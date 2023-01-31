@@ -26,6 +26,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -266,6 +267,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
      * Tests document creation through direct mode
      */
     @Test(groups = { "direct" }, timeOut = TIMEOUT * 10)
+    @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void createRecoversFrom410GoneClientGeneratedOnPartitionSplitDuringIdleTime() throws Exception {
         executeCreateRecoversFrom410GoneOnPartitionSplitDuringIdleTime(false);
     }

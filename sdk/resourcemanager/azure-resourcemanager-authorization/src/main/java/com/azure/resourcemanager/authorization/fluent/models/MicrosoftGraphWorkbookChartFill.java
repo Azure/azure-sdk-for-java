@@ -19,6 +19,10 @@ public final class MicrosoftGraphWorkbookChartFill extends MicrosoftGraphEntity 
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartFill class. */
+    public MicrosoftGraphWorkbookChartFill() {
+    }
+
     /**
      * Get the additionalProperties property: workbookChartFill.
      *

@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The B2B partner content. */
 @Fluent
 public final class B2BPartnerContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(B2BPartnerContent.class);
-
     /*
      * The list of partner business identities.
      */
     @JsonProperty(value = "businessIdentities")
     private List<BusinessIdentity> businessIdentities;
+
+    /** Creates an instance of B2BPartnerContent class. */
+    public B2BPartnerContent() {
+    }
 
     /**
      * Get the businessIdentities property: The list of partner business identities.

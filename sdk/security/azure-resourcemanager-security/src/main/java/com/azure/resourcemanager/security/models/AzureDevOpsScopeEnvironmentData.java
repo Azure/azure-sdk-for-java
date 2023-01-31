@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDevOpsScope")
 @Immutable
 public final class AzureDevOpsScopeEnvironmentData extends EnvironmentData {
+    /** Creates an instance of AzureDevOpsScopeEnvironmentData class. */
+    public AzureDevOpsScopeEnvironmentData() {
+    }
+
     /**
      * Validates the instance.
      *

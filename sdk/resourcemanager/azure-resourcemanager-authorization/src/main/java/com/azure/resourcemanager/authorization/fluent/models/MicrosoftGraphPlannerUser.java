@@ -33,6 +33,10 @@ public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPlannerUser class. */
+    public MicrosoftGraphPlannerUser() {
+    }
+
     /**
      * Get the plans property: Read-only. Nullable. Returns the plannerTasks assigned to the user.
      *

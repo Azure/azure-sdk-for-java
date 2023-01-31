@@ -23,6 +23,10 @@ public final class IngestionPolicyPropertiesFormat {
     @JsonProperty(value = "ingestionSources")
     private List<IngestionSourcesPropertiesFormat> ingestionSources;
 
+    /** Creates an instance of IngestionPolicyPropertiesFormat class. */
+    public IngestionPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the ingestionType property: The ingestion type.
      *

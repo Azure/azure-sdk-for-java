@@ -42,6 +42,10 @@ public final class CapacityReservationInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of CapacityReservationInner class. */
+    public CapacityReservationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Capacity reservation.
      *

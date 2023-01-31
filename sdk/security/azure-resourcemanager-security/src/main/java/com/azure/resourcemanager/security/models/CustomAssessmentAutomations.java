@@ -18,21 +18,6 @@ public interface CustomAssessmentAutomations {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single custom assessment automation by name for the provided subscription and resource group.
-     */
-    CustomAssessmentAutomation getByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
-
-    /**
-     * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,9 +29,9 @@ public interface CustomAssessmentAutomations {
         String resourceGroupName, String customAssessmentAutomationName, Context context);
 
     /**
-     * Deletes a custom assessment automation
+     * Gets a custom assessment automation
      *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
+     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -54,8 +39,9 @@ public interface CustomAssessmentAutomations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single custom assessment automation by name for the provided subscription and resource group.
      */
-    void deleteByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
+    CustomAssessmentAutomation getByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
 
     /**
      * Deletes a custom assessment automation
@@ -71,7 +57,22 @@ public interface CustomAssessmentAutomations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String customAssessmentAutomationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String customAssessmentAutomationName, Context context);
+
+    /**
+     * Deletes a custom assessment automation
+     *
+     * <p>Deletes a custom assessment automation by name for a provided subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String customAssessmentAutomationName);
 
     /**
      * List custom assessment automations in a subscription and a resource group

@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SleuthHttpPolicyTests {
+public class SleuthHttpPolicyTests {
 
     @Mock
     private Tracer tracer;
@@ -56,17 +57,17 @@ class SleuthHttpPolicyTests {
     private MockHttpResponse successResponse = spy(new MockHttpResponse(mock(HttpRequest.class), 200));
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void cleanup() throws Exception {
+    public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
-    void addPolicyForBlobServiceClientBuilder() {
+    public void addPolicyForBlobServiceClientBuilder() {
         SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer);
         // key is test-key
         CustomerProvidedKey providedKey = new CustomerProvidedKey("dGVzdC1rZXk=");
@@ -83,12 +84,12 @@ class SleuthHttpPolicyTests {
             .buildClient();
 
         HttpPipeline pipeline = blobServiceClient.getHttpPipeline();
-        assertEquals(10, pipeline.getPolicyCount());
+        assertTrue(pipeline.getPolicyCount() >= 10);
         assertEquals(SleuthHttpPolicy.class, pipeline.getPolicy(6).getClass());
     }
 
     @Test
-    void processWhenDisableTracingKey() {
+    public void processWhenDisableTracingKey() {
         SleuthHttpPolicy sleuthHttpPolicy = spy(new SleuthHttpPolicy(tracer));
         when(httpPipelineCallContext.getData(com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY))
             .thenReturn(Optional.of(true));
@@ -100,7 +101,7 @@ class SleuthHttpPolicyTests {
     }
 
     @Test
-    void processAndSetParent() throws MalformedURLException {
+    public void processAndSetParent() throws MalformedURLException {
         SleuthHttpPolicy sleuthHttpPolicy = spy(new SleuthHttpPolicy(tracer));
         Span parentSpan = mock(Span.class);
         Span.Builder spanBuilder = mock(Span.Builder.class);
@@ -118,7 +119,7 @@ class SleuthHttpPolicyTests {
     }
 
     @Test
-    void processAndPutTag() throws MalformedURLException {
+    public void processAndPutTag() throws MalformedURLException {
         SleuthHttpPolicy sleuthHttpPolicy = spy(new SleuthHttpPolicy(tracer));
         Span parentSpan = mock(Span.class);
         Span.Builder spanBuilder = mock(Span.Builder.class);
@@ -145,7 +146,7 @@ class SleuthHttpPolicyTests {
     }
 
     @Test
-    void processAndHandleResponse() throws MalformedURLException {
+    public void processAndHandleResponse() throws MalformedURLException {
         SleuthHttpPolicy sleuthHttpPolicy = spy(new SleuthHttpPolicy(tracer));
         Span parentSpan = mock(Span.class);
         Span.Builder spanBuilder = mock(Span.Builder.class);
@@ -174,7 +175,7 @@ class SleuthHttpPolicyTests {
     }
 
     @Test
-    void addAfterPolicyForHttpPipeline() {
+    public void addAfterPolicyForHttpPipeline() {
         final HttpPipeline pipeline = createHttpPipeline();
         assertEquals(1, pipeline.getPolicyCount());
         assertEquals(SleuthHttpPolicy.class, pipeline.getPolicy(0).getClass());

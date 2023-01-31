@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner;
 import com.azure.resourcemanager.dataprotection.models.BaseBackupPolicyResourceList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
 public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(BackupPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupPoliciesService service;
 
@@ -61,7 +58,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface BackupPoliciesService {
+    public interface BackupPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
@@ -71,9 +68,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -86,9 +83,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -102,9 +99,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<BaseBackupPolicyResourceInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
             @BodyParam("application/json") BaseBackupPolicyResourceInner parameters,
             @HeaderParam("Accept") String accept,
@@ -119,9 +116,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @PathParam("backupPolicyName") String backupPolicyName,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -140,34 +137,34 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BaseBackupPolicyResourceInner>> listSinglePageAsync(
-        String vaultName, String resourceGroupName) {
+        String resourceGroupName, String vaultName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -177,9 +174,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                         .list(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             accept,
                             context))
             .<PagedResponse<BaseBackupPolicyResourceInner>>map(
@@ -197,29 +194,22 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BaseBackupPolicyResourceInner>> listSinglePageAsync(
-        String vaultName, String resourceGroupName, Context context) {
+        String resourceGroupName, String vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -227,15 +217,22 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 accept,
                 context)
             .map(
@@ -252,102 +249,103 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BaseBackupPolicyResourceInner> listAsync(String vaultName, String resourceGroupName) {
+    private PagedFlux<BaseBackupPolicyResourceInner> listAsync(String resourceGroupName, String vaultName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(vaultName, resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BaseBackupPolicyResourceInner> listAsync(
-        String vaultName, String resourceGroupName, Context context) {
+        String resourceGroupName, String vaultName, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(vaultName, resourceGroupName, context),
+            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BaseBackupPolicyResourceInner> list(String vaultName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(vaultName, resourceGroupName));
+    public PagedIterable<BaseBackupPolicyResourceInner> list(String resourceGroupName, String vaultName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, vaultName));
     }
 
     /**
      * Returns list of backup policies belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BaseBackupPolicyResourceInner> list(
-        String vaultName, String resourceGroupName, Context context) {
-        return new PagedIterable<>(listAsync(vaultName, resourceGroupName, context));
+        String resourceGroupName, String vaultName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
     }
 
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BaseBackupPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName) {
+        String resourceGroupName, String vaultName, String backupPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -361,9 +359,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                         .get(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             backupPolicyName,
                             accept,
                             context))
@@ -373,36 +371,37 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BaseBackupPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context) {
+        String resourceGroupName, String vaultName, String backupPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -414,9 +413,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .get(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 backupPolicyName,
                 accept,
                 context);
@@ -425,95 +424,88 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BaseBackupPolicyResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName) {
-        return getWithResponseAsync(vaultName, resourceGroupName, backupPolicyName)
-            .flatMap(
-                (Response<BaseBackupPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String vaultName, String backupPolicyName) {
+        return getWithResponseAsync(resourceGroupName, vaultName, backupPolicyName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BaseBackupPolicyResourceInner get(String vaultName, String resourceGroupName, String backupPolicyName) {
-        return getAsync(vaultName, resourceGroupName, backupPolicyName).block();
-    }
-
-    /**
-     * Gets a backup policy belonging to a backup vault.
-     *
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BaseBackupPolicyResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, backupPolicyName, context).block();
+        String resourceGroupName, String vaultName, String backupPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, vaultName, backupPolicyName, context).block();
+    }
+
+    /**
+     * Gets a backup policy belonging to a backup vault.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupPolicyName The backupPolicyName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a backup policy belonging to a backup vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BaseBackupPolicyResourceInner get(String resourceGroupName, String vaultName, String backupPolicyName) {
+        return getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResource.
+     * @return baseBackupPolicyResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BaseBackupPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
+        String resourceGroupName, String vaultName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -532,9 +524,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                         .createOrUpdate(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             backupPolicyName,
                             parameters,
                             accept,
@@ -545,20 +537,20 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResource.
+     * @return baseBackupPolicyResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BaseBackupPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
         String resourceGroupName,
+        String vaultName,
         String backupPolicyName,
         BaseBackupPolicyResourceInner parameters,
         Context context) {
@@ -568,18 +560,18 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -596,9 +588,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .createOrUpdate(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 backupPolicyName,
                 parameters,
                 accept,
@@ -608,34 +600,51 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResource.
+     * @return baseBackupPolicyResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BaseBackupPolicyResourceInner> createOrUpdateAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
-        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, backupPolicyName, parameters)
-            .flatMap(
-                (Response<BaseBackupPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String vaultName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupPolicyName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or Updates a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupPolicyName Name of the policy.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return baseBackupPolicyResource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BaseBackupPolicyResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String vaultName,
+        String backupPolicyName,
+        BaseBackupPolicyResourceInner parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupPolicyName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Creates or Updates a backup policy belonging to a backup vault.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName Name of the policy.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -645,66 +654,43 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BaseBackupPolicyResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
-        return createOrUpdateAsync(vaultName, resourceGroupName, backupPolicyName, parameters).block();
-    }
-
-    /**
-     * Creates or Updates a backup policy belonging to a backup vault.
-     *
-     * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupPolicyName Name of the policy.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BaseBackupPolicyResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String backupPolicyName,
-        BaseBackupPolicyResourceInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, backupPolicyName, parameters, context)
-            .block();
+        String resourceGroupName, String vaultName, String backupPolicyName, BaseBackupPolicyResourceInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName) {
+        String resourceGroupName, String vaultName, String backupPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -718,9 +704,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                         .delete(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             backupPolicyName,
                             accept,
                             context))
@@ -730,36 +716,36 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context) {
+        String resourceGroupName, String vaultName, String backupPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupPolicyName == null) {
             return Mono
@@ -771,9 +757,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             .delete(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 backupPolicyName,
                 accept,
                 context);
@@ -782,61 +768,61 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String backupPolicyName) {
-        return deleteWithResponseAsync(vaultName, resourceGroupName, backupPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupPolicyName) {
+        return deleteWithResponseAsync(resourceGroupName, vaultName, backupPolicyName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a backup policy belonging to a backup vault.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String vaultName, String resourceGroupName, String backupPolicyName) {
-        deleteAsync(vaultName, resourceGroupName, backupPolicyName).block();
-    }
-
-    /**
-     * Deletes a backup policy belonging to a backup vault.
-     *
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context) {
-        return deleteWithResponseAsync(vaultName, resourceGroupName, backupPolicyName, context).block();
+        String resourceGroupName, String vaultName, String backupPolicyName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, vaultName, backupPolicyName, context).block();
+    }
+
+    /**
+     * Deletes a backup policy belonging to a backup vault.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param backupPolicyName The backupPolicyName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String vaultName, String backupPolicyName) {
+        deleteWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BaseBackupPolicyResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -867,12 +853,13 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BaseBackupPolicyResourceInner>> listNextSinglePageAsync(

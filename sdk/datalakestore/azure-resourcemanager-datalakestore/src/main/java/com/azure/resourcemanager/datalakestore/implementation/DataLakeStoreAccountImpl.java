@@ -76,30 +76,6 @@ public final class DataLakeStoreAccountImpl
         return this.innerModel().identity();
     }
 
-    public UUID accountId() {
-        return this.innerModel().accountId();
-    }
-
-    public DataLakeStoreAccountStatus provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public DataLakeStoreAccountState state() {
-        return this.innerModel().state();
-    }
-
-    public OffsetDateTime creationTime() {
-        return this.innerModel().creationTime();
-    }
-
-    public OffsetDateTime lastModifiedTime() {
-        return this.innerModel().lastModifiedTime();
-    }
-
-    public String endpoint() {
-        return this.innerModel().endpoint();
-    }
-
     public String defaultGroup() {
         return this.innerModel().defaultGroup();
     }
@@ -178,12 +154,40 @@ public final class DataLakeStoreAccountImpl
         return this.innerModel().currentTier();
     }
 
+    public UUID accountId() {
+        return this.innerModel().accountId();
+    }
+
+    public DataLakeStoreAccountStatus provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public DataLakeStoreAccountState state() {
+        return this.innerModel().state();
+    }
+
+    public OffsetDateTime creationTime() {
+        return this.innerModel().creationTime();
+    }
+
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerModel().lastModifiedTime();
+    }
+
+    public String endpoint() {
+        return this.innerModel().endpoint();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DataLakeStoreAccountInner innerModel() {
@@ -284,12 +288,12 @@ public final class DataLakeStoreAccountImpl
         return this;
     }
 
-    public void enableKeyVault() {
-        serviceManager.accounts().enableKeyVault(resourceGroupName, accountName);
-    }
-
     public Response<Void> enableKeyVaultWithResponse(Context context) {
         return serviceManager.accounts().enableKeyVaultWithResponse(resourceGroupName, accountName, context);
+    }
+
+    public void enableKeyVault() {
+        serviceManager.accounts().enableKeyVault(resourceGroupName, accountName);
     }
 
     public DataLakeStoreAccountImpl withRegion(Region location) {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details related to the IPv6 address configuration. */
 @Immutable
 public final class Ipv6Config {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6Config.class);
-
     /*
      * The IPv6 address of the network adapter.
      */
@@ -31,6 +27,10 @@ public final class Ipv6Config {
      */
     @JsonProperty(value = "gateway", access = JsonProperty.Access.WRITE_ONLY)
     private String gateway;
+
+    /** Creates an instance of Ipv6Config class. */
+    public Ipv6Config() {
+    }
 
     /**
      * Get the ipAddress property: The IPv6 address of the network adapter.

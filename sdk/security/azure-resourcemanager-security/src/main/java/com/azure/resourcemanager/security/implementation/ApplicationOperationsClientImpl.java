@@ -54,7 +54,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterApplic")
-    private interface ApplicationOperationsService {
+    public interface ApplicationOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}")
         @ExpectedResponses({200})
@@ -189,20 +189,6 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
      * Get a specific application for the requested scope by applicationId.
      *
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner get(String applicationId) {
-        return getAsync(applicationId).block();
-    }
-
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     *
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -212,6 +198,20 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> getWithResponse(String applicationId, Context context) {
         return getWithResponseAsync(applicationId, context).block();
+    }
+
+    /**
+     * Get a specific application for the requested scope by applicationId.
+     *
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific application for the requested scope by applicationId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner get(String applicationId) {
+        return getWithResponse(applicationId, Context.NONE).getValue();
     }
 
     /**
@@ -335,21 +335,6 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
      *
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner createOrUpdate(String applicationId, ApplicationInner application) {
-        return createOrUpdateAsync(applicationId, application).block();
-    }
-
-    /**
-     * Creates or update a security application on the given subscription.
-     *
-     * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -360,6 +345,21 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     public Response<ApplicationInner> createOrUpdateWithResponse(
         String applicationId, ApplicationInner application, Context context) {
         return createOrUpdateWithResponseAsync(applicationId, application, context).block();
+    }
+
+    /**
+     * Creates or update a security application on the given subscription.
+     *
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @param application Application over a subscription scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Application over a given scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner createOrUpdate(String applicationId, ApplicationInner application) {
+        return createOrUpdateWithResponse(applicationId, application, Context.NONE).getValue();
     }
 
     /**
@@ -453,19 +453,6 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
      * Delete an Application over a given scope.
      *
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String applicationId) {
-        deleteAsync(applicationId).block();
-    }
-
-    /**
-     * Delete an Application over a given scope.
-     *
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -475,5 +462,18 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String applicationId, Context context) {
         return deleteWithResponseAsync(applicationId, context).block();
+    }
+
+    /**
+     * Delete an Application over a given scope.
+     *
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String applicationId) {
+        deleteWithResponse(applicationId, Context.NONE);
     }
 }

@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** Schedules applicable to a virtual machine. The schedules may have been defined on a VM or on lab level. */
-@Immutable
+@Fluent
 public final class ApplicableScheduleFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicableScheduleFragment.class);
+    /** Creates an instance of ApplicableScheduleFragment class. */
+    public ApplicableScheduleFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

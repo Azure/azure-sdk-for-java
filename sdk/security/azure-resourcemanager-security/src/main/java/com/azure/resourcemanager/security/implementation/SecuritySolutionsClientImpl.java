@@ -55,7 +55,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecuritySolutionsService {
+    public interface SecuritySolutionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutions")
         @ExpectedResponses({200})
@@ -368,24 +368,6 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param securitySolutionName Name of security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecuritySolutionInner get(String resourceGroupName, String ascLocation, String securitySolutionName) {
-        return getAsync(resourceGroupName, ascLocation, securitySolutionName).block();
-    }
-
-    /**
-     * Gets a specific Security Solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param securitySolutionName Name of security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -396,6 +378,24 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
     public Response<SecuritySolutionInner> getWithResponse(
         String resourceGroupName, String ascLocation, String securitySolutionName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, securitySolutionName, context).block();
+    }
+
+    /**
+     * Gets a specific Security Solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param securitySolutionName Name of security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific Security Solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecuritySolutionInner get(String resourceGroupName, String ascLocation, String securitySolutionName) {
+        return getWithResponse(resourceGroupName, ascLocation, securitySolutionName, Context.NONE).getValue();
     }
 
     /**

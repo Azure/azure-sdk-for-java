@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItems Delete. */
 public final class ProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ProtectedItem_Delete.json
      */
     /**
      * Sample code: Delete Protection from Azure Virtual Machine.
@@ -26,6 +24,6 @@ public final class ProtectedItemsDeleteSamples {
                 "Azure",
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

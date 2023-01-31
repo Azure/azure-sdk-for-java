@@ -20,6 +20,10 @@ public final class AlertsSuppressionRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AlertsSuppressionRuleProperties innerProperties;
 
+    /** Creates an instance of AlertsSuppressionRuleInner class. */
+    public AlertsSuppressionRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: describes AlertsSuppressionRule properties.
      *

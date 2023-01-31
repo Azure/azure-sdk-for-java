@@ -1,24 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f3dbbb5a-7090-4e3b-80cc-78e3ee7d2b01",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "629abf42-2403-4adf-8f79-df7b99fda7b6",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "442",
-      "x-envoy-upstream-service-time" : "16",
+      "x-ms-region" : "West US 2",
+      "x-envoy-upstream-service-time" : "13",
+      "apim-request-id" : "5aa8c82a-3a04-41de-96af-c20156d88048",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 14 Nov 2022 20:10:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "33eaf97b-3f8e-4c3f-8385-eedc75b45fad",
       "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
       "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Hello world\",\"input text\"],\"statistics\":{\"charactersCount\":49,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"monde\"],\"statistics\":{\"charactersCount\":21,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:00:06 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

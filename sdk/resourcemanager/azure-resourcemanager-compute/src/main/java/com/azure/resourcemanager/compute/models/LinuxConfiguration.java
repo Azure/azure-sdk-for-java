@@ -46,6 +46,10 @@ public final class LinuxConfiguration {
     @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
+    /** Creates an instance of LinuxConfiguration class. */
+    public LinuxConfiguration() {
+    }
+
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
      *

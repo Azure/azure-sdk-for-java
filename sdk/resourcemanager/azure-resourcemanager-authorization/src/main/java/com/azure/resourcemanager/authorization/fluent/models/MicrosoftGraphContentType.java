@@ -23,8 +23,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     private String description;
 
     /*
-     * The name of the group this content type belongs to. Helps organize
-     * related content types.
+     * The name of the group this content type belongs to. Helps organize related content types.
      */
     @JsonProperty(value = "group")
     private String group;
@@ -60,16 +59,14 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     private String parentId;
 
     /*
-     * If true, the content type cannot be modified unless this value is first
-     * set to false.
+     * If true, the content type cannot be modified unless this value is first set to false.
      */
     @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
-     * If true, the content type cannot be modified by users or through
-     * push-down operations. Only site collection administrators can seal or
-     * unseal content types.
+     * If true, the content type cannot be modified by users or through push-down operations. Only site collection
+     * administrators can seal or unseal content types.
      */
     @JsonProperty(value = "sealed")
     private Boolean sealed;
@@ -84,6 +81,10 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
      * contentType
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContentType class. */
+    public MicrosoftGraphContentType() {
+    }
 
     /**
      * Get the description property: The descriptive text for the item.

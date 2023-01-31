@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** a compliance result. */
-@Fluent
+@Immutable
 public final class ComplianceResultInner extends ProxyResource {
     /*
      * Compliance result data
      */
     @JsonProperty(value = "properties")
     private ComplianceResultProperties innerProperties;
+
+    /** Creates an instance of ComplianceResultInner class. */
+    public ComplianceResultInner() {
+    }
 
     /**
      * Get the innerProperties property: Compliance result data.

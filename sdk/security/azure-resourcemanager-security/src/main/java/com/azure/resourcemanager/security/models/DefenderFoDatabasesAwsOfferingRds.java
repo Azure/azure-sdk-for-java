@@ -22,6 +22,10 @@ public final class DefenderFoDatabasesAwsOfferingRds {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderFoDatabasesAwsOfferingRds class. */
+    public DefenderFoDatabasesAwsOfferingRds() {
+    }
+
     /**
      * Get the enabled property: Is RDS protection enabled.
      *

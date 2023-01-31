@@ -447,14 +447,26 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName);
+
+    /**
+     * The operation to delete a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName, Boolean forceDeletion);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName);
 
     /**
      * The operation to delete a virtual machine.
@@ -498,19 +510,6 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmName);
-
-    /**
-     * The operation to delete a virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param forceDeletion Optional parameter to force delete virtual machines.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vmName, Boolean forceDeletion);
 
     /**
      * The operation to delete a virtual machine.
@@ -561,24 +560,6 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the virtual machine that is managed by the platform and can change outside of control plane
-     *     operations. 'UserData' retrieves the UserData property as part of the VM model view that was provided by the
-     *     user during the VM Create/Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineInner> getByResourceGroupAsync(
-        String resourceGroupName, String vmName, InstanceViewTypes expand);
-
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -586,19 +567,6 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineInner> getByResourceGroupAsync(String resourceGroupName, String vmName);
-
-    /**
-     * Retrieves information about the model view or the instance view of a virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner getByResourceGroup(String resourceGroupName, String vmName);
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
@@ -618,6 +586,19 @@ public interface VirtualMachinesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineInner> getByResourceGroupWithResponse(
         String resourceGroupName, String vmName, InstanceViewTypes expand, Context context);
+
+    /**
+     * Retrieves information about the model view or the instance view of a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineInner getByResourceGroup(String resourceGroupName, String vmName);
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
@@ -652,19 +633,6 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of a virtual machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInstanceViewInner instanceView(String resourceGroupName, String vmName);
-
-    /**
-     * Retrieves information about the run-time state of a virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -674,6 +642,19 @@ public interface VirtualMachinesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineInstanceViewInner> instanceViewWithResponse(
         String resourceGroupName, String vmName, Context context);
+
+    /**
+     * Retrieves information about the run-time state of a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the instance view of a virtual machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineInstanceViewInner instanceView(String resourceGroupName, String vmName);
 
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
@@ -811,14 +792,27 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName, Boolean hibernate);
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -865,20 +859,6 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deallocateAsync(String resourceGroupName, String vmName);
-
-    /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
-     * that this virtual machine uses.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String vmName, Boolean hibernate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -951,12 +931,14 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void generalize(String resourceGroupName, String vmName);
+    Response<Void> generalizeWithResponse(String resourceGroupName, String vmName, Context context);
 
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
@@ -967,14 +949,12 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> generalizeWithResponse(String resourceGroupName, String vmName, Context context);
+    void generalize(String resourceGroupName, String vmName);
 
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
@@ -1172,16 +1152,27 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
-     *     specified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String vmName);
+
+    /**
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName, Boolean skipShutdown);
+    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName);
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
@@ -1232,22 +1223,6 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> powerOffAsync(String resourceGroupName, String vmName);
-
-    /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
-     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
-     *     specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void powerOff(String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
@@ -1644,7 +1619,11 @@ public interface VirtualMachinesClient
     void redeploy(String resourceGroupName, String vmName, Context context);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1659,7 +1638,11 @@ public interface VirtualMachinesClient
         String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1674,22 +1657,45 @@ public interface VirtualMachinesClient
         String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1705,7 +1711,11 @@ public interface VirtualMachinesClient
         String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1719,7 +1729,11 @@ public interface VirtualMachinesClient
     Mono<Void> reimageAsync(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1732,20 +1746,11 @@ public interface VirtualMachinesClient
     Mono<Void> reimageAsync(String resourceGroupName, String vmName);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
-
-    /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1757,7 +1762,11 @@ public interface VirtualMachinesClient
     void reimage(String resourceGroupName, String vmName);
 
     /**
-     * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+     * Reimages (upgrade the operating system) a virtual machine which don't have a ephemeral OS disk, for virtual
+     * machines who have a ephemeral OS disk the virtual machine is reset to initial state. NOTE: The retaining of old
+     * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
+     * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
+     * deleteOption of the OS disk should be updated accordingly before performing the reimage.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1793,23 +1802,6 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
-     *     1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default
-     *     expiration duration of 120 minutes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
-        String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes);
-
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1818,19 +1810,6 @@ public interface VirtualMachinesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
         String resourceGroupName, String vmName);
-
-    /**
-     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RetrieveBootDiagnosticsDataResultInner retrieveBootDiagnosticsData(String resourceGroupName, String vmName);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
@@ -1849,6 +1828,19 @@ public interface VirtualMachinesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(
         String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes, Context context);
+
+    /**
+     * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS URIs of the console screenshot and serial log blobs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RetrieveBootDiagnosticsDataResultInner retrieveBootDiagnosticsData(String resourceGroupName, String vmName);
 
     /**
      * The operation to perform maintenance on a virtual machine.
@@ -1973,18 +1965,6 @@ public interface VirtualMachinesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void simulateEviction(String resourceGroupName, String vmName);
-
-    /**
-     * The operation to simulate the eviction of spot virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -1993,6 +1973,18 @@ public interface VirtualMachinesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> simulateEvictionWithResponse(String resourceGroupName, String vmName, Context context);
+
+    /**
+     * The operation to simulate the eviction of spot virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void simulateEviction(String resourceGroupName, String vmName);
 
     /**
      * Assess patches on the VM.

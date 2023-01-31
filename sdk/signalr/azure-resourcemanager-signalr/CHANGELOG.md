@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2022-11-21)
+
+- Azure Resource Manager SignalR client library for Java. This package contains Microsoft Azure SDK for SignalR Management SDK. REST API for Azure SignalR Service. Package tag package-2022-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ServerlessSettings` was added
+
+#### `models.CustomDomain` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SignalRResource$Definition` was modified
+
+* `withServerless(models.ServerlessSettings)` was added
+
+#### `models.CustomCertificate` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SignalRResource` was modified
+
+* `resourceGroupName()` was added
+* `serverless()` was added
+
+#### `models.SignalRResource$Update` was modified
+
+* `withServerless(models.ServerlessSettings)` was added
 
 ## 1.0.0-beta.4 (2022-04-11)
 

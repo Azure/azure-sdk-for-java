@@ -22,6 +22,10 @@ public final class AutomationInner extends Resource {
     @JsonProperty(value = "properties")
     private AutomationProperties innerProperties;
 
+    /** Creates an instance of AutomationInner class. */
+    public AutomationInner() {
+    }
+
     /**
      * Get the innerProperties property: Security automation data.
      *

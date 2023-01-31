@@ -24,6 +24,10 @@ public final class PermissionGetResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PermissionGetResult class. */
+    public PermissionGetResult() {
+    }
+
     /**
      * Get the value property: An array of permissions.
      *

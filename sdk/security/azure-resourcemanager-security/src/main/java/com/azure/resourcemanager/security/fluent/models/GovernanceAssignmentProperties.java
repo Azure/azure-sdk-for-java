@@ -52,6 +52,10 @@ public final class GovernanceAssignmentProperties {
     @JsonProperty(value = "additionalData")
     private GovernanceAssignmentAdditionalData additionalData;
 
+    /** Creates an instance of GovernanceAssignmentProperties class. */
+    public GovernanceAssignmentProperties() {
+    }
+
     /**
      * Get the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
      *

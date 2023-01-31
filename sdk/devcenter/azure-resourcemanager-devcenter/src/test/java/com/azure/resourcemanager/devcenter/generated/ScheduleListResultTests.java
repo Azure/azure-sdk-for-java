@@ -14,7 +14,7 @@ public final class ScheduleListResultTests {
         ScheduleListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"dlmkkzevdl\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"dsttwvo\",\"timeZone\":\"bbejdcngqqm\",\"state\":\"Enabled\"},\"id\":\"fgmjzrwrdgrt\",\"name\":\"aenuuz\",\"type\":\"opbminrfdw\"},{\"properties\":{\"provisioningState\":\"hhziuief\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"smlmzqhoftrm\",\"timeZone\":\"qu\",\"state\":\"Disabled\"},\"id\":\"icslfaoq\",\"name\":\"piyylhalnswhccsp\",\"type\":\"kaivwit\"},{\"properties\":{\"provisioningState\":\"ywuggwoluhcz\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"i\",\"timeZone\":\"brgz\",\"state\":\"Disabled\"},\"id\":\"weyp\",\"name\":\"w\",\"type\":\"xggicccnxqhuexmk\"}],\"nextLink\":\"lstvlzywe\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"tkl\",\"timeZone\":\"xbjhwuaanozjosph\",\"state\":\"Enabled\"},\"id\":\"pjrvxagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}],\"nextLink\":\"cskfcktqumiekk\"}")
                 .toObject(ScheduleListResult.class);
     }
 

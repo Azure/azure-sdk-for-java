@@ -22,10 +22,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.http.policy.InstrumentationPolicy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -41,8 +43,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -63,10 +64,14 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private final WireMockServer wireMockServer;
 
     public RestProxyTestBase(TOptions options) {
-        this(options, null);
+        this(options, null, null);
     }
 
     public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier) {
+        this(options, mockResponseSupplier, null);
+    }
+
+    public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier, Tracer tracer) {
         super(options);
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
@@ -86,6 +91,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         httpPipeline = new HttpPipelineBuilder()
             .policies(createPipelinePolicies(options))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
 
         service = RestProxy.create(MyRestProxyService.class, httpPipeline);
@@ -117,6 +123,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             policies.add(new UserAgentPolicy());
             policies.add(new RetryPolicy());
             policies.add(new RequestIdPolicy());
+            policies.add(new InstrumentationPolicy());
             policies.add(new HttpLoggingPolicy(new HttpLogOptions()));
         }
 
@@ -181,7 +188,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         switch (options.getBinaryDataSource()) {
             case BYTES:
                 byte[] bytes = new byte[(int) size];
-                new Random().nextBytes(bytes);
+                ThreadLocalRandom.current().nextBytes(bytes);
                 return  () -> BinaryData.fromBytes(bytes);
             case FILE:
                 try {

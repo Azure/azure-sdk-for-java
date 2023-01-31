@@ -39,6 +39,10 @@ public class MicrosoftGraphScheduleEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphScheduleEntity class. */
+    public MicrosoftGraphScheduleEntity() {
+    }
+
     /**
      * Get the endDateTime property: The endDateTime property.
      *

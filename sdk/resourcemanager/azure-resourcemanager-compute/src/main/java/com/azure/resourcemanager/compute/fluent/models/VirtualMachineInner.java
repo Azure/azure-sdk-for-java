@@ -70,6 +70,10 @@ public final class VirtualMachineInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of VirtualMachineInner class. */
+    public VirtualMachineInner() {
+    }
+
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
      * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable

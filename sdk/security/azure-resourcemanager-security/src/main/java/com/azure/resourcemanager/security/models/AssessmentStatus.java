@@ -29,6 +29,10 @@ public class AssessmentStatus {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of AssessmentStatus class. */
+    public AssessmentStatus() {
+    }
+
     /**
      * Get the code property: Programmatic code for the status of the assessment.
      *

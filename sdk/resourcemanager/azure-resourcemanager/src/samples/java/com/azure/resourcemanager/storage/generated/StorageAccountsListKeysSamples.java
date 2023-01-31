@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageAccounts ListKeys. */
 public final class StorageAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/StorageAccountListKeys.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListKeys.json
      */
     /**
      * Sample code: StorageAccountListKeys.

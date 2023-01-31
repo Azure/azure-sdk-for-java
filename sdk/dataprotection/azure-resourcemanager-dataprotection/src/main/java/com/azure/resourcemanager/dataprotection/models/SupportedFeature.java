@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Elements class for feature request. */
 @Fluent
 public final class SupportedFeature {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedFeature.class);
-
     /*
      * support feature type.
      */
@@ -32,6 +28,10 @@ public final class SupportedFeature {
      */
     @JsonProperty(value = "exposureControlledFeatures")
     private List<String> exposureControlledFeatures;
+
+    /** Creates an instance of SupportedFeature class. */
+    public SupportedFeature() {
+    }
 
     /**
      * Get the featureName property: support feature type.

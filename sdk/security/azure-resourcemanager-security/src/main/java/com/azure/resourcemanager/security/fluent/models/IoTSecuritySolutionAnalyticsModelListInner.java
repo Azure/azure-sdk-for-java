@@ -24,6 +24,10 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IoTSecuritySolutionAnalyticsModelListInner class. */
+    public IoTSecuritySolutionAnalyticsModelListInner() {
+    }
+
     /**
      * Get the value property: List of Security analytics of your IoT Security solution.
      *

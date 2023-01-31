@@ -24,6 +24,10 @@ public final class RuleResultsInput {
     @JsonProperty(value = "results")
     private List<List<String>> results;
 
+    /** Creates an instance of RuleResultsInput class. */
+    public RuleResultsInput() {
+    }
+
     /**
      * Get the latestScan property: Take results from latest scan.
      *

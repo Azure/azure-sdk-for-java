@@ -25,6 +25,10 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
     @JsonProperty(value = "networkSecurityGroups", required = true)
     private List<String> networkSecurityGroups;
 
+    /** Creates an instance of AdaptiveNetworkHardeningEnforceRequest class. */
+    public AdaptiveNetworkHardeningEnforceRequest() {
+    }
+
     /**
      * Get the rules property: The rules to enforce.
      *

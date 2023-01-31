@@ -20,7 +20,7 @@ public final class AssessmentsDeleteSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .assessments()
-            .deleteWithResponse(
+            .deleteByResourceGroupWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
                 "8bb8be0a-6010-4789-812f-e4d661c4ed0e",
                 Context.NONE);

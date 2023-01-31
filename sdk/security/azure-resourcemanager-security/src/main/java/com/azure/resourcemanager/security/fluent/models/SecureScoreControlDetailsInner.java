@@ -17,6 +17,10 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecureScoreControlScoreDetailsInner innerProperties;
 
+    /** Creates an instance of SecureScoreControlDetailsInner class. */
+    public SecureScoreControlDetailsInner() {
+    }
+
     /**
      * Get the innerProperties property: Calculation result data in control level.
      *

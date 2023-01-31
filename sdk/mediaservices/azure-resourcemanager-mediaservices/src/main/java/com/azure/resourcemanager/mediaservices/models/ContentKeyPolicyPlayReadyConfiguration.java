@@ -28,6 +28,10 @@ public final class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPoli
     @JsonProperty(value = "responseCustomData")
     private String responseCustomData;
 
+    /** Creates an instance of ContentKeyPolicyPlayReadyConfiguration class. */
+    public ContentKeyPolicyPlayReadyConfiguration() {
+    }
+
     /**
      * Get the licenses property: The PlayReady licenses.
      *

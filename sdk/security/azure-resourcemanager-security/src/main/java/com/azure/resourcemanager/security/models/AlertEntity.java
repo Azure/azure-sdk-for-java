@@ -26,6 +26,10 @@ public final class AlertEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of AlertEntity class. */
+    public AlertEntity() {
+    }
+
     /**
      * Get the type property: Type of entity.
      *

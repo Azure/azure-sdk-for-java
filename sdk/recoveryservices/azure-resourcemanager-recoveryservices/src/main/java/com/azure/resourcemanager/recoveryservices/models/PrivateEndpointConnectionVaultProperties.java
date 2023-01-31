@@ -30,8 +30,7 @@ public final class PrivateEndpointConnectionVaultProperties {
     private String name;
 
     /*
-     * The type, which will be of the format,
-     * Microsoft.RecoveryServices/vaults/privateEndpointConnections
+     * The type, which will be of the format, Microsoft.RecoveryServices/vaults/privateEndpointConnections
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -41,6 +40,10 @@ public final class PrivateEndpointConnectionVaultProperties {
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /** Creates an instance of PrivateEndpointConnectionVaultProperties class. */
+    public PrivateEndpointConnectionVaultProperties() {
+    }
 
     /**
      * Get the id property: Format of id

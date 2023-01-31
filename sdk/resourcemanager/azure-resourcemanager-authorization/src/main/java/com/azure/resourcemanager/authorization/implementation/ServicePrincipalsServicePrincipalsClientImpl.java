@@ -28,8 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsServicePrincipalsClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfServicePrincipal;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
@@ -38,6 +36,8 @@ import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsSe
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsServicePrincipalOrderby;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsServicePrincipalSelect;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -71,7 +71,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface ServicePrincipalsServicePrincipalsService {
+    public interface ServicePrincipalsServicePrincipalsService {
         @Headers({"Content-Type: application/json"})
         @Get("/servicePrincipals")
         @ExpectedResponses({200})
@@ -180,11 +180,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -253,11 +259,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listServicePrincipal(
@@ -508,29 +520,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphServicePrincipalInner> createServicePrincipalAsync(
         MicrosoftGraphServicePrincipalInner body) {
-        return createServicePrincipalWithResponseAsync(body)
-            .flatMap(
-                (Response<MicrosoftGraphServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Add new entity to servicePrincipals.
-     *
-     * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return servicePrincipal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphServicePrincipalInner createServicePrincipal(MicrosoftGraphServicePrincipalInner body) {
-        return createServicePrincipalAsync(body).block();
+        return createServicePrincipalWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,6 +537,20 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     public Response<MicrosoftGraphServicePrincipalInner> createServicePrincipalWithResponse(
         MicrosoftGraphServicePrincipalInner body, Context context) {
         return createServicePrincipalWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Add new entity to servicePrincipals.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return servicePrincipal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphServicePrincipalInner createServicePrincipal(MicrosoftGraphServicePrincipalInner body) {
+        return createServicePrincipalWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -580,9 +584,13 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -631,9 +639,13 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getServicePrincipal(
@@ -644,35 +656,6 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
                 expandConverted,
                 accept,
                 context);
-    }
-
-    /**
-     * Get entity from servicePrincipals by key.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphServicePrincipalInner> getServicePrincipalAsync(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand) {
-        return getServicePrincipalWithResponseAsync(servicePrincipalId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
     }
 
     /**
@@ -690,31 +673,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         final List<ServicePrincipalsServicePrincipalSelect> select = null;
         final List<ServicePrincipalsServicePrincipalExpand> expand = null;
         return getServicePrincipalWithResponseAsync(servicePrincipalId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get entity from servicePrincipals by key.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphServicePrincipalInner getServicePrincipal(String servicePrincipalId) {
-        final String consistencyLevel = null;
-        final List<ServicePrincipalsServicePrincipalSelect> select = null;
-        final List<ServicePrincipalsServicePrincipalExpand> expand = null;
-        return getServicePrincipalAsync(servicePrincipalId, consistencyLevel, select, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -739,6 +698,24 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         Context context) {
         return getServicePrincipalWithResponseAsync(servicePrincipalId, consistencyLevel, select, expand, context)
             .block();
+    }
+
+    /**
+     * Get entity from servicePrincipals by key.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from servicePrincipals by key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphServicePrincipalInner getServicePrincipal(String servicePrincipalId) {
+        final String consistencyLevel = null;
+        final List<ServicePrincipalsServicePrincipalSelect> select = null;
+        final List<ServicePrincipalsServicePrincipalExpand> expand = null;
+        return getServicePrincipalWithResponse(servicePrincipalId, consistencyLevel, select, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -824,22 +801,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateServicePrincipalAsync(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body) {
-        return updateServicePrincipalWithResponseAsync(servicePrincipalId, body)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update entity in servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body New property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateServicePrincipal(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body) {
-        updateServicePrincipalAsync(servicePrincipalId, body).block();
+        return updateServicePrincipalWithResponseAsync(servicePrincipalId, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -857,6 +819,20 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     public Response<Void> updateServicePrincipalWithResponse(
         String servicePrincipalId, MicrosoftGraphServicePrincipalInner body, Context context) {
         return updateServicePrincipalWithResponseAsync(servicePrincipalId, body, context).block();
+    }
+
+    /**
+     * Update entity in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateServicePrincipal(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body) {
+        updateServicePrincipalWithResponse(servicePrincipalId, body, Context.NONE);
     }
 
     /**
@@ -924,22 +900,6 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * Delete entity from servicePrincipals.
      *
      * @param servicePrincipalId key: id of servicePrincipal.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId, String ifMatch) {
-        return deleteServicePrincipalWithResponseAsync(servicePrincipalId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -948,22 +908,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId) {
         final String ifMatch = null;
-        return deleteServicePrincipalWithResponseAsync(servicePrincipalId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteServicePrincipal(String servicePrincipalId) {
-        final String ifMatch = null;
-        deleteServicePrincipalAsync(servicePrincipalId, ifMatch).block();
+        return deleteServicePrincipalWithResponseAsync(servicePrincipalId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -984,9 +929,24 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     }
 
     /**
+     * Delete entity from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteServicePrincipal(String servicePrincipalId) {
+        final String ifMatch = null;
+        deleteServicePrincipalWithResponse(servicePrincipalId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1014,7 +974,8 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.

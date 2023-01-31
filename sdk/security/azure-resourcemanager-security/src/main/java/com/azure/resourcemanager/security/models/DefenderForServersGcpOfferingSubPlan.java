@@ -16,6 +16,10 @@ public final class DefenderForServersGcpOfferingSubPlan {
     @JsonProperty(value = "type")
     private SubPlan type;
 
+    /** Creates an instance of DefenderForServersGcpOfferingSubPlan class. */
+    public DefenderForServersGcpOfferingSubPlan() {
+    }
+
     /**
      * Get the type property: The available sub plans.
      *

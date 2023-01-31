@@ -60,6 +60,10 @@ public final class CapacityReservationProperties {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /** Creates an instance of CapacityReservationProperties class. */
+    public CapacityReservationProperties() {
+    }
+
     /**
      * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
      * which does not change throughout the lifetime of the resource.

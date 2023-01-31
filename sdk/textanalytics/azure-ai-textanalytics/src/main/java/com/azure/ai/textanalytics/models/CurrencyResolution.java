@@ -14,7 +14,7 @@ public final class CurrencyResolution extends BaseResolution {
      * two letters of the ISO 4217 three-letter code are the same as the code for the country name, and, where
      * possible, the third letter corresponds to the first letter of the currency name.
      */
-    private String iSO4217;
+    private String iso4217;
 
     /*
      * The unit of the amount captured in the extracted entity
@@ -30,8 +30,8 @@ public final class CurrencyResolution extends BaseResolution {
         CurrencyResolutionPropertiesHelper.setAccessor(
             new CurrencyResolutionPropertiesHelper.CurrencyResolutionAccessor() {
                 @Override
-                public void setISO4217(CurrencyResolution currencyResolution, String iso4217) {
-                    currencyResolution.setISO4217(iso4217);
+                public void setIso4217(CurrencyResolution currencyResolution, String iso4217) {
+                    currencyResolution.setIso4217(iso4217);
                 }
 
                 @Override
@@ -47,14 +47,14 @@ public final class CurrencyResolution extends BaseResolution {
     }
 
     /**
-     * Get the iSO4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
+     * Get the ISO4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
      * country names. The first two letters of the ISO 4217 three-letter code are the same as the code for the country
      * name, and, where possible, the third letter corresponds to the first letter of the currency name.
      *
-     * @return the iSO4217 value.
+     * @return the iso4217 value.
      */
-    public String getISO4217() {
-        return this.iSO4217;
+    public String getIso4217() {
+        return this.iso4217;
     }
 
     /**
@@ -75,8 +75,8 @@ public final class CurrencyResolution extends BaseResolution {
         return this.value;
     }
 
-    private void setISO4217(String iSO4217) {
-        this.iSO4217 = iSO4217;
+    private void setIso4217(String iso4217) {
+        this.iso4217 = iso4217;
     }
 
     private void setUnit(String unit) {

@@ -52,6 +52,10 @@ public final class MicrosoftGraphLicenseAssignmentState {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphLicenseAssignmentState class. */
+    public MicrosoftGraphLicenseAssignmentState() {
+    }
+
     /**
      * Get the assignedByGroup property: The assignedByGroup property.
      *

@@ -34,6 +34,10 @@ public final class BaseLongTermRetentionPolicyProperties {
     @JsonProperty(value = "weekOfYear")
     private Integer weekOfYear;
 
+    /** Creates an instance of BaseLongTermRetentionPolicyProperties class. */
+    public BaseLongTermRetentionPolicyProperties() {
+    }
+
     /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
      *

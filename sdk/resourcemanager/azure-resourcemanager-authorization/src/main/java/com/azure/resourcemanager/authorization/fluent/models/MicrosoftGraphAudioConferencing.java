@@ -22,8 +22,7 @@ public final class MicrosoftGraphAudioConferencing {
     private String conferenceId;
 
     /*
-     * A URL to the externally-accessible web page that contains dial-in
-     * information.
+     * A URL to the externally-accessible web page that contains dial-in information.
      */
     @JsonProperty(value = "dialinUrl")
     private String dialinUrl;
@@ -44,6 +43,10 @@ public final class MicrosoftGraphAudioConferencing {
      * audioConferencing
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAudioConferencing class. */
+    public MicrosoftGraphAudioConferencing() {
+    }
 
     /**
      * Get the conferenceId property: The conferenceId property.

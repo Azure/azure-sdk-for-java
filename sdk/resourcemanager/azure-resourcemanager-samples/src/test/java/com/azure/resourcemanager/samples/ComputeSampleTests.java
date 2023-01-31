@@ -11,6 +11,7 @@ import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustom
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVM;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromSnapshot;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromVhd;
+import com.azure.resourcemanager.compute.samples.CreateVirtualMachineWithTrustedLaunchFromGalleryImage;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesAsyncTrackingRelatedResources;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesInParallel;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesUsingCustomImageOrSpecializedVHD;
@@ -197,5 +198,10 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testCloneVirtualMachineToNewRegion() {
         Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));
+    }
+
+    @Test
+    public void testCreateVirtualMachineWithTrustedLaunchFromGalleryImage() {
+        Assertions.assertTrue(CreateVirtualMachineWithTrustedLaunchFromGalleryImage.runSample(azureResourceManager));
     }
 }

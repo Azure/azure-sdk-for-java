@@ -30,8 +30,7 @@ public final class AnalyzeResult {
     private StringIndexType stringIndexType;
 
     /*
-     * Concatenate string representation of all textual and visual elements in
-     * reading order.
+     * Concatenate string representation of all textual and visual elements in reading order.
      */
     @JsonProperty(value = "content", required = true)
     private String content;
@@ -77,6 +76,9 @@ public final class AnalyzeResult {
      */
     @JsonProperty(value = "documents")
     private List<Document> documents;
+
+    /** Creates an instance of AnalyzeResult class. */
+    public AnalyzeResult() {}
 
     /**
      * Get the apiVersion property: API version used to produce this result.

@@ -30,6 +30,10 @@ public final class JitNetworkAccessPolicyVirtualMachine {
     @JsonProperty(value = "publicIpAddress")
     private String publicIpAddress;
 
+    /** Creates an instance of JitNetworkAccessPolicyVirtualMachine class. */
+    public JitNetworkAccessPolicyVirtualMachine() {
+    }
+
     /**
      * Get the id property: Resource ID of the virtual machine that is linked to this policy.
      *

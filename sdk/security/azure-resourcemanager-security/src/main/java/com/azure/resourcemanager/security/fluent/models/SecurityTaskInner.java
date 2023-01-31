@@ -19,6 +19,10 @@ public final class SecurityTaskInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityTaskProperties innerProperties;
 
+    /** Creates an instance of SecurityTaskInner class. */
+    public SecurityTaskInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes properties of a task.
      *

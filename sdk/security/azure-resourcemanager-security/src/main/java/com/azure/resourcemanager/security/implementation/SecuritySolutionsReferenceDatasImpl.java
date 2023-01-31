@@ -27,15 +27,6 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
         this.serviceManager = serviceManager;
     }
 
-    public SecuritySolutionsReferenceDataList list() {
-        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecuritySolutionsReferenceDataList> listWithResponse(Context context) {
         Response<SecuritySolutionsReferenceDataListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
@@ -49,8 +40,8 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
         }
     }
 
-    public SecuritySolutionsReferenceDataList listByHomeRegion(String ascLocation) {
-        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().listByHomeRegion(ascLocation);
+    public SecuritySolutionsReferenceDataList list() {
+        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().list();
         if (inner != null) {
             return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
         } else {
@@ -68,6 +59,15 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecuritySolutionsReferenceDataListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecuritySolutionsReferenceDataList listByHomeRegion(String ascLocation) {
+        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().listByHomeRegion(ascLocation);
+        if (inner != null) {
+            return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
         } else {
             return null;
         }

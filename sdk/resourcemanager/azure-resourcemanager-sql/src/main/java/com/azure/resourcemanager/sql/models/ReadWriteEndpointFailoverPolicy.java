@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReadWriteEndpointFailoverPolicy. */
+/**
+ * Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then
+ * failoverWithDataLossGracePeriodMinutes is required.
+ */
 public final class ReadWriteEndpointFailoverPolicy extends ExpandableStringEnum<ReadWriteEndpointFailoverPolicy> {
     /** Static value Manual for ReadWriteEndpointFailoverPolicy. */
     public static final ReadWriteEndpointFailoverPolicy MANUAL = fromString("Manual");

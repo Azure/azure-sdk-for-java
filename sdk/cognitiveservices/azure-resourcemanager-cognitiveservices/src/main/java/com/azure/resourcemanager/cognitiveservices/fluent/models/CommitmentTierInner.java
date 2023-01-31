@@ -61,6 +61,10 @@ public final class CommitmentTierInner {
     @JsonProperty(value = "cost")
     private CommitmentCost cost;
 
+    /** Creates an instance of CommitmentTierInner class. */
+    public CommitmentTierInner() {
+    }
+
     /**
      * Get the kind property: The Kind of the resource.
      *

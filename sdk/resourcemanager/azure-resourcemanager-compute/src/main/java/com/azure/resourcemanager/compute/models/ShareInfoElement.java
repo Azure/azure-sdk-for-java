@@ -16,6 +16,10 @@ public final class ShareInfoElement {
     @JsonProperty(value = "vmUri", access = JsonProperty.Access.WRITE_ONLY)
     private String vmUri;
 
+    /** Creates an instance of ShareInfoElement class. */
+    public ShareInfoElement() {
+    }
+
     /**
      * Get the vmUri property: A relative URI containing the ID of the VM that has the disk attached.
      *

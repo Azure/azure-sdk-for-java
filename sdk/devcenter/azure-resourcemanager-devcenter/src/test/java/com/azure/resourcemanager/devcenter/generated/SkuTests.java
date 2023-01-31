@@ -16,29 +16,29 @@ public final class SkuTests {
         Sku model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gk\",\"tier\":\"Premium\",\"size\":\"mbmpaxmodfvuefy\",\"family\":\"bpfvm\",\"capacity\":1299993392}")
+                    "{\"name\":\"pwo\",\"tier\":\"Basic\",\"size\":\"fpbsjyofdxl\",\"family\":\"sd\",\"capacity\":1422945070}")
                 .toObject(Sku.class);
-        Assertions.assertEquals("gk", model.name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
-        Assertions.assertEquals("mbmpaxmodfvuefy", model.size());
-        Assertions.assertEquals("bpfvm", model.family());
-        Assertions.assertEquals(1299993392, model.capacity());
+        Assertions.assertEquals("pwo", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
+        Assertions.assertEquals("fpbsjyofdxl", model.size());
+        Assertions.assertEquals("sd", model.family());
+        Assertions.assertEquals(1422945070, model.capacity());
     }
 
     @Test
     public void testSerialize() {
         Sku model =
             new Sku()
-                .withName("gk")
-                .withTier(SkuTier.PREMIUM)
-                .withSize("mbmpaxmodfvuefy")
-                .withFamily("bpfvm")
-                .withCapacity(1299993392);
+                .withName("pwo")
+                .withTier(SkuTier.BASIC)
+                .withSize("fpbsjyofdxl")
+                .withFamily("sd")
+                .withCapacity(1422945070);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("gk", model.name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
-        Assertions.assertEquals("mbmpaxmodfvuefy", model.size());
-        Assertions.assertEquals("bpfvm", model.family());
-        Assertions.assertEquals(1299993392, model.capacity());
+        Assertions.assertEquals("pwo", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
+        Assertions.assertEquals("fpbsjyofdxl", model.size());
+        Assertions.assertEquals("sd", model.family());
+        Assertions.assertEquals(1422945070, model.capacity());
     }
 }

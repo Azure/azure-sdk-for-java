@@ -16,6 +16,10 @@ public final class TopologySingleResourceChild {
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
+    /** Creates an instance of TopologySingleResourceChild class. */
+    public TopologySingleResourceChild() {
+    }
+
     /**
      * Get the resourceId property: Azure resource id which serves as child resource in topology view.
      *

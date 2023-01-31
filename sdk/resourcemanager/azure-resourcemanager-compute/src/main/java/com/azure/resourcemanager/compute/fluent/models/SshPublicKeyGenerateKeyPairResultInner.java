@@ -32,6 +32,10 @@ public final class SshPublicKeyGenerateKeyPairResultInner {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of SshPublicKeyGenerateKeyPairResultInner class. */
+    public SshPublicKeyGenerateKeyPairResultInner() {
+    }
+
     /**
      * Get the privateKey property: Private key portion of the key pair used to authenticate to a virtual machine
      * through ssh. The private key is returned in RFC3447 format and should be treated as a secret.

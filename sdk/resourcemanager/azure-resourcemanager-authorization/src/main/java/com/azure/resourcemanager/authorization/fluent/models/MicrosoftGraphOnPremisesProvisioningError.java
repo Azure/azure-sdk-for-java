@@ -17,9 +17,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphOnPremisesProvisioningError {
     /*
-     * Category of the provisioning error. Note: Currently, there is only one
-     * possible value. Possible value: PropertyConflict - indicates a property
-     * value is not unique. Other objects contain the same value for the
+     * Category of the provisioning error. Note: Currently, there is only one possible value. Possible value:
+     * PropertyConflict - indicates a property value is not unique. Other objects contain the same value for the
      * property.
      */
     @JsonProperty(value = "category")
@@ -32,8 +31,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
     private OffsetDateTime occurredDateTime;
 
     /*
-     * Name of the directory property causing the error. Current possible
-     * values: UserPrincipalName or ProxyAddress
+     * Name of the directory property causing the error. Current possible values: UserPrincipalName or ProxyAddress
      */
     @JsonProperty(value = "propertyCausingError")
     private String propertyCausingError;
@@ -48,6 +46,10 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
      * onPremisesProvisioningError
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnPremisesProvisioningError class. */
+    public MicrosoftGraphOnPremisesProvisioningError() {
+    }
 
     /**
      * Get the category property: Category of the provisioning error. Note: Currently, there is only one possible value.

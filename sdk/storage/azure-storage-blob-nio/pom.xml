@@ -67,12 +67,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.34.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -102,13 +102,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -118,33 +118,27 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.5</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -174,102 +168,44 @@
           </rules>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>2.1.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>addTestSources</goal>
+              <goal>generateTestStubs</goal>
+              <goal>compileTests</goal>
+              <goal>removeTestStubs</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <testSources>
+            <testSource>
+              <directory>${project.basedir}/src/test</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </testSource>
+          </testSources>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
-      <id>java8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.spockframework</groupId>
-          <artifactId>spock-core</artifactId>
-          <version>2.2-M3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>default-testCompile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>
-                    <arg>-warn:-unused</arg>
-                  </compilerArgs>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-batch</artifactId>
-                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>java9plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.spockframework</groupId>
-          <artifactId>spock-core</artifactId>
-          <version>2.2-M3-groovy-4.0</version> <!-- {x-version-update;groovy4_org.spockframework:spock-core;external_dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.codehaus.gmavenplus</groupId>
-            <artifactId>gmavenplus-plugin</artifactId>
-            <version>1.13.1</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <goals>
-                  <goal>addTestSources</goal>
-                  <goal>generateTestStubs</goal>
-                  <goal>compileTests</goal>
-                  <goal>removeTestStubs</goal>
-                </goals>
-                <phase>test-compile</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <testSources>
-                <testSource>
-                  <directory>${project.basedir}/src/test</directory>
-                  <includes>
-                    <include>**/*.groovy</include>
-                  </includes>
-                </testSource>
-              </testSources>
-            </configuration>
-          </plugin>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>

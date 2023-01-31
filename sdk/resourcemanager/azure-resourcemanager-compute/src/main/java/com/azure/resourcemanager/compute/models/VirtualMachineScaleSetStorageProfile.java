@@ -41,6 +41,10 @@ public final class VirtualMachineScaleSetStorageProfile {
     @JsonProperty(value = "diskControllerType")
     private String diskControllerType;
 
+    /** Creates an instance of VirtualMachineScaleSetStorageProfile class. */
+    public VirtualMachineScaleSetStorageProfile() {
+    }
+
     /**
      * Get the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a

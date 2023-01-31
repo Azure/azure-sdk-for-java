@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateStatus. */
+/** The status. */
 public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
     /** Static value Pending for UpdateStatus. */
     public static final UpdateStatus PENDING = fromString("Pending");
@@ -26,6 +26,15 @@ public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
     public static final UpdateStatus RETRY_LATER = fromString("RetryLater");
 
     /**
+     * Creates a new instance of UpdateStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateStatus() {
+    }
+
+    /**
      * Creates or finds a UpdateStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
         return fromString(name, UpdateStatus.class);
     }
 
-    /** @return known UpdateStatus values. */
+    /**
+     * Gets known UpdateStatus values.
+     *
+     * @return known UpdateStatus values.
+     */
     public static Collection<UpdateStatus> values() {
         return values(UpdateStatus.class);
     }

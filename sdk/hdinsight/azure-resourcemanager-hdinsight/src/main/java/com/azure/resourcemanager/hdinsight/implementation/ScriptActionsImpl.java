@@ -15,10 +15,9 @@ import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDeta
 import com.azure.resourcemanager.hdinsight.models.AsyncOperationResult;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
 import com.azure.resourcemanager.hdinsight.models.ScriptActions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptActionsImpl implements ScriptActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptActionsImpl.class);
 
     private final ScriptActionsClient innerClient;
 
@@ -30,13 +29,13 @@ public final class ScriptActionsImpl implements ScriptActions {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String clusterName, String scriptName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, scriptName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String clusterName, String scriptName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, clusterName, scriptName, context);
+    }
+
+    public void delete(String resourceGroupName, String clusterName, String scriptName) {
+        this.serviceClient().delete(resourceGroupName, clusterName, scriptName);
     }
 
     public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName) {
@@ -50,17 +49,6 @@ public final class ScriptActionsImpl implements ScriptActions {
         PagedIterable<RuntimeScriptActionDetailInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
-    }
-
-    public RuntimeScriptActionDetail getExecutionDetail(
-        String resourceGroupName, String clusterName, String scriptExecutionId) {
-        RuntimeScriptActionDetailInner inner =
-            this.serviceClient().getExecutionDetail(resourceGroupName, clusterName, scriptExecutionId);
-        if (inner != null) {
-            return new RuntimeScriptActionDetailImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(
@@ -80,12 +68,12 @@ public final class ScriptActionsImpl implements ScriptActions {
         }
     }
 
-    public AsyncOperationResult getExecutionAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String operationId) {
-        AsyncOperationResultInner inner =
-            this.serviceClient().getExecutionAsyncOperationStatus(resourceGroupName, clusterName, operationId);
+    public RuntimeScriptActionDetail getExecutionDetail(
+        String resourceGroupName, String clusterName, String scriptExecutionId) {
+        RuntimeScriptActionDetailInner inner =
+            this.serviceClient().getExecutionDetail(resourceGroupName, clusterName, scriptExecutionId);
         if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
+            return new RuntimeScriptActionDetailImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -103,6 +91,17 @@ public final class ScriptActionsImpl implements ScriptActions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationResult getExecutionAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().getExecutionAsyncOperationStatus(resourceGroupName, clusterName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }

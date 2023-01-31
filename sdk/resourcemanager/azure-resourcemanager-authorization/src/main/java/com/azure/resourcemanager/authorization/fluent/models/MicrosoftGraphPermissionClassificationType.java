@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphPermissionClassificationType. */
+/** permissionClassificationType. */
 public final class MicrosoftGraphPermissionClassificationType
     extends ExpandableStringEnum<MicrosoftGraphPermissionClassificationType> {
     /** Static value low for MicrosoftGraphPermissionClassificationType. */
@@ -35,7 +35,11 @@ public final class MicrosoftGraphPermissionClassificationType
         return fromString(name, MicrosoftGraphPermissionClassificationType.class);
     }
 
-    /** @return known MicrosoftGraphPermissionClassificationType values. */
+    /**
+     * Gets known MicrosoftGraphPermissionClassificationType values.
+     *
+     * @return known MicrosoftGraphPermissionClassificationType values.
+     */
     public static Collection<MicrosoftGraphPermissionClassificationType> values() {
         return values(MicrosoftGraphPermissionClassificationType.class);
     }

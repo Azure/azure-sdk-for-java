@@ -38,15 +38,6 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
         return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
-    public CommitmentPlan get(String resourceGroupName, String accountName, String commitmentPlanName) {
-        CommitmentPlanInner inner = this.serviceClient().get(resourceGroupName, accountName, commitmentPlanName);
-        if (inner != null) {
-            return new CommitmentPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CommitmentPlan> getWithResponse(
         String resourceGroupName, String accountName, String commitmentPlanName, Context context) {
         Response<CommitmentPlanInner> inner =
@@ -57,6 +48,15 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CommitmentPlanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CommitmentPlan get(String resourceGroupName, String accountName, String commitmentPlanName) {
+        CommitmentPlanInner inner = this.serviceClient().get(resourceGroupName, accountName, commitmentPlanName);
+        if (inner != null) {
+            return new CommitmentPlanImpl(inner, this.manager());
         } else {
             return null;
         }

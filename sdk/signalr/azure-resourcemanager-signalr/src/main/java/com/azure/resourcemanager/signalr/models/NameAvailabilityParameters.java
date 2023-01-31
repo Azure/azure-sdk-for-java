@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NameAvailabilityParameters {
     /*
-     * The resource type. Can be "Microsoft.SignalRService/SignalR" or
-     * "Microsoft.SignalRService/webPubSub"
+     * The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
      */
     @JsonProperty(value = "type", required = true)
     private String type;
@@ -23,6 +22,10 @@ public final class NameAvailabilityParameters {
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of NameAvailabilityParameters class. */
+    public NameAvailabilityParameters() {
+    }
 
     /**
      * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or

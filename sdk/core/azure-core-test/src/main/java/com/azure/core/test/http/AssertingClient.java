@@ -24,11 +24,11 @@ public final class AssertingClient implements HttpClient {
     private final BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction;
 
     AssertingClient(HttpClient delegate, List<Predicate<HttpRequest>> syncAssertions,
-                    List<Predicate<HttpRequest>> asyncAssertions, BiFunction<HttpRequest, Context, Boolean> function) {
+                    List<Predicate<HttpRequest>> asyncAssertions, BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction) {
         this.delegate = delegate;
         this.syncAssertions = syncAssertions;
         this.asyncAssertions = asyncAssertions;
-        this.skipRequestBiFunction = function;
+        this.skipRequestBiFunction = skipRequestBiFunction;
     }
 
     @Override
@@ -64,7 +64,8 @@ public final class AssertingClient implements HttpClient {
     }
 
     private void skipRequest(HttpRequest request, List<Predicate<HttpRequest>> assertions, Context context) {
-        if (skipRequestBiFunction.apply(request, context) && !assertions.isEmpty()) {
+
+        if (skipRequestBiFunction != null && skipRequestBiFunction.apply(request, context) && !assertions.isEmpty()) {
             assertions.remove(assertions.size() - 1);
         }
     }

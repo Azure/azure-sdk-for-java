@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Live trace category configuration of a Microsoft.SignalRService resource. */
 @Fluent
 public final class LiveTraceCategory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveTraceCategory.class);
-
     /*
      * Gets or sets the live trace category's name.
      * Available values: ConnectivityLogs, MessagingLogs.
@@ -29,6 +25,10 @@ public final class LiveTraceCategory {
      */
     @JsonProperty(value = "enabled")
     private String enabled;
+
+    /** Creates an instance of LiveTraceCategory class. */
+    public LiveTraceCategory() {
+    }
 
     /**
      * Get the name property: Gets or sets the live trace category's name. Available values: ConnectivityLogs,

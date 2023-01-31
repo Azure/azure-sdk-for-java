@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSharingInvitation {
     /*
-     * The email address provided for the recipient of the sharing invitation.
-     * Read-only.
+     * The email address provided for the recipient of the sharing invitation. Read-only.
      */
     @JsonProperty(value = "email")
     private String email;
@@ -35,8 +34,7 @@ public final class MicrosoftGraphSharingInvitation {
     private String redeemedBy;
 
     /*
-     * If true the recipient of the invitation needs to sign in in order to
-     * access the shared item. Read-only.
+     * If true the recipient of the invitation needs to sign in in order to access the shared item. Read-only.
      */
     @JsonProperty(value = "signInRequired")
     private Boolean signInRequired;
@@ -45,6 +43,10 @@ public final class MicrosoftGraphSharingInvitation {
      * sharingInvitation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSharingInvitation class. */
+    public MicrosoftGraphSharingInvitation() {
+    }
 
     /**
      * Get the email property: The email address provided for the recipient of the sharing invitation. Read-only.

@@ -795,7 +795,11 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
         return fromString(name, Get6ItemsItem.class);
     }
 
-    /** @return known Get6ItemsItem values. */
+    /**
+     * Gets known Get6ItemsItem values.
+     *
+     * @return known Get6ItemsItem values.
+     */
     public static Collection<Get6ItemsItem> values() {
         return values(Get6ItemsItem.class);
     }

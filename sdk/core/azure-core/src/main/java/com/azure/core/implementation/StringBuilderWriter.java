@@ -9,11 +9,14 @@ import java.util.Objects;
 
 /**
  * Implementation of {@link Writer} that write content to a {@link StringBuilder}.
+ * <p>
+ * Given the backing store of this {@link Writer} is a {@link StringBuilder} this is not thread-safe.
  */
 public final class StringBuilderWriter extends Writer {
     private final StringBuilder builder;
 
-    private volatile boolean closed = false;
+    // This can be non-volatile as StringBuilder itself isn't thread-safe.
+    private boolean closed = false;
 
     /**
      * Creates an instance of {@link StringBuilderWriter}.
@@ -27,45 +30,35 @@ public final class StringBuilderWriter extends Writer {
 
     @Override
     public void write(int c) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(c);
     }
 
     @Override
     public void write(char[] cbuf) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(cbuf);
     }
 
     @Override
     public void write(String str) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(str);
     }
 
     @Override
     public void write(String str, int off, int len) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(str, off, len);
     }
 
     @Override
     public Writer append(CharSequence csq) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(csq);
 
@@ -74,9 +67,7 @@ public final class StringBuilderWriter extends Writer {
 
     @Override
     public Writer append(CharSequence csq, int start, int end) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(csq, start, end);
 
@@ -85,9 +76,7 @@ public final class StringBuilderWriter extends Writer {
 
     @Override
     public Writer append(char c) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(c);
 
@@ -96,22 +85,24 @@ public final class StringBuilderWriter extends Writer {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
 
         builder.append(cbuf, off, len);
     }
 
     @Override
     public void flush() throws IOException {
-        if (closed) {
-            throw new IOException("Writer has been closed.");
-        }
+        ensureOpen();
     }
 
     @Override
     public void close() {
         closed = true;
+    }
+
+    private void ensureOpen() throws IOException {
+        if (closed) {
+            throw new IOException("Writer has been closed.");
+        }
     }
 }

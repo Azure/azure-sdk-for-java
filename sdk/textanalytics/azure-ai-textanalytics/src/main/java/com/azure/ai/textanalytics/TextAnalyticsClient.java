@@ -9,14 +9,16 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -26,7 +28,10 @@ import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -41,6 +46,7 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
@@ -53,12 +59,15 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
@@ -117,6 +126,8 @@ import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
+    private static final ClientLogger LOGGER = new ClientLogger(TextAnalyticsClient.class);
+
     private final TextAnalyticsAsyncClient client;
 
     /**
@@ -206,7 +217,19 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document, String countryHint) {
-        return client.detectLanguage(document, countryHint).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        DetectLanguageResultCollection resultCollection =
+            detectLanguageBatch(Collections.singletonList(document), countryHint, null);
+        DetectedLanguage detectedLanguage = null;
+        for (DetectLanguageResult detectLanguageResult : resultCollection) {
+            if (detectLanguageResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
+            }
+            detectedLanguage = detectLanguageResult.getPrimaryLanguage();
+        }
+        // When the detected language result collection is empty,
+        // return empty result for the empty collection returned by the service.
+        return detectedLanguage;
     }
 
     /**
@@ -261,7 +284,8 @@ public final class TextAnalyticsClient {
     public DetectLanguageResultCollection detectLanguageBatch(
         Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.detectLanguageBatch(documents, countryHint, options).block();
+        return detectLanguageBatchWithResponse(mapByIndex(documents,
+            (index, value) -> new DetectLanguageInput(index, value, countryHint)), options, Context.NONE).getValue();
     }
 
     /**
@@ -323,7 +347,7 @@ public final class TextAnalyticsClient {
     public Response<DetectLanguageResultCollection> detectLanguageBatchWithResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.detectLanguageAsyncClient.detectLanguageBatchWithContext(documents, options, context).block();
+        return client.detectLanguageUtilClient.getDetectedLanguageResponseSync(documents, options, context);
     }
 
     // Categorized Entity
@@ -397,7 +421,19 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CategorizedEntityCollection recognizeEntities(String document, String language) {
-        return client.recognizeEntities(document, language).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final RecognizeEntitiesResultCollection recognizeEntitiesResultCollectionMono =
+            recognizeEntitiesBatch(Collections.singletonList(document), language, null);
+        CategorizedEntityCollection entityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollectionMono) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            entityCollection = new CategorizedEntityCollection(entitiesResult.getEntities(),
+                entitiesResult.getEntities().getWarnings());
+        }
+        return entityCollection;
     }
 
     /**
@@ -447,7 +483,11 @@ public final class TextAnalyticsClient {
     public RecognizeEntitiesResultCollection recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.recognizeEntitiesBatch(documents, language, options).block();
+        return recognizeEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -504,14 +544,14 @@ public final class TextAnalyticsClient {
     public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context).block();
+        return client.recognizeEntityUtilClient.getRecognizedEntitiesResponseSync(documents, options, context);
     }
 
     // PII Entity
     /**
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
      * default language that is set using {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
      * specified, service will use 'en' as the language.
@@ -553,7 +593,7 @@ public final class TextAnalyticsClient {
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
      *
      * <p><strong>Code Sample</strong></p>
@@ -586,14 +626,14 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
-        return client.recognizePiiEntities(document, language).block();
+        return recognizePiiEntities(document, language, null);
     }
 
     /**
      * Returns a list of Personally Identifiable Information(PII) entities in the provided document
      * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
      *
      * <p><strong>Code Sample</strong></p>
@@ -631,7 +671,20 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
-        return client.recognizePiiEntities(document, language, options).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final RecognizePiiEntitiesResultCollection recognizePiiEntitiesResults =
+            recognizePiiEntitiesBatch(Collections.singletonList(document), language, options);
+        PiiEntityCollection entityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizePiiEntitiesResult entitiesResult : recognizePiiEntitiesResults) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
+                entitiesResult.getEntities().getRedactedText(),
+                entitiesResult.getEntities().getWarnings());
+        }
+        return entityCollection;
     }
 
     /**
@@ -686,7 +739,12 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
         Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
-        return client.recognizePiiEntitiesBatch(documents, language, options).block();
+        return recognizePiiEntitiesBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -744,8 +802,8 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
-            context).block();
+        return client.recognizePiiEntityUtilClient.getRecognizePiiEntitiesResponseSync(documents, options,
+            context);
     }
 
     // Linked Entities
@@ -824,7 +882,18 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedEntityCollection recognizeLinkedEntities(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return client.recognizeLinkedEntities(document, language).block();
+        final RecognizeLinkedEntitiesResultCollection resultCollectionResponse =
+            recognizeLinkedEntitiesBatch(Collections.singletonList(document), language, null);
+        LinkedEntityCollection linkedEntityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizeLinkedEntitiesResult entitiesResult : resultCollectionResponse) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            linkedEntityCollection = new LinkedEntityCollection(entitiesResult.getEntities(),
+                entitiesResult.getEntities().getWarnings());
+        }
+        return linkedEntityCollection;
     }
 
     /**
@@ -884,7 +953,12 @@ public final class TextAnalyticsClient {
     public RecognizeLinkedEntitiesResultCollection recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.recognizeLinkedEntitiesBatch(documents, language, options).block();
+        return recognizeLinkedEntitiesBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -949,8 +1023,8 @@ public final class TextAnalyticsClient {
     public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(documents,
-            options, context).block();
+        return client.recognizeLinkedEntityUtilClient.getRecognizedLinkedEntitiesResponseSync(documents,
+            options, context);
     }
 
     // Key Phrase
@@ -1014,7 +1088,18 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyPhrasesCollection extractKeyPhrases(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return client.extractKeyPhrases(document, language).block();
+        final ExtractKeyPhrasesResultCollection resultCollectionResponse =
+            extractKeyPhrasesBatch(Collections.singletonList(document), language, null);
+        KeyPhrasesCollection keyPhrasesCollection = null;
+        // for each loop will have only one entry inside
+        for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse) {
+            if (keyPhraseResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
+            }
+            keyPhrasesCollection = new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                keyPhraseResult.getKeyPhrases().getWarnings());
+        }
+        return keyPhrasesCollection;
     }
 
     /**
@@ -1072,7 +1157,12 @@ public final class TextAnalyticsClient {
     public ExtractKeyPhrasesResultCollection extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.extractKeyPhrasesBatch(documents, language, options).block();
+        return extractKeyPhrasesBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1136,8 +1226,7 @@ public final class TextAnalyticsClient {
     public Response<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithContext(documents, options, context)
-            .block();
+        return client.extractKeyPhraseUtilClient.getExtractedKeyPhrasesResponseSync(documents, options, context);
     }
 
     // Sentiment
@@ -1232,7 +1321,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
-        return client.analyzeSentiment(document, language).block();
+        return analyzeSentiment(document, language, null);
     }
 
     /**
@@ -1285,7 +1374,17 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
-        return client.analyzeSentiment(document, language, options).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final AnalyzeSentimentResultCollection sentimentResultCollection =
+            analyzeSentimentBatch(Collections.singletonList(document), language, options);
+        DocumentSentiment documentSentiment = null;
+        for (AnalyzeSentimentResult sentimentResult : sentimentResultCollection) {
+            if (sentimentResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(sentimentResult.getError()));
+            }
+            documentSentiment = sentimentResult.getDocumentSentiment();
+        }
+        return documentSentiment;
     }
 
     /**
@@ -1352,7 +1451,12 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, language, options).block();
+        return analyzeSentimentBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1417,7 +1521,12 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
         String language, AnalyzeSentimentOptions options) {
-        return client.analyzeSentimentBatch(documents, language, options).block();
+        return analyzeSentimentBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1494,10 +1603,10 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents,
-            new AnalyzeSentimentOptions()
-                .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
-                .setModelVersion(options == null ? null : options.getModelVersion()), context).block();
+        return analyzeSentimentBatchWithResponse(documents,
+            new AnalyzeSentimentOptions().setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+                .setModelVersion(options == null ? null : options.getModelVersion()),
+            context);
     }
 
     /**
@@ -1576,7 +1685,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
+        return client.analyzeSentimentUtilClient.getAnalyzedSentimentResponseSync(documents, options, context);
     }
 
     /**
@@ -1632,7 +1741,12 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
         String language, DynamicClassificationOptions options) {
-        return client.dynamicClassificationBatch(documents, language, options).block();
+        return dynamicClassificationBatchWithResponse(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1710,8 +1824,8 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
-        return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
-            documents, options, context).block();
+        return client.dynamicClassificationUtilClient.getResultCollectionResponseSync(
+            documents, options, context);
     }
 
     /**
@@ -1987,8 +2101,8 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
-        return client.analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options,
-            context).getSyncPoller();
+        return client.analyzeHealthcareEntityUtilClient.beginAnalyzeHealthcarePagedIterable(documents, options,
+            context);
     }
 
     /**
@@ -2185,8 +2299,8 @@ public final class TextAnalyticsClient {
     public SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
         beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName,
             String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
-        return client.recognizeCustomEntitiesAsyncClient.recognizeCustomEntitiesPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+        return client.recognizeCustomEntitiesUtilClient.recognizeCustomEntitiesPagedIterable(
+            documents, projectName, deploymentName, options, context);
     }
 
     /**
@@ -2387,8 +2501,8 @@ public final class TextAnalyticsClient {
     public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginSingleLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
             String deploymentName, SingleLabelClassifyOptions options, Context context) {
-        return client.labelClassifyAsyncClient.singleLabelClassifyPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+        return client.labelClassifyUtilClient.singleLabelClassifyPagedIterable(
+            documents, projectName, deploymentName, options, context);
     }
 
     /**
@@ -2574,8 +2688,8 @@ public final class TextAnalyticsClient {
     public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginMultiLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
             String deploymentName, MultiLabelClassifyOptions options, Context context) {
-        return client.labelClassifyAsyncClient.multiLabelClassifyPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+        return client.labelClassifyUtilClient.multiLabelClassifyPagedIterable(
+            documents, projectName, deploymentName, options, context);
     }
 
     /**
@@ -2739,12 +2853,12 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
-        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(
+        return client.analyzeActionsUtilClient.beginAnalyzeActionsIterable(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
                 return textDocumentInput;
-            }), actions, options, Context.NONE).getSyncPoller();
+            }), actions, options, Context.NONE);
     }
 
     /**
@@ -2826,7 +2940,6 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
-        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(documents, actions, options, context)
-            .getSyncPoller();
+        return client.analyzeActionsUtilClient.beginAnalyzeActionsIterable(documents, actions, options, context);
     }
 }

@@ -23,6 +23,9 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
+    /** Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class. */
+    public ExecuteDataFlowActivityTypePropertiesCompute() {}
+
     /**
      * Get the computeType property: Compute type of the cluster which will execute data flow job.
      *

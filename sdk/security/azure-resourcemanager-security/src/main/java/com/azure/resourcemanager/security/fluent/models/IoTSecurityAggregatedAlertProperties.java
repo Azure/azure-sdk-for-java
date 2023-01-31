@@ -92,6 +92,10 @@ public final class IoTSecurityAggregatedAlertProperties {
     @JsonProperty(value = "topDevicesList", access = JsonProperty.Access.WRITE_ONLY)
     private List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList;
 
+    /** Creates an instance of IoTSecurityAggregatedAlertProperties class. */
+    public IoTSecurityAggregatedAlertProperties() {
+    }
+
     /**
      * Get the alertType property: Name of the alert type.
      *

@@ -63,9 +63,17 @@ public final class ConfigurationAsyncClient {
      * service requests receive up-to-date values.
      */
     ConfigurationAsyncClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
-
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
+    }
+
+    /**
+     * Gets the service endpoint for the Azure App Configuration instance.
+     *
+     * @return the service endpoint for the Azure App Configuration instance.
+     */
+    public String getEndpoint() {
+        return serviceClient.getEndpoint();
     }
 
     /**

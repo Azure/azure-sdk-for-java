@@ -24,6 +24,10 @@ public final class AlertList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AlertList class. */
+    public AlertList() {
+    }
+
     /**
      * Get the value property: describes security alert properties.
      *

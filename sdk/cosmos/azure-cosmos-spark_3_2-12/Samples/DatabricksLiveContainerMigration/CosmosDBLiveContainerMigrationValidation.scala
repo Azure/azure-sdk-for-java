@@ -1,56 +1,107 @@
 // Databricks notebook source
-val cosmosEndpoint = "" //enter your Cosmos DB Account URI
-val cosmosMasterKey = "" //enter your Cosmos DB Account PRIMARY KEY
+// global config
+dbutils.widgets.text("cosmosEndpoint", "") // enter the Cosmos DB Account URI of the source account
+dbutils.widgets.text("cosmosMasterKey", "") // enter the Cosmos DB Account PRIMARY KEY of the source account
+dbutils.widgets.text("cosmosRegion", "") // enter the Cosmos DB Region
+
+// source config
+dbutils.widgets.text("cosmosSourceDatabaseName", "") // enter the name of your source database
+dbutils.widgets.text("cosmosSourceContainerName", "") // enter the name of the container you want to migrate
+
+// target config
+dbutils.widgets.text("cosmosTargetDatabaseName", "") // enter the name of your target database
+dbutils.widgets.text("cosmosTargetContainerName", "") // enter the name of the target container
 
 // COMMAND ----------
 
-spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPath", "/viewDefinitions" +  java.util.UUID.randomUUID.toString)
+val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
+val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
+val cosmosRegion = dbutils.widgets.get("cosmosRegion")
+
+val cosmosSourceDatabaseName = dbutils.widgets.get("cosmosSourceDatabaseName")
+val cosmosSourceContainerName = dbutils.widgets.get("cosmosSourceContainerName") 
+
+val cosmosTargetDatabaseName = dbutils.widgets.get("cosmosTargetDatabaseName")
+val cosmosTargetContainerName = dbutils.widgets.get("cosmosTargetContainerName")
+
+val randomUUID = java.util.UUID.randomUUID.toString.subSequence(0,8);
 
 // COMMAND ----------
 
-// MAGIC %sql
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.SourceView 
-// MAGIC   (id STRING, _etag STRING)
-// MAGIC USING cosmos.oltp
-// MAGIC TBLPROPERTIES(isCosmosView = 'True')
-// MAGIC OPTIONS (
-// MAGIC   spark.cosmos.database = 'database-v4', -- change database-v4 to be the value of your source database 
-// MAGIC   spark.cosmos.container = 'customer', -- change customer to be the value of your source container 
-// MAGIC   spark.cosmos.read.inferSchema.enabled = 'False',  
-// MAGIC   spark.cosmos.read.partitioning.strategy = 'Default');
-// MAGIC 
-// MAGIC SELECT * FROM cosmosCatalog.`database-v4`.SourceView
+import org.apache.spark.sql.DataFrame
+
+def connectToCosmos(cosmosEndpoint: String, cosmosMasterKey: String) {
+  println("Connecting to Cosmos DB...")
+  spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
+  spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
+  spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
+  spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPath", s"/viewDefinitions$randomUUID")
+}
+
+def createCosmosView(cosmosDatabaseName: String, cosmosContainerName: String, cosmosViewDatabaseName: String, cosmosViewName: String) {
+  val tag = if (cosmosViewName contains "Target") {"_origin_etag"} else {"_etag"}
+  val query = s"""
+                  CREATE TABLE IF NOT EXISTS cosmosCatalog.`$cosmosViewDatabaseName`.`$cosmosViewName` (id STRING, ${tag} STRING)
+                  USING cosmos.oltp 
+                  TBLPROPERTIES(isCosmosView = 'True')
+                  OPTIONS (
+                            spark.cosmos.database = '$cosmosDatabaseName',
+                            spark.cosmos.container = '$cosmosContainerName',
+                            spark.cosmos.read.inferSchema.enabled = 'False',  
+                            spark.cosmos.read.partitioning.strategy = 'Default'
+                          );
+              """
+  println("Executing create View...")
+  println(query.trim())
+  try {
+      spark.sql(query)
+  } catch {
+      case e:Exception=> println(e)
+  }
+}
+
+def checkCosmosSourceTargetDiff(cosmosViewDatabaseName: String, cosmosSourceViewName: String, cosmosTargetViewName: String): DataFrame = {
+    val query = s"""-- anti join shows all documents(versions) in the SourceView not present in SinkView
+                        SELECT * FROM cosmosCatalog.`$cosmosViewDatabaseName`.`$cosmosSourceViewName` source
+                        LEFT ANTI JOIN cosmosCatalog.`$cosmosViewDatabaseName`.`$cosmosTargetViewName` target
+                        ON source.id = target.id and source._etag == target._origin_etag
+                """
+    println(query)
+    return spark.sql(query)
+}
+
+def checkCosmosSourceTargetCountDiff(cosmosViewDatabaseName: String, cosmosSourceViewName: String, cosmosTargetViewName: String): DataFrame = {
+    val query = s"""-- anti join shows all documents(versions) in the SourceView not present in SinkView
+                        SELECT COUNT(*) FROM cosmosCatalog.`$cosmosViewDatabaseName`.`$cosmosSourceViewName` source
+                        LEFT ANTI JOIN cosmosCatalog.`$cosmosViewDatabaseName`.`$cosmosTargetViewName` target
+                        ON source.id = target.id and source._etag == target._origin_etag
+                """
+    println(query)
+    return spark.sql(query)
+}
 
 // COMMAND ----------
 
-// MAGIC %sql
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.SinkView 
-// MAGIC   (id STRING, _origin_etag STRING)
-// MAGIC USING cosmos.oltp
-// MAGIC TBLPROPERTIES(isCosmosView = 'True')
-// MAGIC OPTIONS (
-// MAGIC   spark.cosmos.database = 'database-v4', -- change database-v4 to be the value of your target database 
-// MAGIC   spark.cosmos.container = 'customer_v2', -- change customer_v2 to be the value of your target container
-// MAGIC   spark.cosmos.read.inferSchema.enabled = 'False',  
-// MAGIC   spark.cosmos.read.partitioning.strategy = 'Default');
-// MAGIC   
-// MAGIC SELECT * FROM cosmosCatalog.`database-v4`.SinkView
+connectToCosmos(cosmosEndpoint = cosmosEndpoint, cosmosMasterKey = cosmosMasterKey)
 
 // COMMAND ----------
 
-// MAGIC %sql
-// MAGIC -- anti join shows all documents(versions) in the SourceView not present in SinkView
-// MAGIC SELECT * FROM cosmosCatalog.`database-v4`.SourceView src -- change database-v4 to be the value of your source database
-// MAGIC LEFT ANTI JOIN cosmosCatalog.`database-v4`.SinkView sink -- change database-v4 to be the value of your target database
-// MAGIC ON src.id = sink.id and src._etag == sink._origin_etag
+val cosmosSourceViewName = s"Source_${cosmosSourceContainerName}_${randomUUID}"
+val cosmosTargetViewName = s"Target_${cosmosSourceContainerName}_${randomUUID}"
+createCosmosView(cosmosDatabaseName = cosmosSourceDatabaseName, cosmosContainerName = cosmosSourceContainerName, cosmosViewDatabaseName = cosmosSourceDatabaseName, cosmosViewName = cosmosSourceViewName)
+createCosmosView(cosmosDatabaseName = cosmosTargetDatabaseName, cosmosContainerName = cosmosTargetContainerName, cosmosViewDatabaseName = cosmosSourceDatabaseName, cosmosViewName = cosmosTargetViewName)
 
 // COMMAND ----------
 
-// MAGIC %sql
-// MAGIC -- anti join shows count of all documents(versions) in the SourceView not present in SinkView
-// MAGIC SELECT count(*) FROM cosmosCatalog.`database-v4`.SourceView src  -- change database-v4 to be the value of your source database
-// MAGIC LEFT ANTI JOIN cosmosCatalog.`database-v4`.SinkView sink -- change database-v4 to be the value of your target database
-// MAGIC ON src.id = sink.id and src._etag == sink._origin_etag
+val sourceTargetDiff = checkCosmosSourceTargetDiff(cosmosViewDatabaseName = cosmosSourceDatabaseName, cosmosSourceViewName = cosmosSourceViewName, cosmosTargetViewName = cosmosTargetViewName)
+val sourceTargetCountDiff = checkCosmosSourceTargetCountDiff(cosmosViewDatabaseName = cosmosSourceDatabaseName, cosmosSourceViewName = cosmosSourceViewName, cosmosTargetViewName = cosmosTargetViewName)
+
+// COMMAND ----------
+
+// this shouldn't return any results if the migration is completed, e.g. all records are available in the target, otherwise the missing records will be displayed
+display(sourceTargetDiff)
+
+// COMMAND ----------
+
+// this will display the number of rows which are in the source container but not in target
+display(sourceTargetCountDiff)

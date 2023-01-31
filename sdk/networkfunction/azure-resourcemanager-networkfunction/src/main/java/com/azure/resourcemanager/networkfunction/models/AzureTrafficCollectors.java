@@ -14,18 +14,6 @@ public interface AzureTrafficCollectors {
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Traffic Collector in a specified resource group.
-     */
-    AzureTrafficCollector getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName);
-
-    /**
-     * Gets the specified Azure Traffic Collector in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,6 +22,18 @@ public interface AzureTrafficCollectors {
      */
     Response<AzureTrafficCollector> getByResourceGroupWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, Context context);
+
+    /**
+     * Gets the specified Azure Traffic Collector in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Traffic Collector in a specified resource group.
+     */
+    AzureTrafficCollector getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName);
 
     /**
      * Deletes a specified Azure Traffic Collector resource.

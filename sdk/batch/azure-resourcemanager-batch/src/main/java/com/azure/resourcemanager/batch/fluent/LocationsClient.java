@@ -20,18 +20,6 @@ public interface LocationsClient {
      * Gets the Batch service quotas for the specified subscription at the given location.
      *
      * @param locationName The region for which to retrieve Batch service quotas.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchLocationQuotaInner getQuotas(String locationName);
-
-    /**
-     * Gets the Batch service quotas for the specified subscription at the given location.
-     *
-     * @param locationName The region for which to retrieve Batch service quotas.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,6 +29,18 @@ public interface LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BatchLocationQuotaInner> getQuotasWithResponse(String locationName, Context context);
+
+    /**
+     * Gets the Batch service quotas for the specified subscription at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service quotas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch service quotas for the specified subscription at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BatchLocationQuotaInner getQuotas(String locationName);
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
@@ -107,20 +107,6 @@ public interface LocationsClient {
      *
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters parameters);
-
-    /**
-     * Checks whether the Batch account name is available in the specified region.
-     *
-     * @param locationName The desired region for the name check.
-     * @param parameters Properties needed to check the availability of a name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,4 +116,18 @@ public interface LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks whether the Batch account name is available in the specified region.
+     *
+     * @param locationName The desired region for the name check.
+     * @param parameters Properties needed to check the availability of a name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResultInner checkNameAvailability(
+        String locationName, CheckNameAvailabilityParameters parameters);
 }

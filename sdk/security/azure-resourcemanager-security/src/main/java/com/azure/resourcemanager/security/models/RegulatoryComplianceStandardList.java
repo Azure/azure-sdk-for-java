@@ -25,6 +25,10 @@ public final class RegulatoryComplianceStandardList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RegulatoryComplianceStandardList class. */
+    public RegulatoryComplianceStandardList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

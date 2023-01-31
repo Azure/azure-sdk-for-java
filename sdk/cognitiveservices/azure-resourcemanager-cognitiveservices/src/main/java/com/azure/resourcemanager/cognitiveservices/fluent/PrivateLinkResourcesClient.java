@@ -17,19 +17,6 @@ public interface PrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourceListResultInner list(String resourceGroupName, String accountName);
-
-    /**
-     * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,4 +27,17 @@ public interface PrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkResourceListResultInner> listWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Gets the private link resources that need to be created for a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources that need to be created for a Cognitive Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourceListResultInner list(String resourceGroupName, String accountName);
 }

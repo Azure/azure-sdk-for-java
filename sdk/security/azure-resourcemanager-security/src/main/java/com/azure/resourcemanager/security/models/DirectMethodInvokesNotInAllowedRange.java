@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("DirectMethodInvokesNotInAllowedRange")
 @Fluent
 public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of DirectMethodInvokesNotInAllowedRange class. */
+    public DirectMethodInvokesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DirectMethodInvokesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

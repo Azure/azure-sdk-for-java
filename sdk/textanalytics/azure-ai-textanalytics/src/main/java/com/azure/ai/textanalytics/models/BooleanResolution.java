@@ -23,7 +23,7 @@ public final class BooleanResolution extends BaseResolution {
      *
      * @return the value value.
      */
-    public boolean isValue() {
+    public boolean getValue() {
         return this.value;
     }
 

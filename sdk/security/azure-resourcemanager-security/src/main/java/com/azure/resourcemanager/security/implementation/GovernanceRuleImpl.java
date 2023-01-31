@@ -164,10 +164,6 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
         return this;
     }
 
-    public void ruleIdExecuteSingleSubscription(ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        serviceManager.governanceRulesOperations().ruleIdExecuteSingleSubscription(ruleId, executeGovernanceRuleParams);
-    }
-
     public void ruleIdExecuteSingleSubscription() {
         serviceManager.governanceRulesOperations().ruleIdExecuteSingleSubscription(ruleId);
     }

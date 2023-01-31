@@ -72,6 +72,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties class. */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties() {
+    }
+
     /**
      * Get the primary property: Whether this is a primary NIC on a virtual machine.
      *

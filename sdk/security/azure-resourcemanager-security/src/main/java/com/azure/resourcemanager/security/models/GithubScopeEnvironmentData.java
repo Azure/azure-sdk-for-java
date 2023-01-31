@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GithubScope")
 @Immutable
 public final class GithubScopeEnvironmentData extends EnvironmentData {
+    /** Creates an instance of GithubScopeEnvironmentData class. */
+    public GithubScopeEnvironmentData() {
+    }
+
     /**
      * Validates the instance.
      *

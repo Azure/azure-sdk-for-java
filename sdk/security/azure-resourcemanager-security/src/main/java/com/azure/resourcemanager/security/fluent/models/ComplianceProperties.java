@@ -36,6 +36,10 @@ public final class ComplianceProperties {
     @JsonProperty(value = "assessmentResult", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComplianceSegment> assessmentResult;
 
+    /** Creates an instance of ComplianceProperties class. */
+    public ComplianceProperties() {
+    }
+
     /**
      * Get the assessmentTimestampUtcDate property: The timestamp when the Compliance calculation was conducted.
      *

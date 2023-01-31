@@ -27,6 +27,10 @@ public final class MicrosoftGraphTimeOffItem extends MicrosoftGraphScheduleEntit
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTimeOffItem class. */
+    public MicrosoftGraphTimeOffItem() {
+    }
+
     /**
      * Get the timeOffReasonId property: ID of the timeOffReason for this timeOffItem. Required.
      *

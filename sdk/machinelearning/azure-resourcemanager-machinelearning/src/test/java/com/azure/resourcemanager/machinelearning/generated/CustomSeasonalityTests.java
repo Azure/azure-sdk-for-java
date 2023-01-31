@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomSeasonality;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomSeasonalityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomSeasonality model =
             BinaryData.fromString("{\"mode\":\"Custom\",\"value\":1578351643}").toObject(CustomSeasonality.class);
         Assertions.assertEquals(1578351643, model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomSeasonality model = new CustomSeasonality().withValue(1578351643);
         model = BinaryData.fromObject(model).toObject(CustomSeasonality.class);
         Assertions.assertEquals(1578351643, model.value());

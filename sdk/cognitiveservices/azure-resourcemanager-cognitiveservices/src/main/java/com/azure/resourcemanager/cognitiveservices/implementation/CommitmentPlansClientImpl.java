@@ -63,7 +63,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface CommitmentPlansService {
+    public interface CommitmentPlansService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices"
@@ -454,22 +454,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commitmentPlans associated with the Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommitmentPlanInner get(String resourceGroupName, String accountName, String commitmentPlanName) {
-        return getAsync(resourceGroupName, accountName, commitmentPlanName).block();
-    }
-
-    /**
-     * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,6 +464,22 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     public Response<CommitmentPlanInner> getWithResponse(
         String resourceGroupName, String accountName, String commitmentPlanName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, commitmentPlanName, context).block();
+    }
+
+    /**
+     * Gets the specified commitmentPlans associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified commitmentPlans associated with the Cognitive Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommitmentPlanInner get(String resourceGroupName, String accountName, String commitmentPlanName) {
+        return getWithResponse(resourceGroupName, accountName, commitmentPlanName, Context.NONE).getValue();
     }
 
     /**
@@ -634,24 +634,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The commitmentPlan properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommitmentPlanInner createOrUpdate(
-        String resourceGroupName, String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan) {
-        return createOrUpdateAsync(resourceGroupName, accountName, commitmentPlanName, commitmentPlan).block();
-    }
-
-    /**
-     * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,6 +650,26 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, accountName, commitmentPlanName, commitmentPlan, context)
             .block();
+    }
+
+    /**
+     * Update the state of specified commitmentPlans associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The commitmentPlan properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommitmentPlanInner createOrUpdate(
+        String resourceGroupName, String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, accountName, commitmentPlanName, commitmentPlan, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -928,7 +930,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -964,7 +967,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -8,7 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DurabilityLevel. */
+/**
+ * The durability level of the node type. Learn about
+ * [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
+ *
+ * <p>- Bronze - No privileges. This is the default. - Silver - The infrastructure jobs can be paused for a duration of
+ * 10 minutes per UD. - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability
+ * can be enabled only on full node VM skus like D15_V2, G5 etc.
+ */
 public final class DurabilityLevel extends ExpandableStringEnum<DurabilityLevel> {
     /** Static value Bronze for DurabilityLevel. */
     public static final DurabilityLevel BRONZE = fromString("Bronze");
@@ -18,6 +25,15 @@ public final class DurabilityLevel extends ExpandableStringEnum<DurabilityLevel>
 
     /** Static value Gold for DurabilityLevel. */
     public static final DurabilityLevel GOLD = fromString("Gold");
+
+    /**
+     * Creates a new instance of DurabilityLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DurabilityLevel() {
+    }
 
     /**
      * Creates or finds a DurabilityLevel from its string representation.
@@ -30,7 +46,11 @@ public final class DurabilityLevel extends ExpandableStringEnum<DurabilityLevel>
         return fromString(name, DurabilityLevel.class);
     }
 
-    /** @return known DurabilityLevel values. */
+    /**
+     * Gets known DurabilityLevel values.
+     *
+     * @return known DurabilityLevel values.
+     */
     public static Collection<DurabilityLevel> values() {
         return values(DurabilityLevel.class);
     }

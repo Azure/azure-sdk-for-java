@@ -27,6 +27,10 @@ public final class DiskAccessInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of DiskAccessInner class. */
+    public DiskAccessInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties property.
      *

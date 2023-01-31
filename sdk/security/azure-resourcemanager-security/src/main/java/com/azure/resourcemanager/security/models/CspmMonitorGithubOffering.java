@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CspmMonitorGithub")
 @Immutable
 public final class CspmMonitorGithubOffering extends CloudOffering {
+    /** Creates an instance of CspmMonitorGithubOffering class. */
+    public CspmMonitorGithubOffering() {
+    }
+
     /**
      * Validates the instance.
      *

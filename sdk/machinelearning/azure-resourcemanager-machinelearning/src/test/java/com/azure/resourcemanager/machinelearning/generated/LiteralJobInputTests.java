@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.LiteralJobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LiteralJobInputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         LiteralJobInput model =
             BinaryData
                 .fromString("{\"jobInputType\":\"literal\",\"value\":\"mabeddqilwgdf\",\"description\":\"qfp\"}")
@@ -20,8 +19,8 @@ public final class LiteralJobInputTests {
         Assertions.assertEquals("mabeddqilwgdf", model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         LiteralJobInput model = new LiteralJobInput().withDescription("qfp").withValue("mabeddqilwgdf");
         model = BinaryData.fromObject(model).toObject(LiteralJobInput.class);
         Assertions.assertEquals("qfp", model.description());

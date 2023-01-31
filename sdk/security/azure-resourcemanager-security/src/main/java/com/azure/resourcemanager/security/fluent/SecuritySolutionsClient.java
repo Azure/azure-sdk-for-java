@@ -43,22 +43,6 @@ public interface SecuritySolutionsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param securitySolutionName Name of security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecuritySolutionInner get(String resourceGroupName, String ascLocation, String securitySolutionName);
-
-    /**
-     * Gets a specific Security Solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param securitySolutionName Name of security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,4 +52,20 @@ public interface SecuritySolutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecuritySolutionInner> getWithResponse(
         String resourceGroupName, String ascLocation, String securitySolutionName, Context context);
+
+    /**
+     * Gets a specific Security Solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param securitySolutionName Name of security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific Security Solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecuritySolutionInner get(String resourceGroupName, String ascLocation, String securitySolutionName);
 }

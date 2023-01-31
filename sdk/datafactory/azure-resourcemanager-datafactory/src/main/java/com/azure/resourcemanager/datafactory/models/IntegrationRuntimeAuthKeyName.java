@@ -17,6 +17,15 @@ public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<In
     public static final IntegrationRuntimeAuthKeyName AUTH_KEY2 = fromString("authKey2");
 
     /**
+     * Creates a new instance of IntegrationRuntimeAuthKeyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeAuthKeyName() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeAuthKeyName from its string representation.
      *
      * @param name a name to look for.

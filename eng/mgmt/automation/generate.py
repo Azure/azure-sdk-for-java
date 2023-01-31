@@ -112,7 +112,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
     packages = []
-    if 'relatedReadmeMdFile' not in config or not config['relatedReadmeMdFile']:
+    if 'relatedReadmeMdFiles' not in config or not config['relatedReadmeMdFiles']:
         return packages
 
     for readme in config['relatedReadmeMdFiles']:
@@ -231,7 +231,7 @@ def main():
     module = ARTIFACT_FORMAT.format(service)
     stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
-    output_folder = OUTPUT_FOLDER_FORMAT.format(service),
+    output_folder = OUTPUT_FOLDER_FORMAT.format(service)
     namespace = NAMESPACE_FORMAT.format(service)
     succeeded = generate(
         sdk_root,

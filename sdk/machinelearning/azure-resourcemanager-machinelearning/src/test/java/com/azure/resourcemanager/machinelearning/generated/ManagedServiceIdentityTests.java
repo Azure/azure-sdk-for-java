@@ -11,21 +11,20 @@ import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedServiceIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"c4eb4cc9-ffab-4e74-bdcd-49c343934c1a\",\"tenantId\":\"b48270f6-8e36-4c82-97fa-9614d652b2d6\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ginuvamih\":{\"principalId\":\"24383e8f-af05-48aa-b84d-2ad708f1e821\",\"clientId\":\"113029e5-648a-4f0a-8a46-61292e27d2ba\"}}}")
+                    "{\"principalId\":\"eedebc97-7cf9-49d6-8058-af89513b30b7\",\"tenantId\":\"022e8374-0d41-4bc5-8365-0eb3372a635f\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ginuvamih\":{\"principalId\":\"f6324d70-bc8b-4552-95e1-03d0c14617f7\",\"clientId\":\"334d5ff8-4410-4858-b84d-54862312e602\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)

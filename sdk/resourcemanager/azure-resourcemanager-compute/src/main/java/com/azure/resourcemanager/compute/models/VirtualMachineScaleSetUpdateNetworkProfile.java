@@ -32,6 +32,10 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkProfile class. */
+    public VirtualMachineScaleSetUpdateNetworkProfile() {
+    }
+
     /**
      * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
      * the virtual machine scale set. The reference will be in the form:

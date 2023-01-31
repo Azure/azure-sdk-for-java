@@ -55,7 +55,7 @@ public final class CompliancesClientImpl implements CompliancesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterCompli")
-    private interface CompliancesService {
+    public interface CompliancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Security/compliances")
         @ExpectedResponses({200})
@@ -317,22 +317,6 @@ public final class CompliancesClientImpl implements CompliancesClient {
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param complianceName name of the Compliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance of a scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComplianceInner get(String scope, String complianceName) {
-        return getAsync(scope, complianceName).block();
-    }
-
-    /**
-     * Details of a specific Compliance.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param complianceName name of the Compliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -342,6 +326,22 @@ public final class CompliancesClientImpl implements CompliancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComplianceInner> getWithResponse(String scope, String complianceName, Context context) {
         return getWithResponseAsync(scope, complianceName, context).block();
+    }
+
+    /**
+     * Details of a specific Compliance.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param complianceName name of the Compliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return compliance of a scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComplianceInner get(String scope, String complianceName) {
+        return getWithResponse(scope, complianceName, Context.NONE).getValue();
     }
 
     /**

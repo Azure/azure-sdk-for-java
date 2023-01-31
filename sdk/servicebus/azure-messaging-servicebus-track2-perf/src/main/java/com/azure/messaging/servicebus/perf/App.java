@@ -29,7 +29,10 @@ public class App {
             ReceiveAndDeleteMessageTest.class,
             ReceiveAndLockMessageTest.class,
             SendMessageTest.class,
-            SendMessagesTest.class
+            SendMessagesTest.class,
+            SendBatchTest.class,
+            ReceiveMessagesTest.class,
+            ServiceBusProcessorTest.class
         };
 
         PerfStressProgram.run(testClasses, args);

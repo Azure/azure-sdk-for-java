@@ -28,6 +28,9 @@ public final class LinkConnectionCompute {
     @JsonProperty(value = "dataProcessIntervalMinutes")
     private Integer dataProcessIntervalMinutes;
 
+    /** Creates an instance of LinkConnectionCompute class. */
+    public LinkConnectionCompute() {}
+
     /**
      * Get the coreCount property: Compute core count used by the link connection.
      *

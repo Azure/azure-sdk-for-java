@@ -22,6 +22,10 @@ public final class UpdateDomainInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of UpdateDomainInner class. */
+    public UpdateDomainInner() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

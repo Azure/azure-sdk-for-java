@@ -29,15 +29,6 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         this.serviceManager = serviceManager;
     }
 
-    public PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName) {
-        PrivateEndpointConnectionListResultInner inner = this.serviceClient().list(resourceGroupName, accountName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnectionListResult> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<PrivateEndpointConnectionListResultInner> inner =
@@ -53,12 +44,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, privateEndpointConnectionName);
+    public PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName) {
+        PrivateEndpointConnectionListResultInner inner = this.serviceClient().list(resourceGroupName, accountName);
         if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
+            return new PrivateEndpointConnectionListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -76,6 +65,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnection get(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

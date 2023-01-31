@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PredictionModelLifeCycle. */
+/**
+ * Prediction model life cycle. When prediction is in PendingModelConfirmation status, it is allowed to update the
+ * status to PendingFeaturing or Active through API.
+ */
 public final class PredictionModelLifeCycle extends ExpandableStringEnum<PredictionModelLifeCycle> {
     /** Static value New for PredictionModelLifeCycle. */
     public static final PredictionModelLifeCycle NEW = fromString("New");
@@ -65,6 +68,15 @@ public final class PredictionModelLifeCycle extends ExpandableStringEnum<Predict
     public static final PredictionModelLifeCycle FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of PredictionModelLifeCycle value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PredictionModelLifeCycle() {
+    }
+
+    /**
      * Creates or finds a PredictionModelLifeCycle from its string representation.
      *
      * @param name a name to look for.
@@ -75,7 +87,11 @@ public final class PredictionModelLifeCycle extends ExpandableStringEnum<Predict
         return fromString(name, PredictionModelLifeCycle.class);
     }
 
-    /** @return known PredictionModelLifeCycle values. */
+    /**
+     * Gets known PredictionModelLifeCycle values.
+     *
+     * @return known PredictionModelLifeCycle values.
+     */
     public static Collection<PredictionModelLifeCycle> values() {
         return values(PredictionModelLifeCycle.class);
     }

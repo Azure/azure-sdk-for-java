@@ -24,6 +24,15 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
         fromString("WindowsAzureHDInsightService");
 
     /**
+     * Creates a new instance of HiveAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HiveAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a HiveAuthenticationType from its string representation.
      *
      * @param name a name to look for.

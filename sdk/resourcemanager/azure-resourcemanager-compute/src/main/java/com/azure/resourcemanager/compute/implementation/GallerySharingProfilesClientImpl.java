@@ -57,7 +57,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface GallerySharingProfilesService {
+    public interface GallerySharingProfilesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
@@ -114,7 +114,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -172,7 +172,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -250,7 +250,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
     }
 
     /**
@@ -268,7 +268,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
     }
 
     /**

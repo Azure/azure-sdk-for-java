@@ -26,6 +26,10 @@ public final class CommunityGalleryImageVersionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CommunityGalleryImageVersionList class. */
+    public CommunityGalleryImageVersionList() {
+    }
+
     /**
      * Get the value property: A list of community gallery image versions.
      *

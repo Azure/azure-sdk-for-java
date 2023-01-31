@@ -17,20 +17,6 @@ public interface SecurityConnectorApplicationOperations {
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific application for the requested scope by applicationId.
-     */
-    Application get(String resourceGroupName, String securityConnectorName, String applicationId);
-
-    /**
-     * Get a specific application for the requested scope by applicationId.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,20 +27,18 @@ public interface SecurityConnectorApplicationOperations {
         String resourceGroupName, String securityConnectorName, String applicationId, Context context);
 
     /**
-     * Creates or update a security Application on the given security connector.
+     * Get a specific application for the requested scope by applicationId.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
-     * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope.
+     * @return a specific application for the requested scope by applicationId.
      */
-    Application createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application);
+    Application get(String resourceGroupName, String securityConnectorName, String applicationId);
 
     /**
      * Creates or update a security Application on the given security connector.
@@ -78,17 +62,20 @@ public interface SecurityConnectorApplicationOperations {
         Context context);
 
     /**
-     * Delete an Application over a given scope.
+     * Creates or update a security Application on the given security connector.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
+     * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security Application over a given scope.
      */
-    void delete(String resourceGroupName, String securityConnectorName, String applicationId);
+    Application createOrUpdate(
+        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application);
 
     /**
      * Delete an Application over a given scope.
@@ -105,4 +92,17 @@ public interface SecurityConnectorApplicationOperations {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String securityConnectorName, String applicationId, Context context);
+
+    /**
+     * Delete an Application over a given scope.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param applicationId The security Application key - unique key for the standard application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String securityConnectorName, String applicationId);
 }

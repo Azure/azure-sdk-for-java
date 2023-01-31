@@ -17,6 +17,6 @@ public final class AutomationsDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.automations().deleteWithResponse("myRg", "myAutomationName", Context.NONE);
+        manager.automations().deleteByResourceGroupWithResponse("myRg", "myAutomationName", Context.NONE);
     }
 }

@@ -20,6 +20,15 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
     public static final TumblingWindowFrequency MONTH = fromString("Month");
 
     /**
+     * Creates a new instance of TumblingWindowFrequency value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TumblingWindowFrequency() {
+    }
+
+    /**
      * Creates or finds a TumblingWindowFrequency from its string representation.
      *
      * @param name a name to look for.

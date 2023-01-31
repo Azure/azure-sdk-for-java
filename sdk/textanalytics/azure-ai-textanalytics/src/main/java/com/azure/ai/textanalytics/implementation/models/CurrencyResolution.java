@@ -19,8 +19,8 @@ public final class CurrencyResolution extends BaseResolution {
      * two letters of the ISO 4217 three-letter code are the same as the code for the country name, and, where
      * possible, the third letter corresponds to the first letter of the currency name.
      */
-    @JsonProperty(value = "ISO4217")
-    private String iSO4217;
+    @JsonProperty(value = "iso4217")
+    private String iso4217;
 
     /*
      * The unit of the amount captured in the extracted entity
@@ -34,27 +34,30 @@ public final class CurrencyResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of CurrencyResolution class. */
+    public CurrencyResolution() {}
+
     /**
-     * Get the iSO4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
+     * Get the iso4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
      * country names. The first two letters of the ISO 4217 three-letter code are the same as the code for the country
      * name, and, where possible, the third letter corresponds to the first letter of the currency name.
      *
-     * @return the iSO4217 value.
+     * @return the iso4217 value.
      */
-    public String getISO4217() {
-        return this.iSO4217;
+    public String getIso4217() {
+        return this.iso4217;
     }
 
     /**
-     * Set the iSO4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
+     * Set the iso4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
      * country names. The first two letters of the ISO 4217 three-letter code are the same as the code for the country
      * name, and, where possible, the third letter corresponds to the first letter of the currency name.
      *
-     * @param iSO4217 the iSO4217 value to set.
+     * @param iso4217 the iso4217 value to set.
      * @return the CurrencyResolution object itself.
      */
-    public CurrencyResolution setISO4217(String iSO4217) {
-        this.iSO4217 = iSO4217;
+    public CurrencyResolution setIso4217(String iso4217) {
+        this.iso4217 = iso4217;
         return this;
     }
 

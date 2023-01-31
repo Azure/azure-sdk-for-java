@@ -24,6 +24,10 @@ public final class SecurityAssessmentList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecurityAssessmentList class. */
+    public SecurityAssessmentList() {
+    }
+
     /**
      * Get the value property: Collection of security assessments in this page.
      *

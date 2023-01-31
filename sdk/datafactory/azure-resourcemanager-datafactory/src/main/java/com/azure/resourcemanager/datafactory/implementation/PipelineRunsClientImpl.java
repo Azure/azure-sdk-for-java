@@ -54,7 +54,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface PipelineRunsService {
+    public interface PipelineRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

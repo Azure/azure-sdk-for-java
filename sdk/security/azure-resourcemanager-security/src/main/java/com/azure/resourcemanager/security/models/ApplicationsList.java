@@ -24,6 +24,10 @@ public final class ApplicationsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ApplicationsList class. */
+    public ApplicationsList() {
+    }
+
     /**
      * Get the value property: Collection of applications in this page.
      *

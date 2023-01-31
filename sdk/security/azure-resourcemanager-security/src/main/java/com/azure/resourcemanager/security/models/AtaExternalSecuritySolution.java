@@ -21,6 +21,10 @@ public final class AtaExternalSecuritySolution extends ExternalSecuritySolutionI
     @JsonProperty(value = "properties")
     private AtaSolutionProperties properties;
 
+    /** Creates an instance of AtaExternalSecuritySolution class. */
+    public AtaExternalSecuritySolution() {
+    }
+
     /**
      * Get the properties property: The external security solution properties for ATA solutions.
      *

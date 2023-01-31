@@ -26,6 +26,10 @@ public final class CustomAssessmentAutomationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomAssessmentAutomationProperties innerProperties;
 
+    /** Creates an instance of CustomAssessmentAutomationInner class. */
+    public CustomAssessmentAutomationInner() {
+    }
+
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *

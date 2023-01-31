@@ -28,6 +28,10 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
     @JsonProperty(value = "lastOccurrence", access = JsonProperty.Access.WRITE_ONLY)
     private String lastOccurrence;
 
+    /** Creates an instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem class. */
+    public IoTSecurityAggregatedAlertPropertiesTopDevicesListItem() {
+    }
+
     /**
      * Get the deviceId property: Name of the device.
      *

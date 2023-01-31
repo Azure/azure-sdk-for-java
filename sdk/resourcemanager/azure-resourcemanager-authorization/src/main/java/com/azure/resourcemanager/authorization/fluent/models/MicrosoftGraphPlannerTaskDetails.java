@@ -47,6 +47,10 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPlannerTaskDetails class. */
+    public MicrosoftGraphPlannerTaskDetails() {
+    }
+
     /**
      * Get the checklist property: plannerChecklistItems.
      *

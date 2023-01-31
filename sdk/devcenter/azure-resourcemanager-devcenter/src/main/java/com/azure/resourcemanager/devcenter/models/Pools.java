@@ -13,7 +13,7 @@ public interface Pools {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface Pools {
     /**
      * Lists pools for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -39,7 +39,7 @@ public interface Pools {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.
@@ -53,7 +53,7 @@ public interface Pools {
     /**
      * Gets a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +66,7 @@ public interface Pools {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +78,7 @@ public interface Pools {
     /**
      * Deletes a machine pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param context The context to associate with this operation.

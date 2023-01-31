@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AdminRuleCollections Delete. */
 public final class AdminRuleCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRuleCollectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerAdminRuleCollectionDelete.json
      */
     /**
      * Sample code: Deletes an admin rule collection.

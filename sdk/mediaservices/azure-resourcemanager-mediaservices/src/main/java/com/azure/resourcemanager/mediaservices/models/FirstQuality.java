@@ -16,6 +16,10 @@ public final class FirstQuality {
     @JsonProperty(value = "bitrate", required = true)
     private int bitrate;
 
+    /** Creates an instance of FirstQuality class. */
+    public FirstQuality() {
+    }
+
     /**
      * Get the bitrate property: The first quality bitrate.
      *

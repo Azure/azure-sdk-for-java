@@ -49,26 +49,26 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     private final NetworkConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkConnectionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    NetworkConnectionsClientImpl(DevCenterClientImpl client) {
+    NetworkConnectionsClientImpl(DevCenterManagementClientImpl client) {
         this.service =
             RestProxy.create(NetworkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientNetworkConnections to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevCenterManagementClientNetworkConnections to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientNetwo")
-    private interface NetworkConnectionsService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface NetworkConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/networkConnections")
         @ExpectedResponses({200})
@@ -193,9 +193,9 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
                 + "/networkConnections/{networkConnectionName}/runHealthChecks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> runHealthChecks(
+        Mono<Response<Flux<ByteBuffer>>> runHealthChecks(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -406,7 +406,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,7 +461,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -514,7 +514,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -531,7 +531,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -548,7 +548,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,7 +567,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -582,7 +582,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists network connections in a resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -599,7 +599,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets a network connection resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,7 +648,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets a network connection resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,7 +695,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets a network connection resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -712,7 +712,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets a network connection resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,7 +729,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets a network connection resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -744,7 +744,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,7 +800,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -854,7 +854,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,7 +880,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -908,7 +908,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -925,7 +925,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -943,7 +943,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,7 +962,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -982,7 +982,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -999,7 +999,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Creates or updates a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1017,7 +1017,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1073,7 +1073,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1127,7 +1127,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1152,7 +1152,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1180,7 +1180,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,7 +1197,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1215,7 +1215,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1234,7 +1234,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1254,7 +1254,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,7 +1271,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Partially updates a Network Connection.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
      * @param context The context to associate with this operation.
@@ -1289,7 +1289,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1338,7 +1338,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1385,7 +1385,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1405,7 +1405,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1427,7 +1427,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1442,7 +1442,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,7 +1459,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1476,7 +1476,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1494,7 +1494,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1508,7 +1508,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Deletes a Network Connections resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1523,7 +1523,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1584,7 +1584,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1643,7 +1643,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1662,7 +1662,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1681,7 +1681,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1701,7 +1701,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1718,7 +1718,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1736,7 +1736,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1785,7 +1785,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1832,7 +1832,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1849,7 +1849,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1866,7 +1866,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Gets health check status details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1882,7 +1882,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1890,7 +1890,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> runHealthChecksWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(
         String resourceGroupName, String networkConnectionName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1932,7 +1932,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1941,7 +1941,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> runHealthChecksWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(
         String resourceGroupName, String networkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1980,7 +1980,87 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(
+        String resourceGroupName, String networkConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(
+        String resourceGroupName, String networkConnectionName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
+        String resourceGroupName, String networkConnectionName) {
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName).getSyncPoller();
+    }
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
+        String resourceGroupName, String networkConnectionName, Context context) {
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
+    }
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1989,33 +2069,35 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runHealthChecksAsync(String resourceGroupName, String networkConnectionName) {
-        return runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName)
-            .flatMap(ignored -> Mono.empty());
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> runHealthChecksWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
-        return runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName, context).block();
+    private Mono<Void> runHealthChecksAsync(String resourceGroupName, String networkConnectionName, Context context) {
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2023,7 +2105,23 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void runHealthChecks(String resourceGroupName, String networkConnectionName) {
-        runHealthChecksWithResponse(resourceGroupName, networkConnectionName, Context.NONE);
+        runHealthChecksAsync(resourceGroupName, networkConnectionName).block();
+    }
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context) {
+        runHealthChecksAsync(resourceGroupName, networkConnectionName, context).block();
     }
 
     /**

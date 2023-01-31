@@ -16,18 +16,15 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphLocaleInfo {
     /*
-     * A name representing the user's locale in natural language, for example,
-     * 'English (United States)'.
+     * A name representing the user's locale in natural language, for example, 'English (United States)'.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * A locale representation for the user, which includes the user's
-     * preferred language and country/region. For example, 'en-us'. The
-     * language component follows 2-letter codes as defined in ISO 639-1, and
-     * the country component follows 2-letter codes as defined in ISO 3166-1
-     * alpha-2.
+     * A locale representation for the user, which includes the user's preferred language and country/region. For
+     * example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and the country
+     * component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
      */
     @JsonProperty(value = "locale")
     private String locale;
@@ -36,6 +33,10 @@ public final class MicrosoftGraphLocaleInfo {
      * localeInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLocaleInfo class. */
+    public MicrosoftGraphLocaleInfo() {
+    }
 
     /**
      * Get the displayName property: A name representing the user's locale in natural language, for example, 'English

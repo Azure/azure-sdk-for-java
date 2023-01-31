@@ -30,6 +30,10 @@ public final class VirtualMachineScaleSetSkuInner {
     @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuCapacity capacity;
 
+    /** Creates an instance of VirtualMachineScaleSetSkuInner class. */
+    public VirtualMachineScaleSetSkuInner() {
+    }
+
     /**
      * Get the resourceType property: The type of resource the sku applies to.
      *

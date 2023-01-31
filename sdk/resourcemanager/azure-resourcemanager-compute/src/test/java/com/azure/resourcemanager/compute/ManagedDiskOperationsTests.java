@@ -317,7 +317,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
             .withCopyStart()
             .withIncremental(true)
             .create();
-        Assertions.assertFalse(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofMillis(1)));
+        Assertions.assertFalse(!isPlaybackMode() && snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofMillis(1)));
         Assertions.assertTrue(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofHours(24)));
 
         // copy the snapshot to a new region

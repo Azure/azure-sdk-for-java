@@ -62,7 +62,7 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterGovern")
-    private interface GovernanceRulesOperationsService {
+    public interface GovernanceRulesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules/{ruleId}")
         @ExpectedResponses({200})
@@ -227,20 +227,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      * Get a specific governanceRule for the requested scope by ruleId.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceRule for the requested scope by ruleId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceRuleInner get(String ruleId) {
-        return getAsync(ruleId).block();
-    }
-
-    /**
-     * Get a specific governanceRule for the requested scope by ruleId.
-     *
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -250,6 +236,20 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GovernanceRuleInner> getWithResponse(String ruleId, Context context) {
         return getWithResponseAsync(ruleId, context).block();
+    }
+
+    /**
+     * Get a specific governanceRule for the requested scope by ruleId.
+     *
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific governanceRule for the requested scope by ruleId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceRuleInner get(String ruleId) {
+        return getWithResponse(ruleId, Context.NONE).getValue();
     }
 
     /**
@@ -372,21 +372,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param governanceRule GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security GovernanceRule over a given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceRuleInner createOrUpdate(String ruleId, GovernanceRuleInner governanceRule) {
-        return createOrUpdateAsync(ruleId, governanceRule).block();
-    }
-
-    /**
-     * Creates or update a security GovernanceRule on the given subscription.
-     *
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param governanceRule GovernanceRule over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -397,6 +382,21 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
     public Response<GovernanceRuleInner> createOrUpdateWithResponse(
         String ruleId, GovernanceRuleInner governanceRule, Context context) {
         return createOrUpdateWithResponseAsync(ruleId, governanceRule, context).block();
+    }
+
+    /**
+     * Creates or update a security GovernanceRule on the given subscription.
+     *
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @param governanceRule GovernanceRule over a subscription scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security GovernanceRule over a given scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GovernanceRuleInner createOrUpdate(String ruleId, GovernanceRuleInner governanceRule) {
+        return createOrUpdateWithResponse(ruleId, governanceRule, Context.NONE).getValue();
     }
 
     /**
@@ -485,19 +485,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      * Delete a GovernanceRule over a given scope.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String ruleId) {
-        deleteAsync(ruleId).block();
-    }
-
-    /**
-     * Delete a GovernanceRule over a given scope.
-     *
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -507,6 +494,19 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String ruleId, Context context) {
         return deleteWithResponseAsync(ruleId, context).block();
+    }
+
+    /**
+     * Delete a GovernanceRule over a given scope.
+     *
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String ruleId) {
+        deleteWithResponse(ruleId, Context.NONE);
     }
 
     /**
@@ -628,6 +628,26 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      * Execute a security GovernanceRule on the given subscription.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRuleIdExecuteSingleSubscriptionAsync(String ruleId) {
+        final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            ruleIdExecuteSingleSubscriptionWithResponseAsync(ruleId, executeGovernanceRuleParams);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Execute a security GovernanceRule on the given subscription.
+     *
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,15 +670,14 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      * Execute a security GovernanceRule on the given subscription.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRuleIdExecuteSingleSubscription(
-        String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
+    public SyncPoller<PollResult<Void>, Void> beginRuleIdExecuteSingleSubscription(String ruleId) {
+        final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
         return beginRuleIdExecuteSingleSubscriptionAsync(ruleId, executeGovernanceRuleParams).getSyncPoller();
     }
 
@@ -731,21 +750,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
         return beginRuleIdExecuteSingleSubscriptionAsync(ruleId, executeGovernanceRuleParams, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Execute a security GovernanceRule on the given subscription.
-     *
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void ruleIdExecuteSingleSubscription(
-        String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        ruleIdExecuteSingleSubscriptionAsync(ruleId, executeGovernanceRuleParams).block();
     }
 
     /**
@@ -940,6 +944,31 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRuleIdExecuteSingleSecurityConnectorAsync(
+        String resourceGroupName, String securityConnectorName, String ruleId) {
+        final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            ruleIdExecuteSingleSecurityConnectorWithResponseAsync(
+                resourceGroupName, securityConnectorName, ruleId, executeGovernanceRuleParams);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Execute a security GovernanceRule on the given security connector.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param securityConnectorName The security connector name.
+     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -970,7 +999,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      *     insensitive.
      * @param securityConnectorName The security connector name.
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -978,10 +1006,8 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRuleIdExecuteSingleSecurityConnector(
-        String resourceGroupName,
-        String securityConnectorName,
-        String ruleId,
-        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
+        String resourceGroupName, String securityConnectorName, String ruleId) {
+        final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
         return beginRuleIdExecuteSingleSecurityConnectorAsync(
                 resourceGroupName, securityConnectorName, ruleId, executeGovernanceRuleParams)
             .getSyncPoller();
@@ -1085,29 +1111,6 @@ public final class GovernanceRulesOperationsClientImpl implements GovernanceRule
                 resourceGroupName, securityConnectorName, ruleId, executeGovernanceRuleParams, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Execute a security GovernanceRule on the given security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void ruleIdExecuteSingleSecurityConnector(
-        String resourceGroupName,
-        String securityConnectorName,
-        String ruleId,
-        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        ruleIdExecuteSingleSecurityConnectorAsync(
-                resourceGroupName, securityConnectorName, ruleId, executeGovernanceRuleParams)
-            .block();
     }
 
     /**

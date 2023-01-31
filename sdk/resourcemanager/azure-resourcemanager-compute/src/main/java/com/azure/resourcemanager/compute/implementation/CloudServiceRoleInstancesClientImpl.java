@@ -24,9 +24,9 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -37,12 +37,7 @@ import com.azure.resourcemanager.compute.fluent.models.RoleInstanceViewInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RoleInstanceListResult;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
-import java.util.Iterator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -73,7 +68,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServiceRoleInstancesService {
+    public interface CloudServiceRoleInstancesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -193,7 +188,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/remoteDesktopFile")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<StreamResponse> getRemoteDesktopFile(
+        Mono<Response<BinaryData>> getRemoteDesktopFile(
             @HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -252,7 +247,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -309,7 +304,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -383,7 +378,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -401,7 +396,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -513,7 +508,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -577,7 +572,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -591,25 +586,6 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 expand,
                 accept,
                 context);
-    }
-
-    /**
-     * Gets a role instance from a cloud service.
-     *
-     * @param roleInstanceName Name of the role instance.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
-     * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role instance from a cloud service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleInstanceInner> getAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, InstanceViewTypes expand) {
-        return getWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -637,23 +613,6 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role instance from a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleInstanceInner get(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        final InstanceViewTypes expand = null;
-        return getAsync(roleInstanceName, resourceGroupName, cloudServiceName, expand).block();
-    }
-
-    /**
-     * Gets a role instance from a cloud service.
-     *
-     * @param roleInstanceName Name of the role instance.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,6 +628,23 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
         InstanceViewTypes expand,
         Context context) {
         return getWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, expand, context).block();
+    }
+
+    /**
+     * Gets a role instance from a cloud service.
+     *
+     * @param roleInstanceName Name of the role instance.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role instance from a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleInstanceInner get(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+        final InstanceViewTypes expand = null;
+        return getWithResponse(roleInstanceName, resourceGroupName, cloudServiceName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -710,7 +686,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -768,7 +744,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -807,23 +783,6 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of the role instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleInstanceViewInner getInstanceView(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return getInstanceViewAsync(roleInstanceName, resourceGroupName, cloudServiceName).block();
-    }
-
-    /**
-     * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
-     * @param roleInstanceName Name of the role instance.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -834,6 +793,24 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     public Response<RoleInstanceViewInner> getInstanceViewWithResponse(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
         return getInstanceViewWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).block();
+    }
+
+    /**
+     * Retrieves information about the run-time state of a role instance in a cloud service.
+     *
+     * @param roleInstanceName Name of the role instance.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the instance view of the role instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleInstanceViewInner getInstanceView(
+        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+        return getInstanceViewWithResponse(roleInstanceName, resourceGroupName, cloudServiceName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -872,7 +849,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -936,7 +913,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1094,7 +1071,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1151,7 +1128,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1225,7 +1202,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1243,7 +1220,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1354,7 +1331,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1412,7 +1389,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1489,7 +1466,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1508,7 +1485,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1624,7 +1601,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1683,7 +1660,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1763,7 +1740,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1783,7 +1760,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1872,10 +1849,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a remote desktop file for a role instance in a cloud service on successful completion of {@link Mono}.
+     * @return a remote desktop file for a role instance in a cloud service along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getRemoteDesktopFileWithResponseAsync(
+    public Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1901,7 +1879,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         return FluxUtil
             .withContext(
@@ -1929,10 +1907,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a remote desktop file for a role instance in a cloud service on successful completion of {@link Mono}.
+     * @return a remote desktop file for a role instance in a cloud service along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> getRemoteDesktopFileWithResponseAsync(
+    private Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1958,7 +1937,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         context = this.client.mergeContext(context);
         return service
@@ -1982,47 +1961,13 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a remote desktop file for a role instance in a cloud service.
+     * @return a remote desktop file for a role instance in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getRemoteDesktopFileAsync(
+    public Mono<BinaryData> getRemoteDesktopFileAsync(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
         return getRemoteDesktopFileWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-            .flatMapMany(StreamResponse::getValue);
-    }
-
-    /**
-     * Gets a remote desktop file for a role instance in a cloud service.
-     *
-     * @param roleInstanceName Name of the role instance.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a remote desktop file for a role instance in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream getRemoteDesktopFile(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        Iterator<ByteBufferBackedInputStream> iterator =
-            getRemoteDesktopFileAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-                .map(ByteBufferBackedInputStream::new)
-                .toStream()
-                .iterator();
-        Enumeration<InputStream> enumeration =
-            new Enumeration<InputStream>() {
-                @Override
-                public boolean hasMoreElements() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public InputStream nextElement() {
-                    return iterator.next();
-                }
-            };
-        return new SequenceInputStream(enumeration);
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2035,13 +1980,30 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a remote desktop file for a role instance in a cloud service.
+     * @return a remote desktop file for a role instance in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamResponse getRemoteDesktopFileWithResponse(
+    public Response<BinaryData> getRemoteDesktopFileWithResponse(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
         return getRemoteDesktopFileWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
             .block();
+    }
+
+    /**
+     * Gets a remote desktop file for a role instance in a cloud service.
+     *
+     * @param roleInstanceName Name of the role instance.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a remote desktop file for a role instance in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getRemoteDesktopFile(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+        return getRemoteDesktopFileWithResponse(roleInstanceName, resourceGroupName, cloudServiceName, Context.NONE)
+            .getValue();
     }
 
     /**

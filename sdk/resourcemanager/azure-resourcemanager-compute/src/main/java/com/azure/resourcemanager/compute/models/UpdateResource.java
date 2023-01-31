@@ -19,6 +19,10 @@ public class UpdateResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of UpdateResource class. */
+    public UpdateResource() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

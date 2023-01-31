@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuTier. */
+/**
+ * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not
+ * required on a PUT.
+ */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     /** Static value Free for SkuTier. */
     public static final SkuTier FREE = fromString("Free");

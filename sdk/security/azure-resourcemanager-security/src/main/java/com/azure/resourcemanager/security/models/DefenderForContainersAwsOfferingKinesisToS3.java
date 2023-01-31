@@ -16,6 +16,10 @@ public final class DefenderForContainersAwsOfferingKinesisToS3 {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /** Creates an instance of DefenderForContainersAwsOfferingKinesisToS3 class. */
+    public DefenderForContainersAwsOfferingKinesisToS3() {
+    }
+
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS used by Kinesis to transfer data into S3.
      *

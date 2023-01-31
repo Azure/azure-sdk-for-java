@@ -3,14 +3,6 @@
 
 package com.azure.maps.weather;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
@@ -21,14 +13,20 @@ import com.azure.maps.weather.models.HourlyDuration;
 import com.azure.maps.weather.models.TropicalStormForecastOptions;
 import com.azure.maps.weather.models.TropicalStormLocationOptions;
 import com.azure.maps.weather.models.Waypoint;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.test.StepVerifier;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WeatherAsyncClientTest extends WeatherTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -487,7 +485,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 }).verifyComplete();
         }
     }
-    
+
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
@@ -768,8 +766,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalActuals(new GeoPosition(30.0734812, 62.6490341), before, today, null))
             .assertNext(actualResults -> {
                 try {
@@ -786,8 +784,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalActualsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null))
             .assertNext(response -> {
                 try {
@@ -803,8 +801,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDailyHistoricalActualsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalActualsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -817,7 +815,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(client.getDailyHistoricalRecords(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null))
             .assertNext(actualResults -> {
@@ -835,7 +833,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-75.165222, 39.952583), beforeYears, afterYears, null))
             .assertNext(response -> {
@@ -852,7 +850,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDailyHistoricalRecordsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate beforeYears = LocalDate.now().minusYears(10);
+        LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears, null))
             .verifyErrorSatisfies(ex -> {
@@ -866,8 +864,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalNormals(new GeoPosition(30.0734812, 62.6490341), before, today, null))
             .assertNext(actualResults -> {
                 try {
@@ -884,8 +882,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalNormalsWithResponse(new GeoPosition(30.0734812, 62.6490341), before, today, null, null))
             .assertNext(response -> {
                 try {
@@ -901,8 +899,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDailyHistoricalNormalsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        LocalDate before = LocalDate.now().minusDays(30);
-        LocalDate today = LocalDate.now();
+        LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
+        LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;

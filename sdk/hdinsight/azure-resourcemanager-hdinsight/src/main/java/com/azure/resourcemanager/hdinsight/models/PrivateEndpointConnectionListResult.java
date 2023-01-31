@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list private endpoint connections response. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
-
     /*
      * The list of private endpoint connections.
      */
@@ -27,6 +23,10 @@ public final class PrivateEndpointConnectionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    public PrivateEndpointConnectionListResult() {
+    }
 
     /**
      * Get the value property: The list of private endpoint connections.

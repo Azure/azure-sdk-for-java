@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 

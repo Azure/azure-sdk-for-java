@@ -22,6 +22,15 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
     public static final WindowsPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
+     * Creates a new instance of WindowsPatchAssessmentMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WindowsPatchAssessmentMode() {
+    }
+
+    /**
      * Creates or finds a WindowsPatchAssessmentMode from its string representation.
      *
      * @param name a name to look for.

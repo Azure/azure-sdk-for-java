@@ -94,20 +94,20 @@ public final class IngestionSettingImpl implements IngestionSetting, IngestionSe
         return this;
     }
 
-    public IngestionSettingToken listTokens() {
-        return serviceManager.ingestionSettings().listTokens(ingestionSettingName);
-    }
-
     public Response<IngestionSettingToken> listTokensWithResponse(Context context) {
         return serviceManager.ingestionSettings().listTokensWithResponse(ingestionSettingName, context);
     }
 
-    public ConnectionStrings listConnectionStrings() {
-        return serviceManager.ingestionSettings().listConnectionStrings(ingestionSettingName);
+    public IngestionSettingToken listTokens() {
+        return serviceManager.ingestionSettings().listTokens(ingestionSettingName);
     }
 
     public Response<ConnectionStrings> listConnectionStringsWithResponse(Context context) {
         return serviceManager.ingestionSettings().listConnectionStringsWithResponse(ingestionSettingName, context);
+    }
+
+    public ConnectionStrings listConnectionStrings() {
+        return serviceManager.ingestionSettings().listConnectionStrings(ingestionSettingName);
     }
 
     public IngestionSettingImpl withProperties(Object properties) {

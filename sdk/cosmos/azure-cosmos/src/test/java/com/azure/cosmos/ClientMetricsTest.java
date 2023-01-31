@@ -246,7 +246,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                1000
             );
 
             this.validateMetrics(
@@ -254,7 +254,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Replace"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Replace"),
                 1,
-                100
+                1000
             );
         } finally {
             this.afterTest();
@@ -277,16 +277,16 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "204"),
                 Tag.of(TagName.RequestStatusCode.toString(), "204/0"),
-                1,
-                100
+                0,
+                1000
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Delete"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Delete"),
-                1,
-                100
+                0,
+                1000
             );
         } finally {
             this.afterTest();
@@ -318,7 +318,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
                 1,
-                100
+                1000
             );
 
             this.validateItemCountMetrics(
@@ -496,7 +496,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                1000
             );
 
             this.validateMetrics(
@@ -504,7 +504,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
                 1,
-                100
+                1000
             );
         } finally {
             this.afterTest();

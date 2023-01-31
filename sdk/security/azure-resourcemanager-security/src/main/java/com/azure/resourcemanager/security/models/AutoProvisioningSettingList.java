@@ -24,6 +24,10 @@ public final class AutoProvisioningSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AutoProvisioningSettingList class. */
+    public AutoProvisioningSettingList() {
+    }
+
     /**
      * Get the value property: List of all the auto provisioning settings.
      *

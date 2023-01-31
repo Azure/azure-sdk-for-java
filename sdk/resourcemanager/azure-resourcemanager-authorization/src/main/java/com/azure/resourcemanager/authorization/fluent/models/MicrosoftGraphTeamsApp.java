@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     /*
-     * The name of the catalog app provided by the app developer in the
-     * Microsoft Teams zip app package.
+     * The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -30,8 +29,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     private MicrosoftGraphTeamsAppDistributionMethod distributionMethod;
 
     /*
-     * The ID of the catalog provided by the app developer in the Microsoft
-     * Teams zip app package.
+     * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
      */
     @JsonProperty(value = "externalId")
     private String externalId;
@@ -46,6 +44,10 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
      * teamsApp
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamsApp class. */
+    public MicrosoftGraphTeamsApp() {
+    }
 
     /**
      * Get the displayName property: The name of the catalog app provided by the app developer in the Microsoft Teams

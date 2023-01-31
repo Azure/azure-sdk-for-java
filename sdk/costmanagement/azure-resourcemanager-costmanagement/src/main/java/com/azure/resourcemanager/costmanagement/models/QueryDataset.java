@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The definition of data present in the query. */
 @Fluent
 public final class QueryDataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryDataset.class);
-
     /*
      * The granularity of rows in the query.
      */
@@ -24,34 +20,36 @@ public final class QueryDataset {
     private GranularityType granularity;
 
     /*
-     * Has configuration information for the data in the export. The
-     * configuration will be ignored if aggregation and grouping are provided.
+     * Has configuration information for the data in the export. The configuration will be ignored if aggregation and
+     * grouping are provided.
      */
     @JsonProperty(value = "configuration")
     private QueryDatasetConfiguration configuration;
 
     /*
-     * Dictionary of aggregation expression to use in the query. The key of
-     * each item in the dictionary is the alias for the aggregated column.
-     * Query can have up to 2 aggregation clauses.
+     * Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias
+     * for the aggregated column. Query can have up to 2 aggregation clauses.
      */
     @JsonProperty(value = "aggregation")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, QueryAggregation> aggregation;
 
     /*
-     * Array of group by expression to use in the query. Query can have up to 2
-     * group by clauses.
+     * Array of group by expression to use in the query. Query can have up to 2 group by clauses.
      */
     @JsonProperty(value = "grouping")
     private List<QueryGrouping> grouping;
 
     /*
-     * The filter expression to use in the query. Please reference our Query
-     * API REST documentation for how to properly format the filter.
+     * The filter expression to use in the query. Please reference our Query API REST documentation for how to properly
+     * format the filter.
      */
     @JsonProperty(value = "filter")
     private QueryFilter filter;
+
+    /** Creates an instance of QueryDataset class. */
+    public QueryDataset() {
+    }
 
     /**
      * Get the granularity property: The granularity of rows in the query.

@@ -9,11 +9,11 @@ import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscription
 /** An immutable client-side representation of CanceledSubscriptionId. */
 public interface CanceledSubscriptionId {
     /**
-     * Gets the value property: The ID of the canceled subscription.
+     * Gets the subscriptionId property: The ID of the canceled subscription.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    String value();
+    String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner object.

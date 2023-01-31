@@ -144,7 +144,7 @@ class DownloadResponseTest extends APISpec {
             .flatMapMany({ it.getValue() })
 
         then:
-        StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(50)))
+        StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(1)))
             .expectSubscription()
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 

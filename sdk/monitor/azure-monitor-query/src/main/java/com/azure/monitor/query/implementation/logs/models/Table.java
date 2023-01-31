@@ -4,13 +4,17 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains the columns and rows for one table in a query response. */
-@Fluent
+/**
+ * A query response table.
+ *
+ * <p>Contains the columns and rows for one table in a query response.
+ */
+@Immutable
 public final class Table {
     /*
      * The name of the table.

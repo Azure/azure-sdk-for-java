@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.ConnectorMappingsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorMappingResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectorMappingsClient. */
 public final class ConnectorMappingsClientImpl implements ConnectorMappingsClient {
-    private final ClientLogger logger = new ClientLogger(ConnectorMappingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConnectorMappingsService service;
 
@@ -61,7 +58,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface ConnectorMappingsService {
+    public interface ConnectorMappingsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -151,7 +148,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format.
+     * @return the connector mapping resource format along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -221,7 +219,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format.
+     * @return the connector mapping resource format along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -288,7 +287,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format.
+     * @return the connector mapping resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorMappingResourceFormatInner> createOrUpdateAsync(
@@ -298,14 +297,34 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
         String mappingName,
         ConnectorMappingResourceFormatInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, parameters)
-            .flatMap(
-                (Response<ConnectorMappingResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a connector mapping or updates an existing connector mapping in the connector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param mappingName The name of the connector mapping.
+     * @param parameters Parameters supplied to the CreateOrUpdate Connector Mapping operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connector mapping resource format along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String hubName,
+        String connectorName,
+        String mappingName,
+        ConnectorMappingResourceFormatInner parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, hubName, connectorName, mappingName, parameters, context)
+            .block();
     }
 
     /**
@@ -328,34 +347,9 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
         String connectorName,
         String mappingName,
         ConnectorMappingResourceFormatInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, hubName, connectorName, mappingName, parameters).block();
-    }
-
-    /**
-     * Creates a connector mapping or updates an existing connector mapping in the connector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param mappingName The name of the connector mapping.
-     * @param parameters Parameters supplied to the CreateOrUpdate Connector Mapping operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector mapping resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorMappingResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String connectorName,
-        String mappingName,
-        ConnectorMappingResourceFormatInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, hubName, connectorName, mappingName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, hubName, connectorName, mappingName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -368,7 +362,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return a connector mapping in the connector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(
@@ -427,7 +422,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return a connector mapping in the connector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorMappingResourceFormatInner>> getWithResponseAsync(
@@ -482,20 +478,32 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return a connector mapping in the connector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorMappingResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String connectorName, String mappingName) {
         return getWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName)
-            .flatMap(
-                (Response<ConnectorMappingResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a connector mapping in the connector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param mappingName The name of the connector mapping.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connector mapping in the connector along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectorMappingResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
     }
 
     /**
@@ -513,26 +521,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorMappingResourceFormatInner get(
         String resourceGroupName, String hubName, String connectorName, String mappingName) {
-        return getAsync(resourceGroupName, hubName, connectorName, mappingName).block();
-    }
-
-    /**
-     * Gets a connector mapping in the connector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param mappingName The name of the connector mapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorMappingResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
+        return getWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE).getValue();
     }
 
     /**
@@ -545,7 +534,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -602,7 +591,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -655,12 +644,31 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String connectorName, String mappingName) {
         return deleteWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a connector mapping in the connector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param mappingName The name of the connector mapping.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
     }
 
     /**
@@ -676,26 +684,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hubName, String connectorName, String mappingName) {
-        deleteAsync(resourceGroupName, hubName, connectorName, mappingName).block();
-    }
-
-    /**
-     * Deletes a connector mapping in the connector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param mappingName The name of the connector mapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, connectorName, mappingName, context).block();
+        deleteWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE);
     }
 
     /**
@@ -707,7 +696,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorSinglePageAsync(
@@ -770,7 +760,8 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorSinglePageAsync(
@@ -829,7 +820,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(
@@ -849,7 +840,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorMappingResourceFormatInner> listByConnectorAsync(
@@ -868,7 +859,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
@@ -886,7 +877,7 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorMappingResourceFormatInner> listByConnector(
@@ -897,11 +888,13 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list connector mapping operation.
+     * @return the response of list connector mapping operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorNextSinglePageAsync(
@@ -933,12 +926,14 @@ public final class ConnectorMappingsClientImpl implements ConnectorMappingsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list connector mapping operation.
+     * @return the response of list connector mapping operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorMappingResourceFormatInner>> listByConnectorNextSinglePageAsync(

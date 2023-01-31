@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The autoscale request parameters. */
 @Fluent
 public final class Autoscale {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Autoscale.class);
-
     /*
      * Parameters for load-based autoscale
      */
@@ -25,6 +21,10 @@ public final class Autoscale {
      */
     @JsonProperty(value = "recurrence")
     private AutoscaleRecurrence recurrence;
+
+    /** Creates an instance of Autoscale class. */
+    public Autoscale() {
+    }
 
     /**
      * Get the capacity property: Parameters for load-based autoscale.

@@ -47,6 +47,10 @@ public final class ManagedInstanceFamilyCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ManagedInstanceFamilyCapability class. */
+    public ManagedInstanceFamilyCapability() {
+    }
+
     /**
      * Get the name property: Family name.
      *

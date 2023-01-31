@@ -29,6 +29,10 @@ public final class PatchVault extends PatchTrackedResource {
     @JsonProperty(value = "identity")
     private IdentityData identity;
 
+    /** Creates an instance of PatchVault class. */
+    public PatchVault() {
+    }
+
     /**
      * Get the properties property: Properties of the vault.
      *

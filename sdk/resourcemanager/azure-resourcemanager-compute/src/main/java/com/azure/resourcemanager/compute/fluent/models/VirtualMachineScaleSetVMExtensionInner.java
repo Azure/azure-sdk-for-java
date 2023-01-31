@@ -31,6 +31,10 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionInner class. */
+    public VirtualMachineScaleSetVMExtensionInner() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *

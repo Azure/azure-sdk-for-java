@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FailoverGroups Get. */
 public final class FailoverGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/FailoverGroupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupGet.json
      */
     /**
      * Sample code: Get failover group.

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 /** Samples for MobileNetworks CreateOrUpdate. */
 public final class MobileNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/MobileNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/MobileNetworkCreate.json
      */
     /**
      * Sample code: Create mobile network.

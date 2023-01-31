@@ -27,6 +27,10 @@ public final class MicrosoftGraphSwapShiftsChangeRequest extends MicrosoftGraphO
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSwapShiftsChangeRequest class. */
+    public MicrosoftGraphSwapShiftsChangeRequest() {
+    }
+
     /**
      * Get the recipientShiftId property: ShiftId for the recipient user with whom the request is to swap.
      *

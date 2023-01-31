@@ -22,8 +22,7 @@ public final class MicrosoftGraphLookupColumn {
     private Boolean allowMultipleValues;
 
     /*
-     * Indicates whether values in the column should be able to exceed the
-     * standard limit of 255 characters.
+     * Indicates whether values in the column should be able to exceed the standard limit of 255 characters.
      */
     @JsonProperty(value = "allowUnlimitedLength")
     private Boolean allowUnlimitedLength;
@@ -41,9 +40,8 @@ public final class MicrosoftGraphLookupColumn {
     private String listId;
 
     /*
-     * If specified, this column is a secondary lookup, pulling an additional
-     * field from the list item looked up by the primary lookup. Use the list
-     * item looked up by the primary as the source for the column named here.
+     * If specified, this column is a secondary lookup, pulling an additional field from the list item looked up by the
+     * primary lookup. Use the list item looked up by the primary as the source for the column named here.
      */
     @JsonProperty(value = "primaryLookupColumnId")
     private String primaryLookupColumnId;
@@ -52,6 +50,10 @@ public final class MicrosoftGraphLookupColumn {
      * lookupColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLookupColumn class. */
+    public MicrosoftGraphLookupColumn() {
+    }
 
     /**
      * Get the allowMultipleValues property: Indicates whether multiple values can be selected from the source.

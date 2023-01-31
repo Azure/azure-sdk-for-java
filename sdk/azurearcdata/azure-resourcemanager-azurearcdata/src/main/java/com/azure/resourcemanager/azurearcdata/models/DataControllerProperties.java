@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The data controller properties. */
 @Fluent
 public final class DataControllerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataControllerProperties.class);
-
     /*
      * The infrastructure the data controller is running on.
      */
@@ -34,15 +30,13 @@ public final class DataControllerProperties {
     private Object k8SRaw;
 
     /*
-     * Properties on upload watermark.  Mostly timestamp for each upload data
-     * type
+     * Properties on upload watermark.  Mostly timestamp for each upload data type
      */
     @JsonProperty(value = "uploadWatermark")
     private UploadWatermark uploadWatermark;
 
     /*
-     * Last uploaded date from Kubernetes cluster. Defaults to current date
-     * time
+     * Last uploaded date from Kubernetes cluster. Defaults to current date time
      */
     @JsonProperty(value = "lastUploadedDate")
     private OffsetDateTime lastUploadedDate;
@@ -72,18 +66,21 @@ public final class DataControllerProperties {
     private String provisioningState;
 
     /*
-     * If a CustomLocation is provided, this contains the ARM id of the
-     * connected cluster the custom location belongs to.
+     * If a CustomLocation is provided, this contains the ARM id of the connected cluster the custom location belongs
+     * to.
      */
     @JsonProperty(value = "clusterId")
     private String clusterId;
 
     /*
-     * If a CustomLocation is provided, this contains the ARM id of the
-     * extension the custom location belongs to.
+     * If a CustomLocation is provided, this contains the ARM id of the extension the custom location belongs to.
      */
     @JsonProperty(value = "extensionId")
     private String extensionId;
+
+    /** Creates an instance of DataControllerProperties class. */
+    public DataControllerProperties() {
+    }
 
     /**
      * Get the infrastructure property: The infrastructure the data controller is running on.

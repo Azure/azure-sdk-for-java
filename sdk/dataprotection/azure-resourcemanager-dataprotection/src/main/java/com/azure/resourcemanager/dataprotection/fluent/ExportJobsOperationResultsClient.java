@@ -20,13 +20,15 @@ public interface ExportJobsOperationResultsClient {
      * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExportJobsResultInner get(String resourceGroupName, String vaultName, String operationId);
+    Response<ExportJobsResultInner> getWithResponse(
+        String resourceGroupName, String vaultName, String operationId, Context context);
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
@@ -36,13 +38,11 @@ public interface ExportJobsOperationResultsClient {
      * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result of operation triggered by Export Jobs API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExportJobsResultInner> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    ExportJobsResultInner get(String resourceGroupName, String vaultName, String operationId);
 }

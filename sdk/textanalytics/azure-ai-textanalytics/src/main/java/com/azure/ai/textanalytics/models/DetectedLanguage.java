@@ -37,10 +37,11 @@ public final class DetectedLanguage {
     /**
      * Identifies the script of the input document.
      */
-    private ScriptKind script;
+    private ScriptKind scriptKind;
 
     static {
-        DetectedLanguagePropertiesHelper.setAccessor((detectedLanguage, script) -> detectedLanguage.setScript(script));
+        DetectedLanguagePropertiesHelper.setAccessor(
+            (detectedLanguage, scriptKind) -> detectedLanguage.setScriptKind(scriptKind));
     }
 
     /**
@@ -104,11 +105,11 @@ public final class DetectedLanguage {
      *
      * @return the script value.
      */
-    public ScriptKind getScript() {
-        return this.script;
+    public ScriptKind getScriptKind() {
+        return this.scriptKind;
     }
 
-    private void setScript(ScriptKind script) {
-        this.script = script;
+    private void setScriptKind(ScriptKind scriptKind) {
+        this.scriptKind = scriptKind;
     }
 }

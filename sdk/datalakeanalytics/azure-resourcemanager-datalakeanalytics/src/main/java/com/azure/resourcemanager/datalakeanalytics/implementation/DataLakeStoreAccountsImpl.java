@@ -14,10 +14,9 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeStoreAc
 import com.azure.resourcemanager.datalakeanalytics.models.AddDataLakeStoreParameters;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeStoreAccountInformation;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeStoreAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeStoreAccountsImpl.class);
 
     private final DataLakeStoreAccountsClient innerClient;
 
@@ -53,10 +52,6 @@ public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
         return Utils.mapPage(inner, inner1 -> new DataLakeStoreAccountInformationImpl(inner1, this.manager()));
     }
 
-    public void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        this.serviceClient().add(resourceGroupName, accountName, dataLakeStoreAccountName);
-    }
-
     public Response<Void> addWithResponse(
         String resourceGroupName,
         String accountName,
@@ -68,15 +63,8 @@ public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
             .addWithResponse(resourceGroupName, accountName, dataLakeStoreAccountName, parameters, context);
     }
 
-    public DataLakeStoreAccountInformation get(
-        String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        DataLakeStoreAccountInformationInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, dataLakeStoreAccountName);
-        if (inner != null) {
-            return new DataLakeStoreAccountInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        this.serviceClient().add(resourceGroupName, accountName, dataLakeStoreAccountName);
     }
 
     public Response<DataLakeStoreAccountInformation> getWithResponse(
@@ -94,8 +82,15 @@ public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        this.serviceClient().delete(resourceGroupName, accountName, dataLakeStoreAccountName);
+    public DataLakeStoreAccountInformation get(
+        String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        DataLakeStoreAccountInformationInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, dataLakeStoreAccountName);
+        if (inner != null) {
+            return new DataLakeStoreAccountInformationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -103,6 +98,10 @@ public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, accountName, dataLakeStoreAccountName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        this.serviceClient().delete(resourceGroupName, accountName, dataLakeStoreAccountName);
     }
 
     private DataLakeStoreAccountsClient serviceClient() {

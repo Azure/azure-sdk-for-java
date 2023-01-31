@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The vm resource properties that is currently being monitored by the Elastic monitor resource. */
 @Fluent
 public final class VMResourcesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMResourcesInner.class);
-
     /*
      * The ARM id of the VM resource.
      */
     @JsonProperty(value = "vmResourceId")
     private String vmResourceId;
+
+    /** Creates an instance of VMResourcesInner class. */
+    public VMResourcesInner() {
+    }
 
     /**
      * Get the vmResourceId property: The ARM id of the VM resource.

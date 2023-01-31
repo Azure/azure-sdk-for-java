@@ -57,7 +57,7 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterRegula")
-    private interface RegulatoryComplianceControlsService {
+    public interface RegulatoryComplianceControlsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
@@ -429,22 +429,6 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
      *
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance control details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegulatoryComplianceControlInner get(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
-        return getAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName).block();
-    }
-
-    /**
-     * Selected regulatory compliance control details and state.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +439,23 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
     public Response<RegulatoryComplianceControlInner> getWithResponse(
         String regulatoryComplianceStandardName, String regulatoryComplianceControlName, Context context) {
         return getWithResponseAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, context).block();
+    }
+
+    /**
+     * Selected regulatory compliance control details and state.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance control details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegulatoryComplianceControlInner get(
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
+        return getWithResponse(regulatoryComplianceStandardName, regulatoryComplianceControlName, Context.NONE)
+            .getValue();
     }
 
     /**

@@ -71,7 +71,7 @@ public interface ImageVersion {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ImageVersionInner object.

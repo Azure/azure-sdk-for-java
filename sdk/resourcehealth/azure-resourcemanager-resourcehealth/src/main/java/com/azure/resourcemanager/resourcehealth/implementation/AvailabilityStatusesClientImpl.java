@@ -56,7 +56,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
-    private interface AvailabilityStatusesService {
+    public interface AvailabilityStatusesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/availabilityStatuses")
         @ExpectedResponses({200})
@@ -628,35 +628,6 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
      *     and
      *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
-     * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
-     * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AvailabilityStatusInner> getByResourceAsync(String resourceUri, String filter, String expand) {
-        return getByResourceWithResponseAsync(resourceUri, filter, expand)
-            .flatMap(
-                (Response<AvailabilityStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets current availability status for a single resource.
-     *
-     * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,34 +638,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
         final String filter = null;
         final String expand = null;
         return getByResourceWithResponseAsync(resourceUri, filter, expand)
-            .flatMap(
-                (Response<AvailabilityStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets current availability status for a single resource.
-     *
-     * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilityStatusInner getByResource(String resourceUri) {
-        final String filter = null;
-        final String expand = null;
-        return getByResourceAsync(resourceUri, filter, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -718,6 +662,26 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     public Response<AvailabilityStatusInner> getByResourceWithResponse(
         String resourceUri, String filter, String expand, Context context) {
         return getByResourceWithResponseAsync(resourceUri, filter, expand, context).block();
+    }
+
+    /**
+     * Gets current availability status for a single resource.
+     *
+     * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
+     *     Currently the API support not nested and one nesting level resource types :
+     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     *     and
+     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return current availability status for a single resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailabilityStatusInner getByResource(String resourceUri) {
+        final String filter = null;
+        final String expand = null;
+        return getByResourceWithResponse(resourceUri, filter, expand, Context.NONE).getValue();
     }
 
     /**
@@ -933,7 +897,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -970,7 +935,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1008,7 +974,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1045,7 +1012,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,7 +1051,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,7 +1088,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

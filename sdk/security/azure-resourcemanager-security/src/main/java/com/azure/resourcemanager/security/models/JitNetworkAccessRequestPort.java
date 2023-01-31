@@ -56,6 +56,10 @@ public final class JitNetworkAccessRequestPort {
     @JsonProperty(value = "mappedPort")
     private Integer mappedPort;
 
+    /** Creates an instance of JitNetworkAccessRequestPort class. */
+    public JitNetworkAccessRequestPort() {
+    }
+
     /**
      * Get the number property: The number property.
      *

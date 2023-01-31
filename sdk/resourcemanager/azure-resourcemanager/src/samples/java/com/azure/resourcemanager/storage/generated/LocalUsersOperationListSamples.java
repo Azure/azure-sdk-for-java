@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LocalUsersOperation List. */
 public final class LocalUsersOperationListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/LocalUsersList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUsersList.json
      */
     /**
      * Sample code: ListLocalUsers.

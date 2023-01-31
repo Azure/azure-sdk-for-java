@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for PacketCoreDataPlanes UpdateTags. */
 public final class PacketCoreDataPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneUpdateTags.json
      */
     /**
      * Sample code: Update packet core data plane tags.
@@ -24,7 +23,7 @@ public final class PacketCoreDataPlanesUpdateTagsSamples {
         PacketCoreDataPlane resource =
             manager
                 .packetCoreDataPlanes()
-                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", Context.NONE)
+                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

@@ -95,6 +95,10 @@ public final class ScanProperties {
     @JsonProperty(value = "isBaselineApplied")
     private Boolean isBaselineApplied;
 
+    /** Creates an instance of ScanProperties class. */
+    public ScanProperties() {
+    }
+
     /**
      * Get the triggerType property: The scan trigger type.
      *

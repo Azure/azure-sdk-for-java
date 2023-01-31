@@ -17,6 +17,15 @@ public final class LiveEventInputProtocol extends ExpandableStringEnum<LiveEvent
     public static final LiveEventInputProtocol RTMP = fromString("RTMP");
 
     /**
+     * Creates a new instance of LiveEventInputProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveEventInputProtocol() {
+    }
+
+    /**
      * Creates or finds a LiveEventInputProtocol from its string representation.
      *
      * @param name a name to look for.

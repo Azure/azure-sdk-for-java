@@ -17,6 +17,10 @@ public final class EdgePoliciesInner {
     @JsonProperty(value = "usageDataCollectionPolicy")
     private EdgeUsageDataCollectionPolicy usageDataCollectionPolicy;
 
+    /** Creates an instance of EdgePoliciesInner class. */
+    public EdgePoliciesInner() {
+    }
+
     /**
      * Get the usageDataCollectionPolicy property: The usageDataCollectionPolicy property.
      *

@@ -37,15 +37,6 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
         return Utils.mapPage(inner, inner1 -> new DeviceSecurityGroupImpl(inner1, this.manager()));
     }
 
-    public DeviceSecurityGroup get(String resourceId, String deviceSecurityGroupName) {
-        DeviceSecurityGroupInner inner = this.serviceClient().get(resourceId, deviceSecurityGroupName);
-        if (inner != null) {
-            return new DeviceSecurityGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeviceSecurityGroup> getWithResponse(
         String resourceId, String deviceSecurityGroupName, Context context) {
         Response<DeviceSecurityGroupInner> inner =
@@ -61,12 +52,22 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
         }
     }
 
-    public void deleteByResourceGroup(String resourceId, String deviceSecurityGroupName) {
-        this.serviceClient().delete(resourceId, deviceSecurityGroupName);
+    public DeviceSecurityGroup get(String resourceId, String deviceSecurityGroupName) {
+        DeviceSecurityGroupInner inner = this.serviceClient().get(resourceId, deviceSecurityGroupName);
+        if (inner != null) {
+            return new DeviceSecurityGroupImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceId, String deviceSecurityGroupName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceId, deviceSecurityGroupName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceId, String deviceSecurityGroupName) {
+        this.serviceClient().delete(resourceId, deviceSecurityGroupName);
     }
 
     public DeviceSecurityGroup getById(String id) {
@@ -159,7 +160,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                                 "The resource ID '%s' is not valid. Missing path segment 'deviceSecurityGroups'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceId, deviceSecurityGroupName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceId, deviceSecurityGroupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -190,7 +191,7 @@ public final class DeviceSecurityGroupsImpl implements DeviceSecurityGroups {
                                 "The resource ID '%s' is not valid. Missing path segment 'deviceSecurityGroups'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceId, deviceSecurityGroupName, context);
+        return this.deleteByResourceGroupWithResponse(resourceId, deviceSecurityGroupName, context);
     }
 
     private DeviceSecurityGroupsClient serviceClient() {

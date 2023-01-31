@@ -5,37 +5,49 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The managed identity for the DigitalTwinsInstance. */
 @Fluent
 public class DigitalTwinsIdentity {
     /*
-     * The type of Managed Identity used by the DigitalTwinsInstance. Only
-     * SystemAssigned is supported.
+     * The type of Managed Identity used by the DigitalTwinsInstance.
      */
     @JsonProperty(value = "type")
     private DigitalTwinsIdentityType type;
 
     /*
-     * The object id of the Managed Identity Resource. This will be sent to the
-     * RP from ARM via the x-ms-identity-principal-id header in the PUT request
-     * if the resource has a systemAssigned(implicit) identity
+     * The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the
+     * x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the Managed Identity Resource. This will be sent to the
-     * RP from ARM via the x-ms-client-tenant-id header in the PUT request if
-     * the resource has a systemAssigned(implicit) identity
+     * The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the
+     * x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
+    /*
+     * The list of user identities associated with the resource. The user identity dictionary key references will be
+     * ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * .
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of DigitalTwinsIdentity class. */
+    public DigitalTwinsIdentity() {
+    }
+
     /**
-     * Get the type property: The type of Managed Identity used by the DigitalTwinsInstance. Only SystemAssigned is
-     * supported.
+     * Get the type property: The type of Managed Identity used by the DigitalTwinsInstance.
      *
      * @return the type value.
      */
@@ -44,8 +56,7 @@ public class DigitalTwinsIdentity {
     }
 
     /**
-     * Set the type property: The type of Managed Identity used by the DigitalTwinsInstance. Only SystemAssigned is
-     * supported.
+     * Set the type property: The type of Managed Identity used by the DigitalTwinsInstance.
      *
      * @param type the type value to set.
      * @return the DigitalTwinsIdentity object itself.
@@ -77,10 +88,46 @@ public class DigitalTwinsIdentity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * .
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * .
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the DigitalTwinsIdentity object itself.
+     */
+    public DigitalTwinsIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

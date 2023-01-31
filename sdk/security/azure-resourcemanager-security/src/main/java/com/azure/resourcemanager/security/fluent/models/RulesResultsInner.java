@@ -17,6 +17,10 @@ public final class RulesResultsInner {
     @JsonProperty(value = "value")
     private List<RuleResultsInner> value;
 
+    /** Creates an instance of RulesResultsInner class. */
+    public RulesResultsInner() {
+    }
+
     /**
      * Get the value property: List of rule results.
      *

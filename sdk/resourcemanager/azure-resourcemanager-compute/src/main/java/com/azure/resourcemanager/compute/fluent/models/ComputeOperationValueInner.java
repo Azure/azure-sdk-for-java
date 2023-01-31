@@ -28,6 +28,10 @@ public final class ComputeOperationValueInner {
     @JsonProperty(value = "display")
     private ComputeOperationValueDisplay innerDisplay;
 
+    /** Creates an instance of ComputeOperationValueInner class. */
+    public ComputeOperationValueInner() {
+    }
+
     /**
      * Get the origin property: The origin of the compute operation.
      *

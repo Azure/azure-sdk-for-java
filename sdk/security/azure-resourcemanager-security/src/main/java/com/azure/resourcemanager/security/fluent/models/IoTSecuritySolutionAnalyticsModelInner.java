@@ -23,6 +23,10 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
     @JsonProperty(value = "properties")
     private IoTSecuritySolutionAnalyticsModelProperties innerProperties;
 
+    /** Creates an instance of IoTSecuritySolutionAnalyticsModelInner class. */
+    public IoTSecuritySolutionAnalyticsModelInner() {
+    }
+
     /**
      * Get the innerProperties property: Security Solution Aggregated Alert data.
      *

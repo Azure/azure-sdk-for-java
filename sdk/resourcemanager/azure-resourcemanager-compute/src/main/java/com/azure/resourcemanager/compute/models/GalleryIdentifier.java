@@ -16,6 +16,10 @@ public final class GalleryIdentifier {
     @JsonProperty(value = "uniqueName", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueName;
 
+    /** Creates an instance of GalleryIdentifier class. */
+    public GalleryIdentifier() {
+    }
+
     /**
      * Get the uniqueName property: The unique name of the Shared Image Gallery. This name is generated automatically by
      * Azure.

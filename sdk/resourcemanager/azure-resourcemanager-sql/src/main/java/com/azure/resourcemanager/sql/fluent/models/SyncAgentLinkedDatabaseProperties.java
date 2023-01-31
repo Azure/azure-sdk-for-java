@@ -47,6 +47,10 @@ public final class SyncAgentLinkedDatabaseProperties {
     @JsonProperty(value = "userName", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
+    /** Creates an instance of SyncAgentLinkedDatabaseProperties class. */
+    public SyncAgentLinkedDatabaseProperties() {
+    }
+
     /**
      * Get the databaseType property: Type of the sync agent linked database.
      *

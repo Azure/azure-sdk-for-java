@@ -31,9 +31,9 @@ To update generated files for call automation, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2022-04-07-preview
+tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac4677cd31042657c21bf40e0506c7c2752bbe70/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/1fcceb1785e063e75b88436d18b56a04c04dc58d/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -46,20 +46,20 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
-title: Azure Communication Call Automation Service 
+title: Azure Communication Call Automation Service
 directive:
 - rename-model:
-    from: AcsCallParticipant
-    to: AcsCallParticipantInternal    
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
     from: AddParticipantsRequest
-    to: AddParticipantsRequestInternal    
+    to: AddParticipantsRequestInternal
 - rename-model:
     from: AddParticipantsResponse
     to: AddParticipantsResponseInternal
 - rename-model:
     from: CallConnectionProperties
-    to: CallConnectionPropertiesInternal     
+    to: CallConnectionPropertiesInternal
 - rename-model:
     from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
@@ -118,6 +118,9 @@ directive:
     from: FileSource
     to: FileSourceInternal
 - rename-model:
+    from: TextSource
+    to: TextSourceInternal
+- rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
 - rename-model:
@@ -125,13 +128,13 @@ directive:
     to: StartCallRecordingRequestInternal
 - rename-model:
     from: ChannelAffinity
-    to: ChannelAffinityInternal        
+    to: ChannelAffinityInternal
 - rename-model:
     from: DtmfConfigurations
-    to: DtmfConfigurationsInternal        
+    to: DtmfConfigurationsInternal
 - rename-model:
     from: RecognizeConfigurations
-    to: RecognizeConfigurationsInternal   
+    to: RecognizeConfigurationsInternal
 - rename-model:
     from: MediaStreamingConfiguration
     to: MediaStreamingConfigurationInternal
@@ -141,7 +144,22 @@ directive:
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
-    
+- rename-model:
+    from: Choice
+    to: RecognizeChoice
+- rename-model:
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
+- rename-model:
+    from: MuteParticipantsResponse
+    to: MuteParticipantsResponseInternal
+- rename-model:
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
+- rename-model:
+    from: UnmuteParticipantsResponse
+    to: UnmuteParticipantsResponseInternal
+
 # Remove models
 - remove-model: AddParticipantsFailed
 - remove-model: AddParticipantsSucceeded
@@ -312,4 +330,13 @@ directive:
   where: $.definitions.DtmfOptions["x-ms-enum"]
   transform: >
     $.name = "DtmfOptionsInternal";
+```
+
+### Rename Choice to GenderType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Gender["x-ms-enum"]
+  transform: >
+    $.name = "GenderType";
 ```

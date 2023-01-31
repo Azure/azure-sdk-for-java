@@ -28,6 +28,10 @@ public final class GovernanceAssignmentAdditionalData {
     @JsonProperty(value = "ticketStatus")
     private String ticketStatus;
 
+    /** Creates an instance of GovernanceAssignmentAdditionalData class. */
+    public GovernanceAssignmentAdditionalData() {
+    }
+
     /**
      * Get the ticketNumber property: Ticket number associated with this GovernanceAssignment.
      *

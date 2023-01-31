@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionSummary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The execution details of a script action. */
 @Fluent
 public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuntimeScriptActionDetailInner.class);
-
     /*
      * The execution id of the script action.
      */
@@ -58,6 +54,10 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
      */
     @JsonProperty(value = "debugInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String debugInformation;
+
+    /** Creates an instance of RuntimeScriptActionDetailInner class. */
+    public RuntimeScriptActionDetailInner() {
+    }
 
     /**
      * Get the scriptExecutionId property: The execution id of the script action.

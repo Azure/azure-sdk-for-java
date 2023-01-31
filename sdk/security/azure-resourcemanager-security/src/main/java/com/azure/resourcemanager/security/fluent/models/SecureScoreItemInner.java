@@ -17,6 +17,10 @@ public final class SecureScoreItemInner extends ProxyResource {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private SecureScoreItemProperties innerProperties;
 
+    /** Creates an instance of SecureScoreItemInner class. */
+    public SecureScoreItemInner() {
+    }
+
     /**
      * Get the innerProperties property: Secure score item.
      *

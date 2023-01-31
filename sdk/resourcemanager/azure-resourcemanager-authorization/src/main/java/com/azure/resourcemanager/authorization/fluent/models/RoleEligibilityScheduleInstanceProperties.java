@@ -70,10 +70,9 @@ public final class RoleEligibilityScheduleInstanceProperties {
     private MemberType memberType;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can
-     * be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'
+     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
      */
     @JsonProperty(value = "condition")
     private String condition;
@@ -95,6 +94,10 @@ public final class RoleEligibilityScheduleInstanceProperties {
      */
     @JsonProperty(value = "expandedProperties")
     private ExpandedProperties expandedProperties;
+
+    /** Creates an instance of RoleEligibilityScheduleInstanceProperties class. */
+    public RoleEligibilityScheduleInstanceProperties() {
+    }
 
     /**
      * Get the scope property: The role eligibility schedule scope.

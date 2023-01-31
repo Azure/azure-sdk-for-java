@@ -54,7 +54,7 @@ public interface VirtualMachine {
      *
      * @return the amountOfRam value.
      */
-    Integer amountOfRam();
+    int amountOfRam();
 
     /**
      * Gets the controllers property: The list of Virtual Disks' Controllers.
@@ -124,7 +124,7 @@ public interface VirtualMachine {
      *
      * @return the numberOfCores value.
      */
-    Integer numberOfCores();
+    int numberOfCores();
 
     /**
      * Gets the password property: Password for login. Deprecated - use customization property.
@@ -218,6 +218,13 @@ public interface VirtualMachine {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineInner object.
      *
      * @return the inner object.
@@ -281,7 +288,8 @@ public interface VirtualMachine {
                 DefinitionStages.WithResourcePool,
                 DefinitionStages.WithTemplateId,
                 DefinitionStages.WithUsername,
-                DefinitionStages.WithVSphereNetworks {
+                DefinitionStages.WithVSphereNetworks,
+                DefinitionStages.WithReferer {
             /**
              * Executes the create request.
              *
@@ -315,7 +323,7 @@ public interface VirtualMachine {
              * @param amountOfRam The amount of memory.
              * @return the next definition stage.
              */
-            WithCreate withAmountOfRam(Integer amountOfRam);
+            WithCreate withAmountOfRam(int amountOfRam);
         }
         /** The stage of the VirtualMachine definition allowing to specify customization. */
         interface WithCustomization {
@@ -365,7 +373,7 @@ public interface VirtualMachine {
              * @param numberOfCores The number of CPU cores.
              * @return the next definition stage.
              */
-            WithCreate withNumberOfCores(Integer numberOfCores);
+            WithCreate withNumberOfCores(int numberOfCores);
         }
         /** The stage of the VirtualMachine definition allowing to specify password. */
         interface WithPassword {
@@ -427,6 +435,16 @@ public interface VirtualMachine {
              */
             WithCreate withVSphereNetworks(List<String> vSphereNetworks);
         }
+        /** The stage of the VirtualMachine definition allowing to specify referer. */
+        interface WithReferer {
+            /**
+             * Specifies the referer property: referer url.
+             *
+             * @param referer referer url.
+             * @return the next definition stage.
+             */
+            WithCreate withReferer(String referer);
+        }
     }
     /**
      * Begins update for the VirtualMachine resource.
@@ -479,53 +497,4 @@ public interface VirtualMachine {
      * @return the refreshed resource.
      */
     VirtualMachine refresh(Context context);
-
-    /**
-     * Power on virtual machine.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void start();
-
-    /**
-     * Power on virtual machine.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void start(Context context);
-
-    /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
-     * @param mode query stop mode parameter (reboot, shutdown, etc...).
-     * @param m body stop mode parameter (reboot, shutdown, etc...).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void stop(StopMode mode, VirtualMachineStopMode m);
-
-    /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void stop();
-
-    /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
-     * @param mode query stop mode parameter (reboot, shutdown, etc...).
-     * @param m body stop mode parameter (reboot, shutdown, etc...).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void stop(StopMode mode, VirtualMachineStopMode m, Context context);
 }

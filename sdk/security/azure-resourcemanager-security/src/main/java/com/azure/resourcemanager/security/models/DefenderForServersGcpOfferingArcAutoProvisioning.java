@@ -16,6 +16,10 @@ public final class DefenderForServersGcpOfferingArcAutoProvisioning {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of DefenderForServersGcpOfferingArcAutoProvisioning class. */
+    public DefenderForServersGcpOfferingArcAutoProvisioning() {
+    }
+
     /**
      * Get the enabled property: Is arc auto provisioning enabled.
      *

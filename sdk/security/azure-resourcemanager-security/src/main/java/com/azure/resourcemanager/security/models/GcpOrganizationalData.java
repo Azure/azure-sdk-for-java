@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class GcpOrganizationalData {
+    /** Creates an instance of GcpOrganizationalData class. */
+    public GcpOrganizationalData() {
+    }
+
     /**
      * Validates the instance.
      *

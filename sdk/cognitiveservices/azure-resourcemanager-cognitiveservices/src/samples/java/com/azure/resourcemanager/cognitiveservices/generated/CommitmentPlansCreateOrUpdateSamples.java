@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
 /** Samples for CommitmentPlans CreateOrUpdate. */
 public final class CommitmentPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/PutCommitmentPlan.json
      */
     /**
      * Sample code: PutCommitmentPlan.

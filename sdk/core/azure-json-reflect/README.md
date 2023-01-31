@@ -27,16 +27,8 @@ It will then search for all the methods that are required for the `JsonReader` a
 These implementations provide abstractions of the JSON libraries.
 
 ### Entry point
-Use `JsonFactory.getInstance()`, `JsonFactory.getJacksonInstance()`, or `JsonFactory.getGsonInstance()` to get a `JsonFactory`.
-`JsonFactory` contains the methods:
-- `getJsonReader(byte[] bytes, JsonOptions options)`
-- `getJsonReader(String string, JsonOptions options)`
-- `getJsonReader(InputStream stream, JsonOptions options)`
-- `getJsonReader(Reader reader, JsonOptions options)`
-- `getJsonWriter(OutputStream stream, JsonOptions options)`
-- `getJsonWriter(Writer writer, JsonOptions options)`
-
-These methods return implementations of `JsonReader` or `JsonWriter`.
+Use `JsonProviderFactory.getInstance()`, `JsonProviderFactory.getJacksonJsonProvider()`, or 
+`JsonProviderFactory.getGsonJsonProvider()` to get a `JsonProvider`.
 
 ## Examples
 

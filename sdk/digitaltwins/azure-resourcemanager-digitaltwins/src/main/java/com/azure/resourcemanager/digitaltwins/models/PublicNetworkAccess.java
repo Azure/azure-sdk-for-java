@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccess. */
+/** Public network access for the DigitalTwinsInstance. */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /** Static value Enabled for PublicNetworkAccess. */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");

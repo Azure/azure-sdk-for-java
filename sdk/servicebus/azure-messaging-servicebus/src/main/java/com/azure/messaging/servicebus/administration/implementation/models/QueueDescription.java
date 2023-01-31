@@ -97,14 +97,6 @@ public final class QueueDescription {
     private Integer maxDeliveryCount;
 
     /*
-     * The maximum message size for a message.
-     */
-    @JacksonXmlProperty(
-        localName = "MaxMessageSizeInKilobytes",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Long maxMessageSizeInKilobytes;
-
-    /*
      * Value that indicates whether server-side batched operations are enabled.
      */
     @JacksonXmlProperty(
@@ -118,7 +110,7 @@ public final class QueueDescription {
     @JacksonXmlProperty(
             localName = "SizeInBytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer sizeInBytes;
+    private Long sizeInBytes;
 
     /*
      * The number of messages in the queue.
@@ -275,6 +267,14 @@ public final class QueueDescription {
             localName = "ForwardDeadLetteredMessagesTo",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardDeadLetteredMessagesTo;
+
+    /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+            localName = "MaxMessageSizeInKilobytes",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
 
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
@@ -479,7 +479,7 @@ public final class QueueDescription {
      *
      * @return the sizeInBytes value.
      */
-    public Integer getSizeInBytes() {
+    public Long getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -489,7 +489,7 @@ public final class QueueDescription {
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setSizeInBytes(Integer sizeInBytes) {
+    public QueueDescription setSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }

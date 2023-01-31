@@ -20,6 +20,10 @@ public final class AdaptiveApplicationControlGroupsInner {
     @JsonProperty(value = "value")
     private List<AdaptiveApplicationControlGroupInner> value;
 
+    /** Creates an instance of AdaptiveApplicationControlGroupsInner class. */
+    public AdaptiveApplicationControlGroupsInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

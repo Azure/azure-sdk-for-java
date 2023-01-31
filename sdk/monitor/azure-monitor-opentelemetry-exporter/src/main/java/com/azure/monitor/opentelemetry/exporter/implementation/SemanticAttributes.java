@@ -20,12 +20,13 @@ import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 // this is a copy of io.opentelemetry.semconv.trace.attributes.SemanticAttributes
-// because the module that contains that class is not stable, so don't want to take a dependency on it
+// because the module that contains that class is not stable,
+// so don't want to take a dependency on it
 public final class SemanticAttributes {
     /**
      * The URL of the OpenTelemetry schema for these keys and values.
      */
-    public static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.12.0";
+    public static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.13.0";
 
     /**
      * The full invoked ARN as provided on the {@code Context} passed to the function ({@code
@@ -402,18 +403,50 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> NET_TRANSPORT = stringKey("net.transport");
 
     /**
-     * Remote address of the peer (dotted decimal for IPv4 or <a
-     * href="https://tools.ietf.org/html/rfc5952">RFC5952</a> for IPv6)
+     * Application layer protocol used. The value SHOULD be normalized to lowercase.
      */
-    public static final AttributeKey<String> NET_PEER_IP = stringKey("net.peer.ip");
+    public static final AttributeKey<String> NET_APP_PROTOCOL_NAME =
+        stringKey("net.app.protocol.name");
 
     /**
-     * Remote port number.
+     * Version of the application layer protocol used. See note below.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>{@code net.app.protocol.version} refers to the version of the protocol used and might be
+     *       different from the protocol client's version. If the HTTP client used has a version of
+     *       {@code 0.27.2}, but sends HTTP version {@code 1.1}, this attribute should be set to
+     *       {@code 1.1}.
+     * </ul>
      */
-    public static final AttributeKey<Long> NET_PEER_PORT = longKey("net.peer.port");
+    public static final AttributeKey<String> NET_APP_PROTOCOL_VERSION =
+        stringKey("net.app.protocol.version");
 
     /**
-     * Remote hostname or similar, see note below.
+     * Remote socket peer name.
+     */
+    public static final AttributeKey<String> NET_SOCK_PEER_NAME = stringKey("net.sock.peer.name");
+
+    /**
+     * Remote socket peer address: IPv4 or IPv6 for internet protocols, path for local communication,
+     * <a href="https://man7.org/linux/man-pages/man7/address_families.7.html">etc</a>.
+     */
+    public static final AttributeKey<String> NET_SOCK_PEER_ADDR = stringKey("net.sock.peer.addr");
+
+    /**
+     * Remote socket peer port.
+     */
+    public static final AttributeKey<Long> NET_SOCK_PEER_PORT = longKey("net.sock.peer.port");
+
+    /**
+     * Protocol <a href="https://man7.org/linux/man-pages/man7/address_families.7.html">address
+     * family</a> which is used for communication.
+     */
+    public static final AttributeKey<String> NET_SOCK_FAMILY = stringKey("net.sock.family");
+
+    /**
+     * Logical remote hostname, see note below.
      *
      * <p>Notes:
      *
@@ -425,19 +458,29 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> NET_PEER_NAME = stringKey("net.peer.name");
 
     /**
-     * Like {@code net.peer.ip} but for the host IP. Useful in case of a multi-IP host.
+     * Logical remote port number
      */
-    public static final AttributeKey<String> NET_HOST_IP = stringKey("net.host.ip");
+    public static final AttributeKey<Long> NET_PEER_PORT = longKey("net.peer.port");
 
     /**
-     * Like {@code net.peer.port} but for the host port.
+     * Logical local hostname or similar, see note below.
+     */
+    public static final AttributeKey<String> NET_HOST_NAME = stringKey("net.host.name");
+
+    /**
+     * Logical local port number, preferably the one that the peer used to connect
      */
     public static final AttributeKey<Long> NET_HOST_PORT = longKey("net.host.port");
 
     /**
-     * Local hostname or similar, see note below.
+     * Local socket address. Useful in case of a multi-IP host.
      */
-    public static final AttributeKey<String> NET_HOST_NAME = stringKey("net.host.name");
+    public static final AttributeKey<String> NET_SOCK_HOST_ADDR = stringKey("net.sock.host.addr");
+
+    /**
+     * Local socket port number.
+     */
+    public static final AttributeKey<Long> NET_SOCK_HOST_PORT = longKey("net.sock.host.port");
 
     /**
      * The internet connection type currently being used by the host.
@@ -543,46 +586,6 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> HTTP_METHOD = stringKey("http.method");
 
     /**
-     * Full HTTP request URL in the form {@code scheme://host[:port]/path?query[#fragment]}. Usually
-     * the fragment is not transmitted over HTTP, but if it is known, it should be included
-     * nevertheless.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>{@code http.url} MUST NOT contain credentials passed via URL in form of {@code
-     *       https://username:password@www.example.com/}. In such case the attribute's value should be
-     *       {@code https://www.example.com/}.
-     * </ul>
-     */
-    public static final AttributeKey<String> HTTP_URL = stringKey("http.url");
-
-    /**
-     * The full request target as passed in a HTTP request line or equivalent.
-     */
-    public static final AttributeKey<String> HTTP_TARGET = stringKey("http.target");
-
-    /**
-     * The value of the <a href="https://tools.ietf.org/html/rfc7230#section-5.4">HTTP host
-     * header</a>. An empty Host header should also be reported, see note.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>When the header is present but empty the attribute SHOULD be set to the empty string.
-     *       Note that this is a valid situation that is expected in certain cases, according the
-     *       aforementioned <a href="https://tools.ietf.org/html/rfc7230#section-5.4">section of RFC
-     *       7230</a>. When the header is not set the attribute MUST NOT be set.
-     * </ul>
-     */
-    public static final AttributeKey<String> HTTP_HOST = stringKey("http.host");
-
-    /**
-     * The URI scheme identifying the used protocol.
-     */
-    public static final AttributeKey<String> HTTP_SCHEME = stringKey("http.scheme");
-
-    /**
      * <a href="https://tools.ietf.org/html/rfc7231#section-6">HTTP response status code</a>.
      */
     public static final AttributeKey<Long> HTTP_STATUS_CODE = longKey("http.status_code");
@@ -600,42 +603,43 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> HTTP_FLAVOR = stringKey("http.flavor");
 
     /**
-     * Value of the <a href="https://tools.ietf.org/html/rfc7231#section-5.5.3">HTTP User-Agent</a>
-     * header sent by the client.
+     * Value of the <a href="https://www.rfc-editor.org/rfc/rfc9110.html#field.user-agent">HTTP
+     * User-Agent</a> header sent by the client.
      */
     public static final AttributeKey<String> HTTP_USER_AGENT = stringKey("http.user_agent");
 
     /**
      * The size of the request payload body in bytes. This is the number of bytes transferred
      * excluding headers and is often, but not always, present as the <a
-     * href="https://tools.ietf.org/html/rfc7230#section-3.3.2">Content-Length</a> header. For
-     * requests using transport encoding, this should be the compressed size.
+     * href="https://www.rfc-editor.org/rfc/rfc9110.html#field.content-length">Content-Length</a>
+     * header. For requests using transport encoding, this should be the compressed size.
      */
     public static final AttributeKey<Long> HTTP_REQUEST_CONTENT_LENGTH =
         longKey("http.request_content_length");
 
     /**
-     * The size of the uncompressed request payload body after transport decoding. Not set if
-     * transport encoding not used.
-     */
-    public static final AttributeKey<Long> HTTP_REQUEST_CONTENT_LENGTH_UNCOMPRESSED =
-        longKey("http.request_content_length_uncompressed");
-
-    /**
      * The size of the response payload body in bytes. This is the number of bytes transferred
      * excluding headers and is often, but not always, present as the <a
-     * href="https://tools.ietf.org/html/rfc7230#section-3.3.2">Content-Length</a> header. For
-     * requests using transport encoding, this should be the compressed size.
+     * href="https://www.rfc-editor.org/rfc/rfc9110.html#field.content-length">Content-Length</a>
+     * header. For requests using transport encoding, this should be the compressed size.
      */
     public static final AttributeKey<Long> HTTP_RESPONSE_CONTENT_LENGTH =
         longKey("http.response_content_length");
 
     /**
-     * The size of the uncompressed response payload body after transport decoding. Not set if
-     * transport encoding not used.
+     * Full HTTP request URL in the form {@code scheme://host[:port]/path?query[#fragment]}. Usually
+     * the fragment is not transmitted over HTTP, but if it is known, it should be included
+     * nevertheless.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>{@code http.url} MUST NOT contain credentials passed via URL in form of {@code
+     *       https://username:password@www.example.com/}. In such case the attribute's value should be
+     *       {@code https://www.example.com/}.
+     * </ul>
      */
-    public static final AttributeKey<Long> HTTP_RESPONSE_CONTENT_LENGTH_UNCOMPRESSED =
-        longKey("http.response_content_length_uncompressed");
+    public static final AttributeKey<String> HTTP_URL = stringKey("http.url");
 
     /**
      * The ordinal number of request re-sending attempt.
@@ -643,23 +647,26 @@ public final class SemanticAttributes {
     public static final AttributeKey<Long> HTTP_RETRY_COUNT = longKey("http.retry_count");
 
     /**
-     * The primary server name of the matched virtual host. This should be obtained via configuration.
-     * If no such configuration can be obtained, this attribute MUST NOT be set ( {@code
-     * net.host.name} should be used instead).
+     * The URI scheme identifying the used protocol.
+     */
+    public static final AttributeKey<String> HTTP_SCHEME = stringKey("http.scheme");
+
+    /**
+     * The full request target as passed in a HTTP request line or equivalent.
+     */
+    public static final AttributeKey<String> HTTP_TARGET = stringKey("http.target");
+
+    /**
+     * The matched route (path template in the format used by the respective server framework). See
+     * note below
      *
      * <p>Notes:
      *
      * <ul>
-     *   <li>{@code http.url} is usually not readily available on the server side but would have to be
-     *       assembled in a cumbersome and sometimes lossy process from other information (see e.g.
-     *       open-telemetry/opentelemetry-python/pull/148). It is thus preferred to supply the raw
-     *       data that is available.
+     *   <li>'http.route' MUST NOT be populated when this is not supported by the HTTP server
+     *       framework as the route attribute should have low-cardinality and the URI path can NOT
+     *       substitute it.
      * </ul>
-     */
-    public static final AttributeKey<String> HTTP_SERVER_NAME = stringKey("http.server_name");
-
-    /**
-     * The matched route (path template).
      */
     public static final AttributeKey<String> HTTP_ROUTE = stringKey("http.route");
 
@@ -670,14 +677,15 @@ public final class SemanticAttributes {
      * <p>Notes:
      *
      * <ul>
-     *   <li>This is not necessarily the same as {@code net.peer.ip}, which would identify the
+     *   <li>This is not necessarily the same as {@code net.sock.peer.addr}, which would identify the
      *       network-level peer, which may be a proxy.
      *   <li>This attribute should be set when a source of information different from the one used for
-     *       {@code net.peer.ip}, is available even if that other source just confirms the same value
-     *       as {@code net.peer.ip}. Rationale: For {@code net.peer.ip}, one typically does not know
-     *       if it comes from a proxy, reverse proxy, or the actual client. Setting {@code
-     *       http.client_ip} when it's the same as {@code net.peer.ip} means that one is at least
-     *       somewhat confident that the address is not that of the closest proxy.
+     *       {@code net.sock.peer.addr}, is available even if that other source just confirms the same
+     *       value as {@code net.sock.peer.addr}. Rationale: For {@code net.sock.peer.addr}, one
+     *       typically does not know if it comes from a proxy, reverse proxy, or the actual client.
+     *       Setting {@code http.client_ip} when it's the same as {@code net.sock.peer.addr} means
+     *       that one is at least somewhat confident that the address is not that of the closest
+     *       proxy.
      * </ul>
      */
     public static final AttributeKey<String> HTTP_CLIENT_IP = stringKey("http.client_ip");
@@ -810,6 +818,29 @@ public final class SemanticAttributes {
      */
     public static final AttributeKey<List<String>> AWS_DYNAMODB_GLOBAL_SECONDARY_INDEX_UPDATES =
         stringArrayKey("aws.dynamodb.global_secondary_index_updates");
+
+    /**
+     * The name of the operation being executed.
+     */
+    public static final AttributeKey<String> GRAPHQL_OPERATION_NAME =
+        stringKey("graphql.operation.name");
+
+    /**
+     * The type of the operation being executed.
+     */
+    public static final AttributeKey<String> GRAPHQL_OPERATION_TYPE =
+        stringKey("graphql.operation.type");
+
+    /**
+     * The GraphQL document being executed.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The value may be sanitized to exclude sensitive information.
+     * </ul>
+     */
+    public static final AttributeKey<String> GRAPHQL_DOCUMENT = stringKey("graphql.document");
 
     /**
      * A string identifying the messaging system.
@@ -1282,6 +1313,10 @@ public final class SemanticAttributes {
          * CockroachDB.
          */
         public static final String COCKROACHDB = "cockroachdb";
+        /**
+         * OpenSearch.
+         */
+        public static final String OPENSEARCH = "opensearch";
 
         private DbSystemValues() {
         }
@@ -1417,14 +1452,6 @@ public final class SemanticAttributes {
          */
         public static final String IP_UDP = "ip_udp";
         /**
-         * Another IP-based protocol.
-         */
-        public static final String IP = "ip";
-        /**
-         * Unix Domain socket. See below.
-         */
-        public static final String UNIX = "unix";
-        /**
          * Named or anonymous pipe. See note below.
          */
         public static final String PIPE = "pipe";
@@ -1436,8 +1463,36 @@ public final class SemanticAttributes {
          * Something else (non IP-based).
          */
         public static final String OTHER = "other";
+        /**
+         * @deprecated This item has been removed as of 1.13.0 of the semantic conventions.
+         */
+        @Deprecated
+        public static final String IP = "ip";
+        /**
+         * @deprecated This item has been removed as of 1.13.0 of the semantic conventions.
+         */
+        @Deprecated
+        public static final String UNIX = "unix";
 
         private NetTransportValues() {
+        }
+    }
+
+    public static final class NetSockFamilyValues {
+        /**
+         * IPv4 address.
+         */
+        public static final String INET = "inet";
+        /**
+         * IPv6 address.
+         */
+        public static final String INET6 = "inet6";
+        /**
+         * Unix domain socket path.
+         */
+        public static final String UNIX = "unix";
+
+        private NetSockFamilyValues() {
         }
     }
 
@@ -1584,6 +1639,24 @@ public final class SemanticAttributes {
         public static final String QUIC = "QUIC";
 
         private HttpFlavorValues() {
+        }
+    }
+
+    public static final class GraphqlOperationTypeValues {
+        /**
+         * GraphQL query.
+         */
+        public static final String QUERY = "query";
+        /**
+         * GraphQL mutation.
+         */
+        public static final String MUTATION = "mutation";
+        /**
+         * GraphQL subscription.
+         */
+        public static final String SUBSCRIPTION = "subscription";
+
+        private GraphqlOperationTypeValues() {
         }
     }
 
@@ -1774,7 +1847,7 @@ public final class SemanticAttributes {
      * The name of the keyspace being accessed.
      *
      * @deprecated this item has been removed as of 1.8.0 of the semantic conventions. Please use
-     * {@link io.opentelemetry.semconv.trace.attributes.SemanticAttributes#DB_NAME} instead.
+     * {@link SemanticAttributes#DB_NAME} instead.
      */
     @Deprecated
     public static final AttributeKey<String> DB_CASSANDRA_KEYSPACE =
@@ -1784,10 +1857,55 @@ public final class SemanticAttributes {
      * The <a href="https://hbase.apache.org/book.html#_namespace">HBase namespace</a> being accessed.
      *
      * @deprecated this item has been removed as of 1.8.0 of the semantic conventions. Please use
-     * {@link io.opentelemetry.semconv.trace.attributes.SemanticAttributes#DB_NAME} instead.
+     * {@link SemanticAttributes#DB_NAME} instead.
      */
     @Deprecated
     public static final AttributeKey<String> DB_HBASE_NAMESPACE = stringKey("db.hbase.namespace");
+
+    /**
+     * The size of the uncompressed request payload body after transport decoding. Not set if
+     * transport encoding not used.
+     *
+     * @deprecated this item has been removed as of 1.13.0 of the semantic conventions. Please use
+     * {@link SemanticAttributes#HTTP_REQUEST_CONTENT_LENGTH} instead.
+     */
+    @Deprecated
+    public static final AttributeKey<Long> HTTP_REQUEST_CONTENT_LENGTH_UNCOMPRESSED =
+        longKey("http.request_content_length_uncompressed");
+
+    /**
+     * @deprecated This item has been removed as of 1.13.0 of the semantic conventions. Please use
+     * {@link SemanticAttributes#HTTP_RESPONSE_CONTENT_LENGTH} instead.
+     */
+    @Deprecated
+    public static final AttributeKey<Long> HTTP_RESPONSE_CONTENT_LENGTH_UNCOMPRESSED =
+        longKey("http.response_content_length_uncompressed");
+
+    /**
+     * @deprecated This item has been removed as of 1.13.0 of the semantic conventions. Please use
+     * {@link SemanticAttributes#NET_HOST_NAME} instead.
+     */
+    @Deprecated
+    public static final AttributeKey<String> HTTP_SERVER_NAME = stringKey("http.server_name");
+
+    /**
+     * @deprecated This item has been removed as of 1.13.0 of the semantic conventions. Please use
+     * {@link SemanticAttributes#NET_HOST_NAME} instead.
+     */
+    @Deprecated
+    public static final AttributeKey<String> HTTP_HOST = stringKey("http.host");
+
+    /**
+     * @deprecated This item has been removed as of 1.13.0 of the semantic conventions.
+     */
+    @Deprecated
+    public static final AttributeKey<String> NET_PEER_IP = stringKey("net.peer.ip");
+
+    /**
+     * @deprecated This item has been removed as of 1.13.0 of the semantic conventions.
+     */
+    @Deprecated
+    public static final AttributeKey<String> NET_HOST_IP = stringKey("net.host.ip");
 
     private SemanticAttributes() {
     }

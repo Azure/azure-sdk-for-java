@@ -22,15 +22,14 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
     private MicrosoftGraphExternalAudienceScope externalAudience;
 
     /*
-     * The automatic reply to send to the specified external audience, if
-     * Status is AlwaysEnabled or Scheduled.
+     * The automatic reply to send to the specified external audience, if Status is AlwaysEnabled or Scheduled.
      */
     @JsonProperty(value = "externalReplyMessage")
     private String externalReplyMessage;
 
     /*
-     * The automatic reply to send to the audience internal to the signed-in
-     * user's organization, if Status is AlwaysEnabled or Scheduled.
+     * The automatic reply to send to the audience internal to the signed-in user's organization, if Status is
+     * AlwaysEnabled or Scheduled.
      */
     @JsonProperty(value = "internalReplyMessage")
     private String internalReplyMessage;
@@ -57,6 +56,10 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
      * automaticRepliesSetting
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAutomaticRepliesSetting class. */
+    public MicrosoftGraphAutomaticRepliesSetting() {
+    }
 
     /**
      * Get the externalAudience property: externalAudienceScope.

@@ -51,7 +51,7 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ValidateOperationResultsService {
+    public interface ValidateOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

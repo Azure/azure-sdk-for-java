@@ -25,12 +25,6 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <!-- Skip all linting in stress tests. -->
-    <codesnippet.skip>true</codesnippet.skip>
-    <checkstyle.skip>true</checkstyle.skip>
-    <spotbugs.skip>true</spotbugs.skip>
-    <revapi.skip>true</revapi.skip>
-
     <!-- Skip missing Javadocs in stress tests. -->
     <doclint>all,-missing</doclint>
   </properties>
@@ -39,13 +33,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -57,6 +51,20 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>applicationinsights-core</artifactId>
       <version>3.4.1</version> <!-- {x-version-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
+    </dependency>
+
+    <!-- Enable SDK metrics -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-metrics-opentelemetry</artifactId>
+      <version>1.0.0-beta.4</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+    </dependency>
+
+    <!-- Dependencies required for logback -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+      <version>3.1.9</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -83,7 +91,8 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:applicationinsights-core:[3.4.1]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.7.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.codehaus.janino:janino:[3.1.9]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

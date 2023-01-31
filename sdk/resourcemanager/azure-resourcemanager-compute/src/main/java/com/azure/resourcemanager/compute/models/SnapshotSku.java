@@ -25,6 +25,10 @@ public final class SnapshotSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
+    /** Creates an instance of SnapshotSku class. */
+    public SnapshotSku() {
+    }
+
     /**
      * Get the name property: The sku name.
      *

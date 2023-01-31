@@ -25,6 +25,10 @@ public final class UpdateIoTSecuritySolutionProperties {
     @JsonProperty(value = "recommendationsConfiguration")
     private List<RecommendationConfigurationProperties> recommendationsConfiguration;
 
+    /** Creates an instance of UpdateIoTSecuritySolutionProperties class. */
+    public UpdateIoTSecuritySolutionProperties() {
+    }
+
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
      *

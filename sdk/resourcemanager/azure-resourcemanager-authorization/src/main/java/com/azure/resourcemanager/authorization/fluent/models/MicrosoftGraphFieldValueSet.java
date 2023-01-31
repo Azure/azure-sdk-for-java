@@ -19,6 +19,10 @@ public final class MicrosoftGraphFieldValueSet extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphFieldValueSet class. */
+    public MicrosoftGraphFieldValueSet() {
+    }
+
     /**
      * Get the additionalProperties property: fieldValueSet.
      *

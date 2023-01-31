@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The metadata supported value detail. */
 @Fluent
 public final class MetadataSupportedValueDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataSupportedValueDetail.class);
-
     /*
      * The id.
      */
@@ -25,6 +21,10 @@ public final class MetadataSupportedValueDetail {
      */
     @JsonProperty(value = "displayName")
     private String displayName;
+
+    /** Creates an instance of MetadataSupportedValueDetail class. */
+    public MetadataSupportedValueDetail() {
+    }
 
     /**
      * Get the id property: The id.

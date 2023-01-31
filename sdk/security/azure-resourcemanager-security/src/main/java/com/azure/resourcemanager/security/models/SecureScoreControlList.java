@@ -24,6 +24,10 @@ public final class SecureScoreControlList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecureScoreControlList class. */
+    public SecureScoreControlList() {
+    }
+
     /**
      * Get the value property: Collection of security controls in this page.
      *

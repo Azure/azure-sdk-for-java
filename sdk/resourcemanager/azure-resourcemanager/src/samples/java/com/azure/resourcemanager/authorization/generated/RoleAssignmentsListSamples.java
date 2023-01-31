@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RoleAssignments List. */
 public final class RoleAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetAllRoleAssignments.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_ListForSubscription.json
      */
     /**
      * Sample code: List role assignments for subscription.
@@ -23,6 +23,6 @@ public final class RoleAssignmentsListSamples {
             .manager()
             .roleServiceClient()
             .getRoleAssignments()
-            .list(null, Context.NONE);
+            .list(null, null, Context.NONE);
     }
 }

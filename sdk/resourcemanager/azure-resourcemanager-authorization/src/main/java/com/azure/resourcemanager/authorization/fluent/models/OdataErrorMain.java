@@ -20,6 +20,10 @@ public final class OdataErrorMain extends ManagementError {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> innererror;
 
+    /** Creates an instance of OdataErrorMain class. */
+    public OdataErrorMain() {
+    }
+
     /**
      * Get the innererror property: The structure of this object is service-specific.
      *

@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AwsOrganizationalData {
+    /** Creates an instance of AwsOrganizationalData class. */
+    public AwsOrganizationalData() {
+    }
+
     /**
      * Validates the instance.
      *

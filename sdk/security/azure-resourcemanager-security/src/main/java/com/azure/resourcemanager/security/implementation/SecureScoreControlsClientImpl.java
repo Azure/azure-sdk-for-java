@@ -56,7 +56,7 @@ public final class SecureScoreControlsClientImpl implements SecureScoreControlsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecure")
-    private interface SecureScoreControlsService {
+    public interface SecureScoreControlsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}"

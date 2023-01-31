@@ -150,6 +150,9 @@ public class GatewayAddressCache implements IAddressCache {
 
         // Set requested API version header for version enforcement.
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
+        this.defaultRequestHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
@@ -379,6 +382,7 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, forceRefresh, request.forceCollectionRoutingMapRefresh);
+        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, identifier);
 
         HttpHeaders httpHeaders = new HttpHeaders(headers);
 
@@ -724,6 +728,7 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, true, true);
+        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, identifier);
 
         HttpHeaders defaultHttpHeaders = new HttpHeaders(headers);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);

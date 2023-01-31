@@ -18,13 +18,14 @@ public interface IotSecuritySolutionsAnalyticsRecommendations {
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information along with {@link Response}.
      */
-    IoTSecurityAggregatedRecommendation get(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName);
+    Response<IoTSecurityAggregatedRecommendation> getWithResponse(
+        String resourceGroupName, String solutionName, String aggregatedRecommendationName, Context context);
 
     /**
      * Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
@@ -34,14 +35,13 @@ public interface IotSecuritySolutionsAnalyticsRecommendations {
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedRecommendationName Name of the recommendation aggregated for this query.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information along with {@link Response}.
+     * @return ioT Security solution recommendation information.
      */
-    Response<IoTSecurityAggregatedRecommendation> getWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName, Context context);
+    IoTSecurityAggregatedRecommendation get(
+        String resourceGroupName, String solutionName, String aggregatedRecommendationName);
 
     /**
      * Use this method to get the list of aggregated security analytics recommendations of yours IoT Security solution.

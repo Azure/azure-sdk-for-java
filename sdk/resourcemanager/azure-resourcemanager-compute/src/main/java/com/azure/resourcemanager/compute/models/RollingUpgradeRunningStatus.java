@@ -35,6 +35,10 @@ public final class RollingUpgradeRunningStatus {
     @JsonProperty(value = "lastActionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActionTime;
 
+    /** Creates an instance of RollingUpgradeRunningStatus class. */
+    public RollingUpgradeRunningStatus() {
+    }
+
     /**
      * Get the code property: Code indicating the current status of the upgrade.
      *

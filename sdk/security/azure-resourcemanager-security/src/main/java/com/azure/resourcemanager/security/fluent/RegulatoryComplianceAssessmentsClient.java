@@ -52,23 +52,6 @@ public interface RegulatoryComplianceAssessmentsClient {
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance assessment details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RegulatoryComplianceAssessmentInner get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName);
-
-    /**
-     * Supported regulatory compliance details and state for selected assessment.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,4 +64,21 @@ public interface RegulatoryComplianceAssessmentsClient {
         String regulatoryComplianceControlName,
         String regulatoryComplianceAssessmentName,
         Context context);
+
+    /**
+     * Supported regulatory compliance details and state for selected assessment.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
+     * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance assessment details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegulatoryComplianceAssessmentInner get(
+        String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName,
+        String regulatoryComplianceAssessmentName);
 }

@@ -38,6 +38,10 @@ public class ExternalSecuritySolutionProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ExternalSecuritySolutionProperties class. */
+    public ExternalSecuritySolutionProperties() {
+    }
+
     /**
      * Get the deviceVendor property: The deviceVendor property.
      *

@@ -28,6 +28,10 @@ public final class PriorityMixPolicy {
     @JsonProperty(value = "regularPriorityPercentageAboveBase")
     private Integer regularPriorityPercentageAboveBase;
 
+    /** Creates an instance of PriorityMixPolicy class. */
+    public PriorityMixPolicy() {
+    }
+
     /**
      * Get the baseRegularPriorityCount property: The base number of regular priority VMs that will be created in this
      * scale set as it scales out.

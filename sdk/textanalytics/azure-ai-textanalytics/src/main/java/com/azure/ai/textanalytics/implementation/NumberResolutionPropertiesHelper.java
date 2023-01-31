@@ -16,7 +16,7 @@ public final class NumberResolutionPropertiesHelper {
      */
     public interface NumberResolutionAccessor {
         void setNumberKind(NumberResolution numberResolution, NumberKind numberKind);
-        void setValue(NumberResolution numberResolution, String value);
+        void setValue(NumberResolution numberResolution, double value);
     }
 
     /**
@@ -32,7 +32,7 @@ public final class NumberResolutionPropertiesHelper {
         accessor.setNumberKind(numberResolution, numberKind);
     }
 
-    public static void setValue(NumberResolution numberResolution, String value) {
+    public static void setValue(NumberResolution numberResolution, double value) {
         accessor.setValue(numberResolution, value);
     }
 }

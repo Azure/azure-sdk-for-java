@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedRes
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialMinimalTrackedResourceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PartialMinimalTrackedResource model =
             BinaryData
                 .fromString("{\"tags\":{\"wbwo\":\"expbtg\",\"kcnqxwbpo\":\"nwashrtd\",\"aasipqi\":\"ulpiuj\"}}")
@@ -21,8 +20,8 @@ public final class PartialMinimalTrackedResourceTests {
         Assertions.assertEquals("expbtg", model.tags().get("wbwo"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PartialMinimalTrackedResource model =
             new PartialMinimalTrackedResource()
                 .withTags(mapOf("wbwo", "expbtg", "kcnqxwbpo", "nwashrtd", "aasipqi", "ulpiuj"));

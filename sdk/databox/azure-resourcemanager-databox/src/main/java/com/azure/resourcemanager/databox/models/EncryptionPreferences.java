@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Preferences related to the Encryption. */
 @Fluent
 public final class EncryptionPreferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionPreferences.class);
-
     /*
      * Defines secondary layer of software-based encryption enablement.
      */
     @JsonProperty(value = "doubleEncryption")
     private DoubleEncryption doubleEncryption;
+
+    /** Creates an instance of EncryptionPreferences class. */
+    public EncryptionPreferences() {
+    }
 
     /**
      * Get the doubleEncryption property: Defines secondary layer of software-based encryption enablement.

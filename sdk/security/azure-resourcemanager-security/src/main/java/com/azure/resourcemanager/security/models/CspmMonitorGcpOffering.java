@@ -20,6 +20,10 @@ public final class CspmMonitorGcpOffering extends CloudOffering {
     @JsonProperty(value = "nativeCloudConnection")
     private CspmMonitorGcpOfferingNativeCloudConnection nativeCloudConnection;
 
+    /** Creates an instance of CspmMonitorGcpOffering class. */
+    public CspmMonitorGcpOffering() {
+    }
+
     /**
      * Get the nativeCloudConnection property: The native cloud connection configuration.
      *

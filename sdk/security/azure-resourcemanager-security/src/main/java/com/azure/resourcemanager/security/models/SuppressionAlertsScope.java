@@ -18,6 +18,10 @@ public final class SuppressionAlertsScope {
     @JsonProperty(value = "allOf", required = true)
     private List<ScopeElement> allOf;
 
+    /** Creates an instance of SuppressionAlertsScope class. */
+    public SuppressionAlertsScope() {
+    }
+
     /**
      * Get the allOf property: All the conditions inside need to be true in order to suppress the alert.
      *

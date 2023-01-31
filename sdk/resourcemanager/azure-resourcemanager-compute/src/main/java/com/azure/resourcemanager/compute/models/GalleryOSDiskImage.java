@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** This is the OS disk image. */
 @Fluent
 public final class GalleryOSDiskImage extends GalleryDiskImage {
+    /** Creates an instance of GalleryOSDiskImage class. */
+    public GalleryOSDiskImage() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public GalleryOSDiskImage withHostCaching(HostCaching hostCaching) {
@@ -18,7 +22,7 @@ public final class GalleryOSDiskImage extends GalleryDiskImage {
 
     /** {@inheritDoc} */
     @Override
-    public GalleryOSDiskImage withSource(GalleryArtifactVersionSource source) {
+    public GalleryOSDiskImage withSource(GalleryDiskImageSource source) {
         super.withSource(source);
         return this;
     }

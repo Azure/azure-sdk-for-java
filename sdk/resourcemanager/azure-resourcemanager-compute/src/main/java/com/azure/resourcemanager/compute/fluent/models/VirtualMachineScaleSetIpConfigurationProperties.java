@@ -70,6 +70,10 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
     @JsonProperty(value = "loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
 
+    /** Creates an instance of VirtualMachineScaleSetIpConfigurationProperties class. */
+    public VirtualMachineScaleSetIpConfigurationProperties() {
+    }
+
     /**
      * Get the subnet property: Specifies the identifier of the subnet.
      *

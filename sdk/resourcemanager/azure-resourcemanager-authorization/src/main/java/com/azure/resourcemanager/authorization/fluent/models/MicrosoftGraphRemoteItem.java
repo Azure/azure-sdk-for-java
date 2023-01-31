@@ -135,6 +135,10 @@ public final class MicrosoftGraphRemoteItem {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphRemoteItem class. */
+    public MicrosoftGraphRemoteItem() {
+    }
+
     /**
      * Get the createdBy property: identitySet.
      *

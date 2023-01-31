@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Tier. */
+/** The cluster tier. */
 public final class Tier extends ExpandableStringEnum<Tier> {
     /** Static value Standard for Tier. */
     public static final Tier STANDARD = fromString("Standard");
@@ -27,7 +27,11 @@ public final class Tier extends ExpandableStringEnum<Tier> {
         return fromString(name, Tier.class);
     }
 
-    /** @return known Tier values. */
+    /**
+     * Gets known Tier values.
+     *
+     * @return known Tier values.
+     */
     public static Collection<Tier> values() {
         return values(Tier.class);
     }

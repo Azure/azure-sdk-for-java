@@ -25,6 +25,10 @@ public final class SecurityConnectorsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecurityConnectorsList class. */
+    public SecurityConnectorsList() {
+    }
+
     /**
      * Get the value property: The list of security connectors under the given scope.
      *

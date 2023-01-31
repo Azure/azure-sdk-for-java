@@ -23,6 +23,10 @@ public final class AutomationScope {
     @JsonProperty(value = "scopePath")
     private String scopePath;
 
+    /** Creates an instance of AutomationScope class. */
+    public AutomationScope() {
+    }
+
     /**
      * Get the description property: The resources scope description.
      *

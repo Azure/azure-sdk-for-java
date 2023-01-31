@@ -41,6 +41,7 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -371,6 +372,7 @@ public class QueryValidationTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
+    @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;

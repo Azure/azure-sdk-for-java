@@ -32,6 +32,10 @@ public final class MicrosoftGraphDefaultColumnValue {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphDefaultColumnValue class. */
+    public MicrosoftGraphDefaultColumnValue() {
+    }
+
     /**
      * Get the formula property: The formula used to compute the default value for this column.
      *

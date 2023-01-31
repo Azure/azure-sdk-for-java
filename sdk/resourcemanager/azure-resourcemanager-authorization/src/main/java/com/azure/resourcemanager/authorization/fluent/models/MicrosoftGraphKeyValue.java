@@ -32,6 +32,10 @@ public final class MicrosoftGraphKeyValue {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphKeyValue class. */
+    public MicrosoftGraphKeyValue() {
+    }
+
     /**
      * Get the key property: Key for the key-value pair.
      *

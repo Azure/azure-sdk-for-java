@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -91,6 +91,7 @@ The `DefaultAzureCredential` will attempt to authenticate via the following mech
 1. **Environment** - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
 1. **Managed Identity** - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
 1. **IntelliJ** - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
+1. **Azure Developer CLI** - If the developer has authenticated an account via the Azure Developer CLI `azd login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **Azure CLI** - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **Azure PowerShell** - If the developer has authenticated an account via the Azure PowerShell `Connect-AzAccount` command, the `DefaultAzureCredential` will authenticate with that account.
 
@@ -395,6 +396,14 @@ Not all credentials require this configuration. Credentials that authenticate th
   </thead>
   <tbody>
     <tr>
+      <td><code>AzureDeveloperCliCredential</code></td>
+      <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
+      <!-- Example and Reference for azd is WIP -->
+      <td></td>  
+      <td></td>
+      <!-- Example and Reference for azd is WIP -->
+    </tr>
+    <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
@@ -524,10 +533,6 @@ Credentials raise exceptions when they fail to authenticate or can't execute aut
 When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
 See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
-
-### Enable client logging
-
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 

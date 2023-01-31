@@ -96,6 +96,10 @@ public final class CloudServiceProperties {
     @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
+    /** Creates an instance of CloudServiceProperties class. */
+    public CloudServiceProperties() {
+    }
+
     /**
      * Get the packageUrl property: Specifies a URL that refers to the location of the service package in the Blob
      * service. The service package URL can be Shared Access Signature (SAS) URI from any storage account. This is a

@@ -17,6 +17,15 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
     public static final HBaseAuthenticationType BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of HBaseAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HBaseAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a HBaseAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -14,6 +14,15 @@ public final class InstanceSegmentationPrimaryMetrics extends ExpandableStringEn
     public static final InstanceSegmentationPrimaryMetrics MEAN_AVERAGE_PRECISION = fromString("MeanAveragePrecision");
 
     /**
+     * Creates a new instance of InstanceSegmentationPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstanceSegmentationPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a InstanceSegmentationPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

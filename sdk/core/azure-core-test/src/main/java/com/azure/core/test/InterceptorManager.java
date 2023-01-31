@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -303,18 +302,9 @@ public class InterceptorManager implements AutoCloseable {
             return new File(toURI(folderUrl, logger));
         }
 
-        // session-record folder doesn't exist, create it.
-        folderUrl = InterceptorManager.class.getClassLoader().getResource("");
-
-        // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
-        // URI-based constructor of File.
-        Path recordFolder = new File(toURI(folderUrl, logger)).toPath().resolve(RECORD_FOLDER);
-        try {
-            Files.createDirectory(recordFolder);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
-        return recordFolder.toFile();
+        throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
+            + "folder in '/src/test/resources' of the module (ex. for azure-core-test this is "
+            + "'/sdk/core/azure-core-test/src/test/resources/session-records').");
     }
 
     private static URI toURI(URL url, ClientLogger logger) {

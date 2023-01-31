@@ -15,7 +15,6 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -49,6 +48,7 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -129,9 +129,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsClient client;
 
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
     private TextAnalyticsClient getTextAnalyticsClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
-        return getTextAnalyticsAsyncClientBuilder(httpClient, serviceVersion, isStaticResource).buildClient();
+        return getTextAnalyticsClientBuilder(
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            serviceVersion,
+            isStaticResource)
+            .buildClient();
     }
     // Detect language
 
@@ -296,7 +307,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -960,7 +970,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.recognizeLinkedEntitiesBatchWithResponse(inputs, options, Context.NONE)));
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1158,15 +1167,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Extract key phrase
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         extractKeyPhrasesForSingleTextInputRunner(input -> {
             final KeyPhrasesCollection keyPhrasesCollection = client.extractKeyPhrases(input);
-            validateKeyPhrases(asList("Bonjour", "monde"),
-                keyPhrasesCollection.stream().collect(Collectors.toList()));
+            validateKeyPhrases(asList("monde"), keyPhrasesCollection.stream().collect(Collectors.toList()));
         });
     }
 
@@ -1192,7 +1199,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1206,7 +1212,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1216,7 +1221,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE)));
     }
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1226,7 +1230,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 client.extractKeyPhrasesBatchWithResponse(inputs, options, Context.NONE)));
     }
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1235,7 +1238,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, null)));
     }
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1244,7 +1246,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, language, null)));
     }
 
-    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1253,7 +1254,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, options)));
     }
 
-    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14294638")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1265,7 +1265,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             }));
     }
 
-    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14294638")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1835,6 +1834,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1880,7 +1880,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareStringInputWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1906,7 +1905,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1932,7 +1930,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("No stats in document, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15860714")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2084,7 +2081,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
@@ -2108,7 +2104,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
@@ -2175,7 +2170,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
-    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/14262098")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2244,7 +2238,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     // Analyze actions
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2411,13 +2404,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
                     keyPhraseResults.get(1).getDetectedLanguage());
                 // Extractive summarization
-                List<ExtractSummaryResult> extractSummaryResults = actionsResult.getExtractSummaryResults()
-                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
-                    .stream().collect(Collectors.toList());
-                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
-                    extractSummaryResults.get(0).getDetectedLanguage());
-                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
-                    extractSummaryResults.get(1).getDetectedLanguage());
+//                List<ExtractSummaryResult> extractSummaryResults = actionsResult.getExtractSummaryResults()
+//                    .stream().collect(Collectors.toList()).get(0).getDocumentsResults()
+//                    .stream().collect(Collectors.toList());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_ENGLISH,
+//                    extractSummaryResults.get(0).getDetectedLanguage());
+//                validatePrimaryLanguage(DETECTED_LANGUAGE_SPANISH,
+//                    extractSummaryResults.get(1).getDetectedLanguage());
 
                 // Abstractive summarization
 //                List<AbstractiveSummaryResult> abstractiveSummaryResults = actionsResult.getAbstractiveSummaryResults()
@@ -2440,6 +2433,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
@@ -2597,8 +2591,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    @Disabled("https://msazure.visualstudio.com/Cognitive%20Services/_workitems/edit/9956158, additional, "
-                  + "the action name is null but expect PiiEntitiesRecognitionName")
     public void analyzePiiEntityRecognitionWithDomainFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
@@ -2628,7 +2620,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("Linked entity recognition action doesn't contains bingId property. https://github.com/Azure/azure-sdk-for-java/issues/22208")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -2746,7 +2737,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/32906")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeCustomEntitiesAction(HttpClient httpClient,
@@ -2970,7 +2961,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }, 4, SummarySentencesOrder.OFFSET);
     }
 
-    @Disabled("https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15772270")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,

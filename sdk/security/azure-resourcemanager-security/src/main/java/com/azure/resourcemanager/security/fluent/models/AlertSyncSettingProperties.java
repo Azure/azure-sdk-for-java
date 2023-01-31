@@ -16,6 +16,10 @@ public final class AlertSyncSettingProperties {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
+    /** Creates an instance of AlertSyncSettingProperties class. */
+    public AlertSyncSettingProperties() {
+    }
+
     /**
      * Get the enabled property: Is the alert sync setting enabled.
      *

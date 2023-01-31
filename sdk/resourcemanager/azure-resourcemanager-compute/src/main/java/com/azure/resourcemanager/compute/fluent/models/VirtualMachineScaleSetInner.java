@@ -66,6 +66,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of VirtualMachineScaleSetInner class. */
+    public VirtualMachineScaleSetInner() {
+    }
+
     /**
      * Get the sku property: The virtual machine scale set sku.
      *
@@ -596,6 +600,29 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     public OffsetDateTime timeCreated() {
         return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Get the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @return the constrainedMaximumCapacity value.
+     */
+    public Boolean constrainedMaximumCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().constrainedMaximumCapacity();
+    }
+
+    /**
+     * Set the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @param constrainedMaximumCapacity the constrainedMaximumCapacity value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withConstrainedMaximumCapacity(Boolean constrainedMaximumCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withConstrainedMaximumCapacity(constrainedMaximumCapacity);
+        return this;
     }
 
     /**

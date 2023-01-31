@@ -18,7 +18,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,11 +56,11 @@ package to configure OpenTelemetry using environment variables (or system proper
 
 ```java readme-sample-defaultConfiguration
 
-// configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-AutoConfiguredOpenTelemetrySdk.initialize();
+// configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
+// AutoConfiguredOpenTelemetrySdk.initialize();
 
 // configure Azure Client, no metric configuration needed
-// client will use global OTel configured by OpenTelemetry autoconfigure package.
+// client will use global OpenTelemetry configured by OpenTelemetry autoconfigure package.
 AzureClient sampleClient = new AzureClientBuilder()
     .endpoint("https://my-client.azure.com")
     .build();
@@ -81,7 +81,7 @@ SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
     .build();
 
-// Pass OTel meterProvider to MetricsOptions.
+// Pass OpenTelemetry meterProvider to MetricsOptions.
 MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
     .setProvider(meterProvider);
 

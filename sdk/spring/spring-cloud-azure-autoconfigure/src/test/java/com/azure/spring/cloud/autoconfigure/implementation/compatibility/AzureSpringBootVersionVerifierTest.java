@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.system.CapturedOutput;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Isolated("Run this by itself as it captures System.out")
 @ExtendWith({OutputCaptureExtension.class})
 class AzureSpringBootVersionVerifierTest {
 

@@ -37,6 +37,10 @@ public final class SecuritySolutionProperties {
     @JsonProperty(value = "protectionStatus", required = true)
     private String protectionStatus;
 
+    /** Creates an instance of SecuritySolutionProperties class. */
+    public SecuritySolutionProperties() {
+    }
+
     /**
      * Get the securityFamily property: The security family of the security solution.
      *

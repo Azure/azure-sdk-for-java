@@ -42,6 +42,10 @@ public final class SecurityTaskProperties {
     @JsonProperty(value = "subState", access = JsonProperty.Access.WRITE_ONLY)
     private String subState;
 
+    /** Creates an instance of SecurityTaskProperties class. */
+    public SecurityTaskProperties() {
+    }
+
     /**
      * Get the state property: State of the task (Active, Resolved etc.).
      *

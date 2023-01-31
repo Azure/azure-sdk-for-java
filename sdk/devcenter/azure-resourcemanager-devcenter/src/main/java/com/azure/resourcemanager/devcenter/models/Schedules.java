@@ -13,7 +13,7 @@ public interface Schedules {
     /**
      * Lists schedules for a pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +26,7 @@ public interface Schedules {
     /**
      * Lists schedules for a pool.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -42,7 +42,7 @@ public interface Schedules {
     /**
      * Gets a schedule resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -64,7 +64,7 @@ public interface Schedules {
     /**
      * Gets a schedule resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -76,47 +76,9 @@ public interface Schedules {
     Schedule get(String resourceGroupName, String projectName, String poolName, String scheduleName);
 
     /**
-     * Partially updates a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
-
-    /**
-     * Partially updates a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context);
-
-    /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
@@ -129,7 +91,7 @@ public interface Schedules {
     /**
      * Deletes a Scheduled.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.

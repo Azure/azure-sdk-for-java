@@ -18,7 +18,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName);
 
@@ -31,7 +31,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(
         String resourceGroupName, String monitorName, Context context);
@@ -41,7 +41,7 @@ public interface Monitors {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list();
 
@@ -52,7 +52,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list(Context context);
 
@@ -63,7 +63,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> listByResourceGroup(String resourceGroupName);
 
@@ -75,9 +75,23 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Get the properties of a specific monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specific monitor resource along with {@link Response}.
+     */
+    Response<LogzMonitorResource> getByResourceGroupWithResponse(
+        String resourceGroupName, String monitorName, Context context);
 
     /**
      * Get the properties of a specific monitor resource.
@@ -90,20 +104,6 @@ public interface Monitors {
      * @return the properties of a specific monitor resource.
      */
     LogzMonitorResource getByResourceGroup(String resourceGroupName, String monitorName);
-
-    /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
-     */
-    Response<LogzMonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
 
     /**
      * Delete a monitor resource. This delete operation can take upto 10 minutes to complete.
@@ -136,7 +136,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list of user's role for Logz.io account.
+     * @return response for list of user's role for Logz.io account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserRoleResponse> listUserRoles(String resourceGroupName, String monitorName);
 
@@ -150,7 +150,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list of user's role for Logz.io account.
+     * @return response for list of user's role for Logz.io account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserRoleResponse> listUserRoles(
         String resourceGroupName, String monitorName, UserRoleRequest body, Context context);
@@ -162,7 +162,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response}.
      */
     LogzMonitorResource getById(String id);
 
@@ -174,7 +174,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response}.
      */
     Response<LogzMonitorResource> getByIdWithResponse(String id, Context context);
 

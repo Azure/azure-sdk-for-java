@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for generating an upload URI. */
 @Fluent
 public final class GenerateUploadUriParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateUploadUriParameter.class);
-
     /*
      * The blob name of the upload URI.
      */
     @JsonProperty(value = "blobName")
     private String blobName;
+
+    /** Creates an instance of GenerateUploadUriParameter class. */
+    public GenerateUploadUriParameter() {
+    }
 
     /**
      * Get the blobName property: The blob name of the upload URI.

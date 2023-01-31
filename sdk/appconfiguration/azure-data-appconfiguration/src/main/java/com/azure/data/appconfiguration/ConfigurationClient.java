@@ -61,6 +61,15 @@ public final class ConfigurationClient {
     }
 
     /**
+     * Gets the service endpoint for the Azure App Configuration instance.
+     *
+     * @return the service endpoint for the Azure App Configuration instance.
+     */
+    public String getEndpoint() {
+        return serviceClient.getEndpoint();
+    }
+
+    /**
      * Adds a configuration value in the service if that key does not exist. The {@code label} is optional.
      *
      * <p><strong>Code Samples</strong></p>

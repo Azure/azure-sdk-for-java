@@ -30,6 +30,10 @@ public final class AsyncOperationResultInner {
     @JsonProperty(value = "status")
     private AsyncOperationStatus status;
 
+    /** Creates an instance of AsyncOperationResultInner class. */
+    public AsyncOperationResultInner() {
+    }
+
     /**
      * Get the error property: The error object.
      *

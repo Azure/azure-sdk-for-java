@@ -28,6 +28,10 @@ public final class SecurityContactPropertiesNotificationsByRole {
     @JsonProperty(value = "roles")
     private List<Roles> roles;
 
+    /** Creates an instance of SecurityContactPropertiesNotificationsByRole class. */
+    public SecurityContactPropertiesNotificationsByRole() {
+    }
+
     /**
      * Get the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons
      * with specific RBAC roles on the subscription.

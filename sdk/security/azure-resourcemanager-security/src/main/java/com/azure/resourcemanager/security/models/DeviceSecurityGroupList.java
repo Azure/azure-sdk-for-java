@@ -24,6 +24,10 @@ public final class DeviceSecurityGroupList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DeviceSecurityGroupList class. */
+    public DeviceSecurityGroupList() {
+    }
+
     /**
      * Get the value property: List of device security group objects.
      *

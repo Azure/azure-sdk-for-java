@@ -19,12 +19,15 @@ public final class SharedPrivateLinkResourceList {
     private List<SharedPrivateLinkResourceInner> value;
 
     /*
-     * Request URL that can be used to query next page of private endpoint
-     * connections. Returned when the total number of requested private
-     * endpoint connections exceed maximum page size.
+     * Request URL that can be used to query next page of private endpoint connections. Returned when the total number
+     * of requested private endpoint connections exceed maximum page size.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SharedPrivateLinkResourceList class. */
+    public SharedPrivateLinkResourceList() {
+    }
 
     /**
      * Get the value property: The list of the shared private link resources.

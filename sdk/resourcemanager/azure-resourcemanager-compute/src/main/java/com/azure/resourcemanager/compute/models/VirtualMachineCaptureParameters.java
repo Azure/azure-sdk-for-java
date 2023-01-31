@@ -29,6 +29,10 @@ public final class VirtualMachineCaptureParameters {
     @JsonProperty(value = "overwriteVhds", required = true)
     private boolean overwriteVhds;
 
+    /** Creates an instance of VirtualMachineCaptureParameters class. */
+    public VirtualMachineCaptureParameters() {
+    }
+
     /**
      * Get the vhdPrefix property: The captured virtual hard disk's name prefix.
      *

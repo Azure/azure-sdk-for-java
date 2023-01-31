@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListSkus. */
 public final class AccountsListSkusSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListSkus.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListSkus.json
      */
     /**
      * Sample code: List SKUs.

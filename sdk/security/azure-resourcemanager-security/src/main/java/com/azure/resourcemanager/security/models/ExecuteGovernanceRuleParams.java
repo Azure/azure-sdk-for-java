@@ -16,6 +16,10 @@ public final class ExecuteGovernanceRuleParams {
     @JsonProperty(value = "override")
     private Boolean override;
 
+    /** Creates an instance of ExecuteGovernanceRuleParams class. */
+    public ExecuteGovernanceRuleParams() {
+    }
+
     /**
      * Get the override property: Describe if governance rule should be override.
      *

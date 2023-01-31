@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.ServicesClient;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServicesClient. */
 public final class ServicesClientImpl implements ServicesClient {
-    private final ClientLogger logger = new ClientLogger(ServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServicesService service;
 
@@ -63,7 +60,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManagem")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
@@ -152,7 +149,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -163,7 +162,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceInner>> getWithResponseAsync(
@@ -213,7 +212,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -225,7 +226,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceInner>> getWithResponseAsync(
@@ -272,7 +273,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -283,24 +286,42 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceInner> getAsync(
         String resourceGroupName, String clusterName, String applicationName, String serviceName) {
         return getWithResponseAsync(resourceGroupName, clusterName, applicationName, serviceName)
-            .flatMap(
-                (Response<ServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * application resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
+     *     application resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceResourceInner> getWithResponse(
+        String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterName, applicationName, serviceName, context).block();
+    }
+
+    /**
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -316,32 +337,13 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner get(
         String resourceGroupName, String clusterName, String applicationName, String serviceName) {
-        return getAsync(resourceGroupName, clusterName, applicationName, serviceName).block();
+        return getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE).getValue();
     }
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
-     * application resource.
+     * Creates or updates a Service Fabric service resource.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, applicationName, serviceName, context).block();
-    }
-
-    /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -351,7 +353,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -411,7 +413,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -422,7 +426,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -480,7 +484,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -490,9 +496,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link PollerFlux} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String clusterName,
@@ -508,11 +514,13 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 ServiceResourceInner.class,
                 ServiceResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -523,9 +531,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link PollerFlux} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String clusterName,
@@ -544,7 +552,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -554,21 +564,24 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link SyncPoller} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
         String applicationName,
         String serviceName,
         ServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -579,9 +592,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link SyncPoller} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
@@ -589,13 +602,15 @@ public final class ServicesClientImpl implements ServicesClient {
         String serviceName,
         ServiceResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -605,7 +620,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceInner> createOrUpdateAsync(
@@ -620,7 +635,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -631,7 +648,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceInner> createOrUpdateAsync(
@@ -648,7 +665,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -671,7 +690,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Create or update a Service Fabric service resource with the specified name.
+     * Creates or updates a Service Fabric service resource.
+     *
+     * <p>Create or update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -697,7 +718,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -707,7 +730,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -767,7 +790,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -778,7 +803,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -836,7 +861,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -846,9 +873,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link PollerFlux} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String clusterName,
@@ -864,11 +891,13 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 ServiceResourceInner.class,
                 ServiceResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -879,9 +908,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link PollerFlux} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String clusterName,
@@ -899,7 +928,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -909,21 +940,24 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link SyncPoller} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName,
         String clusterName,
         String applicationName,
         String serviceName,
         ServiceResourceUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -934,9 +968,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the {@link SyncPoller} for polling of the service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName,
         String clusterName,
@@ -944,12 +978,15 @@ public final class ServicesClientImpl implements ServicesClient {
         String serviceName,
         ServiceResourceUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -959,7 +996,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceInner> updateAsync(
@@ -974,7 +1011,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -985,7 +1024,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service resource.
+     * @return the service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceInner> updateAsync(
@@ -1001,7 +1040,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1024,7 +1065,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Updates a Service Fabric service resource.
+     *
+     * <p>Update a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1049,7 +1092,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1058,7 +1103,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1108,7 +1153,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1118,7 +1165,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1165,7 +1212,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1174,20 +1223,23 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, clusterName, applicationName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1197,9 +1249,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1211,7 +1263,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1220,16 +1274,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationName, serviceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, applicationName, serviceName).getSyncPoller();
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1239,16 +1295,20 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationName, serviceName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, applicationName, serviceName, context)
+            .getSyncPoller();
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1257,7 +1317,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1268,7 +1328,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1278,7 +1340,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1289,7 +1351,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1305,7 +1369,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1323,7 +1389,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1332,7 +1401,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
+     *     resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceListInner>> listWithResponseAsync(
@@ -1378,7 +1447,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1388,7 +1460,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
+     *     resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceListInner>> listWithResponseAsync(
@@ -1431,7 +1503,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1440,24 +1515,42 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
+     *     resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceResourceListInner> listAsync(
         String resourceGroupName, String clusterName, String applicationName) {
         return listWithResponseAsync(resourceGroupName, clusterName, applicationName)
-            .flatMap(
-                (Response<ServiceResourceListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all service resources created or in the process of being created in the Service Fabric application
+     *     resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceResourceListInner> listWithResponse(
+        String resourceGroupName, String clusterName, String applicationName, Context context) {
+        return listWithResponseAsync(resourceGroupName, clusterName, applicationName, context).block();
+    }
+
+    /**
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -1470,25 +1563,6 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceListInner list(String resourceGroupName, String clusterName, String applicationName) {
-        return listAsync(resourceGroupName, clusterName, applicationName).block();
-    }
-
-    /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceResourceListInner> listWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, Context context) {
-        return listWithResponseAsync(resourceGroupName, clusterName, applicationName, context).block();
+        return listWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE).getValue();
     }
 }

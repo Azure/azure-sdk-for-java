@@ -12,11 +12,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataVersionBaseResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataVersionBaseResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class DataVersionBaseResourceArmPaginatedResultTests {
         Assertions.assertEquals("rcizjxvyd", model.value().get(0).properties().dataUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataVersionBaseResourceArmPaginatedResult model =
             new DataVersionBaseResourceArmPaginatedResult()
                 .withNextLink("qntcypsxjvfoimwk")

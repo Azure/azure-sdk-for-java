@@ -59,7 +59,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecure")
-    private interface SecureScoreControlDefinitionsService {
+    public interface SecureScoreControlDefinitionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Security/secureScoreControlDefinitions")
         @ExpectedResponses({200})

@@ -58,7 +58,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAutoPr")
-    private interface AutoProvisioningSettingsService {
+    public interface AutoProvisioningSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings")
         @ExpectedResponses({200})
@@ -334,20 +334,6 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * Details of a specific setting.
      *
      * @param settingName Auto provisioning setting key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoProvisioningSettingInner get(String settingName) {
-        return getAsync(settingName).block();
-    }
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -357,6 +343,20 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context) {
         return getWithResponseAsync(settingName, context).block();
+    }
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoProvisioningSettingInner get(String settingName) {
+        return getWithResponse(settingName, Context.NONE).getValue();
     }
 
     /**
@@ -477,21 +477,6 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      *
      * @param settingName Auto provisioning setting key.
      * @param setting Auto provisioning setting key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoProvisioningSettingInner create(String settingName, AutoProvisioningSettingInner setting) {
-        return createAsync(settingName, setting).block();
-    }
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
-     * @param setting Auto provisioning setting key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -502,6 +487,21 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
     public Response<AutoProvisioningSettingInner> createWithResponse(
         String settingName, AutoProvisioningSettingInner setting, Context context) {
         return createWithResponseAsync(settingName, setting, context).block();
+    }
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @param setting Auto provisioning setting key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoProvisioningSettingInner create(String settingName, AutoProvisioningSettingInner setting) {
+        return createWithResponse(settingName, setting, Context.NONE).getValue();
     }
 
     /**

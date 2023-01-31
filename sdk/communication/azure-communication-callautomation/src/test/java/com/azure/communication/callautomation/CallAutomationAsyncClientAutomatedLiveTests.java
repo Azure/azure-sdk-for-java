@@ -5,9 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -62,7 +65,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
@@ -119,6 +122,63 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
                     // Do nothing and iterate to next call connection.
                 }
             }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndRejectAutomatedTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call but rejected
+         * 1. create a CallAutomationClient.
+         * 2. Reject
+         * 3. See if call is not established
+         */
+        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+            .buildAsyncClient();
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+            .buildAsyncClient();
+
+        try {
+            // create caller and receiver
+            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create a call
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext).setRepeatabilityHeaders(null);
+            callAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
+
+            // check events
+            CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callDisconnectedEvent);
+            assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
         }
     }
 }

@@ -21,6 +21,10 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GovernanceAssignmentProperties innerProperties;
 
+    /** Creates an instance of GovernanceAssignmentInner class. */
+    public GovernanceAssignmentInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a security governanceAssignment.
      *

@@ -20,6 +20,15 @@ public final class EnhancedSecurityState extends ExpandableStringEnum<EnhancedSe
     public static final EnhancedSecurityState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EnhancedSecurityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnhancedSecurityState() {
+    }
+
+    /**
      * Creates or finds a EnhancedSecurityState from its string representation.
      *
      * @param name a name to look for.

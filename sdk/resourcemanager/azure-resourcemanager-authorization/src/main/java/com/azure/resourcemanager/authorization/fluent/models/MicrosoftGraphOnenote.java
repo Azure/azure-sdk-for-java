@@ -17,46 +17,39 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /*
-     * The collection of OneNote notebooks that are owned by the user or group.
-     * Read-only. Nullable.
+     * The collection of OneNote notebooks that are owned by the user or group. Read-only. Nullable.
      */
     @JsonProperty(value = "notebooks")
     private List<MicrosoftGraphNotebook> notebooks;
 
     /*
-     * The status of OneNote operations. Getting an operations collection is
-     * not supported, but you can get the status of long-running operations if
-     * the Operation-Location header is returned in the response. Read-only.
-     * Nullable.
+     * The status of OneNote operations. Getting an operations collection is not supported, but you can get the status
+     * of long-running operations if the Operation-Location header is returned in the response. Read-only. Nullable.
      */
     @JsonProperty(value = "operations")
     private List<MicrosoftGraphOnenoteOperation> operations;
 
     /*
-     * The pages in all OneNote notebooks that are owned by the user or group.
-     * Read-only. Nullable.
+     * The pages in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
      */
     @JsonProperty(value = "pages")
     private List<MicrosoftGraphOnenotePage> pages;
 
     /*
-     * The image and other file resources in OneNote pages. Getting a resources
-     * collection is not supported, but you can get the binary content of a
-     * specific resource. Read-only. Nullable.
+     * The image and other file resources in OneNote pages. Getting a resources collection is not supported, but you
+     * can get the binary content of a specific resource. Read-only. Nullable.
      */
     @JsonProperty(value = "resources")
     private List<MicrosoftGraphOnenoteResource> resources;
 
     /*
-     * The section groups in all OneNote notebooks that are owned by the user
-     * or group.  Read-only. Nullable.
+     * The section groups in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
      */
     @JsonProperty(value = "sectionGroups")
     private List<MicrosoftGraphSectionGroup> sectionGroups;
 
     /*
-     * The sections in all OneNote notebooks that are owned by the user or
-     * group.  Read-only. Nullable.
+     * The sections in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
      */
     @JsonProperty(value = "sections")
     private List<MicrosoftGraphOnenoteSection> sections;
@@ -65,6 +58,10 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      * onenote
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenote class. */
+    public MicrosoftGraphOnenote() {
+    }
 
     /**
      * Get the notebooks property: The collection of OneNote notebooks that are owned by the user or group. Read-only.

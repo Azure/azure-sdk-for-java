@@ -1990,7 +1990,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @see ServiceBusRuleManagerAsyncClient
      */
-    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class})
+    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class, ServiceBusRuleManagerClient.class})
     public final class ServiceBusRuleManagerBuilder {
         private String subscriptionName;
         private String topicName;

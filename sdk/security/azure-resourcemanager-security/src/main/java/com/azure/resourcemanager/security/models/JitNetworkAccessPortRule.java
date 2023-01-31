@@ -43,6 +43,10 @@ public final class JitNetworkAccessPortRule {
     @JsonProperty(value = "maxRequestAccessDuration", required = true)
     private String maxRequestAccessDuration;
 
+    /** Creates an instance of JitNetworkAccessPortRule class. */
+    public JitNetworkAccessPortRule() {
+    }
+
     /**
      * Get the number property: The number property.
      *

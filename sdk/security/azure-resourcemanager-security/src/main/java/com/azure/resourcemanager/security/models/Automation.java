@@ -372,18 +372,6 @@ public interface Automation {
      * client.
      *
      * @param automation The security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
-     */
-    AutomationValidationStatus validate(AutomationInner automation);
-
-    /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     *
-     * @param automation The security automation resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -391,4 +379,16 @@ public interface Automation {
      * @return the security automation model state property bag along with {@link Response}.
      */
     Response<AutomationValidationStatus> validateWithResponse(AutomationInner automation, Context context);
+
+    /**
+     * Validates the security automation model before create or update. Any validation errors are returned to the
+     * client.
+     *
+     * @param automation The security automation resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation model state property bag.
+     */
+    AutomationValidationStatus validate(AutomationInner automation);
 }

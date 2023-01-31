@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.UriFileDataVersion;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UriFileDataVersionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UriFileDataVersion model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class UriFileDataVersionTests {
         Assertions.assertEquals("zbtz", model.dataUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UriFileDataVersion model =
             new UriFileDataVersion()
                 .withDescription("pfs")

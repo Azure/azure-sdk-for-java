@@ -44,6 +44,10 @@ public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphUsedInsight class. */
+    public MicrosoftGraphUsedInsight() {
+    }
+
     /**
      * Get the lastUsed property: usageDetails.
      *

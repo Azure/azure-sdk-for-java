@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -26,30 +29,25 @@ import com.azure.resourcemanager.costmanagement.implementation.CostManagementCli
 import com.azure.resourcemanager.costmanagement.implementation.DimensionsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ExportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ForecastsImpl;
-import com.azure.resourcemanager.costmanagement.implementation.GenerateReservationDetailsReportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.OperationsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.QueriesImpl;
-import com.azure.resourcemanager.costmanagement.implementation.SettingsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ViewsImpl;
 import com.azure.resourcemanager.costmanagement.models.Alerts;
 import com.azure.resourcemanager.costmanagement.models.Dimensions;
 import com.azure.resourcemanager.costmanagement.models.Exports;
 import com.azure.resourcemanager.costmanagement.models.Forecasts;
-import com.azure.resourcemanager.costmanagement.models.GenerateReservationDetailsReports;
 import com.azure.resourcemanager.costmanagement.models.Operations;
 import com.azure.resourcemanager.costmanagement.models.Queries;
-import com.azure.resourcemanager.costmanagement.models.Settings;
 import com.azure.resourcemanager.costmanagement.models.Views;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to CostManagementManager. */
 public final class CostManagementManager {
-    private Settings settings;
-
     private Views views;
 
     private Alerts alerts;
@@ -59,8 +57,6 @@ public final class CostManagementManager {
     private Dimensions dimensions;
 
     private Queries queries;
-
-    private GenerateReservationDetailsReports generateReservationDetailsReports;
 
     private Operations operations;
 
@@ -93,6 +89,19 @@ public final class CostManagementManager {
     }
 
     /**
+     * Creates an instance of CostManagement service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the CostManagement service API instance.
+     */
+    public static CostManagementManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new CostManagementManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create CostManagementManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -103,13 +112,14 @@ public final class CostManagementManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -171,15 +181,30 @@ public final class CostManagementManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -201,7 +226,7 @@ public final class CostManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.costmanagement")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -219,16 +244,34 @@ public final class CostManagementManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -240,15 +283,11 @@ public final class CostManagementManager {
         }
     }
 
-    /** @return Resource collection API of Settings. */
-    public Settings settings() {
-        if (this.settings == null) {
-            this.settings = new SettingsImpl(clientObject.getSettings(), this);
-        }
-        return settings;
-    }
-
-    /** @return Resource collection API of Views. */
+    /**
+     * Gets the resource collection API of Views. It manages View.
+     *
+     * @return Resource collection API of Views.
+     */
     public Views views() {
         if (this.views == null) {
             this.views = new ViewsImpl(clientObject.getViews(), this);
@@ -256,7 +295,11 @@ public final class CostManagementManager {
         return views;
     }
 
-    /** @return Resource collection API of Alerts. */
+    /**
+     * Gets the resource collection API of Alerts.
+     *
+     * @return Resource collection API of Alerts.
+     */
     public Alerts alerts() {
         if (this.alerts == null) {
             this.alerts = new AlertsImpl(clientObject.getAlerts(), this);
@@ -264,7 +307,11 @@ public final class CostManagementManager {
         return alerts;
     }
 
-    /** @return Resource collection API of Forecasts. */
+    /**
+     * Gets the resource collection API of Forecasts.
+     *
+     * @return Resource collection API of Forecasts.
+     */
     public Forecasts forecasts() {
         if (this.forecasts == null) {
             this.forecasts = new ForecastsImpl(clientObject.getForecasts(), this);
@@ -272,7 +319,11 @@ public final class CostManagementManager {
         return forecasts;
     }
 
-    /** @return Resource collection API of Dimensions. */
+    /**
+     * Gets the resource collection API of Dimensions.
+     *
+     * @return Resource collection API of Dimensions.
+     */
     public Dimensions dimensions() {
         if (this.dimensions == null) {
             this.dimensions = new DimensionsImpl(clientObject.getDimensions(), this);
@@ -280,7 +331,11 @@ public final class CostManagementManager {
         return dimensions;
     }
 
-    /** @return Resource collection API of Queries. */
+    /**
+     * Gets the resource collection API of Queries.
+     *
+     * @return Resource collection API of Queries.
+     */
     public Queries queries() {
         if (this.queries == null) {
             this.queries = new QueriesImpl(clientObject.getQueries(), this);
@@ -288,16 +343,11 @@ public final class CostManagementManager {
         return queries;
     }
 
-    /** @return Resource collection API of GenerateReservationDetailsReports. */
-    public GenerateReservationDetailsReports generateReservationDetailsReports() {
-        if (this.generateReservationDetailsReports == null) {
-            this.generateReservationDetailsReports =
-                new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
-        }
-        return generateReservationDetailsReports;
-    }
-
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -305,7 +355,11 @@ public final class CostManagementManager {
         return operations;
     }
 
-    /** @return Resource collection API of Exports. */
+    /**
+     * Gets the resource collection API of Exports. It manages Export.
+     *
+     * @return Resource collection API of Exports.
+     */
     public Exports exports() {
         if (this.exports == null) {
             this.exports = new ExportsImpl(clientObject.getExports(), this);

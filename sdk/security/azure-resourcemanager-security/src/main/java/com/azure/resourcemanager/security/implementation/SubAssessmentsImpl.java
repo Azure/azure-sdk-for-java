@@ -47,15 +47,6 @@ public final class SubAssessmentsImpl implements SubAssessments {
         return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
-    public SecuritySubAssessment get(String scope, String assessmentName, String subAssessmentName) {
-        SecuritySubAssessmentInner inner = this.serviceClient().get(scope, assessmentName, subAssessmentName);
-        if (inner != null) {
-            return new SecuritySubAssessmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecuritySubAssessment> getWithResponse(
         String scope, String assessmentName, String subAssessmentName, Context context) {
         Response<SecuritySubAssessmentInner> inner =
@@ -66,6 +57,15 @@ public final class SubAssessmentsImpl implements SubAssessments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecuritySubAssessmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecuritySubAssessment get(String scope, String assessmentName, String subAssessmentName) {
+        SecuritySubAssessmentInner inner = this.serviceClient().get(scope, assessmentName, subAssessmentName);
+        if (inner != null) {
+            return new SecuritySubAssessmentImpl(inner, this.manager());
         } else {
             return null;
         }

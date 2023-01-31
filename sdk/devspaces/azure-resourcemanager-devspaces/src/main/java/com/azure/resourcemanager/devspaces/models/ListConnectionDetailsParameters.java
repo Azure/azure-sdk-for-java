@@ -6,20 +6,20 @@ package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters for listing connection details of an Azure Dev Spaces Controller. */
 @Fluent
 public final class ListConnectionDetailsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListConnectionDetailsParameters.class);
-
     /*
-     * Resource ID of the target container host mapped to the Azure Dev Spaces
-     * Controller.
+     * Resource ID of the target container host mapped to the Azure Dev Spaces Controller.
      */
     @JsonProperty(value = "targetContainerHostResourceId", required = true)
     private String targetContainerHostResourceId;
+
+    /** Creates an instance of ListConnectionDetailsParameters class. */
+    public ListConnectionDetailsParameters() {
+    }
 
     /**
      * Get the targetContainerHostResourceId property: Resource ID of the target container host mapped to the Azure Dev
@@ -50,11 +50,13 @@ public final class ListConnectionDetailsParameters {
      */
     public void validate() {
         if (targetContainerHostResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetContainerHostResourceId in model"
                             + " ListConnectionDetailsParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListConnectionDetailsParameters.class);
 }

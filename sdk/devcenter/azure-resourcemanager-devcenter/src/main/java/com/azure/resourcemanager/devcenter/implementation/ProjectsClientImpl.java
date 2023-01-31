@@ -46,25 +46,25 @@ public final class ProjectsClientImpl implements ProjectsClient {
     private final ProjectsService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of ProjectsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ProjectsClientImpl(DevCenterClientImpl client) {
+    ProjectsClientImpl(DevCenterManagementClientImpl client) {
         this.service = RestProxy.create(ProjectsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientProjects to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for DevCenterManagementClientProjects to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientProje")
-    private interface ProjectsService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface ProjectsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/projects")
         @ExpectedResponses({200})
@@ -345,7 +345,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -400,7 +400,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,7 +453,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,7 +470,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,7 +487,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,7 +505,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -520,7 +520,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Lists all projects in the resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,7 +536,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Gets a specific project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -584,7 +584,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Gets a specific project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,7 +630,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Gets a specific project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -646,7 +646,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Gets a specific project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,7 +663,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Gets a specific project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -678,7 +678,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -733,7 +733,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @param context The context to associate with this operation.
@@ -786,7 +786,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -807,7 +807,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @param context The context to associate with this operation.
@@ -831,7 +831,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -848,7 +848,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @param context The context to associate with this operation.
@@ -866,7 +866,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -884,7 +884,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @param context The context to associate with this operation.
@@ -904,7 +904,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,7 +920,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Creates or updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
      * @param context The context to associate with this operation.
@@ -938,7 +938,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,7 +993,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @param context The context to associate with this operation.
@@ -1046,7 +1046,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1067,7 +1067,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @param context The context to associate with this operation.
@@ -1090,7 +1090,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,7 +1107,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @param context The context to associate with this operation.
@@ -1125,7 +1125,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1143,7 +1143,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @param context The context to associate with this operation.
@@ -1163,7 +1163,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1179,7 +1179,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Partially updates a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
      * @param context The context to associate with this operation.
@@ -1196,7 +1196,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1243,7 +1243,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1289,7 +1289,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1308,7 +1308,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,7 +1329,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1344,7 +1344,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1361,7 +1361,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1376,7 +1376,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1394,7 +1394,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1408,7 +1408,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     /**
      * Deletes a project resource.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

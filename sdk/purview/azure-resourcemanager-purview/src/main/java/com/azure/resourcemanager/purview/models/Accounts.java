@@ -11,18 +11,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Accounts. */
 public interface Accounts {
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Account> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
@@ -30,33 +34,54 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Account> listByResourceGroup(String resourceGroupName, String skipToken, Context context);
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Account> list();
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Account> list(String skipToken, Context context);
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an account along with {@link Response}.
+     */
+    Response<Account> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -68,20 +93,9 @@ public interface Accounts {
     Account getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Get an account.
+     * Deletes the account resource.
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
-     */
-    Response<Account> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
-
-    /**
-     * Deletes an account resource.
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -92,7 +106,9 @@ public interface Accounts {
     void deleteByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -104,7 +120,24 @@ public interface Accounts {
     void delete(String resourceGroupName, String accountName, Context context);
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Account access keys along with {@link Response}.
+     */
+    Response<AccessKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -116,20 +149,26 @@ public interface Accounts {
     AccessKeys listKeys(String resourceGroupName, String accountName);
 
     /**
-     * List the authorization keys associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
+     * @param collectionAdminUpdate The collection admin update payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
+     * @return the {@link Response}.
      */
-    Response<AccessKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<Void> addRootCollectionAdminWithResponse(
+        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate, Context context);
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -142,22 +181,24 @@ public interface Accounts {
         String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate);
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Checks the account name availability.
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param collectionAdminUpdate The collection admin update payload.
+     * <p>Checks if account name is available.
+     *
+     * @param checkNameAvailabilityRequest The check name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response payload for CheckNameAvailability API along with {@link Response}.
      */
-    Response<Void> addRootCollectionAdminWithResponse(
-        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate, Context context);
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
-     * Checks if account name is available.
+     * Checks the account name availability.
+     *
+     * <p>Checks if account name is available.
      *
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,43 +209,36 @@ public interface Accounts {
     CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 
     /**
-     * Checks if account name is available.
+     * Gets the account resource.
      *
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for CheckNameAvailability API.
-     */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
-
-    /**
-     * Get an account.
+     * <p>Get an account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
+     * @return an account along with {@link Response}.
      */
     Account getById(String id);
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
+     * @return an account along with {@link Response}.
      */
     Response<Account> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +248,9 @@ public interface Accounts {
     void deleteById(String id);
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -33,6 +33,10 @@ public class InputDefinition {
     @JsonProperty(value = "includedTracks")
     private List<TrackDescriptor> includedTracks;
 
+    /** Creates an instance of InputDefinition class. */
+    public InputDefinition() {
+    }
+
     /**
      * Get the includedTracks property: The list of TrackDescriptors which define the metadata and selection of tracks
      * in the input.

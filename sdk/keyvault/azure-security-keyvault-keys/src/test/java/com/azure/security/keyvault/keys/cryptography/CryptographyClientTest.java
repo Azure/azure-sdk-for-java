@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -278,6 +279,36 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
                 assertTrue(verifyStatus);
             }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
+    public void signVerifyOkp(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        // OKP keys are currently only supported in Managed HSM.
+        Assumptions.assumeTrue(runManagedHsmTest);
+
+        initializeKeyClient(httpClient);
+
+        encryptDecryptOkpRunner(createOkpKeyOptions -> {
+            KeyVaultKey importedKey = client.createOkpKey(createOkpKeyOptions);
+            CryptographyClient cryptoClient =
+                initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
+            CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
+
+            byte[] plaintext = new byte[100];
+
+            new Random(0x1234567L).nextBytes(plaintext);
+
+            byte[] signature = cryptoClient.signData(SignatureAlgorithm.EDDSA, plaintext).getSignature();
+            Boolean verifyStatus = serviceClient.verifyData(SignatureAlgorithm.EDDSA, plaintext, signature, Context.NONE).block().isValid();
+
+            assertTrue(verifyStatus);
+
+            signature = serviceClient.signData(SignatureAlgorithm.EDDSA, plaintext, Context.NONE).block().getSignature();
+            verifyStatus = cryptoClient.verifyData(SignatureAlgorithm.EDDSA, plaintext, signature).isValid();
+
+            assertTrue(verifyStatus);
         });
     }
 

@@ -28,6 +28,9 @@ import com.azure.resourcemanager.security.fluent.AdvancedThreatProtectionsClient
 import com.azure.resourcemanager.security.fluent.AlertsClient;
 import com.azure.resourcemanager.security.fluent.AlertsSuppressionRulesClient;
 import com.azure.resourcemanager.security.fluent.AllowedConnectionsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionOffboardingsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionOnboardingsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionsClient;
 import com.azure.resourcemanager.security.fluent.ApplicationOperationsClient;
 import com.azure.resourcemanager.security.fluent.ApplicationsClient;
 import com.azure.resourcemanager.security.fluent.AssessmentsClient;
@@ -875,6 +878,42 @@ public final class SecurityCenterImpl implements SecurityCenter {
         return this.securityConnectorApplicationOperations;
     }
 
+    /** The ApiCollectionsClient object to access its operations. */
+    private final ApiCollectionsClient apiCollections;
+
+    /**
+     * Gets the ApiCollectionsClient object to access its operations.
+     *
+     * @return the ApiCollectionsClient object.
+     */
+    public ApiCollectionsClient getApiCollections() {
+        return this.apiCollections;
+    }
+
+    /** The ApiCollectionOnboardingsClient object to access its operations. */
+    private final ApiCollectionOnboardingsClient apiCollectionOnboardings;
+
+    /**
+     * Gets the ApiCollectionOnboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOnboardingsClient object.
+     */
+    public ApiCollectionOnboardingsClient getApiCollectionOnboardings() {
+        return this.apiCollectionOnboardings;
+    }
+
+    /** The ApiCollectionOffboardingsClient object to access its operations. */
+    private final ApiCollectionOffboardingsClient apiCollectionOffboardings;
+
+    /**
+     * Gets the ApiCollectionOffboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOffboardingsClient object.
+     */
+    public ApiCollectionOffboardingsClient getApiCollectionOffboardings() {
+        return this.apiCollectionOffboardings;
+    }
+
     /**
      * Initializes an instance of SecurityCenter client.
      *
@@ -961,6 +1000,9 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.applicationOperations = new ApplicationOperationsClientImpl(this);
         this.securityConnectorApplications = new SecurityConnectorApplicationsClientImpl(this);
         this.securityConnectorApplicationOperations = new SecurityConnectorApplicationOperationsClientImpl(this);
+        this.apiCollections = new ApiCollectionsClientImpl(this);
+        this.apiCollectionOnboardings = new ApiCollectionOnboardingsClientImpl(this);
+        this.apiCollectionOffboardings = new ApiCollectionOffboardingsClientImpl(this);
     }
 
     /**

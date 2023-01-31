@@ -72,7 +72,7 @@ stages:
           displayName: 'Generate pom for aggregate JavaDoc report'
           inputs:
             scriptPath: 'eng/scripts/generate_aggregate_pom.py'
-            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark'
+            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
             workingDirectory: '$(System.DefaultWorkingDirectory)'    
 
         - task: Maven@3
@@ -121,8 +121,8 @@ stages:
 
         pool:
           # CredScan build task is Windows only (https://aka.ms/credscan).
-          name: 'azsdk-pool-mms-win-2019-general'
-          vmImage: 'MMS2019'
+          name: 'azsdk-pool-mms-win-2022-general'
+          vmImage: 'MMS2022'
         steps:
         - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
           # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
@@ -153,8 +153,8 @@ stages:
         timeoutInMinutes: 120
 
         pool:
-          name: azsdk-pool-mms-win-2019-general
-          vmImage: MMS2019
+          name: azsdk-pool-mms-win-2022-general
+          vmImage: MMS2022
 
         steps:
           - template: /eng/common/pipelines/templates/steps/policheck.yml

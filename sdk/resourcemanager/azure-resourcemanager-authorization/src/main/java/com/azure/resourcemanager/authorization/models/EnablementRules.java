@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnablementRules. */
+/** The type of enablement rule. */
 public final class EnablementRules extends ExpandableStringEnum<EnablementRules> {
     /** Static value MultiFactorAuthentication for EnablementRules. */
     public static final EnablementRules MULTI_FACTOR_AUTHENTICATION = fromString("MultiFactorAuthentication");
@@ -30,7 +30,11 @@ public final class EnablementRules extends ExpandableStringEnum<EnablementRules>
         return fromString(name, EnablementRules.class);
     }
 
-    /** @return known EnablementRules values. */
+    /**
+     * Gets known EnablementRules values.
+     *
+     * @return known EnablementRules values.
+     */
     public static Collection<EnablementRules> values() {
         return values(EnablementRules.class);
     }

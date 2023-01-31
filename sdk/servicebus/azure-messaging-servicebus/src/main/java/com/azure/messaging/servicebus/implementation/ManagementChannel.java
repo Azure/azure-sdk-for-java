@@ -506,7 +506,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<RuleProperties> getRules() {
+    public Flux<RuleProperties> listRules() {
         return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_RULES, null);
 

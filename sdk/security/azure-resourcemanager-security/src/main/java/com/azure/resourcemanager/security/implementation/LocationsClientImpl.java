@@ -55,7 +55,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterLocati")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations")
         @ExpectedResponses({200})
@@ -336,21 +336,6 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ASC location of the subscription is in the "name" field.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AscLocationInner get(String ascLocation) {
-        return getAsync(ascLocation).block();
-    }
-
-    /**
-     * Details of a specific location.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -360,6 +345,21 @@ public final class LocationsClientImpl implements LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AscLocationInner> getWithResponse(String ascLocation, Context context) {
         return getWithResponseAsync(ascLocation, context).block();
+    }
+
+    /**
+     * Details of a specific location.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ASC location of the subscription is in the "name" field.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AscLocationInner get(String ascLocation) {
+        return getWithResponse(ascLocation, Context.NONE).getValue();
     }
 
     /**

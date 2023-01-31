@@ -10,7 +10,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
@@ -21,9 +20,6 @@ import java.util.Map;
  */
 @Fluent
 public final class ResourceWriteCancelEventData {
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceWriteCancelEventData.class);
-    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-
     /*
      * The tenant ID of the resource.
      */
@@ -66,8 +62,6 @@ public final class ResourceWriteCancelEventData {
     @JsonProperty(value = "status")
     private String status;
 
-    private String authorizationString;
-
     /*
      * The requested authorization for the operation.
      */
@@ -91,6 +85,10 @@ public final class ResourceWriteCancelEventData {
      */
     @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
+
+    static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
+    static final ClientLogger LOGGER = new ClientLogger(ResourceWriteCancelEventData.class);
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -236,43 +234,6 @@ public final class ResourceWriteCancelEventData {
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#getResourceAuthorization()} instead.
-     */
-    @Deprecated
-    public String getAuthorization() {
-        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
-        try {
-            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    /**
-     * Set the authorization property: The requested authorization for the operation.
-     *
-     * @param authorization the authorization value to set.
-     * @return the ResourceWriteCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
-     */
-    @Deprecated
-    public ResourceWriteCancelEventData setAuthorization(String authorization) {
-        try {
-            setResourceAuthorization(
-                DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
-                    SerializerEncoding.JSON));
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-        }
-        return this;
-    }
-
-    /**
-     * Get the authorization property: The requested authorization for the operation.
-     *
-     * @return the authorization value.
      */
     public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
@@ -286,44 +247,6 @@ public final class ResourceWriteCancelEventData {
      */
     public ResourceWriteCancelEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
-        return this;
-    }
-
-    /**
-     * Get the claims property: The properties of the claims.
-     *
-     * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#getResourceClaims()} instead.
-     */
-    @Deprecated
-    public String getClaims() {
-        final Map<String, String> resourceClaims = getResourceClaims();
-        if (!resourceClaims.isEmpty()) {
-            try {
-                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Set the claims property: The properties of the claims.
-     *
-     * @param claims the claims value to set.
-     * @return the ResourceWriteCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#setResourceClaims(Map)} instead.
-     */
-    @Deprecated
-    public ResourceWriteCancelEventData setClaims(String claims) {
-        try {
-            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-        }
         return this;
     }
 
@@ -371,8 +294,66 @@ public final class ResourceWriteCancelEventData {
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
+     */
+    public ResourceHttpRequest getResourceHttpRequest() {
+        return this.httpRequest;
+    }
+
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceWriteCancelEventData object itself.
+     */
+    public ResourceWriteCancelEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
+        this.httpRequest = httpRequest;
+        return this;
+    }
+
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#getResourceHttpRequest()} instead.
+     *     <p>Use {@link ResourceWriteCancelEventData#getResourceClaims()} instead.
+     */
+    @Deprecated
+    public String getClaims() {
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
+            try {
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceWriteCancelEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     *     <p>Use {@link ResourceWriteCancelEventData#setResourceClaims(Map)} instead.
+     */
+    @Deprecated
+    public ResourceWriteCancelEventData setClaims(String claims) {
+        try {
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     *     <p>Use {@link ResourceWriteCancelEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -390,13 +371,14 @@ public final class ResourceWriteCancelEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteCancelEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     * <p> Use {@link ResourceWriteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     *     <p>Use {@link ResourceWriteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceWriteCancelEventData setHttpRequest(String httpRequest) {
         try {
             setResourceHttpRequest(
-                DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
+                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -404,22 +386,39 @@ public final class ResourceWriteCancelEventData {
     }
 
     /**
-     * Get the httpRequest property: The details of the operation.
+     * Get the authorization property: The requested authorization for the operation.
      *
-     * @return the httpRequest value.
+     * @return the authorization value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     *     <p>Use {@link ResourceWriteCancelEventData#getResourceAuthorization()} instead.
      */
-    public ResourceHttpRequest getResourceHttpRequest() {
-        return this.httpRequest;
+    @Deprecated
+    public String getAuthorization() {
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     /**
-     * Set the httpRequest property: The details of the operation.
+     * Set the authorization property: The requested authorization for the operation.
      *
-     * @param httpRequest the httpRequest value to set.
+     * @param authorization the authorization value to set.
      * @return the ResourceWriteCancelEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     *     <p>Use {@link ResourceWriteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
-    public ResourceWriteCancelEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
-        this.httpRequest = httpRequest;
+    @Deprecated
+    public ResourceWriteCancelEventData setAuthorization(String authorization) {
+        try {
+            setResourceAuthorization(
+                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
+                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
         return this;
     }
 }

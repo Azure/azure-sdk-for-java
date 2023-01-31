@@ -41,7 +41,7 @@ public interface VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,7 +53,7 @@ public interface VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,20 +66,7 @@ public interface VaultsClient {
     /**
      * Get the Vault details.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Vault details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultInner getByResourceGroup(String resourceGroupName, String vaultName);
-
-    /**
-     * Get the Vault details.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,9 +78,22 @@ public interface VaultsClient {
     Response<VaultInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName, Context context);
 
     /**
+     * Get the Vault details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Vault details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VaultInner getByResourceGroup(String resourceGroupName, String vaultName);
+
+    /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +108,7 @@ public interface VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -124,7 +124,7 @@ public interface VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +138,7 @@ public interface VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -153,19 +153,7 @@ public interface VaultsClient {
     /**
      * Deletes a vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vaultName);
-
-    /**
-     * Deletes a vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,9 +165,21 @@ public interface VaultsClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context);
 
     /**
+     * Deletes a vault.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String vaultName);
+
+    /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +194,7 @@ public interface VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -210,7 +210,7 @@ public interface VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +224,7 @@ public interface VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.

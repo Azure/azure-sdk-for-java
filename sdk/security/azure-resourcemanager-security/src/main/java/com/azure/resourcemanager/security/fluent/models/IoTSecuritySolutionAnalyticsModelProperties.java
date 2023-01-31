@@ -52,6 +52,10 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
     @JsonProperty(value = "mostPrevalentDeviceRecommendations")
     private List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations;
 
+    /** Creates an instance of IoTSecuritySolutionAnalyticsModelProperties class. */
+    public IoTSecuritySolutionAnalyticsModelProperties() {
+    }
+
     /**
      * Get the metrics property: Security analytics of your IoT Security solution.
      *

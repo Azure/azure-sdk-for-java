@@ -30,6 +30,10 @@ public final class SecurityConnectorInner extends Resource {
     @JsonProperty(value = "properties")
     private SecurityConnectorProperties innerProperties;
 
+    /** Creates an instance of SecurityConnectorInner class. */
+    public SecurityConnectorInner() {
+    }
+
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *

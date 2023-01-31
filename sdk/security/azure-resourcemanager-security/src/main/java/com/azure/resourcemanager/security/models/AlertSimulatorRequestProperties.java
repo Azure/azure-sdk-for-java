@@ -29,6 +29,10 @@ public class AlertSimulatorRequestProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of AlertSimulatorRequestProperties class. */
+    public AlertSimulatorRequestProperties() {
+    }
+
     /**
      * Get the additionalProperties property: Describes properties of an alert simulation request.
      *

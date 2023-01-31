@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.OperationValueDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
 @Fluent
 public final class OperationValueInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueInner.class);
-
     /*
      * The origin of the compute operation.
      */
@@ -32,6 +28,10 @@ public final class OperationValueInner {
      */
     @JsonProperty(value = "display")
     private OperationValueDisplay display;
+
+    /** Creates an instance of OperationValueInner class. */
+    public OperationValueInner() {
+    }
 
     /**
      * Get the origin property: The origin of the compute operation.

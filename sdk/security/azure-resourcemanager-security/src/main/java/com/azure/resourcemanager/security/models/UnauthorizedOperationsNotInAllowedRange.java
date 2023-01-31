@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("UnauthorizedOperationsNotInAllowedRange")
 @Fluent
 public final class UnauthorizedOperationsNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of UnauthorizedOperationsNotInAllowedRange class. */
+    public UnauthorizedOperationsNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public UnauthorizedOperationsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

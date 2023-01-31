@@ -37,6 +37,10 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
     @JsonProperty(value = "awsSecretAccessKey", required = true)
     private String awsSecretAccessKey;
 
+    /** Creates an instance of AwsCredsAuthenticationDetailsProperties class. */
+    public AwsCredsAuthenticationDetailsProperties() {
+    }
+
     /**
      * Get the accountId property: The ID of the cloud account.
      *

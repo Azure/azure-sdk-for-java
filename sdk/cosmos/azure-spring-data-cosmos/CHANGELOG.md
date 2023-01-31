@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.30.0-beta.1 (Unreleased)
+### 3.32.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,20 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.31.0 (2023-01-13)
+#### Features Added
+* Added support for multi-tenancy at the Database level via `CosmosFactory` - See [PR 32516](https://github.com/Azure/azure-sdk-for-java/pull/32516)
+* Added support for Patch API in `CosmosRepository` and `ReactiveCosmosRepository` - See [PR 32630](https://github.com/Azure/azure-sdk-for-java/pull/32630)
+
+### Other Changes
+* Updated `azure-cosmos` to version `4.40.0`.
+* Updated `Spring Boot` to version `2.7.7`.
+* Updated `Spring Data Commons` to version `2.7.6`.
+
+### 3.30.0 (2022-11-16)
+### Other Changes
+* Updated `azure-cosmos` to version `4.39.0`.
 
 ### 3.29.1 (2022-10-21)
 #### Bugs Fixed

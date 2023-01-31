@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration service environment properties. */
 @Fluent
 public final class IntegrationServiceEnvironmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentProperties.class);
-
     /*
      * The provisioning state.
      */
@@ -49,6 +45,10 @@ public final class IntegrationServiceEnvironmentProperties {
      */
     @JsonProperty(value = "encryptionConfiguration")
     private IntegrationServiceEnvironmenEncryptionConfiguration encryptionConfiguration;
+
+    /** Creates an instance of IntegrationServiceEnvironmentProperties class. */
+    public IntegrationServiceEnvironmentProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state.

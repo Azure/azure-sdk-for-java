@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.Service;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Services UpdateTags. */
 public final class ServicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/ServiceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/ServiceUpdateTags.json
      */
     /**
      * Sample code: Update service tags.
@@ -21,7 +20,10 @@ public final class ServicesUpdateTagsSamples {
      */
     public static void updateServiceTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         Service resource =
-            manager.services().getWithResponse("rg1", "testMobileNetwork", "TestService", Context.NONE).getValue();
+            manager
+                .services()
+                .getWithResponse("rg1", "testMobileNetwork", "TestService", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

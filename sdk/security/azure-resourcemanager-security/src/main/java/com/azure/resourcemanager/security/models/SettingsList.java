@@ -24,6 +24,10 @@ public final class SettingsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SettingsList class. */
+    public SettingsList() {
+    }
+
     /**
      * Get the value property: The settings list.
      *

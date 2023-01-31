@@ -16,6 +16,10 @@ public final class DefenderForServersAwsOfferingSubPlan {
     @JsonProperty(value = "type")
     private SubPlan type;
 
+    /** Creates an instance of DefenderForServersAwsOfferingSubPlan class. */
+    public DefenderForServersAwsOfferingSubPlan() {
+    }
+
     /**
      * Get the type property: The available sub plans.
      *

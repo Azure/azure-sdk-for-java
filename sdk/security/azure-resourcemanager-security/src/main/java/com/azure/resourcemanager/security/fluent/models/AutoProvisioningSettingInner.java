@@ -18,6 +18,10 @@ public final class AutoProvisioningSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AutoProvisioningSettingProperties innerProperties;
 
+    /** Creates an instance of AutoProvisioningSettingInner class. */
+    public AutoProvisioningSettingInner() {
+    }
+
     /**
      * Get the innerProperties property: Auto provisioning setting data.
      *

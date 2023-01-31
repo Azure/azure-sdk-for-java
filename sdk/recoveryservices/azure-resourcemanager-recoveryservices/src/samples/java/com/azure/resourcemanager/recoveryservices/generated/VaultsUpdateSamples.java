@@ -24,7 +24,7 @@ import java.util.Map;
 /** Samples for Vaults Update. */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
@@ -50,7 +50,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -68,10 +68,7 @@ public final class VaultsUpdateSamples {
                 new VaultProperties()
                     .withEncryption(
                         new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(
-                                new CmkKeyVaultProperties()
-                                    .withKeyUri(
-                                        "https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"))
+                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
                             .withKekIdentity(
                                 new CmkKekIdentity()
                                     .withUserAssignedIdentity(
@@ -88,7 +85,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PatchVault_WithCMK2.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -112,7 +109,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK3.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -130,10 +127,7 @@ public final class VaultsUpdateSamples {
                 new VaultProperties()
                     .withEncryption(
                         new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(
-                                new CmkKeyVaultProperties()
-                                    .withKeyUri(
-                                        "https://cmk2xkv.vault.azure.net/keys/Key1/0767b348bb1a4c07baa6c4ec0055d2b3"))))
+                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))))
             .withIdentity(
                 new IdentityData()
                     .withType(ResourceIdentityType.USER_ASSIGNED)
@@ -145,7 +139,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -159,7 +153,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.

@@ -26,6 +26,10 @@ public class MicrosoftGraphOnenoteEntityBaseModel extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenoteEntityBaseModel class. */
+    public MicrosoftGraphOnenoteEntityBaseModel() {
+    }
+
     /**
      * Get the self property: The endpoint where you can get details about the page. Read-only.
      *

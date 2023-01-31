@@ -122,21 +122,23 @@ foreach ($packageDetail in $packageDetails) {
   $commaDelimitedClassifiers = ""
   $commaDelimitedTypes = ""
 
+  # AdditionalArtifacts effectively means a changelog. These do not have to exist for
+  # data/track 1 files.
+  $additionalArtifacts = $false
   if ($null -ne $packageDetail.AdditionalArtifacts) {
     foreach($additionalArtifact in $packageDetail.AdditionalArtifacts) {
       $commaDelimitedFileNames += ",$($additionalArtifact.File.FullName)"
       $commaDelimitedClassifiers += ",$($additionalArtifact.Classifier)"
       $commaDelimitedTypes += ",$($additionalArtifact.Type)"
+      $additionalArtifacts = $true
     }
+    $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
+    $classifiersOption = "-Dclassifiers=$($commaDelimitedClassifiers.Substring(1))"
+    $typesOption = "-Dtypes=$($commaDelimitedTypes.Substring(1))"
+    Write-Host "Files Option is: $filesOption"
+    Write-Host "Classifiers Option is: $classifiersOption"
+    Write-Host "Types Option is: $typesOption"
   }
-
-  $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
-  $classifiersOption = "-Dclassifiers=$($commaDelimitedClassifiers.Substring(1))"
-  $typesOption = "-Dtypes=$($commaDelimitedTypes.Substring(1))"
-
-  Write-Host "Files Option is: $filesOption"
-  Write-Host "Classifiers Option is: $classifiersOption"
-  Write-Host "Types Option is: $typesOption"
 
   $gpgexeOption = "-Dgpgexe=$GPGExecutablePath"
   Write-Host "GPG Executable Option is: $gpgexeOption"
@@ -149,13 +151,21 @@ foreach ($packageDetail in $packageDetails) {
 
   Write-Host ""
   Write-Host "Signing package"
-  
-  Write-Host @"
-  mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+
+  if ($additionalArtifacts) {
+    Write-Host @"
+    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
 "@
-  
-  mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
-  
+    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+  } else {
+    # Track 1 libraries do not require $filesOption, $classifiersOption and $typesOption variables which
+    # will only be set if there's a changelog for one or more of the libraries being released
+    Write-Host @"
+    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+"@
+      mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+  }
+
   if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
   $groupId = $packageDetail.GroupId

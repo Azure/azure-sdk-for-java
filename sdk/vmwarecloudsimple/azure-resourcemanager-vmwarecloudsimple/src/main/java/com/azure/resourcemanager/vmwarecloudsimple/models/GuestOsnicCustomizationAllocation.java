@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GuestOsnicCustomizationAllocation. */
+/** IP address allocation method. */
 public final class GuestOsnicCustomizationAllocation extends ExpandableStringEnum<GuestOsnicCustomizationAllocation> {
     /** Static value static for GuestOsnicCustomizationAllocation. */
     public static final GuestOsnicCustomizationAllocation STATIC = fromString("static");
 
     /** Static value dynamic for GuestOsnicCustomizationAllocation. */
     public static final GuestOsnicCustomizationAllocation DYNAMIC = fromString("dynamic");
+
+    /**
+     * Creates a new instance of GuestOsnicCustomizationAllocation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GuestOsnicCustomizationAllocation() {
+    }
 
     /**
      * Creates or finds a GuestOsnicCustomizationAllocation from its string representation.
@@ -27,7 +36,11 @@ public final class GuestOsnicCustomizationAllocation extends ExpandableStringEnu
         return fromString(name, GuestOsnicCustomizationAllocation.class);
     }
 
-    /** @return known GuestOsnicCustomizationAllocation values. */
+    /**
+     * Gets known GuestOsnicCustomizationAllocation values.
+     *
+     * @return known GuestOsnicCustomizationAllocation values.
+     */
     public static Collection<GuestOsnicCustomizationAllocation> values() {
         return values(GuestOsnicCustomizationAllocation.class);
     }

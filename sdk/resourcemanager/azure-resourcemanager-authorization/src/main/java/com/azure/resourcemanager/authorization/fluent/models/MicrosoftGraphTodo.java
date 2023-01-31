@@ -27,6 +27,10 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTodo class. */
+    public MicrosoftGraphTodo() {
+    }
+
     /**
      * Get the lists property: The task lists in the users mailbox.
      *
