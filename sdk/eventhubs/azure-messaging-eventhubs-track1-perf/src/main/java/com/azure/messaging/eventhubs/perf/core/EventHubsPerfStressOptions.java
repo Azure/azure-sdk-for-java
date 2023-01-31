@@ -21,10 +21,10 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
     private String paritionKey = null;
 
     @Parameter(names = { "-pi", "--partitionId" }, description = "Target Partition Id")
-    private int paritionId = 0;
+    private Integer paritionId = 0;
 
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
-    private String consumerGroup;
+    private String consumerGroup = "$Default";
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
     private int prefetch = 500;
@@ -65,7 +65,7 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
      * Get the target partition id.
      * @return The target partition id.
      */
-    public int getPartitionId() {
+    public Integer getPartitionId() {
         return paritionId;
     }
 

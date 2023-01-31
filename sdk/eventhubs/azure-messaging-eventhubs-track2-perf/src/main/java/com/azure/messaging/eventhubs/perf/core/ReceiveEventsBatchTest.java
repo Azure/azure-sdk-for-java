@@ -1,17 +1,11 @@
 package com.azure.messaging.eventhubs.perf.core;
 
-import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class ReceiveEventsTest extends ServiceBatchTest<EventHubsPerfOptions> {
+public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     private EventHubConsumerClient eventHubConsumerClient;
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
 
@@ -21,7 +15,7 @@ public class ReceiveEventsTest extends ServiceBatchTest<EventHubsPerfOptions> {
      * @param options The options bag to use to run performance test.
      * @throws IllegalStateException when expected configuration of environment variables is not found.
      */
-    public ReceiveEventsTest(EventHubsPerfOptions options) throws IllegalStateException {
+    public ReceiveEventsBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
         super(options);
         if(options.getPartitionId() != null) {
             throw new IllegalStateException("Partition Id not required/supported for this test case.");
