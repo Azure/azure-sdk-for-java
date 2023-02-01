@@ -40,6 +40,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -362,7 +364,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         // configure preferredLocation, no of proactive connection regions, no of containers
         return new Object[][] {
             new Object[]{preferredLocations, 2, 1},
-            new Object[]{List.of("R1", "R2", "R3", "R4", "R5", "R6"), 6, 1}
+            new Object[]{
+                Collections.unmodifiableList(
+                    Arrays.asList("R1", "R2", "R3", "R4", "R5", "R6")),
+                6,
+                1
+            }
         };
     }
 
