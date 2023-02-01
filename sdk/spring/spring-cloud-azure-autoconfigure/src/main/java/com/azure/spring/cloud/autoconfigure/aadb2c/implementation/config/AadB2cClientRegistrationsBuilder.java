@@ -15,23 +15,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties.DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
- * A builder for {@link AadB2cClientRegistrationRepositoryBuilder}.
+ * This class provides a fluent builder API to help aid the instantiation of {@link ClientRegistration}
+ * for Azure AD B2C OAuth2 Client.
  */
 public final class AadB2cClientRegistrationsBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadB2cClientRegistrationsBuilder.class);
-
-    private static final String USER_FLOW_INSTANCE_ID_PREFIX = "B2C_1_";
     private String clientId;
     private String clientSecret;
     private String tenantId;
@@ -40,23 +38,16 @@ public final class AadB2cClientRegistrationsBuilder {
     private String baseUri;
 
     private final Map<String, Tuple2<AuthorizationGrantType, Set<String>>> authorizationClients = new HashMap<>();
-    private String signInUserFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
+    private String signInUserFlow;
 
     private Set<String> userFlows = Collections.emptySet();
 
-    private final AadB2cClientRegistrationRepositoryBuilder repositoryBuilder;
-    private final AadB2cClientRegistrationRepositoryBuilderConfigurer configurer;
+    /**
+     * Creates a builder instance that is used to build {@link AadB2cClientRegistrations}.
+     */
+    public AadB2cClientRegistrationsBuilder() {
 
-    public AadB2cClientRegistrationsBuilder(AadB2cClientRegistrationRepositoryBuilder repositoryBuilder) {
-        this.repositoryBuilder = repositoryBuilder;
-        this.configurer = new AadB2cClientRegistrationConfigurer();
-        this.repositoryBuilder.configure(this.configurer);
     }
-
-    public AadB2cClientRegistrationRepositoryBuilder and() {
-        return repositoryBuilder;
-    }
-
 
     /**
      * Sets the client identifier.
@@ -119,15 +110,16 @@ public final class AadB2cClientRegistrationsBuilder {
         return this;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public AadB2cClientRegistrationsBuilder authorizationClient(String registrationId,
                                                                 AuthorizationGrantType authorizationGrantType,
-                                                                String... scope) {
-        Set<String> scopes = Collections.emptySet();
-        if (scope != null && scope.length > 0) {
-            scopes = Collections.unmodifiableSet(new LinkedHashSet(Arrays.asList(scope)));
+                                                                String... scopes) {
+        Set<String> clientScopes = Collections.emptySet();
+        if (scopes != null && scopes.length > 0) {
+            clientScopes = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(scopes)));
         }
 
-        this.authorizationClients.put(registrationId, Tuples.of(authorizationGrantType, scopes));
+        this.authorizationClients.put(registrationId, Tuples.of(authorizationGrantType, clientScopes));
 
         return this;
     }
@@ -156,82 +148,82 @@ public final class AadB2cClientRegistrationsBuilder {
         return this;
     }
 
-    private class AadB2cClientRegistrationConfigurer implements AadB2cClientRegistrationRepositoryBuilderConfigurer {
-        @Override
-        public void configure(AadB2cClientRegistrationRepositoryBuilder builder) {
-            // TODO validate properties
+    /**
+     * Creates an {@link AadB2cClientRegistrations} based on configuration in the builder.
+     * @return an {@link AadB2cClientRegistrations} created from the configurations in this builder.
+     */
+    public AadB2cClientRegistrations build() {
+        // TODO validate properties
 
-            List<ClientRegistration> registrations = new ArrayList<>();
+        List<ClientRegistration> registrations = new ArrayList<>();
+        Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
-            final List<ClientRegistration> userFlowRegistrations = userFlows
-                .stream()
-                .map(flow -> buildClientRegistration(flow))
-                .collect(Collectors.toList());
+        final List<ClientRegistration> userFlowRegistrations =
+            Stream.concat(Stream.of(signInUserFlow), userFlows.stream())
+                  .map(this::buildClientRegistration)
+                  .collect(Collectors.toList());
 
-            final List<ClientRegistration> authorizationClientRegistrations = authorizationClients
-                .entrySet()
-                .stream()
-                .map(entry -> buildClientRegistration(entry.getKey(), entry.getValue().getT1(), entry.getValue().getT2()))
-                .collect(Collectors.toList());
+        final List<ClientRegistration> authorizationClientRegistrations = authorizationClients
+            .entrySet()
+            .stream()
+            .map(entry -> buildClientRegistration(entry.getKey(), entry.getValue().getT1(), entry.getValue().getT2()))
+            .collect(Collectors.toList());
+        registrations.addAll(userFlowRegistrations);
+        registrations.addAll(authorizationClientRegistrations);
 
-            registrations.addAll(userFlowRegistrations);
-            registrations.addAll(authorizationClientRegistrations);
+        nonSignInClientRegistrationIds.addAll(userFlows);
+        nonSignInClientRegistrationIds.addAll(authorizationClients.keySet());
+        return new AadB2cClientRegistrations(registrations, nonSignInClientRegistrationIds);
+    }
 
-            builder.clientRegistrations(registrations.toArray(new ClientRegistration[0]));
-
-            builder.nonSignInClientRegistrationIds(userFlows.stream().filter(f -> !f.equals(signInUserFlow)).toArray(String[]::new));
+    /**
+     * Build OAuth2 {@link ClientRegistration} of authorization code authorization grant, it's used for Azure AD B2C user flow configuration.
+     * @param userFlow the user flow instance id.
+     * @return the client registration for the user flow instance.
+     */
+    private ClientRegistration buildClientRegistration(String userFlow) {
+        Map<String, Object> providerConfigurationMetadata = null;
+        if (userFlow.equals(signInUserFlow)) {
+            providerConfigurationMetadata = new HashMap<>();
+            providerConfigurationMetadata.put("end_session_endpoint", AadB2cUrl.getEndSessionUrl(baseUri, userFlow));
         }
+        return ClientRegistration.withRegistrationId(userFlow)
+                                 .clientName(userFlow)
+                                 .clientId(clientId)
+                                 .clientSecret(clientSecret)
+                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                 .redirectUri(replyUrl)
+                                 .scope(clientId, "openid", "offline_access")
+                                 .authorizationUri(AadB2cUrl.getAuthorizationUrl(baseUri))
+                                 .tokenUri(AadB2cUrl.getTokenUrl(baseUri, userFlow))
+                                 .jwkSetUri(AadB2cUrl.getJwkSetUrl(baseUri, userFlow))
+                                 .userNameAttributeName(userNameAttributeName)
+                                 .providerConfigurationMetadata(providerConfigurationMetadata)
+                                 .build();
+    }
 
-        /**
-         * Build xxx
-         * @param userFlow
-         * @return
-         */
-        private ClientRegistration buildClientRegistration(String userFlow) {
-            Map<String, Object> providerConfigurationMetadata = null;
-            if (userFlow.equals(signInUserFlow)) {
-                providerConfigurationMetadata = new HashMap<>();
-                providerConfigurationMetadata.put("end_session_endpoint", AadB2cUrl.getEndSessionUrl(baseUri, userFlow));
-            }
-            return ClientRegistration.withRegistrationId(userFlow)
-                .clientName(userFlow)
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri(replyUrl)
-                .scope(clientId, "openid", "offline_access")
-                .authorizationUri(AadB2cUrl.getAuthorizationUrl(baseUri))
-                .tokenUri(AadB2cUrl.getTokenUrl(baseUri, userFlow))
-                .jwkSetUri(AadB2cUrl.getJwkSetUrl(baseUri, userFlow))
-                .userNameAttributeName(userNameAttributeName)
-                .providerConfigurationMetadata(providerConfigurationMetadata)
-                .build();
-        }
-
-        /**
-         *
-         * @param clientRegistrationId
-         * @param authorizationGrantType
-         * @param scopes
-         * @return
-         */
-        private ClientRegistration buildClientRegistration(String clientRegistrationId,
-                                                           AuthorizationGrantType authorizationGrantType,
-                                                           Set<String> scopes) {
-            Assert.isTrue(CLIENT_CREDENTIALS.equals(authorizationGrantType),
-                "The authorization type of the " + clientRegistrationId + " client registration is not supported.");
-            return ClientRegistration.withRegistrationId(clientRegistrationId)
-                .clientName(clientRegistrationId)
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .authorizationGrantType(authorizationGrantType)
-                .scope(scopes)
-                .tokenUri(AadB2cUrl.getAADTokenUrl(tenantId))
-                .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(tenantId))
-                .build();
-        }
-
+    /**
+     * Build OAuth2 {@link ClientRegistration} of client credentials authorization grant type.
+     * @param clientRegistrationId the OAuth2 client registration id.
+     * @param authorizationGrantType the authorization grant type.
+     * @param scopes the resource identifier (application ID URI).
+     * @return the client registration for Azure AD B2C authorization client.
+     */
+    private ClientRegistration buildClientRegistration(String clientRegistrationId,
+                                                       AuthorizationGrantType authorizationGrantType,
+                                                       Set<String> scopes) {
+        Assert.isTrue(CLIENT_CREDENTIALS.equals(authorizationGrantType),
+            "The authorization type of the " + clientRegistrationId + " client registration is not supported.");
+        return ClientRegistration.withRegistrationId(clientRegistrationId)
+                                 .clientName(clientRegistrationId)
+                                 .clientId(clientId)
+                                 .clientSecret(clientSecret)
+                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                                 .authorizationGrantType(authorizationGrantType)
+                                 .scope(scopes)
+                                 .tokenUri(AadB2cUrl.getAADTokenUrl(tenantId))
+                                 .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(tenantId))
+                                 .build();
     }
 }

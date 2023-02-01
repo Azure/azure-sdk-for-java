@@ -13,7 +13,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * A representation of a OAuth2 Client registration for Azure AD B2C.
+ * This class provides a fluent builder API to help aid the instantiation of
+ * {@link AadB2cClientRegistrationRepository} for Azure AD B2C OAuth2 Client repository.
  */
 public class AadB2cClientRegistrationRepositoryBuilder {
 
@@ -24,8 +25,18 @@ public class AadB2cClientRegistrationRepositoryBuilder {
 
     private final Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
-    public AadB2cClientRegistrationsBuilder b2cClientRegistration() {
-        return new AadB2cClientRegistrationsBuilder(this);
+    /**
+     * Build client registrations of one application registered in Azure AD B2C, the
+     * {@link AadB2cClientRegistrationsBuilder} will carry the actual client registration
+     * creation and return an {@link AadB2cClientRegistrations} for the repository builder.
+     * @param builder the builder to build an {@link AadB2cClientRegistrations}.
+     * @return the updated AadB2cClientRegistrationRepositoryBuilder.
+     */
+    public AadB2cClientRegistrationRepositoryBuilder b2cClientRegistrations(AadB2cClientRegistrationsBuilder builder) {
+        final AadB2cClientRegistrations aadB2cClientRegistrations = builder.build();
+        this.clientRegistrations(aadB2cClientRegistrations.getClientRegistrations().toArray(new ClientRegistration[0]));
+        this.nonSignInClientRegistrationIds(aadB2cClientRegistrations.getNonSignInClientRegistrationIds().toArray(String[]::new));
+        return this;
     }
 
     public AadB2cClientRegistrationRepositoryBuilder clientRegistrations(ClientRegistration... clientRegistrations) {
@@ -38,16 +49,20 @@ public class AadB2cClientRegistrationRepositoryBuilder {
         return this;
     }
 
-    public AadB2cClientRegistrationRepositoryBuilder configure(AadB2cClientRegistrationRepositoryBuilderConfigurer configurer) {
+    public AadB2cClientRegistrationRepositoryBuilder addRepositoryBuilderConfigurer(AadB2cClientRegistrationRepositoryBuilderConfigurer configurer) {
         this.configurers.add(configurer);
         return this;
     }
 
+    /**
+     * Build client registration repository for Azure AD B2C.
+     * @return an {@link AadB2cClientRegistrationRepository} created from the configuration in this builder.
+     */
     public AadB2cClientRegistrationRepository build() {
         if (this.building.compareAndSet(false, true)) {
             return doBuild();
         }
-        throw new IllegalStateException("This clientRegistrationRepository has already been built");
+        throw new IllegalStateException("This AadB2cClientRegistrationRepository has already been built");
     }
 
     private AadB2cClientRegistrationRepository doBuild() {
@@ -58,5 +73,4 @@ public class AadB2cClientRegistrationRepositoryBuilder {
             return new AadB2cClientRegistrationRepository(this.clientRegistrations, this.nonSignInClientRegistrationIds);
         }
     }
-
 }

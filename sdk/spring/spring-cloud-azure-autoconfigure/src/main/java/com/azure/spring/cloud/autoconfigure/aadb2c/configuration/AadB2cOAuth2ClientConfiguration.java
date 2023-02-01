@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config.AadB2cClientRegistrationRepositoryBuilder;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config.AadB2cClientRegistrationRepositoryBuilderConfigurer;
@@ -35,8 +34,11 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 
+import java.util.Collection;
+
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter.getClientRegistrations;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -69,36 +71,44 @@ public class AadB2cOAuth2ClientConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cClientRegistrationRepository clientRegistrationRepository(
+    public ClientRegistrationRepository clientRegistrationRepository(
         ObjectProvider<OAuth2ClientProperties> oAuth2ClientPropertiesProvider,
         ObjectProvider<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurersProvider) {
         final AadB2cClientRegistrationRepositoryBuilder repositoryBuilder = new AadB2cClientRegistrationRepositoryBuilder();
-
-        final AadB2cClientRegistrationsBuilder clientRegistrationsBuilder = repositoryBuilder
-            .b2cClientRegistration()
-            .clientId(properties.getCredential().getClientId())
-            .clientSecret(properties.getCredential().getClientSecret())
-            .tenantId(properties.getProfile().getTenantId())
-            .baseUri(properties.getBaseUri())
-            .signInUserFlow(properties.getLoginFlow())
-            .replyUrl(properties.getReplyUrl())
-            .userNameAttributeName(properties.getUserNameAttributeName())
-            .userFlows(properties.getUserFlows().values().toArray(new String[0]));
-
+        final AadB2cClientRegistrationsBuilder clientRegistrationsBuilder = new AadB2cClientRegistrationsBuilder()
+                .clientId(properties.getCredential().getClientId())
+                .clientSecret(properties.getCredential().getClientSecret())
+                .tenantId(properties.getProfile().getTenantId())
+                .baseUri(properties.getBaseUri())
+                .signInUserFlow(properties.getUserFlows().get(properties.getLoginFlow()))
+                .replyUrl(properties.getReplyUrl())
+                .userNameAttributeName(properties.getUserNameAttributeName())
+                .userFlows(properties.getUserFlows()
+                                     .entrySet()
+                                     .stream()
+                                     .filter(entry -> !entry.getKey().equals(properties.getLoginFlow()))
+                                     .map(entry -> entry.getValue())
+                                     .toArray(String[]::new));
         properties.getAuthorizationClients()
-            .entrySet()
-            .forEach(entry ->
-                clientRegistrationsBuilder.authorizationClient(
-                    entry.getKey(),
-                    entry.getValue().getAuthorizationGrantType(),
-                    entry.getValue().getScopes().toArray(new String[0])
-                )
-            );
-
-        oAuth2ClientPropertiesProvider.ifAvailable(properties -> repositoryBuilder.clientRegistrations(
-            getClientRegistrations(properties).values().toArray(new ClientRegistration[0]))
-        );
-        configurersProvider.orderedStream().forEach(repositoryBuilder::configure);
+                  .entrySet()
+                  .forEach(entry ->
+                      clientRegistrationsBuilder.authorizationClient(
+                          entry.getKey(),
+                          entry.getValue().getAuthorizationGrantType(),
+                          entry.getValue().getScopes().toArray(new String[0])
+                      )
+                  );
+        repositoryBuilder.b2cClientRegistrations(clientRegistrationsBuilder);
+        oAuth2ClientPropertiesProvider.ifAvailable(properties -> {
+            Collection<ClientRegistration> oauth2Registrations = getClientRegistrations(properties).values();
+            repositoryBuilder.clientRegistrations(oauth2Registrations.toArray(new ClientRegistration[0]));
+            repositoryBuilder.nonSignInClientRegistrationIds(
+                oauth2Registrations.stream()
+                                   .filter(client -> !AUTHORIZATION_CODE.equals(client.getAuthorizationGrantType()))
+                                   .map(ClientRegistration::getRegistrationId)
+                                   .toArray(String[]::new));
+        });
+        configurersProvider.orderedStream().forEach(repositoryBuilder::addRepositoryBuilderConfigurer);
         return repositoryBuilder.build();
     }
 

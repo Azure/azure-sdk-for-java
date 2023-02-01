@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * An AAD B2C {@link ClientRegistrationRepository} implementation, it will manage all the client registrations
- * from user flow instances and native OAuth2 clients.
+ * from user flow instances, authorization client and native OAuth2 clients.
  */
 public class AadB2cClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
@@ -37,8 +37,7 @@ public class AadB2cClientRegistrationRepository implements ClientRegistrationRep
 
     @Override
     public Iterator<ClientRegistration> iterator() {
-        final Iterable<ClientRegistration> iterable = () -> this.delegate.iterator();
-
+        final Iterable<ClientRegistration> iterable = this.delegate::iterator;
         return StreamSupport.stream(iterable.spliterator(), false)
             .filter(cr -> !this.nonSignInClientRegistrationIds.contains(cr.getRegistrationId()))
             .iterator();
