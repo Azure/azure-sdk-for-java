@@ -25,7 +25,8 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.CL
 
 /**
  * This class provides a fluent builder API to help aid the instantiation of {@link ClientRegistration}
- * for Azure AD B2C OAuth2 Client.
+ * for Azure AD B2C OAuth2 Client, they serve as a set of client registration information corresponding
+ * to an application registered in Azure AD B2C.
  */
 public final class AadB2cClientRegistrationsBuilder {
 
@@ -177,7 +178,7 @@ public final class AadB2cClientRegistrationsBuilder {
     }
 
     /**
-     * Build OAuth2 {@link ClientRegistration} of authorization code authorization grant, it's used for Azure AD B2C user flow configuration.
+     * Build OAuth2 login {@link ClientRegistration} of authorization code authorization grant, it's used for one Azure AD B2C user flow configuration.
      * @param userFlow the user flow instance id.
      * @return the client registration for the user flow instance.
      */
@@ -205,6 +206,7 @@ public final class AadB2cClientRegistrationsBuilder {
 
     /**
      * Build OAuth2 {@link ClientRegistration} of client credentials authorization grant type.
+     * It represents a unique resource client in an application registered with Azure AD B2C.
      * @param clientRegistrationId the OAuth2 client registration id.
      * @param authorizationGrantType the authorization grant type.
      * @param scopes the resource identifier (application ID URI).

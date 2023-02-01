@@ -20,9 +20,7 @@ public class AadB2cClientRegistrationRepositoryBuilder {
 
     private final AtomicBoolean building = new AtomicBoolean();
     private final List<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurers = new ArrayList<>();
-
     private final List<ClientRegistration> clientRegistrations = new ArrayList<>();
-
     private final Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
     /**
@@ -35,10 +33,11 @@ public class AadB2cClientRegistrationRepositoryBuilder {
     public AadB2cClientRegistrationRepositoryBuilder b2cClientRegistrations(AadB2cClientRegistrationsBuilder builder) {
         final AadB2cClientRegistrations aadB2cClientRegistrations = builder.build();
         this.clientRegistrations(aadB2cClientRegistrations.getClientRegistrations().toArray(new ClientRegistration[0]));
-        this.nonSignInClientRegistrationIds(aadB2cClientRegistrations.getNonSignInClientRegistrationIds().toArray(String[]::new));
+        this.nonSignInClientRegistrationIds(
+            aadB2cClientRegistrations.getNonSignInClientRegistrationIds()
+                                     .toArray(new String[0]));
         return this;
     }
-
     public AadB2cClientRegistrationRepositoryBuilder clientRegistrations(ClientRegistration... clientRegistrations) {
         Arrays.stream(clientRegistrations).forEach(this.clientRegistrations::add);
         return this;
