@@ -16,13 +16,14 @@ public interface Communications {
      *
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response}.
      */
-    CheckNameAvailabilityOutput checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput);
+    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
+        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
@@ -30,14 +31,13 @@ public interface Communications {
      *
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API.
      */
-    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+    CheckNameAvailabilityOutput checkNameAvailability(
+        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput);
 
     /**
      * Lists all communications (attachments not included) for a support ticket. &lt;br/&gt;&lt;/br&gt; You can also
@@ -51,7 +51,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationDetails> list(String supportTicketName);
 
@@ -73,9 +73,22 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationDetails> list(String supportTicketName, Integer top, String filter, Context context);
+
+    /**
+     * Returns communication details for a support ticket.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param communicationName Communication name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that represents a Communication resource along with {@link Response}.
+     */
+    Response<CommunicationDetails> getWithResponse(String supportTicketName, String communicationName, Context context);
 
     /**
      * Returns communication details for a support ticket.
@@ -92,24 +105,11 @@ public interface Communications {
     /**
      * Returns communication details for a support ticket.
      *
-     * @param supportTicketName Support ticket name.
-     * @param communicationName Communication name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
-     */
-    Response<CommunicationDetails> getWithResponse(String supportTicketName, String communicationName, Context context);
-
-    /**
-     * Returns communication details for a support ticket.
-     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response}.
      */
     CommunicationDetails getById(String id);
 
@@ -121,7 +121,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response}.
      */
     Response<CommunicationDetails> getByIdWithResponse(String id, Context context);
 

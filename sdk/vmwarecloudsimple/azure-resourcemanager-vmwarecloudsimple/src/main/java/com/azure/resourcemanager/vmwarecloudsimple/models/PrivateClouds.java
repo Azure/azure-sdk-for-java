@@ -11,30 +11,51 @@ import com.azure.core.util.Context;
 /** Resource collection API of PrivateClouds. */
 public interface PrivateClouds {
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> list(String regionId);
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> list(String regionId, Context context);
 
     /**
-     * Returns private cloud by its name.
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
+     *
+     * @param pcName The private cloud name.
+     * @param regionId The region Id (westus, eastus).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private cloud model along with {@link Response}.
+     */
+    Response<PrivateCloud> getWithResponse(String pcName, String regionId, Context context);
+
+    /**
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -44,17 +65,4 @@ public interface PrivateClouds {
      * @return private cloud model.
      */
     PrivateCloud get(String pcName, String regionId);
-
-    /**
-     * Returns private cloud by its name.
-     *
-     * @param pcName The private cloud name.
-     * @param regionId The region Id (westus, eastus).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private cloud model.
-     */
-    Response<PrivateCloud> getWithResponse(String pcName, String regionId, Context context);
 }

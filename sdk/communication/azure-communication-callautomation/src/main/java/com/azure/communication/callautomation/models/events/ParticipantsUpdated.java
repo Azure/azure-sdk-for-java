@@ -3,9 +3,9 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
+import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +24,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
      * List of current participants in the call.
      */
     @JsonIgnore
-    private final List<CommunicationIdentifier> participants;
+    private final List<CallParticipant> participants;
 
     @JsonCreator
     private ParticipantsUpdated(@JsonProperty("participants") List<Map<String, Object>> participants) {
@@ -32,10 +32,10 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants
             .stream()
-            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
+            .map(item -> mapper.convertValue(item, CallParticipantInternal.class))
             .collect(Collectors.toList())
             .stream()
-            .map(CommunicationIdentifierConverter::convert)
+            .map(CallParticipantConverter::convert)
             .collect(Collectors.toList());
     }
 
@@ -44,7 +44,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
      *
      * @return the participants value.
      */
-    public List<CommunicationIdentifier> getParticipants() {
+    public List<CallParticipant> getParticipants() {
         return this.participants;
     }
 }

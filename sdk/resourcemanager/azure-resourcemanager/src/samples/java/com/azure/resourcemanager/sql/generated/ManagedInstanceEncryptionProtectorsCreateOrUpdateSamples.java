@@ -30,7 +30,7 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new ManagedInstanceEncryptionProtectorInner()
-                    .withServerKeyName("someVault_someKey_01234567890123456789012345678901")
+                    .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT)
                     .withAutoRotationEnabled(false),
                 Context.NONE);
@@ -56,7 +56,7 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new ManagedInstanceEncryptionProtectorInner()
-                    .withServerKeyName("ServiceManaged")
+                    .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.SERVICE_MANAGED),
                 Context.NONE);
     }

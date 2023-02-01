@@ -55,7 +55,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseRestoreDetailsService {
+    public interface ManagedDatabaseRestoreDetailsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

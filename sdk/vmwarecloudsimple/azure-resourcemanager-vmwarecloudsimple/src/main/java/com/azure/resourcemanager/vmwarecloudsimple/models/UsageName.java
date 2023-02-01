@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User name model. */
 @Fluent
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
-
     /*
      * e.g. "Virtual Machines"
      */
@@ -25,6 +21,10 @@ public final class UsageName {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of UsageName class. */
+    public UsageName() {
+    }
 
     /**
      * Get the localizedValue property: e.g. "Virtual Machines".

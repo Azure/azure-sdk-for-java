@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "00720877-55b4-48e5-82d2-cb7ec73721b9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "00720877-55b4-48e5-82d2-cb7ec73721b9",
+      "StatusCode" : "201",
+      "Date" : "Tue, 17 Jan 2023 20:46:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "00720877-55b4-48e5-82d2-cb7ec73721b9",
+      "ETag" : "W/\"0x8DAF8CBE319EF9C\"",
+      "elapsed-time" : "41",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "620",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBE319EF9C\\\"\",\"name\":\"sentiment-skillset75772dd34dd42dfee\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "00720877-55b4-48e5-82d2-cb7ec73721b9",
+      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('sentiment-skillset75772dd34dd42dfee')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('sentiment-skillset75772dd34dd42dfee')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8b612792-4af5-4afb-82fb-8be9773ba371"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8b612792-4af5-4afb-82fb-8be9773ba371",
+      "elapsed-time" : "25",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8b612792-4af5-4afb-82fb-8be9773ba371",
+      "StatusCode" : "204",
+      "Date" : "Tue, 17 Jan 2023 20:46:19 GMT",
+      "x-ms-client-request-id" : "8b612792-4af5-4afb-82fb-8be9773ba371"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sentiment-skillset75772dd34dd42dfee" ]
+}

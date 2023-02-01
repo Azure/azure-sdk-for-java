@@ -70,7 +70,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientB")
-    private interface BackupShortTermRetentionPoliciesService {
+    public interface BackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

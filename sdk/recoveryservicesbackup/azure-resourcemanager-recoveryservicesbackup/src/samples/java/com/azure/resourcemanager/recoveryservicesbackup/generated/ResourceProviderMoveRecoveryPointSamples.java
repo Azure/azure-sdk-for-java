@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
 
 /** Samples for ResourceProvider MoveRecoveryPoint. */
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/TriggerRecoveryPointMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/TriggerRecoveryPointMove_Post.json
      */
     /**
      * Sample code: Trigger RP Move Operation.
@@ -33,6 +32,6 @@ public final class ResourceProviderMoveRecoveryPointSamples {
                     .withObjectType("MoveRPAcrossTiersRequest")
                     .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
                     .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

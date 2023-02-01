@@ -23,6 +23,10 @@ public final class OperationStatusInner extends OperationStatusResult {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
+
     /**
      * Get the properties property: Additional properties from RP, only when operation is successful.
      *

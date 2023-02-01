@@ -100,22 +100,6 @@ public interface PatchSchedulesClient {
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisPatchScheduleInner createOrUpdate(
-        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
-
-    /**
-     * Create or replace the patching schedule for Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,6 +113,22 @@ public interface PatchSchedulesClient {
         DefaultName defaultParameter,
         RedisPatchScheduleInner parameters,
         Context context);
+
+    /**
+     * Create or replace the patching schedule for Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to put/get patch schedules for Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisPatchScheduleInner createOrUpdate(
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Deletes the patching schedule of a redis cache.
@@ -164,19 +164,6 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name, DefaultName defaultParameter);
-
-    /**
-     * Deletes the patching schedule of a redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,6 +173,19 @@ public interface PatchSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String name, DefaultName defaultParameter, Context context);
+
+    /**
+     * Deletes the patching schedule of a redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String name, DefaultName defaultParameter);
 
     /**
      * Gets the patching schedule of a redis cache.
@@ -223,20 +223,6 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisPatchScheduleInner get(String resourceGroupName, String name, DefaultName defaultParameter);
-
-    /**
-     * Gets the patching schedule of a redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,4 +232,18 @@ public interface PatchSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RedisPatchScheduleInner> getWithResponse(
         String resourceGroupName, String name, DefaultName defaultParameter, Context context);
+
+    /**
+     * Gets the patching schedule of a redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the patching schedule of a redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisPatchScheduleInner get(String resourceGroupName, String name, DefaultName defaultParameter);
 }

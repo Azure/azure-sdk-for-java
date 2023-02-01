@@ -56,7 +56,7 @@ public final class EndpointCertificatesClientImpl implements EndpointCertificate
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
-    private interface EndpointCertificatesService {
+    public interface EndpointCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
