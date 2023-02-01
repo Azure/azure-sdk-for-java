@@ -10,6 +10,8 @@
 - Added `BinaryData.fromListByteBuffer(List<ByteBuffer>)` to support additional ways to create `BinaryData`. ([#32932](https://github.com/Azure/azure-sdk-for-java/pull/32932))
 - Added `TracingOptions` to make tracing configurable. ([#32573](https://github.com/Azure/azure-sdk-for-java/pull/32573))
 - Added support for links, start timestamp, W3C trace-context propagation, and numerical attributes in tracing.
+- Tracing plugins are no longer required to implement `AfterRetryPolicyProvider` as tracing is now handled by
+  `InstrumentationPolicy` using the provided `Tracer` implementation.
 
 ### Breaking Changes
 
