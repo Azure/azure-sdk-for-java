@@ -3,9 +3,9 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.utils.TestUtils
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import spock.lang.Requires
 
 class StorageFileInputOutputStreamTests extends APISpec {
     def fileClient
@@ -42,7 +42,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
             throw new UncheckedIOException(ex)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
+        TestUtils.assertArraysEqual(randomBytes, randomBytes2)
     }
 
 
@@ -69,6 +69,6 @@ class StorageFileInputOutputStreamTests extends APISpec {
             throw new UncheckedIOException(ex)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 2 * Constants.MB, 9 * Constants.MB)
+        TestUtils.assertArraysEqual(Arrays.copyOfRange(randomBytes, 2 * Constants.MB, 9 * Constants.MB), randomBytes2)
     }
 }

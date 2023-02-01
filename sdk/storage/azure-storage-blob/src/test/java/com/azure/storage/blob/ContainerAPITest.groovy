@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
@@ -39,7 +38,6 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -960,6 +958,7 @@ class ContainerAPITest extends APISpec {
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
+        // TODO (alzimmer): Should reduce the polling duration.
         copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()

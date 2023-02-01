@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -1580,24 +1581,24 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
-        def "Async buffered upload"() {
-            setup:
-            def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
-                .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
-                .getBlobAsyncClient(blobAsyncClient.getBlobName())
+    def "Async buffered upload"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
 
-            when:
-            def data = getRandomData(dataSize)
-            ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
-            blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
-            data.position(0)
+        when:
+        def data = getRandomByteArray(dataSize)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
+        blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(data)), parallelTransferOptions, true).block()
+        data.position(0)
 
-            then:
-            // Due to memory issues, this check only runs on small to medium sized data sets.
-            if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
-                .assertNext({ assert it == data })
-                .verifyComplete()
+        then:
+        // Due to memory issues, this check only runs on small to medium sized data sets.
+        if (dataSize < 100 * 1024 * 1024) {
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.download(), data.length))
+            .assertNext({ TestUtils.assertArraysEqual(data, it) })
+            .verifyComplete()
         }
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))

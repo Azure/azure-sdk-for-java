@@ -3,7 +3,7 @@
 
 package com.azure.storage.file.share.specialized
 
-import com.azure.core.http.rest.Response
+
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
 import com.azure.storage.file.share.ShareClient
@@ -266,8 +266,6 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(shareClient, leaseID)
 
         when:
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000)
         def renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null)
 
         then:
@@ -392,10 +390,6 @@ class LeaseAPITest extends APISpec {
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
         breakLeaseResponse.getValue() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.getHeaders())
-        if (breakPeriod != null) {
-            // If running in live mode wait for the lease to break so we can delete the share after the test completes
-            sleepIfRecord(breakPeriod * 1000)
-        }
 
         where:
         leaseTime | breakPeriod | remainingTime
