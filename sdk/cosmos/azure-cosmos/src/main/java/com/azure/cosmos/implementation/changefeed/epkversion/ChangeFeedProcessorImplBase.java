@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -57,7 +58,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
     private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
-
     private final String hostName;
     private final ChangeFeedContextClient feedContextClient;
     private final ChangeFeedContextClient leaseContextClient;
@@ -67,7 +67,9 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private final Scheduler scheduler;
 
     private volatile String databaseResourceId;
+    private volatile String databaseId;
     private volatile String collectionResourceId;
+    private volatile String collectionId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
     private HealthMonitor healthMonitor;
@@ -257,12 +259,14 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .readDatabase(this.feedContextClient.getDatabaseClient(), null)
                 .map(databaseResourceResponse -> {
                     this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
+                    this.databaseId = databaseResourceResponse.getProperties().getId();
                     return this.databaseResourceId;
                 })
                 .flatMap( id -> this.feedContextClient
                         .readContainer(this.feedContextClient.getContainerClient(), null)
                         .map(documentCollectionResourceResponse -> {
                             this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
+                            this.collectionId = documentCollectionResourceResponse.getProperties().getId();
                             return this;
                         }));
     }
@@ -287,6 +291,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .requestOptionsFactory(requestOptionsFactory)
                                     .hostName(this.hostName)
                                     .build();
+
                         return Mono.just(this.leaseStoreManager);
                     });
         }
@@ -319,20 +324,67 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.collectionResourceId);
     }
 
+    private String getPkRangeIdVersionLeasePrefix() {
+        String optionsPrefix = this.changeFeedProcessorOptions.getLeasePrefix();
+
+        if (optionsPrefix == null) {
+            optionsPrefix = "";
+        }
+
+        URI uri = this.feedContextClient.getServiceEndpoint();
+
+        return String.format(
+            "%s%s_%s_%s",
+            optionsPrefix,
+            uri.getHost(),
+            this.databaseId,
+            this.collectionId);
+    }
+
     abstract Class<T> getPartitionProcessorItemType();
+    abstract boolean canBootstrapFromPkRangeIdVersionLeaseStore();
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
         CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
                 this.feedContextClient,
-                this.feedContextClient.getContainerClient(),
+                BridgeInternal.extractContainerSelfLink(this.feedContextClient.getContainerClient()),
                 leaseStoreManager,
                 leaseStoreManager,
                 DEFAULT_DEGREE_OF_PARALLELISM,
-                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE);
+                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+                this.changeFeedProcessorOptions,
+                this.changeFeedMode);
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+        Bootstrapper bootstrapper;
+        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
+
+            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
+            RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
+            LeaseStoreManager pkRangeIdVersionLeaseStoreManager =
+                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
+                    .leasePrefix(pkRangeIdVersionLeasePrefix)
+                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                    .leaseContextClient(this.leaseContextClient)
+                    .requestOptionsFactory(requestOptionsFactory)
+                    .hostName(this.hostName)
+                    .build();
+
+            bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
+                synchronizer,
+                leaseStoreManager,
+                this.lockTime,
+                this.sleepTime,
+                pkRangeIdVersionLeaseStoreManager);
+        } else {
+            bootstrapper = new BootstrapperImpl(
+                synchronizer,
+                leaseStoreManager,
+                this.lockTime,
+                this.sleepTime);
+        }
+
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,

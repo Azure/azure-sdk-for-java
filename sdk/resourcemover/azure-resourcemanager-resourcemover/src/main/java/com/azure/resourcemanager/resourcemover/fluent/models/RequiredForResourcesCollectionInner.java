@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Required for resources collection. */
 @Fluent
 public final class RequiredForResourcesCollectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequiredForResourcesCollectionInner.class);
-
     /*
-     * Gets or sets the list of source Ids for which the input resource is
-     * required.
+     * Gets or sets the list of source Ids for which the input resource is required.
      */
     @JsonProperty(value = "sourceIds")
     private List<String> sourceIds;
+
+    /** Creates an instance of RequiredForResourcesCollectionInner class. */
+    public RequiredForResourcesCollectionInner() {
+    }
 
     /**
      * Get the sourceIds property: Gets or sets the list of source Ids for which the input resource is required.

@@ -57,7 +57,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface DeletedProtectionContainersService {
+    public interface DeletedProtectionContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

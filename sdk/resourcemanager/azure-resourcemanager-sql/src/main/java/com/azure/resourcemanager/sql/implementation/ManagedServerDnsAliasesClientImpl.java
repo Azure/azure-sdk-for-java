@@ -67,7 +67,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedServerDnsAliasesService {
+    public interface ManagedServerDnsAliasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

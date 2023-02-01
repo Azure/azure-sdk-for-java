@@ -14,10 +14,9 @@ import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceList
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
 import com.azure.resourcemanager.servicefabric.models.ServiceResourceList;
 import com.azure.resourcemanager.servicefabric.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
@@ -27,17 +26,6 @@ public final class ServicesImpl implements Services {
         ServicesClient innerClient, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ServiceResource get(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName) {
-        ServiceResourceInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, applicationName, serviceName);
-        if (inner != null) {
-            return new ServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ServiceResource> getWithResponse(
@@ -55,6 +43,17 @@ public final class ServicesImpl implements Services {
         }
     }
 
+    public ServiceResource get(
+        String resourceGroupName, String clusterName, String applicationName, String serviceName) {
+        ServiceResourceInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, applicationName, serviceName);
+        if (inner != null) {
+            return new ServiceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName) {
         this.serviceClient().delete(resourceGroupName, clusterName, applicationName, serviceName);
     }
@@ -62,15 +61,6 @@ public final class ServicesImpl implements Services {
     public void delete(
         String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, applicationName, serviceName, context);
-    }
-
-    public ServiceResourceList list(String resourceGroupName, String clusterName, String applicationName) {
-        ServiceResourceListInner inner = this.serviceClient().list(resourceGroupName, clusterName, applicationName);
-        if (inner != null) {
-            return new ServiceResourceListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ServiceResourceList> listWithResponse(
@@ -88,10 +78,19 @@ public final class ServicesImpl implements Services {
         }
     }
 
+    public ServiceResourceList list(String resourceGroupName, String clusterName, String applicationName) {
+        ServiceResourceListInner inner = this.serviceClient().list(resourceGroupName, clusterName, applicationName);
+        if (inner != null) {
+            return new ServiceResourceListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public ServiceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -99,21 +98,21 @@ public final class ServicesImpl implements Services {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -126,7 +125,7 @@ public final class ServicesImpl implements Services {
     public Response<ServiceResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,21 +133,21 @@ public final class ServicesImpl implements Services {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -159,7 +158,7 @@ public final class ServicesImpl implements Services {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,21 +166,21 @@ public final class ServicesImpl implements Services {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -192,7 +191,7 @@ public final class ServicesImpl implements Services {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,21 +199,21 @@ public final class ServicesImpl implements Services {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));

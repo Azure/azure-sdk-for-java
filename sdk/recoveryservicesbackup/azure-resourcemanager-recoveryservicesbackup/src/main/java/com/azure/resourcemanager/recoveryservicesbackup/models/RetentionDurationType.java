@@ -26,6 +26,15 @@ public final class RetentionDurationType extends ExpandableStringEnum<RetentionD
     public static final RetentionDurationType YEARS = fromString("Years");
 
     /**
+     * Creates a new instance of RetentionDurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RetentionDurationType() {
+    }
+
+    /**
      * Creates or finds a RetentionDurationType from its string representation.
      *
      * @param name a name to look for.

@@ -23,6 +23,9 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of SentimentAnalysisTaskParameters class. */
+    public SentimentAnalysisTaskParameters() {}
+
     /**
      * Get the opinionMining property: The opinionMining property.
      *

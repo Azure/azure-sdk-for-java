@@ -41,9 +41,6 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
-- name: SkipAggregateReports
-  type: boolean
-  default: false
 - name: PreBuildSteps
   type: object
   default: []
@@ -79,7 +76,6 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
@@ -109,7 +105,7 @@ stages:
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
-  - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
     - ${{ parameters.LiveTestStages }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.

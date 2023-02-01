@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of virtual networks. */
 @Fluent
 public final class VirtualNetworkListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkListResponse.class);
-
     /*
      * Link for next list of VirtualNetwork
      */
@@ -27,6 +23,10 @@ public final class VirtualNetworkListResponse {
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkInner> value;
+
+    /** Creates an instance of VirtualNetworkListResponse class. */
+    public VirtualNetworkListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of VirtualNetwork.

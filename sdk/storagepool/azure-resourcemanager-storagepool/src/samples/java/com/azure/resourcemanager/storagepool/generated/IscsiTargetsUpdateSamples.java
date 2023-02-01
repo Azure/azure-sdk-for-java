@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTarget;
@@ -24,7 +23,7 @@ public final class IscsiTargetsUpdateSamples {
         IscsiTarget resource =
             manager
                 .iscsiTargets()
-                .getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", Context.NONE)
+                .getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

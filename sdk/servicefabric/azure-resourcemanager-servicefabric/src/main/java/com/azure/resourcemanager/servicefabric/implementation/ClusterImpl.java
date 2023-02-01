@@ -247,6 +247,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ClusterInner innerModel() {
         return this.innerObject;
     }
@@ -340,15 +344,15 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    public UpgradableVersionPathResult listUpgradableVersions() {
-        return serviceManager.clusters().listUpgradableVersions(resourceGroupName, clusterName);
-    }
-
     public Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
         UpgradableVersionsDescription versionsDescription, Context context) {
         return serviceManager
             .clusters()
             .listUpgradableVersionsWithResponse(resourceGroupName, clusterName, versionsDescription, context);
+    }
+
+    public UpgradableVersionPathResult listUpgradableVersions() {
+        return serviceManager.clusters().listUpgradableVersions(resourceGroupName, clusterName);
     }
 
     public ClusterImpl withRegion(Region location) {

@@ -116,6 +116,13 @@ public interface IscsiTarget {
     List<String> sessions();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetInner object.
      *
      * @return the inner object.

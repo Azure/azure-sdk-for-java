@@ -69,7 +69,7 @@ public final class ManagedServerSecurityAlertPoliciesClientImpl implements Manag
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedServerSecurityAlertPoliciesService {
+    public interface ManagedServerSecurityAlertPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

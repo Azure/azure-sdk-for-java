@@ -59,6 +59,15 @@ public final class BackupItemType extends ExpandableStringEnum<BackupItemType> {
     public static final BackupItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
+     * Creates a new instance of BackupItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupItemType() {
+    }
+
+    /**
      * Creates or finds a BackupItemType from its string representation.
      *
      * @param name a name to look for.

@@ -1,14 +1,16 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.14.1 (2023-02-01)
 
 ### Bugs Fixed
 
+- Fixed a `NullPointerException` when `AssertingClient` is used with a null `skipRequestBiFunction`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
 
 ## 1.14.0 (2023-01-05)
 

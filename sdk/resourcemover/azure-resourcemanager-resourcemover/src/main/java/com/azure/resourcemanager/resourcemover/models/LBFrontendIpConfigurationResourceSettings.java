@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines load balancer frontend IP configuration properties. */
 @Fluent
 public final class LBFrontendIpConfigurationResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LBFrontendIpConfigurationResourceSettings.class);
-
     /*
      * Gets or sets the frontend IP configuration name.
      */
@@ -21,10 +17,8 @@ public final class LBFrontendIpConfigurationResourceSettings {
     private String name;
 
     /*
-     * Gets or sets the IP address of the Load Balancer.This is only specified
-     * if a specific
-     * private IP address shall be allocated from the subnet specified in
-     * subnetRef.
+     * Gets or sets the IP address of the Load Balancer.This is only specified if a specific
+     * private IP address shall be allocated from the subnet specified in subnetRef.
      */
     @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
@@ -46,6 +40,10 @@ public final class LBFrontendIpConfigurationResourceSettings {
      */
     @JsonProperty(value = "zones")
     private String zones;
+
+    /** Creates an instance of LBFrontendIpConfigurationResourceSettings class. */
+    public LBFrontendIpConfigurationResourceSettings() {
+    }
 
     /**
      * Get the name property: Gets or sets the frontend IP configuration name.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection Get. */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get PrivateEndpointConnection.
@@ -21,6 +19,9 @@ public final class PrivateEndpointConnectionGetSamples {
         manager
             .privateEndpointConnections()
             .getWithResponse(
-                "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", Context.NONE);
+                "gaallavaultbvtd2msi",
+                "gaallaRG",
+                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -72,7 +72,7 @@ public final class InstancePoolsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientI")
-    private interface InstancePoolsService {
+    public interface InstancePoolsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools")
         @ExpectedResponses({200})

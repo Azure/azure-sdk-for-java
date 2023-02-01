@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/a005ae14eabf5837763eacd9a62097ce3f5c67e0/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/1fcceb1785e063e75b88436d18b56a04c04dc58d/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -49,8 +49,8 @@ context-client-method-parameter: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
-    from: AcsCallParticipant
-    to: AcsCallParticipantInternal
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
     from: AddParticipantsRequest
     to: AddParticipantsRequestInternal
@@ -147,6 +147,18 @@ directive:
 - rename-model:
     from: Choice
     to: RecognizeChoice
+- rename-model:
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
+- rename-model:
+    from: MuteParticipantsResponse
+    to: MuteParticipantsResponseInternal
+- rename-model:
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
+- rename-model:
+    from: UnmuteParticipantsResponse
+    to: UnmuteParticipantsResponseInternal
 
 # Remove models
 - remove-model: AddParticipantsFailed

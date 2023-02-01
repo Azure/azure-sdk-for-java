@@ -3,14 +3,18 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -34,17 +38,20 @@ public class PartitionSynchronizerImplTests {
     @Test
     public void createAllLeases() {
         ChangeFeedContextClient feedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
-        CosmosAsyncContainer feedContainerMock = Mockito.mock(CosmosAsyncContainer.class);
+        String feedContainerSelfLink = "/db/TestDB/coll/TestContainer";
         LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
         LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = Mockito.mock(ChangeFeedProcessorOptions.class);
 
         PartitionSynchronizerImpl partitionSynchronizer = new PartitionSynchronizerImpl(
                 feedContextClientMock,
-                feedContainerMock,
+                feedContainerSelfLink,
                 leaseContainerMock,
                 leaseManagerMock,
                 1,
-                1);
+                1,
+                changeFeedProcessorOptions,
+                ChangeFeedMode.INCREMENTAL);
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
@@ -83,17 +90,20 @@ public class PartitionSynchronizerImplTests {
     @Test
     public void createMissingLeases() {
         ChangeFeedContextClient feedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
-        CosmosAsyncContainer feedContainerMock = Mockito.mock(CosmosAsyncContainer.class);
+        String feedContainerSelfLink = "/db/TestDB/coll/TestContainer";
         LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
         LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = Mockito.mock(ChangeFeedProcessorOptions.class);
 
         PartitionSynchronizerImpl partitionSynchronizer = new PartitionSynchronizerImpl(
                 feedContextClientMock,
-                feedContainerMock,
+                feedContainerSelfLink,
                 leaseContainerMock,
                 leaseManagerMock,
                 1,
-                1);
+                1,
+                changeFeedProcessorOptions,
+                ChangeFeedMode.INCREMENTAL);
 
         List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
         overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
@@ -135,5 +145,66 @@ public class PartitionSynchronizerImplTests {
         verify(leaseManagerMock, times(1)).createLeaseIfNotExist(feedRangeEpkArgumentCaptor.capture(), any());
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().size()).isEqualTo(1);
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().get(0).getRange()).isEqualTo(overlappingRanges.get(2).toRange());
+    }
+
+    @Test(groups = "unit")
+    public void createMissingLeasesFromPkRangeIdVersionLeases() {
+        ChangeFeedContextClient feedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        String feedContainerSelfLink = "/db/TestDB/coll/TestContainer";
+        LeaseContainer leaseContainerMock = Mockito.mock(LeaseContainer.class);
+        LeaseManager leaseManagerMock = Mockito.mock(LeaseManager.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = Mockito.mock(ChangeFeedProcessorOptions.class);
+
+        PartitionSynchronizerImpl partitionSynchronizer = new PartitionSynchronizerImpl(
+            feedContextClientMock,
+            feedContainerSelfLink,
+            leaseContainerMock,
+            leaseManagerMock,
+            1,
+            1,
+            changeFeedProcessorOptions,
+            ChangeFeedMode.INCREMENTAL);
+
+        List<PartitionKeyRange> overlappingRanges = new ArrayList<>();
+        overlappingRanges.add(new PartitionKeyRange("1", "AA", "BB"));
+        overlappingRanges.add(new PartitionKeyRange("2", "BB", "DD"));
+        overlappingRanges.add(new PartitionKeyRange("3", "DD", "EE"));
+
+        List<Lease> pkRangeIdVersionLeases = new ArrayList<>();
+
+        for (PartitionKeyRange partitionKeyRange : overlappingRanges) {
+            ServiceItemLease pkRangeIdVersionLease =
+                new ServiceItemLease()
+                    .withLeaseToken(partitionKeyRange.getId())
+                    .withETag(String.valueOf(partitionKeyRange.getId()));
+            pkRangeIdVersionLease.setId("TestLease-" + UUID.randomUUID());
+            pkRangeIdVersionLeases.add(pkRangeIdVersionLease);
+        }
+
+        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
+            .thenReturn(Mono.just(overlappingRanges));
+
+        when(leaseContainerMock.getAllLeases()).thenReturn(Flux.empty());
+        when(leaseManagerMock.createLeaseIfNotExist((FeedRangeEpkImpl) any(), any()))
+            .thenReturn(Mono.empty());
+
+        StepVerifier.create(partitionSynchronizer.createMissingLeases(pkRangeIdVersionLeases))
+            .verifyComplete();
+
+        // Verify the new lease will start from the lsn from pk version lease
+        ArgumentCaptor<FeedRangeEpkImpl> feedRangeEpkArgumentCaptor = ArgumentCaptor.forClass(FeedRangeEpkImpl.class);
+        ArgumentCaptor<String> continuationTokenArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(leaseManagerMock, times(3))
+            .createLeaseIfNotExist(feedRangeEpkArgumentCaptor.capture(), continuationTokenArgumentCaptor.capture());
+        assertThat(feedRangeEpkArgumentCaptor.getAllValues().size()).isEqualTo(3);
+        assertThat(continuationTokenArgumentCaptor.getAllValues().size()).isEqualTo(3);
+
+        for (int i = 0; i < pkRangeIdVersionLeases.size(); i++) {
+            assertThat(feedRangeEpkArgumentCaptor.getAllValues().get(i).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
+            ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationTokenArgumentCaptor.getAllValues().get(i));
+            assertThat(changeFeedState.getFeedRange()).isInstanceOf(FeedRangeEpkImpl.class);
+            assertThat(((FeedRangeEpkImpl)changeFeedState.getFeedRange()).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
+            assertThat(changeFeedState.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo(pkRangeIdVersionLeases.get(i).getContinuationToken());
+        }
     }
 }

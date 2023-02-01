@@ -56,7 +56,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ValidateOperationsService {
+    public interface ValidateOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -245,7 +245,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginTriggerAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -264,7 +264,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginTriggerAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**

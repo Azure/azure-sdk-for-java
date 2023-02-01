@@ -65,7 +65,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseExtensionsOperationsService {
+    public interface DatabaseExtensionsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

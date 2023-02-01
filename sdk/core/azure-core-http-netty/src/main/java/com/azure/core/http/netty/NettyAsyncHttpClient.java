@@ -38,6 +38,7 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
@@ -185,6 +186,22 @@ class NettyAsyncHttpClient implements HttpClient {
             })
             .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
                 .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        try {
+            return send(request, context).block();
+        } catch (Exception e) {
+            Throwable unwrapped = Exceptions.unwrap(e);
+            if (unwrapped instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
+            } else if (unwrapped instanceof IOException) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
+            }
+        }
     }
 
     /**

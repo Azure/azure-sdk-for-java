@@ -199,6 +199,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
   type: boolean
   default: true
+- name: release_springcloudazurestarterredis
+  displayName: 'spring-cloud-azure-starter-redis'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -513,3 +517,11 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
+      - name: spring-cloud-azure-starter-redis
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterredis
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterredis }}
