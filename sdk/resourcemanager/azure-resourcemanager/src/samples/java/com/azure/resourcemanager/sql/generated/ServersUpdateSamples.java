@@ -29,7 +29,7 @@ public final class ServersUpdateSamples {
                 "sqlcrudtest-4645",
                 new ServerUpdate()
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("placeholder")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withPublicNetworkAccess(ServerNetworkAccessFlag.DISABLED)
                     .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED),
                 Context.NONE);

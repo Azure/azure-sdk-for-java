@@ -70,7 +70,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerAzureADOnlyAuthenticationsService {
+    public interface ServerAzureADOnlyAuthenticationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

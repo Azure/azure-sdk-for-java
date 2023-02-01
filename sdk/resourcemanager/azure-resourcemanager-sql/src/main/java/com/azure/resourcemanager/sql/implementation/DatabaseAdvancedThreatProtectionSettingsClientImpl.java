@@ -66,7 +66,7 @@ public final class DatabaseAdvancedThreatProtectionSettingsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseAdvancedThreatProtectionSettingsService {
+    public interface DatabaseAdvancedThreatProtectionSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

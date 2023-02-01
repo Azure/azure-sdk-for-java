@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NumberKind. */
+/** The type of the extracted number entity. */
 public final class NumberKind extends ExpandableStringEnum<NumberKind> {
     /** Static value Integer for NumberKind. */
     public static final NumberKind INTEGER = fromString("Integer");

@@ -24,6 +24,10 @@ public final class RedisLinkedServerWithPropertiesList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RedisLinkedServerWithPropertiesList class. */
+    public RedisLinkedServerWithPropertiesList() {
+    }
+
     /**
      * Get the value property: List of linked servers (with properties) of a Redis cache.
      *

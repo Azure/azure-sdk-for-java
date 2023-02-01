@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0-beta.1 (2023-01-26)
+
+### Features Added
+
+- Added additional `SchemaFormat`s, `SchemaFormat.JSON`, and `SchemaFormat.CUSTOM`.
+- Added new service version, `SchemaRegistryVersion.V2022_10`.
+- Updated the latest service version to `SchemaRegistryVersion.V2022_10`.
 
 ## 1.3.2 (2023-01-18)
 

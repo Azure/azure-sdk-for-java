@@ -55,7 +55,7 @@ public final class DatabaseSchemasClientImpl implements DatabaseSchemasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseSchemasService {
+    public interface DatabaseSchemasService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

@@ -65,7 +65,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
-    private interface ExtendedDatabaseBlobAuditingPoliciesService {
+    public interface ExtendedDatabaseBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
