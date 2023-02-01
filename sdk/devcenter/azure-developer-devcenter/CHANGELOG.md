@@ -4,9 +4,12 @@
 
 This release updates the Azure DevCenter library to use the 2022-11-11-preview API.
 
-### Features Added
+### Breaking Changes
 
 - `DevBoxClient`, `DevCenterClient`, and `EnvironmentsClient` now accept an endpoint URI on construction rather than tenant ID + dev center name.
+
+### Features Added
+
 - Added upcoming actions APIs to dev boxes.
     - `delayUpcomingActionWithResponse`
     - `getUpcomingActionWithResponse`
@@ -14,10 +17,8 @@ This release updates the Azure DevCenter library to use the 2022-11-11-preview A
     - `skipUpcomingActionWithResponse`
 
 ### Bugs Fixed
+
 - Invalid `beginDeleteEnvironmentAction` API removed from `EnvironmentsClient`.
-
-### Other Changes
-
 - Unimplemented artifacts APIs removed from `EnvironmentsClient`.
 
 ## 1.0.0-beta.1 (2022-11-11)
