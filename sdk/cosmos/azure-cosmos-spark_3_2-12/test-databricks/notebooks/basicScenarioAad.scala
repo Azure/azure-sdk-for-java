@@ -96,7 +96,3 @@ df.filter(col("isAlive") === true)
     .show()
 
 // COMMAND ----------
-
-// clean up
-spark.sql(s"DROP TABLE IF EXISTS cosmosCatalog.$cosmosDatabaseName.$cosmosContainerName;")
-spark.sql(s"DROP DATABASE IF EXISTS cosmosCatalog.$cosmosDatabaseName;")
