@@ -5,7 +5,7 @@
 %% 2. Run command: mmdc -i DefaultAzureCredentialAuthFlow.md -o DefaultAzureCredentialAuthFlow.svg
 
 flowchart LR;
-    A(Environment):::deployed ==> B(Managed Identity):::deployed ==> C(IntelliJ):::developer ==> D(Azure CLI):::developer ==> E(Azure PowerShell):::developer;
+    A(Environment):::deployed ==> B(Managed Identity):::deployed ==> C(Azure Developer CLI):::developer ==> D(IntelliJ):::developer ==> E(Azure CLI):::developer ==> F(Azure PowerShell):::developer;
 
     subgraph CREDENTIAL TYPES;
         direction LR;
@@ -22,7 +22,7 @@ flowchart LR;
     %% Add API ref links to credential type boxes
     click A "https://docs.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable" _blank;
     click B "https://docs.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable" _blank;
-    click C "https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable" _blank;
+    click D "https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable" _blank;
     click E "https://docs.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable" _blank;
     click F "https://docs.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable" _blank;
 ```
