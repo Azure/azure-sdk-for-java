@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ProactiveContainerInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -18,13 +18,13 @@ public interface IAddressResolver {
 
     /**
      * Warm up caches and open connections for containers specified by
-     * {@link ProactiveContainerInitConfig#getCosmosContainerIdentities()} to replicas in
-     * {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} preferred regions.
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
      * Set the open connection handler so SDK can proactively create connections based on need.

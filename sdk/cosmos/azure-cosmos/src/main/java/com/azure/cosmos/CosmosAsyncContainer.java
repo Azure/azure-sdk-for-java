@@ -477,7 +477,7 @@ public class CosmosAsyncContainer {
         if (isInitialized.compareAndSet(false, true)) {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
-            ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
                     .setProactiveConnectionRegions(1)
                     .build();
 
@@ -493,13 +493,14 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     *  Best effort to initialize the container by warming up the caches and connections to a specified no. of regions from the
-     *  preferred list of regions.
+     *  Best effort to initialize the container by warming up the caches and connections to a specified no.
+     *  of regions from the  preferred list of regions.
      *
-     *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
-     *  to get an estimated time:
+     *  Depending on how many partitions the container has, the total time needed will also change. But
+     *  generally you can use the following formula to get an estimated time:
      *  If it took 200ms to establish a connection, and you have 100 partitions in your container
-     *  then it will take around (100 * 4 / CPUCores) * 200ms to open all connections after get the address list
+     *  then it will take around (100 * 4 / (10 * CPUCores)) * 200ms * RegionsWithProactiveConnections to open all
+     *  connections after get the address list
      *
      *  <p>
      *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
@@ -507,7 +508,8 @@ public class CosmosAsyncContainer {
      *  </p>
      * <p>
      * In order to minimize latencies associated with warming up caches and opening connections
-     * the no. of proactive connection regions cannot be more than {@link ProactiveContainerInitConfigBuilder#MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS}.
+     * the no. of proactive connection regions cannot be more
+     * than {@link CosmosContainerProactiveInitConfigBuilder#MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS}.
      * </p>
      *
      * @param numProactiveConnectionRegions the no of regions to proactively connect to
@@ -521,36 +523,46 @@ public class CosmosAsyncContainer {
         checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
 
         if (numProactiveConnectionRegions > 1) {
-            checkArgument(endpointDiscoveryEnabled, "endpoint discovery should be enabled when no. " +
+            checkArgument(
+                endpointDiscoveryEnabled,
+                "endpoint discovery should be enabled when no. " +
                     "of proactive regions is greater than 1");
-            checkArgument(preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions, "no. of proactive connection " +
+            checkArgument(
+                preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions,
+                "no. of proactive connection " +
                     "regions should be lesser than the no. of preferred regions.");
         }
 
         if(isInitialized.compareAndSet(false, true)) {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
-            ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+                new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
                     .setProactiveConnectionRegions(numProactiveConnectionRegions)
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
-                    .flatMap(openResult -> {
-                        logger.info("OpenConnectionsAndInitCaches: {}", openResult);
-                        return Mono.empty();
-                    }));
+                    .flatMap(
+                        openResult -> {
+                            logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                            return Mono.empty();
+                        }));
         } else {
-            logger.warn("OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            logger.warn(
+                "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
+                this.getId());
             return Mono.empty();
         }
     }
 
     /***
-     * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
+     * Internal implementation to try to initialize the container by warming up the caches and
+     * connections for the current read region.
      *
      * @return a string represents the open result.
      */
-    private Mono<String> openConnectionsAndInitCachesInternal(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+    private Mono<String> openConnectionsAndInitCachesInternal(
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig)
                 .collectList()
                 .flatMap(openConnectionResponses -> {
@@ -573,7 +585,9 @@ public class CosmosAsyncContainer {
 
                     long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
                     return Mono.just(String.format(
-                            "EndpointsConnected: %s, Failed: %s", endpointConnected, endPointOpenConnectionsStatistics.size() - endpointConnected));
+                            "EndpointsConnected: %s, Failed: %s",
+                        endpointConnected,
+                        endPointOpenConnectionsStatistics.size() - endpointConnected));
                 });
     }
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ProactiveContainerInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -55,11 +55,11 @@ public interface RxStoreModel {
 
     /**
      * Warm up caches and open connections for containers specified by
-     * {@link ProactiveContainerInitConfig#getCosmosContainerIdentities()} to replicas in
-     * {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} preferred regions.
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 }

@@ -11,7 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.ProactiveContainerInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
@@ -4305,9 +4305,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
-    // TODO: Add check argument for list of container identities
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 

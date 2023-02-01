@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.ProactiveContainerInitConfig;
-import com.azure.cosmos.ProactiveContainerInitConfigBuilder;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -197,7 +197,7 @@ public class GlobalAddressResolverTest {
                 .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
-        ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegions(1)
                 .build();
 

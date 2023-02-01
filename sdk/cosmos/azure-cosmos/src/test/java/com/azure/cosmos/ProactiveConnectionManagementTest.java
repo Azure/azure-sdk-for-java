@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
@@ -46,6 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
@@ -78,6 +80,48 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         safeClose(dummyClient);
     }
 
+    @Test(groups = {"multi-region"}, dataProvider = "invalidProactiveContainerInitConfigs")
+    public void openConnectionsAndInitCachesWithInvalidCosmosClientConfig(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers) {
+
+        CosmosAsyncClient clientWithOpenConnections = null;
+
+        List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
+        List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+
+        for (int i = 1; i <= numContainers; i++) {
+            String containerId = String.format("id%d", i);
+            cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
+            asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
+            cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+        }
+
+        if (numProactiveConnectionRegions > 5) {
+            try {
+                CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .build();
+                fail("Should have thrown exception");
+            } catch (IllegalArgumentException illegalArgEx) {}
+
+        } else {
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                .build();
+
+            try {
+                clientWithOpenConnections = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .endpointDiscoveryEnabled(true)
+                    .preferredRegions(preferredRegions)
+                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                    .directMode()
+                    .buildAsyncClient();
+                fail("Should have thrown exception");
+            } catch (IllegalArgumentException illegalArgEx) {}
+        }
+    }
+
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers) {
 
@@ -95,7 +139,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
             }
 
-            ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                     .setProactiveConnectionRegions(numProactiveConnectionRegions)
                     .build();
 
@@ -118,8 +162,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            List<URI> proactiveConnectionEndpoints = globalEndpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions());
-
+            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
+                0,
+                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getNumProactiveConnectionRegions()));
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
 
@@ -205,7 +251,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
 
-            ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                     .setProactiveConnectionRegions(numProactiveConnectionRegions)
                     .build();
 
@@ -222,7 +268,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosAsyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions).block();
 
-            List<URI> proactiveConnectionEndpoints = globalEndpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions());
+            UnmodifiableList<URI> readEndpoints =
+                globalEndpointManager.getReadEndpoints();
+            List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
+                0,
+                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getNumProactiveConnectionRegions()));
 
             Mono<CosmosAsyncContainer> asyncContainerMono = Mono.just(cosmosAsyncContainer);
 
@@ -288,6 +338,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations.add(accountLocation.getName());
+            preferredLocations.add("EastUS");
         }
 
         // configure preferredLocation, no of proactive connection regions, no of containers
@@ -295,6 +346,23 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 new Object[]{preferredLocations, 1, 3},
                 new Object[]{preferredLocations, 2, 1}
 
+        };
+    }
+
+    @DataProvider(name = "invalidProactiveContainerInitConfigs")
+    private Object[][] invalidProactiveContainerInitConfigs() {
+        Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
+        List<String> preferredLocations = new ArrayList<>();
+
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            preferredLocations.add(accountLocation.getName());
+        }
+
+        // configure preferredLocation, no of proactive connection regions, no of containers
+        return new Object[][] {
+            new Object[]{preferredLocations, 2, 1},
+            new Object[]{List.of("R1", "R2", "R3", "R4", "R5", "R6"), 6, 1}
         };
     }
 
@@ -315,5 +383,4 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         return ReflectionUtils.getValueMapNonBlockingCache(routingMapAsyncCache);
     }
-
 }

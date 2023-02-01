@@ -87,7 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
-    private final ProactiveContainerInitConfig proactiveContainerInitConfig;
+    private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
 
@@ -602,13 +602,23 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
+        int concurrency = 1;
+        int prefetch = 10;
         if (this.proactiveContainerInitConfig != null) {
             return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
-                    .flatMap(cosmosContainerIdentity -> Mono.just(this
+                    .flatMap(
+                        cosmosContainerIdentity -> Mono.just(this
                             .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity)))
+                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
+                        concurrency,
+                        prefetch
                     )
-                    .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer.openConnectionsAndInitCaches(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()))
+                    .flatMap(
+                        cosmosAsyncContainer -> cosmosAsyncContainer
+                            .openConnectionsAndInitCaches(
+                                this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()),
+                        concurrency,
+                        prefetch)
                     .collectList();
         }
         return Mono.empty();

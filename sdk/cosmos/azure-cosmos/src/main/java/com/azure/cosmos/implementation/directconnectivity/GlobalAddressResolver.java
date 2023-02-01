@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ProactiveContainerInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -97,12 +96,16 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+
         // Strip the leading "/", which follows the same format for document requests
-        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
+        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/",
+        //  some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
         return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
-                .flatMap(containerIdentity -> Mono.just(StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
+                .flatMap(containerIdentity -> Mono.just(
+                    StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
                 .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
                         .flatMapMany(collection -> {
                             if (collection == null) {
@@ -137,7 +140,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            ProactiveContainerInitConfig proactiveContainerInitConfig
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig
     ) {
 
         if (proactiveContainerInitConfig.getNumProactiveConnectionRegions() > 0) {

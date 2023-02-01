@@ -5,22 +5,27 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Encapsulates the list of container identities and no. of proactive connection regions.
  * */
-public final class ProactiveContainerInitConfig {
+public final class CosmosContainerProactiveInitConfig {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final int numProactiveConnectionRegions;
 
-    ProactiveContainerInitConfig(List<CosmosContainerIdentity> cosmosContainerIdentities, int numProactiveConnectionRegions) {
-        this.cosmosContainerIdentities = cosmosContainerIdentities;
+    CosmosContainerProactiveInitConfig(
+        List<CosmosContainerIdentity> cosmosContainerIdentities,
+        int numProactiveConnectionRegions) {
+
+        this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
     }
 
     /**
-     * Gets the list of container identities
+     * Gets the list of container identities. The returned list is protected against modifications.
      *
      * @return list of {@link CosmosContainerIdentity}
      * */
@@ -39,7 +44,7 @@ public final class ProactiveContainerInitConfig {
      * </p>
      * <p>
      * These proactive connection regions are a subset of the preferred regions configured through the {@link CosmosClientBuilder}. The first
-     * {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} read regions from preferred regions are picked. In this context a write-region could also be a read-region but not vice-versa.
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} read regions from preferred regions are picked. In this context a write-region could also be a read-region but not vice-versa.
      * </p>
      * <p>
      * Consider a multi-master account with client configured with preferred regions - "US West" (write-region) and "US East" (write-region)
@@ -60,4 +65,22 @@ public final class ProactiveContainerInitConfig {
     public int getNumProactiveConnectionRegions() {
         return numProactiveConnectionRegions;
     }
+
+    @Override
+    public String toString() {
+
+        if (this.cosmosContainerIdentities == null || cosmosContainerIdentities.isEmpty()) {
+            return "";
+        } else {
+            return
+                String.format(
+                    "%s(%d)",
+                    cosmosContainerIdentities
+                        .stream()
+                        .map(ci -> ci.getContainerLink())
+                        .collect(Collectors.joining(",")),
+                    numProactiveConnectionRegions);
+        }
+    }
+
 }
