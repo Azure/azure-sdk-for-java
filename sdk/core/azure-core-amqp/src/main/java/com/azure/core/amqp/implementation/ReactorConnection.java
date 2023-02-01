@@ -28,8 +28,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -79,6 +77,7 @@ public class ReactorConnection implements AmqpConnection {
     private final Mono<Connection> connectionMono;
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
+    private final AmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final MessageSerializer messageSerializer;
     private final ConnectionOptions connectionOptions;
@@ -89,7 +88,7 @@ public class ReactorConnection implements AmqpConnection {
     private final Duration operationTimeout;
     private final Composite subscriptions;
 
-    private ReactorExecutor executor;
+    private ReactorExecutor reactorExecutor;
 
     private volatile ClaimsBasedSecurityChannel cbsChannel;
     private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
@@ -102,13 +101,14 @@ public class ReactorConnection implements AmqpConnection {
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-        ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
+        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
 
@@ -117,6 +117,7 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionId = connectionId;
         this.logger = new ClientLogger(ReactorConnection.class, createContextWithConnectionId(connectionId));
         this.handlerProvider = handlerProvider;
+        this.linkProvider = linkProvider;
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
@@ -132,9 +133,10 @@ public class ReactorConnection implements AmqpConnection {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, String.format(
-                        "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
-                        operationTimeout), handler.getErrorContext())));
+                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true,
+                        TIMEOUT_ERROR,
+                        String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
+                        handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
             .doOnError(error -> {
@@ -169,6 +171,29 @@ public class ReactorConnection implements AmqpConnection {
             .cache(1);
 
         this.subscriptions = Disposables.composite(this.endpointStates.subscribe());
+    }
+
+    /**
+     * Establish a connection to the broker and wait for it to active.
+     *
+     * @return the {@link Mono} that completes once the broker connection is established and active.
+     */
+    public Mono<ReactorConnection> connectAndAwaitToActive() {
+        return this.connectionMono
+            .handle((c, sink) -> {
+                if (isDisposed()) {
+                    // Today 'connectionMono' emits QPID-connection even if the endpoint terminated with
+                    // 'completion' without ever emitting any state. (Had it emitted a state and never
+                    // emitted 'active', then timeout-error would have happened, then 'handle' won't be
+                    // running, same with endpoint terminating with any error).
+                    sink.error(new AmqpException(true,
+                        String.format("Connection '%s' completed without being active.", connectionId),
+                        null));
+                } else {
+                    sink.complete();
+                }
+            })
+            .thenReturn(this);
     }
 
     /**
@@ -347,7 +372,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
+            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
             connectionOptions.getRetry());
     }
 
@@ -442,7 +467,7 @@ public class ReactorConnection implements AmqpConnection {
         return closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."));
     }
 
-    Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
+    public Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
 
@@ -521,10 +546,10 @@ public class ReactorConnection implements AmqpConnection {
 
         // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
         // remaining work after OperationTimeout has elapsed and closes afterwards.
-        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> {
+        final Mono<Void> closedExecutor = reactorExecutor != null ? Mono.defer(() -> {
             synchronized (this) {
                 logger.info("Closing executor.");
-                return executor.closeAsync();
+                return reactorExecutor.closeAsync();
             }
         }) : Mono.empty();
 
@@ -574,25 +599,14 @@ public class ReactorConnection implements AmqpConnection {
 
             final ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
 
-            // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
-            // Using Schedulers.single() will use the same thread for all connections in this process which
-            // limits the scalability of the no. of concurrent connections a single process can have.
-            // This could be a long timeout depending on the user's operation timeout. It's probable that the
-            // connection's long disposed.
-            final Duration timeoutDivided = connectionOptions.getRetry().getTryTimeout().dividedBy(2);
-            final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
-                ? ClientConstants.SERVER_BUSY_WAIT_TIME
-                : timeoutDivided;
-            final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
-            executor = new ReactorExecutor(reactor, scheduler, connectionId,
-                reactorExceptionHandler, pendingTasksDuration,
-                connectionOptions.getFullyQualifiedNamespace());
+            reactorExecutor = reactorProvider.createExecutor(reactor, connectionId,
+                connectionOptions.getFullyQualifiedNamespace(), reactorExceptionHandler, connectionOptions.getRetry());
 
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
             final Mono<Void> executorCloseMono = Mono.defer(() -> {
                 synchronized (this) {
-                    return executor.closeAsync();
+                    return reactorExecutor.closeAsync();
                 }
             });
 
@@ -609,13 +623,13 @@ public class ReactorConnection implements AmqpConnection {
                 })
                 .subscribe();
 
-            executor.start();
+            reactorExecutor.start();
         }
 
         return connection;
     }
 
-    private final class ReactorExceptionHandler extends AmqpExceptionHandler {
+    public final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super();
         }

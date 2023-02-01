@@ -8,13 +8,14 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
@@ -58,7 +59,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusReceiveLink receiveLink;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private final Duration operationTimeout;
     private final MessageSerializer messageSerializer;
     private final String identifier;
@@ -79,13 +80,13 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
-        this.connectionProcessor = connectionProcessor;
-        this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
+        this.connectionCache = connectionCache;
+        this.operationTimeout = connectionCache.getRetryOptions().getTryTimeout();
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
         this.identifier = identifier;
@@ -110,9 +111,9 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
-        this(entityPath, entityType, connectionProcessor,
+        this(entityPath, entityType, connectionCache,
             messageSerializer, receiverOptions, null, identifier);
     }
 
@@ -244,7 +245,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(connectionProcessor.getFullyQualifiedNamespace(), entityPath);
+        return new SessionErrorContext(connectionCache.getFullyQualifiedNamespace(), entityPath);
     }
 
     /**
@@ -258,7 +259,8 @@ class ServiceBusSessionManager implements AutoCloseable {
         final String linkName = (sessionId != null)
             ? sessionId
             : StringUtil.getRandomString("session-");
-        return connectionProcessor
+        return connectionCache
+            .get()
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                 null, entityType, identifier, sessionId);
@@ -316,7 +318,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return existing;
                 }
 
-                return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
+                return new ServiceBusSessionReceiver(link, messageSerializer, connectionCache.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
             })))
@@ -336,7 +338,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+        return connectionCache.get().flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
     /**

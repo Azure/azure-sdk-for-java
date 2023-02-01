@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
@@ -12,8 +13,8 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -82,7 +83,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
@@ -91,15 +92,15 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
-     * @param connectionProcessor The AMQP connection to the Service Bus resource.
+     * @param connectionCache The cache supplying the AMQP connection to the Service Bus resource.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Runnable onClientClose) {
+                                     ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.connectionCache = Objects.requireNonNull(connectionCache,
+            "'connectionCache' cannot be null.");
         this.onClientClose = onClientClose;
     }
 
@@ -109,7 +110,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return connectionProcessor.getFullyQualifiedNamespace();
+        return connectionCache.getFullyQualifiedNamespace();
     }
 
     /**
@@ -157,7 +158,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             ));
         }
 
-        return connectionProcessor
+        return connectionCache
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(ServiceBusManagementNode::listRules);
     }
@@ -186,7 +188,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
+        return connectionCache
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.deleteRule(ruleName));
     }
@@ -217,7 +220,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
+        return connectionCache
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.createRule(ruleName, options));
     }
