@@ -2,10 +2,6 @@
 
 ## 1.0.0-beta.2 (2023-02-01)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed a bug where `GsonJsonReader.bufferObject` would throw an exception if the starting `JsonToken` was a field name

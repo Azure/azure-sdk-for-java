@@ -8,8 +8,12 @@
   `text` was being implicitly supported by using `SerializerEncoding.JSON` but there were edge cases when a `String`
   wasn't a JSON string (`string` vs `"string"`). ([#32277](https://github.com/Azure/azure-sdk-for-java/pull/32277))
 - Added `BinaryData.fromListByteBuffer(List<ByteBuffer>)` to support additional ways to create `BinaryData`. ([#32932](https://github.com/Azure/azure-sdk-for-java/pull/32932))
+- Added `TracingOptions` to make tracing configurable. ([#32573](https://github.com/Azure/azure-sdk-for-java/pull/32573))
+- Added support for links, start timestamp, W3C trace-context propagation, and numerical attributes in tracing.
 
 ### Breaking Changes
+
+- Deprecated messaging-specific methods in tracing abstractions.
 
 ### Bugs Fixed
 
@@ -23,6 +27,8 @@
 
 - Exceptions when deserializing error HTTP responses now include the deserialization exception as the causal exception
   in addition to logging it.
+- `ExpandableStringEnum` now uses `MethodHandle` instead of `Constructor` to create subtype instances when using
+  `fromString(String, Class<T>)`.
 
 ## 1.35.0 (2023-01-05)
 

@@ -4,9 +4,17 @@
 
 ### Features Added
 
+- Added support for custom tracer providers.
+- Switched to OpenTelemetry messaging semantic conventions and started reporting schema version.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Renamed attributes to converge with OpenTelemetry semantic conventions:
+  - `messaging_bus.destination` -> `messaging.destination.name`
+  - `peer.address` -> `net.peer.name`
+  - `clientRequestId` -> `az.client_request_id`
+  - `service.request.id` -> `az.service_request_id`
+- Removed `OpenTelemetryHttpPolicy`.
 
 ### Other Changes
 

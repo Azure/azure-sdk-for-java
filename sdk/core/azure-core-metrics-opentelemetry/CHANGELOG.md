@@ -2,12 +2,6 @@
 
 ## 1.0.0-beta.5 (2023-02-01)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
