@@ -658,7 +658,7 @@ public final class IdentityClientOptions implements Cloneable {
 
     /**
      * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. Some scenarios may require disabling this.
+     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
      *
      * @return the updated client options
      */
