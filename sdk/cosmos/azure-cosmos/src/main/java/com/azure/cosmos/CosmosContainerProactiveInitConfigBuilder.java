@@ -46,9 +46,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
             numProactiveConnectionRegions >= 0 &&
 
                 numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
-                String.format(
-                    "The no. of regions to proactively connect to cannot be less than 0 or more than %d.",
-                    MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS));
+                    "The no. of regions to proactively connect to cannot be less than 0 or more than {}.",
+                    MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         return this;
     }
@@ -62,9 +61,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         checkArgument(
             numProactiveConnectionRegions >= 0 &&
                 numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
-                String.format(
-                    "The no. of regions to proactively connect to cannot be less than 0 or more than %d.",
-                    MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS));
+                "The no. of regions to proactively connect to cannot be less than 0 or more than {}.",
+                    MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS);
         return new CosmosContainerProactiveInitConfig(
                 this.cosmosContainerIdentities,
                 this.numProactiveConnectionRegions

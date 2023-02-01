@@ -22,7 +22,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
-    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 10;
+    private static int DEFAULT_CONNECTION_SEMAPHORE_TIMEOUT_IN_MINUTES = 30;
     private final TransportClient transportClient;
     private final Semaphore openConnectionsSemaphore;
 
