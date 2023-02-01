@@ -12,7 +12,7 @@ flowchart LR;
         Deployed(Deployed service):::deployed ==> Developer(Developer):::developer;
 
         %% Hide links between boxes in the legend by setting width to 0. The integers after "linkStyle" represent link indices.
-        linkStyle 4 stroke-width:0px;
+        linkStyle 5 stroke-width:0px;
     end;
 
     %% Define styles for credential type boxes
@@ -20,9 +20,9 @@ flowchart LR;
     classDef developer fill:#F5AF6F, stroke:#EB7C39;
 
     %% Add API ref links to credential type boxes
-    click A "https://docs.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable" _blank;
-    click B "https://docs.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable" _blank;
-    click D "https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable" _blank;
-    click E "https://docs.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable" _blank;
-    click F "https://docs.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable" _blank;
+    click A "https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable" _blank;
+    click B "https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable" _blank;
+    click D "https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable" _blank;
+    click E "https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable" _blank;
+    click F "https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable" _blank;
 ```

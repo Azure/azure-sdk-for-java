@@ -328,7 +328,7 @@ Not all credentials require this configuration. Credentials that authenticate th
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
     <tr>
-      <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
       <td>authenticates a service principal using a secret</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
@@ -429,7 +429,7 @@ Not all credentials require this configuration. Credentials that authenticate th
   </tbody>
 </table>
 
-> __Note:__ `AzureDeveloperCliCredential` is in beta and its name may change before GA release.
+> __Note:__ `AzureDeveloperCliCredential` is in beta and its name may change before the stable release.
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
