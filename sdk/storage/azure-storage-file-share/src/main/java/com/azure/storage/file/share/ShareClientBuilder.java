@@ -161,6 +161,8 @@ public class ShareClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private ShareServiceVersion version;
+    private boolean allowSourceTrailingDot;
+    private boolean allowTrailingDot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareClient ShareClients} and {@link
@@ -214,6 +216,8 @@ public class ShareClientBuilder implements
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .allowTrailingDot(allowTrailingDot)
             .buildClient();
 
         return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion,
@@ -597,6 +601,34 @@ public class ShareClientBuilder implements
      */
     public ShareClientBuilder serviceVersion(ShareServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
+     * @return the updated ShareClientBuilder object
+     */
+    public ShareClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
+        this.allowSourceTrailingDot = allowSourceTrailingDot;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowTrailingDot the allowTrailingDot value.
+     * @return the updated ShareClientBuilder object
+     */
+    public ShareClientBuilder allowTrailingDot(boolean allowTrailingDot) {
+        this.allowTrailingDot = allowTrailingDot;
         return this;
     }
 }
