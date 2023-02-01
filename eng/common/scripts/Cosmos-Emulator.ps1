@@ -98,6 +98,7 @@ if ($Stage -eq "Launch")
   }
 
   Write-Host "Starting emulator process: $emulator $argumentList"
+  Add-MpPreference -ExclusionPath $targetDir
   $process = Start-Process $emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru
   Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
 
