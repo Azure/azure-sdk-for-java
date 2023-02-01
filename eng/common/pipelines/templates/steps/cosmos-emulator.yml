@@ -10,7 +10,6 @@ steps:
       arguments: >
         -EmulatorMsiUrl "${{ parameters.EmulatorMsiUrl }}"
         -StartParameters "${{ parameters.StartParameters }}"
-        -Emulator "${{ parameters.EmulatorInstallPath }}"
         -Stage "Launch"
       pwsh: true
     displayName: Launch Public Cosmos DB Emulator
