@@ -19,7 +19,6 @@ public final class CosmosContainerIdentity {
     private final String containerName;
     private final String containerLink;
 
-
     /**
      * Instantiates a {@link CosmosContainerIdentity} class
      *
