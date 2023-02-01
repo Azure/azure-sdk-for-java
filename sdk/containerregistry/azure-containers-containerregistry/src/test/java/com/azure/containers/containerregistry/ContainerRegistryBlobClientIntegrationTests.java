@@ -4,7 +4,6 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.DownloadBlobResult;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciAnnotations;
@@ -27,12 +26,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -247,12 +251,13 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void downloadBlob(HttpClient httpClient) {
+        BinaryData content = BinaryData.fromFile(Paths.get("C:\\Users\\neska\\Downloads\\ddmsetup.exe"));
         client = getBlobClient("oci-artifact", httpClient);
-        UploadBlobResult uploadResult = client.uploadBlob(configData);
-        DownloadBlobResult downloadResult = client.downloadBlob(uploadResult.getDigest());
+        UploadBlobResult uploadResult = client.uploadBlob(content);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        client.downloadBlob(uploadResult.getDigest(), stream);
 
-        assertEquals(uploadResult.getDigest(), downloadResult.getDigest());
-        assertEquals(downloadResult.getContent().toString(), configData.toString());
+        assertArrayEquals(content.toBytes(), stream.toByteArray());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -260,18 +265,20 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     public void downloadBlobAsync(HttpClient httpClient) {
         ContainerRegistryBlobAsyncClient asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
+        BinaryData content = BinaryData.fromFile(Paths.get("C:\\Users\\neska\\Downloads\\ddmsetup.exe"));
+        //BinaryData content = BinaryData.fromString("foobarbaz123456789012345678901234567890foobarbaz123456789012345678901234567890foobarbaz123456789012345678901234567890");
         AtomicReference<String> digest = new AtomicReference<>(null);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         StepVerifier.create(asyncClient
-                .uploadBlob(configData)
+                .uploadBlob(content)
                 .flatMap(uploadResult ->  {
                     digest.set(uploadResult.getDigest());
-                    return asyncClient.downloadBlob(uploadResult.getDigest());
+                    return asyncClient.downloadBlob(uploadResult.getDigest(), stream);
                 }))
-            .assertNext(downloadResult -> {
-                assertEquals(digest.get(), downloadResult.getDigest());
-                assertEquals(downloadResult.getContent().toString(), configData.toString());
-            })
             .verifyComplete();
+
+        //System.out.println(BinaryData.fromBytes(stream.toByteArray()).toString());
+        assertArrayEquals(content.toBytes(), stream.toByteArray());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

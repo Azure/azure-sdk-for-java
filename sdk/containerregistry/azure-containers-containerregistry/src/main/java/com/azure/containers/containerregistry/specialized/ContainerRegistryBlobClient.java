@@ -16,7 +16,6 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsStartUploadResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsUploadChunkResponse;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
-import com.azure.containers.containerregistry.models.DownloadBlobResult;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
@@ -29,7 +28,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -38,15 +39,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.OutputStream;
+import java.security.MessageDigest;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.chunkToStream;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -306,13 +314,11 @@ public class ContainerRegistryBlobClient {
      * Download the blob associated with the given digest.
      *
      * @param digest The digest for the given image layer.
-     * @return The image associated with the given digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadBlobResult downloadBlob(String digest) {
-        return this.downloadBlobWithResponse(digest, Context.NONE).getValue();
+    public void downloadBlob(String digest, OutputStream stream) {
+        downloadBlobWithResponse(digest, stream, Context.NONE);
     }
 
     /**
@@ -320,38 +326,27 @@ public class ContainerRegistryBlobClient {
      *
      * @param digest The digest for the given image layer.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The image associated with the given digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
+    public void downloadBlobWithResponse(String digest, OutputStream stream, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         context = enableSync(getTracingContext(context));
-        Response<BinaryData> streamResponse;
-        try {
-            streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
-        } catch (HttpResponseException exception) {
-            throw LOGGER.logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse(),
-                exception));
+        MessageDigest sha256 = createSha256();
+        Response<BinaryData> firstChunk = writeChunk(digest, 0, stream, sha256, context);
+        long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+        for (long pos = firstChunk.getValue().getLength(); pos < blobSize; pos += CHUNK_SIZE) {
+            writeChunk(digest, pos, stream, sha256, context);
         }
-        String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
 
-        BinaryData binaryData = streamResponse.getValue();
+        validateDigest(sha256, digest);
+    }
 
-        // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-        // the contents returned by the service.
-        if (Objects.equals(resDigest, digest)) {
-
-            return new SimpleResponse<>(
-                streamResponse.getRequest(),
-                streamResponse.getStatusCode(),
-                streamResponse.getHeaders(),
-                new DownloadBlobResult(resDigest, binaryData));
-        } else {
-            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
-        }
+    private Response<BinaryData> writeChunk(String digest, long position, OutputStream outputStream, MessageDigest sha256, Context context) {
+        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, new HttpRange(position, CHUNK_SIZE).toString(), context);
+        chunkToStream(response, outputStream, sha256);
+        return response;
     }
 
     /**

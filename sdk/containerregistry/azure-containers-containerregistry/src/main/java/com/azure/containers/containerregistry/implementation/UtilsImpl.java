@@ -17,7 +17,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -37,6 +39,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -45,6 +48,8 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -73,7 +78,7 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
     public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
     public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
-
+    public static final long CHUNK_SIZE =  4 * 1024 * 1024;
     private UtilsImpl() { }
 
     /**
@@ -185,8 +190,37 @@ public final class UtilsImpl {
         }
     }
 
+    public static MessageDigest createSha256() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
+        String sha256 = byteArrayToHex(messageDigest.digest());
+        if (!requestedDigest.endsWith(sha256)
+            || !requestedDigest.startsWith("sha256:")
+            || requestedDigest.length() != 71) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+        }
+    }
+
+    public static void chunkToStream(Response<BinaryData> response, OutputStream outputStream, MessageDigest sha256) {
+        byte[] buffer = response.getValue().toBytes();
+        try {
+            outputStream.write(buffer);
+            outputStream.flush();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+        sha256.update(buffer);
+    }
+
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    private static String byteArrayToHex(byte[] bytes) {
+    public static String byteArrayToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -398,5 +432,16 @@ public final class UtilsImpl {
         }
 
         return locationHeader;
+    }
+
+    public static long getBlobSize(HttpHeader contentRangeHeader) {
+        if (contentRangeHeader != null) {
+            int slashInd = contentRangeHeader.getValue().indexOf('/');
+            if (slashInd > 0) {
+                return Long.valueOf(contentRangeHeader.getValue().substring(slashInd + 1));
+            }
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid response. Did not get Content-Range header from service. " + contentRangeHeader));
     }
 }
