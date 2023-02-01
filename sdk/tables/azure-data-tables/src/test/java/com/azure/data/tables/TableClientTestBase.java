@@ -48,7 +48,7 @@ public abstract class TableClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
-            tableClientBuilder.httpClient(playbackClient);
+            tableClientBuilder.httpClient(buildAssertingClient(playbackClient));
         } else {
             tableClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
 
