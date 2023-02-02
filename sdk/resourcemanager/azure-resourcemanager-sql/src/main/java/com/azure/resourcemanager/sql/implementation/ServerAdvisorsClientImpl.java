@@ -53,7 +53,7 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerAdvisorsService {
+    public interface ServerAdvisorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

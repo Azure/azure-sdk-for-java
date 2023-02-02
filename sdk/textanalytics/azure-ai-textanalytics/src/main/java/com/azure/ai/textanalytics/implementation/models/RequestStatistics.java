@@ -44,6 +44,9 @@ public class RequestStatistics {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of RequestStatistics class. */
+    public RequestStatistics() {}
+
     /**
      * Get the documentsCount property: Number of documents submitted in the request.
      *

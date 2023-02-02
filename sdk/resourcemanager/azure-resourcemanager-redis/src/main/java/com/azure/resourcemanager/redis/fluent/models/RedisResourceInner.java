@@ -29,8 +29,7 @@ public final class RedisResourceInner extends Resource {
     private RedisPropertiesInner innerProperties = new RedisPropertiesInner();
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -40,6 +39,10 @@ public final class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /** Creates an instance of RedisResourceInner class. */
+    public RedisResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Redis cache properties.
@@ -281,8 +284,9 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @return the redisVersion value.
      */
@@ -291,8 +295,9 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @param redisVersion the redisVersion value to set.
      * @return the RedisResourceInner object itself.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AsyncOperationStatus Get. */
 public final class AsyncOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheAsyncOperationStatus.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheAsyncOperationStatus.json
      */
     /**
      * Sample code: RedisCacheAsyncOperationStatus.

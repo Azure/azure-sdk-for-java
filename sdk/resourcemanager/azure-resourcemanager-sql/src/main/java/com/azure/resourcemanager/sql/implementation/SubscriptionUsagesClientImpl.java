@@ -55,7 +55,7 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface SubscriptionUsagesService {
+    public interface SubscriptionUsagesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages")
         @ExpectedResponses({200})

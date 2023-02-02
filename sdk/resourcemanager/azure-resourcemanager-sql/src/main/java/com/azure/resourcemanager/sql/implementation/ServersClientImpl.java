@@ -76,7 +76,7 @@ public final class ServersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServersService {
+    public interface ServersService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/checkNameAvailability")
         @ExpectedResponses({200})

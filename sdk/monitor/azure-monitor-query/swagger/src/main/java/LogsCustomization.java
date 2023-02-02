@@ -18,5 +18,13 @@ public class LogsCustomization extends Customization {
 
         ClassCustomization azureLogAnalyticsBuilder = libraryCustomization.getClass("com.azure.monitor.query.implementation.logs", "AzureLogAnalyticsBuilder");
         azureLogAnalyticsBuilder.rename("AzureLogAnalyticsImplBuilder");
+        String replace = libraryCustomization.getRawEditor().getFileContent("src/main/java/com/azure/monitor/query/implementation" +
+                        "/logs/AzureLogAnalyticsImplBuilder.java")
+                .replace("policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/" +
+                                ".default\", host)));",
+                        "String localHost = (host != null) ? host : \"https://api.loganalytics.io\";\n" +
+                                "policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/.default\", localHost)));");
+        libraryCustomization.getRawEditor().replaceFile("src/main/java/com/azure/monitor/query/implementation" +
+                "/logs/AzureLogAnalyticsImplBuilder.java", replace);
     }
 }
