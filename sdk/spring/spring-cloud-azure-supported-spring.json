@@ -3,7 +3,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : null,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.3-SNAPSHOT",
     "spring-cloud-version" : "2022.0.1"
   },
@@ -11,7 +11,7 @@
     "current" : true,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.0.2",
     "spring-cloud-version" : "2022.0.1"
   },
