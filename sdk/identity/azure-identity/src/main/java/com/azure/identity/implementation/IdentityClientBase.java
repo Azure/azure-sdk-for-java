@@ -6,22 +6,19 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
-import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -69,7 +66,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +91,6 @@ public abstract class IdentityClientBase {
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
     static final String MSI_ENDPOINT_VERSION = "2017-09-01";
-    static final String ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION = "2019-11-01";
     static final String ADFS_TENANT = "adfs";
     static final String HTTP_LOCALHOST = "http://localhost";
     static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
@@ -141,7 +137,7 @@ public abstract class IdentityClientBase {
                    Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
-            options.setAdditionallyAllowedTenants(Collections.singletonList(IdentityUtil.ALL_TENANTS));
+            options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
         }
         if (options == null) {
             options = new IdentityClientOptions();
@@ -206,7 +202,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -260,7 +256,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            builder = builder.authority(authorityUrl);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -353,7 +349,8 @@ public abstract class IdentityClientBase {
             applicationBuilder.executorService(options.getExecutorService());
         }
 
-        return applicationBuilder.build();
+        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+        return confidentialClientApplication;
     }
 
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request, Consumer<DeviceCodeInfo> deviceCodeConsumer) {
@@ -500,106 +497,6 @@ public abstract class IdentityClientBase {
         return token;
     }
 
-    AccessToken getTokenFromAzureDeveloperCLIAuthentication(StringBuilder azdCommand) {
-        AccessToken token;
-        try {
-            String starter;
-            String switcher;
-            if (isWindowsPlatform()) {
-                starter = WINDOWS_STARTER;
-                switcher = WINDOWS_SWITCHER;
-            } else {
-                starter = LINUX_MAC_STARTER;
-                switcher = LINUX_MAC_SWITCHER;
-            }
-
-            ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
-
-            String workingDirectory = getSafeWorkingDirectory();
-            if (workingDirectory != null) {
-                builder.directory(new File(workingDirectory));
-            } else {
-                throw LOGGER.logExceptionAsError(
-                        new IllegalStateException(
-                                "A Safe Working directory could not be"
-                                        + " found to execute Azure Developer CLI command from."));
-            }
-            builder.redirectErrorStream(true);
-            Process process = builder.start();
-
-            StringBuilder output = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                    StandardCharsets.UTF_8.name()))) {
-                String line;
-                while (true) {
-                    line = reader.readLine();
-                    if (line == null) {
-                        break;
-                    }
-
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                            || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
-                        throw LoggingUtil.logCredentialUnavailableException(
-                                LOGGER,
-                                options,
-                                new CredentialUnavailableException(
-                                        "AzureDeveloperCliCredential authentication unavailable. Azure Developer CLI not installed."
-                                                +
-                                                "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                                +
-                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                    }
-                    output.append(line);
-                }
-            }
-            String processOutput = output.toString();
-
-            // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(10, TimeUnit.SECONDS);
-
-            if (process.exitValue() != 0) {
-                if (processOutput.length() > 0) {
-                    String redactedOutput = redactInfo(processOutput);
-                    if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
-                        throw LoggingUtil.logCredentialUnavailableException(
-                                LOGGER,
-                                options,
-                                new CredentialUnavailableException(
-                                        "AzureDeveloperCliCredential authentication unavailable."
-                                        + " Please run 'azd login' to set up account."));
-                    }
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
-                } else {
-                    throw LOGGER.logExceptionAsError(
-                            new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
-                }
-            }
-
-            LOGGER.verbose(
-                    "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
-                            +
-                            " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
-                    processOutput,
-                    Map.class,
-                    SerializerEncoding.JSON);
-            String accessToken = objectMap.get("token");
-            String time = objectMap.get("expiresOn");
-            // az expiresOn format = "2022-11-30 02:38:42.000000" vs
-            // azd expiresOn format = "2022-11-30T02:05:08Z"
-            String standardTime = time.substring(0, time.indexOf("Z"));
-            OffsetDateTime expiresOn = LocalDateTime
-                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.of("Z"))
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
-        } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-        }
-
-        return token;
-    }
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
@@ -628,29 +525,18 @@ public abstract class IdentityClientBase {
 
     HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
 
-        HttpLogOptions httpLogOptions = (options.getHttpLogOptions() == null) ? new HttpLogOptions() : options.getHttpLogOptions();
-
-        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(options.getClientOptions(), httpLogOptions), clientName, clientVersion, buildConfiguration);
+        userAgent = UserAgentUtil.toUserAgentString(null, clientName, clientVersion, buildConfiguration);
         policies.add(new UserAgentPolicy(userAgent));
 
-        if (options.getClientOptions() != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            options.getClientOptions().getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
-
-        policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        // Add retry policy.
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(options.getRetryPolicy(), options.getRetryOptions()));
-        policies.addAll(options.getPerRetryPolicies());
+        policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
@@ -681,7 +567,7 @@ public abstract class IdentityClientBase {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[1024];
             int read = certificate.read(buffer, 0, buffer.length);
             while (read != -1) {
                 outputStream.write(buffer, 0, read);

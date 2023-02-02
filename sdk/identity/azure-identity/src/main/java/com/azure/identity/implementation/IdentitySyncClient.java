@@ -36,7 +36,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -338,42 +337,6 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
     }
-
-    /**
-     * Asynchronously acquire a token from Active Directory with Azure Developer CLI.
-     *
-     * @param request the details of the token request
-     * @return a Publisher that emits an AccessToken
-     */
-    public AccessToken authenticateWithAzureDeveloperCli(TokenRequestContext request) {
-
-        StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
-
-        List<String> scopes = request.getScopes();
-
-        // It's really unlikely that the request comes with no scope, but we want to
-        // validate it as we are adding `--scope` arg to the azd command.
-        if (scopes.size() == 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing scope in request"));
-        }
-
-        // At least one scope is appended to the azd command.
-        // If there are more than one scope, we add `--scope` before each.
-        azdCommand.append(String.join(" --scope ", scopes));
-
-        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azdCommand.append(" --tenant-id ").append(tenant);
-        }
-
-        try {
-            return getTokenFromAzureDeveloperCLIAuthentication(azdCommand);
-        } catch (RuntimeException e) {
-            throw (e instanceof CredentialUnavailableException
-                ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
-                : LOGGER.logExceptionAsError(e));
-        }
-    }    
 
     /**
      * Asynchronously acquire a token from Active Directory with Azure PowerShell.
