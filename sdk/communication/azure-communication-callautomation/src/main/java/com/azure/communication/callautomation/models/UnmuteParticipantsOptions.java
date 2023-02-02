@@ -7,17 +7,20 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * The options for muting all participants.
+ * The options for unmuting a participant.
  */
 @Fluent
-public final class MuteAllParticipantsOptions {
+public final class UnmuteParticipantsOptions {
     /**
-     * The participant that emitted the request.
+     * The participants to unmute.
+     *  Only one participant currently supported.
+     *  Only ACS Users are currently supported.
      */
-    private CommunicationIdentifier requestInitiator;
+    private final List<CommunicationIdentifier> targetParticipant;
 
     /**
      * The operational context
@@ -32,18 +35,20 @@ public final class MuteAllParticipantsOptions {
     /**
      * Constructor
      *
+     * @param targetParticipant The participants to unmute.
      */
-    public MuteAllParticipantsOptions() {
+    public UnmuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
+        this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
-     * Get the participant.
+     * Get the participants.
      *
-     * @return the participants to be mute.
+     * @return the participants to mute.
      */
-    public CommunicationIdentifier getRequestInitiator() {
-        return requestInitiator;
+    public List<CommunicationIdentifier> getTargetParticipant() {
+        return targetParticipant;
     }
 
     /**
@@ -68,9 +73,9 @@ public final class MuteAllParticipantsOptions {
      * Set the repeatability headers
      *
      * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the MuteAllParticipantsOptions object itself.
+     * @return the RemoveParticipantsOptions object itself.
      */
-    public MuteAllParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+    public UnmuteParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
@@ -79,20 +84,10 @@ public final class MuteAllParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the MuteAllParticipantsOptions object itself.
+     * @return the RemoveParticipantsOptions object itself.
      */
-    public MuteAllParticipantsOptions setOperationContext(String operationContext) {
+    public UnmuteParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the request initiator.
-     * @param requestInitiator the participant that initiated the request.
-     * @return the MuteAllParticipantsOptions object itself.
-     */
-    public MuteAllParticipantsOptions setRequestInitiator(CommunicationIdentifier requestInitiator) {
-        this.requestInitiator = requestInitiator;
         return this;
     }
 }

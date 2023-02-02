@@ -700,7 +700,7 @@ class SparkE2EChangeFeedITest
       .to(cosmosClientCacheItems => {
 
         databaseResourceId = cosmosClientCacheItems.head.get
-          .client
+          .cosmosClient
           .getDatabase(cosmosDatabase)
           .read()
           .block()
@@ -708,7 +708,7 @@ class SparkE2EChangeFeedITest
           .getResourceId
 
         val container = cosmosClientCacheItems.head.get
-          .client
+          .cosmosClient
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)
 

@@ -7,17 +7,20 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * The options for muting a participant.
  */
 @Fluent
-public final class MuteParticipantOptions {
+public final class MuteParticipantsOptions {
     /**
-     * The participant to mute.
+     * The participants to mute.
+     * Only one participant currently supported.
+     * Only ACS Users are currently supported.
      */
-    private final CommunicationIdentifier targetParticipant;
+    private final List<CommunicationIdentifier> targetParticipant;
 
     /**
      * The operational context
@@ -34,7 +37,7 @@ public final class MuteParticipantOptions {
      *
      * @param targetParticipant The targetParticipant to mute.
      */
-    public MuteParticipantOptions(CommunicationIdentifier targetParticipant) {
+    public MuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
         this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
@@ -44,7 +47,7 @@ public final class MuteParticipantOptions {
      *
      * @return the participants to mute.
      */
-    public CommunicationIdentifier getTargetParticipant() {
+    public List<CommunicationIdentifier> getTargetParticipant() {
         return targetParticipant;
     }
 
@@ -72,7 +75,7 @@ public final class MuteParticipantOptions {
      * @param repeatabilityHeaders The repeatability headers configuration.
      * @return the RemoveParticipantsOptions object itself.
      */
-    public MuteParticipantOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+    public MuteParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
@@ -83,7 +86,7 @@ public final class MuteParticipantOptions {
      * @param operationContext the operationContext to set
      * @return the RemoveParticipantsOptions object itself.
      */
-    public MuteParticipantOptions setOperationContext(String operationContext) {
+    public MuteParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
