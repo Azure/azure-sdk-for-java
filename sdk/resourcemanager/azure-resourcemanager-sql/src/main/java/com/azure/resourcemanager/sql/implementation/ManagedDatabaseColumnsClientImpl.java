@@ -60,7 +60,7 @@ public final class ManagedDatabaseColumnsClientImpl implements ManagedDatabaseCo
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseColumnsService {
+    public interface ManagedDatabaseColumnsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

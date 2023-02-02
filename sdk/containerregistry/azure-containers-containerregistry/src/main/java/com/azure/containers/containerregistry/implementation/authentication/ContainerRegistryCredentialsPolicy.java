@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -12,11 +13,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * <p>Credential policy for the container registry. It follows the challenge based authorization scheme.</p>
@@ -40,15 +36,11 @@ import java.util.regex.Pattern;
 public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
     private static final String BEARER = "Bearer";
-    public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
-        Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String SCOPES_PARAMETER = "scope";
     public static final String SERVICE_PARAMETER = "service";
-    public static final String AUTHORIZATION = "Authorization";
 
     private final ContainerRegistryTokenService tokenService;
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
 
     /**
      * Creates an instance of ContainerRegistryCredentialsPolicy.
@@ -82,7 +74,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
-                context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
+                context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
                 return Mono.empty();
             });
     }
@@ -100,7 +92,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
 
         HttpPipelineNextPolicy nextPolicy = next.clone();
         return authorizeRequest(context)
-            .then(Mono.defer(() -> next.process()))
+            .then(next.process())
             .flatMap(httpResponse -> {
                 String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                 if (httpResponse.getStatusCode() == 401 && authHeader != null) {
@@ -137,22 +129,19 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        return Mono.defer(() -> {
-            String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
-            if (!(response.getStatusCode() == 401 && authHeader != null)) {
-                return Mono.just(false);
-            } else {
-                Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-                if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                    String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                    String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                    return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
-                        .then(Mono.defer(() -> Mono.just(true)));
-                }
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        if (!(response.getStatusCode() == 401 && authHeader != null)) {
+            return Mono.just(false);
+        } else {
+            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
 
-                return Mono.just(false);
+            if (scope != null && serviceName != null) {
+                return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
+                    .thenReturn(true);
             }
-        });
+            return Mono.just(false);
+        }
     }
 
     /**
@@ -175,7 +164,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     @Override
     public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         AccessToken token = tokenService.getTokenSync(tokenRequestContext);
-        context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
     }
 
     @Override
@@ -227,29 +216,37 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
-            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
+
+            if (scope != null && serviceName != null) {
                 setAuthorizationHeaderSync(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
                 return true;
             }
-
-            return false;
         }
+
+        return false;
     }
 
-    private Map<String, String> parseBearerChallenge(String header) {
-        if (header.startsWith(BEARER)) {
-            String challengeParams = header.substring(BEARER.length());
+    /**
+     * Extracts value for given key in www-authenticate header.
+     * Expects key="value" format and return value without quotes.
+     *
+     * returns if value is not found
+     */
+    private String extractValue(String authHeader, String key) {
+        int start = authHeader.indexOf(key);
+        if (start < 0 || authHeader.length() - start < key.length() + 3) {
+            return null;
+        }
 
-            Matcher matcher2 = AUTHENTICATION_CHALLENGE_PARAMS_PATTERN.matcher(challengeParams);
-
-            Map<String, String> challengeParameters = new HashMap<>();
-            while (matcher2.find()) {
-                challengeParameters.put(matcher2.group(1), matcher2.group(2));
+        start += key.length();
+        if (authHeader.charAt(start) == '=' && authHeader.charAt(start + 1) == '"') {
+            start += 2;
+            int end = authHeader.indexOf('"', start);
+            if (end > start) {
+                return authHeader.substring(start, end);
             }
-            return challengeParameters;
         }
 
         return null;

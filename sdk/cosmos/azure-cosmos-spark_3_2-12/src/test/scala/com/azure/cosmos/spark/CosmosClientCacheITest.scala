@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.mockito.Mockito.mock
 
@@ -40,22 +42,9 @@ class CosmosClientCacheITest
       (
         "StandardCtorWithoutPreferredRegions",
         CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        Some("SampleApplicationName"),
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        disableTcpConnectionEndpointRediscovery = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = None)
-      ),
-      (
-        "StandardCtorWithEmptyPreferredRegions",
-        CosmosClientConfiguration(
           cosmosEndpoint,
-          cosmosMasterKey,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
@@ -63,27 +52,37 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]()))
+          preferredRegionsList = None,
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
+      ),
+      (
+        "StandardCtorWithEmptyPreferredRegions",
+        CosmosClientConfiguration(
+          cosmosEndpoint,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          Some("SampleApplicationName"),
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
+          clientTelemetryEndpoint = None,
+          preferredRegionsList = Some(Array[String]()),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       ),
       (
         "StandardCtorWithOnePreferredRegion",
         CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        None,
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        disableTcpConnectionEndpointRediscovery = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = Some(Array[String]("North Europe")))
-      ),
-      (
-        "StandardCtorWithTwoPreferredRegions",
-        CosmosClientConfiguration(
           cosmosEndpoint,
-          cosmosMasterKey,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
           "SampleApplicationName",
           useGatewayMode = true,
@@ -91,7 +90,30 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")))
+          preferredRegionsList = Some(Array[String]("North Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
+      ),
+      (
+        "StandardCtorWithTwoPreferredRegions",
+        CosmosClientConfiguration(
+          cosmosEndpoint,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          None,
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
+          clientTelemetryEndpoint = None,
+          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       )
     )
 
@@ -101,7 +123,8 @@ class CosmosClientCacheITest
       val userConfig = userConfigPair._2
       val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
-        userConfig.key,
+        userConfig.databaseAccountName,
+        userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
@@ -112,7 +135,11 @@ class CosmosClientCacheITest
         userConfig.preferredRegionsList match {
           case Some(array) => Some(array.clone())
           case None => None
-        }
+        },
+        userConfig.subscriptionId,
+        userConfig.tenantId,
+        userConfig.resourceGroupName,
+        userConfig.azureEnvironment
       )
 
       logInfo(s"TestCase: {$testCaseName}")
@@ -127,9 +154,11 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-            clients2(0).get.client should be theSameInstanceAs clients(0).get.client
+             clients2(0).get.cosmosClient should be theSameInstanceAs clients(0).get.cosmosClient
+             clients2(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
+             clients(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
 
-             val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+               val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
@@ -177,7 +206,7 @@ class CosmosClientCacheITest
      ))
      .to(clients => {
        clients(0).get shouldBe a[CosmosClientCacheItem]
-       clients(0).get.client shouldBe a[CosmosAsyncClient]
+       clients(0).get.cosmosClient shouldBe a[CosmosAsyncClient]
        CosmosClientCache.purge(userConfig)
      })
   }

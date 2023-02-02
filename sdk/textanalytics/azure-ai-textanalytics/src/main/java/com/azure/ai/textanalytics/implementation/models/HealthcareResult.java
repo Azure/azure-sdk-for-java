@@ -17,6 +17,9 @@ public final class HealthcareResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage> documents;
 
+    /** Creates an instance of HealthcareResult class. */
+    public HealthcareResult() {}
+
     /**
      * Get the documents property: The documents property.
      *

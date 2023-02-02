@@ -18,9 +18,6 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
-- name: SkipAggregateReports
-  type: boolean
-  default: false
 - name: BuildParallelization
   type: string
   default: '2C'

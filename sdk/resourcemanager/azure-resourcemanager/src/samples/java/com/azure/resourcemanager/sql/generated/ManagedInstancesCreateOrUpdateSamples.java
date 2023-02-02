@@ -42,7 +42,7 @@ public final class ManagedInstancesCreateOrUpdateSamples {
                     .withLocation("Japan East")
                     .withSku(new Sku().withName("GP_Gen4").withTier("GeneralPurpose"))
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("PLACEHOLDER")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withSubnetId(
                         "/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
                     .withLicenseType(ManagedInstanceLicenseType.LICENSE_INCLUDED)
@@ -73,7 +73,7 @@ public final class ManagedInstancesCreateOrUpdateSamples {
                     .withTags(mapOf("tagKey1", "TagValue1"))
                     .withSku(new Sku().withName("GP_Gen5").withTier("GeneralPurpose"))
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("PLACEHOLDER")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withSubnetId(
                         "/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
                     .withLicenseType(ManagedInstanceLicenseType.LICENSE_INCLUDED)

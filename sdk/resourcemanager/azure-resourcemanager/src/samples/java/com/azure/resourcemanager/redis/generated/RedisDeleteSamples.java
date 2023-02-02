@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Redis Delete. */
 public final class RedisDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheDelete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheDelete.json
      */
     /**
      * Sample code: RedisCacheDelete.

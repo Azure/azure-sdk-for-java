@@ -26,6 +26,9 @@ public final class AreaResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of AreaResolution class. */
+    public AreaResolution() {}
+
     /**
      * Get the unit property: The area Unit of measurement.
      *

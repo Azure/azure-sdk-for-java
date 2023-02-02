@@ -20,6 +20,9 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private SentimentResponse results;
 
+    /** Creates an instance of SentimentTaskResult class. */
+    public SentimentTaskResult() {}
+
     /**
      * Get the results property: The results property.
      *

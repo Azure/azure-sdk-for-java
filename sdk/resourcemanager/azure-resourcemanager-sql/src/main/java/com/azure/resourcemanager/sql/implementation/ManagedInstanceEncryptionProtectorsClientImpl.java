@@ -70,7 +70,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceEncryptionProtectorsService {
+    public interface ManagedInstanceEncryptionProtectorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
