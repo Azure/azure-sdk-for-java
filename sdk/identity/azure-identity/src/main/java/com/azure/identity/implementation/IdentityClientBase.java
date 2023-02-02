@@ -86,8 +86,7 @@ public abstract class IdentityClientBase {
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
-    static final Pattern BASH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?: command not found");
-    static final Pattern ZSH_PROCESS_ERROR_MESSAGE = Pattern.compile("command not found: azd?");
+    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?: command not found");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -451,8 +450,7 @@ public abstract class IdentityClientBase {
                     }
 
                     if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
-                        || BASH_PROCESS_ERROR_MESSAGE.matcher(line).find()
-                        || ZSH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
+                        || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "AzureCliCredential authentication unavailable. Azure CLI not installed."
@@ -540,8 +538,7 @@ public abstract class IdentityClientBase {
                     }
 
                     if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
-                            || BASH_PROCESS_ERROR_MESSAGE.matcher(line).find()
-                            || ZSH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
+                            || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
