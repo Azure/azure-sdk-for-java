@@ -1591,7 +1591,6 @@ class BlockBlobAPITest extends APISpec {
         def data = getRandomByteArray(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
         blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(data)), parallelTransferOptions, true).block()
-        data.position(0)
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.

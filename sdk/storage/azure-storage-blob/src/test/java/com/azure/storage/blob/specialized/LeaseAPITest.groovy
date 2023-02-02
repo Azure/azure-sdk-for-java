@@ -816,13 +816,20 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(cc, namer.getRandomUuid())
         leaseClient.acquireLease(leaseTime)
 
+        when:
         def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
         def state = cc.getProperties().getLeaseState()
 
-        expect:
+        then:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
         breakLeaseResponse.getValue() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.getHeaders())
+
+        when:
+        leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+
+        then:
+        notThrown(BlobStorageException)
 
         where:
         leaseTime | breakPeriod | remainingTime
