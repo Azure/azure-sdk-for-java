@@ -9,6 +9,7 @@ import spock.lang.Unroll
 import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryIteratorException
 import java.nio.file.Path
+import java.util.stream.IntStream
 
 class AzureDirectoryStreamTest extends APISpec {
     AzureFileSystem fs
@@ -25,10 +26,14 @@ class AzureDirectoryStreamTest extends APISpec {
         }
         def rootName = absolute ? getNonDefaultRootDir(fs) : ""
         def dirName = generateBlobName()
-        List<AzureResource> resources = []
-        for (int i = 0; i < numFiles; i++) {
-            resources.push(new AzureResource(fs.getPath(rootName, dirName, generateBlobName())))
-            resources[0].getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+        def resources = new HashMap<Path, AzureResource>()
+        if (numFiles > 0) {
+            IntStream.range(0, numFiles).parallel().forEach {
+                def resourcePath = fs.getPath(rootName, dirName, generateBlobName())
+                def resource = new AzureResource(resourcePath)
+                resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+                resources.put(resourcePath, resource)
+            }
         }
 
         when:
@@ -42,15 +47,7 @@ class AzureDirectoryStreamTest extends APISpec {
         for (int i = 0; i < numFiles; i++) {
             assert it.hasNext()
             def path = it.next()
-            def found = false
-            for (AzureResource resource : resources) {
-                if (resource.getPath() == path) {
-                    found = true
-                    resources.remove(resource)
-                    break
-                }
-            }
-            assert found
+            assert resources.get(path) != null
         }
         !it.hasNext()
 

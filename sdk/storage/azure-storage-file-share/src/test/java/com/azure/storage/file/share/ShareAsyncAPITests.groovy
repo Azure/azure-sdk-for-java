@@ -256,8 +256,6 @@ class ShareAsyncAPITests extends APISpec {
 
         when:
         def initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
-        sleepIfRecord(45000)
-        // Calling delete again after garbage collection is completed
         def secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block()
 
         then:

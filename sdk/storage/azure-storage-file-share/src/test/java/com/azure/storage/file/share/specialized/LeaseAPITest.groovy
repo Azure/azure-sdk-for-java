@@ -383,13 +383,20 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(shareClient, namer.getRandomUuid())
         leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null)
 
+        when:
         def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
         def state = shareClient.getProperties().getLeaseState()
 
-        expect:
+        then:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
         breakLeaseResponse.getValue() <= remainingTime
         validateBasicHeaders(breakLeaseResponse.getHeaders())
+
+        when:
+        leaseClient.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ZERO), null, null)
+
+        then:
+        notThrown(ShareStorageException)
 
         where:
         leaseTime | breakPeriod | remainingTime

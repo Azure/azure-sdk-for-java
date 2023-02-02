@@ -2354,7 +2354,7 @@ class BlobAPITest extends APISpec {
         false  | true
         false  | false
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {
@@ -2591,7 +2591,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName())
 
         when:
-        bc.copyFromUrl("http://www.error.com")
+        bc.copyFromUrl("https://www.azure.com")
 
         then:
         thrown(BlobStorageException)

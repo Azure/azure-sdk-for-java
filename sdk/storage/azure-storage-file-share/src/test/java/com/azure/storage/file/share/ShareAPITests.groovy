@@ -416,8 +416,6 @@ class ShareAPITests extends APISpec {
 
         when:
         def initialResponse = client.deleteIfExistsWithResponse(null, null, null)
-        // Calling delete again after garbage collection is completed
-        sleepIfRecord(45000)
         def secondResponse = client.deleteIfExistsWithResponse(null, null, null)
 
         then:

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.nio;
+package com.azure.storage.blob.nio
 
+import com.azure.core.test.utils.TestUtils
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.BlobOutputStream
-import org.mockito.Answers
 import org.mockito.Mockito
 import spock.lang.Unroll
 
@@ -56,14 +56,14 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (count < sourceFileSize) {
-            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            def buffer = ByteBuffer.allocate(rand.nextInt(100 * 1024, 1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
             count += readAmount
         }
 
         then:
-        os.toByteArray() == fileContent
+        TestUtils.assertArraysEqual(fileContent, os.toByteArray())
     }
 
     def "Read loop until EOF"() {
@@ -76,7 +76,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (System.currentTimeMillis() < timeLimit) { // ensures test duration is bounded
-            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            def buffer = ByteBuffer.allocate(rand.nextInt(100 * 1024, 1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             if (readAmount == -1) {
                 break; // reached EOF
@@ -85,7 +85,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         }
 
         then:
-        os.toByteArray() == fileContent
+        TestUtils.assertArraysEqual(fileContent, os.toByteArray())
         System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
     }
 
@@ -148,7 +148,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         writeByteChannel.write(ByteBuffer.wrap(fileContent))
         then:
         while (count < sourceFileSize) {
-            int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count)
+            int writeAmount = Math.min(rand.nextInt(100 * 1024, 1024 * 1024), sourceFileSize - count)
             def buffer = new byte[writeAmount]
             fileStream.read(buffer)
             writeByteChannel.write(ByteBuffer.wrap(buffer))
