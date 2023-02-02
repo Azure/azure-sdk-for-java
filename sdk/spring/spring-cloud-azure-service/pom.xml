@@ -103,7 +103,7 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;org.apache.kafka:kafka-clients;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;org.apache.kafka:kafka-clients;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -124,13 +124,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.0.4</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -178,7 +178,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.kafka:kafka-clients:[3.3.1]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
+                <include>org.apache.kafka:kafka-clients:[3.3.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.5.1]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>

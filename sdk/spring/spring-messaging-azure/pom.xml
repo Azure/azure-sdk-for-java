@@ -45,12 +45,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>6.0.4</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>6.0.4</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>3.0.0</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>3.0.1</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.10.3</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.0.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -128,10 +128,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.10.2]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[3.0.0]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
-                <include>org.springframework:spring-messaging:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.10.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[3.0.1]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework:spring-messaging:[6.0.4]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.0.4]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.0]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
               </includes>
             </bannedDependencies>
