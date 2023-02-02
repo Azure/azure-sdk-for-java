@@ -291,7 +291,7 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetByIdResponse> getByIdWithResponseAsync(
@@ -334,7 +334,7 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddResponse> addWithResponseAsync(
@@ -496,7 +496,7 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return digital twin relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetRelationshipByIdResponse> getRelationshipByIdWithResponseAsync(
@@ -553,7 +553,7 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return digital twin relationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsAddRelationshipResponse> addRelationshipWithResponseAsync(
@@ -988,7 +988,7 @@ public final class DigitalTwinsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return digital twin component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsGetComponentResponse> getComponentWithResponseAsync(
