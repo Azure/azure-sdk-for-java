@@ -45,7 +45,7 @@ public final class ServiceBusReceivedMessageContext {
      * @return The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      */
     public String getEntityPath() {
-        return entityPath;
+        return this.entityPath;
     }
 
     /**
@@ -56,7 +56,7 @@ public final class ServiceBusReceivedMessageContext {
      * is associated with.
      */
     public String getFullyQualifiedNamespace() {
-        return fullyQualifiedNamespace;
+        return this.fullyQualifiedNamespace;
     }
 
     /**
