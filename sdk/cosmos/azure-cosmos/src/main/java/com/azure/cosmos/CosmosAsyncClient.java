@@ -576,14 +576,15 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tracerProvider;
     }
 
-    /**
+    /***
      * Enable throughput control group.
      *
      * @param group Throughput control group going to be enabled.
+     * @param throughputQueryMono The throughput query mono.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group cannot be null");
-        this.asyncDocumentClient.enableThroughputControlGroup(group);
+        this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     /**

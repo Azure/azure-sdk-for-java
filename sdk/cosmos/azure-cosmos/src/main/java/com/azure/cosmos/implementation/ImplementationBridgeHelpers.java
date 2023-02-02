@@ -15,6 +15,8 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -697,6 +699,12 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
+
+            void enableGlobalThroughputControlGroup(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                ThroughputControlGroupConfig groupConfig,
+                GlobalThroughputControlConfig globalControlConfig,
+                Mono<Integer> throughputQueryMono);
         }
     }
 

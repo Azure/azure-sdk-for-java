@@ -1825,7 +1825,7 @@ public class CosmosAsyncContainer {
      */
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup, null);
     }
 
     /**
@@ -1857,10 +1857,25 @@ public class CosmosAsyncContainer {
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig) {
 
+        this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, null);
+    }
+
+    /***
+     * Only used internally.
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     * @param throughputQueryMono The throughput query mono.
+     */
+    void enableGlobalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        GlobalThroughputControlConfig globalControlConfig,
+        Mono<Integer> throughputQueryMono) {
+
         GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-        this.database.getClient().enableThroughputControlGroup(globalControlGroup);
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1868,7 +1883,24 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
-            CosmosAsyncContainer::queryChangeFeedInternalFunc);
+            new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+                    Class<T> classType) {
+                    return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
+                }
+
+                @Override
+                public void enableGlobalThroughputControlGroup(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    ThroughputControlGroupConfig groupConfig,
+                    GlobalThroughputControlConfig globalControlConfig,
+                    Mono<Integer> throughputQueryMono) {
+                    cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, throughputQueryMono);
+                }
+            });
     }
 
     static { initialize(); }
