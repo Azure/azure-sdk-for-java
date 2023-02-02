@@ -232,7 +232,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                             changeFeedProcessorState.setEstimatedLag(-1);
                                         }
 
-                                        changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                                        changeFeedProcessorState.setEstimatedLag((int)Math.min(estimatedLag, Integer.MAX_VALUE));
                                         return changeFeedProcessorState;
                                     });
                         })

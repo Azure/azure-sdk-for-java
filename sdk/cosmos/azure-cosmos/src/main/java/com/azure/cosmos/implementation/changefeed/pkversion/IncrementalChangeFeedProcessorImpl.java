@@ -262,7 +262,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                     .map(valueList -> {
                         Map<String, Integer> result = new ConcurrentHashMap<>();
                         for (Pair<String, Long> pair : valueList) {
-                            result.put(pair.getKey(), pair.getValue().intValue());
+                            result.put(pair.getKey(), (int)Math.min(pair.getValue(), Integer.MAX_VALUE));
                         }
                         return result;
                     })
@@ -335,7 +335,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                                     currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                                     estimatedLag = Long.parseLong(latestLsn);
                                     estimatedLag = estimatedLag - currentLsn + 1;
-                                    changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                                    changeFeedProcessorState.setEstimatedLag((int)Math.min(estimatedLag, Integer.MAX_VALUE));
                                 } catch (NumberFormatException ex) {
                                     logger.warn("Unexpected Cosmos LSN found", ex);
                                     changeFeedProcessorState.setEstimatedLag(-1);

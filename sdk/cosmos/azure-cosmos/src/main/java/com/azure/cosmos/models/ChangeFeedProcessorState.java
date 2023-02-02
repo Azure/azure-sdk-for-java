@@ -98,8 +98,8 @@ public class ChangeFeedProcessorState {
      * @param estimatedLag the estimated lag.
      * @return the current ChangeFeedProcessorState instance.
      */
-    public ChangeFeedProcessorState setEstimatedLag(long estimatedLag) {
-        this.estimatedLag = (int)estimatedLag;
+    public ChangeFeedProcessorState setEstimatedLag(int estimatedLag) {
+        this.estimatedLag = estimatedLag;
         return this;
     }
 }
