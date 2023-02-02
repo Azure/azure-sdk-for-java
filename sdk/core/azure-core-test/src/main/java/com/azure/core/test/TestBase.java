@@ -54,12 +54,16 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
+    /**
+     * Specifies that the out of process test proxy should be used.
+     */
+    protected static boolean enableTestProxy;
+
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
     private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
         .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
-    protected static boolean enableTestProxy;
 
     static {
         CONFIGURED_HTTP_CLIENTS = new ArrayList<>();
