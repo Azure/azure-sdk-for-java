@@ -66,6 +66,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
             .flatMapMany(rootResource -> Flux.fromIterable(rootResource.createdTopLevelResources()));
     }
 
+    @SuppressWarnings("unchecked")
     private Mono<CreatedResources<T>> createAsyncNonStream(List<? extends Creatable<T>> creatables) {
         return createWithRootResourceAsync(creatables)
                 .map(CreatedResourcesImpl::new);

@@ -155,6 +155,7 @@ stages:
             arguments: >
               -SourceDirectory $(System.DefaultWorkingDirectory)/build
               -TargetDirectory $(Build.ArtifactStagingDirectory)
+              -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage)
               -InformationAction Continue
 
         - template: /eng/common/pipelines/templates/steps/publish-artifact.yml

@@ -3,6 +3,7 @@
 ### 4.17.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added Service Principle based AAD Auth - See [PR 32393](https://github.com/Azure/azure-sdk-for-java/pull/32393)
 
 #### Breaking Changes
 
