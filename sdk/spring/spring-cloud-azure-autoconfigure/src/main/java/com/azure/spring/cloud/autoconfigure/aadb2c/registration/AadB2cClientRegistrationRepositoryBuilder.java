@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config;
+package com.azure.spring.cloud.autoconfigure.aadb2c.registration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration.AadB2cClientRegistrations;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class provides a fluent builder API to help aid the instantiation of
  * {@link AadB2cClientRegistrationRepository} for Azure AD B2C OAuth2 Client repository.
  */
-public class AadB2cClientRegistrationRepositoryBuilder {
+public final class AadB2cClientRegistrationRepositoryBuilder {
 
     private final AtomicBoolean building = new AtomicBoolean();
     private final List<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurers = new ArrayList<>();
@@ -58,10 +60,11 @@ public class AadB2cClientRegistrationRepositoryBuilder {
      * @return an {@link AadB2cClientRegistrationRepository} created from the configuration in this builder.
      */
     public AadB2cClientRegistrationRepository build() {
+        Assert.isTrue(clientRegistrations.size() > 0,"'clientRegistrations' cannot be empty.");
         if (this.building.compareAndSet(false, true)) {
             return doBuild();
         }
-        throw new IllegalStateException("This AadB2cClientRegistrationRepository has already been built");
+        throw new IllegalStateException("This AadB2cClientRegistrationRepository has already been built.");
     }
 
     private AadB2cClientRegistrationRepository doBuild() {

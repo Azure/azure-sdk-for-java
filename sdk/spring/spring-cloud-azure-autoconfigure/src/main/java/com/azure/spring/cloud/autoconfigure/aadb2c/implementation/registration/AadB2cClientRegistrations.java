@@ -1,5 +1,8 @@
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration;
 
+import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationsBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.util.CollectionUtils;
 
@@ -12,7 +15,7 @@ import java.util.Set;
 /**
  * Represents client registrations and non sign in client registration ids, it's built by {@link AadB2cClientRegistrationsBuilder#build()}.
  */
-final class AadB2cClientRegistrations {
+public final class AadB2cClientRegistrations {
     private final List<ClientRegistration> clientRegistrations;
     private final Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
@@ -29,7 +32,7 @@ final class AadB2cClientRegistrations {
      * @param clientRegistrations the client registration list.
      * @param nonSignInClientRegistrationIds the non sign in registration id set.
      */
-    AadB2cClientRegistrations(Collection<ClientRegistration> clientRegistrations, Set<String> nonSignInClientRegistrationIds) {
+    public AadB2cClientRegistrations(Collection<ClientRegistration> clientRegistrations, Set<String> nonSignInClientRegistrationIds) {
         this.clientRegistrations = new ArrayList<>(clientRegistrations);
         if (!CollectionUtils.isEmpty(nonSignInClientRegistrationIds)) {
             this.nonSignInClientRegistrationIds.addAll(nonSignInClientRegistrationIds);
@@ -40,7 +43,7 @@ final class AadB2cClientRegistrations {
      * Get the client registration list.
      * @return the client registration list.
      */
-    List<ClientRegistration> getClientRegistrations() {
+    public List<ClientRegistration> getClientRegistrations() {
         return clientRegistrations;
     }
 
@@ -48,7 +51,7 @@ final class AadB2cClientRegistrations {
      * Get the non sign in client registration ids.
      * @return the non sign in client registration ids.
      */
-    Set<String> getNonSignInClientRegistrationIds() {
+    public Set<String> getNonSignInClientRegistrationIds() {
         return nonSignInClientRegistrationIds;
     }
 }

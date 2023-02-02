@@ -106,12 +106,26 @@ class AadB2cUrlTests {
     }
 
     @Test
+    void testGetGlobalEndSessionUrlWithoutPostLogoutRedirectUri() {
+        final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/oauth2/v2.0/logout?p=my-p";
+
+        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(DEFAULT_BASE_URI,"my-p"), expect);
+    }
+
+    @Test
     void testGetChinaEndSessionUrl() {
         final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/logout?"
             + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
 
         Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(CHINA_BASE_URI,
             "http://localhost:8080/home", "my-p"), expect);
+    }
+
+    @Test
+    void testGetChinaEndSessionUrlWithoutPostLogoutRedirectUri() {
+        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/logout?p=my-p";
+
+        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(CHINA_BASE_URI,"my-p"), expect);
     }
 
     @Test

@@ -24,8 +24,9 @@ public final class AadB2cUrl {
 
     private static final String JWKSET_URL_PATTERN = "discovery/v2.0/keys?p=";
 
-//    private static final String END_SESSION_URL_PATTERN = "oauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
-    private static final String END_SESSION_URL_PATTERN = "oauth2/v2.0/logout?p=%s";
+    private static final String END_SESSION_URL_PATTERN = "oauth2/v2.0/logout?post_logout_redirect_uri=%s&p=%s";
+
+    private static final String END_SESSION_URL_WITHOUT_REDIRECT_URI_PATTERN = "oauth2/v2.0/logout?p=%s";
 
     private static final String AAD_TOKEN_URL_PATTERN = "https://login.microsoftonline.com/%s/oauth2/v2.0/token";
     private static final String AAD_JWKSET_URL_PATTERN = "https://login.microsoftonline.com/%s/discovery/v2.0/keys";
@@ -104,7 +105,7 @@ public final class AadB2cUrl {
     }
 
     /**
-     * Gets the end session URL.
+     * Gets the end session URL without parameter 'post_logout_redirect_uri'.
      *
      * @param baseUri the base URI
      * @param userFlow the user flow
@@ -112,7 +113,7 @@ public final class AadB2cUrl {
      */
     public static String getEndSessionUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, MSG_USER_FLOW_CANNOT_BE_EMPTY);
-        return addSlash(baseUri) + String.format(END_SESSION_URL_PATTERN, userFlow);
+        return addSlash(baseUri) + String.format(END_SESSION_URL_WITHOUT_REDIRECT_URI_PATTERN, userFlow);
     }
 
     private static String getEncodedURL(String url) {

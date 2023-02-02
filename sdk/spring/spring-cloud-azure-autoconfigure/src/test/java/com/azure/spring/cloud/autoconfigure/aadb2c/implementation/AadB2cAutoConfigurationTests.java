@@ -25,8 +25,10 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -112,7 +114,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     void servletApplication() {
         getDefaultContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
-            .run(context -> assertThat(context).hasSingleBean(AadB2cLogoutSuccessHandler.class));
+            .run(context -> assertThat(context).hasSingleBean(OidcClientInitiatedLogoutSuccessHandler.class));
     }
 
     @Test
@@ -224,7 +226,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
         getDefaultContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
             .run(c -> {
-                final AadB2cLogoutSuccessHandler handler = c.getBean(AadB2cLogoutSuccessHandler.class);
+                final LogoutSuccessHandler handler = c.getBean(OidcClientInitiatedLogoutSuccessHandler.class);
                 Assertions.assertNotNull(handler);
             });
     }

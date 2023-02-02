@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
@@ -38,54 +37,37 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTem
 @Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
 public class AadB2cAutoConfiguration {
 
+    private final AadB2cProperties properties;
+
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadOAuth2ClientConfiguration}.
-     *
-     * @param restTemplateBuilder the RestTemplateBuilder
-     */
-    public AadB2cAutoConfiguration(RestTemplateBuilder restTemplateBuilder) {
+    private final ClientRegistrationRepository repository;
+
+    AadB2cAutoConfiguration(AadB2cProperties properties,
+                                   RestTemplateBuilder restTemplateBuilder,
+                                   ClientRegistrationRepository repository) {
+        this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
+        this.repository = repository;
     }
 
-    /**
-     * Declare AadB2cAuthorizationRequestResolver bean.
-     * @param repository The clientRegistrationRepository,
-     * @param properties The AADB2CProperties,
-     * @return AadB2cAuthorizationRequestResolver bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(
-            ClientRegistrationRepository repository, AadB2cProperties properties) {
+    AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
         return new AadB2cAuthorizationRequestResolver(repository, properties);
     }
 
-    /**
-     * Declare LogoutSuccessHandler bean.
-     * @return OidcClientInitiatedLogoutSuccessHandler bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public LogoutSuccessHandler b2cLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository,
-                                                        AadB2cProperties properties) {
-        OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler =
-            new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+    LogoutSuccessHandler b2cLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(repository);
         logoutSuccessHandler.setPostLogoutRedirectUri(properties.getLogoutSuccessUrl());
         return logoutSuccessHandler;
     }
 
-    /**
-     * Declare AadB2cOidcLoginConfigurer bean.
-     *
-     * @param handler the logout success handler
-     * @param resolver the AAD B2C authorization request resolver
-     * @return AadB2cOidcLoginConfigurer bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cOidcLoginConfigurer b2cLoginConfigurer(LogoutSuccessHandler handler,
+    AadB2cOidcLoginConfigurer b2cLoginConfigurer(LogoutSuccessHandler handler,
                                                         AadB2cAuthorizationRequestResolver resolver) {
         return new AadB2cOidcLoginConfigurer(handler, resolver, null, restTemplateBuilder);
     }

@@ -1,12 +1,16 @@
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.autoconfigure.aadb2c.registration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration.AadB2cClientRegistrations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -41,7 +45,7 @@ public final class AadB2cClientRegistrationsBuilder {
     private final Map<String, Tuple2<AuthorizationGrantType, Set<String>>> authorizationClients = new HashMap<>();
     private String signInUserFlow;
 
-    private Set<String> userFlows = Collections.emptySet();
+    private Set<String> userFlows = new HashSet<>();
 
     /**
      * Creates a builder instance that is used to build {@link AadB2cClientRegistrations}.
@@ -144,7 +148,7 @@ public final class AadB2cClientRegistrationsBuilder {
      */
     public AadB2cClientRegistrationsBuilder userFlows(String... userFlows) {
         if (userFlows != null && userFlows.length > 0) {
-            this.userFlows = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(userFlows)));
+            this.userFlows.addAll(new HashSet<>(Arrays.asList(userFlows)));
         }
         return this;
     }
@@ -154,8 +158,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * @return an {@link AadB2cClientRegistrations} created from the configurations in this builder.
      */
     public AadB2cClientRegistrations build() {
-        // TODO validate properties
-
+        validateConfig();
         List<ClientRegistration> registrations = new ArrayList<>();
         Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
@@ -175,6 +178,22 @@ public final class AadB2cClientRegistrationsBuilder {
         nonSignInClientRegistrationIds.addAll(userFlows);
         nonSignInClientRegistrationIds.addAll(authorizationClients.keySet());
         return new AadB2cClientRegistrations(registrations, nonSignInClientRegistrationIds);
+    }
+
+    private void validateConfig() {
+        Assert.isTrue(StringUtils.hasText(baseUri),"The 'baseUri' cannot be empty.");
+        Assert.isTrue(StringUtils.hasText(clientId) && StringUtils.hasText(clientSecret),
+            "The 'clientId' and 'clientSecret' cannot be empty.");
+        Assert.isTrue(StringUtils.hasText(signInUserFlow), "The 'signInUserFlow' user flow instance id cannot be empty.");
+        
+        if (userFlows.contains(signInUserFlow)) {
+            throw new IllegalArgumentException("Found duplicate sign-in user flow instance id, "
+                + "please remove '" + signInUserFlow + "' from 'userFlows'.");
+        }
+
+        if (authorizationClients.size() > 0 && !StringUtils.hasText(tenantId)) {
+            throw new IllegalArgumentException("'tenantId' must be provided when using client credential grant type.");
+        }
     }
 
     /**
