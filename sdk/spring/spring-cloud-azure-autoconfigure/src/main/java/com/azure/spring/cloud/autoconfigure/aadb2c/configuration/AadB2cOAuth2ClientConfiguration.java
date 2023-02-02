@@ -60,14 +60,20 @@ public class AadB2cOAuth2ClientConfiguration {
      * @param properties the AAD B2C properties
      * @param restTemplateBuilder the restTemplateBuilder
      */
-    AadB2cOAuth2ClientConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
+    public AadB2cOAuth2ClientConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
+    /**
+     * Declare ClientRegistrationRepository bean.
+     * @param oAuth2ClientPropertiesProvider the {@link OAuth2ClientProperties} provider.
+     * @param configurersProvider the {@link AadB2cClientRegistrationRepositoryBuilderConfigurer} provider.
+     * @return ClientRegistrationRepository bean
+     */
     @Bean
     @ConditionalOnMissingBean
-    ClientRegistrationRepository clientRegistrationRepository(
+    public ClientRegistrationRepository clientRegistrationRepository(
         ObjectProvider<OAuth2ClientProperties> oAuth2ClientPropertiesProvider,
         ObjectProvider<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurersProvider) {
         final AadB2cClientRegistrationRepositoryBuilder repositoryBuilder = new AadB2cClientRegistrationRepositoryBuilder();
@@ -117,7 +123,7 @@ public class AadB2cOAuth2ClientConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    OAuth2AuthorizedClientManager authorizedClientManager(
+    public OAuth2AuthorizedClientManager authorizedClientManager(
             ClientRegistrationRepository clients,
             OAuth2AuthorizedClientRepository authorizedClients) {
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()

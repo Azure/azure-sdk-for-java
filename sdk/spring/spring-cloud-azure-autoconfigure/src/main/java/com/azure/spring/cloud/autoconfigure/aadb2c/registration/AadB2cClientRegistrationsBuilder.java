@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.registration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration.AadB2cClientRegistrations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -14,6 +13,7 @@ import org.springframework.util.StringUtils;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,18 +41,9 @@ public final class AadB2cClientRegistrationsBuilder {
     private String userNameAttributeName;
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
     private String baseUri;
-
-    private final Map<String, Tuple2<AuthorizationGrantType, Set<String>>> authorizationClients = new HashMap<>();
     private String signInUserFlow;
-
-    private Set<String> userFlows = new HashSet<>();
-
-    /**
-     * Creates a builder instance that is used to build {@link AadB2cClientRegistrations}.
-     */
-    public AadB2cClientRegistrationsBuilder() {
-
-    }
+    private final Set<String> userFlows = new HashSet<>();
+    private final Map<String, Tuple2<AuthorizationGrantType, Set<String>>> authorizationClients = new HashMap<>();
 
     /**
      * Sets the client identifier.
@@ -76,6 +67,11 @@ public final class AadB2cClientRegistrationsBuilder {
         return this;
     }
 
+    /**
+     * Sets the id of the AD B2C tenant, it's required when setting the authorization clients.
+     * @param tenantId the id of the AD B2C tenant.
+     * @return the {@link AadB2cClientRegistrationsBuilder}
+     */
     public AadB2cClientRegistrationsBuilder tenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -115,6 +111,37 @@ public final class AadB2cClientRegistrationsBuilder {
         return this;
     }
 
+    /**
+     * Sets the primary sign-in flow instance id, no need to set this value in {@link #userFlows} anymore.
+     *
+     * @param signInUserFlow the key for the primary sign-in or sign-up user flow id
+     * @return the {@link AadB2cClientRegistrationsBuilder}
+     */
+    public AadB2cClientRegistrationsBuilder signInUserFlow(String signInUserFlow) {
+        this.signInUserFlow = signInUserFlow;
+        return this;
+    }
+
+    /**
+     * Sets the user flow instance id set, which should not include the sign in user flow instance id.
+     * @param userFlows the user flow instance id for each user flow type.
+     * @return the {@link AadB2cClientRegistrationsBuilder}
+     */
+    public AadB2cClientRegistrationsBuilder userFlows(String... userFlows) {
+        if (userFlows != null && userFlows.length > 0) {
+            this.userFlows.addAll(new HashSet<>(Arrays.asList(userFlows)));
+        }
+        return this;
+    }
+
+    /**
+     * Sets one authorization client to current AD B2C application, it only supports
+     * to set the grant type {@link AuthorizationGrantType#CLIENT_CREDENTIALS}.
+     * @param registrationId the client registration id of OAuth2 client.
+     * @param authorizationGrantType the authorization grant type of OAuth2 client.
+     * @param scopes the scope set of OAuth2 client.
+     * @return the {@link AadB2cClientRegistrationsBuilder}
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public AadB2cClientRegistrationsBuilder authorizationClient(String registrationId,
                                                                 AuthorizationGrantType authorizationGrantType,
@@ -130,31 +157,7 @@ public final class AadB2cClientRegistrationsBuilder {
     }
 
     /**
-     * Sets the primary sign-in flow key.
-     *
-     * @param signInUserFlow the key for the primary sign-in or sign-up user flow id
-     * @return the {@link AadB2cClientRegistrationsBuilder}
-     */
-    public AadB2cClientRegistrationsBuilder signInUserFlow(String signInUserFlow) {
-        this.signInUserFlow = signInUserFlow;
-        return this;
-    }
-
-    /**
-     * Sets the user flow instance id mapping.
-     *
-     * @param userFlows the user flow instance id for each user flow type.
-     * @return the {@link AadB2cClientRegistrationsBuilder}
-     */
-    public AadB2cClientRegistrationsBuilder userFlows(String... userFlows) {
-        if (userFlows != null && userFlows.length > 0) {
-            this.userFlows.addAll(new HashSet<>(Arrays.asList(userFlows)));
-        }
-        return this;
-    }
-
-    /**
-     * Creates an {@link AadB2cClientRegistrations} based on configuration in the builder.
+     * Creates an {@link AadB2cClientRegistrations} based on configuration in this builder.
      * @return an {@link AadB2cClientRegistrations} created from the configurations in this builder.
      */
     public AadB2cClientRegistrations build() {
@@ -180,12 +183,18 @@ public final class AadB2cClientRegistrationsBuilder {
         return new AadB2cClientRegistrations(registrations, nonSignInClientRegistrationIds);
     }
 
+    /**
+     * Validate configurations, and throw an exception if found invalid configuration.
+     */
     private void validateConfig() {
-        Assert.isTrue(StringUtils.hasText(baseUri),"The 'baseUri' cannot be empty.");
-        Assert.isTrue(StringUtils.hasText(clientId) && StringUtils.hasText(clientSecret),
-            "The 'clientId' and 'clientSecret' cannot be empty.");
+        Assert.isTrue(StringUtils.hasText(baseUri), "The 'baseUri' cannot be empty.");
+        try {
+            new java.net.URL(baseUri);
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException("Found invalid URL '" + baseUri + "'.");
+        }
+
         Assert.isTrue(StringUtils.hasText(signInUserFlow), "The 'signInUserFlow' user flow instance id cannot be empty.");
-        
         if (userFlows.contains(signInUserFlow)) {
             throw new IllegalArgumentException("Found duplicate sign-in user flow instance id, "
                 + "please remove '" + signInUserFlow + "' from 'userFlows'.");

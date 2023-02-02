@@ -3,9 +3,8 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.registration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration.AadB2cClientRegistrations;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.util.Assert;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public final class AadB2cClientRegistrationRepositoryBuilder {
     private final Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 
     /**
-     * Build client registrations of one application registered in Azure AD B2C, the
+     * Add the client registrations of one application registered in Azure AD B2C, the
      * {@link AadB2cClientRegistrationsBuilder} will carry the actual client registration
      * creation and return an {@link AadB2cClientRegistrations} for the repository builder.
      * @param builder the builder to build an {@link AadB2cClientRegistrations}.
@@ -40,16 +39,33 @@ public final class AadB2cClientRegistrationRepositoryBuilder {
                                      .toArray(new String[0]));
         return this;
     }
+
+    /**
+     * Add the client registrations for the repository builder.
+     * @param clientRegistrations the array of {@link ClientRegistration}.
+     * @return the updated AadB2cClientRegistrationRepositoryBuilder.
+     */
     public AadB2cClientRegistrationRepositoryBuilder clientRegistrations(ClientRegistration... clientRegistrations) {
         Arrays.stream(clientRegistrations).forEach(this.clientRegistrations::add);
         return this;
     }
 
+    /**
+     * Add the non sign-in registration array, which are not the primary OAuth2
+     * login clients and will not be shown by default on the login page.
+     * @param clientRegistrationIds the array of registration id.
+     * @return the updated AadB2cClientRegistrationRepositoryBuilder.
+     */
     public AadB2cClientRegistrationRepositoryBuilder nonSignInClientRegistrationIds(String... clientRegistrationIds) {
         Arrays.stream(clientRegistrationIds).forEach(this.nonSignInClientRegistrationIds::add);
         return this;
     }
 
+    /**
+     * Add an {@link AadB2cClientRegistrationRepositoryBuilderConfigurer} to configure extra client registrationS of an application registered in Azure AD B2C.
+     * @param configurer the repository builder configurer.
+     * @return the updated AadB2cClientRegistrationRepositoryBuilder.
+     */
     public AadB2cClientRegistrationRepositoryBuilder addRepositoryBuilderConfigurer(AadB2cClientRegistrationRepositoryBuilderConfigurer configurer) {
         this.configurers.add(configurer);
         return this;
@@ -58,16 +74,16 @@ public final class AadB2cClientRegistrationRepositoryBuilder {
     /**
      * Build client registration repository for Azure AD B2C.
      * @return an {@link AadB2cClientRegistrationRepository} created from the configuration in this builder.
+     * @throws IllegalStateException If the method {@link #build} is called a second time.
      */
-    public AadB2cClientRegistrationRepository build() {
-        Assert.isTrue(clientRegistrations.size() > 0,"'clientRegistrations' cannot be empty.");
+    public ClientRegistrationRepository build() {
         if (this.building.compareAndSet(false, true)) {
             return doBuild();
         }
         throw new IllegalStateException("This AadB2cClientRegistrationRepository has already been built.");
     }
 
-    private AadB2cClientRegistrationRepository doBuild() {
+    private ClientRegistrationRepository doBuild() {
         synchronized (this.configurers) {
             for (AadB2cClientRegistrationRepositoryBuilderConfigurer configurer : configurers) {
                 configurer.configure(this);

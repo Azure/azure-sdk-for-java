@@ -11,7 +11,7 @@ public interface AadB2cClientRegistrationRepositoryBuilderConfigurer {
 
     /**
      * Configure the {@link AadB2cClientRegistrationRepositoryBuilder} for Azure AD B2C OAuth2 login.
-     * @return the Azure AD B2C client registration repository builder.
+     * @param builder the Azure AD B2C client registration repository builder.
      */
     void configure(AadB2cClientRegistrationRepositoryBuilder builder);
 }

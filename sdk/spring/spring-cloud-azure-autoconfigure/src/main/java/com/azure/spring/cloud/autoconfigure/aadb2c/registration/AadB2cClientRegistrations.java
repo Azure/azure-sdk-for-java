@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation.registration;
+package com.azure.spring.cloud.autoconfigure.aadb2c.registration;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationsBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.util.CollectionUtils;
 
@@ -23,7 +22,7 @@ public final class AadB2cClientRegistrations {
      * Create an instance only with client registration list.
      * @param clientRegistrations the client registration list.
      */
-    AadB2cClientRegistrations(Collection<ClientRegistration> clientRegistrations) {
+    public AadB2cClientRegistrations(Collection<ClientRegistration> clientRegistrations) {
         this(clientRegistrations, null);
     }
 
