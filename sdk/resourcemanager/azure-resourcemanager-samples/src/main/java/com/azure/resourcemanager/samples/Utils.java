@@ -1644,7 +1644,8 @@ public final class Utils {
         HashMap<String, String> auth = new HashMap<>();
 
         if (content.startsWith("{")) {
-            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+            auth = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(content, auth.getClass(), SerializerEncoding.JSON);
             return auth.get("clientId");
         } else {
             Properties authSettings = new Properties();
@@ -1667,7 +1668,8 @@ public final class Utils {
         HashMap<String, String> auth = new HashMap<>();
 
         if (content.startsWith("{")) {
-            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+            auth = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(content, auth.getClass(), SerializerEncoding.JSON);
             return auth.get("clientSecret");
         } else {
             Properties authSettings = new Properties();

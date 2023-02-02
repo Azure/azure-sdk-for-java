@@ -209,7 +209,8 @@ class HelperTest extends APISpec {
             "</PageList>"
 
         when:
-        def pageList = (PageList) new JacksonAdapter().deserialize(responseXml, PageList.class, SerializerEncoding.XML)
+        def pageList = (PageList) JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(responseXml, PageList.class, SerializerEncoding.XML)
 
         then:
         pageList.getPageRange().size() == 2

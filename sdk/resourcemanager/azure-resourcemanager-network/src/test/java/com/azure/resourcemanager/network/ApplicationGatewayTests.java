@@ -579,7 +579,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         ((ObjectNode) userAssignedIdentitiesValueObject).put("principalId", identity.principalId());
         ((ObjectNode) userAssignedIdentitiesValueObject).put("clientId", identity.clientId());
         ManagedServiceIdentityUserAssignedIdentities userAssignedIdentitiesValue =
-            new JacksonAdapter()
+            JacksonAdapter.createDefaultSerializerAdapter()
                 .deserialize(
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userAssignedIdentitiesValueObject),
                     ManagedServiceIdentityUserAssignedIdentities.class,

@@ -139,10 +139,11 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
         if (isJsonBased(content)) {
-            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+            auth = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(content, auth.getClass(), SerializerEncoding.JSON);
         } else {
             Properties authSettings = new Properties();
-            FileInputStream credentialsFileStream = new FileInputStream(new File(authFilename));
+            FileInputStream credentialsFileStream = new FileInputStream(authFilename);
             authSettings.load(credentialsFileStream);
             credentialsFileStream.close();
 

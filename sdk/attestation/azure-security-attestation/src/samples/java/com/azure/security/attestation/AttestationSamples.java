@@ -95,10 +95,10 @@ public class AttestationSamples {
                     LinkedHashMap<String, Object> runtimeClaims = (LinkedHashMap) result.getRuntimeClaims();
                     for (String key : runtimeClaims.keySet()) {
                         System.out.printf("Claim %s:", key);
-                        JacksonAdapter serializer = new JacksonAdapter();
 
                         try {
-                            String serializedObject = serializer.serialize(runtimeClaims.get(key), SerializerEncoding.JSON);
+                            String serializedObject = JacksonAdapter.createDefaultSerializerAdapter()
+                                .serialize(runtimeClaims.get(key), SerializerEncoding.JSON);
                             System.out.printf("%s", serializedObject);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -170,10 +170,10 @@ public class AttestationSamples {
             LinkedHashMap<String, Object> runtimeClaims = (LinkedHashMap) result.getRuntimeClaims();
             for (String key : runtimeClaims.keySet()) {
                 System.out.printf("Claim %s:", key);
-                JacksonAdapter serializer = new JacksonAdapter();
 
                 try {
-                    String serializedObject = serializer.serialize(runtimeClaims.get(key), SerializerEncoding.JSON);
+                    String serializedObject = JacksonAdapter.createDefaultSerializerAdapter()
+                        .serialize(runtimeClaims.get(key), SerializerEncoding.JSON);
                     System.out.printf("%s\n", serializedObject);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -249,10 +249,10 @@ public class AttestationSamples {
             LinkedHashMap<String, Object> policyClaims = (LinkedHashMap) response.getValue().getPolicyClaims();
             for (String key : policyClaims.keySet()) {
                 System.out.printf("Policy Generated Claim %s:", key);
-                JacksonAdapter serializer = new JacksonAdapter();
 
                 try {
-                    String serializedObject = serializer.serialize(policyClaims.get(key), SerializerEncoding.JSON);
+                    String serializedObject = JacksonAdapter.createDefaultSerializerAdapter()
+                        .serialize(policyClaims.get(key), SerializerEncoding.JSON);
                     System.out.printf("%s\n", serializedObject);
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -562,8 +562,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
     private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
         String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
-        HashMap<String, String> auth = new HashMap<>();
-        auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
-        return auth;
+        return JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(content, HashMap.class, SerializerEncoding.JSON);
     }
 }
