@@ -56,9 +56,6 @@ if ($Stage -eq "Install")
     $installProcess  = Start-Process msiexec -Wait -PassThru -ArgumentList "/a $EmulatorMsiUrl TARGETDIR=$targetDir /qn /liew $logFile"
     Get-Content $logFile
     Write-Host "Exit Code: $($installProcess.ExitCode)"
-
-    Add-MpPreference -ExclusionPath  "$targetDir"
-    Write-Host "Added defender exception for $targetDir"
   }
   while(($installProcess.ExitCode -ne 0) -and ($downloadTryCount -lt 3))
 

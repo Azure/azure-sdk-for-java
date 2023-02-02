@@ -71,16 +71,15 @@ public final class CosmosContainerProactiveInitConfig {
 
         if (this.cosmosContainerIdentities == null || cosmosContainerIdentities.isEmpty()) {
             return "";
-        } else {
-            return
-                String.format(
-                    "%s(%d)",
-                    cosmosContainerIdentities
-                        .stream()
-                        .map(ci -> ci.getContainerLink())
-                        .collect(Collectors.joining(",")),
-                    numProactiveConnectionRegions);
         }
-    }
 
+        return
+            String.format(
+                "%s(%d)",
+                cosmosContainerIdentities
+                    .stream()
+                    .map(ci -> ci.getContainerLink())
+                    .collect(Collectors.joining(",")),
+                numProactiveConnectionRegions);
+    }
 }

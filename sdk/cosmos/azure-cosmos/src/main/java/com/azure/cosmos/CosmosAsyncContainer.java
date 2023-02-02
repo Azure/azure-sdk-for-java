@@ -533,7 +533,7 @@ public class CosmosAsyncContainer {
                     "regions should be lesser than the no. of preferred regions.");
         }
 
-        if(isInitialized.compareAndSet(false, true)) {
+        if (isInitialized.compareAndSet(false, true)) {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
