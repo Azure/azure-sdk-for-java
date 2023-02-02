@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -44,7 +45,7 @@ public final class ServiceBusReceivedMessageContext {
      * @return The Service Bus resource this instance of {@link ServiceBusProcessorClient} interacts with.
      */
     public String getEntityPath() {
-        return this.entityPath;
+        return entityPath;
     }
 
     /**
@@ -55,7 +56,7 @@ public final class ServiceBusReceivedMessageContext {
      * is associated with.
      */
     public String getFullyQualifiedNamespace() {
-        return this.fullyQualifiedNamespace;
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -68,6 +69,15 @@ public final class ServiceBusReceivedMessageContext {
     /**
      * Abandons the {@link #getMessage() message} in this context.
      *
+     * @param timeout the timeout for the block
+     */
+    public void abandon(Duration timeout) {
+        receiverClient.abandon(receivedMessageContext.getMessage()).block(timeout);
+    }
+
+    /**
+     * Abandons the {@link #getMessage() message} in this context.
+     *
      * @param options Additional options for abandoning the message.
      */
     public void abandon(AbandonOptions options) {
@@ -75,10 +85,29 @@ public final class ServiceBusReceivedMessageContext {
     }
 
     /**
+     * Abandons the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for abandoning the message.
+     * @param timeout the timeout for the block
+     */
+    public void abandon(AbandonOptions options, Duration timeout) {
+        receiverClient.abandon(receivedMessageContext.getMessage(), options).block(timeout);
+    }
+
+    /**
      * Completes the {@link #getMessage() message} in this context.
      */
     public void complete() {
         receiverClient.complete(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Completes the {@link #getMessage() message} in this context.
+     *
+     * @param timeout the timeout for the block
+     */
+    public void complete(Duration timeout) {
+        receiverClient.complete(receivedMessageContext.getMessage()).block(timeout);
     }
 
     /**
@@ -92,10 +121,30 @@ public final class ServiceBusReceivedMessageContext {
     }
 
     /**
+     * Completes the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for completing the message.
+     * @param timeout the timeout for the block
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void complete(CompleteOptions options, Duration timeout) {
+        receiverClient.complete(receivedMessageContext.getMessage(), options).block(timeout);
+    }
+
+    /**
      * Defers the {@link #getMessage() message} in this context.
      */
     public void defer() {
         receiverClient.defer(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Defers the {@link #getMessage() message} in this context.
+     *
+     * @param timeout the timeout for the block
+     */
+    public void defer(Duration timeout) {
+        receiverClient.defer(receivedMessageContext.getMessage()).block(timeout);
     }
 
     /**
@@ -109,10 +158,30 @@ public final class ServiceBusReceivedMessageContext {
     }
 
     /**
+     * Defers the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for deferring the message.
+     * @param timeout the timeout for the block
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void defer(DeferOptions options, Duration timeout) {
+        receiverClient.defer(receivedMessageContext.getMessage(), options).block(timeout);
+    }
+
+    /**
      * Dead-letters the {@link #getMessage() message} in this context.
      */
     public void deadLetter() {
         receiverClient.deadLetter(receivedMessageContext.getMessage()).block();
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     *
+     * @param timeout the timeout for the block
+     */
+    public void deadLetter(Duration timeout) {
+        receiverClient.deadLetter(receivedMessageContext.getMessage()).block(timeout);
     }
 
     /**
@@ -124,5 +193,17 @@ public final class ServiceBusReceivedMessageContext {
      */
     public void deadLetter(DeadLetterOptions options) {
         receiverClient.deadLetter(receivedMessageContext.getMessage(), options).block();
+    }
+
+    /**
+     * Dead-letters the {@link #getMessage() message} in this context.
+     *
+     * @param options Additional options for dead-lettering the message.
+     * @param timeout the timeout for the block
+     *
+     * @throws NullPointerException if {@code options} are null.
+     */
+    public void deadLetter(DeadLetterOptions options, Duration timeout) {
+        receiverClient.deadLetter(receivedMessageContext.getMessage(), options).block(timeout);
     }
 }
