@@ -5,24 +5,18 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.models.Identity;
 import com.azure.resourcemanager.deploymentmanager.models.RolloutOperationInfo;
 import com.azure.resourcemanager.deploymentmanager.models.Service;
 import com.azure.resourcemanager.deploymentmanager.models.StepGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Defines the rollout. */
-@JsonFlatten
 @Fluent
-public class RolloutInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutInner.class);
-
+public final class RolloutInner extends Resource {
     /*
      * Identity for the resource.
      */
@@ -30,55 +24,14 @@ public class RolloutInner extends Resource {
     private Identity identity;
 
     /*
-     * The version of the build being deployed.
+     * The properties that define a rollout.
      */
-    @JsonProperty(value = "properties.buildVersion")
-    private String buildVersion;
+    @JsonProperty(value = "properties")
+    private RolloutProperties innerProperties;
 
-    /*
-     * The reference to the artifact source resource Id where the payload is
-     * located.
-     */
-    @JsonProperty(value = "properties.artifactSourceId")
-    private String artifactSourceId;
-
-    /*
-     * The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     */
-    @JsonProperty(value = "properties.targetServiceTopologyId")
-    private String targetServiceTopologyId;
-
-    /*
-     * The list of step groups that define the orchestration.
-     */
-    @JsonProperty(value = "properties.stepGroups")
-    private List<StepGroup> stepGroups;
-
-    /*
-     * The current status of the rollout.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
-    /*
-     * The cardinal count of total number of retries performed on the rollout
-     * at a given time.
-     */
-    @JsonProperty(value = "properties.totalRetryAttempts", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalRetryAttempts;
-
-    /*
-     * Operational information of the rollout.
-     */
-    @JsonProperty(value = "properties.operationInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private RolloutOperationInfo operationInfo;
-
-    /*
-     * The detailed information on the services being deployed.
-     */
-    @JsonProperty(value = "properties.services", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Service> services;
+    /** Creates an instance of RolloutInner class. */
+    public RolloutInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.
@@ -101,122 +54,12 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Get the buildVersion property: The version of the build being deployed.
+     * Get the innerProperties property: The properties that define a rollout.
      *
-     * @return the buildVersion value.
+     * @return the innerProperties value.
      */
-    public String buildVersion() {
-        return this.buildVersion;
-    }
-
-    /**
-     * Set the buildVersion property: The version of the build being deployed.
-     *
-     * @param buildVersion the buildVersion value to set.
-     * @return the RolloutInner object itself.
-     */
-    public RolloutInner withBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
-        return this;
-    }
-
-    /**
-     * Get the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
-     *
-     * @return the artifactSourceId value.
-     */
-    public String artifactSourceId() {
-        return this.artifactSourceId;
-    }
-
-    /**
-     * Set the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
-     *
-     * @param artifactSourceId the artifactSourceId value to set.
-     * @return the RolloutInner object itself.
-     */
-    public RolloutInner withArtifactSourceId(String artifactSourceId) {
-        this.artifactSourceId = artifactSourceId;
-        return this;
-    }
-
-    /**
-     * Get the targetServiceTopologyId property: The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     *
-     * @return the targetServiceTopologyId value.
-     */
-    public String targetServiceTopologyId() {
-        return this.targetServiceTopologyId;
-    }
-
-    /**
-     * Set the targetServiceTopologyId property: The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     *
-     * @param targetServiceTopologyId the targetServiceTopologyId value to set.
-     * @return the RolloutInner object itself.
-     */
-    public RolloutInner withTargetServiceTopologyId(String targetServiceTopologyId) {
-        this.targetServiceTopologyId = targetServiceTopologyId;
-        return this;
-    }
-
-    /**
-     * Get the stepGroups property: The list of step groups that define the orchestration.
-     *
-     * @return the stepGroups value.
-     */
-    public List<StepGroup> stepGroups() {
-        return this.stepGroups;
-    }
-
-    /**
-     * Set the stepGroups property: The list of step groups that define the orchestration.
-     *
-     * @param stepGroups the stepGroups value to set.
-     * @return the RolloutInner object itself.
-     */
-    public RolloutInner withStepGroups(List<StepGroup> stepGroups) {
-        this.stepGroups = stepGroups;
-        return this;
-    }
-
-    /**
-     * Get the status property: The current status of the rollout.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.status;
-    }
-
-    /**
-     * Get the totalRetryAttempts property: The cardinal count of total number of retries performed on the rollout at a
-     * given time.
-     *
-     * @return the totalRetryAttempts value.
-     */
-    public Integer totalRetryAttempts() {
-        return this.totalRetryAttempts;
-    }
-
-    /**
-     * Get the operationInfo property: Operational information of the rollout.
-     *
-     * @return the operationInfo value.
-     */
-    public RolloutOperationInfo operationInfo() {
-        return this.operationInfo;
-    }
-
-    /**
-     * Get the services property: The detailed information on the services being deployed.
-     *
-     * @return the services value.
-     */
-    public List<Service> services() {
-        return this.services;
+    private RolloutProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -234,6 +77,137 @@ public class RolloutInner extends Resource {
     }
 
     /**
+     * Get the status property: The current status of the rollout.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the totalRetryAttempts property: The cardinal count of total number of retries performed on the rollout at a
+     * given time.
+     *
+     * @return the totalRetryAttempts value.
+     */
+    public Integer totalRetryAttempts() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalRetryAttempts();
+    }
+
+    /**
+     * Get the operationInfo property: Operational information of the rollout.
+     *
+     * @return the operationInfo value.
+     */
+    public RolloutOperationInfo operationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationInfo();
+    }
+
+    /**
+     * Get the services property: The detailed information on the services being deployed.
+     *
+     * @return the services value.
+     */
+    public List<Service> services() {
+        return this.innerProperties() == null ? null : this.innerProperties().services();
+    }
+
+    /**
+     * Get the buildVersion property: The version of the build being deployed.
+     *
+     * @return the buildVersion value.
+     */
+    public String buildVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().buildVersion();
+    }
+
+    /**
+     * Set the buildVersion property: The version of the build being deployed.
+     *
+     * @param buildVersion the buildVersion value to set.
+     * @return the RolloutInner object itself.
+     */
+    public RolloutInner withBuildVersion(String buildVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutProperties();
+        }
+        this.innerProperties().withBuildVersion(buildVersion);
+        return this;
+    }
+
+    /**
+     * Get the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
+     *
+     * @return the artifactSourceId value.
+     */
+    public String artifactSourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactSourceId();
+    }
+
+    /**
+     * Set the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
+     *
+     * @param artifactSourceId the artifactSourceId value to set.
+     * @return the RolloutInner object itself.
+     */
+    public RolloutInner withArtifactSourceId(String artifactSourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutProperties();
+        }
+        this.innerProperties().withArtifactSourceId(artifactSourceId);
+        return this;
+    }
+
+    /**
+     * Get the targetServiceTopologyId property: The resource Id of the service topology from which service units are
+     * being referenced in step groups to be deployed.
+     *
+     * @return the targetServiceTopologyId value.
+     */
+    public String targetServiceTopologyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetServiceTopologyId();
+    }
+
+    /**
+     * Set the targetServiceTopologyId property: The resource Id of the service topology from which service units are
+     * being referenced in step groups to be deployed.
+     *
+     * @param targetServiceTopologyId the targetServiceTopologyId value to set.
+     * @return the RolloutInner object itself.
+     */
+    public RolloutInner withTargetServiceTopologyId(String targetServiceTopologyId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutProperties();
+        }
+        this.innerProperties().withTargetServiceTopologyId(targetServiceTopologyId);
+        return this;
+    }
+
+    /**
+     * Get the stepGroups property: The list of step groups that define the orchestration.
+     *
+     * @return the stepGroups value.
+     */
+    public List<StepGroup> stepGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().stepGroups();
+    }
+
+    /**
+     * Set the stepGroups property: The list of step groups that define the orchestration.
+     *
+     * @param stepGroups the stepGroups value to set.
+     * @return the RolloutInner object itself.
+     */
+    public RolloutInner withStepGroups(List<StepGroup> stepGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutProperties();
+        }
+        this.innerProperties().withStepGroups(stepGroups);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -242,14 +216,8 @@ public class RolloutInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (stepGroups() != null) {
-            stepGroups().forEach(e -> e.validate());
-        }
-        if (operationInfo() != null) {
-            operationInfo().validate();
-        }
-        if (services() != null) {
-            services().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

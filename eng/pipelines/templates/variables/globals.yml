@@ -38,6 +38,8 @@ variables:
   # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
   # matrix has been processed
   TestFromSource: false
+  # This will be overwritten by the test matrix, if configured.
+  RunAggregateReports: false
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

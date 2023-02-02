@@ -56,6 +56,10 @@ public final class AudioTrack extends TrackBase {
     @JsonProperty(value = "bitRate", access = JsonProperty.Access.WRITE_ONLY)
     private Integer bitRate;
 
+    /** Creates an instance of AudioTrack class. */
+    public AudioTrack() {
+    }
+
     /**
      * Get the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.

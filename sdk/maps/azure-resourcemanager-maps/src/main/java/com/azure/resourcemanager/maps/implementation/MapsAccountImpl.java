@@ -9,10 +9,10 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
 import com.azure.resourcemanager.maps.models.Kind;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.MapsAccountKeys;
-import com.azure.resourcemanager.maps.models.MapsAccountProperties;
 import com.azure.resourcemanager.maps.models.MapsAccountUpdateParameters;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
 import com.azure.resourcemanager.maps.models.Sku;
@@ -71,6 +71,10 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MapsAccountInner innerModel() {
@@ -170,16 +174,12 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
         return this;
     }
 
-    public MapsAccountKeys listKeys() {
-        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
-    }
-
     public Response<MapsAccountKeys> listKeysWithResponse(Context context) {
         return serviceManager.accounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public MapsAccountKeys regenerateKeys(MapsKeySpecification keySpecification) {
-        return serviceManager.accounts().regenerateKeys(resourceGroupName, accountName, keySpecification);
+    public MapsAccountKeys listKeys() {
+        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<MapsAccountKeys> regenerateKeysWithResponse(
@@ -187,6 +187,10 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
         return serviceManager
             .accounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, keySpecification, context);
+    }
+
+    public MapsAccountKeys regenerateKeys(MapsKeySpecification keySpecification) {
+        return serviceManager.accounts().regenerateKeys(resourceGroupName, accountName, keySpecification);
     }
 
     public MapsAccountImpl withRegion(Region location) {

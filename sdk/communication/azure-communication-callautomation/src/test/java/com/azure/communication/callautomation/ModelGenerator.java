@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
@@ -18,8 +18,8 @@ public class ModelGenerator {
                 .setId(userId));
     }
 
-    static AcsCallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted) {
-        return new AcsCallParticipantInternal()
+    static CallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted) {
+        return new CallParticipantInternal()
             .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
             .setIsMuted(isMuted);
     }

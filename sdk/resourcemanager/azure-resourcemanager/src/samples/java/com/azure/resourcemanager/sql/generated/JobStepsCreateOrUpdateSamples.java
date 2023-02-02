@@ -40,8 +40,7 @@ public final class JobStepsCreateOrUpdateSamples {
                 new JobStepInner()
                     .withTargetGroup(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup0")
-                    .withCredential(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0")
+                    .withCredential("fakeTokenPlaceholder")
                     .withAction(new JobStepAction().withValue("select 1")),
                 Context.NONE);
     }
@@ -71,8 +70,7 @@ public final class JobStepsCreateOrUpdateSamples {
                     .withStepId(1)
                     .withTargetGroup(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1")
-                    .withCredential(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1")
+                    .withCredential("fakeTokenPlaceholder")
                     .withAction(
                         new JobStepAction()
                             .withType(JobStepActionType.TSQL)
@@ -87,8 +85,7 @@ public final class JobStepsCreateOrUpdateSamples {
                             .withDatabaseName("database3")
                             .withSchemaName("myschema1234")
                             .withTableName("mytable5678")
-                            .withCredential(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0"))
+                            .withCredential("fakeTokenPlaceholder"))
                     .withExecutionOptions(
                         new JobStepExecutionOptions()
                             .withTimeoutSeconds(1234)

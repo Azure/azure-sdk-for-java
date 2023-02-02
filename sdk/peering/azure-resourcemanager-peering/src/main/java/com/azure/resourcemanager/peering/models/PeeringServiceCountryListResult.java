@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceCountryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of peering service countries. */
 @Fluent
 public final class PeeringServiceCountryListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceCountryListResult.class);
-
     /*
      * The list of peering service countries.
      */
@@ -27,6 +23,10 @@ public final class PeeringServiceCountryListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PeeringServiceCountryListResult class. */
+    public PeeringServiceCountryListResult() {
+    }
 
     /**
      * Get the value property: The list of peering service countries.

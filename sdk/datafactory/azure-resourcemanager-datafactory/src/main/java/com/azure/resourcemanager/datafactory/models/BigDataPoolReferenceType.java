@@ -14,6 +14,15 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
     public static final BigDataPoolReferenceType BIG_DATA_POOL_REFERENCE = fromString("BigDataPoolReference");
 
     /**
+     * Creates a new instance of BigDataPoolReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BigDataPoolReferenceType() {
+    }
+
+    /**
      * Creates or finds a BigDataPoolReferenceType from its string representation.
      *
      * @param name a name to look for.

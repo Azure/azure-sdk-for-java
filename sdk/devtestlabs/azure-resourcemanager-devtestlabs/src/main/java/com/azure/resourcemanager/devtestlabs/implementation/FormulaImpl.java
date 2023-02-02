@@ -85,6 +85,10 @@ public final class FormulaImpl implements Formula, Formula.Definition, Formula.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public FormulaInner innerModel() {
         return this.innerObject;
     }

@@ -46,6 +46,15 @@ public final class CassandraSourceReadConsistencyLevels
     public static final CassandraSourceReadConsistencyLevels LOCAL_SERIAL = fromString("LOCAL_SERIAL");
 
     /**
+     * Creates a new instance of CassandraSourceReadConsistencyLevels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CassandraSourceReadConsistencyLevels() {
+    }
+
+    /**
      * Creates or finds a CassandraSourceReadConsistencyLevels from its string representation.
      *
      * @param name a name to look for.

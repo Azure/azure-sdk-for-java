@@ -7,33 +7,22 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
-import com.azure.resourcemanager.servicefabric.models.MoveCost;
-import com.azure.resourcemanager.servicefabric.models.PartitionSchemeDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
-import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
 /** The service resource. */
 @Fluent
 public final class ServiceResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceInner.class);
-
     /*
      * The service resource properties.
      */
     @JsonProperty(value = "properties")
-    private ServiceResourceProperties innerProperties;
+    private ServiceResourceProperties properties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     @JsonProperty(value = "location")
     private String location;
@@ -57,13 +46,28 @@ public final class ServiceResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ServiceResourceInner class. */
+    public ServiceResourceInner() {
+    }
+
     /**
-     * Get the innerProperties property: The service resource properties.
+     * Get the properties property: The service resource properties.
      *
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private ServiceResourceProperties innerProperties() {
-        return this.innerProperties;
+    public ServiceResourceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The service resource properties.
+     *
+     * @param properties the properties value to set.
+     * @return the ServiceResourceInner object itself.
+     */
+    public ServiceResourceInner withProperties(ServiceResourceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -125,244 +129,13 @@ public final class ServiceResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the serviceTypeName property: The name of the service type.
-     *
-     * @return the serviceTypeName value.
-     */
-    public String serviceTypeName() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceTypeName();
-    }
-
-    /**
-     * Set the serviceTypeName property: The name of the service type.
-     *
-     * @param serviceTypeName the serviceTypeName value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServiceTypeName(String serviceTypeName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceTypeName(serviceTypeName);
-        return this;
-    }
-
-    /**
-     * Get the partitionDescription property: Describes how the service is partitioned.
-     *
-     * @return the partitionDescription value.
-     */
-    public PartitionSchemeDescription partitionDescription() {
-        return this.innerProperties() == null ? null : this.innerProperties().partitionDescription();
-    }
-
-    /**
-     * Set the partitionDescription property: Describes how the service is partitioned.
-     *
-     * @param partitionDescription the partitionDescription value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withPartitionDescription(PartitionSchemeDescription partitionDescription) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withPartitionDescription(partitionDescription);
-        return this;
-    }
-
-    /**
-     * Get the servicePackageActivationMode property: The activation Mode of the service package.
-     *
-     * @return the servicePackageActivationMode value.
-     */
-    public ArmServicePackageActivationMode servicePackageActivationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().servicePackageActivationMode();
-    }
-
-    /**
-     * Set the servicePackageActivationMode property: The activation Mode of the service package.
-     *
-     * @param servicePackageActivationMode the servicePackageActivationMode value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServicePackageActivationMode(
-        ArmServicePackageActivationMode servicePackageActivationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServicePackageActivationMode(servicePackageActivationMode);
-        return this;
-    }
-
-    /**
-     * Get the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
-     * accessed via its DNS name instead of service name.
-     *
-     * @return the serviceDnsName value.
-     */
-    public String serviceDnsName() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceDnsName();
-    }
-
-    /**
-     * Set the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
-     * accessed via its DNS name instead of service name.
-     *
-     * @param serviceDnsName the serviceDnsName value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServiceDnsName(String serviceDnsName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceDnsName(serviceDnsName);
-        return this;
-    }
-
-    /**
-     * Get the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to particular nodes based on the service
-     * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
-     * == blue)".
-     *
-     * @return the placementConstraints value.
-     */
-    public String placementConstraints() {
-        return this.innerProperties() == null ? null : this.innerProperties().placementConstraints();
-    }
-
-    /**
-     * Set the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to particular nodes based on the service
-     * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
-     * == blue)".
-     *
-     * @param placementConstraints the placementConstraints value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withPlacementConstraints(String placementConstraints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withPlacementConstraints(placementConstraints);
-        return this;
-    }
-
-    /**
-     * Get the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
-     * @return the correlationScheme value.
-     */
-    public List<ServiceCorrelationDescription> correlationScheme() {
-        return this.innerProperties() == null ? null : this.innerProperties().correlationScheme();
-    }
-
-    /**
-     * Set the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
-     * @param correlationScheme the correlationScheme value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withCorrelationScheme(correlationScheme);
-        return this;
-    }
-
-    /**
-     * Get the serviceLoadMetrics property: The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
-     *
-     * @return the serviceLoadMetrics value.
-     */
-    public List<ServiceLoadMetricDescription> serviceLoadMetrics() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceLoadMetrics();
-    }
-
-    /**
-     * Set the serviceLoadMetrics property: The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
-     *
-     * @param serviceLoadMetrics the serviceLoadMetrics value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceLoadMetrics(serviceLoadMetrics);
-        return this;
-    }
-
-    /**
-     * Get the servicePlacementPolicies property: A list that describes the correlation of the service with other
-     * services.
-     *
-     * @return the servicePlacementPolicies value.
-     */
-    public List<ServicePlacementPolicyDescription> servicePlacementPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().servicePlacementPolicies();
-    }
-
-    /**
-     * Set the servicePlacementPolicies property: A list that describes the correlation of the service with other
-     * services.
-     *
-     * @param servicePlacementPolicies the servicePlacementPolicies value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServicePlacementPolicies(servicePlacementPolicies);
-        return this;
-    }
-
-    /**
-     * Get the defaultMoveCost property: Specifies the move cost for the service.
-     *
-     * @return the defaultMoveCost value.
-     */
-    public MoveCost defaultMoveCost() {
-        return this.innerProperties() == null ? null : this.innerProperties().defaultMoveCost();
-    }
-
-    /**
-     * Set the defaultMoveCost property: Specifies the move cost for the service.
-     *
-     * @param defaultMoveCost the defaultMoveCost value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withDefaultMoveCost(MoveCost defaultMoveCost) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withDefaultMoveCost(defaultMoveCost);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

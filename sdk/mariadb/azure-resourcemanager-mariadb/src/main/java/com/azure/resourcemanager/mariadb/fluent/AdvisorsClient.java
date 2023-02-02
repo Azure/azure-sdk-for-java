@@ -19,6 +19,22 @@ public interface AdvisorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recommendation action advisor along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AdvisorInner> getWithResponse(
+        String resourceGroupName, String serverName, String advisorName, Context context);
+
+    /**
+     * Get a recommendation action advisor.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param advisorName The advisor name for recommendation action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,22 +44,6 @@ public interface AdvisorsClient {
     AdvisorInner get(String resourceGroupName, String serverName, String advisorName);
 
     /**
-     * Get a recommendation action advisor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The advisor name for recommendation action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation action advisor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvisorInner> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context);
-
-    /**
      * List recommendation action advisors.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -51,7 +51,7 @@ public interface AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AdvisorInner> listByServer(String resourceGroupName, String serverName);
@@ -65,7 +65,7 @@ public interface AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AdvisorInner> listByServer(String resourceGroupName, String serverName, Context context);

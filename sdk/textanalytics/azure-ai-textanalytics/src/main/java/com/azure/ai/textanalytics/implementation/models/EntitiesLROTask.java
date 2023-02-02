@@ -20,6 +20,9 @@ public final class EntitiesLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private EntitiesTaskParameters parameters;
 
+    /** Creates an instance of EntitiesLROTask class. */
+    public EntitiesLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for an Entity Recognition task.
      *

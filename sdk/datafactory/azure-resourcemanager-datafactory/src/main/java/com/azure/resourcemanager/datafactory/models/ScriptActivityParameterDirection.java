@@ -20,6 +20,15 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
     public static final ScriptActivityParameterDirection INPUT_OUTPUT = fromString("InputOutput");
 
     /**
+     * Creates a new instance of ScriptActivityParameterDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityParameterDirection() {
+    }
+
+    /**
      * Creates or finds a ScriptActivityParameterDirection from its string representation.
      *
      * @param name a name to look for.

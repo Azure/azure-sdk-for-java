@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.CustomizationPoliciesC
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPolicyInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPolicies;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomizationPoliciesImpl implements CustomizationPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomizationPoliciesImpl.class);
 
     private final CustomizationPoliciesClient innerClient;
 
@@ -39,15 +38,6 @@ public final class CustomizationPoliciesImpl implements CustomizationPolicies {
         return Utils.mapPage(inner, inner1 -> new CustomizationPolicyImpl(inner1, this.manager()));
     }
 
-    public CustomizationPolicy get(String regionId, String pcName, String customizationPolicyName) {
-        CustomizationPolicyInner inner = this.serviceClient().get(regionId, pcName, customizationPolicyName);
-        if (inner != null) {
-            return new CustomizationPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomizationPolicy> getWithResponse(
         String regionId, String pcName, String customizationPolicyName, Context context) {
         Response<CustomizationPolicyInner> inner =
@@ -58,6 +48,15 @@ public final class CustomizationPoliciesImpl implements CustomizationPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CustomizationPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CustomizationPolicy get(String regionId, String pcName, String customizationPolicyName) {
+        CustomizationPolicyInner inner = this.serviceClient().get(regionId, pcName, customizationPolicyName);
+        if (inner != null) {
+            return new CustomizationPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

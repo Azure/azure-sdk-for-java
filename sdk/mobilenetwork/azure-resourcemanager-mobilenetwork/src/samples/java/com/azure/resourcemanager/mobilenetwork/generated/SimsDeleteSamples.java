@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Sims Delete. */
 public final class SimsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class SimsDeleteSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sims().delete("testResourceGroupName", "testSimGroup", "testSim", Context.NONE);
+        manager.sims().delete("testResourceGroupName", "testSimGroup", "testSim", com.azure.core.util.Context.NONE);
     }
 }

@@ -254,7 +254,8 @@ public final class AzureLogAnalyticsImplBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", host)));
+            String localHost = (host != null) ? host : "https://api.loganalytics.io";
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localHost)));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()

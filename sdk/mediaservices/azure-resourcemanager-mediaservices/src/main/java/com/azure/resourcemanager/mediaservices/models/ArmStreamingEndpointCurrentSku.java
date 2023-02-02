@@ -22,6 +22,10 @@ public final class ArmStreamingEndpointCurrentSku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
+    /** Creates an instance of ArmStreamingEndpointCurrentSku class. */
+    public ArmStreamingEndpointCurrentSku() {
+    }
+
     /**
      * Get the name property: The streaming endpoint sku name.
      *

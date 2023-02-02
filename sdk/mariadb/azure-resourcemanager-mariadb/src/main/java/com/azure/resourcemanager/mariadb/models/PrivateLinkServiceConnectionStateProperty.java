@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkServiceConnectionStateProperty model. */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
-
     /*
      * The private link service connection status.
      */
@@ -31,6 +28,10 @@ public final class PrivateLinkServiceConnectionStateProperty {
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionStateProperty class. */
+    public PrivateLinkServiceConnectionStateProperty() {
+    }
 
     /**
      * Get the status property: The private link service connection status.
@@ -88,16 +89,18 @@ public final class PrivateLinkServiceConnectionStateProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionStateProperty.class);
 }

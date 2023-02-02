@@ -41,6 +41,10 @@ public final class H264Video extends Video {
     @JsonProperty(value = "sceneChangeDetection")
     private Boolean sceneChangeDetection;
 
+    /** Creates an instance of H264Video class. */
+    public H264Video() {
+    }
+
     /**
      * Get the complexity property: Tells the encoder how to choose its encoding settings. The default value is
      * Balanced.

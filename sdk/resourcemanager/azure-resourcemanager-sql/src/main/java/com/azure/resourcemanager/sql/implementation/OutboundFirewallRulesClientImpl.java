@@ -63,7 +63,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientO")
-    private interface OutboundFirewallRulesService {
+    public interface OutboundFirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

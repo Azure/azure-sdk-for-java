@@ -7,15 +7,12 @@ package com.azure.resourcemanager.purview.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.fluent.models.PrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of private link resources. */
 @Fluent
 public final class PrivateLinkResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceList.class);
-
     /*
      * Total item count.
      */
@@ -33,6 +30,10 @@ public final class PrivateLinkResourceList {
      */
     @JsonProperty(value = "value", required = true)
     private List<PrivateLinkResourceInner> value;
+
+    /** Creates an instance of PrivateLinkResourceList class. */
+    public PrivateLinkResourceList() {
+    }
 
     /**
      * Get the count property: Total item count.
@@ -101,11 +102,13 @@ public final class PrivateLinkResourceList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model PrivateLinkResourceList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourceList.class);
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreControlPlanes List. */
 public final class PacketCoreControlPlanesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class PacketCoreControlPlanesListSamples {
      */
     public static void listPacketCoreControlPlanesInASubscription(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlanes().list(Context.NONE);
+        manager.packetCoreControlPlanes().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -29,6 +29,15 @@ public final class GlobalParameterType extends ExpandableStringEnum<GlobalParame
     public static final GlobalParameterType ARRAY = fromString("Array");
 
     /**
+     * Creates a new instance of GlobalParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GlobalParameterType() {
+    }
+
+    /**
      * Creates or finds a GlobalParameterType from its string representation.
      *
      * @param name a name to look for.

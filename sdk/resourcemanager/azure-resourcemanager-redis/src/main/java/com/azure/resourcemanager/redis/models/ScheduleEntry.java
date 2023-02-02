@@ -30,6 +30,10 @@ public final class ScheduleEntry {
     @JsonProperty(value = "maintenanceWindow")
     private Duration maintenanceWindow;
 
+    /** Creates an instance of ScheduleEntry class. */
+    public ScheduleEntry() {
+    }
+
     /**
      * Get the dayOfWeek property: Day of the week when a cache can be patched.
      *

@@ -59,6 +59,15 @@ public final class WorkloadType extends ExpandableStringEnum<WorkloadType> {
     public static final WorkloadType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
+     * Creates a new instance of WorkloadType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadType() {
+    }
+
+    /**
      * Creates or finds a WorkloadType from its string representation.
      *
      * @param name a name to look for.

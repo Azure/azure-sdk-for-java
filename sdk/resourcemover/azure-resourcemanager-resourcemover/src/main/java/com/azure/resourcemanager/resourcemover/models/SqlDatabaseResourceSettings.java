@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Sql/servers/databases")
 @Fluent
 public final class SqlDatabaseResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseResourceSettings.class);
-
     /*
      * Defines the zone redundant resource setting.
      */
     @JsonProperty(value = "zoneRedundant")
     private ZoneRedundant zoneRedundant;
+
+    /** Creates an instance of SqlDatabaseResourceSettings class. */
+    public SqlDatabaseResourceSettings() {
+    }
 
     /**
      * Get the zoneRedundant property: Defines the zone redundant resource setting.

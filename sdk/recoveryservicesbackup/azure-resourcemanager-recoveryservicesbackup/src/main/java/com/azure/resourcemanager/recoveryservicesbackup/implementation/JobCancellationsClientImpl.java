@@ -49,7 +49,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface JobCancellationsService {
+    public interface JobCancellationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

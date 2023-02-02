@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityS
 /** Samples for BackupResourceVaultConfigs Update. */
 public final class BackupResourceVaultConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Patch.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Patch.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -29,6 +28,6 @@ public final class BackupResourceVaultConfigsUpdateSamples {
                 new BackupResourceVaultConfigResourceInner()
                     .withProperties(
                         new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

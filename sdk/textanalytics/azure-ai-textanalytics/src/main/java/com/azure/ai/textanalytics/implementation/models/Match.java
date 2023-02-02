@@ -35,6 +35,9 @@ public final class Match {
     @JsonProperty(value = "length", required = true)
     private int length;
 
+    /** Creates an instance of Match class. */
+    public Match() {}
+
     /**
      * Get the confidenceScore property: If a well known item is recognized, a decimal number denoting the confidence
      * level between 0 and 1 will be returned.

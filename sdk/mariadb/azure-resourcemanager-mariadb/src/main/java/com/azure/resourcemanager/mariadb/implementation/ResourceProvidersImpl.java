@@ -12,10 +12,9 @@ import com.azure.resourcemanager.mariadb.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryPerformanceInsightResetDataResultInner;
 import com.azure.resourcemanager.mariadb.models.QueryPerformanceInsightResetDataResult;
 import com.azure.resourcemanager.mariadb.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
@@ -25,17 +24,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         ResourceProvidersClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(
-        String resourceGroupName, String serverName) {
-        QueryPerformanceInsightResetDataResultInner inner =
-            this.serviceClient().resetQueryPerformanceInsightData(resourceGroupName, serverName);
-        if (inner != null) {
-            return new QueryPerformanceInsightResetDataResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<QueryPerformanceInsightResetDataResult> resetQueryPerformanceInsightDataWithResponse(
@@ -48,6 +36,17 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QueryPerformanceInsightResetDataResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(
+        String resourceGroupName, String serverName) {
+        QueryPerformanceInsightResetDataResultInner inner =
+            this.serviceClient().resetQueryPerformanceInsightData(resourceGroupName, serverName);
+        if (inner != null) {
+            return new QueryPerformanceInsightResetDataResultImpl(inner, this.manager());
         } else {
             return null;
         }

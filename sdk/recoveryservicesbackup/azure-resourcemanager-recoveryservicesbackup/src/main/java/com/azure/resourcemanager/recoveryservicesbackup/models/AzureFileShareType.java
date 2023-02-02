@@ -20,6 +20,15 @@ public final class AzureFileShareType extends ExpandableStringEnum<AzureFileShar
     public static final AzureFileShareType XSYNC = fromString("XSync");
 
     /**
+     * Creates a new instance of AzureFileShareType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFileShareType() {
+    }
+
+    /**
      * Creates or finds a AzureFileShareType from its string representation.
      *
      * @param name a name to look for.

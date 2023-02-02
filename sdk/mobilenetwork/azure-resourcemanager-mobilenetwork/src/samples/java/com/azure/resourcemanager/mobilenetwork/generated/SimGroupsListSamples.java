@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SimGroups List. */
 public final class SimGroupsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class SimGroupsListSamples {
      */
     public static void listSIMGroupsInASubscription(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simGroups().list(Context.NONE);
+        manager.simGroups().list(com.azure.core.util.Context.NONE);
     }
 }

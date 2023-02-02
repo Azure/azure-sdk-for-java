@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicy;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,10 @@ public final class SimPoliciesUpdateTagsSamples {
      */
     public static void updateSIMPolicyTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         SimPolicy resource =
-            manager.simPolicies().getWithResponse("rg1", "testMobileNetwork", "testPolicy", Context.NONE).getValue();
+            manager
+                .simPolicies()
+                .getWithResponse("rg1", "testMobileNetwork", "testPolicy", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

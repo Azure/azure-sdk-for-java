@@ -42,11 +42,13 @@ public class FormRecognizerSample {
                 .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
                 .buildClient();
 
-        InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream("contoso-allinone.jpg");
-        BinaryData targetData = BinaryData.fromStream(resourceAsStream);
-
+        String fileName = "contoso-allinone.jpg";
+        InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream(fileName);
+        BinaryData imageData = BinaryData.fromStream(resourceAsStream);
+        byte[] bytes = imageData.toBytes();
+        BinaryData requestContent = BinaryData.fromBytes(bytes);
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", targetData);
+                client.beginAnalyzeDocument("prebuilt-receipt", requestContent);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

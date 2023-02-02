@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeature
 /** Samples for BackupResourceVaultConfigs Put. */
 public final class BackupResourceVaultConfigsPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Put.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -32,6 +31,6 @@ public final class BackupResourceVaultConfigsPutSamples {
                         new BackupResourceVaultConfig()
                             .withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
                             .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

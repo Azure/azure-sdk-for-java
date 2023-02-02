@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Compute/virtualMachines")
 @Fluent
 public final class VirtualMachineResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineResourceSettings.class);
-
     /*
      * Gets or sets the target availability zone.
      */
@@ -31,11 +27,14 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
     private String targetVmSize;
 
     /*
-     * Gets or sets the target availability set id for virtual machines not in
-     * an availability set at source.
+     * Gets or sets the target availability set id for virtual machines not in an availability set at source.
      */
     @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
+
+    /** Creates an instance of VirtualMachineResourceSettings class. */
+    public VirtualMachineResourceSettings() {
+    }
 
     /**
      * Get the targetAvailabilityZone property: Gets or sets the target availability zone.

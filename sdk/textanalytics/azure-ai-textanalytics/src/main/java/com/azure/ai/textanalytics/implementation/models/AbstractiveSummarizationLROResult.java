@@ -21,6 +21,9 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     @JsonProperty(value = "results", required = true)
     private AbstractiveSummarizationResult results;
 
+    /** Creates an instance of AbstractiveSummarizationLROResult class. */
+    public AbstractiveSummarizationLROResult() {}
+
     /**
      * Get the results property: An object representing the pre-build summarization results of each document.
      *

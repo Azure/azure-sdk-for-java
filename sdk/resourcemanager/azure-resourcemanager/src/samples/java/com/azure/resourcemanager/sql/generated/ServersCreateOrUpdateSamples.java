@@ -33,7 +33,7 @@ public final class ServersCreateOrUpdateSamples {
                 new ServerInner()
                     .withLocation("Japan East")
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("PLACEHOLDER")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withPublicNetworkAccess(ServerNetworkAccessFlag.ENABLED)
                     .withAdministrators(
                         new ServerExternalAdministrator()

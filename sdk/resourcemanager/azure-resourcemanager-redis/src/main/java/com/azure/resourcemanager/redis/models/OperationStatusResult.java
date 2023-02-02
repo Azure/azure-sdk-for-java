@@ -61,6 +61,10 @@ public class OperationStatusResult {
     @JsonProperty(value = "error")
     private ErrorDetail error;
 
+    /** Creates an instance of OperationStatusResult class. */
+    public OperationStatusResult() {
+    }
+
     /**
      * Get the id property: Fully qualified ID for the async operation.
      *

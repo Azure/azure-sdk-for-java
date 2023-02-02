@@ -64,7 +64,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerTrustCertificatesService {
+    public interface ServerTrustCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
