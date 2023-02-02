@@ -153,7 +153,7 @@ public interface DiagnosticsClientContext {
             if (config == null) {
                 this.proactivelyInitializedContainersAsString = "";
             } else {
-                this.preferredRegionsAsString = config.toString();
+                this.proactivelyInitializedContainersAsString = config.toString();
             }
 
             return this;

@@ -1167,6 +1167,7 @@ public class ImplementationBridgeHelpers {
         public interface CosmosContainerIdentityAccessor {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
+            String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
         }
     }
 }

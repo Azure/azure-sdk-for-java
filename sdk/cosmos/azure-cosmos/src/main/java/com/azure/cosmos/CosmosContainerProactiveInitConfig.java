@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.util.Collections;
@@ -13,6 +14,10 @@ import java.util.stream.Collectors;
  * Encapsulates the list of container identities and no. of proactive connection regions.
  * */
 public final class CosmosContainerProactiveInitConfig {
+    private final static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor
+        containerIdAccessor = ImplementationBridgeHelpers
+            .CosmosContainerIdentityHelper
+            .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final int numProactiveConnectionRegions;
 
@@ -78,7 +83,10 @@ public final class CosmosContainerProactiveInitConfig {
                 "%s(%d)",
                 cosmosContainerIdentities
                     .stream()
-                    .map(ci -> ci.getContainerLink())
+                    .map(ci -> String.join(
+                        ".",
+                        containerIdAccessor.getDatabaseName(ci),
+                        containerIdAccessor.getContainerName(ci)))
                     .collect(Collectors.joining(",")),
                 numProactiveConnectionRegions);
     }

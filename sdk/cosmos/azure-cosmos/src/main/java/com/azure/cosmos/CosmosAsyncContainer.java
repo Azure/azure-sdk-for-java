@@ -584,10 +584,11 @@ public class CosmosAsyncContainer {
                     }
 
                     long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
-                    return Mono.just(String.format(
+                    return Mono.just(
+                        String.format(
                             "EndpointsConnected: %s, Failed: %s",
-                        endpointConnected,
-                        endPointOpenConnectionsStatistics.size() - endpointConnected));
+                            endpointConnected,
+                            endPointOpenConnectionsStatistics.size() - endpointConnected));
                 });
     }
 

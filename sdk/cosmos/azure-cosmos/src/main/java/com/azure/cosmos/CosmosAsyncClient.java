@@ -603,7 +603,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
         int concurrency = 1;
-        int prefetch = 10;
+        int prefetch = 1;
         if (this.proactiveContainerInitConfig != null) {
             return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
                     .flatMap(

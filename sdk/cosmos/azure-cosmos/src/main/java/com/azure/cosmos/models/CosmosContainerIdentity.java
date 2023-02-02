@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -33,16 +35,9 @@ public final class CosmosContainerIdentity {
         this.databaseName = databaseName;
         this.containerName = containerName;
         String databaseLink = Utils.joinPath(Paths.DATABASES_ROOT, databaseName);
-        this.containerLink = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName;
-    }
-
-    /**
-     * Gets the fully qualified name of the container
-     *
-     * @return the fully qualified name of the container
-     * */
-    public String getContainerLink() {
-        return containerLink;
+        this.containerLink = StringUtils.strip(
+                Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName,
+                Constants.Properties.PATH_SEPARATOR);
     }
 
     static void initialize() {
@@ -56,6 +51,11 @@ public final class CosmosContainerIdentity {
             @Override
             public String getContainerName(CosmosContainerIdentity cosmosContainerIdentity) {
                 return cosmosContainerIdentity.containerName;
+            }
+
+            @Override
+            public String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity) {
+                return cosmosContainerIdentity.containerLink;
             }
         });
     }

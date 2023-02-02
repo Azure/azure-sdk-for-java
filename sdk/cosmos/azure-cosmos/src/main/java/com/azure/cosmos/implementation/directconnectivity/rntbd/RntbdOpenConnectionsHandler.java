@@ -31,7 +31,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         checkNotNull(transportClient, "Argument 'transportClient' can not be null");
 
         this.transportClient = transportClient;
-        this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt());
+        this.openConnectionsSemaphore = new Semaphore(Configs.getCPUCnt() * 10);
     }
 
     @Override

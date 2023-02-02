@@ -27,6 +27,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
             cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty(),
             "The list of container identities cannot be null or empty.");
         this.cosmosContainerIdentities = cosmosContainerIdentities;
+        this.numProactiveConnectionRegions = 1;
     }
 
     /**
@@ -43,10 +44,10 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      */
     public CosmosContainerProactiveInitConfigBuilder setProactiveConnectionRegions(int numProactiveConnectionRegions) {
         checkArgument(
-            numProactiveConnectionRegions >= 0 &&
+            numProactiveConnectionRegions > 0 &&
 
                 numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
-                    "The no. of regions to proactively connect to cannot be less than 0 or more than {}.",
+                    "The no. of regions to proactively connect to cannot be less than 1 or more than {}.",
                     MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         return this;

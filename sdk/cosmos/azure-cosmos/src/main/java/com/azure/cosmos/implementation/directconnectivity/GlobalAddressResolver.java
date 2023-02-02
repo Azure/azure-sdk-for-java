@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -104,9 +105,16 @@ public class GlobalAddressResolver implements IAddressResolver {
         //  some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
         return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
-                .flatMap(containerIdentity -> Mono.just(
-                    StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
-                .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
+                .flatMap(containerIdentity ->
+                    this
+                        .collectionCache
+                        .resolveByNameAsync(
+                            null,
+                            ImplementationBridgeHelpers
+                                .CosmosContainerIdentityHelper
+                                .getCosmosContainerIdentityAccessor()
+                                .getContainerLink(containerIdentity),
+                            null)
                         .flatMapMany(collection -> {
                             if (collection == null) {
                                 logger.warn("Can not find the collection, no connections will be opened");
