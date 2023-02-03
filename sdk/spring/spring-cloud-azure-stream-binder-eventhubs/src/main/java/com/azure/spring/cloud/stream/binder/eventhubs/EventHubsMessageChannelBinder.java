@@ -117,9 +117,10 @@ public class EventHubsMessageChannelBinder extends
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
                 EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
-        } else {
-            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
+//        else {
+//            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
+//        }
         return handler;
     }
 
