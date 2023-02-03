@@ -2,13 +2,9 @@
 
 ## 2.24.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that updating `NetworkSecurityGroup` rules source/destination will fail from application security group to ip addresses or service tags.
 
 ## 2.23.0 (2023-01-27)
 
