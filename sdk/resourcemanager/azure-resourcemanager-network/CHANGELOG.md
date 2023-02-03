@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fixed a bug that updating `NetworkSecurityGroup` rules source/destination will fail from application security group to ip addresses or service tags.
+- Fixed a bug that updating `NetworkSecurityGroup` rules' source/destination fails when from application security group to ip addresses/service tags.
 
 ## 2.23.0 (2023-01-27)
 
