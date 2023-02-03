@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 // This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a validate() method
 // that the generated type comes with when client side validation is enabled.
@@ -77,7 +76,7 @@ public final class DigitalTwinsBulkJob {
      * Details of the error(s) that occurred executing the bulk job.
      */
     @JsonProperty(value = "error")
-    private Error error;
+    private ImportError error;
 
     /**
      * Creates an instance of BulkImportJob class.
@@ -113,7 +112,7 @@ public final class DigitalTwinsBulkJob {
                                 OffsetDateTime lastActionDateTime,
                                 OffsetDateTime finishedDateTime,
                                 OffsetDateTime purgeDateTime,
-                                Error error) {
+                                ImportError error) {
         this.id = id;
         this.inputBlobUri = inputBlobUri;
         this.outputBlobUri = outputBlobUri;
@@ -208,7 +207,7 @@ public final class DigitalTwinsBulkJob {
      *
      * @return the error value.
      */
-    public Error getError() {
+    public ImportError getError() {
         return this.error;
     }
 
@@ -218,7 +217,7 @@ public final class DigitalTwinsBulkJob {
      * @param error the error value to set.
      * @return the BulkImportJob object itself.
      */
-    public DigitalTwinsBulkJob setError(Error error) {
+    public DigitalTwinsBulkJob setError(ImportError error) {
         this.error = error;
         return this;
     }

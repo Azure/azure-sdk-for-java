@@ -4,12 +4,11 @@
 package com.azure.digitaltwins.core.implementation.converters;
 
 import com.azure.digitaltwins.core.models.*;
-import com.azure.digitaltwins.core.models.Error;
+import com.azure.digitaltwins.core.models.ImportError;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A converter between {@link com.azure.digitaltwins.core.implementation.models.EventRoute} and
@@ -50,16 +49,16 @@ public final class BulkJobConverter {
         return new com.azure.digitaltwins.core.implementation.models.BulkImportJob(input.getInputBlobUri(), input.getOutputBlobUri());
     }
 
-    public static Error mapError(com.azure.digitaltwins.core.implementation.models.Error input) {
+    public static ImportError mapError(com.azure.digitaltwins.core.implementation.models.Error input) {
         if(input == null){
             return null;
         }
-        Error error = new Error(input.getCode(), input.getMessage(), mapDetails(input.getDetails()));
-        error.setInnererror(mapInnerError(input.getInnererror()));
+        ImportError error = new ImportError(input.getCode(), input.getMessage(), mapDetails(input.getDetails()));
+        error.setInnerError(mapInnerError(input.getInnererror()));
         return error;
     }
 
-    public static List<Error> mapDetails(List<com.azure.digitaltwins.core.implementation.models.Error> inputList) {
+    public static List<ImportError> mapDetails(List<com.azure.digitaltwins.core.implementation.models.Error> inputList) {
         if(inputList == null){
             return null;
         }

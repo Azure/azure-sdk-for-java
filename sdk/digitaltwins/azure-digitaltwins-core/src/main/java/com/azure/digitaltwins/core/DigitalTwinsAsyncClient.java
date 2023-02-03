@@ -20,12 +20,34 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.converters.*;
+import com.azure.digitaltwins.core.implementation.converters.BulkJobConverter;
+import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
+import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
+import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
+import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.BulkJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
+import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsBulkJob;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponseHeaders;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
+import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
+import com.azure.digitaltwins.core.models.PublishTelemetryOptions;
+import com.azure.digitaltwins.core.models.QueryOptions;
+import com.azure.digitaltwins.core.models.UpdateComponentOptions;
+import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -2393,6 +2415,9 @@ public final class DigitalTwinsAsyncClient {
     }
 
     //endregion Telemetry APIs
+
+
+    //region Import APIs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DigitalTwinsBulkJob>> createBulkImportJob(String id, DigitalTwinsBulkJob importJob) {
         return withContext(context -> createBulkImportJob(id, importJob, context));
@@ -2549,4 +2574,6 @@ public final class DigitalTwinsAsyncClient {
             pagedBulkImportResponse.getContinuationToken(),
             ((PagedResponseBase) pagedBulkImportResponse).getDeserializedHeaders());
     };
+
+    //endregion Import APIs
 }

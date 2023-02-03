@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** Defines values for Status. */
 public enum Status {
     /** Enum value notstarted. */
-    NOTSTARTED("notstarted"),
+    NOT_STARTED("notstarted"),
 
     /** Enum value running. */
     RUNNING("running"),

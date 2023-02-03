@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Error definition. */
 @Fluent
-public final class Error {
+public final class ImportError {
     /*
      * Service specific error code which serves as the substatus for the HTTP
      * error code.
@@ -29,16 +29,16 @@ public final class Error {
      * Internal error details.
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Error> details;
+    private List<ImportError> details;
 
     /*
      * An object containing more specific information than the current object
      * about the error.
      */
     @JsonProperty(value = "innererror")
-    private InnerError innererror;
+    private InnerError innerError;
 
-    public Error(String code, String message, List<Error> details) {
+    public ImportError(String code, String message, List<ImportError> details) {
         this.code = code;
         this.message= message;
         this.details = details;
@@ -67,7 +67,7 @@ public final class Error {
      *
      * @return the details value.
      */
-    public List<Error> getDetails() {
+    public List<ImportError> getDetails() {
         return this.details;
     }
 
@@ -77,19 +77,19 @@ public final class Error {
      *
      * @return the innererror value.
      */
-    public InnerError getInnererror() {
-        return this.innererror;
+    public InnerError getInnerError() {
+        return this.innerError;
     }
 
     /**
-     * Set the innererror property: An object containing more specific information than the current object about the
+     * Set the innerError property: An object containing more specific information than the current object about the
      * error.
      *
-     * @param innererror the innererror value to set.
+     * @param innerError the innerError value to set.
      * @return the Error object itself.
      */
-    public Error setInnererror(InnerError innererror) {
-        this.innererror = innererror;
+    public ImportError setInnerError(InnerError innerError) {
+        this.innerError = innerError;
         return this;
     }
 }

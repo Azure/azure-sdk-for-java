@@ -11,7 +11,24 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.BulkJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
+import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsBulkJob;
+import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
+import com.azure.digitaltwins.core.models.ListModelsOptions;
+import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
+import com.azure.digitaltwins.core.models.PublishTelemetryOptions;
+import com.azure.digitaltwins.core.models.QueryOptions;
+import com.azure.digitaltwins.core.models.UpdateComponentOptions;
+import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
