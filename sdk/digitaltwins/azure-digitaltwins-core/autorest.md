@@ -20,7 +20,7 @@ Run `generate.ps1` in this directory to generate the code.
 
 ``` yaml
 #When generating from the official specifications repository
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/0bd0dcf8e3a9c71f418f660359907c1b7a9781ab/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/preview/2023-02-27-preview/digitaltwins.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0bd0dcf8e3a9c71f418f660359907c1b7a9781ab/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/preview/2023-02-27-preview/digitaltwins.json
 
 #if you want to generate using local swagger copy:
 #input-file: $(this-folder)/swagger/2022-05-31/digitaltwins.json
