@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.spring.data.cosmos.CosmosFactory;
 
 /**
- * Example for extending CosmosFactory for Mutli-Tenancy at the database level
+ * Example for extending CosmosFactory for Mutli-Tenancy at the container level
  */
 public class MultiTenantContainerCosmosFactory extends CosmosFactory {
 
