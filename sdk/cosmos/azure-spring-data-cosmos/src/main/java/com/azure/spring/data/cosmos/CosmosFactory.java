@@ -22,6 +22,8 @@ public class CosmosFactory {
 
     /**
      * Database Name to be used for operations.
+     * This is not practically tied to CosmosFactory instance.
+     * This can be updated even for same cosmosAsyncClient.
      */
     protected String databaseName;
 
@@ -61,6 +63,17 @@ public class CosmosFactory {
      */
     public String getDatabaseName() {
         return this.databaseName;
+    }
+
+    /**
+     * This returns container name for each operation.
+     * By default, container name will be derived from entity definition.
+     * NOTE: Using this API will override container name defined on entity definition.
+     *
+     * @return container name
+     */
+    public String getContainerName() {
+        return null;
     }
 
     /**
