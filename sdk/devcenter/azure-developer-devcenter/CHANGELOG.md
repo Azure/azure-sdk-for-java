@@ -6,7 +6,7 @@ This release updates the Azure DevCenter library to use the 2022-11-11-preview A
 
 ### Breaking Changes
 
-- `DevBoxClient`, `DevCenterClient`, and `EnvironmentsClient` now accept an endpoint URI on construction rather than tenant ID + dev center name.
+- `DevBoxClientBuilder`, `DevCenterClientBuilder`, and `EnvironmentsClientBuilder` now accept an endpoint URI on construction rather than tenant ID + dev center name.
 
 ### Features Added
 
@@ -20,6 +20,11 @@ This release updates the Azure DevCenter library to use the 2022-11-11-preview A
 
 - Invalid `beginDeleteEnvironmentAction` API removed from `EnvironmentsClient`.
 - Unimplemented artifacts APIs removed from `EnvironmentsClient`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from version `1.34.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from version `1.12.7` to version `1.13.0`.
 
 ## 1.0.0-beta.1 (2022-11-11)
 
