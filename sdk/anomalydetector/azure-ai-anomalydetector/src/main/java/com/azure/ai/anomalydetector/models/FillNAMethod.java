@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FillNAMethod. */
+/**
+ * An optional field, indicating how missing values will be filled. One of Previous, Subsequent, Linear, Zero, Fixed.
+ */
 public final class FillNAMethod extends ExpandableStringEnum<FillNAMethod> {
     /** Static value Previous for FillNAMethod. */
     public static final FillNAMethod PREVIOUS = fromString("Previous");
@@ -24,6 +26,14 @@ public final class FillNAMethod extends ExpandableStringEnum<FillNAMethod> {
 
     /** Static value Fixed for FillNAMethod. */
     public static final FillNAMethod FIXED = fromString("Fixed");
+
+    /**
+     * Creates a new instance of FillNAMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FillNAMethod() {}
 
     /**
      * Creates or finds a FillNAMethod from its string representation.

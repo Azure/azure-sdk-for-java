@@ -940,8 +940,9 @@ public final class AnomalyDetectorAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of listing models as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
+    public PagedFlux<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
         // Generated convenience method for listMultivariateModels
         RequestOptions requestOptions = new RequestOptions();
         if (skip != null) {

@@ -928,8 +928,9 @@ public final class AnomalyDetectorClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
+    public PagedIterable<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
         // Generated convenience method for listMultivariateModels
         return new PagedIterable<>(client.listMultivariateModels(skip, top));
     }
