@@ -11,16 +11,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
+public final class DevBoxesGetUpcomingActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesGetPoolTests() {
+    public void testDevBoxesGetUpcomingActionTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("DevPool", "myProject", requestOptions);
+        Response<BinaryData> response =
+                devBoxesClient.getUpcomingActionWithResponse(
+                        "myProject", "me", "myDevBox", "cae4d1f4-94b8-75f2-406d-5f00ae4c1da7", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"LargeDevWorkStationPool\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}}}")
+                                "{\"actionType\":\"StopDevBox\",\"id\":\"cae4d1f4-94b8-75f2-406d-5f00ae4c1da7\",\"originalScheduledTime\":\"2021-09-30T12:00:00Z\",\"reason\":\"Schedule\",\"scheduledTime\":\"2022-09-30T17:00:00Z\",\"sourceId\":\"/projects/myProject/pools/myPool/schedules/mySchedule\"}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

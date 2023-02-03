@@ -7,21 +7,28 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClientTestBase {
+public final class DevBoxesDelayUpcomingActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsGetEnvironmentByUserTests() {
+    public void testDevBoxesDelayUpcomingActionTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.getEnvironmentByUserWithResponse("myProject", "me", "mydevenv", requestOptions);
+                devBoxesClient.delayUpcomingActionWithResponse(
+                        "myProject",
+                        "me",
+                        "myDevBox",
+                        "cae4d1f4-94b8-75f2-406d-5f00ae4c1da7",
+                        OffsetDateTime.parse("2022-09-30T17:00:00Z"),
+                        requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"description\":\"Personal Dev Environment 2\",\"catalogItemName\":\"helloworld\",\"catalogName\":\"main\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
+                                "{\"actionType\":\"StopDevBox\",\"id\":\"cae4d1f4-94b8-75f2-406d-5f00ae4c1da7\",\"originalScheduledTime\":\"2021-09-30T12:00:00Z\",\"reason\":\"Schedule\",\"scheduledTime\":\"2022-09-30T17:00:00Z\",\"sourceId\":\"/projects/myProject/pools/myPool/schedules/mySchedule\"}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }
