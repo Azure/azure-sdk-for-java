@@ -181,7 +181,7 @@ public class TestProxyTests extends TestProxyTestBase {
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
         // default sanitizers
-        assertEquals("https://REDACTED:3000/fr/path/1", record.getUri());
+        assertEquals("http://REDACTED:3000/fr/path/1", record.getUri());
         assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
         // custom sanitizers
         assertEquals(REDACTED, record.getResponse().get("modelId"));
@@ -248,7 +248,7 @@ public class TestProxyTests extends TestProxyTestBase {
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
         // default regex sanitizers
-        assertEquals("https://REDACTED:3000/fr/path/2", record.getUri());
+        assertEquals("http://REDACTED:3000/fr/path/2", record.getUri());
 
         // user delegation sanitizers
         assertTrue(record.getResponse().get("Body").contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
