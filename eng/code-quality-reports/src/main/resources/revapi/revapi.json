@@ -304,49 +304,6 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLoginConfigurer(===com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
-          "new": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLoginConfigurer(===org.springframework.security.web.authentication.logout.LogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
-          "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
-          "new": "method org.springframework.security.web.authentication.logout.LogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
-          "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old": "method com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
-          "new": "method org.springframework.security.web.authentication.logout.LogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
-          "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(===com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
-          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(===org.springframework.security.web.authentication.logout.LogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
-          "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository()",
-          "new": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository(org.springframework.beans.factory.ObjectProvider<org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties>, org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderConfigurer>)",
-          "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.missing.newSuperType",
-          "old": "class com.azure.messaging.eventhubs.EventData",
-          "new": "class com.azure.messaging.eventhubs.EventData",
-          "superClass": "com.azure.core.models.MessageContent",
-          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
-          "justification": "SDK classes are allowed to be exposed by dependencies using them."
-        },
-        {
           "regex": true,
           "code": "java.method.numberOfParametersChanged",
           "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
@@ -514,19 +471,6 @@
           "old": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository()",
           "new": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository(org.springframework.beans.factory.ObjectProvider<org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties>, org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderConfigurer>)",
           "justification": "To support multiple client registrations for Azure AD B2C."
-        },
-        {
-          "code": "java.missing.newSuperType",
-          "old": "class com.azure.messaging.eventhubs.EventData",
-          "new": "class com.azure.messaging.eventhubs.EventData",
-          "superClass": "com.azure.core.models.MessageContent",
-          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
-          "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
           "regex": true,
