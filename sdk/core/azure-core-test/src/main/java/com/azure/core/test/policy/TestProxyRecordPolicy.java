@@ -42,6 +42,11 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
 
+    /**
+     * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
+     *
+     * @param customSanitizers the list of custom sanitizers to be added to {@link TestProxyRecordPolicy}
+     */
     public TestProxyRecordPolicy(List<TestProxySanitizer> customSanitizers) {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);

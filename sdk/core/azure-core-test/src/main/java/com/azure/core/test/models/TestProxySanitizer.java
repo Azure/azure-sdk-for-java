@@ -61,7 +61,7 @@ public class TestProxySanitizer {
      * Set the group for replace.
      *
      * @param groupForReplace th value to set
-     * @return
+     * @return the {@link TestProxySanitizer} itself.
      */
     public TestProxySanitizer setGroupForReplace(String groupForReplace) {
         this.groupForReplace = groupForReplace;

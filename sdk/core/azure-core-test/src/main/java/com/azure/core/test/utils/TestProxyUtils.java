@@ -86,6 +86,10 @@ public class TestProxyUtils {
         }
     }
 
+    /**
+     * Registers the default set of sanitizers for sanitizing request and responses
+     * @return the list of default sanitizers to be added.
+     */
     public static List<TestProxySanitizer> loadSanitizers() {
         List<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.addAll(addDefaultRegexSanitizers());
@@ -95,23 +99,30 @@ public class TestProxyUtils {
         return sanitizers;
     }
 
-    public static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
+    private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
     }
 
-    public static String createBodyJsonKeyRequestBody(String regexValue, String redactedValue) {
+    private static String createBodyJsonKeyRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
     }
 
 
-    public static String createBodyRegexRequestBody(String regexValue, String redactedValue, String groupForReplace) {
+    private static String createBodyRegexRequestBody(String regexValue, String redactedValue, String groupForReplace) {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", redactedValue, regexValue, groupForReplace);
     }
 
-    public static String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
+    private static String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
     }
 
+    /**
+     * Creates a list of sanitizer requests to be sent to the test proxy server.
+     *
+     * @param sanitizers the list of sanitizers to be added
+     * @return the list of sanitizer {@link HttpRequest requests} to be sent.
+     * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
+     */
     public static List<HttpRequest> getSanitizerRequests(List<TestProxySanitizer> sanitizers) {
         return sanitizers.stream().map(testProxySanitizer -> {
             String requestBody;
@@ -120,22 +131,22 @@ public class TestProxyUtils {
                 case URL:
                     requestBody =
                         createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.URL.name;
+                    sanitizerType = TestProxySanitizerType.URL.getName();
                     break;
                 case BODY_REGEX:
                     requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    sanitizerType = TestProxySanitizerType.BODY_REGEX.name;
+                    sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
                     break;
                 case BODY:
                     requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.BODY.name;
+                    sanitizerType = TestProxySanitizerType.BODY.getName();
                     break;
                 case HEADER:
                     requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.HEADER.name;
+                    sanitizerType = TestProxySanitizerType.HEADER.getName();
                     break;
                 default:
                     throw new RuntimeException(String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
