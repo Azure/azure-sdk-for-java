@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -55,6 +56,16 @@ public final class AddParticipantsOptions {
      * Repeatability Headers Configuration
      */
     private RepeatabilityHeaders repeatabilityHeaders;
+
+    /*
+     * Use to put custom context for voip call
+     */
+    private Map<String, String> voipHeaders;
+
+    /*
+     * Use to put custom context for pstn call
+     */
+    private Map<String, String> sipHeaders;
 
     /**
      * Constructor
@@ -130,6 +141,24 @@ public final class AddParticipantsOptions {
     }
 
     /**
+     * Get the customContext for adding pstn participants
+     *
+     * @return the sipHeaders
+     */
+    public Map<String, String> getSipHeaders() {
+        return sipHeaders;
+    }
+
+    /**
+     * Get the customContext for adding voip participants
+     *
+     * @return the voipHeaders
+     */
+    public Map<String, String> getVoipHeaders() {
+        return voipHeaders;
+    }
+
+    /**
      * Set the repeatability headers
      *
      * @param repeatabilityHeaders The repeatability headers configuration.
@@ -197,6 +226,30 @@ public final class AddParticipantsOptions {
      */
     public AddParticipantsOptions setInvitationTimeout(Duration invitationTimeout) {
         this.invitationTimeout = invitationTimeout;
+        return this;
+    }
+
+    /**
+     * Set the sipHeaders.
+     *
+     * @param sipHeaders Set the custom context adding pstn participants.
+     *
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setSipHeaders(Map<String, String> sipHeaders) {
+        this.sipHeaders = sipHeaders;
+        return this;
+    }
+
+    /**
+     * Set the voipHeaders.
+     *
+     * @param voipHeaders Set the custom context adding voip participants.
+     *
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setVoipHeaders(Map<String, String> voipHeaders) {
+        this.voipHeaders = voipHeaders;
         return this;
     }
 }

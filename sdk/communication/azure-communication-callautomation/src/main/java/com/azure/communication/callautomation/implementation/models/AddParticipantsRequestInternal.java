@@ -57,6 +57,12 @@ public final class AddParticipantsRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The customContext property.
+     */
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
+
     /**
      * Get the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
      * invited. Required only when inviting a PSTN participant.
@@ -186,6 +192,26 @@ public final class AddParticipantsRequestInternal {
      */
     public AddParticipantsRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the customContext property: The customContext property.
+     *
+     * @return the customContext value.
+     */
+    public CustomContext getCustomContext() {
+        return this.customContext;
+    }
+
+    /**
+     * Set the customContext property: The customContext property.
+     *
+     * @param customContext the customContext value to set.
+     * @return the AddParticipantsRequestInternal object itself.
+     */
+    public AddParticipantsRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 }

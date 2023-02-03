@@ -18,6 +18,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
@@ -328,10 +329,18 @@ public class CallConnectionAsync {
                 .setSourceDisplayName(addParticipantsOptions.getSourceDisplayName())
                 .setSourceIdentifier(CommunicationIdentifierConverter.convert(addParticipantsOptions.getSourceIdentifier()))
                 .setOperationContext(addParticipantsOptions.getOperationContext());
-
+                
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantsOptions.getInvitationTimeout() != null) {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
+            }
+
+            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+            if (addParticipantsOptions.getSipHeaders() != null || addParticipantsOptions.getVoipHeaders() != null) {
+                CustomContext customContext = new CustomContext();
+                customContext.setSipHeaders(addParticipantsOptions.getSipHeaders());
+                customContext.setVoipHeaders(addParticipantsOptions.getVoipHeaders());
+                request.setCustomContext(customContext);
             }
 
             addParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(addParticipantsOptions.getRepeatabilityHeaders()));
