@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -37,8 +38,25 @@ public final class SearchIndexerStatus {
     @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private SearchIndexerLimits limits;
 
-    /** Creates an instance of SearchIndexerStatus class. */
-    public SearchIndexerStatus() {}
+    /**
+     * Creates an instance of SearchIndexerStatus class.
+     *
+     * @param status the status value to set.
+     * @param executionHistory the executionHistory value to set.
+     * @param limits the limits value to set.
+     */
+    @JsonCreator
+    public SearchIndexerStatus(
+        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            IndexerStatus status,
+        @JsonProperty(value = "executionHistory", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<IndexerExecutionResult> executionHistory,
+        @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            SearchIndexerLimits limits) {
+        this.status = status;
+        this.executionHistory = executionHistory;
+        this.limits = limits;
+    }
 
     /**
      * Get the status property: Overall indexer status.

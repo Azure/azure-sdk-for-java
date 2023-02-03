@@ -7,6 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of Autocomplete requests. */
@@ -24,8 +25,20 @@ public final class AutocompleteItem {
     @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String queryPlusText;
 
-    /** Creates an instance of AutocompleteItem class. */
-    public AutocompleteItem() {}
+    /**
+     * Creates an instance of AutocompleteItem class.
+     *
+     * @param text the text value to set.
+     * @param queryPlusText the queryPlusText value to set.
+     */
+    @JsonCreator
+    public AutocompleteItem(
+        @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY) String text,
+        @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            String queryPlusText) {
+        this.text = text;
+        this.queryPlusText = queryPlusText;
+    }
 
     /**
      * Get the text property: The completed term.

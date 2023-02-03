@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an item- or document-level indexing error. */
@@ -52,8 +53,21 @@ public final class SearchIndexerError {
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerError class. */
-    public SearchIndexerError() {}
+    /**
+     * Creates an instance of SearchIndexerError class.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @param statusCode the statusCode value to set.
+     */
+    @JsonCreator
+    public SearchIndexerError(
+        @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            String errorMessage,
+        @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int statusCode) {
+        this.errorMessage = errorMessage;
+        this.statusCode = statusCode;
+    }
 
     /**
      * Get the key property: The key of the item for which indexing failed.

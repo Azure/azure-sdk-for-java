@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an item-level warning. */
@@ -44,8 +45,16 @@ public final class SearchIndexerWarning {
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
-    /** Creates an instance of SearchIndexerWarning class. */
-    public SearchIndexerWarning() {}
+    /**
+     * Creates an instance of SearchIndexerWarning class.
+     *
+     * @param message the message value to set.
+     */
+    @JsonCreator
+    public SearchIndexerWarning(
+        @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+        this.message = message;
+    }
 
     /**
      * Get the key property: The key of the item which generated a warning.

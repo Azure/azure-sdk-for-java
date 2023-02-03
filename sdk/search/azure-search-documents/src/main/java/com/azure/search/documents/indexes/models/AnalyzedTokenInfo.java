@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a token returned by an analyzer. */
@@ -38,8 +39,26 @@ public final class AnalyzedTokenInfo {
     @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int position;
 
-    /** Creates an instance of AnalyzedTokenInfo class. */
-    public AnalyzedTokenInfo() {}
+    /**
+     * Creates an instance of AnalyzedTokenInfo class.
+     *
+     * @param token the token value to set.
+     * @param startOffset the startOffset value to set.
+     * @param endOffset the endOffset value to set.
+     * @param position the position value to set.
+     */
+    @JsonCreator
+    public AnalyzedTokenInfo(
+        @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY) String token,
+        @JsonProperty(value = "startOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int startOffset,
+        @JsonProperty(value = "endOffset", required = true, access = JsonProperty.Access.WRITE_ONLY) int endOffset,
+        @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY) int position) {
+        this.token = token;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
+        this.position = position;
+    }
 
     /**
      * Get the token property: The token returned by the analyzer.

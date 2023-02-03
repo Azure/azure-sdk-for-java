@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -87,8 +88,33 @@ public final class IndexerExecutionResult {
     @JsonProperty(value = "finalTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String finalTrackingState;
 
-    /** Creates an instance of IndexerExecutionResult class. */
-    public IndexerExecutionResult() {}
+    /**
+     * Creates an instance of IndexerExecutionResult class.
+     *
+     * @param status the status value to set.
+     * @param errors the errors value to set.
+     * @param warnings the warnings value to set.
+     * @param itemCount the itemCount value to set.
+     * @param failedItemCount the failedItemCount value to set.
+     */
+    @JsonCreator
+    public IndexerExecutionResult(
+        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            IndexerExecutionStatus status,
+        @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<SearchIndexerError> errors,
+        @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<SearchIndexerWarning> warnings,
+        @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int itemCount,
+        @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int failedItemCount) {
+        this.status = status;
+        this.errors = errors;
+        this.warnings = warnings;
+        this.itemCount = itemCount;
+        this.failedItemCount = failedItemCount;
+    }
 
     /**
      * Get the status property: The outcome of this indexer execution.
