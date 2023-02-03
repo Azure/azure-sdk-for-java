@@ -63,11 +63,11 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 pwd = os.getcwd()
                 os.chdir(cadl_dir)
                 try:
-                   # install latest @azure-tools/cadl-java
-                    subprocess.run('npm install "@azure-tools/cadl-java@0.2.0"', shell=True, check=True)
-
                     # install dependencies
                     subprocess.run('npm install "@azure-tools/cadl-autorest@0.24.0" "@cadl-lang/eslint-config-cadl@0.5.0" "@cadl-lang/eslint-plugin@0.38.0" "@cadl-lang/library-linter@0.38.0"', shell=True, check=True)
+
+                    # install latest @azure-tools/cadl-java
+                    subprocess.run('npm install "@azure-tools/cadl-java@0.2.2"', shell=True, check=True)
 
                     # check client.cadl
                     cadl_source = '.'

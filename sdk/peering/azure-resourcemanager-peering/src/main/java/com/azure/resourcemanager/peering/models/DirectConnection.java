@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a direct connection. */
 @Fluent
 public final class DirectConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectConnection.class);
-
     /*
      * The bandwidth of the connection.
      */
@@ -33,22 +29,19 @@ public final class DirectConnection {
     private SessionAddressProvider sessionAddressProvider;
 
     /*
-     * The flag that indicates whether or not the connection is used for
-     * peering service.
+     * The flag that indicates whether or not the connection is used for peering service.
      */
     @JsonProperty(value = "useForPeeringService")
     private Boolean useForPeeringService;
 
     /*
-     * The ID used within Microsoft's peering provisioning system to track the
-     * connection
+     * The ID used within Microsoft's peering provisioning system to track the connection
      */
     @JsonProperty(value = "microsoftTrackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String microsoftTrackingId;
 
     /*
-     * The PeeringDB.com ID of the facility at which the connection has to be
-     * set up.
+     * The PeeringDB.com ID of the facility at which the connection has to be set up.
      */
     @JsonProperty(value = "peeringDBFacilityId")
     private Integer peeringDBFacilityId;
@@ -76,6 +69,10 @@ public final class DirectConnection {
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
+
+    /** Creates an instance of DirectConnection class. */
+    public DirectConnection() {
+    }
 
     /**
      * Get the bandwidthInMbps property: The bandwidth of the connection.

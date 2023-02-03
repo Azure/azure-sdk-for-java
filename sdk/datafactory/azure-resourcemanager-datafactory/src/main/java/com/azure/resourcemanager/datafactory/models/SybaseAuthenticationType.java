@@ -17,6 +17,15 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
     public static final SybaseAuthenticationType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of SybaseAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SybaseAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a SybaseAuthenticationType from its string representation.
      *
      * @param name a name to look for.

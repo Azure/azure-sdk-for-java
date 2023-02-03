@@ -50,31 +50,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.13.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.13.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.15.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.4.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.5.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.5.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -112,10 +112,18 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- Jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.8.0</version> <!-- {x-version-update;spring_redis.clients:jedis;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -127,7 +135,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.24</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.25</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -154,6 +162,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.1.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
+                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

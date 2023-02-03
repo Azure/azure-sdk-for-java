@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests List. */
 public final class LoadTestsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class LoadTestsListSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsListBySubscription(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().list(Context.NONE);
+        manager.loadTests().list(com.azure.core.util.Context.NONE);
     }
 }

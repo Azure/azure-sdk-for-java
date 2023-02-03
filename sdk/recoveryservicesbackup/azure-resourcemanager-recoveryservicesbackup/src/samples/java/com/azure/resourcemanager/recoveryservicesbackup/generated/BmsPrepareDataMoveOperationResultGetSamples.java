@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BmsPrepareDataMoveOperationResult Get. */
 public final class BmsPrepareDataMoveOperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
      */
     /**
      * Sample code: Get operation result for PrepareDataMove.
@@ -20,6 +18,7 @@ public final class BmsPrepareDataMoveOperationResultGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .bmsPrepareDataMoveOperationResults()
-            .getWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", Context.NONE);
+            .getWithResponse(
+                "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
+      "StatusCode" : "201",
+      "Date" : "Tue, 17 Jan 2023 20:46:06 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
+      "ETag" : "W/\"0x8DAF8CBDB6CAC8A\"",
+      "elapsed-time" : "42",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "782",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBDB6CAC8A\\\"\",\"name\":\"merge-text-skillset41247613ebffe667c\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
+      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('merge-text-skillset41247613ebffe667c')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('merge-text-skillset41247613ebffe667c')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f",
+      "elapsed-time" : "29",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f",
+      "StatusCode" : "204",
+      "Date" : "Tue, 17 Jan 2023 20:46:06 GMT",
+      "x-ms-client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "merge-text-skillset41247613ebffe667c" ]
+}

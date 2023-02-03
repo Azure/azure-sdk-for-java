@@ -322,7 +322,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName).getSyncPoller();
     }
 
     /**
@@ -339,7 +339,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, context).getSyncPoller();
     }
 
     /**
@@ -726,7 +726,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MobileNetworkInner>, MobileNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, MobileNetworkInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, parameters).getSyncPoller();
     }
 
     /**
@@ -744,7 +744,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MobileNetworkInner>, MobileNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, MobileNetworkInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, parameters, context).getSyncPoller();
     }
 
     /**

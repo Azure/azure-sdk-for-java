@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LengthUnit. */
+/** The length Unit of measurement. */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /** Static value Unspecified for LengthUnit. */
     public static final LengthUnit UNSPECIFIED = fromString("Unspecified");

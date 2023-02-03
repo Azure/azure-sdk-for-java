@@ -6,31 +6,29 @@ package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionPlan;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The container for solution. */
 @Fluent
 public final class SolutionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SolutionInner.class);
-
     /*
-     * Plan for solution object supported by the OperationsManagement resource
-     * provider.
+     * Plan for solution object supported by the OperationsManagement resource provider.
      */
     @JsonProperty(value = "plan")
     private SolutionPlan plan;
 
     /*
-     * Properties for solution object supported by the OperationsManagement
-     * resource provider.
+     * Properties for solution object supported by the OperationsManagement resource provider.
      */
     @JsonProperty(value = "properties")
     private SolutionProperties properties;
+
+    /** Creates an instance of SolutionInner class. */
+    public SolutionInner() {
+    }
 
     /**
      * Get the plan property: Plan for solution object supported by the OperationsManagement resource provider.

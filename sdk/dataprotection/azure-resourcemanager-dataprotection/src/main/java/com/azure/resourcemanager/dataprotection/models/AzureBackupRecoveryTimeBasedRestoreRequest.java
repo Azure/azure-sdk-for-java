@@ -6,24 +6,28 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureBackupRecoveryTimeBasedRestoreRequest AzureBackup RecoveryPointTime Based Restore Request. */
+/**
+ * AzureBackupRecoveryTimeBasedRestoreRequest
+ *
+ * <p>AzureBackup RecoveryPointTime Based Restore Request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureBackupRecoveryTimeBasedRestoreRequest")
 @Fluent
 public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBackupRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryTimeBasedRestoreRequest.class);
-
     /*
-     * The recovery time in ISO 8601 format example -
-     * 2020-08-14T17:30:00.0000000Z.
+     * The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
      */
     @JsonProperty(value = "recoveryPointTime", required = true)
     private String recoveryPointTime;
+
+    /** Creates an instance of AzureBackupRecoveryTimeBasedRestoreRequest class. */
+    public AzureBackupRecoveryTimeBasedRestoreRequest() {
+    }
 
     /**
      * Get the recoveryPointTime property: The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
@@ -59,6 +63,13 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRecoveryTimeBasedRestoreRequest withSourceResourceId(String sourceResourceId) {
+        super.withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -68,11 +79,13 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
     public void validate() {
         super.validate();
         if (recoveryPointTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property recoveryPointTime in model"
                             + " AzureBackupRecoveryTimeBasedRestoreRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRecoveryTimeBasedRestoreRequest.class);
 }

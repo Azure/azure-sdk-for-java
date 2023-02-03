@@ -54,10 +54,6 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.fasterxml\\.jackson(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
             "match": "/reactor\\.(core|netty|util)(\\..*)?/"
           },
           {
@@ -66,11 +62,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio|io\\.vertx)(\\..+)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.nimbusds(\\..*)?/"
+            "match": "/(kotlin|okhttp3|okio|io\\.vertx|com\\.nimbusds|com\\.fasterxml\\.jackson|com\\.google\\.gson)(\\..+)?/"
           },
           {
             "matcher": "java-package",
@@ -85,12 +77,10 @@
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationRefresh|AppConfigurationBootstrapConfiguration)",
           "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationBootstrapConfiguration",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -103,12 +93,7 @@
             "matcher": "java-package",
             "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
           },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.google\\.gson(\\..*)?/"
-          },
-          "class com\\.azure\\.cosmos\\.BridgeInternal",
-          "class com\\.azure\\.cosmos\\.CosmosBridgeInternal",
+          "class com\\.azure\\.cosmos\\.(BridgeInternal|CosmosBridgeInternal)",
           "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
           "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
         ]
@@ -154,7 +139,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging\\.eventhubs|messaging\\.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -174,7 +159,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -186,7 +171,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -204,7 +189,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
           "justification": "Spring interfaces are allowed to add methods."
-        },                
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -216,7 +201,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
@@ -226,14 +211,8 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) io\\.opentelemetry.*",
-          "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|enum) io\\.cloudevents.*",
-          "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+          "new": "(interface|class|enum) io\\.(cloudevents|opentelemetry).*",
+          "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry, Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
         },
         {
           "regex": true,
@@ -250,133 +229,15 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.attributeValueChanged",
-          "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
-          "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-        },
-        {
-          "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
           "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.added",
-          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
-          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.added",
-          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
-          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
-        },
-        {
-          "regex": true,
           "code": "java\\.annotation\\.removed",
           "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
           "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method boolean com.google.gson.JsonArray::isEmpty()",
-          "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
-        },
-        {
-          "regex": true,
-          "code": "java.field.enumConstantOrderChanged",
-          "new": "field com.google.gson.FieldNamingPolicy.(LOWER_CASE_WITH_DASHES|LOWER_CASE_WITH_DOTS|LOWER_CASE_WITH_UNDERSCORES)",
-          "justification": "Fix core-ci pipeline"
-        },
-        {
-          "code": "java.method.added",
-          "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
-          "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
-        },
-        {
-          "code": "java.field.removedWithConstant",
-          "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
-          "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
-        },
-        {
-          "code": "java.class.nonFinalClassInheritsFromNewClass",
-          "old": "class com.azure.messaging.eventhubs.EventData",
-          "new": "class com.azure.messaging.eventhubs.EventData",
-          "superClass": "com.azure.core.models.MessageContent",
-          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
-        },
-        {
-          "regex": true,
-          "code": "java.class.noLongerInheritsFromClass",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
-          "justification": "To support for storage services and keyvault services to share values of common properties."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.(added|removed|attributeValueChanged|attributeAdded|attributeRemoved)",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
-          "justification": "To support for storage services and keyvault services to share values of common properties."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method org.springframework.boot.autoconfigure.kafka.KafkaProperties com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration::azureKafkaProperties(com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.EventHubs>)",
-          "justification": "To move kafka properties customization to bean post processor."
-        },
-        {
-          "code": "java.annotation.attributeValueChanged",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
-          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
-          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.aad\\.configuration\\.AadOAuth2ClientConfiguration\\..*",
-          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
-        },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old:": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
-          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
-          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
-        },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
-          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
-          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
-          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
-          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
-          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
-          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
-        },
-        {
-          "code": "java.field.removedWithConstant",
-          "old": "field com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX",
-          "justification": "Unused constant."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
-          "justification": "Shouldn't have been a public API and was recently released."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "new": "method com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsPropertiesBeanPostProcessor com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration::azureServiceBusJmsPropertiesBeanPostProcessor(org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.ServiceBus>>)",
-          "justification": "Shouldn't have been a public API and was recently released."
         },
         {
           "code" : "java.method.visibilityReduced",
@@ -397,16 +258,6 @@
         },
         {
           "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
-          "justification": "Fixes a bug."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
-          "justification": "Fixes a bug."
-        },
-        {
-          "code": "java.annotation.added",
           "old": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
           "new": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
           "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(value = {\"spring.cloud.azure.eventhubs.kafka.enabled\"}, havingValue = \"true\", matchIfMissing = true)",
@@ -421,6 +272,36 @@
           "code": "java.method.added",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "New method added to fix a bug."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
         },
         {
           "code": "java.method.parameterTypeChanged",
@@ -466,43 +347,12 @@
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
           "regex": true,
           "code": "java.method.numberOfParametersChanged",
           "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
           "justification": "Not a public api"
         },
         {
-          "regex": true,
           "code": "java.method.removed",
           "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
           "justification": "Not a public api"
@@ -510,31 +360,18 @@
         {
           "regex": true,
           "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.(Connection|ConnectionPool)",
           "justification": "Not a public api"
         },
         {
           "regex": true,
           "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationPropertySource|AppConfigurationPropertySourceLocator)",
           "justification": "Not a public api"
         },
         {
-          "regex": true,
           "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySource",
-          "justification": "Not a public api"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySourceLocator",
-          "justification": "Not a public api"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.stores\\.ClientStore",
+          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
           "justification": "Not a public api"
         },
         {
@@ -594,7 +431,6 @@
           "justification": "Not a public api"
         },
         {
-          "regex": true,
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
           "justification": "Not a public api"
@@ -650,6 +486,49 @@
           "justification": "Bean configuration will not be used by customer in java code."
         },
         {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLoginConfigurer(===com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
+          "new": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLoginConfigurer(===org.springframework.security.web.authentication.logout.LogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
+          "justification": "To support multiple client registrations for Azure AD B2C."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
+          "new": "method org.springframework.security.web.authentication.logout.LogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
+          "justification": "To support multiple client registrations for Azure AD B2C."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
+          "new": "method org.springframework.security.web.authentication.logout.LogoutSuccessHandler com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::b2cLogoutSuccessHandler(org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties)",
+          "justification": "To support multiple client registrations for Azure AD B2C."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(===com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(===org.springframework.security.web.authentication.logout.LogoutSuccessHandler===, com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver)",
+          "justification": "To support multiple client registrations for Azure AD B2C."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository()",
+          "new": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository(org.springframework.beans.factory.ObjectProvider<org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties>, org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderConfigurer>)",
+          "justification": "To support multiple client registrations for Azure AD B2C."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
           "regex": true,
           "code": "java.annotation.added",
           "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
@@ -664,6 +543,12 @@
           "code": "java.method.numberOfParametersChanged",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.addedToInterface",
+          "new": "method java.lang.String com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::getServiceBusDomainName()",
+          "justification": "support configuration of Service Bus domain name."
         },
         {
           "ignore": true,
@@ -896,13 +781,11 @@
           "justification": "Return type has been renamed by backend."
         },
         {
-          "regex": true,
           "code": "java.class.noLongerImplementsInterface",
           "old": "interface com.azure.resourcemanager.sql.models.TransparentDataEncryption",
           "justification": "TransparentDataEncryptionInner has been rename to LogicalDatabaseTransparentDataEncryptionInner by backend."
         },
         {
-          "regex": true,
           "code": "java.class.superTypeTypeParametersChanged",
           "old": "interface com.azure.resourcemanager.sql.models.TransparentDataEncryption",
           "justification": "TransparentDataEncryptionInner has been rename to LogicalDatabaseTransparentDataEncryptionInner by backend."

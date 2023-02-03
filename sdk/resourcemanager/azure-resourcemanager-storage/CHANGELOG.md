@@ -1,6 +1,20 @@
 # Release History
 
-## 2.23.0-beta.1 (Unreleased)
+## 2.24.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.23.0 (2023-01-27)
+
+### Features Added
+
+- Supported enabling last access time tracking policy for `BlobServiceProperties`.
 
 ### Bugs Fixed
 

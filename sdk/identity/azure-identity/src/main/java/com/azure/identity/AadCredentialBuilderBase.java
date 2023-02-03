@@ -107,4 +107,16 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
         identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }
+
+    /**
+     * Disables instance discovery.
+     *
+     * @return An updated instance of this builder with instance discovery disabled.
+     */
+    @SuppressWarnings("unchecked")
+
+    public T disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDisovery();
+        return (T) this;
+    }
 }

@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreSku;
 import com.azure.resourcemanager.powerbidedicated.models.VCoreProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents an instance of an auto scale v-core resource. */
-@JsonFlatten
 @Fluent
-public class AutoScaleVCoreInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleVCoreInner.class);
-
+public final class AutoScaleVCoreInner extends Resource {
     /*
      * The SKU of the auto scale v-core resource.
      */
@@ -28,30 +23,20 @@ public class AutoScaleVCoreInner extends Resource {
     private AutoScaleVCoreSku sku;
 
     /*
-     * The maximum capacity of an auto scale v-core resource.
+     * Properties of an auto scale v-core resource.
      */
-    @JsonProperty(value = "properties.capacityLimit")
-    private Integer capacityLimit;
-
-    /*
-     * The object ID of the capacity resource associated with the auto scale
-     * v-core resource.
-     */
-    @JsonProperty(value = "properties.capacityObjectId")
-    private String capacityObjectId;
-
-    /*
-     * The current deployment state of an auto scale v-core resource. The
-     * provisioningState is to indicate states for resource provisioning.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private VCoreProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private AutoScaleVCoreProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData")
     private SystemData systemData;
+
+    /** Creates an instance of AutoScaleVCoreInner class. */
+    public AutoScaleVCoreInner() {
+    }
 
     /**
      * Get the sku property: The SKU of the auto scale v-core resource.
@@ -74,55 +59,12 @@ public class AutoScaleVCoreInner extends Resource {
     }
 
     /**
-     * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     * Get the innerProperties property: Properties of an auto scale v-core resource.
      *
-     * @return the capacityLimit value.
+     * @return the innerProperties value.
      */
-    public Integer capacityLimit() {
-        return this.capacityLimit;
-    }
-
-    /**
-     * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
-     * @param capacityLimit the capacityLimit value to set.
-     * @return the AutoScaleVCoreInner object itself.
-     */
-    public AutoScaleVCoreInner withCapacityLimit(Integer capacityLimit) {
-        this.capacityLimit = capacityLimit;
-        return this;
-    }
-
-    /**
-     * Get the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
-     * resource.
-     *
-     * @return the capacityObjectId value.
-     */
-    public String capacityObjectId() {
-        return this.capacityObjectId;
-    }
-
-    /**
-     * Set the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
-     * resource.
-     *
-     * @param capacityObjectId the capacityObjectId value to set.
-     * @return the AutoScaleVCoreInner object itself.
-     */
-    public AutoScaleVCoreInner withCapacityObjectId(String capacityObjectId) {
-        this.capacityObjectId = capacityObjectId;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment state of an auto scale v-core resource. The
-     * provisioningState is to indicate states for resource provisioning.
-     *
-     * @return the provisioningState value.
-     */
-    public VCoreProvisioningState provisioningState() {
-        return this.provisioningState;
+    private AutoScaleVCoreProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -160,17 +102,80 @@ public class AutoScaleVCoreInner extends Resource {
     }
 
     /**
+     * Get the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
+     * resource.
+     *
+     * @return the capacityObjectId value.
+     */
+    public String capacityObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityObjectId();
+    }
+
+    /**
+     * Set the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
+     * resource.
+     *
+     * @param capacityObjectId the capacityObjectId value to set.
+     * @return the AutoScaleVCoreInner object itself.
+     */
+    public AutoScaleVCoreInner withCapacityObjectId(String capacityObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreProperties();
+        }
+        this.innerProperties().withCapacityObjectId(capacityObjectId);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment state of an auto scale v-core resource. The
+     * provisioningState is to indicate states for resource provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    public VCoreProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     *
+     * @return the capacityLimit value.
+     */
+    public Integer capacityLimit() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityLimit();
+    }
+
+    /**
+     * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     *
+     * @param capacityLimit the capacityLimit value to set.
+     * @return the AutoScaleVCoreInner object itself.
+     */
+    public AutoScaleVCoreInner withCapacityLimit(Integer capacityLimit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreProperties();
+        }
+        this.innerProperties().withCapacityLimit(capacityLimit);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model AutoScaleVCoreInner"));
         } else {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoScaleVCoreInner.class);
 }

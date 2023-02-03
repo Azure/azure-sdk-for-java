@@ -17,7 +17,7 @@ public interface DelegatedNetworksClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedControllerInner> list();
@@ -29,7 +29,7 @@ public interface DelegatedNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedControllerInner> list(Context context);
@@ -41,7 +41,8 @@ public interface DelegatedNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedControllerInner> listByResourceGroup(String resourceGroupName);
@@ -54,7 +55,8 @@ public interface DelegatedNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedControllerInner> listByResourceGroup(String resourceGroupName, Context context);

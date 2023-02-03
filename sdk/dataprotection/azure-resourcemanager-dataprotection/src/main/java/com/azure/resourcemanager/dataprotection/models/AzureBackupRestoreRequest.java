@@ -6,13 +6,16 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureBackupRestoreRequest Azure backup restore request. */
+/**
+ * AzureBackupRestoreRequest
+ *
+ * <p>Azure backup restore request.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -29,8 +32,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureBackupRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRestoreRequest.class);
-
     /*
      * Gets or sets the restore target information.
      */
@@ -42,6 +43,16 @@ public class AzureBackupRestoreRequest {
      */
     @JsonProperty(value = "sourceDataStoreType", required = true)
     private SourceDataStoreType sourceDataStoreType;
+
+    /*
+     * Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
+     */
+    @JsonProperty(value = "sourceResourceId")
+    private String sourceResourceId;
+
+    /** Creates an instance of AzureBackupRestoreRequest class. */
+    public AzureBackupRestoreRequest() {
+    }
 
     /**
      * Get the restoreTargetInfo property: Gets or sets the restore target information.
@@ -84,13 +95,35 @@ public class AzureBackupRestoreRequest {
     }
 
     /**
+     * Get the sourceResourceId property: Fully qualified Azure Resource Manager ID of the datasource which is being
+     * recovered.
+     *
+     * @return the sourceResourceId value.
+     */
+    public String sourceResourceId() {
+        return this.sourceResourceId;
+    }
+
+    /**
+     * Set the sourceResourceId property: Fully qualified Azure Resource Manager ID of the datasource which is being
+     * recovered.
+     *
+     * @param sourceResourceId the sourceResourceId value to set.
+     * @return the AzureBackupRestoreRequest object itself.
+     */
+    public AzureBackupRestoreRequest withSourceResourceId(String sourceResourceId) {
+        this.sourceResourceId = sourceResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (restoreTargetInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreTargetInfo in model AzureBackupRestoreRequest"));
@@ -98,10 +131,12 @@ public class AzureBackupRestoreRequest {
             restoreTargetInfo().validate();
         }
         if (sourceDataStoreType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceDataStoreType in model AzureBackupRestoreRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRestoreRequest.class);
 }

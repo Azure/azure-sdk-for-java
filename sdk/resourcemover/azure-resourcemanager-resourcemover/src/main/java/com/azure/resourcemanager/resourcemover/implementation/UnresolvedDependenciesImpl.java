@@ -12,10 +12,9 @@ import com.azure.resourcemanager.resourcemover.fluent.models.UnresolvedDependenc
 import com.azure.resourcemanager.resourcemover.models.DependencyLevel;
 import com.azure.resourcemanager.resourcemover.models.UnresolvedDependencies;
 import com.azure.resourcemanager.resourcemover.models.UnresolvedDependency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UnresolvedDependenciesImpl implements UnresolvedDependencies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnresolvedDependenciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UnresolvedDependenciesImpl.class);
 
     private final UnresolvedDependenciesClient innerClient;
 

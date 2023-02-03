@@ -23,6 +23,15 @@ public final class SecurityLevel extends ExpandableStringEnum<SecurityLevel> {
     public static final SecurityLevel SL3000 = fromString("SL3000");
 
     /**
+     * Creates a new instance of SecurityLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityLevel() {
+    }
+
+    /**
      * Creates or finds a SecurityLevel from its string representation.
      *
      * @param name a name to look for.

@@ -65,6 +65,10 @@ public final class PeeringServicePrefixImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PeeringServicePrefixInner innerModel() {
         return this.innerObject;
     }

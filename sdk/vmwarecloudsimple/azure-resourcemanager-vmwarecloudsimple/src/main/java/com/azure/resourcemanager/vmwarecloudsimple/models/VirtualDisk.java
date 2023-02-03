@@ -6,14 +6,11 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual disk model. */
 @Fluent
 public final class VirtualDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualDisk.class);
-
     /*
      * Disk's Controller id
      */
@@ -43,6 +40,10 @@ public final class VirtualDisk {
      */
     @JsonProperty(value = "virtualDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualDiskName;
+
+    /** Creates an instance of VirtualDisk class. */
+    public VirtualDisk() {
+    }
 
     /**
      * Get the controllerId property: Disk's Controller id.
@@ -140,14 +141,16 @@ public final class VirtualDisk {
      */
     public void validate() {
         if (controllerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property controllerId in model VirtualDisk"));
         }
         if (independenceMode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property independenceMode in model VirtualDisk"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualDisk.class);
 }

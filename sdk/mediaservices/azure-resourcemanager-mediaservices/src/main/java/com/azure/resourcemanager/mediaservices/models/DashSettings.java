@@ -16,6 +16,10 @@ public final class DashSettings {
     @JsonProperty(value = "role")
     private String role;
 
+    /** Creates an instance of DashSettings class. */
+    public DashSettings() {
+    }
+
     /**
      * Get the role property: The role for the DASH setting.
      *

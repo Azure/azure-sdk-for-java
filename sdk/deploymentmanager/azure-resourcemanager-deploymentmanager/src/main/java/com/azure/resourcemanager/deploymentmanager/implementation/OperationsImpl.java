@@ -12,10 +12,9 @@ import com.azure.resourcemanager.deploymentmanager.fluent.OperationsClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.OperationsListInner;
 import com.azure.resourcemanager.deploymentmanager.models.Operations;
 import com.azure.resourcemanager.deploymentmanager.models.OperationsList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public OperationsList list() {
-        OperationsListInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new OperationsListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationsList> listWithResponse(Context context) {
         Response<OperationsListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
@@ -44,6 +34,15 @@ public final class OperationsImpl implements Operations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationsList list() {
+        OperationsListInner inner = this.serviceClient().list();
+        if (inner != null) {
+            return new OperationsListImpl(inner, this.manager());
         } else {
             return null;
         }

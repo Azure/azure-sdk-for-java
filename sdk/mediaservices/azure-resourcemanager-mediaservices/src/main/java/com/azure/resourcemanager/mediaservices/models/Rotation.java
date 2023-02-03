@@ -29,6 +29,15 @@ public final class Rotation extends ExpandableStringEnum<Rotation> {
     public static final Rotation ROTATE270 = fromString("Rotate270");
 
     /**
+     * Creates a new instance of Rotation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Rotation() {
+    }
+
+    /**
      * Creates or finds a Rotation from its string representation.
      *
      * @param name a name to look for.

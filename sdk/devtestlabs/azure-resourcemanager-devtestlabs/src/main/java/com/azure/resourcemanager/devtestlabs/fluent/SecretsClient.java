@@ -25,7 +25,7 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecretInner> list(String resourceGroupName, String labName, String username);
@@ -44,7 +44,7 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecretInner> list(
@@ -64,6 +64,24 @@ public interface SecretsClient {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the secret.
+     * @param expand Specify the $expand query. Example: 'properties($select=value)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return secret along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SecretInner> getWithResponse(
+        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+
+    /**
+     * Get secret.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,24 +91,6 @@ public interface SecretsClient {
     SecretInner get(String resourceGroupName, String labName, String username, String name);
 
     /**
-     * Get secret.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the secret.
-     * @param expand Specify the $expand query. Example: 'properties($select=value)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secret.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecretInner> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
-
-    /**
      * Create or replace an existing secret. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
@@ -101,9 +101,9 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
+     * @return the {@link SyncPoller} for polling of a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, SecretInner secret);
 
@@ -119,9 +119,9 @@ public interface SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
+     * @return the {@link SyncPoller} for polling of a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, SecretInner secret, Context context);
 
@@ -159,6 +159,23 @@ public interface SecretsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecretInner createOrUpdate(
         String resourceGroupName, String labName, String username, String name, SecretInner secret, Context context);
+
+    /**
+     * Delete secret.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the secret.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String labName, String username, String name, Context context);
 
     /**
      * Delete secret.
@@ -175,21 +192,22 @@ public interface SecretsClient {
     void delete(String resourceGroupName, String labName, String username, String name);
 
     /**
-     * Delete secret.
+     * Allows modifying tags of secrets. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the secret.
+     * @param secret A secret.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    Response<SecretInner> updateWithResponse(
+        String resourceGroupName, String labName, String username, String name, SecretFragment secret, Context context);
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
@@ -206,22 +224,4 @@ public interface SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecretInner update(String resourceGroupName, String labName, String username, String name, SecretFragment secret);
-
-    /**
-     * Allows modifying tags of secrets. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the secret.
-     * @param secret A secret.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a secret.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecretInner> updateWithResponse(
-        String resourceGroupName, String labName, String username, String name, SecretFragment secret, Context context);
 }

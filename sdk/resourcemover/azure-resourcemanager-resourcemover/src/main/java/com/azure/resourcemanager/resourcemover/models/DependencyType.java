@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DependencyType. */
+/** Defines the dependency type. */
 public final class DependencyType extends ExpandableStringEnum<DependencyType> {
     /** Static value RequiredForPrepare for DependencyType. */
     public static final DependencyType REQUIRED_FOR_PREPARE = fromString("RequiredForPrepare");
 
     /** Static value RequiredForMove for DependencyType. */
     public static final DependencyType REQUIRED_FOR_MOVE = fromString("RequiredForMove");
+
+    /**
+     * Creates a new instance of DependencyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DependencyType() {
+    }
 
     /**
      * Creates or finds a DependencyType from its string representation.
@@ -27,7 +36,11 @@ public final class DependencyType extends ExpandableStringEnum<DependencyType> {
         return fromString(name, DependencyType.class);
     }
 
-    /** @return known DependencyType values. */
+    /**
+     * Gets known DependencyType values.
+     *
+     * @return known DependencyType values.
+     */
     public static Collection<DependencyType> values() {
         return values(DependencyType.class);
     }

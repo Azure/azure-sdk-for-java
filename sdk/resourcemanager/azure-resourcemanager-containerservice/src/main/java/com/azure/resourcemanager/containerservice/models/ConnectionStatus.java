@@ -23,6 +23,15 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
     public static final ConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of ConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a ConnectionStatus from its string representation.
      *
      * @param name a name to look for.

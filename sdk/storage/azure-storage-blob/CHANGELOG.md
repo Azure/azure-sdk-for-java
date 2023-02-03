@@ -6,6 +6,7 @@
 - Added support for 2021-12-02 service version.
 - Added support for Blob Cold Tier `AccessTier.COLD`.
 - Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
+- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
 
 ### Breaking Changes
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.support.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Type. */
+/** The type of resource. */
 public enum Type {
     /** Enum value Microsoft.Support/supportTickets. */
     MICROSOFT_SUPPORT_SUPPORT_TICKETS("Microsoft.Support/supportTickets"),
@@ -30,6 +30,9 @@ public enum Type {
      */
     @JsonCreator
     public static Type fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Type[] items = Type.values();
         for (Type item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum Type {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

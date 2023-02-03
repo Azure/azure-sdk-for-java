@@ -188,6 +188,7 @@ import java.util.stream.Collectors;
 public final class Utility {
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
+    public static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
@@ -430,7 +431,7 @@ public final class Utility {
     }
 
     // Detect Language
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLegacyApi(
         Response<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
@@ -464,7 +465,7 @@ public final class Utility {
                 languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse2(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLanguageApi(
         Response<AnalyzeTextTaskResult> response) {
         final LanguageDetectionResult languageResult =
             ((LanguageDetectionTaskResult) response.getValue()).getResults();
@@ -515,7 +516,7 @@ public final class Utility {
     }
 
     // Key Phrase Extraction
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLegacyApi(
         final Response<KeyPhraseResult> response) {
         final KeyPhraseResult keyPhraseResult = response.getValue();
         // List of documents results
@@ -543,7 +544,7 @@ public final class Utility {
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
 
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse2(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLanguageApi(
         final Response<AnalyzeTextTaskResult> response) {
         final KeyPhraseResult keyPhraseResult = ((KeyPhraseTaskResult) response.getValue()).getResults();
         // List of documents results
@@ -629,7 +630,7 @@ public final class Utility {
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponseLegacyApi(
         final Response<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         return new SimpleResponse<>(response,
@@ -1258,6 +1259,18 @@ public final class Utility {
         }
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
+    }
+
+    /**
+     * Enable the sync stack rest proxy.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
+    public static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     /**

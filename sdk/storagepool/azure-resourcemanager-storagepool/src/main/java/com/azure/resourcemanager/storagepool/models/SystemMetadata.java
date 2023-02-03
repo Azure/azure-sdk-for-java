@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Metadata pertaining to creation and last modification of the resource. */
 @Fluent
 public final class SystemMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemMetadata.class);
-
     /*
      * The identity that created the resource.
      */
@@ -50,6 +46,10 @@ public final class SystemMetadata {
      */
     @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
+
+    /** Creates an instance of SystemMetadata class. */
+    public SystemMetadata() {
+    }
 
     /**
      * Get the createdBy property: The identity that created the resource.

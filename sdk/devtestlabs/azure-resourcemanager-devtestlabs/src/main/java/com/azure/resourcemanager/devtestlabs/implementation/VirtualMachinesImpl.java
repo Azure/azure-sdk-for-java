@@ -21,10 +21,9 @@ import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachine;
 import com.azure.resourcemanager.devtestlabs.models.RdpConnection;
 import com.azure.resourcemanager.devtestlabs.models.ResizeLabVirtualMachineProperties;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 
@@ -54,15 +53,6 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         return Utils.mapPage(inner, inner1 -> new LabVirtualMachineImpl(inner1, this.manager()));
     }
 
-    public LabVirtualMachine get(String resourceGroupName, String labName, String name) {
-        LabVirtualMachineInner inner = this.serviceClient().get(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new LabVirtualMachineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LabVirtualMachine> getWithResponse(
         String resourceGroupName, String labName, String name, String expand, Context context) {
         Response<LabVirtualMachineInner> inner =
@@ -73,6 +63,15 @@ public final class VirtualMachinesImpl implements VirtualMachines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LabVirtualMachineImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LabVirtualMachine get(String resourceGroupName, String labName, String name) {
+        LabVirtualMachineInner inner = this.serviceClient().get(resourceGroupName, labName, name);
+        if (inner != null) {
+            return new LabVirtualMachineImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -132,15 +131,6 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         this.serviceClient().detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, context);
     }
 
-    public RdpConnection getRdpFileContents(String resourceGroupName, String labName, String name) {
-        RdpConnectionInner inner = this.serviceClient().getRdpFileContents(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new RdpConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RdpConnection> getRdpFileContentsWithResponse(
         String resourceGroupName, String labName, String name, Context context) {
         Response<RdpConnectionInner> inner =
@@ -156,10 +146,10 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public ApplicableSchedule listApplicableSchedules(String resourceGroupName, String labName, String name) {
-        ApplicableScheduleInner inner = this.serviceClient().listApplicableSchedules(resourceGroupName, labName, name);
+    public RdpConnection getRdpFileContents(String resourceGroupName, String labName, String name) {
+        RdpConnectionInner inner = this.serviceClient().getRdpFileContents(resourceGroupName, labName, name);
         if (inner != null) {
-            return new ApplicableScheduleImpl(inner, this.manager());
+            return new RdpConnectionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -175,6 +165,15 @@ public final class VirtualMachinesImpl implements VirtualMachines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicableScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicableSchedule listApplicableSchedules(String resourceGroupName, String labName, String name) {
+        ApplicableScheduleInner inner = this.serviceClient().listApplicableSchedules(resourceGroupName, labName, name);
+        if (inner != null) {
+            return new ApplicableScheduleImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -248,7 +247,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public LabVirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -256,14 +255,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -276,7 +275,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public Response<LabVirtualMachine> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -284,14 +283,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -303,7 +302,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -311,14 +310,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -330,7 +329,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -338,14 +337,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

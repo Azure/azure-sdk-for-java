@@ -55,7 +55,7 @@ public final class TimeZonesClientImpl implements TimeZonesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientT")
-    private interface TimeZonesService {
+    public interface TimeZonesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/timeZones")
         @ExpectedResponses({200})

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.managedapplications.fluent.ResourceProvidersCli
 import com.azure.resourcemanager.managedapplications.fluent.models.OperationInner;
 import com.azure.resourcemanager.managedapplications.models.Operation;
 import com.azure.resourcemanager.managedapplications.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
