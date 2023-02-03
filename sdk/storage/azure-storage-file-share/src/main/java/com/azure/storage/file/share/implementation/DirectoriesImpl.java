@@ -36,8 +36,8 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
-import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import java.util.Map;

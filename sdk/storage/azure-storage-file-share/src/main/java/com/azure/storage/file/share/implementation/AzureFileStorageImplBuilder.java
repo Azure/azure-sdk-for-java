@@ -31,7 +31,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

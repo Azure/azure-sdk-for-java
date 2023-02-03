@@ -11,7 +11,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 
 /** Initializes a new instance of the AzureFileStorage type. */
 public final class AzureFileStorageImpl {
