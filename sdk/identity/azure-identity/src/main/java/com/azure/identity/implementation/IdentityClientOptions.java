@@ -103,11 +103,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Disables authority validation when required for Azure Active Directory token endpoint.
-     * @return IdentityClientOptions
-     */
-
-    /**
      * @return the AKS Pod Authority endpoint to acquire tokens.
      */
     public String getImdsAuthorityHost() {
