@@ -118,6 +118,14 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders setAll(HttpHeaders headers) {
+        convertIfNeeded();
+
+        azureCoreHeaders.setAll(headers);
+        return this;
+    }
+
+    @Override
     public HttpHeader get(String name) {
         convertIfNeeded();
 

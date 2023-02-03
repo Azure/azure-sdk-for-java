@@ -12,8 +12,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.IndexingResult;
@@ -21,6 +19,7 @@ import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,17 +56,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link SearchIndexingBufferedSender}.
  */
 public class SearchIndexingBufferedSenderTests extends SearchTestBase {
-    private static final JacksonAdapter JACKSON_ADAPTER;
+    private static final ObjectMapper MAPPER;
     private static final TypeReference<Map<String, Object>> HOTEL_DOCUMENT_TYPE;
     private static final Function<Map<String, Object>, String> HOTEL_ID_KEY_RETRIEVER;
     private String indexToDelete;
     private SearchClientBuilder clientBuilder;
 
     static {
-        JacksonAdapter adapter = new JacksonAdapter();
-        adapter.serializer().setAnnotationIntrospector(new IgnoreJacksonWriteOnlyAccess());
+        MAPPER = new ObjectMapper().setAnnotationIntrospector(new IgnoreJacksonWriteOnlyAccess());
 
-        JACKSON_ADAPTER = adapter;
         HOTEL_DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() { };
         HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
@@ -1015,8 +1011,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         }
 
         try {
-            return JACKSON_ADAPTER.serialize(new IndexDocumentsResult(results), SerializerEncoding.JSON)
-                .getBytes(StandardCharsets.UTF_8);
+            return MAPPER.writeValueAsBytes(new IndexDocumentsResult(results));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -1044,7 +1039,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .flatMap(bodyBytes -> {
                 try {
                     // Request documents are in a sub-node called value.
-                    JsonNode jsonNode = JACKSON_ADAPTER.serializer().readTree(bodyBytes).get("value");
+                    JsonNode jsonNode = MAPPER.readTree(bodyBytes).get("value");
 
                     // Given the initial size was 10 and it was split we should expect 5 elements.
                     assertTrue(jsonNode.isArray());

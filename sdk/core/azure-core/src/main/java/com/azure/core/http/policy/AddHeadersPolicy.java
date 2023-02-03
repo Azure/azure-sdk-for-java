@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -20,9 +19,7 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            for (HttpHeader header : headers) {
-                context.getHttpRequest().setHeader(header.getName(), header.getValue());
-            }
+            context.getHttpRequest().getHeaders().setAll(headers);
         }
     };
 

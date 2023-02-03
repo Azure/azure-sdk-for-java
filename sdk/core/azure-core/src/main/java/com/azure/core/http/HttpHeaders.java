@@ -207,21 +207,58 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         } else {
             headers.put(formattedName, new HttpHeader(name, values));
         }
+
         return this;
     }
 
     /**
-     * Sets all provided header key/values pairs into this HttpHeaders instance. This is equivalent to calling {@code
-     * headers.forEach(this::set)}, and therefore the behavior is as specified in {@link #set(String, List)}. In other
-     * words, this will create a header for each key in the provided map, replacing or removing an existing one,
-     * depending on the value. If the given values list is null, the header with the given name will be removed. If the
-     * given name is already a header, it will be removed and replaced with the headers provided.
+     * Sets all provided header key/values pairs into this HttpHeaders instance.
+     * <p>
+     * This is equivalent to calling {@code headers.forEach(this::set)}, and therefore the behavior is as specified in
+     * {@link #set(String, List)}. In other words, this will create a header for each key in the provided map, replacing
+     * or removing an existing one, depending on the value. If the given values list is null, the header with the given
+     * name will be removed. If the given name is already a header, it will be removed and replaced with the headers
+     * provided.
+     * <p>
+     * If {@code headers} is null or empty this is a no-op.
+     * <p>
+     * Prefer {@link #setAll(HttpHeaders)} if the value is already HttpHeaders as that has optimizations available to
+     * it that this API doesn't.
      *
      * @param headers a map containing keys representing header names, and keys representing the associated values.
      * @return The updated HttpHeaders object
+     * @throws NullPointerException If {@code headers} is null.
      */
     public HttpHeaders setAll(Map<String, List<String>> headers) {
-        headers.forEach(this::set);
+        if (!CoreUtils.isNullOrEmpty(headers)) {
+            headers.forEach(this::set);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets all provided header key-values pairs into this HttpHeaders instance.
+     * <p>
+     * This is the equivalent to calling
+     * {@code headers.forEach(header -> this.set(header.getName(), header.getValueList())}, and therefore the behavior
+     * is as specified in {@link #set(String, List)}. In other words, this will create a header for each key in the
+     * provided HttpHeaders, replacing the existing HttpHeader.
+     * <p>
+     * If {@code headers} is null or empty this is a no-op.
+     * <p>
+     * This API is preferred over {@link #setAll(Map)} if the value is already HttpHeaders as this has internal
+     * optimizations available to it that will reduce String allocations.
+     *
+     * @param headers Another HttpHeaders to set into this HttpHeaders.
+     * @return The updated HttpHeaders object.
+     */
+    public HttpHeaders setAll(HttpHeaders headers) {
+        if (headers == null || CoreUtils.isNullOrEmpty(headers.headers)) {
+            return this;
+        }
+
+        headers.headers.forEach((name, header) -> this.setInternal(name, header.getName(), header.getValuesList()));
         return this;
     }
 
@@ -338,8 +375,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
      * recommended that users prefer to use alternate APIs present on the HttpHeaders class, over using APIs present on
-     * the returned Map class. For example, use the {@link #get(String)} API, rather than {@code
-     * httpHeaders.toMap().get(name)}.</p>
+     * the returned Map class. For example, use the {@link #get(String)} API, rather than
+     * {@code httpHeaders.toMap().get(name)}.</p>
      *
      * @return the headers in a copied and unmodifiable form.
      */
@@ -358,8 +395,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
      * recommended that users prefer to use alternate APIs present on the HttpHeaders class, over using APIs present on
-     * the returned Map class. For example, use the {@link #get(String)} API, rather than {@code
-     * httpHeaders.toMap().get(name)}.</p>
+     * the returned Map class. For example, use the {@link #get(String)} API, rather than
+     * {@code httpHeaders.toMap().get(name)}.</p>
      *
      * @return the headers in a copied and unmodifiable form.
      */

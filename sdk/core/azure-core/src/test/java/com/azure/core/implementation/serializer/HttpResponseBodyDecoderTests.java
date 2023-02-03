@@ -4,6 +4,7 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -17,6 +18,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.mocking.MockHttpResponseDecodeData;
 import com.azure.core.util.mocking.MockSerializerAdapter;
+import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -29,7 +31,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -53,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
@@ -118,10 +119,29 @@ public class HttpResponseBodyDecoderTests {
 
     @Test
     public void ioExceptionInErrorDeserializationReturnsEmpty() {
-        JacksonAdapter ioExceptionThrower = new JacksonAdapter() {
+        SerializerAdapter ioExceptionThrower = new SerializerAdapter() {
             @Override
-            public <T> T deserialize(InputStream inputStream, Type type, SerializerEncoding encoding)
-                throws IOException {
+            public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+                throw new IOException();
+            }
+
+            @Override
+            public String serializeRaw(Object object) {
+                return null;
+            }
+
+            @Override
+            public String serializeList(List<?> list, CollectionFormat format) {
+                return null;
+            }
+
+            @Override
+            public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+                throw new IOException();
+            }
+
+            @Override
+            public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
                 throw new IOException();
             }
         };

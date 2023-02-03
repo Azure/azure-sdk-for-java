@@ -10,25 +10,19 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.models.CloudEvent;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -328,15 +322,15 @@ public class EventGridPublisherClientTests extends TestBase {
     @Test
     public void publishCloudEventsCustomSerializer() {
         // Custom Serializer for testData
-        JacksonAdapter customSerializer = new JacksonAdapter();
-        customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
-            new JsonSerializer<TestData>() {
-                @Override
-                public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-                    throws IOException {
-                    jsonGenerator.writeString(testData.getName());
-                }
-            }));
+//        JacksonAdapter customSerializer = new JacksonAdapter();
+//        customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
+//            new JsonSerializer<TestData>() {
+//                @Override
+//                public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+//                    throws IOException {
+//                    jsonGenerator.writeString(testData.getName());
+//                }
+//            }));
 
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .credential(getKey(CLOUD_KEY))
