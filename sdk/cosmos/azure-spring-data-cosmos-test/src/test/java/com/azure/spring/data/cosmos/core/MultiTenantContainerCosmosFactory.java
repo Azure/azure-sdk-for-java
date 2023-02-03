@@ -9,9 +9,11 @@ import com.azure.spring.data.cosmos.CosmosFactory;
 /**
  * Example for extending CosmosFactory for Mutli-Tenancy at the database level
  */
-public class MultiTenantDBCosmosFactory extends CosmosFactory {
+public class MultiTenantContainerCosmosFactory extends CosmosFactory {
 
     public String manuallySetDatabaseName;
+
+    public String manuallySetContainerName;
 
     /**
      * Validate config and initialization
@@ -19,14 +21,14 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
      * @param cosmosAsyncClient cosmosAsyncClient
      * @param databaseName      databaseName
      */
-    public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+    public MultiTenantContainerCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         super(cosmosAsyncClient, databaseName);
 
         this.manuallySetDatabaseName = databaseName;
     }
 
     @Override
-    public String getDatabaseName() {
-        return this.manuallySetDatabaseName;
+    public String getContainerName() {
+        return this.manuallySetContainerName;
     }
 }
