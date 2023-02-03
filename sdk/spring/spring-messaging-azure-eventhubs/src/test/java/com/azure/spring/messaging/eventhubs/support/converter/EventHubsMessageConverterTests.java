@@ -61,6 +61,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
     public void testConvertCustomHeadersToEventData() {
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put("fake-header", "fake-value");
+        headerMap.put(EventHubsMessageConverter.TARGET_PROTOCOL, "kafka");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
         EventData eventData = new EventData(EVENT_DATA);
@@ -69,6 +70,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         converter.setCustomHeaders(headers, eventData);
 
         assertEquals(eventData.getProperties().get("fake-header"), "fake-value");
+        assertEquals(eventData.getProperties().get(EventHubsMessageConverter.TARGET_PROTOCOL), "amqp");
         assertEquals(eventData.getBodyAsString(), EVENT_DATA);
     }
 
@@ -107,7 +109,6 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER, SEQUENCE_NUMBER);
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, "test");
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, "test");
-        headerMap.put(EventHubsMessageConverter.TARGET_PROTOCOL, "test");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
         EventData eventData = new EventData(EVENT_DATA);
@@ -125,7 +126,6 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES));
-        assertFalse(eventData.getProperties().containsKey(EventHubsMessageConverter.TARGET_PROTOCOL));
     }
 
     @Test

@@ -43,8 +43,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         EventHubsHeaders.SEQUENCE_NUMBER,
         EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER,
         EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES,
-        EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES,
-        TARGET_PROTOCOL
+        EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES
         )));
 
     private final ObjectMapper objectMapper;
@@ -91,6 +90,8 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         headers.forEach((key, value) -> {
             if (IGNORED_SPRING_MESSAGE_HEADERS.contains(key)) {
                 ignoredHeaders.add(key);
+            } else if (TARGET_PROTOCOL.contains(key)) {
+                azureMessage.getProperties().put(key, "amqp");
             } else {
                 azureMessage.getProperties().put(key, value.toString());
             }
