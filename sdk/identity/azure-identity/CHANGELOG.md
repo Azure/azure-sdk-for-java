@@ -3,6 +3,8 @@
 ## 1.8.0 (2023-02-03)
 
 ### Features Added
+
+#### Features Generally Available from v1.8.0-beta1
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
 
 #### Dependency Updates
