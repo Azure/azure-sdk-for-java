@@ -24,6 +24,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesAcquireLeaseHeaders;
@@ -382,6 +383,7 @@ public final class SharesImpl {
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @BodyParam("application/json") SharePermission sharePermission,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -396,6 +398,7 @@ public final class SharesImpl {
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @BodyParam("application/json") SharePermission sharePermission,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -411,6 +414,7 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -425,6 +429,7 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -2774,6 +2779,7 @@ public final class SharesImpl {
                                 comp,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 sharePermission,
                                 accept,
                                 context));
@@ -2806,6 +2812,7 @@ public final class SharesImpl {
                 comp,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 sharePermission,
                 accept,
                 context);
@@ -2878,6 +2885,7 @@ public final class SharesImpl {
                                 comp,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 sharePermission,
                                 accept,
                                 context));
@@ -2910,6 +2918,7 @@ public final class SharesImpl {
                 comp,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 sharePermission,
                 accept,
                 context);
@@ -2945,6 +2954,7 @@ public final class SharesImpl {
                                 filePermissionKey,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2978,6 +2988,7 @@ public final class SharesImpl {
                 filePermissionKey,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3052,6 +3063,7 @@ public final class SharesImpl {
                                 filePermissionKey,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3085,6 +3097,7 @@ public final class SharesImpl {
                 filePermissionKey,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }

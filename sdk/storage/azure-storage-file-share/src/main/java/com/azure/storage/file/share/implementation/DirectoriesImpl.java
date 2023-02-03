@@ -36,6 +36,7 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
@@ -78,6 +79,7 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -87,6 +89,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -98,6 +101,7 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
@@ -107,6 +111,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -118,9 +123,11 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -132,9 +139,11 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -146,8 +155,10 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -159,8 +170,10 @@ public final class DirectoriesImpl {
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
                 @QueryParam("restype") String restype,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -181,6 +194,8 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -201,6 +216,8 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
                 @HeaderParam("x-ms-file-change-time") String fileChangeTime,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -216,6 +233,8 @@ public final class DirectoriesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -231,6 +250,8 @@ public final class DirectoriesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -252,6 +273,8 @@ public final class DirectoriesImpl {
                         @HeaderParam("x-ms-version") String version,
                         @QueryParam("include") String include,
                         @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
+                        @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                        @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                         @HeaderParam("Accept") String accept,
                         Context context);
 
@@ -272,6 +295,8 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("include") String include,
                 @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -289,6 +314,8 @@ public final class DirectoriesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -306,6 +333,8 @@ public final class DirectoriesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -323,6 +352,8 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -340,6 +371,8 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-recursive") Boolean recursive,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -366,6 +399,9 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-permission") String filePermission,
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -392,6 +428,9 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-permission") String filePermission,
                 @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+                @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -442,6 +481,7 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
@@ -451,6 +491,7 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -501,6 +542,7 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -510,6 +552,7 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -665,6 +708,7 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
@@ -674,6 +718,7 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -724,6 +769,7 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 metadata,
                 this.client.getVersion(),
@@ -733,6 +779,7 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -765,9 +812,11 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 sharesnapshot,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -799,9 +848,11 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -880,9 +931,11 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 sharesnapshot,
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -914,9 +967,11 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 sharesnapshot,
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -946,8 +1001,10 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -976,8 +1033,10 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1044,8 +1103,10 @@ public final class DirectoriesImpl {
                                 shareName,
                                 directory,
                                 restype,
+                                this.client.isAllowTrailingDot(),
                                 timeout,
                                 this.client.getVersion(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1074,8 +1135,10 @@ public final class DirectoriesImpl {
                 shareName,
                 directory,
                 restype,
+                this.client.isAllowTrailingDot(),
                 timeout,
                 this.client.getVersion(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1134,6 +1197,8 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1192,6 +1257,8 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1349,6 +1416,8 @@ public final class DirectoriesImpl {
                                 fileCreationTime,
                                 fileLastWriteTime,
                                 fileChangeTime,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1407,6 +1476,8 @@ public final class DirectoriesImpl {
                 fileCreationTime,
                 fileLastWriteTime,
                 fileChangeTime,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1442,6 +1513,8 @@ public final class DirectoriesImpl {
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1476,6 +1549,8 @@ public final class DirectoriesImpl {
                 timeout,
                 metadata,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1553,6 +1628,8 @@ public final class DirectoriesImpl {
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1587,6 +1664,8 @@ public final class DirectoriesImpl {
                 timeout,
                 metadata,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1652,6 +1731,8 @@ public final class DirectoriesImpl {
                                 this.client.getVersion(),
                                 includeConverted,
                                 includeExtendedInfo,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1717,6 +1798,8 @@ public final class DirectoriesImpl {
                 this.client.getVersion(),
                 includeConverted,
                 includeExtendedInfo,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1883,6 +1966,8 @@ public final class DirectoriesImpl {
                                 this.client.getVersion(),
                                 includeConverted,
                                 includeExtendedInfo,
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1948,6 +2033,8 @@ public final class DirectoriesImpl {
                 this.client.getVersion(),
                 includeConverted,
                 includeExtendedInfo,
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1999,6 +2086,8 @@ public final class DirectoriesImpl {
                                 sharesnapshot,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2050,6 +2139,8 @@ public final class DirectoriesImpl {
                 sharesnapshot,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2176,6 +2267,8 @@ public final class DirectoriesImpl {
                                 sharesnapshot,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2227,6 +2320,8 @@ public final class DirectoriesImpl {
                 sharesnapshot,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2278,6 +2373,8 @@ public final class DirectoriesImpl {
                                 handleId,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2329,6 +2426,8 @@ public final class DirectoriesImpl {
                 handleId,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2456,6 +2555,8 @@ public final class DirectoriesImpl {
                                 handleId,
                                 recursive,
                                 this.client.getVersion(),
+                                this.client.isAllowTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2507,6 +2608,8 @@ public final class DirectoriesImpl {
                 handleId,
                 recursive,
                 this.client.getVersion(),
+                this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2612,6 +2715,9 @@ public final class DirectoriesImpl {
                                 filePermission,
                                 filePermissionKey,
                                 metadata,
+                                this.client.isAllowTrailingDot(),
+                                this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2717,6 +2823,9 @@ public final class DirectoriesImpl {
                 filePermission,
                 filePermissionKey,
                 metadata,
+                this.client.isAllowTrailingDot(),
+                this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2949,6 +3058,9 @@ public final class DirectoriesImpl {
                                 filePermission,
                                 filePermissionKey,
                                 metadata,
+                                this.client.isAllowTrailingDot(),
+                                this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3054,6 +3166,9 @@ public final class DirectoriesImpl {
                 filePermission,
                 filePermissionKey,
                 metadata,
+                this.client.isAllowTrailingDot(),
+                this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
