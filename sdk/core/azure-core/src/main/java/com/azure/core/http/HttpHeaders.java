@@ -222,8 +222,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * <p>
      * If {@code headers} is null or empty this is a no-op.
      * <p>
-     * Prefer {@link #setAll(HttpHeaders)} if the value is already HttpHeaders as that has optimizations available to
-     * it that this API doesn't.
+     * Prefer {@link #setHeaders(HttpHeaders)} if the value is already HttpHeaders as that has optimizations available
+     * to it that this API doesn't.
      *
      * @param headers a map containing keys representing header names, and keys representing the associated values.
      * @return The updated HttpHeaders object
@@ -238,7 +238,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Sets all provided header key-values pairs into this HttpHeaders instance.
+     * Sets the other HttpHeaders into this HttpHeaders instance.
      * <p>
      * This is the equivalent to calling
      * {@code headers.forEach(header -> this.set(header.getName(), header.getValueList())}, and therefore the behavior
@@ -253,7 +253,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers Another HttpHeaders to set into this HttpHeaders.
      * @return The updated HttpHeaders object.
      */
-    public HttpHeaders setAll(HttpHeaders headers) {
+    public HttpHeaders setHeaders(HttpHeaders headers) {
         if (headers == null || CoreUtils.isNullOrEmpty(headers.headers)) {
             return this;
         }

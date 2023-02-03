@@ -15,6 +15,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.Header;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.mocking.MockHttpResponseDecodeData;
 import com.azure.core.util.mocking.MockSerializerAdapter;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -46,6 +48,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -118,7 +121,7 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void ioExceptionInErrorDeserializationReturnsEmpty() {
+    public void ioExceptionInErrorDeserializationReturnsException() {
         SerializerAdapter ioExceptionThrower = new SerializerAdapter() {
             @Override
             public String serialize(Object object, SerializerEncoding encoding) throws IOException {
@@ -144,6 +147,22 @@ public class HttpResponseBodyDecoderTests {
             public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
                 throw new IOException();
             }
+
+            @Override
+            public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+                throw new IOException();
+            }
+
+            @Override
+            public <T> T deserialize(InputStream inputStream, Type type, SerializerEncoding encoding)
+                throws IOException {
+                throw new IOException();
+            }
+
+            @Override
+            public <T> T deserializeHeader(Header header, Type type) throws IOException {
+                throw new IOException();
+            }
         };
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(
@@ -151,7 +170,8 @@ public class HttpResponseBodyDecoderTests {
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
 
-        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
+        assertInstanceOf(IOException.class, HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower,
+            noExpectedStatusCodes));
     }
 
     @Test

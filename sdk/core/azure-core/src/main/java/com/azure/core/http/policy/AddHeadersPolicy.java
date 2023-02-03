@@ -19,7 +19,7 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            context.getHttpRequest().getHeaders().setAll(headers);
+            context.getHttpRequest().getHeaders().setHeaders(headers);
         }
     };
 
