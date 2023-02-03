@@ -69,9 +69,8 @@ public final class IdentityUtil {
         }
 
         if (additionallyAllowedTenants.contains(ALL_TENANTS)) {
-            return Collections.singletonList(ALL_TENANTS);
+            return Arrays.asList(ALL_TENANTS);
         }
-
         return additionallyAllowedTenants;
     }
 

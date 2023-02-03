@@ -38,11 +38,4 @@ public class IdentityClientOptionsTest {
         identityClientOptions.setAuthorityHost(authorityHost);
         Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
     }
-
-    @Test
-    public void testDisableInstanceDiscovery() {
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        identityClientOptions.disableInstanceDisovery();
-        Assert.assertFalse(identityClientOptions.getInstanceDiscovery());
-    }
 }

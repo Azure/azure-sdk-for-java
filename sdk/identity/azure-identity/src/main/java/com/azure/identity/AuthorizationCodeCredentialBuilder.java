@@ -8,6 +8,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link AuthorizationCodeCredential}.
@@ -16,7 +17,6 @@ import java.net.URISyntaxException;
  */
 public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase<AuthorizationCodeCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
-    private static final String CLASS_NAME = AuthorizationCodeCredentialBuilder.class.getSimpleName();
 
     private String authCode;
     private String redirectUrl;
@@ -66,9 +66,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link AuthorizationCodeCredential} with the current configurations.
      */
     public AuthorizationCodeCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "authorizationCode", authCode,
-            "redirectUrl", redirectUrl);
-
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+                put("clientId", clientId);
+                put("authorizationCode", authCode);
+                put("redirectUrl", redirectUrl);
+            }}, LOGGER);
         try {
             return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),
                 identityClientOptions);

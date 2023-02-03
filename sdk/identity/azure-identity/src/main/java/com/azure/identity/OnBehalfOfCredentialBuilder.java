@@ -6,6 +6,8 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.HashMap;
+
 /**
  * Fluent credential builder for instantiating a {@link OnBehalfOfCredential}.
  *
@@ -13,7 +15,6 @@ import com.azure.identity.implementation.util.ValidationUtil;
  */
 public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBehalfOfCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(OnBehalfOfCredentialBuilder.class);
-    private static final String CLASS_NAME = OnBehalfOfCredentialBuilder.class.getSimpleName();
 
     private String clientSecret;
     private String clientCertificatePath;
@@ -108,7 +109,12 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
      * are configured.
      */
     public OnBehalfOfCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId);
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {
+            {
+                put("clientId", clientId);
+                put("tenantId", tenantId);
+            }
+        }, LOGGER);
 
         if (clientSecret == null && clientCertificatePath == null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("At least client secret or certificate "
