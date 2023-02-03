@@ -1,22 +1,17 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0 (2023-02-03)
 
 ### Features Added
 
-- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.8.0-beta.1 (2023-01-20)
-
-### Features Added
+#### Features Generally Available from v1.8.0-beta1
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
-- Added support to disable instance discovery on AAD credentials.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `msal4j` from `1.13.3` to version `1.13.4`.
 
 ## 1.7.3 (2023-01-06)
 

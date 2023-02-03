@@ -100,7 +100,8 @@ public final class IdentitySslUtil {
     private static String extractCertificateThumbprint(Certificate certificate, ClientLogger logger) {
         try {
             StringBuilder thumbprint = new StringBuilder();
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            MessageDigest messageDigest;
+            messageDigest = MessageDigest.getInstance("SHA-1");
 
             byte[] encodedCertificate;
 
@@ -110,7 +111,7 @@ public final class IdentitySslUtil {
                 throw new RuntimeException(e);
             }
 
-            byte[] updatedDigest = messageDigest.digest(encodedCertificate);
+            byte[]  updatedDigest = messageDigest.digest(encodedCertificate);
 
             for (byte b : updatedDigest) {
                 int unsignedByte = b & 0xff;

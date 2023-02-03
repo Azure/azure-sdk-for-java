@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.HashMap;
 import java.util.function.Supplier;
 
 /**
@@ -15,7 +16,6 @@ import java.util.function.Supplier;
  */
 public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<ClientAssertionCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredentialBuilder.class);
-    private static final String CLASS_NAME = ClientAssertionCredentialBuilder.class.getSimpleName();
 
     private Supplier<String> clientAssertionSupplier;
 
@@ -51,8 +51,11 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
      * @throws IllegalArgumentException if either of clientId, tenantId or clientAssertion is not present.
      */
     public ClientAssertionCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientAssertion", clientAssertionSupplier);
+        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
+                put("clientId", clientId);
+                put("tenantId", tenantId);
+                put("clientAssertion", clientAssertionSupplier);
+            }}, LOGGER);
 
         return new ClientAssertionCredential(clientId, tenantId, clientAssertionSupplier, identityClientOptions);
     }

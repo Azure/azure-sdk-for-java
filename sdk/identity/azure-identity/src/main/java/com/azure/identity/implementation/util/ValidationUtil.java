@@ -7,48 +7,24 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
-    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
-        String param2Name, Object param2) {
-        String missing = "";
-
-        if (param1 == null) {
-            missing += param1Name;
+    public static void validate(String className, Map<String, Object> parameters, ClientLogger logger) {
+        List<String> missing = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            if (entry.getValue() == null) {
+                missing.add(entry.getKey());
+            }
         }
-
-        if (param2 == null) {
-            missing += missing.isEmpty() ? param2Name : ", " + param2Name;
-        }
-
-        if (!missing.isEmpty()) {
+        if (missing.size() > 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
-                +  missing + " properties in " + className));
-        }
-    }
-
-    public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
-        String param2Name, Object param2, String param3Name, Object param3) {
-        String missing = "";
-
-        if (param1 == null) {
-            missing += param1Name;
-        }
-
-        if (param2 == null) {
-            missing += missing.isEmpty() ? param2Name : ", " + param2Name;
-        }
-
-        if (param3 == null) {
-            missing += missing.isEmpty() ? param3Name : ", " + param3Name;
-        }
-
-        if (!missing.isEmpty()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
-                +  missing + " properties in " + className));
+                + String.join(", ", missing) + " properties in " + className));
         }
     }
 
