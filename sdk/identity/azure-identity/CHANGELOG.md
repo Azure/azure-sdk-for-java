@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -14,6 +16,7 @@
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
+- Added support to disable instance discovery on AAD credentials.
 
 ## 1.7.3 (2023-01-06)
 

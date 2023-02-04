@@ -35,7 +35,7 @@ public final class SyncGroupsUpdateSamples {
                     .withSyncDatabaseId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328")
                     .withHubDatabaseUsername("hubUser")
-                    .withHubDatabasePassword("hubPassword")
+                    .withHubDatabasePassword("fakeTokenPlaceholder")
                     .withUsePrivateLinkConnection(true),
                 Context.NONE);
     }

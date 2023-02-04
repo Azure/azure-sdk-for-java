@@ -58,7 +58,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientG")
-    private interface GeoBackupPoliciesService {
+    public interface GeoBackupPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

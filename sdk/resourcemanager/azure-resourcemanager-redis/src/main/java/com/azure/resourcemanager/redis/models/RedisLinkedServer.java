@@ -16,6 +16,10 @@ public final class RedisLinkedServer {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of RedisLinkedServer class. */
+    public RedisLinkedServer() {
+    }
+
     /**
      * Get the id property: Linked server Id.
      *

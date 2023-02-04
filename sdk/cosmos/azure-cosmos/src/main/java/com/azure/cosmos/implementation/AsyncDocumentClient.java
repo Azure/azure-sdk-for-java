@@ -1653,7 +1653,7 @@ public interface AsyncDocumentClient {
      *
      * @param group the throughput control group.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
     /***
      *  Warming up the caches and connections to all replicas of the container for the current read region.

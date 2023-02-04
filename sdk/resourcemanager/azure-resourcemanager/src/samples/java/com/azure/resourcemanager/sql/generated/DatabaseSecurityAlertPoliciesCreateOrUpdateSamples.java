@@ -38,8 +38,7 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
                     .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
                     .withEmailAccountAdmins(true)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withRetentionDays(6),
                 Context.NONE);
     }

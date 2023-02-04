@@ -59,7 +59,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseSecurityEventsService {
+    public interface ManagedDatabaseSecurityEventsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

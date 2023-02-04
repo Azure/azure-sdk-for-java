@@ -30,6 +30,24 @@ public class RedisLinkedServerCreateProperties {
     @JsonProperty(value = "serverRole", required = true)
     private ReplicationRole serverRole;
 
+    /*
+     * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
+     * seamless Geo Failover experience.
+     */
+    @JsonProperty(value = "geoReplicatedPrimaryHostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String geoReplicatedPrimaryHostname;
+
+    /*
+     * The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
+     * after the Geo Failover.
+     */
+    @JsonProperty(value = "primaryHostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String primaryHostname;
+
+    /** Creates an instance of RedisLinkedServerCreateProperties class. */
+    public RedisLinkedServerCreateProperties() {
+    }
+
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
      *
@@ -88,6 +106,26 @@ public class RedisLinkedServerCreateProperties {
     public RedisLinkedServerCreateProperties withServerRole(ReplicationRole serverRole) {
         this.serverRole = serverRole;
         return this;
+    }
+
+    /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     *
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    public String geoReplicatedPrimaryHostname() {
+        return this.geoReplicatedPrimaryHostname;
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     *
+     * @return the primaryHostname value.
+     */
+    public String primaryHostname() {
+        return this.primaryHostname;
     }
 
     /**
