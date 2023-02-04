@@ -1,11 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED:3000/fr/path/2",
+      "RequestUri": "http://REDACTED:3000/fr/path/2",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
         "Connection": "keep-alive",
+        "Content-Type": "application/json",
         "User-Agent": "Java/11.0.9"
       },
       "RequestBody": null,

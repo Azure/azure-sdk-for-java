@@ -37,8 +37,7 @@ public class TestProxyUtils {
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
     private static final String URL_REGEX =
-        "^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)";
-    private static final String URL_REDACTION_VALUE = "https://REDACTED";
+        "(?<=http://|https://)(?:[^@\\\\]+@)?(?:www\\\\.)?([^:\\\\/]+)";
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
@@ -149,7 +148,7 @@ public class TestProxyUtils {
     }
 
     private static TestProxySanitizer addDefaultUrlSanitizer() {
-        return new TestProxySanitizer(URL_REGEX, URL_REDACTION_VALUE, TestProxySanitizerType.URL);
+        return new TestProxySanitizer(URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.URL);
     }
 
     private static List<TestProxySanitizer> addDefaultBodySanitizers() {
