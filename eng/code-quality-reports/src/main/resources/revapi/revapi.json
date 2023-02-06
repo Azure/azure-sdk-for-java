@@ -76,11 +76,6 @@
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
-          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationRefresh|AppConfigurationBootstrapConfiguration)",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -305,40 +300,6 @@
         },
         {
           "regex": true,
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
-          "justification": "Not a public api"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
-          "justification": "Not a public api"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.(Connection|ConnectionPool)",
-          "justification": "Not a public api"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationPropertySource|AppConfigurationPropertySourceLocator)",
-          "justification": "Not a public api"
-        },
-        {
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
-          "justification": "Not a public api"
-        },
-        {
-          "ignore": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
-          "justification": "Thi isn't an external class"
-        },
-        {
-          "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
           "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
@@ -380,17 +341,6 @@
           "code": "java.method.returnTypeChangedCovariantly",
           "new": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*",
           "justification": "Proper support for fluent setters in subtypes."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean)",
-          "new": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean, java.lang.Integer)",
-          "justification": "Not a public api"
-        },
-        {
-          "code": "java.field.removedWithConstant",
-          "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
-          "justification": "Not a public api"
         },
         {
           "code": "java.method.numberOfParametersChanged",
@@ -791,6 +741,41 @@
           "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
           "new": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
           "justification": "Previous constant value had a typo and was never functional."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.SettingSelector",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.SettingFields",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.models.ConfigurationSetting",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "enum com.azure.data.appconfiguration.ConfigurationServiceVersion",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationClientBuilder",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationClient",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration.ConfigurationAsyncClient",
+          "justification": "This is an Azure SDK class that is used in the public API."
         }
       ]
     }

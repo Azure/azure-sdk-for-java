@@ -100,11 +100,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-service</artifactId>
-      <version>4.4.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
       <version>4.4.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;dependency} -->
     </dependency>

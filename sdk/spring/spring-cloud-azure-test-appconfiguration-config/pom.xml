@@ -13,8 +13,8 @@
   </parent>
 
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-test-appconfiguration-config</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-appconfiguration-config;current} -->
+    <artifactId>spring-cloud-azure-test-appconfiguration-config</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-appconfiguration-config;current} -->
 
     <properties>
         <skipSpringITs>true</skipSpringITs>
@@ -23,8 +23,8 @@
     <dependencies>
         <dependency>
             <groupId>com.azure.spring</groupId>
-            <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
-            <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
+            <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
+            <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;current} -->
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -56,7 +56,8 @@
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <skipITs>${skipSpringITs}</skipITs>
+                            <skipITs>
+                                ${skipSpringITs}</skipITs>
                         </configuration>
                     </execution>
                 </executions>
@@ -66,7 +67,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-                    <skipTests>${skipSpringITs}</skipTests>
+                    <skipTests>
+                        ${skipSpringITs}</skipTests>
                 </configuration>
             </plugin>
         </plugins>

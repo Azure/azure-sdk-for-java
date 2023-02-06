@@ -62,7 +62,7 @@
         <module>spring-cloud-azure-integration-tests</module>
         <module>spring-cloud-azure-test-appconfiguration-config</module>
         <module>spring-cloud-azure-appconfiguration-config</module>
-        <module>spring-cloud-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
         <module>spring-cloud-azure-feature-management</module>
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
@@ -120,7 +120,7 @@
         <module>spring-cloud-azure-starter-redis</module>
         <module>spring-cloud-azure-test-appconfiguration-config</module>
         <module>spring-cloud-azure-appconfiguration-config</module>
-        <module>spring-cloud-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
         <module>spring-cloud-azure-feature-management</module>
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
