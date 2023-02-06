@@ -81,6 +81,33 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-cosmos</artifactId>
+      <version>2.23.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <!-- Test -->
     <dependency>
@@ -147,7 +174,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.9.6</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.9.7</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -195,7 +222,7 @@
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.4.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.6]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.7]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -397,10 +424,6 @@
                       <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
                     </relocation>
                     <relocation>
-                      <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
-                    </relocation>
-                    <relocation>
                       <pattern>com.ctc.wstx</pattern>
                       <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
                     </relocation>
@@ -447,6 +470,10 @@
                     <relocation>
                       <pattern>com.google</pattern>
                       <shadedPattern>${shadingPrefix}.com.google</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.azure.resourcemanager</pattern>
+                      <shadedPattern>${shadingPrefix}.com.azure.resourcemanager</shadedPattern>
                     </relocation>
                   </relocations>
                   <filters>

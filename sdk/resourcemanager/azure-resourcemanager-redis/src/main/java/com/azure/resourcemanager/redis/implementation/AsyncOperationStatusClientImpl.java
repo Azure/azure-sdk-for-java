@@ -51,7 +51,7 @@ public final class AsyncOperationStatusClientImpl implements AsyncOperationStatu
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
-    private interface AsyncOperationStatusService {
+    public interface AsyncOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/asyncOperations"
@@ -171,30 +171,7 @@ public final class AsyncOperationStatusClientImpl implements AsyncOperationStatu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * For checking the ongoing status of an operation.
-     *
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String location, String operationId) {
-        return getAsync(location, operationId).block();
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -211,5 +188,20 @@ public final class AsyncOperationStatusClientImpl implements AsyncOperationStatu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * For checking the ongoing status of an operation.
+     *
+     * @param location The location at which operation was triggered.
+     * @param operationId The ID of asynchronous operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asynchronous operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(String location, String operationId) {
+        return getWithResponse(location, operationId, Context.NONE).getValue();
     }
 }

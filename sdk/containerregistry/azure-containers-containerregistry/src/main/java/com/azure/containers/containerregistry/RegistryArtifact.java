@@ -25,6 +25,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
@@ -149,9 +151,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTagWithResponse(String tag, Context context) {
-        if (tag == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'tag' cannot be null"));
-        }
+        Objects.requireNonNull(tag, "'tag' cannot be null.");
         if (tag.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
         }
@@ -280,9 +280,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactTagProperties> getTagPropertiesWithResponse(String tag, Context context) {
-        if (tag == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'tag' cannot be null."));
-        }
+        Objects.requireNonNull(tag, "'tag' cannot be null.");
         if (tag.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
         }
@@ -431,6 +429,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         if (pageSize != null && pageSize < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
+
         final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
 
         String res = this.getDigest();
@@ -486,16 +485,11 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ArtifactTagProperties tagProperties, Context context) {
-        if (tag == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'tag' cannot be null."));
-        }
+        Objects.requireNonNull(tag, "'tag' cannot be null.");
+        Objects.requireNonNull(tagProperties, "'tagProperties' cannot be null.");
 
         if (tag.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
-        }
-
-        if (tagProperties == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'tagProperties' cannot be null."));
         }
 
         TagWriteableProperties writeableProperties = new TagWriteableProperties()
@@ -567,9 +561,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
-        if (manifestProperties == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'value' cannot be null."));
-        }
+        Objects.requireNonNull(manifestProperties, "'manifestProperties' cannot be null.");
 
         ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
             .setDeleteEnabled(manifestProperties.isDeleteEnabled())

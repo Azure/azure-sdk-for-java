@@ -17,6 +17,9 @@ public class ClassificationDocumentResult extends DocumentResult {
     @JsonProperty(value = "class", required = true)
     private List<ClassificationResult> classProperty;
 
+    /** Creates an instance of ClassificationDocumentResult class. */
+    public ClassificationDocumentResult() {}
+
     /**
      * Get the classProperty property: The class property.
      *

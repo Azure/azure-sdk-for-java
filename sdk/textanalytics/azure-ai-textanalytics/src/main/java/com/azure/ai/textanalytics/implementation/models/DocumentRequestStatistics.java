@@ -12,6 +12,9 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class DocumentRequestStatistics extends RequestStatistics {
+    /** Creates an instance of DocumentRequestStatistics class. */
+    public DocumentRequestStatistics() {}
+
     /** {@inheritDoc} */
     @Override
     public DocumentRequestStatistics setDocumentsCount(int documentsCount) {

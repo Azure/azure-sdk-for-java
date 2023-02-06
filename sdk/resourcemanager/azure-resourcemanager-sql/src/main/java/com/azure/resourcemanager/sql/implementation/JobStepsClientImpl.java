@@ -57,7 +57,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobStepsService {
+    public interface JobStepsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

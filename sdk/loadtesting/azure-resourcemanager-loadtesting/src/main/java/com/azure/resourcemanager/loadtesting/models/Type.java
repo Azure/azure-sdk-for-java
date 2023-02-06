@@ -17,6 +17,15 @@ public final class Type extends ExpandableStringEnum<Type> {
     public static final Type USER_ASSIGNED = fromString("UserAssigned");
 
     /**
+     * Creates a new instance of Type value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Type() {
+    }
+
+    /**
      * Creates or finds a Type from its string representation.
      *
      * @param name a name to look for.

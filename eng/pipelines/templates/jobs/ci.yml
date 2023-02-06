@@ -28,9 +28,6 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -189,6 +186,7 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
@@ -424,7 +422,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}

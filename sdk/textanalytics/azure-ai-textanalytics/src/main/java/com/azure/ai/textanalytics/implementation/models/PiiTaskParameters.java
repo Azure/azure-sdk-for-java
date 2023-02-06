@@ -30,6 +30,9 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of PiiTaskParameters class. */
+    public PiiTaskParameters() {}
+
     /**
      * Get the domain property: The PII domain used for PII Entity Recognition.
      *

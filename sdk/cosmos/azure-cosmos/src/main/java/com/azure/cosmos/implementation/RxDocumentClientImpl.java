@@ -1682,17 +1682,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
-        String capabilitiesHeaderValue = HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES;
-        if (request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
-            capabilitiesHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
-        }
-
-        // this header will be suppressed in pkversion change feed processor
-        // remove it if non capabilities is being set
-        if (capabilitiesHeaderValue.equalsIgnoreCase(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE)) {
-            request.getHeaders().remove(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
-        } else {
-            request.getHeaders().put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, capabilitiesHeaderValue);
+        if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
+            request
+                .getHeaders()
+                .put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
         }
     }
 
@@ -4288,7 +4281,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
 
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
@@ -4301,7 +4294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.storeModel.enableThroughputControl(throughputControlStore);
         }
 
-        this.throughputControlStore.enableThroughputControlGroup(group);
+        this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     @Override

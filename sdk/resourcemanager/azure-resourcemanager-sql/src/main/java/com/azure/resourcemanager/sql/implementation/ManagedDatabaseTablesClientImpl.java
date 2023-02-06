@@ -56,7 +56,7 @@ public final class ManagedDatabaseTablesClientImpl implements ManagedDatabaseTab
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseTablesService {
+    public interface ManagedDatabaseTablesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

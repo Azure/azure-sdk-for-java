@@ -25,6 +25,9 @@ public final class HealthcareRelationEntity {
     @JsonProperty(value = "role", required = true)
     private String role;
 
+    /** Creates an instance of HealthcareRelationEntity class. */
+    public HealthcareRelationEntity() {}
+
     /**
      * Get the ref property: Reference link object, using a JSON pointer RFC 6901 (URI Fragment Identifier
      * Representation), pointing to the entity .

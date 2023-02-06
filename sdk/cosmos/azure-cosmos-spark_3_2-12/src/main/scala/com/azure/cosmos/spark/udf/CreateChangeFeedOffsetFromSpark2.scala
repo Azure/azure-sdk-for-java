@@ -32,7 +32,7 @@ class CreateChangeFeedOffsetFromSpark2 extends UDF4[String, String, Map[String, 
       .to(cosmosClientCacheItems => {
 
         SparkBridgeImplementationInternal.createChangeFeedOffsetFromSpark2(
-          cosmosClientCacheItems(0).get.client,
+          cosmosClientCacheItems(0).get.cosmosClient,
           databaseResourceId,
           containerResourceId,
           tokens
