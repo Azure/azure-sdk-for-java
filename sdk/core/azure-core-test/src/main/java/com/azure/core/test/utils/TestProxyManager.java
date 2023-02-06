@@ -47,8 +47,6 @@ public class TestProxyManager {
         try {
             ProcessBuilder builder = new ProcessBuilder(Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                 getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
-                .inheritIO()
-                .redirectErrorStream(true)
                 .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
