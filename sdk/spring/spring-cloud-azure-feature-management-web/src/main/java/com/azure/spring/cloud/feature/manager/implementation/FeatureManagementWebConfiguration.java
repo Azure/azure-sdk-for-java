@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
 
-import com.azure.spring.cloud.feature.manager.DynamicFeatureManager;
-import com.azure.spring.cloud.feature.manager.DynamicFeatureManagerSnapshot;
 import com.azure.spring.cloud.feature.manager.FeatureHandler;
 import com.azure.spring.cloud.feature.manager.FeatureManager;
 import com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
@@ -34,18 +32,6 @@ public class FeatureManagementWebConfiguration {
     @RequestScope
     public FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
         return new FeatureManagerSnapshot(featureManager);
-    }
-
-    /**
-     * Creates DynamicFeatureManagerSnapshot
-     * 
-     * @param dynamicFeatureManager App Configuration Dynamic Feature Manager
-     * @return DynamicFeatureManagerSnapshot
-     */
-    @Bean
-    @RequestScope
-    public DynamicFeatureManagerSnapshot dynamicFeatureManagerSnapshot(DynamicFeatureManager dynamicFeatureManager) {
-        return new DynamicFeatureManagerSnapshot(dynamicFeatureManager);
     }
 
     /**

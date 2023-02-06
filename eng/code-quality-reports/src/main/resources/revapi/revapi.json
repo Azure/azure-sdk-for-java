@@ -776,6 +776,16 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.data.appconfiguration.ConfigurationAsyncClient",
           "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManager",
+          "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
+          "justification": "This is an Azure SDK class that is used in the public API."
         }
       ]
     }
