@@ -14,26 +14,26 @@ This package helps Spring Application to load properties from Azure Configuratio
 
 ### Include the package
 
-There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version has various methods for refreshing configurations on a watch interval when the application is active. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
+There are two libraries that can be used spring-cloud-azure-appconfiguration-config and spring-cloud-azure-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version has various methods for refreshing configurations on a watch interval when the application is active. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.azure.spring:spring-cloud-azure-appconfiguration-config;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
-    <version>2.10.0</version>
+    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+    <version>4.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 or
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+[//]: # ({x-version-update-start;com.azure.spring:spring-cloud-azure-appconfiguration-config;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
-    <version>2.10.0</version>
+    <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+    <version>4.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,6 +52,7 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
+spring.cloud.azure.appconfiguration.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a list of stores, where each store follows the following format:
@@ -70,7 +71,6 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].endpoints | When multiple replica endpoints of an App Configuration store are specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. Replica endpoints should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if multiple authentication methods are provided. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].connection-string | When the connection-string of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
-spring.cloud.azure.appconfiguration.stores[0].managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 
 `spring.cloud.azure.appconfiguration.stores[0].monitoring` is a set of configurations dealing with refresh of configurations:
 
@@ -91,9 +91,28 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secon
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled | Whether feature flags are loaded from the config store.  | No | false
-spring.cloud.azure.appconfiguration.stores[0].feature-flags.label-filter | The label used to indicate which feature flags will be loaded. | No | \0
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].key-filter | The key pattern used to indicate which feature flags will be loaded. | No | \0
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].label-filter | The label used to indicate which feature flags will be loaded. | No | \0
 
 ### Advanced usage
+
+#### Geo-Replication
+
+Each replica created has its dedicated endpoint. Geo-replication is enabled when `spring.cloud.azure.appconfiguration.stores[0].endpoints` is set with multiple endpoints.
+
+```properties
+spring.cloud.azure.appconfiguration.stores[0].endpoints[0]=<store-endpoint>
+spring.cloud.azure.appconfiguration.stores[0].endpoints[1]=<replica-1-endpoint>
+spring.cloud.azure.appconfiguration.stores[0].endpoints[2]=<replica-2-endpoint>
+```
+
+As shown you can list your replica endpoints in the order of the most preferred to the least preferred endpoint. When the current endpoint isn't accessible, the provider library will fail over to a less preferred endpoint, but it will try to connect to the more preferred endpoints from time to time. When a more preferred endpoint becomes available, it will switch to it for future requests.
+
+Note: The failover may occur if the App Configuration provider observes the following conditions.
+Receives responses with service unavailable status (HTTP status code 500 or above).
+Experiences with network connectivity issues.
+Requests are throttled (HTTP status code 429).
+The failover won't happen for client errors like authentication failures.
 
 #### Load from multiple configuration stores
 
@@ -121,7 +140,7 @@ Multiple labels can be separated with comma, if duplicate keys exists for multip
 
 #### Spring Profiles
 
-Spring Profiles are supported by automatically by being set as App Configuration Labels. Using the label filter configuration overrides profile use. To include Spring Profiles and labels:
+Spring Profiles are supported automatically by being set as the default label value of your selected keys. Using the label filter configuration overrides profile use. To include Spring Profiles and labels:
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=${spring.profiles.active},v1
@@ -240,30 +259,6 @@ spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]
 
 #If Using User Assigned Identity
 spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]
-```
-
-#### Token Credential Provider
-
-Another method of authentication is using AppConfigCredentialProvider and/or KeyVaultCredentialProvider. By implementing either of these classes and providing and generating a @Bean of them will enable authentication through any method defined by the [Java Azure SDK][azure_identity_sdk]. The uri value is the endpoint/dns name of the connection service, so if needed different credentials can be used per config store/key vault.
-
-```java
-public class MyCredentials implements AppConfigCredentialProvider, KeyVaultCredentialProvider {
-
-    @Override
-    public TokenCredential getAppConfigCredential(String uri) {
-            return buildCredential();
-    }
-
-    @Override
-    public TokenCredential getKeyVaultCredential(String uri) {
-            return buildCredential();
-    }
-
-    TokenCredential buildCredential() {
-            return new DefaultAzureCredentialBuilder().build();
-    }
-
-}
 ```
 
 #### Client Builder Customization

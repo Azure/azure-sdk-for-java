@@ -28,20 +28,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.23</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.25</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.3.23</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
+      <version>5.3.25</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -54,19 +48,10 @@
       <artifactId>spring-cloud-azure-feature-management</artifactId>
       <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
     </dependency>
-    <!-- Added this dependency to include necessary annotations used by reactor core.
-    Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
-    which is used in @Nullable annotation in reactor core classes -->
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -82,8 +67,8 @@
               <includes>
                 <include>com.azure.spring:spring-cloud-azure-feature-management:[4.0.0-beta.3]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.23]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.3.23]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.25]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[5.3.25]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
