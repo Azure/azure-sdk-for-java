@@ -33,14 +33,14 @@ public final class HelloWorld {
      */
     public static void main(String[] args) {
         // Initialize the clients
-        LoadTestAdministrationClientBuilder adminBuilder = new LoadTestAdministrationClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("<endpoint>");
-        LoadTestRunClientBuilder testRunBuilder = new LoadTestRunClientBuilder()
+                .endpoint("<endpoint>")
+                .buildClient();
+        LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("<endpoint>");
-        LoadTestAdministrationClient adminClient = adminBuilder.buildClient();
-        LoadTestRunClient testRunClient = testRunBuilder.buildClient();
+                .endpoint("<endpoint>")
+                .buildClient();
 
         // Constants and parameters
         final String testId = "6758667a-a57c-47e5-9cef-9b1f1432daca";

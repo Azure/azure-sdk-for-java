@@ -22,4 +22,8 @@ directive:
 - rename-operation:
     from: LoadTestRun_ListMetricDefinitions
     to: LoadTestRun_GetMetricDefinitions
+- where-operation: LoadTestRun_ListMetrics
+  transform: $['parameters'][3]['x-ms-client-name'] = 'metricName'
+- where-operation: LoadTestRun_ListMetricDimensionValues
+  transform: $['parameters'][3]['x-ms-client-name'] = 'metricName'
 ```

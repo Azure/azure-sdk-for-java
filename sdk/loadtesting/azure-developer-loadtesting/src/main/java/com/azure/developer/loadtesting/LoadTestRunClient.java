@@ -253,6 +253,7 @@ public final class LoadTestRunClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response to a metrics query as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetrics(
             String testRunId,
@@ -291,7 +292,7 @@ public final class LoadTestRunClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -307,13 +308,13 @@ public final class LoadTestRunClient {
     public PagedIterable<BinaryData> listMetricDimensionValues(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
         return new PagedIterable<>(
                 this.client.listMetricDimensionValues(
-                        testRunId, name, metricname, metricNamespace, timespan, requestOptions));
+                        testRunId, name, metricName, metricNamespace, timespan, requestOptions));
     }
 
     /**

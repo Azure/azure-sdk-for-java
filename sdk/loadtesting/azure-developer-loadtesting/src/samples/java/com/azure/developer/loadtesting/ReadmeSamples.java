@@ -29,14 +29,14 @@ public final class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
         // create client using DefaultAzureCredential
-        LoadTestAdministrationClientBuilder adminBuilder = new LoadTestAdministrationClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
                 .credential(credential)
-                .endpoint("<Enter Azure Load Testing Data-Plane URL>");
-        LoadTestRunClientBuilder testRunBuilder = new LoadTestRunClientBuilder()
+                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+                .buildClient();
+        LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
                 .credential(credential)
-                .endpoint("<Enter Azure Load Testing Data-Plane URL>");
-        LoadTestAdministrationClient adminClient = adminBuilder.buildClient();
-        LoadTestRunClient testRunClient = testRunBuilder.buildClient();
+                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
             .addQueryParam("orderBy", "lastModifiedDateTime")

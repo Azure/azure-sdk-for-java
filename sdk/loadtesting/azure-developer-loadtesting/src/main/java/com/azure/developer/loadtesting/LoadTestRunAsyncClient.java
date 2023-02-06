@@ -260,16 +260,6 @@ public final class LoadTestRunAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -289,7 +279,7 @@ public final class LoadTestRunAsyncClient {
      *
      * <pre>{@code
      * {
-     *     timeseries (Optional): [
+     *     value (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -364,7 +354,7 @@ public final class LoadTestRunAsyncClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
      * @param name Dimension name.
-     * @param metricname Metric name.
+     * @param metricName Metric name.
      * @param metricNamespace Metric namespace to query metric definitions for.
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
@@ -380,12 +370,12 @@ public final class LoadTestRunAsyncClient {
     public PagedFlux<BinaryData> listMetricDimensionValues(
             String testRunId,
             String name,
-            String metricname,
+            String metricName,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
         return this.serviceClient.listMetricDimensionValuesAsync(
-                testRunId, name, metricname, metricNamespace, timespan, requestOptions);
+                testRunId, name, metricName, metricNamespace, timespan, requestOptions);
     }
 
     /**
