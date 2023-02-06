@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>qpid-jms-client</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.messaginghub</groupId>
