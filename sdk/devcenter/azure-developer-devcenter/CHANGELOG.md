@@ -21,7 +21,9 @@ This release updates the Azure DevCenter library to use the 2022-11-11-preview A
 - Invalid `beginDeleteEnvironmentAction` API removed from `EnvironmentsClient`.
 - Unimplemented artifacts APIs removed from `EnvironmentsClient`.
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from version `1.34.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from version `1.12.7` to version `1.13.0`.
