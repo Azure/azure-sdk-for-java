@@ -8,11 +8,5 @@ public enum FaultInjectionServerErrorType {
     TOO_MANY_REQUEST,
     NOT_FOUND_1002,
     SERVER_TIMEOUT,
-    SERVER_DELAY,
-    // other error cases might be useful for testing
-    NOT_FOUND_0,
-    BAD_REQUEST,
-    CONFLICT,
-    FORBIDDEN,
-    PRE_CONDITION_FAILED
+    SERVER_DELAY
 }

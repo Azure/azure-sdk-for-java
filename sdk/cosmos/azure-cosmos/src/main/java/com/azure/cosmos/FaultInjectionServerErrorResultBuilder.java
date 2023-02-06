@@ -17,12 +17,6 @@ public class FaultInjectionServerErrorResultBuilder {
         this.serverErrorType = serverErrorType;
     }
 
-    /***
-     * This is not used for Server_Dely error type
-     *
-     * @param times
-     * @return
-     */
     public FaultInjectionServerErrorResultBuilder times(int times) {
         if (this.serverErrorType == FaultInjectionServerErrorType.SERVER_DELAY) {
             throw new IllegalArgumentException("Argument 'times' is not support for error type " + this.serverErrorType);
