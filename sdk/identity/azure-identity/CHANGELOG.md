@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added Azure Developer CLI Credential. [#32527](https://github.com/Azure/azure-sdk-for-java/pull/32527)
+- Added support for disabling instance discovery in MSAL. [#27888](https://github.com/Azure/azure-sdk-for-java/issues/27888)
 
 ## 1.8.0 (2023-02-03)
 
