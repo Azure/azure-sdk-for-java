@@ -60,7 +60,7 @@ public class TestProxySanitizer {
     /**
      * Set the group for replace.
      *
-     * @param groupForReplace th value to set
+     * @param groupForReplace The name of the group to replace.
      * @return the {@link TestProxySanitizer} itself.
      */
     public TestProxySanitizer setGroupForReplace(String groupForReplace) {
