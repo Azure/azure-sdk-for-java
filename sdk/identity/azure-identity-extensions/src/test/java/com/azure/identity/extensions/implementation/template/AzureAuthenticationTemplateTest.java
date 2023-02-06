@@ -6,13 +6,8 @@ package com.azure.identity.extensions.implementation.template;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
-import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
-import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
@@ -114,36 +109,4 @@ class AzureAuthenticationTemplateTest {
         }
     }
 
-    private static ClientSecretCredential getClientSecretCredential() {
-        ClientSecretCredential delegate = mock(ClientSecretCredential.class);
-        when(delegate.getToken(any()))
-            .thenReturn(Mono.just(new AccessToken("fake-access-token-1", OffsetDateTime.now().plusHours(2))))
-            .thenReturn(Mono.just(new AccessToken("fake-access-token-2", OffsetDateTime.now().plusHours(2))));
-        return delegate;
-    }
-
-
-    private static TokenCredentialProvider getTokenCredentialProvider() {
-        ClientSecretCredential credential = getClientSecretCredential();
-
-        TokenCredentialProvider tokenCredentialProvider = mock(TokenCredentialProvider.class);
-        when(tokenCredentialProvider.get()).thenReturn(credential);
-        return tokenCredentialProvider;
-    }
-
-    private static AccessTokenResolver getAccessTokenResolver() {
-        AccessTokenResolverOptions resolverOptions = new AccessTokenResolverOptions();
-        resolverOptions.setTenantId("fake-tenant-id");
-        resolverOptions.setScopes(new String[]{OSSRDBMS_SCOPE});
-        return AccessTokenResolver.createDefault(resolverOptions);
-    }
-
-    private static TokenCredentialProviderOptions getProviderOptions() {
-        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions();
-        providerOptions.setTenantId("fake-tenant-id");
-        providerOptions.setClientId("fake-client-id");
-        providerOptions.setClientSecret("fake-client-secret");
-        providerOptions.setAuthorityHost("fake-authority-host");
-        return providerOptions;
-    }
 }
