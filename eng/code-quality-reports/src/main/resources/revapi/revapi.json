@@ -70,17 +70,19 @@
           },
           {
             "matcher": "java-package",
-            "match": "/javax\\.(jms|servlet)(\\..*)?/"
+            "match": "/jakarta\\.(jms|servlet)(\\..*)?/"
           },
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationRefresh|AppConfigurationBootstrapConfiguration)",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
           "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationBootstrapConfiguration",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -105,12 +107,6 @@
     "configuration": {
       "ignore": true,
       "differences": [
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
-          "justification": "We allow this in azure.spring.messaging."
-        },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
@@ -155,54 +151,6 @@
           "justification": "resourcemanager interfaces are allowed to add methods."
         },
         {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
@@ -238,35 +186,6 @@
           "code": "java\\.annotation\\.removed",
           "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
           "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
-        },
-        {
-          "code" : "java.method.visibilityReduced",
-          "old" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
-          "new" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code" : "java.method.visibilityReduced",
-          "old" : "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
-          "new" : "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code" : "java.method.removed",
-          "old" : "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter()",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code": "java.annotation.added",
-          "old": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
-          "new": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
-          "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(value = {\"spring.cloud.azure.eventhubs.kafka.enabled\"}, havingValue = \"true\", matchIfMissing = true)",
-          "justification": "To enable turn on/off the related auto-configurations manually."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration",
-          "justification": "Fixes a bug."
         },
         {
           "code": "java.method.added",
@@ -310,6 +229,7 @@
           "justification": "Not a public api"
         },
         {
+          "regex": true,
           "code": "java.method.removed",
           "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
           "justification": "Not a public api"
@@ -317,16 +237,17 @@
         {
           "regex": true,
           "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.(Connection|ConnectionPool)",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
           "justification": "Not a public api"
         },
         {
           "regex": true,
           "code": "java.class.removed",
-          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationPropertySource|AppConfigurationPropertySourceLocator)",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
           "justification": "Not a public api"
         },
         {
+          "regex": true,
           "code": "java.class.removed",
           "old": "class com.azure.spring.cloud.config.stores.ClientStore",
           "justification": "Not a public api"
@@ -382,67 +303,6 @@
           "justification": "Proper support for fluent setters in subtypes."
         },
         {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean)",
-          "new": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean, java.lang.Integer)",
-          "justification": "Not a public api"
-        },
-        {
-          "code": "java.field.removedWithConstant",
-          "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
-          "justification": "Not a public api"
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
           "regex": true,
           "code": "java.annotation.added",
           "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
@@ -452,11 +312,6 @@
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
         },
         {
           "ignore": true,
