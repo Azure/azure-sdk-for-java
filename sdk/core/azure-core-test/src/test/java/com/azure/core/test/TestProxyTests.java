@@ -31,6 +31,7 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -259,7 +260,8 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = InterceptorManager.getRecordFolder() + "\\" + this.testContextManager.getTestPlaybackRecordingName() + ".json";
+        String filePath = Paths.get(InterceptorManager.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
+
         File recordFile = new File(filePath);
         try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
