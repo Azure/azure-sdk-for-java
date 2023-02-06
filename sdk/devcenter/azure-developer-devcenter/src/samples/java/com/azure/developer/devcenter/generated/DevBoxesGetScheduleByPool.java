@@ -16,14 +16,13 @@ public class DevBoxesGetScheduleByPool {
         DevBoxesClient devBoxesClient =
                 new DevBoxesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .devCenter("ContosoDevCenter")
-                        .devCenterDnsSuffix("devcenter.azure.com")
-                        .tenantId("84fq37b9-22t3-t887-l09p-93241ngq0s95")
+                        .endpoint(
+                                "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.devboxesgetschedulebypool.devboxesgetschedulebypool
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "{scheduleName}", requestOptions);
+                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "default", requestOptions);
         // END:com.azure.developer.devcenter.generated.devboxesgetschedulebypool.devboxesgetschedulebypool
     }
 }

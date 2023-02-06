@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsListArtifactsByEnvironmentAndPathTests extends DevCenterClientTestBase {
+public final class DevBoxesListUpcomingActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsListArtifactsByEnvironmentAndPathTests() {
+    public void testDevBoxesListUpcomingActionsTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
-                environmentsClient.listArtifactsByEnvironmentAndPath(
-                        "myProject", "me", "{environmentName}", "{artifactPath}", requestOptions);
+                devBoxesClient.listUpcomingActions("myProject", "me", "myDevBox", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"Example\",\"createdTime\":\"2021-10-11T21:35:18.658Z\",\"downloadUri\":\"https://devcenterstorage.file.core.windows.net/myenv/.artifacts/myfile.json/?sv=2018-03-28&ss=bjqt&srt=sco&sp=rwddgcup&se=2019-05-01T05:01:17Z&st=2019-04-30T21:01:17Z&spr=https&sig=MGCXiyEzbtttkr3ewJIh2AR8KrghSy1DGM9ovN734bQF4%3D\",\"fileSize\":1024,\"id\":\"13829dae-4d88-4345-8b2a-062d01a44acc\",\"isDirectory\":false,\"lastModifiedTime\":\"2021-10-11T21:35:18.658Z\"}")
+                                "{\"actionType\":\"StopDevBox\",\"id\":\"cae4d1f4-94b8-75f2-406d-5f00ae4c1da7\",\"originalScheduledTime\":\"2021-09-30T12:00:00Z\",\"reason\":\"Schedule\",\"scheduledTime\":\"2022-09-30T17:00:00Z\",\"sourceId\":\"/projects/myProject/pools/myPool/schedules/mySchedule\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }
