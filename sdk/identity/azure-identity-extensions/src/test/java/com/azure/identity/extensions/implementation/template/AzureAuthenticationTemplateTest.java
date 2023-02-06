@@ -83,22 +83,21 @@ class AzureAuthenticationTemplateTest {
     @Test
     void testGetTokenAsPassword() throws InterruptedException {
         // setup
-        String TOKEN_1 = "token1";
-        String TOKEN_2 = "token2";
-        int TOKEN_EXPIRE_SECONDS = 2;
+        String token1 = "token1";
+        String token2 = "token2";
+        int tokenExpireSeconds = 2;
         TokenCredential mockTokenCredential = mock(TokenCredential.class);
-        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(TOKEN_EXPIRE_SECONDS);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
         when(mockTokenCredential.getToken(any()))
             .thenAnswer(u -> {
                 if (OffsetDateTime.now().isBefore(offsetDateTime)) {
-                    return Mono.just(new AccessToken(TOKEN_1, offsetDateTime));
+                    return Mono.just(new AccessToken(token1, offsetDateTime));
                 } else {
-                    return Mono.just(new AccessToken(TOKEN_2, offsetDateTime.plusSeconds(TOKEN_EXPIRE_SECONDS)));
+                    return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
                 }
             });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock
-                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
             when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
         })) {
             Properties properties = new Properties();
@@ -106,10 +105,10 @@ class AzureAuthenticationTemplateTest {
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
             template.init(properties);
             for (int i = 0; i < 5; i++) {
-                assertEquals(TOKEN_1, template.getTokenAsPassword());
+                assertEquals(token1, template.getTokenAsPassword());
             }
-            TimeUnit.SECONDS.sleep(TOKEN_EXPIRE_SECONDS);
-            assertEquals(TOKEN_2, template.getTokenAsPassword());
+            TimeUnit.SECONDS.sleep(tokenExpireSeconds);
+            assertEquals(token2, template.getTokenAsPassword());
 
             assertNotNull(identityClientMock);
         }
