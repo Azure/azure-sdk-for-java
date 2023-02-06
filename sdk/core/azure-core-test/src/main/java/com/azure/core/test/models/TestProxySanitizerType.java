@@ -30,7 +30,7 @@ public enum TestProxySanitizerType {
 
     /**
      * Gets the name value of the enum.
-      * @return the name value of the enum.
+     * @return the name value of the enum.
      */
     public String getName() {
         return name;
