@@ -13,7 +13,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
 - Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
 - Make the domain-name option optional when configuring Event Hubs/Service Bus in non-public Azure cloud [#32034](https://github.com/Azure/azure-sdk-for-java/issues/32034).
-- Support multiple sign-in user flow registrations for Azure ADB B2C [33234](https://github.com/Azure/azure-sdk-for-java/pull/33234).
+- Support multiple sign-in user flow registrations (include native OAuth2 login clients) for Azure ADB B2C [33234](https://github.com/Azure/azure-sdk-for-java/pull/33234).
 
 #### Breaking Changes
 - Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).

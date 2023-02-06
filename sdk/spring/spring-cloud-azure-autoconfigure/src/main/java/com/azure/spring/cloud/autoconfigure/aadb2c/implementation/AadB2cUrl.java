@@ -94,7 +94,7 @@ public final class AadB2cUrl {
      *
      * @param baseUri the base URI
      * @param logoutUrl the logout URL
-     * @param userFlow the user flow
+     * @param userFlow the user flow instance id
      * @return the end session URL
      */
     public static String getEndSessionUrl(String baseUri, String logoutUrl, String userFlow) {

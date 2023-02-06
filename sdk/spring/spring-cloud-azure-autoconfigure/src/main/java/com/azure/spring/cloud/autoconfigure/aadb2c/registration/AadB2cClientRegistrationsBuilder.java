@@ -156,7 +156,7 @@ public class AadB2cClientRegistrationsBuilder {
     }
 
     /**
-     * Creates an {@link AadB2cClientRegistrations} based on configuration in this builder.
+     * Creates an {@link AadB2cClientRegistrations} based on the configuration in this builder.
      * @return an {@link AadB2cClientRegistrations} created from the configurations in this builder.
      */
     public AadB2cClientRegistrations build() {
