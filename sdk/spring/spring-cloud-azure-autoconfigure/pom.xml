@@ -119,7 +119,7 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+      <version>2.0.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -372,7 +372,7 @@
                 <include>com.mysql:mysql-connector-j:[8.0.32]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.0.0]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.5.1]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->

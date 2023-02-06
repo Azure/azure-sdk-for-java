@@ -93,7 +93,7 @@ org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
 org.apache.qpid:proton-j;0.33.8
-org.apache.qpid:qpid-jms-client;0.53.0
+org.apache.qpid:qpid-jms-client;2.0.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;2.1.0
