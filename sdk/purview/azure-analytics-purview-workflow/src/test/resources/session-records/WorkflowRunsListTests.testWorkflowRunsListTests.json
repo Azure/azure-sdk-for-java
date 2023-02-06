@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure-test.com/workflow/workflowruns?api-version=2022-05-01-preview&maxpagesize=1000&orderby=startTime%20desc&timeWindow=30d",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "47989889-1262-43df-b922-5a3b0805a627"
+    },
+    "Response" : {
+      "content-length" : "1882",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "8127044c-f3a9-4eeb-9c7a-840cb3c2e4cc",
+      "Body" : "{\"value\":[{\"id\":\"41b1feae-1f90-4b35-835f-037f39d8ef67\",\"workflowId\":\"4afb5752-e47f-43a1-8ba7-c696bf8d2745\",\"startTime\":\"2023-02-03T10:07:01.651286335Z\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"userRequestId\":\"41b1feae-1f90-4b35-835f-037f39d8ef67\",\"runPayload\":{\"type\":\"CreateTerm\",\"targetValue\":\"term\"},\"status\":\"InProgress\"},{\"id\":\"752249e8-eef2-41f1-adb1-53b7ee1e4634\",\"workflowId\":\"4afb5752-e47f-43a1-8ba7-c696bf8d2745\",\"startTime\":\"2023-02-03T10:05:30.233228384Z\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"userRequestId\":\"752249e8-eef2-41f1-adb1-53b7ee1e4634\",\"runPayload\":{\"type\":\"CreateTerm\",\"targetValue\":\"term\"},\"status\":\"Completed\",\"endTime\":\"2023-02-03T10:06:51.366188593Z\"},{\"id\":\"d77281b4-2af3-4bc5-8d2f-14a2b63fa33d\",\"workflowId\":\"8af1ecae-16ee-4b2d-8972-00d611dd2f99\",\"startTime\":\"2023-01-21T14:53:20.781403339Z\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"userRequestId\":\"d77281b4-2af3-4bc5-8d2f-14a2b63fa33d\",\"runPayload\":{\"type\":\"DeleteTerm\",\"targetValue\":\"term0106\"},\"status\":\"Canceled\",\"endTime\":\"2023-01-21T14:54:13.340696759Z\",\"cancelComment\":\"Thanks!\"},{\"id\":\"ce30f91a-92c0-443b-841e-c3d57ef15939\",\"workflowId\":\"8af1ecae-16ee-4b2d-8972-00d611dd2f99\",\"startTime\":\"2023-01-13T09:59:25.460948841Z\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"userRequestId\":\"ce30f91a-92c0-443b-841e-c3d57ef15939\",\"runPayload\":{\"type\":\"DeleteTerm\",\"targetValue\":\"sample-term\"},\"status\":\"Canceled\",\"endTime\":\"2023-01-18T07:42:30.381836315Z\",\"cancelComment\":\"Thanks!\"},{\"id\":\"5a5b35c1-a430-4397-a4e2-d75ac23be8df\",\"workflowId\":\"8af1ecae-16ee-4b2d-8972-00d611dd2f99\",\"startTime\":\"2023-01-11T10:22:58.512569863Z\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"userRequestId\":\"5a5b35c1-a430-4397-a4e2-d75ac23be8df\",\"runPayload\":{\"type\":\"DeleteTerm\",\"targetValue\":\"sample-term\"},\"status\":\"Completed\",\"endTime\":\"2023-01-19T13:39:09.313383513Z\"}]}",
+      "Date" : "Fri, 03 Feb 2023 10:08:44 GMT",
+      "x-ms-client-request-id" : "47989889-1262-43df-b922-5a3b0805a627",
+      "x-ms-correlation-request-id" : "f9f3f722-89ba-4d6b-a391-7edbb5b821a9",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

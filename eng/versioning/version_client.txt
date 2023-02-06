@@ -48,6 +48,7 @@ com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-catalog;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-administration;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-analytics-purview-workflow;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.11;1.0.0-beta.12
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.5;1.0.0-beta.6
@@ -177,7 +178,6 @@ com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-developer-loadtesting;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity-extensions;1.0.0;1.1.0-beta.1
-com.azure:azure-analytics-purview-workflow;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.10.0;2.11.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;2.10.0;2.11.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.9.0;2.10.0-beta.1

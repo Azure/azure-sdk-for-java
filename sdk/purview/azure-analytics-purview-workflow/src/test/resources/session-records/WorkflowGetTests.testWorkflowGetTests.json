@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure-test.com/workflow/workflows/8af1ecae-16ee-4b2d-8972-00d611dd2f99?api-version=2022-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d9c81be-5dca-49e7-af75-5b8542165f54"
+    },
+    "Response" : {
+      "content-length" : "1819",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e7dcd7ba-faf8-444d-9f73-3f6c8fae9fe0",
+      "Body" : "{\"id\":\"8af1ecae-16ee-4b2d-8972-00d611dd2f99\",\"triggers\":[{\"type\":\"when_term_deletion_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}],\"createdTime\":\"2023-01-11T10:15:43.610476536Z\",\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"lastUpdateTime\":\"2023-01-18T08:07:36.735876427Z\",\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"name\":\"Delete glossary term\",\"isEnabled\":true,\"description\":\"\",\"actionDag\":{\"actions\":{\"Start and wait for an approval\":{\"type\":\"Approval\",\"inputs\":{\"parameters\":{\"approvalType\":\"PendingOnAll\",\"title\":\"Approval Request for Delete Glossary Term\",\"assignedTo\":[\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"7645223c-cdca-43e9-98c8-bd4d97e79e5e\"]}},\"runAfter\":{}},\"Condition\":{\"type\":\"If\",\"expression\":{\"and\":[{\"equals\":[\"@outputs('Start and wait for an approval')['body/outcome']\",\"Approved\"]}]},\"actions\":{\"Delete glossary term\":{\"type\":\"DeleteTerm\",\"runAfter\":{}},\"Send email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"Glossary Term Delete - APPROVED\",\"emailMessage\":\"Your request for Glossary Term @{triggerBody()['request']['term']['name']} is approved.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{\"Delete glossary term\":[\"Succeeded\"]},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}},\"else\":{\"actions\":{\"Send reject email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"Glossary Term Delete - REJECTED\",\"emailMessage\":\"Your request for Glossary Term @{triggerBody()['request']['term']['name']} is rejected.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}}},\"runAfter\":{\"Start and wait for an approval\":[\"Succeeded\"]}}}}}",
+      "Date" : "Fri, 03 Feb 2023 09:53:10 GMT",
+      "x-ms-client-request-id" : "7d9c81be-5dca-49e7-af75-5b8542165f54",
+      "x-ms-correlation-request-id" : "80fd2a90-0194-4faa-9d98-4efebc9e1506",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

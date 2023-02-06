@@ -13,13 +13,12 @@ import org.junit.jupiter.api.Test;
 
 public final class WorkflowRunCancelTests extends PurviewWorkflowClientTestBase {
     @Test
-    @Disabled
     public void testWorkflowRunCancelTests() {
         BinaryData runCancelReply = BinaryData.fromString("{\"comment\":\"Thanks!\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.cancelWorkflowRunWithResponse(
-                        "b7aaf54b-59c2-4a0e-a7d0-f431044f2198", runCancelReply, requestOptions);
+                        "41b1feae-1f90-4b35-835f-037f39d8ef67", runCancelReply, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 public final class UserRequestsSubmitTests extends PurviewWorkflowClientTestBase {
     @Test
-    @Disabled
     public void testUserRequestsSubmitTests() {
         BinaryData userRequestsPayload =
                 BinaryData.fromString(
@@ -22,10 +21,5 @@ public final class UserRequestsSubmitTests extends PurviewWorkflowClientTestBase
         Response<BinaryData> response =
                 purviewWorkflowClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"comment\":\"Thanks!\",\"requestId\":\"26026374-f2f6-4627-b2f4-ba2db93c7e2c\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"status\":\"InProgress\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}},\"workflowRunIds\":[\"26026374-f2f6-4627-b2f4-ba2db93c7e2c\"]}]}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
     }
 }

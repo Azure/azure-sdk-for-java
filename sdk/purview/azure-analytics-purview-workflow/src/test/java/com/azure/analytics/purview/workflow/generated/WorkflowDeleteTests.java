@@ -12,12 +12,11 @@ import org.junit.jupiter.api.Test;
 
 public final class WorkflowDeleteTests extends PurviewWorkflowClientTestBase {
     @Test
-    @Disabled
     public void testWorkflowDeleteTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.deleteWorkflowWithResponse(
-                        "4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
+                        "af1ecae-16ee-4b2d-8972-00d611dd2f99", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
     }
 }
