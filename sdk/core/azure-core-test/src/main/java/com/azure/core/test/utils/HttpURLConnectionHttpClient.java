@@ -84,9 +84,10 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             BinaryData body = request.getBodyAsBinaryData();
             if (body != null) {
                 connection.setDoOutput(true);
-                BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
-                stream.write(body.toBytes());
-                stream.flush();
+                try (BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream())) {
+                    stream.write(body.toBytes());
+                    stream.flush();
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
