@@ -8,4 +8,7 @@ import com.azure.core.annotation.Immutable;
 
 /** Azure Synapse nested resource, which belongs to a workspace. */
 @Immutable
-public class SubResource extends AzureEntityResource {}
+public class SubResource extends AzureEntityResource {
+    /** Creates an instance of SubResource class. */
+    public SubResource() {}
+}

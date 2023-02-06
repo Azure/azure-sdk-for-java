@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstanceAdministrators ListByInstance. */
 public final class ManagedInstanceAdministratorsListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ManagedInstanceAdministratorListByInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorListByInstance.json
      */
     /**
      * Sample code: List administrators of managed instance.

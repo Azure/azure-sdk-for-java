@@ -5,43 +5,32 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The authorization policy resource format. */
-@JsonFlatten
 @Fluent
-public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPolicyResourceFormatInner.class);
-
+public final class AuthorizationPolicyResourceFormatInner extends ProxyResource {
     /*
-     * Name of the policy.
+     * The authorization policy.
      */
-    @JsonProperty(value = "properties.policyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyName;
+    @JsonProperty(value = "properties")
+    private AuthorizationPolicyInner innerProperties;
 
-    /*
-     * The permissions associated with the policy.
-     */
-    @JsonProperty(value = "properties.permissions")
-    private List<PermissionTypes> permissions;
+    /** Creates an instance of AuthorizationPolicyResourceFormatInner class. */
+    public AuthorizationPolicyResourceFormatInner() {
+    }
 
-    /*
-     * Primary key associated with the policy.
+    /**
+     * Get the innerProperties property: The authorization policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
-
-    /*
-     * Secondary key associated with the policy.
-     */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
+    private AuthorizationPolicyInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the policyName property: Name of the policy.
@@ -49,7 +38,7 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the policyName value.
      */
     public String policyName() {
-        return this.policyName;
+        return this.innerProperties() == null ? null : this.innerProperties().policyName();
     }
 
     /**
@@ -58,7 +47,7 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the permissions value.
      */
     public List<PermissionTypes> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
@@ -68,7 +57,10 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withPermissions(List<PermissionTypes> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
@@ -78,7 +70,7 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
@@ -88,7 +80,10 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
@@ -98,7 +93,7 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
@@ -108,7 +103,10 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
@@ -118,5 +116,8 @@ public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

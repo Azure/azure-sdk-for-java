@@ -27,6 +27,10 @@ public final class ActivityLogAlertActionGroup {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
+    /** Creates an instance of ActivityLogAlertActionGroup class. */
+    public ActivityLogAlertActionGroup() {
+    }
+
     /**
      * Get the actionGroupId property: The resource ID of the Action Group. This cannot be null or empty.
      *

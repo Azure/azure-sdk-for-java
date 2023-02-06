@@ -29,6 +29,15 @@ public final class H264VideoProfile extends ExpandableStringEnum<H264VideoProfil
     public static final H264VideoProfile HIGH444 = fromString("High444");
 
     /**
+     * Creates a new instance of H264VideoProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264VideoProfile() {
+    }
+
+    /**
      * Creates or finds a H264VideoProfile from its string representation.
      *
      * @param name a name to look for.

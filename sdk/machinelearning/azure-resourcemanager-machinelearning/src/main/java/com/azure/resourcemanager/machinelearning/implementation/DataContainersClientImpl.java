@@ -59,7 +59,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface DataContainersService {
+    public interface DataContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

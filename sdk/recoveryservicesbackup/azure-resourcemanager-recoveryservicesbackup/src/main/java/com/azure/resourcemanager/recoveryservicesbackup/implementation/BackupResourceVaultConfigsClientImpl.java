@@ -55,7 +55,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupResourceVaultConfigsService {
+    public interface BackupResourceVaultConfigsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

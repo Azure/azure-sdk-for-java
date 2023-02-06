@@ -75,6 +75,10 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DtlEnvironmentInner innerModel() {
         return this.innerObject;
     }

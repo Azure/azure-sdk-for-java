@@ -17,6 +17,15 @@ public final class VmPriority extends ExpandableStringEnum<VmPriority> {
     public static final VmPriority LOW_PRIORITY = fromString("LowPriority");
 
     /**
+     * Creates a new instance of VmPriority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VmPriority() {
+    }
+
+    /**
      * Creates or finds a VmPriority from its string representation.
      *
      * @param name a name to look for.

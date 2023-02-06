@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.DeploymentResourceConfig
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentResourceConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentResourceConfiguration model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class DeploymentResourceConfigurationTests {
         Assertions.assertEquals("dcfhucqdpf", model.instanceType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentResourceConfiguration model =
             new DeploymentResourceConfiguration()
                 .withInstanceCount(1806206586)

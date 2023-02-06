@@ -35,6 +35,15 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
     public static final BackupType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
+     * Creates a new instance of BackupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupType() {
+    }
+
+    /**
      * Creates or finds a BackupType from its string representation.
      *
      * @param name a name to look for.

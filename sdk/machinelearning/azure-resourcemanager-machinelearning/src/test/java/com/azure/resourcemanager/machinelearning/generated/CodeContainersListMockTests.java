@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.CodeContainer;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class CodeContainersListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CodeContainer> response =
-            manager.codeContainers().list("aluzyi", "fcvcewbwq", "dgsjsat", Context.NONE);
+            manager.codeContainers().list("aluzyi", "fcvcewbwq", "dgsjsat", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rbwtdrcwgzwl", response.iterator().next().properties().description());
         Assertions.assertEquals("lhhfi", response.iterator().next().properties().properties().get("acfculzjrmhpf"));

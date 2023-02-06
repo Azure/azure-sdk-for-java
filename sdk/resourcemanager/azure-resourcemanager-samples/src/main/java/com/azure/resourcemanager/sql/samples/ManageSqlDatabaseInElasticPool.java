@@ -13,7 +13,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
@@ -28,7 +27,6 @@ import com.azure.resourcemanager.sql.models.SqlServer;
  *  - List and print databases in the elastic pool
  *  - Remove a database from elastic pool.
  *  - List and print elastic pool activities
- *  - List and print elastic pool database activities
  *  - Add another elastic pool in existing SQL Server.
  *  - Delete database, elastic pools and SQL Server
  */
@@ -156,15 +154,6 @@ public final class ManageSqlDatabaseInElasticPool {
             System.out.println("Start ------- Activities in a elastic pool");
             for (ElasticPoolActivity activity: elasticPool.listActivities()) {
                 Utils.print(activity);
-            }
-            System.out.println("End ------- Activities in a elastic pool");
-
-            // ============================================================
-            // Get list of elastic pool's database activities and print the same.
-
-            System.out.println("Start ------- Activities in a elastic pool");
-            for (ElasticPoolDatabaseActivity databaseActivity: elasticPool.listDatabaseActivities()) {
-                Utils.print(databaseActivity);
             }
             System.out.println("End ------- Activities in a elastic pool");
 

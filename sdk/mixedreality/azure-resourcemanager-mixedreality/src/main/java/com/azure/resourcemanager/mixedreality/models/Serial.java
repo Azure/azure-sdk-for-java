@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mixedreality.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Serial. */
+/** serial of key to be regenerated. */
 public enum Serial {
     /** Enum value 1. */
     ONE(1),

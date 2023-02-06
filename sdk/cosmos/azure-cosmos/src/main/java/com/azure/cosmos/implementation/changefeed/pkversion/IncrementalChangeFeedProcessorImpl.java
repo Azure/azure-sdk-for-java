@@ -87,8 +87,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final ChangeFeedContextClient feedContextClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final ChangeFeedObserverFactory<JsonNode> observerFactory;
-    private volatile String databaseResourceId;
-    private volatile String collectionResourceId;
+    private volatile String databaseId;
+    private volatile String collectionId;
     private final ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
@@ -211,10 +211,9 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
                     .flatMap(lease -> {
-                        final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -240,18 +239,18 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
 
                                 // An empty list of documents returned means that we are current (zero lag)
                                 if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
-                                    return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
+                                    return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0l);
                                 }
 
-                                int currentLsn = 0;
-                                int estimatedLag;
+                                long currentLsn = 0;
+                                long estimatedLag;
                                 try {
-                                    currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                                    estimatedLag = Integer.parseInt(latestLsn);
+                                    currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                    estimatedLag = Long.parseLong(latestLsn);
                                     estimatedLag = estimatedLag - currentLsn + 1;
                                 } catch (NumberFormatException ex) {
                                     logger.warn("Unexpected Cosmos LSN found", ex);
-                                    estimatedLag = -1;
+                                    estimatedLag = -1l;
                                 }
 
                                 return Pair.of(
@@ -262,8 +261,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                     .collectList()
                     .map(valueList -> {
                         Map<String, Integer> result = new ConcurrentHashMap<>();
-                        for (Pair<String, Integer> pair : valueList) {
-                            result.put(pair.getKey(), pair.getValue());
+                        for (Pair<String, Long> pair : valueList) {
+                            result.put(pair.getKey(), (int)Math.min(pair.getValue(), Integer.MAX_VALUE));
                         }
                         return result;
                     })
@@ -293,7 +292,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -330,13 +329,13 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                                 changeFeedProcessorState.setContinuationToken(
                                     feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
 
-                                int currentLsn;
-                                int estimatedLag;
+                                long currentLsn;
+                                long estimatedLag;
                                 try {
-                                    currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                                    estimatedLag = Integer.parseInt(latestLsn);
+                                    currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                    estimatedLag = Long.parseLong(latestLsn);
                                     estimatedLag = estimatedLag - currentLsn + 1;
-                                    changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                                    changeFeedProcessorState.setEstimatedLag((int)Math.min(estimatedLag, Integer.MAX_VALUE));
                                 } catch (NumberFormatException ex) {
                                     logger.warn("Unexpected Cosmos LSN found", ex);
                                     changeFeedProcessorState.setEstimatedLag(-1);
@@ -354,13 +353,13 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
-                return this.databaseResourceId;
+                this.databaseId = databaseResourceResponse.getProperties().getId();
+                return this.databaseId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
+                    this.collectionId = documentCollectionResourceResponse.getProperties().getId();
                     return this;
                 }));
     }
@@ -411,8 +410,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             "%s%s_%s_%s",
             optionsPrefix,
             uri.getHost(),
-            this.databaseResourceId,
-            this.collectionResourceId);
+            this.databaseId,
+            this.collectionId);
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
@@ -425,7 +424,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             leaseStoreManager,
             DEFAULT_DEGREE_OF_PARALLELISM,
             DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
-            this.collectionResourceId
+            this.collectionId
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
@@ -437,7 +436,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
                 this.feedContextClient.getContainerClient(),
-                this.collectionResourceId),
+                this.collectionId),
             this.changeFeedProcessorOptions,
             this.scheduler
         );

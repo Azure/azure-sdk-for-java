@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMRunCommands Get. */
 public final class VirtualMachineScaleSetVMRunCommandsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
      */
     /**
      * Sample code: Get VirtualMachineScaleSet VM run commands.
@@ -22,6 +20,7 @@ public final class VirtualMachineScaleSetVMRunCommandsGetSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMRunCommands()
-            .getWithResponse("myResourceGroup", "myvmScaleSet", "0", "myRunCommand", null, Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "myvmScaleSet", "0", "myRunCommand", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrderState. */
+/** Status of the order as per the allowed status types. */
 public final class OrderState extends ExpandableStringEnum<OrderState> {
     /** Static value Untracked for OrderState. */
     public static final OrderState UNTRACKED = fromString("Untracked");
@@ -53,6 +53,15 @@ public final class OrderState extends ExpandableStringEnum<OrderState> {
     public static final OrderState COLLECTED_AT_MICROSOFT = fromString("CollectedAtMicrosoft");
 
     /**
+     * Creates a new instance of OrderState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrderState() {
+    }
+
+    /**
      * Creates or finds a OrderState from its string representation.
      *
      * @param name a name to look for.
@@ -63,7 +72,11 @@ public final class OrderState extends ExpandableStringEnum<OrderState> {
         return fromString(name, OrderState.class);
     }
 
-    /** @return known OrderState values. */
+    /**
+     * Gets known OrderState values.
+     *
+     * @return known OrderState values.
+     */
     public static Collection<OrderState> values() {
         return values(OrderState.class);
     }

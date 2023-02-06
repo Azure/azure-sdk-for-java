@@ -32,6 +32,9 @@ public final class OrdinalResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of OrdinalResolution class. */
+    public OrdinalResolution() {}
+
     /**
      * Get the offset property: The offset With respect to the reference (e.g., offset = -1 in "show me the second to
      * last".

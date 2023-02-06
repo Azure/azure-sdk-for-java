@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceSkus List. */
 public final class ResourceSkusListSamples {
     /*
@@ -17,7 +15,12 @@ public final class ResourceSkusListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listsAllAvailableResourceSKUs(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getResourceSkus().list(null, null, Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getResourceSkus()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,7 +38,7 @@ public final class ResourceSkusListSamples {
             .manager()
             .serviceClient()
             .getResourceSkus()
-            .list("location eq 'westus'", null, Context.NONE);
+            .list("location eq 'westus'", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -48,6 +51,11 @@ public final class ResourceSkusListSamples {
      */
     public static void listsAllAvailableResourceSKUsWithExtendedLocationInformation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getResourceSkus().list(null, "true", Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getResourceSkus()
+            .list(null, "true", com.azure.core.util.Context.NONE);
     }
 }

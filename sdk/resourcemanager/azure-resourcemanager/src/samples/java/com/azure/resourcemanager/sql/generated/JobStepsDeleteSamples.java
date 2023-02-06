@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobSteps Delete. */
 public final class JobStepsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DeleteJobStep.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobStep.json
      */
     /**
      * Sample code: Delete a job step.

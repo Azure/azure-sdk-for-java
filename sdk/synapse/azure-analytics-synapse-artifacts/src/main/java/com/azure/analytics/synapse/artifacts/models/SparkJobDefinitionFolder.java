@@ -19,6 +19,9 @@ public final class SparkJobDefinitionFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of SparkJobDefinitionFolder class. */
+    public SparkJobDefinitionFolder() {}
+
     /**
      * Get the name property: The name of the folder that this Spark job definition is in.
      *

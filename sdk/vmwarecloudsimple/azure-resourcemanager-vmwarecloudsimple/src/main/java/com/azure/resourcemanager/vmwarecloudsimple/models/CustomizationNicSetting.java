@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CustomizationNicSetting model. */
 @Fluent
 public final class CustomizationNicSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationNicSetting.class);
-
     /*
      * The list of adapters' settings
      */
@@ -25,6 +21,10 @@ public final class CustomizationNicSetting {
      */
     @JsonProperty(value = "macAddress")
     private String macAddress;
+
+    /** Creates an instance of CustomizationNicSetting class. */
+    public CustomizationNicSetting() {
+    }
 
     /**
      * Get the adapter property: The list of adapters' settings.

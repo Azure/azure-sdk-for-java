@@ -48,7 +48,9 @@ public final class LinkConnectionDetailedStatus {
     private Object stopTime;
 
     /*
-     * Link connection status
+     * Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -76,6 +78,9 @@ public final class LinkConnectionDetailedStatus {
      */
     @JsonProperty(value = "landingZoneCredentialExpireTime")
     private OffsetDateTime landingZoneCredentialExpireTime;
+
+    /** Creates an instance of LinkConnectionDetailedStatus class. */
+    public LinkConnectionDetailedStatus() {}
 
     /**
      * Get the id property: Link connection id.
@@ -198,7 +203,9 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Get the status property: Link connection status.
+     * Get the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @return the status value.
      */
@@ -207,7 +214,9 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Set the status property: Link connection status.
+     * Set the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @param status the status value to set.
      * @return the LinkConnectionDetailedStatus object itself.

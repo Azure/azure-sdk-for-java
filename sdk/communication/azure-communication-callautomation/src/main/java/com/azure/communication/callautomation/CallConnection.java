@@ -10,10 +10,14 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -217,6 +221,49 @@ public class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveParticipantsResult> removeParticipantsWithResponse(RemoveParticipantsOptions removeParticipantsOptions, Context context) {
         return callConnectionAsync.removeParticipantsWithResponseInternal(removeParticipantsOptions, context).block();
+    }
+
+    /**
+     * Mutes participants in the call.
+     *
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
+    }
+
+    /**
+     * Mute participants in the call.
+     * @param muteParticipantsOptions - Options for the request.
+     * @param context A {@link Context} representing the request context.
+     * @return a Response containing the MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
+    }
+
+    /**
+     * Unmutes participants in the call.
+     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
+     * @return An UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnmuteParticipantsResult unmuteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.unmuteParticipantsAsync(targetParticipant).block();
+    }
+
+    /**
+     * Unmutes participants in the call.
+     * @param unmuteParticipantsOptions - Options for the request.
+     * @param context A {@link Context} representing the request context.
+     * @return a Response containing the UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
     }
 
     //region Content management Actions

@@ -58,6 +58,9 @@ public class DynamicsAXLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DynamicsAXLinkedService class. */
+    public DynamicsAXLinkedService() {}
+
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      *

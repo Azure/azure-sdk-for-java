@@ -65,7 +65,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobAgentsService {
+    public interface JobAgentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
@@ -191,7 +191,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -202,7 +201,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<JobAgentInner>>map(
@@ -252,7 +251,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -261,7 +259,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -382,7 +380,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -394,7 +391,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -438,7 +435,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,7 +444,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -478,23 +474,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobAgentInner get(String resourceGroupName, String serverName, String jobAgentName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName).block();
-    }
-
-    /**
-     * Gets a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -505,6 +484,23 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     public Response<JobAgentInner> getWithResponse(
         String resourceGroupName, String serverName, String jobAgentName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, context).block();
+    }
+
+    /**
+     * Gets a job agent.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job agent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobAgentInner get(String resourceGroupName, String serverName, String jobAgentName) {
+        return getWithResponse(resourceGroupName, serverName, jobAgentName, Context.NONE).getValue();
     }
 
     /**
@@ -550,7 +546,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -562,7 +557,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -613,7 +608,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -623,7 +617,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -842,7 +836,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -853,7 +846,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -896,7 +889,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -905,7 +897,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1107,7 +1099,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1119,7 +1110,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1170,7 +1161,6 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1180,7 +1170,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1364,7 +1354,8 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1399,7 +1390,8 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -46,6 +46,9 @@ public final class ErrorResponse {
     @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorAdditionalInfo> additionalInfo;
 
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {}
+
     /**
      * Get the code property: The error code.
      *

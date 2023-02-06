@@ -20,6 +20,9 @@ public final class BooleanResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private boolean value;
 
+    /** Creates an instance of BooleanResolution class. */
+    public BooleanResolution() {}
+
     /**
      * Get the value property: The value property.
      *

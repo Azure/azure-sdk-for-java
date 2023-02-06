@@ -3,7 +3,6 @@ pr: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
-    SkipAggregateReports: true
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExecutionType. */
+/** The type of the export execution. */
 public final class ExecutionType extends ExpandableStringEnum<ExecutionType> {
     /** Static value OnDemand for ExecutionType. */
     public static final ExecutionType ON_DEMAND = fromString("OnDemand");
 
     /** Static value Scheduled for ExecutionType. */
     public static final ExecutionType SCHEDULED = fromString("Scheduled");
+
+    /**
+     * Creates a new instance of ExecutionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExecutionType() {
+    }
 
     /**
      * Creates or finds a ExecutionType from its string representation.
@@ -27,7 +36,11 @@ public final class ExecutionType extends ExpandableStringEnum<ExecutionType> {
         return fromString(name, ExecutionType.class);
     }
 
-    /** @return known ExecutionType values. */
+    /**
+     * Gets known ExecutionType values.
+     *
+     * @return known ExecutionType values.
+     */
     public static Collection<ExecutionType> values() {
         return values(ExecutionType.class);
     }

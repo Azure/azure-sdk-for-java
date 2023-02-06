@@ -20,7 +20,7 @@ public interface ResourceChanges {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Change> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime);
 
@@ -38,7 +38,7 @@ public interface ResourceChanges {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Change> list(
         String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);

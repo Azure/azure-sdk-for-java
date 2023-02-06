@@ -138,6 +138,12 @@ public final class VirtualMachineScaleSetProperties {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /*
+     * Optional property which must either be set to True or omitted.
+     */
+    @JsonProperty(value = "constrainedMaximumCapacity")
+    private Boolean constrainedMaximumCapacity;
+
     /** Creates an instance of VirtualMachineScaleSetProperties class. */
     public VirtualMachineScaleSetProperties() {
     }
@@ -494,6 +500,26 @@ public final class VirtualMachineScaleSetProperties {
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
+    }
+
+    /**
+     * Get the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @return the constrainedMaximumCapacity value.
+     */
+    public Boolean constrainedMaximumCapacity() {
+        return this.constrainedMaximumCapacity;
+    }
+
+    /**
+     * Set the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @param constrainedMaximumCapacity the constrainedMaximumCapacity value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withConstrainedMaximumCapacity(Boolean constrainedMaximumCapacity) {
+        this.constrainedMaximumCapacity = constrainedMaximumCapacity;
+        return this;
     }
 
     /**

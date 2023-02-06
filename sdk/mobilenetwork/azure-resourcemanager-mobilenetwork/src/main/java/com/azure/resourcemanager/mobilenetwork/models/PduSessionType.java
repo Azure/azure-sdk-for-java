@@ -17,6 +17,15 @@ public final class PduSessionType extends ExpandableStringEnum<PduSessionType> {
     public static final PduSessionType IPV6 = fromString("IPv6");
 
     /**
+     * Creates a new instance of PduSessionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PduSessionType() {
+    }
+
+    /**
      * Creates or finds a PduSessionType from its string representation.
      *
      * @param name a name to look for.

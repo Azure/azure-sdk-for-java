@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.dataprotection.models.AlertsState;
+import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
+import com.azure.resourcemanager.dataprotection.models.MonitoringSettings;
+import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for BackupVaults Update. */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
@@ -23,9 +26,19 @@ public final class BackupVaultsUpdateSamples {
         BackupVaultResource resource =
             manager
                 .backupVaults()
-                .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("newKey", "newVal")).apply();
+        resource
+            .update()
+            .withTags(mapOf("newKey", "newVal"))
+            .withProperties(
+                new PatchBackupVaultInput()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))))
+            .apply();
     }
 
     @SuppressWarnings("unchecked")

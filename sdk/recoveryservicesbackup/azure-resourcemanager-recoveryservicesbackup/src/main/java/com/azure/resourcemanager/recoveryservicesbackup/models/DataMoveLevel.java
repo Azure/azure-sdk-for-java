@@ -20,6 +20,15 @@ public final class DataMoveLevel extends ExpandableStringEnum<DataMoveLevel> {
     public static final DataMoveLevel CONTAINER = fromString("Container");
 
     /**
+     * Creates a new instance of DataMoveLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataMoveLevel() {
+    }
+
+    /**
      * Creates or finds a DataMoveLevel from its string representation.
      *
      * @param name a name to look for.

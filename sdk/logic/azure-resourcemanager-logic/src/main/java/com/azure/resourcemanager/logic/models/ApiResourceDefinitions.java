@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Api resource definition. */
 @Fluent
 public final class ApiResourceDefinitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiResourceDefinitions.class);
-
     /*
      * The original swagger url.
      */
@@ -25,6 +21,10 @@ public final class ApiResourceDefinitions {
      */
     @JsonProperty(value = "modifiedSwaggerUrl")
     private String modifiedSwaggerUrl;
+
+    /** Creates an instance of ApiResourceDefinitions class. */
+    public ApiResourceDefinitions() {
+    }
 
     /**
      * Get the originalSwaggerUrl property: The original swagger url.

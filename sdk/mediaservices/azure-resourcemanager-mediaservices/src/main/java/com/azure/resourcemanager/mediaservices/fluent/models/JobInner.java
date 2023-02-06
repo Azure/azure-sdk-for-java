@@ -34,6 +34,10 @@ public final class JobInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of JobInner class. */
+    public JobInner() {
+    }
+
     /**
      * Get the innerProperties property: The resource properties.
      *

@@ -49,6 +49,7 @@ public final class ServerRntbdRequestManager extends ChannelDuplexHandler {
                 // emulate the server close the channel
                 if (response == RequestResponseType.CHANNEL_RST) {
                     context.channel().config().setOption(ChannelOption.SO_LINGER, 0);
+                    context.channel().unsafe().closeForcibly();
                 } else if (response == RequestResponseType.CHANNEL_FIN) {
                     context.channel().unsafe().closeForcibly();
                 } else {

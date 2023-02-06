@@ -18,6 +18,10 @@ public final class MetricAlertResourceCollection {
     @JsonProperty(value = "value")
     private List<MetricAlertResourceInner> value;
 
+    /** Creates an instance of MetricAlertResourceCollection class. */
+    public MetricAlertResourceCollection() {
+    }
+
     /**
      * Get the value property: the values for the alert rule resources.
      *

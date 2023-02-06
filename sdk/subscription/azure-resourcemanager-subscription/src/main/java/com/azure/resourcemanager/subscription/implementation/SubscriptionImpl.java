@@ -8,6 +8,8 @@ import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.subscription.models.Subscription;
 import com.azure.resourcemanager.subscription.models.SubscriptionPolicies;
 import com.azure.resourcemanager.subscription.models.SubscriptionState;
+import java.util.Collections;
+import java.util.Map;
 
 public final class SubscriptionImpl implements Subscription {
     private SubscriptionInner innerObject;
@@ -34,6 +36,19 @@ public final class SubscriptionImpl implements Subscription {
 
     public SubscriptionState state() {
         return this.innerModel().state();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public SubscriptionPolicies subscriptionPolicies() {

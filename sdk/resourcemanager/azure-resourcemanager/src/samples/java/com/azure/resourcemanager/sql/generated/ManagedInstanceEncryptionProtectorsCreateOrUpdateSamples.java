@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 /** Samples for ManagedInstanceEncryptionProtectors CreateOrUpdate. */
 public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
      * Sample code: Update the encryption protector to key vault.
@@ -30,13 +30,14 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new ManagedInstanceEncryptionProtectorInner()
-                    .withServerKeyName("someVault_someKey_01234567890123456789012345678901")
-                    .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT),
+                    .withServerKeyName("fakeTokenPlaceholder")
+                    .withServerKeyType(ServerKeyType.AZURE_KEY_VAULT)
+                    .withAutoRotationEnabled(false),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**
      * Sample code: Update the encryption protector to service managed.
@@ -55,7 +56,7 @@ public final class ManagedInstanceEncryptionProtectorsCreateOrUpdateSamples {
                 "sqlcrudtest-4645",
                 EncryptionProtectorName.CURRENT,
                 new ManagedInstanceEncryptionProtectorInner()
-                    .withServerKeyName("ServiceManaged")
+                    .withServerKeyName("fakeTokenPlaceholder")
                     .withServerKeyType(ServerKeyType.SERVICE_MANAGED),
                 Context.NONE);
     }

@@ -48,6 +48,10 @@ public final class ExtensionDataSource {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ExtensionDataSource class. */
+    public ExtensionDataSource() {
+    }
+
     /**
      * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
      * will be used for this data and usually what table in Log Analytics the data will be sent to.

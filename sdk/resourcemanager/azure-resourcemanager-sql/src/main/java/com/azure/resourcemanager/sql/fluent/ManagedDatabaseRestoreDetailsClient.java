@@ -62,26 +62,6 @@ public interface ManagedDatabaseRestoreDetailsClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param restoreDetailsName The name of the restore details to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseRestoreDetailsResultInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        RestoreDetailsName restoreDetailsName);
-
-    /**
-     * Gets managed database restore details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param restoreDetailsName The name of the restore details to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,4 +75,24 @@ public interface ManagedDatabaseRestoreDetailsClient {
         String databaseName,
         RestoreDetailsName restoreDetailsName,
         Context context);
+
+    /**
+     * Gets managed database restore details.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param restoreDetailsName The name of the restore details to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed database restore details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedDatabaseRestoreDetailsResultInner get(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        RestoreDetailsName restoreDetailsName);
 }

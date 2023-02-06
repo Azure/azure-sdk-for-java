@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IdentityType. */
+/** The type of identity. */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /** Static value None for IdentityType. */
     public static final IdentityType NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /** Static value UserAssigned for IdentityType. */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * Creates a new instance of IdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IdentityType() {
+    }
 
     /**
      * Creates or finds a IdentityType from its string representation.
@@ -30,7 +39,11 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
         return fromString(name, IdentityType.class);
     }
 
-    /** @return known IdentityType values. */
+    /**
+     * Gets known IdentityType values.
+     *
+     * @return known IdentityType values.
+     */
     public static Collection<IdentityType> values() {
         return values(IdentityType.class);
     }

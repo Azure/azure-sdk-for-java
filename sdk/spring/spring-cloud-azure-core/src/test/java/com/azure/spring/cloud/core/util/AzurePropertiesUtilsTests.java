@@ -166,7 +166,8 @@ class AzurePropertiesUtilsTests {
         assertNull(target.proxy.getPort());
         assertNull(target.proxy.getUsername());
         assertNull(target.proxy.getPassword());
-        assertEquals(EXPONENTIAL, target.retry.getMode());
+        assertNull(target.proxy.getPassword());
+        assertNull(target.retry.getMode());
         assertEquals(13, target.retry.getExponential().getMaxRetries());
         assertNull(target.retry.getExponential().getBaseDelay());
         assertEquals(Duration.ofSeconds(14), target.retry.getExponential().getMaxDelay());
@@ -238,6 +239,7 @@ class AzurePropertiesUtilsTests {
         source.profile.setTenantId("profile-tenant-id-A");
         source.profile.getEnvironment().setActiveDirectoryEndpoint("aad-endpoint-A");
         source.proxy.setHostname("proxy-hostname-A");
+        source.retry.setMode(EXPONENTIAL);
         source.retry.getExponential().setMaxRetries(13);
         source.retry.getFixed().setMaxRetries(17);
         source.credential.setClientId("credential-client-id-A");
@@ -328,6 +330,7 @@ class AzurePropertiesUtilsTests {
         propertiesToOverride.profile.setTenantId("profile-tenant-id-A");
         propertiesToOverride.profile.getEnvironment().setActiveDirectoryEndpoint("aad-endpoint-A");
         propertiesToOverride.proxy.setHostname("proxy-hostname-A");
+        propertiesToOverride.retry.setMode(EXPONENTIAL);
         propertiesToOverride.retry.getExponential().setMaxRetries(13);
         propertiesToOverride.retry.getFixed().setMaxRetries(17);
         propertiesToOverride.credential.setClientId("credential-client-id-A");

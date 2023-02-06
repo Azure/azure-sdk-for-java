@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments DeleteByBillingProfile. */
 public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
     /*
@@ -20,6 +18,9 @@ public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
         manager
             .billingRoleAssignments()
             .deleteByBillingProfileWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{billingRoleAssignmentName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{billingRoleAssignmentName}",
+                com.azure.core.util.Context.NONE);
     }
 }

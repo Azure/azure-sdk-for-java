@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
@@ -49,7 +48,7 @@ public final class DisksCreateOrUpdateSamples {
                             .withStorageAccountId(
                                 "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -84,7 +83,7 @@ public final class DisksCreateOrUpdateSamples {
                         new DiskSecurityProfile()
                             .withSecurityType(
                                 DiskSecurityTypes.CONFIDENTIAL_VM_VMGUEST_STATE_ONLY_ENCRYPTED_WITH_PLATFORM_KEY)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -112,7 +111,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withNetworkAccessPolicy(NetworkAccessPolicy.ALLOW_PRIVATE)
                     .withDiskAccessId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/{existing-diskAccess-name}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -141,7 +140,7 @@ public final class DisksCreateOrUpdateSamples {
                         new Encryption()
                             .withDiskEncryptionSetId(
                                 "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -169,7 +168,7 @@ public final class DisksCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY)
                             .withSourceResourceId(
                                 "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -193,7 +192,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withCreationData(
                         new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withPerformancePlus(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -221,7 +220,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withDiskSizeGB(200)
                     .withDiskIopsReadWrite(125L)
                     .withDiskMBpsReadWrite(3000L),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -252,7 +251,7 @@ public final class DisksCreateOrUpdateSamples {
                                     .withId(
                                         "/Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}")))
                     .withSecurityProfile(new DiskSecurityProfile().withSecurityType(DiskSecurityTypes.TRUSTED_LAUNCH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -279,7 +278,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withCreationData(
                         new CreationData().withCreateOption(DiskCreateOption.EMPTY).withLogicalSectorSize(512))
                     .withDiskSizeGB(200),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -309,7 +308,7 @@ public final class DisksCreateOrUpdateSamples {
                                 new ImageDiskReference()
                                     .withId(
                                         "/Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/westus/Publishers/{publisher}/ArtifactTypes/VMImage/Offers/{offer}/Skus/{sku}/Versions/1.0.0"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -340,7 +339,7 @@ public final class DisksCreateOrUpdateSamples {
                                 new ImageDiskReference()
                                     .withSharedGalleryImageId(
                                         "/SharedGalleries/{sharedGalleryUniqueName}/Images/{imageName}/Versions/1.0.0"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -364,7 +363,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
                     .withDiskSizeGB(200),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -391,7 +390,7 @@ public final class DisksCreateOrUpdateSamples {
                         new CreationData()
                             .withCreateOption(DiskCreateOption.IMPORT)
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -420,7 +419,7 @@ public final class DisksCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.UPLOAD_PREPARED_SECURE)
                             .withUploadSizeBytes(10737418752L))
                     .withSecurityProfile(new DiskSecurityProfile().withSecurityType(DiskSecurityTypes.TRUSTED_LAUNCH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -446,7 +445,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
                     .withDiskSizeGB(200)
                     .withOptimizedForFrequentAttach(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -473,7 +472,7 @@ public final class DisksCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY)
                             .withSourceResourceId(
                                 "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -503,7 +502,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withDiskIopsReadWrite(125L)
                     .withDiskMBpsReadWrite(3000L)
                     .withEncryption(new Encryption().withType(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -539,7 +538,7 @@ public final class DisksCreateOrUpdateSamples {
                             .withSecurityType(DiskSecurityTypes.CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_CUSTOMER_KEY)
                             .withSecureVMDiskEncryptionSetId(
                                 "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -564,7 +563,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_ZRS))
                     .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
                     .withDiskSizeGB(200),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -591,7 +590,7 @@ public final class DisksCreateOrUpdateSamples {
                         new ExtendedLocation().withName("{edge-zone-id}").withType(ExtendedLocationTypes.EDGE_ZONE))
                     .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
                     .withDiskSizeGB(200),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -622,7 +621,7 @@ public final class DisksCreateOrUpdateSamples {
                                 new ImageDiskReference()
                                     .withCommunityGalleryImageId(
                                         "/CommunityGalleries/{communityGalleryPublicGalleryName}/Images/{imageName}/Versions/1.0.0"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -646,7 +645,7 @@ public final class DisksCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withCreationData(
                         new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withUploadSizeBytes(10737418752L)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -677,7 +676,7 @@ public final class DisksCreateOrUpdateSamples {
                                 new ImageDiskReference()
                                     .withId(
                                         "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Providers/Microsoft.Compute/Galleries/{galleryName}/Images/{imageName}/Versions/1.0.0"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -702,6 +701,6 @@ public final class DisksCreateOrUpdateSamples {
                     .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
                     .withDiskSizeGB(200)
                     .withDataAccessAuthMode(DataAccessAuthMode.AZURE_ACTIVE_DIRECTORY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

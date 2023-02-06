@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response of payload to be passed while installing VM agent. */
 @Fluent
 public final class VMExtensionPayloadInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMExtensionPayloadInner.class);
-
     /*
      * API Key corresponding to the resource.
      */
@@ -25,6 +21,10 @@ public final class VMExtensionPayloadInner {
      */
     @JsonProperty(value = "region")
     private String region;
+
+    /** Creates an instance of VMExtensionPayloadInner class. */
+    public VMExtensionPayloadInner() {
+    }
 
     /**
      * Get the apiKey property: API Key corresponding to the resource.

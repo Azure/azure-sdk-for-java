@@ -20,6 +20,15 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
     public static final ImpalaAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
+     * Creates a new instance of ImpalaAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImpalaAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a ImpalaAuthenticationType from its string representation.
      *
      * @param name a name to look for.

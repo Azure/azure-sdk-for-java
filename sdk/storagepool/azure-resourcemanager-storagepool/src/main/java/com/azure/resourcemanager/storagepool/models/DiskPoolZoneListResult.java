@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolZoneInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List Disk Pool skus operation response. */
 @Immutable
 public final class DiskPoolZoneListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolZoneListResult.class);
-
     /*
      * The list of Disk Pool Skus.
      */
@@ -27,6 +23,10 @@ public final class DiskPoolZoneListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DiskPoolZoneListResult class. */
+    public DiskPoolZoneListResult() {
+    }
 
     /**
      * Get the value property: The list of Disk Pool Skus.

@@ -31,6 +31,9 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of HealthcareTaskParameters class. */
+    public HealthcareTaskParameters() {}
+
     /**
      * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
      * additional information see https://www.hl7.org/fhir/overview.html.

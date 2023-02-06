@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CapacitySkuTier. */
+/** The name of the Azure pricing tier to which the SKU applies. */
 public final class CapacitySkuTier extends ExpandableStringEnum<CapacitySkuTier> {
     /** Static value PBIE_Azure for CapacitySkuTier. */
     public static final CapacitySkuTier PBIE_AZURE = fromString("PBIE_Azure");
@@ -18,6 +18,15 @@ public final class CapacitySkuTier extends ExpandableStringEnum<CapacitySkuTier>
 
     /** Static value AutoPremiumHost for CapacitySkuTier. */
     public static final CapacitySkuTier AUTO_PREMIUM_HOST = fromString("AutoPremiumHost");
+
+    /**
+     * Creates a new instance of CapacitySkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapacitySkuTier() {
+    }
 
     /**
      * Creates or finds a CapacitySkuTier from its string representation.
@@ -30,7 +39,11 @@ public final class CapacitySkuTier extends ExpandableStringEnum<CapacitySkuTier>
         return fromString(name, CapacitySkuTier.class);
     }
 
-    /** @return known CapacitySkuTier values. */
+    /**
+     * Gets known CapacitySkuTier values.
+     *
+     * @return known CapacitySkuTier values.
+     */
     public static Collection<CapacitySkuTier> values() {
         return values(CapacitySkuTier.class);
     }

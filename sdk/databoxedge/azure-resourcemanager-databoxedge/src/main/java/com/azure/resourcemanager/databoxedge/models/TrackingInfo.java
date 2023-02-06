@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tracking courier information. */
 @Fluent
 public final class TrackingInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackingInfo.class);
-
     /*
      * Serial number of the device being tracked.
      */
@@ -37,6 +33,10 @@ public final class TrackingInfo {
      */
     @JsonProperty(value = "trackingUrl")
     private String trackingUrl;
+
+    /** Creates an instance of TrackingInfo class. */
+    public TrackingInfo() {
+    }
 
     /**
      * Get the serialNumber property: Serial number of the device being tracked.

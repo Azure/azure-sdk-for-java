@@ -13,7 +13,7 @@ import java.util.UUID;
 /** Samples for DatabaseBlobAuditingPolicies CreateOrUpdate. */
 public final class DatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DatabaseAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update a database's azure monitor auditing policy with minimal parameters.
@@ -32,13 +32,13 @@ public final class DatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 "blobauditingtest-6440",
                 "testdb",
                 new DatabaseBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
-                    .withIsAzureMonitorTargetEnabled(true),
+                    .withIsAzureMonitorTargetEnabled(true)
+                    .withState(BlobAuditingPolicyState.ENABLED),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DatabaseBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update a database's blob auditing policy with all parameters.
@@ -57,10 +57,6 @@ public final class DatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 "blobauditingtest-6440",
                 "testdb",
                 new DatabaseBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
-                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
                     .withRetentionDays(6)
                     .withAuditActionsAndGroups(
                         Arrays
@@ -68,15 +64,18 @@ public final class DatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                                 "DATABASE_LOGOUT_GROUP",
                                 "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
                                 "UPDATE on database::TestDatabaseName by public"))
-                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000"))
                     .withIsStorageSecondaryKeyInUse(false)
                     .withIsAzureMonitorTargetEnabled(true)
-                    .withQueueDelayMs(4000),
+                    .withQueueDelayMs(4000)
+                    .withState(BlobAuditingPolicyState.ENABLED)
+                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder")
+                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DatabaseBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update a database's blob auditing policy with minimal parameters.
@@ -97,8 +96,7 @@ public final class DatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 new DatabaseBlobAuditingPolicyInner()
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

@@ -41,6 +41,10 @@ public final class InstancePoolFamilyCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of InstancePoolFamilyCapability class. */
+    public InstancePoolFamilyCapability() {
+    }
+
     /**
      * Get the name property: Family name.
      *

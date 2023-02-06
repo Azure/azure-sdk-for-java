@@ -60,7 +60,7 @@ Add the following Maven dependency:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.13</version>
+    <version>1.1.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -136,7 +136,9 @@ Use the `DeviceCodeCredential` object to perform device code authentication.
 
 ```java readme-sample-createClientWithDeviceCode
 DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
-    .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
+    .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> {
+        logger.info(deviceCodeInfo.getMessage());
+    })
     .clientId(environment.getClientId())
     .tenantId(environment.getTenantId())
     .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())

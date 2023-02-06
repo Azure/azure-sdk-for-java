@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionSharedAccessSignature;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionSharedAccessSignatureTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspaceConnectionSharedAccessSignature model =
             BinaryData
                 .fromString("{\"sas\":\"uczkgofxyfsruc\"}")
@@ -19,8 +18,8 @@ public final class WorkspaceConnectionSharedAccessSignatureTests {
         Assertions.assertEquals("uczkgofxyfsruc", model.sas());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspaceConnectionSharedAccessSignature model =
             new WorkspaceConnectionSharedAccessSignature().withSas("uczkgofxyfsruc");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionSharedAccessSignature.class);

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreControlPlanes GetByResourceGroup. */
 public final class PacketCoreControlPlanesGetByResourceGroupSamples {
     /*
@@ -17,6 +15,8 @@ public final class PacketCoreControlPlanesGetByResourceGroupSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlanes().getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", Context.NONE);
+        manager
+            .packetCoreControlPlanes()
+            .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

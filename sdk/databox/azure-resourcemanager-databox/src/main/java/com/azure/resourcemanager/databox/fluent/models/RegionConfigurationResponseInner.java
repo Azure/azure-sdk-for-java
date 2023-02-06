@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityResponse;
 import com.azure.resourcemanager.databox.models.TransportAvailabilityResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration response specific to a region. */
 @Immutable
 public final class RegionConfigurationResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionConfigurationResponseInner.class);
-
     /*
      * Schedule availability for given sku in a region.
      */
@@ -27,6 +23,10 @@ public final class RegionConfigurationResponseInner {
      */
     @JsonProperty(value = "transportAvailabilityResponse", access = JsonProperty.Access.WRITE_ONLY)
     private TransportAvailabilityResponse transportAvailabilityResponse;
+
+    /** Creates an instance of RegionConfigurationResponseInner class. */
+    public RegionConfigurationResponseInner() {
+    }
 
     /**
      * Get the scheduleAvailabilityResponse property: Schedule availability for given sku in a region.

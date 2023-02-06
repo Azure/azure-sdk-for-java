@@ -15,20 +15,24 @@ import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public interface SubscriptionsClient {
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationInner> listLocations(String subscriptionId);
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -36,10 +40,23 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationInner> listLocations(String subscriptionId, Context context);
+
+    /**
+     * Gets details about a specified subscription.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a specified subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context);
 
     /**
      * Gets details about a specified subscription.
@@ -54,24 +71,11 @@ public interface SubscriptionsClient {
     SubscriptionInner get(String subscriptionId);
 
     /**
-     * Gets details about a specified subscription.
-     *
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context);
-
-    /**
      * Gets all subscriptions for a tenant.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionInner> list();
@@ -83,7 +87,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionInner> list(Context context);

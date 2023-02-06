@@ -11,21 +11,18 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolInner;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
-import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.IdentityType;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerMetric;
-import com.azure.resourcemanager.sql.models.ServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
@@ -44,11 +41,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlServer and its parent interfaces. */
 public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner, SqlServerImpl, SqlServerManager>
@@ -210,44 +204,6 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public List<ServiceObjective> listServiceObjectives() {
-        List<ServiceObjective> serviceObjectives = new ArrayList<>();
-        PagedIterable<ServiceObjectiveInner> serviceObjectiveInners =
-            this.manager().serviceClient().getServiceObjectives().listByServer(this.resourceGroupName(), this.name());
-        for (ServiceObjectiveInner inner : serviceObjectiveInners) {
-            serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
-        }
-        return Collections.unmodifiableList(serviceObjectives);
-    }
-
-    @Override
-    public ServiceObjective getServiceObjective(String serviceObjectiveName) {
-        ServiceObjectiveInner inner =
-            this
-                .manager()
-                .serviceClient()
-                .getServiceObjectives()
-                .get(this.resourceGroupName(), this.name(), serviceObjectiveName);
-        return (inner != null) ? new ServiceObjectiveImpl(inner, this) : null;
-    }
-
-    @Override
-    public Map<String, RecommendedElasticPool> listRecommendedElasticPools() {
-        Map<String, RecommendedElasticPool> recommendedElasticPoolMap = new HashMap<>();
-        PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
-            this
-                .manager()
-                .serviceClient()
-                .getRecommendedElasticPools()
-                .listByServer(this.resourceGroupName(), this.name());
-        for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
-            recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
-        }
-
-        return Collections.unmodifiableMap(recommendedElasticPoolMap);
-    }
-
-    @Override
     public List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases() {
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
         PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
@@ -380,7 +336,9 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             .manager()
             .serviceClient()
             .getServerAzureADAdministrators()
-            .delete(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY);
+            .deleteAsync(this.resourceGroupName(), this.name(), AdministratorName.ACTIVE_DIRECTORY)
+            .then(refreshAsync())
+            .block();
     }
 
     @Override

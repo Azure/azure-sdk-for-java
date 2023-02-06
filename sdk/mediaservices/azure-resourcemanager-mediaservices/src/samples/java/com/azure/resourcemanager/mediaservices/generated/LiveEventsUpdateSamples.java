@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.IpAccessControl;
 import com.azure.resourcemanager.mediaservices.models.IpRange;
 import com.azure.resourcemanager.mediaservices.models.LiveEvent;
@@ -20,7 +19,7 @@ import java.util.Map;
 /** Samples for LiveEvents Update. */
 public final class LiveEventsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveevent-update.json
      */
     /**
      * Sample code: Update a LiveEvent.
@@ -31,7 +30,7 @@ public final class LiveEventsUpdateSamples {
         LiveEvent resource =
             manager
                 .liveEvents()
-                .getWithResponse("mediaresources", "slitestmedia10", "myLiveEvent1", Context.NONE)
+                .getWithResponse("mediaresources", "slitestmedia10", "myLiveEvent1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -46,7 +45,7 @@ public final class LiveEventsUpdateSamples {
                                 new IpAccessControl()
                                     .withAllow(
                                         Arrays.asList(new IpRange().withName("AllowOne").withAddress("192.1.1.0")))))
-                    .withKeyFrameIntervalDuration("PT6S"))
+                    .withKeyFrameIntervalDuration("fakeTokenPlaceholder"))
             .withPreview(
                 new LiveEventPreview()
                     .withAccessControl(

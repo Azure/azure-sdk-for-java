@@ -57,7 +57,7 @@ public final class BaselinesClientImpl implements BaselinesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientBaselin")
-    private interface BaselinesService {
+    public interface BaselinesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/metricBaselines")
         @ExpectedResponses({200})

@@ -55,6 +55,9 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     /** Static value Premium for AccessTier. */
     public static final AccessTier PREMIUM = fromString("Premium");
 
+    /** Static value Cold for AccessTier. */
+    public static final AccessTier COLD = fromString("Cold");
+
     /**
      * Creates or finds a AccessTier from its string representation.
      *

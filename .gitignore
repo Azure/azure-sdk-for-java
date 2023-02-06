@@ -109,3 +109,13 @@ scalastyle-output.xml
 .flattened-pom.xml
 flatter.pom
 /.vs/
+
+
+# stress-tests
+Chart.lock
+generatedValues.yaml
+stress-test-resources.json
+stress-test-addons*
+
+# Temp cadl files
+TempCadlFiles/

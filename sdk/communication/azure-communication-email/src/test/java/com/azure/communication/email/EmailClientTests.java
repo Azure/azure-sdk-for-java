@@ -6,13 +6,15 @@ package com.azure.communication.email;
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+@Timeout(value = 2, unit = TimeUnit.MINUTES)
 public class EmailClientTests extends EmailTestBase {
 
     private EmailClient emailClient;

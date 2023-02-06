@@ -24,6 +24,10 @@ public final class RestorePointListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RestorePointListResult class. */
+    public RestorePointListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

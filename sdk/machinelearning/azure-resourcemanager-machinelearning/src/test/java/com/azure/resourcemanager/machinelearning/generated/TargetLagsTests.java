@@ -6,16 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.TargetLags;
-import org.junit.jupiter.api.Test;
 
 public final class TargetLagsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TargetLags model = BinaryData.fromString("{\"mode\":\"TargetLags\"}").toObject(TargetLags.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TargetLags model = new TargetLags();
         model = BinaryData.fromObject(model).toObject(TargetLags.class);
     }
