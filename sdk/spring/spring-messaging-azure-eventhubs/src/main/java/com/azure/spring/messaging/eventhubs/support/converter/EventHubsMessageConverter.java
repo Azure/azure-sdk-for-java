@@ -90,10 +90,14 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         headers.forEach((key, value) -> {
             if (IGNORED_SPRING_MESSAGE_HEADERS.contains(key)) {
                 ignoredHeaders.add(key);
-            } else if (TARGET_PROTOCOL.contains(key)) {
-                azureMessage.getProperties().put(key, "amqp");
             } else {
                 azureMessage.getProperties().put(key, value.toString());
+            }
+        });
+
+        azureMessage.getProperties().forEach((key, value) -> {
+            if (key.equals(TARGET_PROTOCOL)) {
+                azureMessage.getProperties().put(key, "amqp");
             }
         });
 
