@@ -15,6 +15,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
+
+import com.azure.identity.UsernamePasswordCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 class PurviewWorkflowClientTestBase extends TestBase {
@@ -33,8 +35,14 @@ class PurviewWorkflowClientTestBase extends TestBase {
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             purviewWorkflowClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new UsernamePasswordCredentialBuilder()
+                    .clientId(Configuration.getGlobalConfiguration().get("CLIENTID", "clientId"))
+                    .tenantId(Configuration.getGlobalConfiguration().get("TENANTID", "tenantId"))
+                    .username(Configuration.getGlobalConfiguration().get("USERNAME", "username"))
+                    .password(Configuration.getGlobalConfiguration().get("PASSWORD", "password"))
+                    .authorityHost(Configuration.getGlobalConfiguration().get("HOST", "host"))
+                    .build());
         } else if (getTestMode() == TestMode.LIVE) {
             purviewWorkflowClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
