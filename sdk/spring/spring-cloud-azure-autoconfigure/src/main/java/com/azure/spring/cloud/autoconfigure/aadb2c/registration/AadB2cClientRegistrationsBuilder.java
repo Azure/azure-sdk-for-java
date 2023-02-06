@@ -28,8 +28,8 @@ import java.util.stream.Stream;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
- * This class provides a fluent builder API to help aid the instantiation of {@link ClientRegistration}
- * for Azure AD B2C OAuth2 Client, they serve as a set of client registration information corresponding
+ * This class provides a fluent builder API to help aid the instantiation of {@link AadB2cClientRegistrations}
+ * for Azure AD B2C, they serve as a set of client registration information corresponding
  * to an application registered in Azure AD B2C.
  */
 public class AadB2cClientRegistrationsBuilder {
