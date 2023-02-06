@@ -28,6 +28,7 @@ import java.security.PrivilegedExceptionAction;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
@@ -59,34 +60,35 @@ public class JacksonAdapter implements SerializerAdapter {
         }
     }
 
-    enum GlobalJsonMapper {
-        JSON_MAPPER(ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-            (ignored, ignored2) -> { }));
-
-        private final ObjectMapperShim jsonMapper;
-
-        GlobalJsonMapper(ObjectMapperShim jsonMapper) {
-            this.jsonMapper = jsonMapper;
-        }
-
-        private ObjectMapperShim getJsonMapper() {
-            return jsonMapper;
-        }
-    }
-
-    enum GlobalHeaderMapper {
-        HEADER_MAPPER(ObjectMapperShim.createHeaderMapper());
-
-        private final ObjectMapperShim headerMapper;
-
-        GlobalHeaderMapper(ObjectMapperShim headerMapper) {
-            this.headerMapper = headerMapper;
-        }
-
-        private ObjectMapperShim getHeaderMapper() {
-            return headerMapper;
-        }
-    }
+    // Uncomment enums when all SDKs are no longer using 'serializer()' or 'simpleMapper()'.
+//    enum GlobalJsonMapper {
+//        JSON_MAPPER(ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+//            (ignored, ignored2) -> { }));
+//
+//        private final ObjectMapperShim jsonMapper;
+//
+//        GlobalJsonMapper(ObjectMapperShim jsonMapper) {
+//            this.jsonMapper = jsonMapper;
+//        }
+//
+//        private ObjectMapperShim getJsonMapper() {
+//            return jsonMapper;
+//        }
+//    }
+//
+//    enum GlobalHeaderMapper {
+//        HEADER_MAPPER(ObjectMapperShim.createHeaderMapper());
+//
+//        private final ObjectMapperShim headerMapper;
+//
+//        GlobalHeaderMapper(ObjectMapperShim headerMapper) {
+//            this.headerMapper = headerMapper;
+//        }
+//
+//        private ObjectMapperShim getHeaderMapper() {
+//            return headerMapper;
+//        }
+//    }
 
     private enum GlobalSerializerAdapter {
         SERIALIZER_ADAPTER(new JacksonAdapter());
@@ -103,9 +105,25 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
+     * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
+     */
+    private final ObjectMapperShim mapper;
+    private final ObjectMapperShim headerMapper;
+
+    /**
+     * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
+     */
+    private ObjectMapper rawOuterMapper;
+    private ObjectMapper rawInnerMapper;
+
+    /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
+        this.headerMapper = ObjectMapperShim.createHeaderMapper();
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper,
+                (ignored1, ignored2) -> { }));
     }
 
     /**
@@ -118,33 +136,46 @@ public class JacksonAdapter implements SerializerAdapter {
      * <p>
      * Register modules on the outer instance to add custom (de)serializers similar to
      * {@code new JacksonAdapter((outer, inner) -> outer.registerModule(new MyModule()))}
-     *
+     * <p>
      * Use inner mapper for chaining serialization logic in your (de)serializers.
      *
      * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
      * chaining.
-     * @throws UnsupportedOperationException Always, as this is no longer supported.
+     * @throws NullPointerException If {@code configureSerialization} is null.
      * @deprecated Use {@link #createDefaultSerializerAdapter()} instead as modified
      * {@link JacksonAdapter JacksonAdapters} are no longer supported.
      */
     @Deprecated
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("new "
-            + "JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>) is no longer supported and shouldn't be used."));
+        Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
+        this.headerMapper = ObjectMapperShim.createHeaderMapper();
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper,
+                configureSerialization));
+    }
+
+    /**
+     * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
+     * serializer()
+     */
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
+        this.rawOuterMapper = outerMapper;
+        this.rawInnerMapper = innerMapper;
+
+        configure.accept(outerMapper, innerMapper);
     }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
-     * @throws UnsupportedOperationException Always, API is unsupported and shouldn't be used.
-     * @deprecated deprecated, use {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor to
-     * configure modules.
+     * @deprecated Modified {@link JacksonAdapter JacksonAdapters} are no longer supported and internal
+     * {@link ObjectMapper ObjectMappers} shouldn't be accessed.
      */
     @Deprecated
     protected ObjectMapper simpleMapper() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "JacksonAdapter.simpleMapper() is no longer supported and shouldn't be used."));
+        return rawInnerMapper;
     }
 
     /**
@@ -158,14 +189,12 @@ public class JacksonAdapter implements SerializerAdapter {
 
     /**
      * @return the original serializer type.
-     * @throws UnsupportedOperationException Always, API is unsupported and shouldn't be used.
-     * @deprecated deprecated to avoid direct {@link ObjectMapper} usage in favor of using more resilient and debuggable
-     * {@link JacksonAdapter} APIs.
+     * @deprecated Modified {@link JacksonAdapter JacksonAdapters} are no longer supported and internal
+     * {@link ObjectMapper ObjectMappers} shouldn't be accessed.
      */
     @Deprecated
     public ObjectMapper serializer() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "JacksonAdapter.serializer() is no longer supported and shouldn't be used."));
+        return rawOuterMapper;
     }
 
     @Override
@@ -416,11 +445,15 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     private ObjectMapperShim getJsonMapper() {
-        return GlobalJsonMapper.JSON_MAPPER.getJsonMapper();
+        // Once all usage of 'serializer()' and 'simpleMapper()' are removed use
+        // return GlobalJsonMapper.JSON_MAPPER.getJsonMapper();
+        return mapper;
     }
 
     private ObjectMapperShim getHeaderMapper() {
-        return GlobalHeaderMapper.HEADER_MAPPER.getHeaderMapper();
+        // Once all usage of 'serializer()' and 'simpleMapper()' are removed use
+        // return GlobalHeaderMapper.HEADER_MAPPER.getHeaderMapper();
+        return headerMapper;
     }
 
     @SuppressWarnings("removal")

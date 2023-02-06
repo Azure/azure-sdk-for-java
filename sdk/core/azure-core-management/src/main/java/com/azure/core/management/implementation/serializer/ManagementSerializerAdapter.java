@@ -14,6 +14,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class ManagementSerializerAdapter implements SerializerAdapter {
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
+
     private enum InternalAdapter {
         INTERNAL_ADAPTER(JacksonAdapter.createDefaultSerializerAdapter());
 
@@ -135,12 +138,29 @@ public class ManagementSerializerAdapter implements SerializerAdapter {
             // Initialize the parser to the start object or JSON null.
             parser.nextToken();
 
-            if ("error".equals(parser.nextFieldName())) {
+            // Get the current field name.
+            String fieldName = parser.nextFieldName();
+
+            // Parse the JSON until an 'error' field is found.
+            while (fieldName != null && !"error".equals(fieldName)) {
+                // Skip over any nested JSON arrays and objects.
+                if (parser.nextToken().isStructStart()) {
+                    parser.skipChildren();
+                }
+
+                // Get the next field name.
+                fieldName = parser.nextFieldName();
+            }
+
+            // If the 'error' JSON node is found iterate to the next JSON token, should either be JSON start object or
+            // null, and extract that to begin reading the wrapped ManagementError.
+            if ("error".equals(fieldName)) {
                 parser.nextToken();
 
                 return InternalAdapter.INTERNAL_ADAPTER.getAdapter().deserialize(
                     readWrappedManagementError(parser, bytes.length), type, encoding);
             } else {
+                // Otherwise, read the JSON value directly as ManagementError.
                 return InternalAdapter.INTERNAL_ADAPTER.getAdapter().deserialize(bytes, type, encoding);
             }
         }
@@ -200,7 +220,7 @@ public class ManagementSerializerAdapter implements SerializerAdapter {
                     buffer.append("\"").append(parser.getText()).append("\":");
                 }
             } else if (token == JsonToken.VALUE_STRING) {
-                buffer.append("\"").append(parser.getText()).append("\"");
+                buffer.append("\"").append(JSON_STRING_ENCODER.quoteAsString(parser.getText())).append("\"");
             } else {
                 buffer.append(parser.getText());
             }

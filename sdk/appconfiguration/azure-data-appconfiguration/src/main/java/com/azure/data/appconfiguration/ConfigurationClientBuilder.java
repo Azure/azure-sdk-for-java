@@ -135,11 +135,8 @@ public final class ConfigurationClientBuilder implements
             .set("Content-Type", "application/json")
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
 
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
-
-        SERIALIZER_ADAPTER = jacksonAdapter;
+        SERIALIZER_ADAPTER = new JacksonAdapter((outer, inner) -> outer.registerModules(
+            ConfigurationSettingJsonSerializer.getModule(), ConfigurationSettingJsonDeserializer.getModule()));
     }
 
 

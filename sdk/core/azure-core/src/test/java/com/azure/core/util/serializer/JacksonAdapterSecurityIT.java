@@ -147,7 +147,7 @@ public class JacksonAdapterSecurityIT {
 
             // Set the System property codebase.azure-core to the location of JacksonAdapter's codebase.
             // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
-            System.setProperty("codebase.azure-core", JacksonAdapter.GlobalJsonMapper.class.getProtectionDomain()
+            System.setProperty("codebase.azure-core", JacksonAdapter.class.getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
                 .toString());

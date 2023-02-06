@@ -7,12 +7,11 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ObjectMapperShimTests {
@@ -33,12 +32,25 @@ public class ObjectMapperShimTests {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testConfigureJacksonAdapter() {
+    public void testConfigureJacksonAdapter() throws ReflectiveOperationException {
         final AtomicReference<Boolean> configureIsCalled = new AtomicReference<>(false);
+        final AtomicReference<ObjectMapper> outerMapper = new AtomicReference<>(null);
+        final AtomicReference<ObjectMapper> innerMapper = new AtomicReference<>(null);
 
-        assertThrows(UnsupportedOperationException.class,
-            () -> new JacksonAdapter((outer, inner) -> configureIsCalled.set(true)));
+        final JacksonAdapter adapter = new JacksonAdapter((outer, inner) -> {
+            outerMapper.set(outer);
+            innerMapper.set(inner);
+            assertNotNull(outer);
+            assertNotNull(inner);
+            configureIsCalled.set(true);
+        });
 
-        assertFalse(configureIsCalled.get());
+        assertTrue(configureIsCalled.get());
+        assertSame(outerMapper.get(), adapter.serializer());
+
+        // check protected simpleMapper getter
+        Method method = JacksonAdapter.class.getDeclaredMethod("simpleMapper");
+        method.setAccessible(true);
+        assertSame(innerMapper.get(), method.invoke(adapter));
     }
 }
