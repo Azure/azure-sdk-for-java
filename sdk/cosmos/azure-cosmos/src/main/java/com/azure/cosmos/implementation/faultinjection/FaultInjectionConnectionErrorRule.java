@@ -1,50 +1,39 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.faultInjection;
+package com.azure.cosmos.implementation.faultinjection;
 
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
+import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInternal{
-    private final OperationType operationType;
-    private final FaultInjectionServerErrorResult result;
+public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInternal{
+    private final FaultInjectionConnectionErrorResult result;
     private final String ruleId;
     private boolean enabled;
     private final List<Uri> addresses;
-    private final Duration duration;
+    private Duration duration;
     private final Instant expireTime;
-    private final int requestHitLimit;
 
-    public FaultInjectionServerErrorRule(
+    public FaultInjectionConnectionErrorRule(
         String ruleId,
-        OperationType operationType,
-        FaultInjectionServerErrorResult result,
+        FaultInjectionConnectionErrorResult result,
         boolean enabled,
         Duration duration,
-        int requestHitLimit,
         List<Uri> addresses) {
-        this.operationType = operationType;
-        this.result = result;
         this.ruleId = ruleId;
+        this.result = result;
         this.enabled = enabled;
-        this.addresses = addresses;
         this.duration = duration;
         this.expireTime = this.duration != null ? Instant.now().plusMillis(this.duration.toMillis()) : Instant.MAX;
-        this.requestHitLimit = requestHitLimit;
+        this.addresses = addresses;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
-    }
-
-    public FaultInjectionServerErrorResult getResult() {
+    public FaultInjectionConnectionErrorResult getResult() {
         return result;
     }
 
@@ -64,10 +53,6 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         return duration;
     }
 
-    public int getRequestHitLimit() {
-        return requestHitLimit;
-    }
-
     @Override
     public boolean isValid() {
         return this.enabled && Instant.now().isBefore(this.expireTime);
@@ -75,11 +60,11 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
 
     @Override
     public List<String> getEndpointAddresses() {
-        return this.addresses.stream().map(uri -> uri.getURI().getAuthority().toString()).collect(Collectors.toList());
+        return this.addresses.stream().map(uri -> uri.getURI().getAuthority()).collect(Collectors.toList());
     }
 
     @Override
     public String getId() {
-        return this.getRuleId();
+        return this.ruleId;
     }
 }

@@ -29,7 +29,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.faultInjection.FaultInjectionRulesProcessor;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRulesProcessor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -62,7 +62,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FaultInjectionRequestProtocol;
+import com.azure.cosmos.models.FaultInjectionConnectionType;
 import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -4319,9 +4319,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null nor empty");
 
         if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && rules.stream().anyMatch(rule -> rule.getCondition().getProtocol() == FaultInjectionRequestProtocol.TCP)) {
+            && rules.stream().anyMatch(rule -> rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT)) {
             return Mono.error(
-                new IllegalArgumentException("TCP protocol fault injection rule can not be applied as client is not in direct connection mode"));
+                new IllegalArgumentException("Fault injection rule can not be applied as client is not in direct connection mode"));
         }
 
         return Flux.fromIterable(rules)

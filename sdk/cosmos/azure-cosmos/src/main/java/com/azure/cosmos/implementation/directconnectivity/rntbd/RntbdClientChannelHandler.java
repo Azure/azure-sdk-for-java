@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
-import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

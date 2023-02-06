@@ -3,9 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FaultInjectionCondition;
 import com.azure.cosmos.models.FaultInjectionRule;
-import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 import com.azure.cosmos.models.IFaultInjectionResult;
 
 import java.time.Duration;
@@ -14,11 +14,18 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FaultInjectionRuleBuilder {
+
+    private final String id;
     private FaultInjectionCondition condition;
     private IFaultInjectionResult result;
     private Duration duration;
     private int requestHitLimit = Integer.MAX_VALUE;
     private boolean enabled = true;
+
+    public FaultInjectionRuleBuilder(String id) {
+        checkArgument(StringUtils.isNotEmpty(id), "Argument 'id' can not be null or empty");
+        this.id = id;
+    }
 
     public FaultInjectionRuleBuilder condition(FaultInjectionCondition condition) {
         checkNotNull(condition, "Argument 'condition' can not be null");
@@ -53,6 +60,12 @@ public class FaultInjectionRuleBuilder {
         checkNotNull(this.condition, "Argument 'condition' can not be null");
         checkNotNull(this.result, "Argument 'result' can not be null");
 
-        return new FaultInjectionRule(this.condition, this.result, this.duration, this.requestHitLimit, this.enabled);
+        return new FaultInjectionRule(
+            this.id,
+            this.condition,
+            this.result,
+            this.duration,
+            this.requestHitLimit,
+            this.enabled);
     }
 }

@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FaultInjectionCondition;
 import com.azure.cosmos.models.FaultInjectionEndpoints;
 import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionRequestProtocol;
+import com.azure.cosmos.models.FaultInjectionConnectionType;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -17,7 +17,7 @@ public class FaultInjectionConditionBuilder {
     private FaultInjectionEndpoints endpoints;
     private FaultInjectionOperationType operationType;
     private String region;
-    private FaultInjectionRequestProtocol protocol = FaultInjectionRequestProtocol.TCP;
+    private FaultInjectionConnectionType connectionType = FaultInjectionConnectionType.DIRECT;
 
     /**
      * Optional.
@@ -44,13 +44,8 @@ public class FaultInjectionConditionBuilder {
         return this;
     }
 
-    /***
-     * Optional.
-     * @param protocol the protocol.
-     * @return the builder.
-     */
-    public FaultInjectionConditionBuilder protocol(FaultInjectionRequestProtocol protocol) {
-        this.protocol = protocol;
+    public FaultInjectionConditionBuilder connectionType(FaultInjectionConnectionType connectionType) {
+        this.connectionType = connectionType;
         return this;
     }
 
@@ -69,7 +64,7 @@ public class FaultInjectionConditionBuilder {
     public FaultInjectionCondition build() {
         return new FaultInjectionCondition(
             this.operationType,
-            this.protocol,
+            this.connectionType,
             this.region,
             this.endpoints);
     }

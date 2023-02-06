@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.faultInjection;
+package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -18,7 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.azure.cosmos.models.FaultInjectionEndpoints;
 import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionRequestProtocol;
+import com.azure.cosmos.models.FaultInjectionConnectionType;
 import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FaultInjectionServerErrorResult;
 import reactor.core.publisher.Mono;
@@ -56,7 +56,7 @@ public class FaultInjectionRulesProcessor {
         checkNotNull(rule, "Argument 'rule' can not be null");
         checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null");
 
-        if (rule.getCondition().getProtocol() == FaultInjectionRequestProtocol.TCP) {
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT) {
             return this.getApplicableAddresses(
                     rule.getCondition().getEndpoints(),
                     rule.getCondition().getRegion(),
@@ -65,7 +65,7 @@ public class FaultInjectionRulesProcessor {
                     if (rule.getResult() instanceof FaultInjectionServerErrorResult) {
                         FaultInjectionServerErrorRule serverErrorRule =
                             new FaultInjectionServerErrorRule(
-                                rule.getRuleId(),
+                                rule.getId(),
                                 this.getOperationType(rule.getCondition().getOperationType()),
                                 (FaultInjectionServerErrorResult) rule.getResult(),
                                 rule.isEnabled(),
@@ -80,7 +80,7 @@ public class FaultInjectionRulesProcessor {
                     } else if (rule.getResult() instanceof FaultInjectionConnectionErrorResult) {
                         FaultInjectionConnectionErrorRule connectionErrorRule =
                             new FaultInjectionConnectionErrorRule(
-                                rule.getRuleId(),
+                                rule.getId(),
                                 (FaultInjectionConnectionErrorResult) rule.getResult(),
                                 rule.isEnabled(),
                                 rule.getDuration(),
@@ -97,7 +97,7 @@ public class FaultInjectionRulesProcessor {
         } else {
             FaultInjectionServerErrorRule serverErrorRule =
                 new FaultInjectionServerErrorRule(
-                    rule.getRuleId(),
+                    rule.getId(),
                     this.getOperationType(rule.getCondition().getOperationType()),
                     (FaultInjectionServerErrorResult) rule.getResult(),
                     rule.isEnabled(),
@@ -139,9 +139,10 @@ public class FaultInjectionRulesProcessor {
 
                 return this.addressSelector.resolveAllUriAsync(
                     request,
-                    !faultInjectionEndpoints.isExcludePrimary(),
+                    faultInjectionEndpoints.isIncludePrimary(),
                     true);
             })
+            // TODO: always sort the address list so the result can be deterministic across different clients
             .map(allAddresses -> allAddresses.stream().limit(faultInjectionEndpoints.getReplicaCount()).collect(Collectors.toList()));
     }
 

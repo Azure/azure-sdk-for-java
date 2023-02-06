@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.models;
 
 public class FaultInjectionEndpoints {
@@ -5,7 +8,7 @@ public class FaultInjectionEndpoints {
     private static final boolean DEFAULT_FAULT_INJECTION_EXCLUDE_PRIMARY = false;
 
     private final PartitionKey partitionKey;
-    private boolean excludePrimary;
+    private boolean includePrimary;
     private int replicaCount;
 
     public FaultInjectionEndpoints(PartitionKey partitionKey) {
@@ -16,18 +19,18 @@ public class FaultInjectionEndpoints {
         this(partitionKey, replicaCount, DEFAULT_FAULT_INJECTION_EXCLUDE_PRIMARY);
     }
 
-    public FaultInjectionEndpoints(PartitionKey partitionKey, int replicaCount, boolean excludePrimary) {
+    public FaultInjectionEndpoints(PartitionKey partitionKey, int replicaCount, boolean includePrimary) {
         this.partitionKey = partitionKey;
         this.replicaCount = replicaCount;
-        this.excludePrimary = excludePrimary;
+        this.includePrimary = includePrimary;
     }
 
     public PartitionKey getPartitionKey() {
         return partitionKey;
     }
 
-    public boolean isExcludePrimary() {
-        return excludePrimary;
+    public boolean isIncludePrimary() {
+        return includePrimary;
     }
 
     public int getReplicaCount() {

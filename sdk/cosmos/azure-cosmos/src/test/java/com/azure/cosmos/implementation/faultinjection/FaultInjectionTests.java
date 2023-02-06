@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorType;
 import com.azure.cosmos.models.FaultInjectionEndpoints;
 import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionRequestProtocol;
+import com.azure.cosmos.models.FaultInjectionConnectionType;
 import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FaultInjectionServerErrorType;
 import com.azure.cosmos.models.PartitionKey;
@@ -36,17 +36,17 @@ public class FaultInjectionTests {
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(containerName);
 
         // How to inject a server error
-        FaultInjectionRule serverErrorInjectionRule = new FaultInjectionRuleBuilder()
+        FaultInjectionRule serverErrorInjectionRule = new FaultInjectionRuleBuilder("serverErrorInjectionRule")
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(FaultInjectionOperationType.READ)
-                    .protocol(FaultInjectionRequestProtocol.TCP)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
                     .region("West US")
                     .endpoints(new FaultInjectionEndpoints(new PartitionKey("SomeValue"), 2, false))
                     .build())
             .result(
                 FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.SERVER_410)
+                    .getResultBuilder(FaultInjectionServerErrorType.SERVER_GONE)
                     .times(3)
                     .build())
             .duration(Duration.ofMinutes(30))
@@ -55,10 +55,10 @@ public class FaultInjectionTests {
             .build();
 
         // How to inject connection error
-        FaultInjectionRule connectionFaultInjectionRule = new FaultInjectionRuleBuilder()
+        FaultInjectionRule connectionFaultInjectionRule = new FaultInjectionRuleBuilder("connectionFaultInjectionRule")
             .condition(
                 new FaultInjectionConditionBuilder()
-                    .protocol(FaultInjectionRequestProtocol.TCP)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
                     .region("West US")
                     .endpoints(
                         new FaultInjectionEndpoints(

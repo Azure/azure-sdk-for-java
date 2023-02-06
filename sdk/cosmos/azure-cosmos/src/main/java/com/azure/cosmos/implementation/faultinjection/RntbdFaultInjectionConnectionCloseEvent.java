@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.faultInjection;
+package com.azure.cosmos.implementation.faultinjection;
 
 public class RntbdFaultInjectionConnectionCloseEvent {
     private final String ruleId;

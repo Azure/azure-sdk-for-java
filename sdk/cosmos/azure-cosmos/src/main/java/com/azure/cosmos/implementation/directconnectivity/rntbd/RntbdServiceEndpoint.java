@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;

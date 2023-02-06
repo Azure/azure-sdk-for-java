@@ -1,18 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.GlobalThroughputControlConfig;
-import com.azure.cosmos.ThroughputControlGroupConfig;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -22,11 +17,12 @@ public class FaultInjectionRule {
     private final IFaultInjectionResult result;
     private final Duration duration;
     private final int requestHitLimit;
-    private final String ruleId;
+    private final String id;
     private boolean enabled;
     private IFaultInjectionRuleInternal effectiveFaultInjectionRule;
 
     public FaultInjectionRule(
+        String id,
         FaultInjectionCondition condition,
         IFaultInjectionResult result,
         Duration duration,
@@ -37,12 +33,12 @@ public class FaultInjectionRule {
         checkNotNull(result, "Argument 'result' can not be null");
         checkArgument(requestHitLimit > 0, "Argument 'requestHitLimit' should be larger than 0");
 
+        this.id = id;
         this.condition = condition;
         this.result = result;
         this.duration = duration;
         this.requestHitLimit = requestHitLimit;
         this.enabled = enabled;
-        this.ruleId = UUID.randomUUID().toString();
     }
 
     public void enabled(boolean enabled) {
@@ -65,11 +61,15 @@ public class FaultInjectionRule {
         return requestHitLimit;
     }
 
-    public String getRuleId() {
-        return this.ruleId;
+    public String getId() {
+        return this.id;
     }
 
     public boolean isEnabled() { return this.enabled; }
+
+    public void disable() {
+        this.enabled = false;
+    }
 
     void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveFaultInjectionRule) {
         this.effectiveFaultInjectionRule = effectiveFaultInjectionRule;

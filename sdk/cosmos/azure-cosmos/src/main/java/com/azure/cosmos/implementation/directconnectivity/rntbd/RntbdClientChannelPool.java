@@ -5,9 +5,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
-import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionCloseEvent;
-import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionResetEvent;
-import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

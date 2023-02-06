@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.faultInjection;
+package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
@@ -88,13 +88,13 @@ public class RntbdServerErrorInjector {
         RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
 
         switch (errorType) {
-            case SERVER_410:
+            case SERVER_GONE:
                 GoneException goneException = new GoneException("Fault Injection SERVER_410");
                 goneException.setIsBasedOn410ResponseFromService();
                 requestRecord.completeExceptionally(goneException);
                 request.faultInjectionRequestContext.applyFaultInjectionRule(rule);
                 return true;
-            case SERVER_449:
+            case SERVER_RETRY_WITH:
                 requestRecord.completeExceptionally(new RetryWithException("FaultInjection SERVER_449", null));
                 request.faultInjectionRequestContext.applyFaultInjectionRule(rule);
                 return true;
