@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
@@ -16,6 +15,7 @@ import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -30,21 +30,18 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
+class EventHubsTestHelper<T extends EventHubsOptions> implements Closeable {
     private final ScheduledExecutorService scheduler;
 
-    protected final List<EventData> events;
-    protected CompletableFuture<EventHubClient> clientFuture;
-    protected EventHubClient client;
+    private final T options;
+    private final List<EventData> events;
 
     /**
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
      */
-    ServiceTest(T options) {
-        super(options);
-
+    EventHubsTestHelper(T options) {
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         byte[] eventBytes;
@@ -77,6 +74,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             eventsList.add(eventData);
         }
 
+        this.options = options;
         this.events = Collections.unmodifiableList(eventsList);
         this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 4);
     }
@@ -97,13 +95,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         return builder;
     }
 
-    /**
-     * Gets the scheduler that the EventHubClient uses.
-     *
-     * @return The scheduler.
-     */
-    ScheduledExecutorService getScheduler() {
-        return scheduler;
+    List<EventData> getEvents() {
+        return events;
     }
 
     /**
@@ -242,8 +235,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
     /**
      * Closes the client or clientFuture if they are set.
      */
-    @Override
-    public Mono<Void> cleanupAsync() {
+    Mono<Void> cleanupAsync(EventHubClient client, CompletableFuture<EventHubClient> clientFuture) {
         if (client != null) {
             try {
                 client.closeSync();
@@ -254,21 +246,15 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         }
 
         if (clientFuture != null) {
-            final CompletableFuture<Void> future = clientFuture.thenComposeAsync(client -> client.close());
+            final CompletableFuture<Void> future = clientFuture.thenComposeAsync(c -> c.close());
             return Mono.fromCompletionStage(future);
         }
 
         return Mono.empty();
     }
 
-    /**
-     * Shutdown the scheduler.
-     *
-     * @return A Mono that completes.
-     */
     @Override
-    public Mono<Void> globalCleanupAsync() {
+    public void close() {
         scheduler.shutdown();
-        return Mono.empty();
     }
 }
