@@ -1,0 +1,117 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.config.web;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.bus.BusProperties;
+import org.springframework.cloud.bus.event.Destination;
+import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
+import org.springframework.cloud.context.refresh.ContextRefresher;
+import org.springframework.cloud.endpoint.RefreshEndpoint;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.web.implementation.pullrefresh.AppConfigurationEventListener;
+import com.azure.spring.cloud.config.web.implementation.pushbusrefresh.AppConfigurationBusRefreshEndpoint;
+import com.azure.spring.cloud.config.web.implementation.pushbusrefresh.AppConfigurationBusRefreshEventListener;
+import com.azure.spring.cloud.config.web.implementation.pushrefresh.AppConfigurationRefreshEndpoint;
+import com.azure.spring.cloud.config.web.implementation.pushrefresh.AppConfigurationRefreshEventListener;
+
+/**
+ * Sets up refresh methods based on dependencies.
+ */
+@Configuration
+@EnableConfigurationProperties(AppConfigurationProperties.class)
+@RemoteApplicationEventScan
+@ConditionalOnBean(AppConfigurationRefresh.class)
+class AppConfigurationWebAutoConfiguration {
+
+    /**
+     * Listener for activity, to check for config store changes.
+     * 
+     * @param appConfigurationRefresh Config Store refresher.
+     * @return Component for Listening for activity.
+     */
+    @Bean
+    @ConditionalOnClass(RefreshEndpoint.class)
+    AppConfigurationEventListener configListener(AppConfigurationRefresh appConfigurationRefresh) {
+        return new AppConfigurationEventListener(appConfigurationRefresh);
+    }
+
+    /**
+     * Refresh from Pull Requests
+     */
+    @Configuration
+    @ConditionalOnClass(name = {
+        "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+        "org.springframework.cloud.endpoint.RefreshEndpoint"
+    })
+    static class AppConfigurationPushRefreshConfiguration {
+
+        /**
+         * Creates Endpoint for push refresh.
+         * @param contextRefresher Spring Context Refresher
+         * @param appConfiguration App Configuration properties
+         * @return AppConfigurationRefreshEndpoint
+         */
+        @Bean
+        public AppConfigurationRefreshEndpoint appConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
+            AppConfigurationProperties appConfiguration) {
+            return new AppConfigurationRefreshEndpoint(contextRefresher, appConfiguration);
+        }
+
+        /**
+         * Creates an Event Listener for push refresh events.
+         * @param appConfigurationRefresh App Configuration refresher.
+         * @return AppConfigurationRefreshEventListener
+         */
+        @Bean
+        public AppConfigurationRefreshEventListener appConfigurationRefreshEventListener(
+            AppConfigurationRefresh appConfigurationRefresh) {
+            return new AppConfigurationRefreshEventListener(appConfigurationRefresh);
+        }
+    }
+
+    /**
+     * Refresh from appconfiguration-refresh-bus
+     */
+    @Configuration
+    @ConditionalOnClass(name = {
+        "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+        "org.springframework.cloud.bus.BusProperties",
+        "org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent",
+        "org.springframework.cloud.endpoint.RefreshEndpoint" })
+    static class AppConfigurationBusConfiguration {
+
+        /**
+         * Creates Endpoint for push bus refresh.
+         * @param context Spring Application Context
+         * @param bus Spring Bus properties
+         * @param appConfiguration App Configuration properties
+         * @param destinationFactory Spring destination factory
+         * @return AppConfigurationBusRefreshEndpoint
+         */
+        @Bean
+        AppConfigurationBusRefreshEndpoint appConfigurationBusRefreshEndpoint(ApplicationContext context,
+            BusProperties bus, AppConfigurationProperties appConfiguration, Destination.Factory destinationFactory) {
+            return new AppConfigurationBusRefreshEndpoint(context, bus.getId(), destinationFactory, appConfiguration);
+        }
+
+        /**
+         * Creates an Event Listener for push bus refresh events.
+         * @param appConfigurationRefresh App Configuration Refresher.
+         * @return AppConfigurationBusRefreshEventListener
+         */
+        @Bean
+        AppConfigurationBusRefreshEventListener appConfigurationBusRefreshEventListener(
+            AppConfigurationRefresh appConfigurationRefresh) {
+            return new AppConfigurationBusRefreshEventListener(appConfigurationRefresh);
+        }
+    }
+
+}

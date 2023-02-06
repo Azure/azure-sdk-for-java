@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.azure</groupId>
+		<artifactId>azure-client-sdk-parent</artifactId>
+		<version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+		<relativePath>../../parents/azure-client-sdk-parent</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.azure.spring</groupId>
+	<artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+	<version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+	<name>Azure Spring Cloud App Configuration Config Web</name>
+	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
+
+	<properties>
+		<codesnippet.skip>false</codesnippet.skip>
+		<javadocDoclet></javadocDoclet>
+		<javadocDocletOptions></javadocDocletOptions>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+			<version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+			<version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.8.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+					<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+				<configuration>
+					<rules>
+						<bannedDependencies>
+							<includes>
+								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+								<include>org.springframework.boot:spring-boot-starter-web:[2.7.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+								<include>org.springframework.cloud:spring-cloud-bus:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+							</includes>
+						</bannedDependencies>
+					</rules>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>com.azure.spring.cloud.starter.appconfiguration</Automatic-Module-Name>
+						</manifestEntries>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+				<!-- START: Empty Java Doc & Sources -->
+				<!-- The following code will generate an empty javadoc/sources with just a README.md. This is necessary
+           		to pass the required checks on Maven. The way this works is by setting the classesDirectory
+             	to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+             	is set to the root, where the README.md lives, it still won't have javadocs/sources but the jar file
+             	will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+             	and recreated with the README.md being copied every time to guarantee that, when building locally,
+             	it'll have the latest copy of the README.md file.
+        		-->
+				<executions>
+					<execution>
+						<id>empty-javadoc-jar-with-readme</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>javadoc</classifier>
+							<classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>empty-source-jar-with-readme</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>sources</classifier>
+							<classesDirectory>${project.basedir}/sourceTemp</classesDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+				<executions>
+					<execution>
+						<id>copy-readme-to-javadocTemp-and-sourceTemp</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<target>
+								<echo>Deleting existing ${project.basedir}/javadocTemp and
+                  ${project.basedir}/sourceTemp</echo>
+								<delete includeEmptyDirs="true" quiet="true">
+									<fileset dir="${project.basedir}/javadocTemp" />
+									<fileset dir="${project.basedir}/sourceTemp" />
+								</delete>
+								<echo>Copying ${project.basedir}/../README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+								<copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md" failonerror="false" />
+								<echo>Copying ${project.basedir}/../README.md to
+                  ${project.basedir}/sourceTemp/README.md
+                </echo>
+								<copy file="${project.basedir}/../README.md" tofile="${project.basedir}/sourceTemp/README.md" failonerror="false" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<!-- END: Empty Java Doc & Sources -->
+			</plugin>
+		</plugins>
+	</build>
+</project>
