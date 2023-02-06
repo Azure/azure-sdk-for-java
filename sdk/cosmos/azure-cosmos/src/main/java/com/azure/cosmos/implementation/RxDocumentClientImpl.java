@@ -23,11 +23,13 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.faultInjection.FaultInjectionRulesProcessor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -52,14 +54,16 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FaultInjectionRequestProtocol;
+import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -188,6 +192,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
     private final EnumSet<TagName> metricTagNames;
+    private FaultInjectionRulesProcessor faultInjectionRulesProcessor;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -556,6 +561,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.initializeDirectConnectivity();
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
+            this.faultInjectionRulesProcessor = new FaultInjectionRulesProcessor(
+                this.storeModel,
+                this.gatewayProxy,
+                this.collectionCache,
+                new AddressSelector(this.addressResolver, this.configs.getProtocol()));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -568,7 +578,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializeDirectConnectivity() {
-
         this.addressResolver = new GlobalAddressResolver(this,
             this.reactorHttpClient,
             this.globalEndpointManager,
@@ -4302,6 +4311,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
         return this.storeModel.openConnectionsAndInitCaches(containerLink);
+    }
+
+    @Override
+    public Mono<Void> addFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
+        checkNotNull(rules, "Argument 'rules' can not be null");
+        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null nor empty");
+
+        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
+            && rules.stream().anyMatch(rule -> rule.getCondition().getProtocol() == FaultInjectionRequestProtocol.TCP)) {
+            return Mono.error(
+                new IllegalArgumentException("TCP protocol fault injection rule can not be applied as client is not in direct connection mode"));
+        }
+
+        return Flux.fromIterable(rules)
+            .flatMap(rule -> this.faultInjectionRulesProcessor.addFaultInjectionRule(rule, containerNameLink))
+            .then();
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

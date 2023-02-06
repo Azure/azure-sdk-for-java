@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -47,7 +48,7 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  *
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
-class RxGatewayStoreModel implements RxStoreModel {
+public class RxGatewayStoreModel implements RxStoreModel {
     private final static byte[] EMPTY_BYTE_ARRAY = {};
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
@@ -527,6 +528,11 @@ class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return Flux.empty();
+    }
+
+    @Override
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal faultInjectionRule) {
+        // to be implemented
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

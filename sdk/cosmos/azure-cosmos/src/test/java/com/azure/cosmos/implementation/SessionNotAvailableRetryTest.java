@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -520,6 +521,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
             throw new NotImplementedException("tryOpenConnection is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+            throw new NotImplementedException("addFaultInjectionRule is not supported in RntbdTransportClientTest");
         }
 
         @Override

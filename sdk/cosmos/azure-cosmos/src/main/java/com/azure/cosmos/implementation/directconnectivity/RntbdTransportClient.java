@@ -15,6 +15,11 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
+import com.azure.cosmos.implementation.faultInjection.FaultInjectionConnectionErrorRule;
+import com.azure.cosmos.implementation.faultInjection.FaultInjectionServerErrorRule;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultInjection.RntbdConnectionErrorInjector;
+import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -90,6 +95,8 @@ public class RntbdTransportClient extends TransportClient {
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
+    private final RntbdServerErrorInjector serverErrorInjector;
+    private final RntbdConnectionErrorInjector connectionErrorInjector;
 
     // endregion
 
@@ -116,7 +123,8 @@ public class RntbdTransportClient extends TransportClient {
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
-            clientTelemetry, globalEndpointManager);
+            clientTelemetry,
+            globalEndpointManager);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -126,6 +134,8 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
+        this.connectionErrorInjector = new RntbdConnectionErrorInjector(endpointProvider);
+        this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
     RntbdTransportClient(
@@ -135,17 +145,21 @@ public class RntbdTransportClient extends TransportClient {
         final ClientTelemetry clientTelemetry,
         final GlobalEndpointManager globalEndpointManager) {
 
+        this.serverErrorInjector = new RntbdServerErrorInjector();
+
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
             options,
             checkNotNull(sslContext, "expected non-null sslContext"),
             addressResolver,
-            clientTelemetry);
+            clientTelemetry,
+            this.serverErrorInjector);
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        this.connectionErrorInjector = new RntbdConnectionErrorInjector(endpointProvider);
     }
 
     // endregion
@@ -323,6 +337,15 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         return Mono.fromFuture(endpoint.openConnection(addressUri));
+    }
+
+    @Override
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        if (rule instanceof FaultInjectionServerErrorRule) {
+            this.serverErrorInjector.addFaultInjectionRule((FaultInjectionServerErrorRule) rule);
+        } else if (rule instanceof FaultInjectionConnectionErrorRule) {
+            this.connectionErrorInjector.addFaultInjectionRule((FaultInjectionConnectionErrorRule) rule);
+        }
     }
 
     /**

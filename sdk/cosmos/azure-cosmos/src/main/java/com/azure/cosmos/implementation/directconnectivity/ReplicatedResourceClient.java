@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -191,5 +192,9 @@ public class ReplicatedResourceClient {
 
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return this.addressSelector.openConnectionsAndInitCaches(containerLink);
+    }
+
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        this.transportClient.addFaultInjectionRule(rule);
     }
 }

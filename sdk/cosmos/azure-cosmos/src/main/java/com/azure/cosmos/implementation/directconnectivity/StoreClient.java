@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,6 +137,10 @@ public class StoreClient implements IStoreClient {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return this.replicatedResourceClient.openConnectionsAndInitCaches(containerLink);
+    }
+
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        this.replicatedResourceClient.addFaultInjectionRule(rule);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {

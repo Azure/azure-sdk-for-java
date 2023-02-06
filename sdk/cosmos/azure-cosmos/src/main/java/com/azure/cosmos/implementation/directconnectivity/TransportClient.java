@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
@@ -51,6 +52,8 @@ public abstract class TransportClient implements AutoCloseable {
      * @return the {@link OpenConnectionResponse}.
      */
     public abstract Mono<OpenConnectionResponse> openConnection(final Uri addressUri);
+
+    public abstract void addFaultInjectionRule(IFaultInjectionRuleInternal rule);
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
 

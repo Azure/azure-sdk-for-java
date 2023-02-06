@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -58,5 +59,10 @@ public class ServerStoreModel implements RxStoreModel {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return this.storeClient.openConnectionsAndInitCaches(containerLink);
+    }
+
+    @Override
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        this.storeClient.addFaultInjectionRule(rule);
     }
 }

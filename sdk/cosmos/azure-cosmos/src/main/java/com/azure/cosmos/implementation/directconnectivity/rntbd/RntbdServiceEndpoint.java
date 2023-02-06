@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -14,8 +15,9 @@ import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -99,7 +101,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
         final URI physicalAddress,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdServerErrorInjector rntbdFaultInjector) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
 
@@ -130,7 +133,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this) : null;
 
-        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
+        this.channelPool =
+            new RntbdClientChannelPool(
+                this,
+                bootstrap,
+                config,
+                clientTelemetry,
+                this.connectionStateListener,
+                rntbdFaultInjector);
 
         if (clientTelemetry != null &&
             clientTelemetry.isClientMetricsEnabled()) {
@@ -276,6 +286,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public long usedHeapMemory() {
         return this.channelPool.usedHeapMemory();
+    }
+
+    @Override
+    public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+        this.channelPool.injectConnectionErrors(ruleId, faultInjectionConnectionErrorResult);
     }
 
     // endregion
@@ -566,13 +581,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdTransportClient transportClient;
         private final IAddressResolver addressResolver;
         private final ClientTelemetry clientTelemetry;
+        private final RntbdServerErrorInjector rntbdFaultInjector;
 
         public Provider(
             final RntbdTransportClient transportClient,
             final Options options,
             final SslContext sslContext,
             final IAddressResolver addressResolver,
-            final ClientTelemetry clientTelemetry) {
+            final ClientTelemetry clientTelemetry,
+            final RntbdServerErrorInjector rntbdFaultInjector) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -599,6 +616,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
+            this.rntbdFaultInjector = rntbdFaultInjector;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
         }
@@ -668,7 +686,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.eventLoopGroup,
                 this.requestTimer,
                 physicalAddress,
-                this.clientTelemetry));
+                this.clientTelemetry,
+                this.rntbdFaultInjector));
         }
 
         @Override

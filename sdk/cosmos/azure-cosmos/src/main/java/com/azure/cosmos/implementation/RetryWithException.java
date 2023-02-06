@@ -31,7 +31,7 @@ public class RetryWithException extends CosmosException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    RetryWithException(String message, URI requestUri) {
+    public RetryWithException(String message, URI requestUri) {
         this(message, null, null, requestUri);
     }
 

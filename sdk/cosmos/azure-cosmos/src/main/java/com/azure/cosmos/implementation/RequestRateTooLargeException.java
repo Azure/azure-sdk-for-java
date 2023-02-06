@@ -40,7 +40,7 @@ public class RequestRateTooLargeException extends CosmosException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    RequestRateTooLargeException(String message, URI requestUri) {
+    public RequestRateTooLargeException(String message, URI requestUri) {
         this(message, null, null, requestUri);
     }
 

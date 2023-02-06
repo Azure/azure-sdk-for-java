@@ -157,6 +157,10 @@ public class LocationCache {
             return request.requestContext.locationEndpointToRoute;
         }
 
+        if (request.getResourceType() == ResourceType.FaultInjection) {
+            return this.resolveFaultInjectionEndpointByLocation(request.requestContext.faultInjectionLocationToRoute);
+        }
+
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
 
         boolean usePreferredLocations = request.requestContext.usePreferredLocations != null ? request.requestContext.usePreferredLocations : true;
@@ -177,6 +181,16 @@ public class LocationCache {
             UnmodifiableList<URI> endpoints = request.getOperationType().isWriteOperation()? this.getWriteEndpoints() : this.getReadEndpoints();
             return endpoints.get(locationIndex % endpoints.size());
         }
+    }
+
+    public URI resolveFaultInjectionEndpointByLocation(String region) {
+        Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
+        if (Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder)
+        || Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder)) {
+            return endpointValueHolder.v;
+        }
+
+        throw new IllegalArgumentException("Can not find service endpoint for region " + region);
     }
 
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {

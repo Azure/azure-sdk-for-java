@@ -26,6 +26,9 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -55,6 +58,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.text.MessageFormat;
@@ -104,6 +108,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final Timestamps timestamps = new Timestamps();
     private final RntbdConnectionStateListener rntbdConnectionStateListener;
     private final long idleConnectionTimerResolutionInNanos;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
@@ -114,7 +119,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final ChannelHealthChecker healthChecker,
         final int pendingRequestLimit,
         final RntbdConnectionStateListener connectionStateListener,
-        final long idleConnectionTimerResolutionInNanos) {
+        final long idleConnectionTimerResolutionInNanos,
+        final RntbdServerErrorInjector serverErrorInjector) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -124,6 +130,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.healthChecker = healthChecker;
         this.rntbdConnectionStateListener = connectionStateListener;
         this.idleConnectionTimerResolutionInNanos = idleConnectionTimerResolutionInNanos;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     // region ChannelHandler methods
@@ -411,6 +418,15 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     this.exceptionCaught(context, sslHandshakeCompletionEvent.cause());
                     return;
                 }
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
+                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
+                return;
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
+                context.close(); // TODO: how to add a meaningful fault injection message
             }
 
             context.fireUserEventTriggered(event);
@@ -826,6 +842,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+
+            // check if there is any fault injection rules can apply
+            if (this.serverErrorInjector != null && this.serverErrorInjector.applyRule(requestRecord, storeResponse)) {
+                return;
+            }
+
             requestRecord.complete(storeResponse);
 
         } else {
@@ -947,6 +969,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
 
+            if (this.serverErrorInjector != null && this.serverErrorInjector.applyRule(requestRecord, cause)) {
+                return;
+            }
             requestRecord.completeExceptionally(cause);
         }
     }

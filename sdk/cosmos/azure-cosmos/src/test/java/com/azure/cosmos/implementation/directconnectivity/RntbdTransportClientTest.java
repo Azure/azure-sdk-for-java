@@ -57,6 +57,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -956,7 +957,8 @@ public final class RntbdTransportClientTest {
                     new RntbdClientChannelHealthChecker(config),
                     30,
                     null,
-                    Duration.ofMillis(100).toNanos());
+                    Duration.ofMillis(100).toNanos(),
+                null);
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
@@ -1064,6 +1066,11 @@ public final class RntbdTransportClientTest {
         @Override
         public long usedHeapMemory() {
             return 0;
+        }
+
+        @Override
+        public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+            throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 
         // endregion

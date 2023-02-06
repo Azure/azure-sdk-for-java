@@ -47,6 +47,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -1802,6 +1803,14 @@ public class CosmosAsyncContainer {
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
+    }
+
+    public Mono<Void> addFaultInjectionRules(List<FaultInjectionRule> rules) {
+        checkNotNull(rules, "Argument 'rules' can not be null");
+
+        return this.database
+            .getClient()
+            .addFaultInjectionRules(rules, Utils.trimBeginningAndEndingSlashes(this.link));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

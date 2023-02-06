@@ -20,6 +20,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -38,6 +39,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -1130,6 +1132,46 @@ public class ImplementationBridgeHelpers {
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);
+        }
+    }
+
+    public static final class CosmosFaultInjectionRuleHelper {
+        private final static AtomicBoolean faultInjectionRuleClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosFaultInjectionRuleAccessor> accessor = new AtomicReference<>();
+
+        private CosmosFaultInjectionRuleHelper() {
+        }
+
+        public static CosmosFaultInjectionRuleAccessor getFaultInjectionRuleAccessor() {
+            if (!faultInjectionRuleClassLoaded.get()) {
+                logger.debug("Initializing CosmosFaultInjectionRuleAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosFaultInjectionRuleAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosFaultInjectionRuleAccessor is not initialized yet!");
+                System.exit(9725); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosFaultInjectionRuleAccessor(
+            final CosmosFaultInjectionRuleAccessor newAccessor) {
+
+            assert(newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosFaultInjectionRuleAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosFaultInjectionRuleAccessor...");
+                faultInjectionRuleClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosFaultInjectionRuleAccessor {
+            void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal);
         }
     }
 }

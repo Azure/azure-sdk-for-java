@@ -43,6 +43,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.faultInjection.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -238,6 +239,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
         throw new NotImplementedException("openConnection is not supported in httpTransportClient");
+    }
+
+    @Override
+    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        throw new NotImplementedException("addFaultInjectionRule is not supported in httpTransportClient");
     }
 
     @Override

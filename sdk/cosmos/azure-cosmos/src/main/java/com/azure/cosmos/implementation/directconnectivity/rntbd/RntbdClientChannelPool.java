@@ -5,6 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultInjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultInjection.RntbdServerErrorInjector;
+import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -49,6 +53,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -197,8 +202,16 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Bootstrap bootstrap,
         final Config config,
         final ClientTelemetry clientTelemetry,
-        final RntbdConnectionStateListener connectionStateListener) {
-        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry, connectionStateListener);
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector rntbdFaultInjector) {
+        this(
+            endpoint,
+            bootstrap,
+            config,
+            new RntbdClientChannelHealthChecker(config),
+            clientTelemetry,
+            connectionStateListener,
+            rntbdFaultInjector);
     }
 
     private RntbdClientChannelPool(
@@ -207,7 +220,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final RntbdClientChannelHealthChecker healthChecker,
         final ClientTelemetry clientTelemetry,
-        final RntbdConnectionStateListener connectionStateListener) {
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector serverErrorInjector) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
@@ -215,7 +229,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(healthChecker, "expected non-null healthChecker");
 
         this.endpoint = endpoint;
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener);
+        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
 
@@ -1326,6 +1340,41 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         this.availableChannels.offer(first);  // we choose not to check any channel more than once in a single call
         return null;
+    }
+
+    public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionResult) {
+        if (this.executor.inEventLoop()) {
+            this.injectConnectionErrorsInternal(ruleId, faultInjectionResult);
+        } else {
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(ruleId, faultInjectionResult)).awaitUninterruptibly(); // block until complete
+        }
+    }
+
+    private void injectConnectionErrorsInternal(String ruleId, FaultInjectionConnectionErrorResult faultInjectionResult) {
+        int channelsToBeClosed = (int) Math.ceil(this.channels(false) * faultInjectionResult.getThreshold());
+        List<Channel> channelsToBeClosedList = this.acquiredChannels.values().stream().limit(channelsToBeClosed).collect(Collectors.toList());
+
+        if (channelsToBeClosedList.size() < channelsToBeClosed) {
+            channelsToBeClosedList.addAll(
+                this.availableChannels
+                    .stream()
+                    .limit(channelsToBeClosed - channelsToBeClosedList.size()).collect(Collectors.toList()));
+        }
+
+        for (Channel channel: channelsToBeClosedList) {
+            switch (faultInjectionResult.getErrorTypes()) {
+                case CONNECTION_CLOSE:
+                    channel.pipeline().context(RntbdRequestManager.class)
+                            .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(ruleId));
+                    break;
+                case CONNECTION_RESET:
+                    channel.pipeline().firstContext()
+                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(ruleId));
+                    break;
+                default:
+                    throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorTypes() + " is not supported");
+            }
+        }
     }
 
     /**
