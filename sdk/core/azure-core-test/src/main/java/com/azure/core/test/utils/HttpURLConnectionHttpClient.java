@@ -22,6 +22,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A {@link HttpClient} that uses the JDK {@link HttpURLConnection}.
+ */
 public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
@@ -40,7 +43,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null ) {
+            if (connection != null) {
                 connection.disconnect();
             }
         }
@@ -60,7 +63,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null ) {
+            if (connection != null) {
                 connection.disconnect();
             }
         }

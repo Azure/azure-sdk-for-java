@@ -22,9 +22,17 @@ public enum TestProxySanitizerType {
      */
     HEADER("HeaderRegexSanitizer");
 
-    public final String name;
+    private final String name;
 
     TestProxySanitizerType(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the name value of the enum.
+     * @return the name value of the enum.
+     */
+    public String getName() {
+        return name;
     }
 }

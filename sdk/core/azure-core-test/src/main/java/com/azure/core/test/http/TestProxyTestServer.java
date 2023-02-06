@@ -40,12 +40,12 @@ public class TestProxyTestServer implements Closeable {
                         res.addHeader(requestHeader.getKey(), requestHeader.getValue());
                     }
                     return res.status(HttpResponseStatus.OK)
-                        .addHeader("Content-Type","application/json")
+                        .addHeader("Content-Type", "application/json")
                         .sendString(Mono.just(TEST_JSON_RESPONSE_BODY));
                 })
                 .get("/fr/path/2",
                     (req, res) -> res.status(HttpResponseStatus.OK)
-                        .addHeader("Content-Type","application/json")
+                        .addHeader("Content-Type", "application/json")
                         .sendString(Mono.just(TEST_XML_RESPONSE_BODY))))
             .bindNow();
     }

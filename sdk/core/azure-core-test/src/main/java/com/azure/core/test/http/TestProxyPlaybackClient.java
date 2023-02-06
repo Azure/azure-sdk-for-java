@@ -41,6 +41,11 @@ public class TestProxyPlaybackClient implements HttpClient {
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
+    /**
+     * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
+     *
+     * @param customSanitizers the list of custom sanitizers to be added to {@link TestProxyPlaybackClient}
+     */
     public TestProxyPlaybackClient(List<TestProxySanitizer> customSanitizers) {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);
