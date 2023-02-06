@@ -4,199 +4,222 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerInstanceInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** An immutable client-side representation of SapApplicationServerInstance. */
+/**
+ * An immutable client-side representation of SapApplicationServerInstance.
+ */
 public interface SapApplicationServerInstance {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the instanceNo property: The application server instance id.
-     *
+     * Gets the instanceNo property: Application server Instance Number.
+     * 
      * @return the instanceNo value.
      */
     String instanceNo();
 
     /**
-     * Gets the subnet property: The application server subnet.
-     *
+     * Gets the subnet property: Application server Subnet.
+     * 
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the hostname property: The application server SAP host name.
-     *
+     * Gets the hostname property: Application server instance SAP hostname.
+     * 
      * @return the hostname value.
      */
     String hostname();
 
     /**
-     * Gets the kernelVersion property: The application server SAP kernel version.
-     *
+     * Gets the kernelVersion property:  Application server instance SAP Kernel Version.
+     * 
      * @return the kernelVersion value.
      */
     String kernelVersion();
 
     /**
-     * Gets the kernelPatch property: The application server SAP kernel patch.
-     *
+     * Gets the kernelPatch property: Application server instance SAP Kernel Patch level.
+     * 
      * @return the kernelPatch value.
      */
     String kernelPatch();
 
     /**
-     * Gets the ipAddress property: The application server SAP IP Address.
-     *
+     * Gets the ipAddress property:  Application server instance SAP IP Address.
+     * 
      * @return the ipAddress value.
      */
     String ipAddress();
 
     /**
-     * Gets the gatewayPort property: The application server gateway Port.
-     *
+     * Gets the gatewayPort property: Application server instance gateway Port.
+     * 
      * @return the gatewayPort value.
      */
     Long gatewayPort();
 
     /**
-     * Gets the icmHttpPort property: The application server ICM HTTP Port.
-     *
+     * Gets the icmHttpPort property: Application server instance ICM HTTP Port.
+     * 
      * @return the icmHttpPort value.
      */
     Long icmHttpPort();
 
     /**
-     * Gets the icmHttpsPort property: The application server ICM HTTPS Port.
-     *
+     * Gets the icmHttpsPort property: Application server instance ICM HTTPS Port.
+     * 
      * @return the icmHttpsPort value.
      */
     Long icmHttpsPort();
 
     /**
-     * Gets the virtualMachineId property: The virtual machine.
-     *
-     * @return the virtualMachineId value.
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines.
+     * 
+     * @return the loadBalancerDetails value.
      */
-    String virtualMachineId();
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines.
+     * 
+     * @return the vmDetails value.
+     */
+    List<ApplicationServerVmDetails> vmDetails();
 
     /**
      * Gets the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     SapVirtualInstanceStatus status();
 
     /**
-     * Gets the health property: Defines the SAP Instance health.
-     *
+     * Gets the health property: Defines the health of SAP Instances.
+     * 
      * @return the health value.
      */
     SapHealthState health();
 
     /**
      * Gets the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
      * Gets the errors property: Defines the Application Instance errors.
-     *
+     * 
      * @return the errors value.
      */
     SapVirtualInstanceError errors();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerInstanceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SapApplicationServerInstanceInner innerModel();
 
-    /** The entirety of the SapApplicationServerInstance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the SapApplicationServerInstance definition.
+     */
+     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The SapApplicationServerInstance definition stages. */
-    interface DefinitionStages {
-        /** The first stage of the SapApplicationServerInstance definition. */
-        interface Blank extends WithLocation {
+    /**
+     * The SapApplicationServerInstance definition stages.
+     */
+     interface DefinitionStages {
+        /**
+         * The first stage of the SapApplicationServerInstance definition.
+         */
+         interface Blank extends WithLocation {
         }
-        /** The stage of the SapApplicationServerInstance definition allowing to specify location. */
-        interface WithLocation {
+        /**
+         * The stage of the SapApplicationServerInstance definition allowing to specify location.
+         */
+         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -204,48 +227,51 @@ public interface SapApplicationServerInstance {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
-        /** The stage of the SapApplicationServerInstance definition allowing to specify parent resource. */
-        interface WithParentResource {
+        /**
+         * The stage of the SapApplicationServerInstance definition allowing to specify parent resource.
+         */
+         interface WithParentResource {
             /**
              * Specifies resourceGroupName, sapVirtualInstanceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
         }
         /**
-         * The stage of the SapApplicationServerInstance definition which contains all the minimum required properties
-         * for the resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the SapApplicationServerInstance definition which contains all the minimum required properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+         interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SapApplicationServerInstance create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SapApplicationServerInstance create(Context context);
         }
-        /** The stage of the SapApplicationServerInstance definition allowing to specify tags. */
-        interface WithTags {
+        /**
+         * The stage of the SapApplicationServerInstance definition allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -254,35 +280,41 @@ public interface SapApplicationServerInstance {
     }
     /**
      * Begins update for the SapApplicationServerInstance resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SapApplicationServerInstance.Update update();
 
-    /** The template for SapApplicationServerInstance update. */
-    interface Update extends UpdateStages.WithTags {
+    /**
+     * The template for SapApplicationServerInstance update.
+     */
+     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SapApplicationServerInstance apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SapApplicationServerInstance apply(Context context);
     }
-    /** The SapApplicationServerInstance update stages. */
-    interface UpdateStages {
-        /** The stage of the SapApplicationServerInstance update allowing to specify tags. */
-        interface WithTags {
+    /**
+     * The SapApplicationServerInstance update stages.
+     */
+     interface UpdateStages {
+        /**
+         * The stage of the SapApplicationServerInstance update allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Gets or sets the Resource tags..
-             *
+             * 
              * @param tags Gets or sets the Resource tags.
              * @return the next definition stage.
              */
@@ -291,16 +323,57 @@ public interface SapApplicationServerInstance {
     }
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SapApplicationServerInstance refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     SapApplicationServerInstance refresh(Context context);
+
+    /**
+     * Starts the SAP Application Server Instance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the SAP Application Server Instance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the SAP Application Server Instance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the SAP Application Server Instance.
+     * 
+     * @param body SAP Application server instance stop request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

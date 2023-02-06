@@ -4,193 +4,215 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.fluent.models.SapCentralServerInstanceInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** An immutable client-side representation of SapCentralServerInstance. */
+/**
+ * An immutable client-side representation of SapCentralServerInstance.
+ */
 public interface SapCentralServerInstance {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the instanceNo property: The central server instance id.
-     *
+     * Gets the instanceNo property: The central services instance number.
+     * 
      * @return the instanceNo value.
      */
     String instanceNo();
 
     /**
-     * Gets the subnet property: The central server subnet.
-     *
+     * Gets the subnet property: The central services instance subnet.
+     * 
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the messageServerProperties property: Defines the SAP message server properties.
-     *
+     * Gets the messageServerProperties property: Defines the SAP Message Server properties.
+     * 
      * @return the messageServerProperties value.
      */
     MessageServerProperties messageServerProperties();
 
     /**
-     * Gets the enqueueServerProperties property: Defines the SAP enqueue server properties.
-     *
+     * Gets the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
+     * 
      * @return the enqueueServerProperties value.
      */
     EnqueueServerProperties enqueueServerProperties();
 
     /**
      * Gets the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @return the gatewayServerProperties value.
      */
     GatewayServerProperties gatewayServerProperties();
 
     /**
-     * Gets the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
-     *
+     * Gets the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
+     * 
      * @return the enqueueReplicationServerProperties value.
      */
     EnqueueReplicationServerProperties enqueueReplicationServerProperties();
 
     /**
-     * Gets the kernelVersion property: The central server kernel version.
-     *
+     * Gets the kernelVersion property: The central services instance Kernel Version.
+     * 
      * @return the kernelVersion value.
      */
     String kernelVersion();
 
     /**
-     * Gets the kernelPatch property: The central server kernel patch.
-     *
+     * Gets the kernelPatch property: The central services instance Kernel Patch level.
+     * 
      * @return the kernelPatch value.
      */
     String kernelPatch();
 
     /**
-     * Gets the vmDetails property: The list of virtual machines.
-     *
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines.
+     * 
+     * @return the loadBalancerDetails value.
+     */
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
+     * 
      * @return the vmDetails value.
      */
     List<CentralServerVmDetails> vmDetails();
 
     /**
      * Gets the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     SapVirtualInstanceStatus status();
 
     /**
-     * Gets the health property: Defines the SAP Instance health.
-     *
+     * Gets the health property: Defines the health of SAP Instances.
+     * 
      * @return the health value.
      */
     SapHealthState health();
 
     /**
      * Gets the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
-     * Gets the errors property: Defines the Central Instance errors.
-     *
+     * Gets the errors property: Defines the errors related to SAP Central Services Instance resource.
+     * 
      * @return the errors value.
      */
     SapVirtualInstanceError errors();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.workloads.fluent.models.SapCentralServerInstanceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SapCentralServerInstanceInner innerModel();
 
-    /** The entirety of the SapCentralServerInstance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the SapCentralServerInstance definition.
+     */
+     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The SapCentralServerInstance definition stages. */
-    interface DefinitionStages {
-        /** The first stage of the SapCentralServerInstance definition. */
-        interface Blank extends WithLocation {
+    /**
+     * The SapCentralServerInstance definition stages.
+     */
+     interface DefinitionStages {
+        /**
+         * The first stage of the SapCentralServerInstance definition.
+         */
+         interface Blank extends WithLocation {
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify location. */
-        interface WithLocation {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify location.
+         */
+         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -198,83 +220,87 @@ public interface SapCentralServerInstance {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify parent resource. */
-        interface WithParentResource {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify parent resource.
+         */
+         interface WithParentResource {
             /**
              * Specifies resourceGroupName, sapVirtualInstanceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
         }
         /**
-         * The stage of the SapCentralServerInstance definition which contains all the minimum required properties for
-         * the resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the SapCentralServerInstance definition which contains all the minimum required properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithMessageServerProperties,
-                DefinitionStages.WithEnqueueServerProperties,
-                DefinitionStages.WithGatewayServerProperties,
-                DefinitionStages.WithEnqueueReplicationServerProperties {
+         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMessageServerProperties, DefinitionStages.WithEnqueueServerProperties, DefinitionStages.WithGatewayServerProperties, DefinitionStages.WithEnqueueReplicationServerProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SapCentralServerInstance create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SapCentralServerInstance create(Context context);
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify tags. */
-        interface WithTags {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify messageServerProperties. */
-        interface WithMessageServerProperties {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify messageServerProperties.
+         */
+         interface WithMessageServerProperties {
             /**
-             * Specifies the messageServerProperties property: Defines the SAP message server properties..
-             *
-             * @param messageServerProperties Defines the SAP message server properties.
+             * Specifies the messageServerProperties property: Defines the SAP Message Server properties..
+             * 
+             * @param messageServerProperties Defines the SAP Message Server properties.
              * @return the next definition stage.
              */
             WithCreate withMessageServerProperties(MessageServerProperties messageServerProperties);
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify enqueueServerProperties. */
-        interface WithEnqueueServerProperties {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify enqueueServerProperties.
+         */
+         interface WithEnqueueServerProperties {
             /**
-             * Specifies the enqueueServerProperties property: Defines the SAP enqueue server properties..
-             *
-             * @param enqueueServerProperties Defines the SAP enqueue server properties.
+             * Specifies the enqueueServerProperties property: Defines the SAP Enqueue Server properties..
+             * 
+             * @param enqueueServerProperties Defines the SAP Enqueue Server properties.
              * @return the next definition stage.
              */
             WithCreate withEnqueueServerProperties(EnqueueServerProperties enqueueServerProperties);
         }
-        /** The stage of the SapCentralServerInstance definition allowing to specify gatewayServerProperties. */
-        interface WithGatewayServerProperties {
+        /**
+         * The stage of the SapCentralServerInstance definition allowing to specify gatewayServerProperties.
+         */
+         interface WithGatewayServerProperties {
             /**
              * Specifies the gatewayServerProperties property: Defines the SAP Gateway Server properties..
-             *
+             * 
              * @param gatewayServerProperties Defines the SAP Gateway Server properties.
              * @return the next definition stage.
              */
@@ -283,48 +309,53 @@ public interface SapCentralServerInstance {
         /**
          * The stage of the SapCentralServerInstance definition allowing to specify enqueueReplicationServerProperties.
          */
-        interface WithEnqueueReplicationServerProperties {
+         interface WithEnqueueReplicationServerProperties {
             /**
-             * Specifies the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties..
-             *
-             * @param enqueueReplicationServerProperties Defines the SAP ERS Server properties.
+             * Specifies the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties..
+             * 
+             * @param enqueueReplicationServerProperties Defines the SAP Enqueue Replication Server (ERS) properties.
              * @return the next definition stage.
              */
-            WithCreate withEnqueueReplicationServerProperties(
-                EnqueueReplicationServerProperties enqueueReplicationServerProperties);
+            WithCreate withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties);
         }
     }
     /**
      * Begins update for the SapCentralServerInstance resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SapCentralServerInstance.Update update();
 
-    /** The template for SapCentralServerInstance update. */
-    interface Update extends UpdateStages.WithTags {
+    /**
+     * The template for SapCentralServerInstance update.
+     */
+     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SapCentralServerInstance apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SapCentralServerInstance apply(Context context);
     }
-    /** The SapCentralServerInstance update stages. */
-    interface UpdateStages {
-        /** The stage of the SapCentralServerInstance update allowing to specify tags. */
-        interface WithTags {
+    /**
+     * The SapCentralServerInstance update stages.
+     */
+     interface UpdateStages {
+        /**
+         * The stage of the SapCentralServerInstance update allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Gets or sets the Resource tags..
-             *
+             * 
              * @param tags Gets or sets the Resource tags.
              * @return the next definition stage.
              */
@@ -333,16 +364,57 @@ public interface SapCentralServerInstance {
     }
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SapCentralServerInstance refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     SapCentralServerInstance refresh(Context context);
+
+    /**
+     * Starts the SAP Central Services Instance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the SAP Central Services Instance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the SAP Central Services Instance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the SAP Central Services Instance.
+     * 
+     * @param body SAP Central Services instance stop request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

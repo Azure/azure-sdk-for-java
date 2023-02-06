@@ -5,10 +5,16 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Defines the virtual machine configuration. */
+/**
+ * Defines the virtual machine configuration.
+ */
 @Fluent
 public final class VirtualMachineConfiguration {
     /*
@@ -30,8 +36,14 @@ public final class VirtualMachineConfiguration {
     private OSProfile osProfile;
 
     /**
+     * Creates an instance of VirtualMachineConfiguration class.
+     */
+    public VirtualMachineConfiguration() {
+    }
+
+    /**
      * Get the vmSize property: The virtual machine size.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -40,7 +52,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the vmSize property: The virtual machine size.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -51,7 +63,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Get the imageReference property: The image reference.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -60,7 +72,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the imageReference property: The image reference.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -71,7 +83,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Get the osProfile property: The OS profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -80,7 +92,7 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the osProfile property: The OS profile.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
@@ -91,29 +103,20 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property vmSize in model VirtualMachineConfiguration"));
         }
         if (imageReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageReference in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property imageReference in model VirtualMachineConfiguration"));
         } else {
             imageReference().validate();
         }
         if (osProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osProfile in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property osProfile in model VirtualMachineConfiguration"));
         } else {
             osProfile().validate();
         }

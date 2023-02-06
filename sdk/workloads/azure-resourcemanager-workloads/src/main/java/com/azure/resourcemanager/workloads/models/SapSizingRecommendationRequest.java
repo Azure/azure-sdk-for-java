@@ -5,10 +5,17 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** The SAP Sizing Recommendation request. */
+/**
+ * The SAP Sizing Recommendation request.
+ */
 @Fluent
 public final class SapSizingRecommendationRequest {
     /*
@@ -66,8 +73,14 @@ public final class SapSizingRecommendationRequest {
     private SapHighAvailabilityType highAvailabilityType;
 
     /**
+     * Creates an instance of SapSizingRecommendationRequest class.
+     */
+    public SapSizingRecommendationRequest() {
+    }
+
+    /**
      * Get the appLocation property: The geo-location where the resource is to be created.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -76,7 +89,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the appLocation property: The geo-location where the resource is to be created.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -87,7 +100,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @return the environment value.
      */
     public SapEnvironmentType environment() {
@@ -96,7 +109,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -107,7 +120,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -116,7 +129,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @param sapProduct the sapProduct value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -127,7 +140,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     *
+     * 
      * @return the deploymentType value.
      */
     public SapDeploymentType deploymentType() {
@@ -136,7 +149,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -147,7 +160,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the saps property: The SAP Application Performance Standard measurement.
-     *
+     * 
      * @return the saps value.
      */
     public long saps() {
@@ -156,7 +169,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the saps property: The SAP Application Performance Standard measurement.
-     *
+     * 
      * @param saps the saps value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -167,7 +180,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the dbMemory property: The database memory configuration.
-     *
+     * 
      * @return the dbMemory value.
      */
     public long dbMemory() {
@@ -176,7 +189,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the dbMemory property: The database memory configuration.
-     *
+     * 
      * @param dbMemory the dbMemory value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -187,7 +200,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the databaseType property: The database type.
-     *
+     * 
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -196,7 +209,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the databaseType property: The database type.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -207,7 +220,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the dbScaleMethod property: The DB scale method.
-     *
+     * 
      * @return the dbScaleMethod value.
      */
     public SapDatabaseScaleMethod dbScaleMethod() {
@@ -216,7 +229,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the dbScaleMethod property: The DB scale method.
-     *
+     * 
      * @param dbScaleMethod the dbScaleMethod value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -227,7 +240,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Get the highAvailabilityType property: The high availability type.
-     *
+     * 
      * @return the highAvailabilityType value.
      */
     public SapHighAvailabilityType highAvailabilityType() {
@@ -236,7 +249,7 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Set the highAvailabilityType property: The high availability type.
-     *
+     * 
      * @param highAvailabilityType the highAvailabilityType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
@@ -247,39 +260,24 @@ public final class SapSizingRecommendationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appLocation in model SapSizingRecommendationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property appLocation in model SapSizingRecommendationRequest"));
         }
         if (environment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property environment in model SapSizingRecommendationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property environment in model SapSizingRecommendationRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapProduct in model SapSizingRecommendationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property sapProduct in model SapSizingRecommendationRequest"));
         }
         if (deploymentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentType in model SapSizingRecommendationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property deploymentType in model SapSizingRecommendationRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseType in model SapSizingRecommendationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property databaseType in model SapSizingRecommendationRequest"));
         }
     }
 

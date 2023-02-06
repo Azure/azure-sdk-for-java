@@ -4,14 +4,29 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.regex.Pattern;
 
-/** Defines the SAP monitor errors. */
+/**
+ * Defines the SAP monitor errors.
+ */
 @Immutable
 public final class MonitorPropertiesErrors extends Error {
     /**
+     * Creates an instance of MonitorPropertiesErrors class.
+     */
+    public MonitorPropertiesErrors() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

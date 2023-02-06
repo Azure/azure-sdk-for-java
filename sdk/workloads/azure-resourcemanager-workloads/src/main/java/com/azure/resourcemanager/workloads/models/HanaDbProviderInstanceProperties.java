@@ -5,11 +5,19 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Gets or sets the provider properties. */
+/**
+ * Gets or sets the provider properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
 @JsonTypeName("SapHana")
 @Fluent
@@ -59,8 +67,8 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     /*
      * Gets or sets the blob URI to SSL certificate for the DB.
      */
-    @JsonProperty(value = "dbSslCertificateUri")
-    private String dbSslCertificateUri;
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
 
     /*
      * Gets or sets the hostname(s) in the SSL certificate.
@@ -68,9 +76,27 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     @JsonProperty(value = "sslHostNameInCertificate")
     private String sslHostnameInCertificate;
 
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the SAP System Identifier.
+     */
+    @JsonProperty(value = "sapSid")
+    private String sapSid;
+
+    /**
+     * Creates an instance of HanaDbProviderInstanceProperties class.
+     */
+    public HanaDbProviderInstanceProperties() {
+    }
+
     /**
      * Get the hostname property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -79,7 +105,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the hostname property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -90,7 +116,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbName property: Gets or sets the hana database name.
-     *
+     * 
      * @return the dbName value.
      */
     public String dbName() {
@@ -99,7 +125,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbName property: Gets or sets the hana database name.
-     *
+     * 
      * @param dbName the dbName value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -110,7 +136,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sqlPort property: Gets or sets the database sql port.
-     *
+     * 
      * @return the sqlPort value.
      */
     public String sqlPort() {
@@ -119,7 +145,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sqlPort property: Gets or sets the database sql port.
-     *
+     * 
      * @param sqlPort the sqlPort value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -130,7 +156,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the instanceNumber property: Gets or sets the database instance number.
-     *
+     * 
      * @return the instanceNumber value.
      */
     public String instanceNumber() {
@@ -139,7 +165,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the instanceNumber property: Gets or sets the database instance number.
-     *
+     * 
      * @param instanceNumber the instanceNumber value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -150,7 +176,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @return the dbUsername value.
      */
     public String dbUsername() {
@@ -159,7 +185,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @param dbUsername the dbUsername value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -170,7 +196,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @return the dbPassword value.
      */
     public String dbPassword() {
@@ -179,7 +205,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @param dbPassword the dbPassword value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -190,7 +216,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @return the dbPasswordUri value.
      */
     public String dbPasswordUri() {
@@ -199,7 +225,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @param dbPasswordUri the dbPasswordUri value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -209,28 +235,28 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     }
 
     /**
-     * Get the dbSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
-     *
-     * @return the dbSslCertificateUri value.
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
+     * 
+     * @return the sslCertificateUri value.
      */
-    public String dbSslCertificateUri() {
-        return this.dbSslCertificateUri;
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
     }
 
     /**
-     * Set the dbSslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
-     *
-     * @param dbSslCertificateUri the dbSslCertificateUri value to set.
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
+     * 
+     * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
-    public HanaDbProviderInstanceProperties withDbSslCertificateUri(String dbSslCertificateUri) {
-        this.dbSslCertificateUri = dbSslCertificateUri;
+    public HanaDbProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
         return this;
     }
 
     /**
      * Get the sslHostnameInCertificate property: Gets or sets the hostname(s) in the SSL certificate.
-     *
+     * 
      * @return the sslHostnameInCertificate value.
      */
     public String sslHostnameInCertificate() {
@@ -239,7 +265,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sslHostnameInCertificate property: Gets or sets the hostname(s) in the SSL certificate.
-     *
+     * 
      * @param sslHostnameInCertificate the sslHostnameInCertificate value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -249,8 +275,48 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
     }
 
     /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     * 
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     * 
+     * @param sslPreference the sslPreference value to set.
+     * @return the HanaDbProviderInstanceProperties object itself.
+     */
+    public HanaDbProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sapSid property: Gets or sets the SAP System Identifier.
+     * 
+     * @return the sapSid value.
+     */
+    public String sapSid() {
+        return this.sapSid;
+    }
+
+    /**
+     * Set the sapSid property: Gets or sets the SAP System Identifier.
+     * 
+     * @param sapSid the sapSid value to set.
+     * @return the HanaDbProviderInstanceProperties object itself.
+     */
+    public HanaDbProviderInstanceProperties withSapSid(String sapSid) {
+        this.sapSid = sapSid;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

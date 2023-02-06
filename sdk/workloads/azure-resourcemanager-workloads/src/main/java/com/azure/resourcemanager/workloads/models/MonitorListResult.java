@@ -5,11 +5,18 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.models.MonitorInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The response from the List SAP monitors operation. */
+/**
+ * The response from the List SAP monitors operation.
+ */
 @Fluent
 public final class MonitorListResult {
     /*
@@ -25,8 +32,14 @@ public final class MonitorListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of MonitorListResult class.
+     */
+    public MonitorListResult() {
+    }
+
+    /**
      * Get the value property: The list of SAP monitors.
-     *
+     * 
      * @return the value value.
      */
     public List<MonitorInner> value() {
@@ -35,7 +48,7 @@ public final class MonitorListResult {
 
     /**
      * Set the value property: The list of SAP monitors.
-     *
+     * 
      * @param value the value value to set.
      * @return the MonitorListResult object itself.
      */
@@ -46,7 +59,7 @@ public final class MonitorListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of SAP monitors.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +68,7 @@ public final class MonitorListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of SAP monitors.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MonitorListResult object itself.
      */
@@ -66,7 +79,7 @@ public final class MonitorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,10 +4,19 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** The Central Server VM Details. */
+/**
+ * The SAP Central Services Instance VM details.
+ */
 @Immutable
 public final class CentralServerVmDetails {
     /*
@@ -22,9 +31,22 @@ public final class CentralServerVmDetails {
     @JsonProperty(value = "virtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualMachineId;
 
+    /*
+     * Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared
+     * Storage.
+     */
+    @JsonProperty(value = "storageDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageInformation> storageDetails;
+
+    /**
+     * Creates an instance of CentralServerVmDetails class.
+     */
+    public CentralServerVmDetails() {
+    }
+
     /**
      * Get the type property: Defines the type of central server VM.
-     *
+     * 
      * @return the type value.
      */
     public CentralServerVirtualMachineType type() {
@@ -33,7 +55,7 @@ public final class CentralServerVmDetails {
 
     /**
      * Get the virtualMachineId property: The virtualMachineId property.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -41,10 +63,23 @@ public final class CentralServerVmDetails {
     }
 
     /**
+     * Get the storageDetails property: Storage details of all the Storage Accounts attached to the ASCS Virtual
+     * Machine. For e.g. NFS on AFS Shared Storage.
+     * 
+     * @return the storageDetails value.
+     */
+    public List<StorageInformation> storageDetails() {
+        return this.storageDetails;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (storageDetails() != null) {
+            storageDetails().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
 /**
  * Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once VM is
@@ -14,35 +19,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OSProfile {
     /*
-     * Specifies the name of the administrator account. <br><br> This property
-     * cannot be updated after the VM is created. <br><br> **Windows-only
-     * restriction:** Cannot end in "." <br><br> **Disallowed values:**
-     * "administrator", "admin", "user", "user1", "test", "user2", "test1",
-     * "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
-     * "aspnet", "backup", "console", "david", "guest", "john", "owner",
-     * "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
-     * "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1
-     * character <br><br> **Max-length (Linux):** 64 characters <br><br>
-     * **Max-length (Windows):** 20 characters.
+     * Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is
+     * created. <br><br> **Windows-only restriction:** Cannot end in "." <br><br> **Disallowed values:**
+     * "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a",
+     * "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server",
+     * "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length
+     * (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20
+     * characters.
      */
     @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
-     * Specifies the password of the administrator account. <br><br>
-     * **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length
-     * (Linux):** 6 characters <br><br> **Max-length (Windows):** 123
-     * characters <br><br> **Max-length (Linux):** 72 characters <br><br>
-     * **Complexity requirements:** 3 out of 4 conditions below need to be
-     * fulfilled <br> Has lower characters <br>Has upper characters <br> Has a
-     * digit <br> Has a special character (Regex match [\W_]) <br><br>
-     * **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
-     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22",
-     * "iloveyou!" <br><br> For resetting the password, see [How to reset the
-     * Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
-     * <br><br> For resetting root password, see [Manage users, SSH, and check
-     * or repair disks on Azure Linux VMs using the VMAccess
+     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters
+     * <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br>
+     * **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to
+     * be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character
+     * (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
+     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the
+     * password, see [How to reset the Remote Desktop service or its login password in a Windows
+     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
+     * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
     @JsonProperty(value = "adminPassword")
@@ -55,14 +52,20 @@ public final class OSProfile {
     private OSConfiguration osConfiguration;
 
     /**
+     * Creates an instance of OSProfile class.
+     */
+    public OSProfile() {
+    }
+
+    /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; This
-     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot end
-     * in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2",
-     * "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david",
-     * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
-     * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
-     * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot
+     * end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test",
+     * "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console",
+     * "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
+     * "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1  character &lt;br&gt;&lt;br&gt;
+     * **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -71,13 +74,13 @@ public final class OSProfile {
 
     /**
      * Set the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; This
-     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot end
-     * in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2",
-     * "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david",
-     * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
-     * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
-     * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot
+     * end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test",
+     * "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console",
+     * "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
+     * "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1  character &lt;br&gt;&lt;br&gt;
+     * **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the OSProfile object itself.
      */
@@ -93,12 +96,13 @@ public final class OSProfile {
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
+     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -112,12 +116,13 @@ public final class OSProfile {
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
+     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfile object itself.
      */
@@ -128,7 +133,7 @@ public final class OSProfile {
 
     /**
      * Get the osConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @return the osConfiguration value.
      */
     public OSConfiguration osConfiguration() {
@@ -137,7 +142,7 @@ public final class OSProfile {
 
     /**
      * Set the osConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @param osConfiguration the osConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -148,7 +153,7 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

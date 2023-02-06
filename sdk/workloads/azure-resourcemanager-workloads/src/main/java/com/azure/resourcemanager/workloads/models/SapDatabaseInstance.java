@@ -4,158 +4,180 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** An immutable client-side representation of SapDatabaseInstance. */
+/**
+ * An immutable client-side representation of SapDatabaseInstance.
+ */
 public interface SapDatabaseInstance {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the subnet property: The database subnet.
-     *
+     * Gets the subnet property: Database subnet.
+     * 
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the databaseSid property: The database SID.
-     *
+     * Gets the databaseSid property: Database SID name.
+     * 
      * @return the databaseSid value.
      */
     String databaseSid();
 
     /**
-     * Gets the databaseType property: The SAP database type.
-     *
+     * Gets the databaseType property: Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server.
+     * 
      * @return the databaseType value.
      */
     String databaseType();
 
     /**
-     * Gets the ipAddress property: The database IP Address.
-     *
+     * Gets the ipAddress property: Database IP Address.
+     * 
      * @return the ipAddress value.
      */
     String ipAddress();
 
     /**
-     * Gets the vmDetails property: The list of virtual machines.
-     *
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines.
+     * 
+     * @return the loadBalancerDetails value.
+     */
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines corresponding to the Database resource.
+     * 
      * @return the vmDetails value.
      */
     List<DatabaseVmDetails> vmDetails();
 
     /**
      * Gets the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     SapVirtualInstanceStatus status();
 
     /**
      * Gets the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
-     * Gets the errors property: Defines the Database Instance errors.
-     *
+     * Gets the errors property: Defines the errors related to Database resource.
+     * 
      * @return the errors value.
      */
     SapVirtualInstanceError errors();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SapDatabaseInstanceInner innerModel();
 
-    /** The entirety of the SapDatabaseInstance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the SapDatabaseInstance definition.
+     */
+     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The SapDatabaseInstance definition stages. */
-    interface DefinitionStages {
-        /** The first stage of the SapDatabaseInstance definition. */
-        interface Blank extends WithLocation {
+    /**
+     * The SapDatabaseInstance definition stages.
+     */
+     interface DefinitionStages {
+        /**
+         * The first stage of the SapDatabaseInstance definition.
+         */
+         interface Blank extends WithLocation {
         }
-        /** The stage of the SapDatabaseInstance definition allowing to specify location. */
-        interface WithLocation {
+        /**
+         * The stage of the SapDatabaseInstance definition allowing to specify location.
+         */
+         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -163,48 +185,51 @@ public interface SapDatabaseInstance {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
-        /** The stage of the SapDatabaseInstance definition allowing to specify parent resource. */
-        interface WithParentResource {
+        /**
+         * The stage of the SapDatabaseInstance definition allowing to specify parent resource.
+         */
+         interface WithParentResource {
             /**
              * Specifies resourceGroupName, sapVirtualInstanceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
         }
         /**
-         * The stage of the SapDatabaseInstance definition which contains all the minimum required properties for the
-         * resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the SapDatabaseInstance definition which contains all the minimum required properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+         interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SapDatabaseInstance create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SapDatabaseInstance create(Context context);
         }
-        /** The stage of the SapDatabaseInstance definition allowing to specify tags. */
-        interface WithTags {
+        /**
+         * The stage of the SapDatabaseInstance definition allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -213,35 +238,41 @@ public interface SapDatabaseInstance {
     }
     /**
      * Begins update for the SapDatabaseInstance resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SapDatabaseInstance.Update update();
 
-    /** The template for SapDatabaseInstance update. */
-    interface Update extends UpdateStages.WithTags {
+    /**
+     * The template for SapDatabaseInstance update.
+     */
+     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SapDatabaseInstance apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SapDatabaseInstance apply(Context context);
     }
-    /** The SapDatabaseInstance update stages. */
-    interface UpdateStages {
-        /** The stage of the SapDatabaseInstance update allowing to specify tags. */
-        interface WithTags {
+    /**
+     * The SapDatabaseInstance update stages.
+     */
+     interface UpdateStages {
+        /**
+         * The stage of the SapDatabaseInstance update allowing to specify tags.
+         */
+         interface WithTags {
             /**
              * Specifies the tags property: Gets or sets the Resource tags..
-             *
+             * 
              * @param tags Gets or sets the Resource tags.
              * @return the next definition stage.
              */
@@ -250,16 +281,57 @@ public interface SapDatabaseInstance {
     }
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SapDatabaseInstance refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     SapDatabaseInstance refresh(Context context);
+
+    /**
+     * Starts the database instance of the SAP system.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the database instance of the SAP system.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the database instance of the SAP system.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the database instance of the SAP system.
+     * 
+     * @param body Stop request for the database instance of the SAP system.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

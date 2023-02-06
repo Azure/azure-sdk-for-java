@@ -5,32 +5,54 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Display information of the operation. */
+/**
+ * Display information of the operation.
+ */
 @Fluent
 public final class OperationsDefinitionDisplay extends OperationsDisplayDefinition {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of OperationsDefinitionDisplay class.
+     */
+    public OperationsDefinitionDisplay() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withProvider(String provider) {
         super.withProvider(provider);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withResource(String resource) {
         super.withResource(resource);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withDescription(String description) {
         super.withDescription(description);
@@ -39,7 +61,7 @@ public final class OperationsDefinitionDisplay extends OperationsDisplayDefiniti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

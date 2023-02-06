@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapProductType. */
+/**
+ * Defines the SAP Product type.
+ */
 public final class SapProductType extends ExpandableStringEnum<SapProductType> {
-    /** Static value ECC for SapProductType. */
+    /**
+     * Static value ECC for SapProductType.
+     */
     public static final SapProductType ECC = fromString("ECC");
 
-    /** Static value S4HANA for SapProductType. */
+    /**
+     * Static value S4HANA for SapProductType.
+     */
     public static final SapProductType S4HANA = fromString("S4HANA");
 
-    /** Static value Other for SapProductType. */
+    /**
+     * Static value Other for SapProductType.
+     */
     public static final SapProductType OTHER = fromString("Other");
 
     /**
+     * Creates a new instance of SapProductType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapProductType() {
+    }
+
+    /**
      * Creates or finds a SapProductType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SapProductType.
      */
@@ -32,7 +49,7 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
 
     /**
      * Gets known SapProductType values.
-     *
+     * 
      * @return known SapProductType values.
      */
     public static Collection<SapProductType> values() {

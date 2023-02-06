@@ -5,15 +5,22 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.models.SapCentralServerInstanceInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** Defines the collection of SAP Central Instances. */
+/**
+ * Defines the collection of SAP Central Services Instance resources.
+ */
 @Fluent
 public final class SapCentralInstanceList {
     /*
-     * Gets the list of SAP central instances.
+     * Gets the list of SAP central services instance resources.
      */
     @JsonProperty(value = "value")
     private List<SapCentralServerInstanceInner> value;
@@ -25,8 +32,14 @@ public final class SapCentralInstanceList {
     private String nextLink;
 
     /**
-     * Get the value property: Gets the list of SAP central instances.
-     *
+     * Creates an instance of SapCentralInstanceList class.
+     */
+    public SapCentralInstanceList() {
+    }
+
+    /**
+     * Get the value property: Gets the list of SAP central services instance resources.
+     * 
      * @return the value value.
      */
     public List<SapCentralServerInstanceInner> value() {
@@ -34,8 +47,8 @@ public final class SapCentralInstanceList {
     }
 
     /**
-     * Set the value property: Gets the list of SAP central instances.
-     *
+     * Set the value property: Gets the list of SAP central services instance resources.
+     * 
      * @param value the value value to set.
      * @return the SapCentralInstanceList object itself.
      */
@@ -46,7 +59,7 @@ public final class SapCentralInstanceList {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +68,7 @@ public final class SapCentralInstanceList {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SapCentralInstanceList object itself.
      */
@@ -66,7 +79,7 @@ public final class SapCentralInstanceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

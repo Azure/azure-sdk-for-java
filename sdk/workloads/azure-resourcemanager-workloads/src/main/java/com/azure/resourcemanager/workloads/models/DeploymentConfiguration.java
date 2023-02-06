@@ -5,11 +5,18 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
 
-/** Deployment Configuration. */
+/**
+ * Deployment Configuration.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
 @JsonTypeName("Deployment")
 @Fluent
@@ -33,8 +40,14 @@ public final class DeploymentConfiguration extends SapConfiguration {
     private SoftwareConfiguration softwareConfiguration;
 
     /**
+     * Creates an instance of DeploymentConfiguration class.
+     */
+    public DeploymentConfiguration() {
+    }
+
+    /**
      * Get the appLocation property: The geo-location where the SAP system is to be created.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -43,7 +56,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
 
     /**
      * Set the appLocation property: The geo-location where the SAP system is to be created.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the DeploymentConfiguration object itself.
      */
@@ -54,7 +67,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
 
     /**
      * Get the infrastructureConfiguration property: The infrastructure configuration.
-     *
+     * 
      * @return the infrastructureConfiguration value.
      */
     public InfrastructureConfiguration infrastructureConfiguration() {
@@ -63,19 +76,18 @@ public final class DeploymentConfiguration extends SapConfiguration {
 
     /**
      * Set the infrastructureConfiguration property: The infrastructure configuration.
-     *
+     * 
      * @param infrastructureConfiguration the infrastructureConfiguration value to set.
      * @return the DeploymentConfiguration object itself.
      */
-    public DeploymentConfiguration withInfrastructureConfiguration(
-        InfrastructureConfiguration infrastructureConfiguration) {
+    public DeploymentConfiguration withInfrastructureConfiguration(InfrastructureConfiguration infrastructureConfiguration) {
         this.infrastructureConfiguration = infrastructureConfiguration;
         return this;
     }
 
     /**
      * Get the softwareConfiguration property: The software configuration.
-     *
+     * 
      * @return the softwareConfiguration value.
      */
     public SoftwareConfiguration softwareConfiguration() {
@@ -84,7 +96,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
 
     /**
      * Set the softwareConfiguration property: The software configuration.
-     *
+     * 
      * @param softwareConfiguration the softwareConfiguration value to set.
      * @return the DeploymentConfiguration object itself.
      */
@@ -95,7 +107,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

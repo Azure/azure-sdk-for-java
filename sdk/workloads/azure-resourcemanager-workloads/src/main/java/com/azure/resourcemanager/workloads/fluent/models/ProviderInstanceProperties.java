@@ -5,12 +5,20 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.ProviderInstancePropertiesErrors;
 import com.azure.resourcemanager.workloads.models.ProviderSpecificProperties;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Describes the properties of a provider instance. */
+/**
+ * Describes the properties of a provider instance.
+ */
 @Fluent
 public final class ProviderInstanceProperties {
     /*
@@ -32,8 +40,14 @@ public final class ProviderInstanceProperties {
     private ProviderSpecificProperties providerSettings;
 
     /**
+     * Creates an instance of ProviderInstanceProperties class.
+     */
+    public ProviderInstanceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of provisioning of the provider instance.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -42,7 +56,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Get the errors property: Defines the provider instance errors.
-     *
+     * 
      * @return the errors value.
      */
     public ProviderInstancePropertiesErrors errors() {
@@ -51,7 +65,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Get the providerSettings property: Defines the provider instance errors.
-     *
+     * 
      * @return the providerSettings value.
      */
     public ProviderSpecificProperties providerSettings() {
@@ -60,7 +74,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Set the providerSettings property: Defines the provider instance errors.
-     *
+     * 
      * @param providerSettings the providerSettings value to set.
      * @return the ProviderInstanceProperties object itself.
      */
@@ -71,7 +85,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

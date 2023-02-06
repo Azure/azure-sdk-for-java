@@ -5,9 +5,16 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Object containing more specific information than the current object about the error. */
+/**
+ * Object containing more specific information than  the current object about the error.
+ */
 @Fluent
 public final class ErrorInnerError {
     /*
@@ -17,8 +24,14 @@ public final class ErrorInnerError {
     private Error innerError;
 
     /**
+     * Creates an instance of ErrorInnerError class.
+     */
+    public ErrorInnerError() {
+    }
+
+    /**
      * Get the innerError property: Standard error object.
-     *
+     * 
      * @return the innerError value.
      */
     public Error innerError() {
@@ -27,7 +40,7 @@ public final class ErrorInnerError {
 
     /**
      * Set the innerError property: Standard error object.
-     *
+     * 
      * @param innerError the innerError value to set.
      * @return the ErrorInnerError object itself.
      */
@@ -38,7 +51,7 @@ public final class ErrorInnerError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,18 +4,31 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
 
-/** Specifies Windows operating system settings on the virtual machine. */
+/**
+ * Specifies Windows operating system settings on the virtual machine.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "osType")
 @JsonTypeName("Windows")
 @Immutable
 public final class WindowsConfiguration extends OSConfiguration {
     /**
+     * Creates an instance of WindowsConfiguration class.
+     */
+    public WindowsConfiguration() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

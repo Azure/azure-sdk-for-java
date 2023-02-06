@@ -5,12 +5,18 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Managed service identity (user assigned identities). */
+/**
+ * Managed service identity (user assigned identities).
+ */
 @Fluent
 public class UserAssignedServiceIdentity {
     /*
@@ -27,8 +33,14 @@ public class UserAssignedServiceIdentity {
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
+     * Creates an instance of UserAssignedServiceIdentity class.
+     */
+    public UserAssignedServiceIdentity() {
+    }
+
+    /**
      * Get the type property: Type of manage identity.
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -37,7 +49,7 @@ public class UserAssignedServiceIdentity {
 
     /**
      * Set the type property: Type of manage identity.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserAssignedServiceIdentity object itself.
      */
@@ -48,7 +60,7 @@ public class UserAssignedServiceIdentity {
 
     /**
      * Get the userAssignedIdentities property: User assigned identities dictionary.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -57,37 +69,26 @@ public class UserAssignedServiceIdentity {
 
     /**
      * Set the userAssignedIdentities property: User assigned identities dictionary.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedServiceIdentity object itself.
      */
-    public UserAssignedServiceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public UserAssignedServiceIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model UserAssignedServiceIdentity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property type in model UserAssignedServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> { if (e != null) { e.validate(); } });
         }
     }
 

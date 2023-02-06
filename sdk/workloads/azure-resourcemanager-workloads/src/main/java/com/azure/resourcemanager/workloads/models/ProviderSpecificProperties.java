@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
 
-/** Gets or sets the provider specific properties. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "providerType",
-    defaultImpl = ProviderSpecificProperties.class)
+/**
+ * Gets or sets the provider specific properties.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType", defaultImpl = ProviderSpecificProperties.class)
 @JsonTypeName("ProviderSpecificProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SapHana", value = HanaDbProviderInstanceProperties.class),
@@ -27,8 +30,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class ProviderSpecificProperties {
     /**
+     * Creates an instance of ProviderSpecificProperties class.
+     */
+    public ProviderSpecificProperties() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

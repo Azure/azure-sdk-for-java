@@ -5,41 +5,50 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
 import com.azure.resourcemanager.workloads.models.GatewayServerProperties;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.MessageServerProperties;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Defines the SAP Central Server properties. */
+/**
+ * Defines the SAP Central Services Instance properties.
+ */
 @Fluent
 public final class SapCentralServerProperties {
     /*
-     * The central server instance id.
+     * The central services instance number.
      */
     @JsonProperty(value = "instanceNo", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceNo;
 
     /*
-     * The central server subnet.
+     * The central services instance subnet.
      */
     @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
     /*
-     * Defines the SAP message server properties.
+     * Defines the SAP Message Server properties.
      */
     @JsonProperty(value = "messageServerProperties")
     private MessageServerProperties messageServerProperties;
 
     /*
-     * Defines the SAP enqueue server properties.
+     * Defines the SAP Enqueue Server properties.
      */
     @JsonProperty(value = "enqueueServerProperties")
     private EnqueueServerProperties enqueueServerProperties;
@@ -51,25 +60,31 @@ public final class SapCentralServerProperties {
     private GatewayServerProperties gatewayServerProperties;
 
     /*
-     * Defines the SAP ERS Server properties.
+     * Defines the SAP Enqueue Replication Server (ERS) properties.
      */
     @JsonProperty(value = "enqueueReplicationServerProperties")
     private EnqueueReplicationServerProperties enqueueReplicationServerProperties;
 
     /*
-     * The central server kernel version.
+     * The central services instance Kernel Version.
      */
     @JsonProperty(value = "kernelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelVersion;
 
     /*
-     * The central server kernel patch.
+     * The central services instance Kernel Patch level.
      */
     @JsonProperty(value = "kernelPatch", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelPatch;
 
     /*
-     * The list of virtual machines.
+     * The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines
+     */
+    @JsonProperty(value = "loadBalancerDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private LoadBalancerDetails loadBalancerDetails;
+
+    /*
+     * The list of virtual machines corresponding to the Central Services instance.
      */
     @JsonProperty(value = "vmDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<CentralServerVmDetails> vmDetails;
@@ -81,7 +96,7 @@ public final class SapCentralServerProperties {
     private SapVirtualInstanceStatus status;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
@@ -93,14 +108,20 @@ public final class SapCentralServerProperties {
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
-     * Defines the Central Instance errors.
+     * Defines the errors related to SAP Central Services Instance resource.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceError errors;
 
     /**
-     * Get the instanceNo property: The central server instance id.
-     *
+     * Creates an instance of SapCentralServerProperties class.
+     */
+    public SapCentralServerProperties() {
+    }
+
+    /**
+     * Get the instanceNo property: The central services instance number.
+     * 
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -108,8 +129,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the subnet property: The central server subnet.
-     *
+     * Get the subnet property: The central services instance subnet.
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -117,8 +138,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the messageServerProperties property: Defines the SAP message server properties.
-     *
+     * Get the messageServerProperties property: Defines the SAP Message Server properties.
+     * 
      * @return the messageServerProperties value.
      */
     public MessageServerProperties messageServerProperties() {
@@ -126,8 +147,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Set the messageServerProperties property: Defines the SAP message server properties.
-     *
+     * Set the messageServerProperties property: Defines the SAP Message Server properties.
+     * 
      * @param messageServerProperties the messageServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -137,8 +158,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the enqueueServerProperties property: Defines the SAP enqueue server properties.
-     *
+     * Get the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
+     * 
      * @return the enqueueServerProperties value.
      */
     public EnqueueServerProperties enqueueServerProperties() {
@@ -146,8 +167,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Set the enqueueServerProperties property: Defines the SAP enqueue server properties.
-     *
+     * Set the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
+     * 
      * @param enqueueServerProperties the enqueueServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -158,7 +179,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @return the gatewayServerProperties value.
      */
     public GatewayServerProperties gatewayServerProperties() {
@@ -167,7 +188,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Set the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @param gatewayServerProperties the gatewayServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -177,8 +198,9 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
-     *
+     * Get the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS)
+     * properties.
+     * 
      * @return the enqueueReplicationServerProperties value.
      */
     public EnqueueReplicationServerProperties enqueueReplicationServerProperties() {
@@ -186,20 +208,20 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Set the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
-     *
+     * Set the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS)
+     * properties.
+     * 
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
-    public SapCentralServerProperties withEnqueueReplicationServerProperties(
-        EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
+    public SapCentralServerProperties withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         this.enqueueReplicationServerProperties = enqueueReplicationServerProperties;
         return this;
     }
 
     /**
-     * Get the kernelVersion property: The central server kernel version.
-     *
+     * Get the kernelVersion property: The central services instance Kernel Version.
+     * 
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -207,8 +229,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the kernelPatch property: The central server kernel patch.
-     *
+     * Get the kernelPatch property: The central services instance Kernel Patch level.
+     * 
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -216,8 +238,18 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the vmDetails property: The list of virtual machines.
-     *
+     * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual
+     * Machines.
+     * 
+     * @return the loadBalancerDetails value.
+     */
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.loadBalancerDetails;
+    }
+
+    /**
+     * Get the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
+     * 
      * @return the vmDetails value.
      */
     public List<CentralServerVmDetails> vmDetails() {
@@ -226,7 +258,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -234,8 +266,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
-     *
+     * Get the health property: Defines the health of SAP Instances.
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -244,7 +276,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -252,8 +284,8 @@ public final class SapCentralServerProperties {
     }
 
     /**
-     * Get the errors property: Defines the Central Instance errors.
-     *
+     * Get the errors property: Defines the errors related to SAP Central Services Instance resource.
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -262,7 +294,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -277,6 +309,9 @@ public final class SapCentralServerProperties {
         }
         if (enqueueReplicationServerProperties() != null) {
             enqueueReplicationServerProperties().validate();
+        }
+        if (loadBalancerDetails() != null) {
+            loadBalancerDetails().validate();
         }
         if (vmDetails() != null) {
             vmDetails().forEach(e -> e.validate());

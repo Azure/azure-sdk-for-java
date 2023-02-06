@@ -5,11 +5,18 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.SapAvailabilityZonePair;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The list of supported availability zone pairs which are part of SAP HA deployment. */
+/**
+ * The list of supported availability zone pairs which are part of SAP HA deployment.
+ */
 @Fluent
 public final class SapAvailabilityZoneDetailsResultInner {
     /*
@@ -19,8 +26,14 @@ public final class SapAvailabilityZoneDetailsResultInner {
     private List<SapAvailabilityZonePair> availabilityZonePairs;
 
     /**
+     * Creates an instance of SapAvailabilityZoneDetailsResultInner class.
+     */
+    public SapAvailabilityZoneDetailsResultInner() {
+    }
+
+    /**
      * Get the availabilityZonePairs property: Gets the list of availability zone pairs.
-     *
+     * 
      * @return the availabilityZonePairs value.
      */
     public List<SapAvailabilityZonePair> availabilityZonePairs() {
@@ -29,19 +42,18 @@ public final class SapAvailabilityZoneDetailsResultInner {
 
     /**
      * Set the availabilityZonePairs property: Gets the list of availability zone pairs.
-     *
+     * 
      * @param availabilityZonePairs the availabilityZonePairs value to set.
      * @return the SapAvailabilityZoneDetailsResultInner object itself.
      */
-    public SapAvailabilityZoneDetailsResultInner withAvailabilityZonePairs(
-        List<SapAvailabilityZonePair> availabilityZonePairs) {
+    public SapAvailabilityZoneDetailsResultInner withAvailabilityZonePairs(List<SapAvailabilityZonePair> availabilityZonePairs) {
         this.availabilityZonePairs = availabilityZonePairs;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,9 +5,16 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** An error response from the Virtual Instance for SAP Workload service. */
+/**
+ * An error response from the Virtual Instance for SAP Workload service.
+ */
 @Fluent
 public final class SapVirtualInstanceError {
     /*
@@ -17,8 +24,14 @@ public final class SapVirtualInstanceError {
     private ErrorDefinition properties;
 
     /**
+     * Creates an instance of SapVirtualInstanceError class.
+     */
+    public SapVirtualInstanceError() {
+    }
+
+    /**
      * Get the properties property: The Virtual Instance for SAP error body.
-     *
+     * 
      * @return the properties value.
      */
     public ErrorDefinition properties() {
@@ -27,7 +40,7 @@ public final class SapVirtualInstanceError {
 
     /**
      * Set the properties property: The Virtual Instance for SAP error body.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SapVirtualInstanceError object itself.
      */
@@ -38,7 +51,7 @@ public final class SapVirtualInstanceError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

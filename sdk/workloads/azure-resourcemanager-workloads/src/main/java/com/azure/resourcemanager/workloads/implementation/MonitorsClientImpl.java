@@ -26,10 +26,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloads.fluent.MonitorsClient;
@@ -37,24 +39,33 @@ import com.azure.resourcemanager.workloads.fluent.models.MonitorInner;
 import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.models.MonitorListResult;
 import com.azure.resourcemanager.workloads.models.UpdateMonitorRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public final class MonitorsClientImpl implements MonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WorkloadsClientImpl client;
 
     /**
      * Initializes an instance of MonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    MonitorsClientImpl(WorkloadsClientImpl client) {
+     MonitorsClientImpl(WorkloadsClientImpl client) {
         this.service = RestProxy.create(MonitorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -65,222 +76,137 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientMonit")
-    private interface MonitorsService {
-        @Headers({"Content-Type: application/json"})
+    public interface MonitorsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/monitors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorInner>> getByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @BodyParam("application/json") MonitorInner monitorParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @BodyParam("application/json") MonitorInner monitorParameter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}")
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @BodyParam("application/json") UpdateMonitorRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorInner>> update(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @BodyParam("application/json") UpdateMonitorRequest body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitorListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MonitorListResult>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP monitors in the specified subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of SAP monitors in the specified subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<MonitorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<MonitorInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP monitors in the specified subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of SAP monitors in the specified subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SAP monitors in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitorInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -290,13 +216,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitorInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SAP monitors in the specified subscription as paginated response with {@link PagedIterable}.
@@ -307,9 +235,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
-     *
+     * Gets a list of SAP monitors in the specified subscription.
+     * 
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,111 +251,79 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP monitors in the specified resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of SAP monitors in the specified resource group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<MonitorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<MonitorInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP monitors in the specified resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of SAP monitors in the specified resource group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitorInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<MonitorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -441,8 +338,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,8 +357,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -472,8 +373,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Gets a list of SAP monitors
+     * 
      * Gets a list of SAP monitors in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -487,121 +390,108 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Gets properties of a SAP monitor.
+     * 
      * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<Response<MonitorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Gets properties of a SAP monitor.
+     * 
      * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<Response<MonitorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
     /**
+     * Gets properties of a SAP monitor.
+     * 
      * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name on
-     *     successful completion of {@link Mono}.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitorInner> getByResourceGroupAsync(String resourceGroupName, String monitorName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
+
+    /**
+     * Gets properties of a SAP monitor.
+     * 
+     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MonitorInner> getByResourceGroupWithResponse(String resourceGroupName, String monitorName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
+     * Gets properties of a SAP monitor.
+     * 
      * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -611,87 +501,51 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitorInner getByResourceGroup(String resourceGroupName, String monitorName) {
-        return getByResourceGroupAsync(resourceGroupName, monitorName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName, context).block();
-    }
-
-    /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (monitorParameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter monitorParameter is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter monitorParameter is required and cannot be null."));
         } else {
             monitorParameter.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            monitorParameter,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, monitorParameter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -699,77 +553,56 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (monitorParameter == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter monitorParameter is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter monitorParameter is required and cannot be null."));
         } else {
             monitorParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                monitorParameter,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, monitorParameter, accept, context);
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sAP monitor info on Azure (ARM properties and SAP monitor
-     *     properties).
+     * @return the {@link PollerFlux} for polling of sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MonitorInner>, MonitorInner> beginCreateAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, monitorParameter);
-        return this
-            .client
-            .<MonitorInner, MonitorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), MonitorInner.class, MonitorInner.class, this.client.getContext());
+    private PollerFlux<PollResult<MonitorInner>, MonitorInner> beginCreateAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, monitorParameter);
+        return this.client.<MonitorInner, MonitorInner>getLroResult(mono, this.client.getHttpPipeline(), MonitorInner.class, MonitorInner.class, this.client.getContext());
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -777,42 +610,38 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sAP monitor info on Azure (ARM properties and SAP monitor
-     *     properties).
+     * @return the {@link PollerFlux} for polling of sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MonitorInner>, MonitorInner> beginCreateAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
+    private PollerFlux<PollResult<MonitorInner>, MonitorInner> beginCreateAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, monitorParameter, context);
-        return this
-            .client
-            .<MonitorInner, MonitorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), MonitorInner.class, MonitorInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, monitorParameter, context);
+        return this.client.<MonitorInner, MonitorInner>getLroResult(mono, this.client.getHttpPipeline(), MonitorInner.class, MonitorInner.class, context);
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sAP monitor info on Azure (ARM properties and SAP monitor
-     *     properties).
+     * @return the {@link SyncPoller} for polling of sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
-        return beginCreateAsync(resourceGroupName, monitorName, monitorParameter).getSyncPoller();
+    public SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
+        return this.beginCreateAsync(resourceGroupName, monitorName, monitorParameter).getSyncPoller();
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -820,38 +649,38 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sAP monitor info on Azure (ARM properties and SAP monitor
-     *     properties).
+     * @return the {@link SyncPoller} for polling of sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, monitorParameter, context).getSyncPoller();
+    public SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
+        return this.beginCreateAsync(resourceGroupName, monitorName, monitorParameter, context).getSyncPoller();
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link
-     *     Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitorInner> createAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
+    private Mono<MonitorInner> createAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter) {
         return beginCreateAsync(resourceGroupName, monitorName, monitorParameter)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -859,20 +688,20 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link
-     *     Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitorInner> createAsync(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
+    private Mono<MonitorInner> createAsync(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
         return beginCreateAsync(resourceGroupName, monitorName, monitorParameter, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -887,8 +716,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Creates a SAP monitor.
+     * 
      * Creates a SAP monitor for the specified subscription, resource group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param monitorParameter Request body representing a SAP monitor.
@@ -899,109 +730,78 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitorInner create(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
+    public MonitorInner create(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context) {
         return createAsync(resourceGroupName, monitorName, monitorParameter, context).block();
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1010,22 +810,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
-        String resourceGroupName, String monitorName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(String resourceGroupName, String monitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                this.client.getContext());
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono, this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, this.client.getContext());
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -1035,23 +829,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(String resourceGroupName, String monitorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, context);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono, this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1060,14 +848,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName, String monitorName) {
+        return this.beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -1077,14 +866,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName, String monitorName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1094,12 +884,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).last().flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, monitorName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -1109,16 +903,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String monitorName, Context context) {
         return beginDeleteAsync(resourceGroupName, monitorName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1132,8 +927,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Deletes a SAP monitor.
+     * 
      * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -1148,35 +945,28 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
+     * Patches the Tags field of a SAP monitor.
+     * 
      * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitorInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
+    private Mono<Response<MonitorInner>> updateWithResponseAsync(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
@@ -1187,25 +977,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
             body.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            body,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Patches the Tags field of a SAP monitor.
+     * 
      * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param body The Update SAP workload monitor request body.
@@ -1213,27 +993,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitorInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
+    private Mono<Response<MonitorInner>> updateWithResponseAsync(String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
@@ -1245,55 +1016,32 @@ public final class MonitorsClientImpl implements MonitorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, body, accept, context);
     }
 
     /**
+     * Patches the Tags field of a SAP monitor.
+     * 
      * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link
-     *     Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitorInner> updateAsync(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
         return updateWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
+     * Patches the Tags field of a SAP monitor.
+     * 
      * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @param body The Update SAP workload monitor request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitorInner update(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
-        return updateAsync(resourceGroupName, monitorName, body).block();
-    }
-
-    /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param body The Update SAP workload monitor request body.
@@ -1304,20 +1052,38 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitorInner> updateWithResponse(
-        String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
+    public Response<MonitorInner> updateWithResponse(String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
         return updateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Patches the Tags field of a SAP monitor.
+     * 
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MonitorInner update(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
+        return updateWithResponse(resourceGroupName, monitorName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listNextSinglePageAsync(String nextLink) {
@@ -1325,36 +1091,31 @@ public final class MonitorsClientImpl implements MonitorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MonitorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MonitorInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1362,35 +1123,30 @@ public final class MonitorsClientImpl implements MonitorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1398,37 +1154,31 @@ public final class MonitorsClientImpl implements MonitorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MonitorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MonitorInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return the response from the List SAP monitors operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1436,23 +1186,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

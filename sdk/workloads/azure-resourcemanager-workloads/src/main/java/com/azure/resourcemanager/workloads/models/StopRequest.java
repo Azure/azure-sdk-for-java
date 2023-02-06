@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Stop SAP Request. */
+/**
+ * Stop SAP instance(s) request body.
+ */
 @Fluent
 public final class StopRequest {
     /*
-     * A boolean to specify if the SAP system should be hard-stopped.
+     * This parameter defines how long (in seconds) the soft shutdown waits until the RFC/HTTP clients no longer
+     * consider the server for calls with load balancing. Value 0 means that the kernel does not wait, but goes
+     * directly into the next shutdown state, i.e. hard stop.
      */
-    @JsonProperty(value = "hardStop")
-    private Boolean hardStop;
+    @JsonProperty(value = "softStopTimeoutSeconds")
+    private Long softStopTimeoutSeconds;
 
     /**
-     * Get the hardStop property: A boolean to specify if the SAP system should be hard-stopped.
-     *
-     * @return the hardStop value.
+     * Creates an instance of StopRequest class.
      */
-    public Boolean hardStop() {
-        return this.hardStop;
+    public StopRequest() {
     }
 
     /**
-     * Set the hardStop property: A boolean to specify if the SAP system should be hard-stopped.
-     *
-     * @param hardStop the hardStop value to set.
+     * Get the softStopTimeoutSeconds property: This parameter defines how long (in seconds) the soft shutdown waits
+     * until the RFC/HTTP clients no longer consider the server for calls with load balancing. Value 0 means that the
+     * kernel does not wait, but goes directly into the next shutdown state, i.e. hard stop.
+     * 
+     * @return the softStopTimeoutSeconds value.
+     */
+    public Long softStopTimeoutSeconds() {
+        return this.softStopTimeoutSeconds;
+    }
+
+    /**
+     * Set the softStopTimeoutSeconds property: This parameter defines how long (in seconds) the soft shutdown waits
+     * until the RFC/HTTP clients no longer consider the server for calls with load balancing. Value 0 means that the
+     * kernel does not wait, but goes directly into the next shutdown state, i.e. hard stop.
+     * 
+     * @param softStopTimeoutSeconds the softStopTimeoutSeconds value to set.
      * @return the StopRequest object itself.
      */
-    public StopRequest withHardStop(Boolean hardStop) {
-        this.hardStop = hardStop;
+    public StopRequest withSoftStopTimeoutSeconds(Long softStopTimeoutSeconds) {
+        this.softStopTimeoutSeconds = softStopTimeoutSeconds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

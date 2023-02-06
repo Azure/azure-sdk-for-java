@@ -5,12 +5,19 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.models.SapSizingRecommendationResultInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
 
-/** The recommended configuration for a three tier SAP system. */
+/**
+ * The recommended configuration for a three tier SAP system.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType")
 @JsonTypeName("ThreeTier")
 @Fluent
@@ -52,8 +59,14 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
     private Long applicationServerInstanceCount;
 
     /**
+     * Creates an instance of ThreeTierRecommendationResult class.
+     */
+    public ThreeTierRecommendationResult() {
+    }
+
+    /**
      * Get the dbVmSku property: The database VM SKU.
-     *
+     * 
      * @return the dbVmSku value.
      */
     public String dbVmSku() {
@@ -62,7 +75,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the dbVmSku property: The database VM SKU.
-     *
+     * 
      * @param dbVmSku the dbVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -73,7 +86,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the databaseInstanceCount property: The database server instance count.
-     *
+     * 
      * @return the databaseInstanceCount value.
      */
     public Long databaseInstanceCount() {
@@ -82,7 +95,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the databaseInstanceCount property: The database server instance count.
-     *
+     * 
      * @param databaseInstanceCount the databaseInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -93,7 +106,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the centralServerVmSku property: The central server VM SKU.
-     *
+     * 
      * @return the centralServerVmSku value.
      */
     public String centralServerVmSku() {
@@ -102,7 +115,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the centralServerVmSku property: The central server VM SKU.
-     *
+     * 
      * @param centralServerVmSku the centralServerVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -113,7 +126,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the centralServerInstanceCount property: The central server instance count.
-     *
+     * 
      * @return the centralServerInstanceCount value.
      */
     public Long centralServerInstanceCount() {
@@ -122,7 +135,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the centralServerInstanceCount property: The central server instance count.
-     *
+     * 
      * @param centralServerInstanceCount the centralServerInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -133,7 +146,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the applicationServerVmSku property: The application server VM SKU.
-     *
+     * 
      * @return the applicationServerVmSku value.
      */
     public String applicationServerVmSku() {
@@ -142,7 +155,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the applicationServerVmSku property: The application server VM SKU.
-     *
+     * 
      * @param applicationServerVmSku the applicationServerVmSku value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -153,7 +166,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Get the applicationServerInstanceCount property: The application server instance count.
-     *
+     * 
      * @return the applicationServerInstanceCount value.
      */
     public Long applicationServerInstanceCount() {
@@ -162,7 +175,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Set the applicationServerInstanceCount property: The application server instance count.
-     *
+     * 
      * @param applicationServerInstanceCount the applicationServerInstanceCount value to set.
      * @return the ThreeTierRecommendationResult object itself.
      */
@@ -173,7 +186,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
 /**
  * Contains information about SSH certificate public key and the path on the Linux VM where the public key is placed.
@@ -13,21 +18,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SshPublicKey {
     /*
-     * SSH public key certificate used to authenticate with the VM through ssh.
-     * The key needs to be at least 2048-bit and in ssh-rsa format. <br><br>
-     * For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux
-     * VMs in
+     * SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit
+     * and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      */
     @JsonProperty(value = "keyData")
     private String keyData;
 
     /**
+     * Creates an instance of SshPublicKey class.
+     */
+    public SshPublicKey() {
+    }
+
+    /**
      * Get the keyData property: SSH public key certificate used to authenticate with the VM through ssh. The key needs
      * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
      * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-     *
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -39,7 +48,7 @@ public final class SshPublicKey {
      * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
      * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-     *
+     * 
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.
      */
@@ -50,7 +59,7 @@ public final class SshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

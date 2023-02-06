@@ -5,9 +5,16 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The SAP supported SKU. */
+/**
+ * The SAP supported SKU.
+ */
 @Fluent
 public final class SapSupportedSku {
     /*
@@ -29,8 +36,14 @@ public final class SapSupportedSku {
     private Boolean isDatabaseCertified;
 
     /**
+     * Creates an instance of SapSupportedSku class.
+     */
+    public SapSupportedSku() {
+    }
+
+    /**
      * Get the vmSku property: The VM Sku.
-     *
+     * 
      * @return the vmSku value.
      */
     public String vmSku() {
@@ -39,7 +52,7 @@ public final class SapSupportedSku {
 
     /**
      * Set the vmSku property: The VM Sku.
-     *
+     * 
      * @param vmSku the vmSku value to set.
      * @return the SapSupportedSku object itself.
      */
@@ -50,7 +63,7 @@ public final class SapSupportedSku {
 
     /**
      * Get the isAppServerCertified property: True if the Sku is certified for App server in the SAP system.
-     *
+     * 
      * @return the isAppServerCertified value.
      */
     public Boolean isAppServerCertified() {
@@ -59,7 +72,7 @@ public final class SapSupportedSku {
 
     /**
      * Set the isAppServerCertified property: True if the Sku is certified for App server in the SAP system.
-     *
+     * 
      * @param isAppServerCertified the isAppServerCertified value to set.
      * @return the SapSupportedSku object itself.
      */
@@ -70,7 +83,7 @@ public final class SapSupportedSku {
 
     /**
      * Get the isDatabaseCertified property: True if the Sku is certified for Database server in the SAP system.
-     *
+     * 
      * @return the isDatabaseCertified value.
      */
     public Boolean isDatabaseCertified() {
@@ -79,7 +92,7 @@ public final class SapSupportedSku {
 
     /**
      * Set the isDatabaseCertified property: True if the Sku is certified for Database server in the SAP system.
-     *
+     * 
      * @param isDatabaseCertified the isDatabaseCertified value to set.
      * @return the SapSupportedSku object itself.
      */
@@ -90,7 +103,7 @@ public final class SapSupportedSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

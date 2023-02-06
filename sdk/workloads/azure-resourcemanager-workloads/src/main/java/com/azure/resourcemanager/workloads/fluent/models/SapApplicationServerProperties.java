@@ -4,75 +4,92 @@
 
 package com.azure.resourcemanager.workloads.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.workloads.models.ApplicationServerVmDetails;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Defines the SAP Application Server properties. */
+/**
+ * Defines the SAP Application Server instance properties.
+ */
 @Immutable
 public final class SapApplicationServerProperties {
     /*
-     * The application server instance id.
+     * Application server Instance Number.
      */
     @JsonProperty(value = "instanceNo", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceNo;
 
     /*
-     * The application server subnet.
+     * Application server Subnet.
      */
     @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
     /*
-     * The application server SAP host name.
+     * Application server instance SAP hostname.
      */
     @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
-     * The application server SAP kernel version.
+     * Application server instance SAP Kernel Version.
      */
     @JsonProperty(value = "kernelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelVersion;
 
     /*
-     * The application server SAP kernel patch.
+     * Application server instance SAP Kernel Patch level.
      */
     @JsonProperty(value = "kernelPatch", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelPatch;
 
     /*
-     * The application server SAP IP Address.
+     * Application server instance SAP IP Address.
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * The application server gateway Port.
+     * Application server instance gateway Port.
      */
     @JsonProperty(value = "gatewayPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long gatewayPort;
 
     /*
-     * The application server ICM HTTP Port.
+     * Application server instance ICM HTTP Port.
      */
     @JsonProperty(value = "icmHttpPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long icmHttpPort;
 
     /*
-     * The application server ICM HTTPS Port.
+     * Application server instance ICM HTTPS Port.
      */
     @JsonProperty(value = "icmHttpsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long icmHttpsPort;
 
     /*
-     * The virtual machine.
+     * The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines
      */
-    @JsonProperty(value = "virtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
-    private String virtualMachineId;
+    @JsonProperty(value = "loadBalancerDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private LoadBalancerDetails loadBalancerDetails;
+
+    /*
+     * The list of virtual machines.
+     */
+    @JsonProperty(value = "vmDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationServerVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
@@ -81,7 +98,7 @@ public final class SapApplicationServerProperties {
     private SapVirtualInstanceStatus status;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
@@ -99,8 +116,14 @@ public final class SapApplicationServerProperties {
     private SapVirtualInstanceError errors;
 
     /**
-     * Get the instanceNo property: The application server instance id.
-     *
+     * Creates an instance of SapApplicationServerProperties class.
+     */
+    public SapApplicationServerProperties() {
+    }
+
+    /**
+     * Get the instanceNo property: Application server Instance Number.
+     * 
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -108,8 +131,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the subnet property: The application server subnet.
-     *
+     * Get the subnet property: Application server Subnet.
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -117,8 +140,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the hostname property: The application server SAP host name.
-     *
+     * Get the hostname property: Application server instance SAP hostname.
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -126,8 +149,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the kernelVersion property: The application server SAP kernel version.
-     *
+     * Get the kernelVersion property:  Application server instance SAP Kernel Version.
+     * 
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -135,8 +158,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the kernelPatch property: The application server SAP kernel patch.
-     *
+     * Get the kernelPatch property: Application server instance SAP Kernel Patch level.
+     * 
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -144,8 +167,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the ipAddress property: The application server SAP IP Address.
-     *
+     * Get the ipAddress property:  Application server instance SAP IP Address.
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -153,8 +176,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the gatewayPort property: The application server gateway Port.
-     *
+     * Get the gatewayPort property: Application server instance gateway Port.
+     * 
      * @return the gatewayPort value.
      */
     public Long gatewayPort() {
@@ -162,8 +185,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the icmHttpPort property: The application server ICM HTTP Port.
-     *
+     * Get the icmHttpPort property: Application server instance ICM HTTP Port.
+     * 
      * @return the icmHttpPort value.
      */
     public Long icmHttpPort() {
@@ -171,8 +194,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the icmHttpsPort property: The application server ICM HTTPS Port.
-     *
+     * Get the icmHttpsPort property: Application server instance ICM HTTPS Port.
+     * 
      * @return the icmHttpsPort value.
      */
     public Long icmHttpsPort() {
@@ -180,17 +203,27 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the virtualMachineId property: The virtual machine.
-     *
-     * @return the virtualMachineId value.
+     * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Application
+     * Server Virtual Machines.
+     * 
+     * @return the loadBalancerDetails value.
      */
-    public String virtualMachineId() {
-        return this.virtualMachineId;
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.loadBalancerDetails;
+    }
+
+    /**
+     * Get the vmDetails property: The list of virtual machines.
+     * 
+     * @return the vmDetails value.
+     */
+    public List<ApplicationServerVmDetails> vmDetails() {
+        return this.vmDetails;
     }
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -198,8 +231,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
-     *
+     * Get the health property: Defines the health of SAP Instances.
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -208,7 +241,7 @@ public final class SapApplicationServerProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -217,7 +250,7 @@ public final class SapApplicationServerProperties {
 
     /**
      * Get the errors property: Defines the Application Instance errors.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -226,10 +259,16 @@ public final class SapApplicationServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (loadBalancerDetails() != null) {
+            loadBalancerDetails().validate();
+        }
+        if (vmDetails() != null) {
+            vmDetails().forEach(e -> e.validate());
+        }
         if (errors() != null) {
             errors().validate();
         }

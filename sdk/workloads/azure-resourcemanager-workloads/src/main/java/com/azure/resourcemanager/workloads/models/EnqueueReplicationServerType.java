@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnqueueReplicationServerType. */
+/**
+ * Defines the type of Enqueue Replication Server.
+ */
 public final class EnqueueReplicationServerType extends ExpandableStringEnum<EnqueueReplicationServerType> {
-    /** Static value EnqueueReplicator1 for EnqueueReplicationServerType. */
+    /**
+     * Static value EnqueueReplicator1 for EnqueueReplicationServerType.
+     */
     public static final EnqueueReplicationServerType ENQUEUE_REPLICATOR1 = fromString("EnqueueReplicator1");
 
-    /** Static value EnqueueReplicator2 for EnqueueReplicationServerType. */
+    /**
+     * Static value EnqueueReplicator2 for EnqueueReplicationServerType.
+     */
     public static final EnqueueReplicationServerType ENQUEUE_REPLICATOR2 = fromString("EnqueueReplicator2");
 
     /**
+     * Creates a new instance of EnqueueReplicationServerType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnqueueReplicationServerType() {
+    }
+
+    /**
      * Creates or finds a EnqueueReplicationServerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnqueueReplicationServerType.
      */
@@ -29,7 +44,7 @@ public final class EnqueueReplicationServerType extends ExpandableStringEnum<Enq
 
     /**
      * Gets known EnqueueReplicationServerType values.
-     *
+     * 
      * @return known EnqueueReplicationServerType values.
      */
     public static Collection<EnqueueReplicationServerType> values() {

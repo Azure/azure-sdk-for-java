@@ -5,11 +5,18 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.regex.Pattern;
 
-/** Discovery Details. */
+/**
+ * Discovery Details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
 @JsonTypeName("Discovery")
 @Fluent
@@ -21,14 +28,29 @@ public final class DiscoveryConfiguration extends SapConfiguration {
     private String centralServerVmId;
 
     /*
+     * The custom storage account name for the storage account created by the service in the managed resource group
+     * created as part of VIS deployment.<br><br>Refer to the storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).<br><br>If
+     * not provided, the service will create the storage account with a random name.
+     */
+    @JsonProperty(value = "managedRgStorageAccountName")
+    private String managedRgStorageAccountName;
+
+    /*
      * The geo-location where the SAP system exists.
      */
     @JsonProperty(value = "appLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String appLocation;
 
     /**
+     * Creates an instance of DiscoveryConfiguration class.
+     */
+    public DiscoveryConfiguration() {
+    }
+
+    /**
      * Get the centralServerVmId property: The virtual machine ID of the Central Server.
-     *
+     * 
      * @return the centralServerVmId value.
      */
     public String centralServerVmId() {
@@ -37,7 +59,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
 
     /**
      * Set the centralServerVmId property: The virtual machine ID of the Central Server.
-     *
+     * 
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the DiscoveryConfiguration object itself.
      */
@@ -47,8 +69,36 @@ public final class DiscoveryConfiguration extends SapConfiguration {
     }
 
     /**
+     * Get the managedRgStorageAccountName property: The custom storage account name for the storage account created by
+     * the service in the managed resource group created as part of VIS deployment.&lt;br&gt;&lt;br&gt;Refer to the
+     * storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
+     * not provided, the service will create the storage account with a random name.
+     * 
+     * @return the managedRgStorageAccountName value.
+     */
+    public String managedRgStorageAccountName() {
+        return this.managedRgStorageAccountName;
+    }
+
+    /**
+     * Set the managedRgStorageAccountName property: The custom storage account name for the storage account created by
+     * the service in the managed resource group created as part of VIS deployment.&lt;br&gt;&lt;br&gt;Refer to the
+     * storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
+     * not provided, the service will create the storage account with a random name.
+     * 
+     * @param managedRgStorageAccountName the managedRgStorageAccountName value to set.
+     * @return the DiscoveryConfiguration object itself.
+     */
+    public DiscoveryConfiguration withManagedRgStorageAccountName(String managedRgStorageAccountName) {
+        this.managedRgStorageAccountName = managedRgStorageAccountName;
+        return this;
+    }
+
+    /**
      * Get the appLocation property: The geo-location where the SAP system exists.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -57,7 +107,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

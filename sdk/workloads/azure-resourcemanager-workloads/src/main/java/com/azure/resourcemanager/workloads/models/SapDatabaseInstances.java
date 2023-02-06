@@ -4,47 +4,56 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.workloads.fluent.SapDatabaseInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInner;
+import com.azure.resourcemanager.workloads.implementation.SapDatabaseInstanceImpl;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** Resource collection API of SapDatabaseInstances. */
+/**
+ * Resource collection API of SapDatabaseInstances.
+ */
 public interface SapDatabaseInstances {
     /**
-     * Gets the SAP Database Instance.
-     *
+     * Gets the SAP Database Instance resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param databaseInstanceName Database Instance string modeled as parameter for auto generation to work correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAP Database Instance.
-     */
-    SapDatabaseInstance get(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
-
-    /**
-     * Gets the SAP Database Instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param databaseInstanceName Database Instance string modeled as parameter for auto generation to work correctly.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAP Database Instance along with {@link Response}.
+     * @return the SAP Database Instance resource along with {@link Response}.
      */
-    Response<SapDatabaseInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    Response<SapDatabaseInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
 
     /**
-     * Deletes the SAP Database Instance. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will
-     * return a Bad Request error.
-     *
+     * Gets the SAP Database Instance resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param databaseInstanceName Database Instance string modeled as parameter for auto generation to work correctly.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAP Database Instance resource.
+     */
+    SapDatabaseInstance get(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+
+    /**
+     * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,26 +62,24 @@ public interface SapDatabaseInstances {
     OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
-     * Deletes the SAP Database Instance. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will
-     * return a Bad Request error.
-     *
+     * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param databaseInstanceName Database Instance string modeled as parameter for auto generation to work correctly.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
 
     /**
-     * Lists the SAP Database Instances in an SVI.
-     *
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -81,10 +88,10 @@ public interface SapDatabaseInstances {
     PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName);
 
     /**
-     * Lists the SAP Database Instances in an SVI.
-     *
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,32 +101,86 @@ public interface SapDatabaseInstances {
     PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName, Context context);
 
     /**
-     * Gets the SAP Database Instance.
-     *
+     * Starts the database instance of the SAP system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+
+    /**
+     * Starts the database instance of the SAP system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+
+    /**
+     * Stops the database instance of the SAP system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+
+    /**
+     * Stops the database instance of the SAP system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work correctly.
+     * @param body Stop request for the database instance of the SAP system.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StopRequest body, Context context);
+
+    /**
+     * Gets the SAP Database Instance resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAP Database Instance along with {@link Response}.
+     * @return the SAP Database Instance resource along with {@link Response}.
      */
     SapDatabaseInstance getById(String id);
 
     /**
-     * Gets the SAP Database Instance.
-     *
+     * Gets the SAP Database Instance resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAP Database Instance along with {@link Response}.
+     * @return the SAP Database Instance resource along with {@link Response}.
      */
     Response<SapDatabaseInstance> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the SAP Database Instance. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will
-     * return a Bad Request error.
-     *
+     * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,9 +190,8 @@ public interface SapDatabaseInstances {
     OperationStatusResult deleteById(String id);
 
     /**
-     * Deletes the SAP Database Instance. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will
-     * return a Bad Request error.
-     *
+     * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource. &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +203,7 @@ public interface SapDatabaseInstances {
 
     /**
      * Begins definition for a new SapDatabaseInstance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SapDatabaseInstance definition.
      */

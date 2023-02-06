@@ -5,10 +5,16 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Gets or sets the central server configuration. */
+/**
+ * Gets or sets the central server configuration.
+ */
 @Fluent
 public final class CentralServerConfiguration {
     /*
@@ -30,8 +36,14 @@ public final class CentralServerConfiguration {
     private long instanceCount;
 
     /**
+     * Creates an instance of CentralServerConfiguration class.
+     */
+    public CentralServerConfiguration() {
+    }
+
+    /**
      * Get the subnetId property: The subnet id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -40,7 +52,7 @@ public final class CentralServerConfiguration {
 
     /**
      * Set the subnetId property: The subnet id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the CentralServerConfiguration object itself.
      */
@@ -51,7 +63,7 @@ public final class CentralServerConfiguration {
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -60,19 +72,18 @@ public final class CentralServerConfiguration {
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the CentralServerConfiguration object itself.
      */
-    public CentralServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public CentralServerConfiguration withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the instanceCount property: The number of central server VMs.
-     *
+     * 
      * @return the instanceCount value.
      */
     public long instanceCount() {
@@ -81,7 +92,7 @@ public final class CentralServerConfiguration {
 
     /**
      * Set the instanceCount property: The number of central server VMs.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the CentralServerConfiguration object itself.
      */
@@ -92,21 +103,15 @@ public final class CentralServerConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model CentralServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property subnetId in model CentralServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model CentralServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property virtualMachineConfiguration in model CentralServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }
