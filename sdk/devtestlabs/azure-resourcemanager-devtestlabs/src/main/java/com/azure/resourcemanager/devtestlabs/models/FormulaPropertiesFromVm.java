@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a VM from which a formula is to be created. */
 @Fluent
 public final class FormulaPropertiesFromVm {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FormulaPropertiesFromVm.class);
-
     /*
      * The identifier of the VM from which a formula is to be created.
      */
     @JsonProperty(value = "labVmId")
     private String labVmId;
+
+    /** Creates an instance of FormulaPropertiesFromVm class. */
+    public FormulaPropertiesFromVm() {
+    }
 
     /**
      * Get the labVmId property: The identifier of the VM from which a formula is to be created.

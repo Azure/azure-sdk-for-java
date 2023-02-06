@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerType. */
+/** The partner type. */
 public final class PartnerType extends ExpandableStringEnum<PartnerType> {
     /** Static value NotSpecified for PartnerType. */
     public static final PartnerType NOT_SPECIFIED = fromString("NotSpecified");
 
     /** Static value B2B for PartnerType. */
     public static final PartnerType B2B = fromString("B2B");
+
+    /**
+     * Creates a new instance of PartnerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerType() {
+    }
 
     /**
      * Creates or finds a PartnerType from its string representation.
@@ -27,7 +36,11 @@ public final class PartnerType extends ExpandableStringEnum<PartnerType> {
         return fromString(name, PartnerType.class);
     }
 
-    /** @return known PartnerType values. */
+    /**
+     * Gets known PartnerType values.
+     *
+     * @return known PartnerType values.
+     */
     public static Collection<PartnerType> values() {
         return values(PartnerType.class);
     }

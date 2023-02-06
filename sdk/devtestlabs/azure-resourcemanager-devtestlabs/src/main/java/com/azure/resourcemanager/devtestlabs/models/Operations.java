@@ -14,23 +14,23 @@ public interface Operations {
      *
      * @param locationName The name of the location.
      * @param name The name of the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
+     * @return operation along with {@link Response}.
      */
-    OperationResult get(String locationName, String name);
+    Response<OperationResult> getWithResponse(String locationName, String name, Context context);
 
     /**
      * Get operation.
      *
      * @param locationName The name of the location.
      * @param name The name of the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation.
      */
-    Response<OperationResult> getWithResponse(String locationName, String name, Context context);
+    OperationResult get(String locationName, String name);
 }

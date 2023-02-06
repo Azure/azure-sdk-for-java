@@ -1,5 +1,21 @@
 # Release History
 
+## 2.24.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+- Added "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING" and "WEBSITE_CONTENTSHARE" app settings to FunctionApp of Linux Consumption plan and Premium plan.
+
 ## 2.22.0 (2022-12-23)
 
 ### Other Changes

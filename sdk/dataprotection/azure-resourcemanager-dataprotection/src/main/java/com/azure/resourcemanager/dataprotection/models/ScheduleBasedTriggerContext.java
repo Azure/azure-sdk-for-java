@@ -6,21 +6,24 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** ScheduleBasedTriggerContext Schedule based trigger context. */
+/**
+ * ScheduleBasedTriggerContext
+ *
+ * <p>Schedule based trigger context.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ScheduleBasedTriggerContext")
 @Fluent
 public final class ScheduleBasedTriggerContext extends TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleBasedTriggerContext.class);
-
     /*
-     * BackupSchedule Schedule for this backup
+     * BackupSchedule
+     *
+     * Schedule for this backup
      */
     @JsonProperty(value = "schedule", required = true)
     private BackupSchedule schedule;
@@ -31,8 +34,14 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     @JsonProperty(value = "taggingCriteria", required = true)
     private List<TaggingCriteria> taggingCriteria;
 
+    /** Creates an instance of ScheduleBasedTriggerContext class. */
+    public ScheduleBasedTriggerContext() {
+    }
+
     /**
-     * Get the schedule property: BackupSchedule Schedule for this backup.
+     * Get the schedule property: BackupSchedule
+     *
+     * <p>Schedule for this backup.
      *
      * @return the schedule value.
      */
@@ -41,7 +50,9 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     }
 
     /**
-     * Set the schedule property: BackupSchedule Schedule for this backup.
+     * Set the schedule property: BackupSchedule
+     *
+     * <p>Schedule for this backup.
      *
      * @param schedule the schedule value to set.
      * @return the ScheduleBasedTriggerContext object itself.
@@ -80,7 +91,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     public void validate() {
         super.validate();
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schedule in model ScheduleBasedTriggerContext"));
@@ -88,7 +99,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
             schedule().validate();
         }
         if (taggingCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
@@ -96,4 +107,6 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
             taggingCriteria().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleBasedTriggerContext.class);
 }

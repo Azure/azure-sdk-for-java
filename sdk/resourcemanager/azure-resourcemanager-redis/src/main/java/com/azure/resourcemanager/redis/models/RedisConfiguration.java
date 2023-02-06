@@ -26,7 +26,7 @@ public final class RedisConfiguration {
     private String rdbBackupEnabled;
 
     /*
-     * Specifies the frequency for creating rdb backup
+     * Specifies the frequency for creating rdb backup in minutes. Valid values: (15, 30, 60, 360, 720, 1440)
      */
     @JsonProperty(value = "rdb-backup-frequency")
     private String rdbBackupFrequency;
@@ -42,6 +42,12 @@ public final class RedisConfiguration {
      */
     @JsonProperty(value = "rdb-storage-connection-string")
     private String rdbStorageConnectionString;
+
+    /*
+     * Specifies whether the aof backup is enabled
+     */
+    @JsonProperty(value = "aof-backup-enabled")
+    private String aofBackupEnabled;
 
     /*
      * First storage account connection string
@@ -62,8 +68,7 @@ public final class RedisConfiguration {
     private String maxfragmentationmemoryReserved;
 
     /*
-     * The eviction strategy used when your data won't fit within its memory
-     * limit.
+     * The eviction strategy used when your data won't fit within its memory limit.
      */
     @JsonProperty(value = "maxmemory-policy")
     private String maxmemoryPolicy;
@@ -87,17 +92,17 @@ public final class RedisConfiguration {
     private String maxclients;
 
     /*
-     * Preferred auth method to communicate to storage account used for data
-     * archive, specify SAS or ManagedIdentity, default value is SAS
+     * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
+     * default value is SAS
      */
     @JsonProperty(value = "preferred-data-archive-auth-method", access = JsonProperty.Access.WRITE_ONLY)
     private String preferredDataArchiveAuthMethod;
 
     /*
-     * Preferred auth method to communicate to storage account used for data
-     * persistence, specify SAS or ManagedIdentity, default value is SAS
+     * Preferred auth method to communicate to storage account used for data persistence, specify SAS or
+     * ManagedIdentity, default value is SAS
      */
-    @JsonProperty(value = "preferred-data-persistence-auth-method", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "preferred-data-persistence-auth-method")
     private String preferredDataPersistenceAuthMethod;
 
     /*
@@ -107,11 +112,22 @@ public final class RedisConfiguration {
     private String zonalConfiguration;
 
     /*
+     * Specifies whether the authentication is disabled. Setting this property is highly discouraged from security
+     * point of view.
+     */
+    @JsonProperty(value = "authnotrequired")
+    private String authnotrequired;
+
+    /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
     @JsonIgnore private Map<String, String> additionalProperties;
+
+    /** Creates an instance of RedisConfiguration class. */
+    public RedisConfiguration() {
+    }
 
     /**
      * Get the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
@@ -134,7 +150,8 @@ public final class RedisConfiguration {
     }
 
     /**
-     * Get the rdbBackupFrequency property: Specifies the frequency for creating rdb backup.
+     * Get the rdbBackupFrequency property: Specifies the frequency for creating rdb backup in minutes. Valid values:
+     * (15, 30, 60, 360, 720, 1440).
      *
      * @return the rdbBackupFrequency value.
      */
@@ -143,7 +160,8 @@ public final class RedisConfiguration {
     }
 
     /**
-     * Set the rdbBackupFrequency property: Specifies the frequency for creating rdb backup.
+     * Set the rdbBackupFrequency property: Specifies the frequency for creating rdb backup in minutes. Valid values:
+     * (15, 30, 60, 360, 720, 1440).
      *
      * @param rdbBackupFrequency the rdbBackupFrequency value to set.
      * @return the RedisConfiguration object itself.
@@ -190,6 +208,26 @@ public final class RedisConfiguration {
      */
     public RedisConfiguration withRdbStorageConnectionString(String rdbStorageConnectionString) {
         this.rdbStorageConnectionString = rdbStorageConnectionString;
+        return this;
+    }
+
+    /**
+     * Get the aofBackupEnabled property: Specifies whether the aof backup is enabled.
+     *
+     * @return the aofBackupEnabled value.
+     */
+    public String aofBackupEnabled() {
+        return this.aofBackupEnabled;
+    }
+
+    /**
+     * Set the aofBackupEnabled property: Specifies whether the aof backup is enabled.
+     *
+     * @param aofBackupEnabled the aofBackupEnabled value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withAofBackupEnabled(String aofBackupEnabled) {
+        this.aofBackupEnabled = aofBackupEnabled;
         return this;
     }
 
@@ -343,12 +381,46 @@ public final class RedisConfiguration {
     }
 
     /**
+     * Set the preferredDataPersistenceAuthMethod property: Preferred auth method to communicate to storage account used
+     * for data persistence, specify SAS or ManagedIdentity, default value is SAS.
+     *
+     * @param preferredDataPersistenceAuthMethod the preferredDataPersistenceAuthMethod value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withPreferredDataPersistenceAuthMethod(String preferredDataPersistenceAuthMethod) {
+        this.preferredDataPersistenceAuthMethod = preferredDataPersistenceAuthMethod;
+        return this;
+    }
+
+    /**
      * Get the zonalConfiguration property: Zonal Configuration.
      *
      * @return the zonalConfiguration value.
      */
     public String zonalConfiguration() {
         return this.zonalConfiguration;
+    }
+
+    /**
+     * Get the authnotrequired property: Specifies whether the authentication is disabled. Setting this property is
+     * highly discouraged from security point of view.
+     *
+     * @return the authnotrequired value.
+     */
+    public String authnotrequired() {
+        return this.authnotrequired;
+    }
+
+    /**
+     * Set the authnotrequired property: Specifies whether the authentication is disabled. Setting this property is
+     * highly discouraged from security point of view.
+     *
+     * @param authnotrequired the authnotrequired value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withAuthnotrequired(String authnotrequired) {
+        this.authnotrequired = authnotrequired;
+        return this;
     }
 
     /**

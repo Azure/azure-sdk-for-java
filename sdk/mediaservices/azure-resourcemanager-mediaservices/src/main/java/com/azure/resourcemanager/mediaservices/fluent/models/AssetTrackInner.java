@@ -19,6 +19,10 @@ public final class AssetTrackInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AssetTrackProperties innerProperties;
 
+    /** Creates an instance of AssetTrackInner class. */
+    public AssetTrackInner() {
+    }
+
     /**
      * Get the innerProperties property: The resource properties.
      *

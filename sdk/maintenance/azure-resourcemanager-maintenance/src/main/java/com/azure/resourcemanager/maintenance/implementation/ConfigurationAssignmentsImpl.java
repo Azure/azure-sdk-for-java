@@ -13,10 +13,9 @@ import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsClie
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationAssignmentsImpl implements ConfigurationAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAssignmentsImpl.class);
 
     private final ConfigurationAssignmentsClient innerClient;
 
@@ -27,34 +26,6 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ConfigurationAssignment createOrUpdateParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment) {
-        ConfigurationAssignmentInner inner =
-            this
-                .serviceClient()
-                .createOrUpdateParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    configurationAssignmentName,
-                    configurationAssignment);
-        if (inner != null) {
-            return new ConfigurationAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ConfigurationAssignment> createOrUpdateParentWithResponse(
@@ -91,25 +62,27 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         }
     }
 
-    public ConfigurationAssignment deleteParent(
+    public ConfigurationAssignment createOrUpdateParent(
         String resourceGroupName,
         String providerName,
         String resourceParentType,
         String resourceParentName,
         String resourceType,
         String resourceName,
-        String configurationAssignmentName) {
+        String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment) {
         ConfigurationAssignmentInner inner =
             this
                 .serviceClient()
-                .deleteParent(
+                .createOrUpdateParent(
                     resourceGroupName,
                     providerName,
                     resourceParentType,
                     resourceParentName,
                     resourceType,
                     resourceName,
-                    configurationAssignmentName);
+                    configurationAssignmentName,
+                    configurationAssignment);
         if (inner != null) {
             return new ConfigurationAssignmentImpl(inner, this.manager());
         } else {
@@ -149,23 +122,25 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         }
     }
 
-    public ConfigurationAssignment createOrUpdate(
+    public ConfigurationAssignment deleteParent(
         String resourceGroupName,
         String providerName,
+        String resourceParentType,
+        String resourceParentName,
         String resourceType,
         String resourceName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment) {
+        String configurationAssignmentName) {
         ConfigurationAssignmentInner inner =
             this
                 .serviceClient()
-                .createOrUpdate(
+                .deleteParent(
                     resourceGroupName,
                     providerName,
+                    resourceParentType,
+                    resourceParentName,
                     resourceType,
                     resourceName,
-                    configurationAssignmentName,
-                    configurationAssignment);
+                    configurationAssignmentName);
         if (inner != null) {
             return new ConfigurationAssignmentImpl(inner, this.manager());
         } else {
@@ -203,16 +178,23 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         }
     }
 
-    public ConfigurationAssignment delete(
+    public ConfigurationAssignment createOrUpdate(
         String resourceGroupName,
         String providerName,
         String resourceType,
         String resourceName,
-        String configurationAssignmentName) {
+        String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment) {
         ConfigurationAssignmentInner inner =
             this
                 .serviceClient()
-                .delete(resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName);
+                .createOrUpdate(
+                    resourceGroupName,
+                    providerName,
+                    resourceType,
+                    resourceName,
+                    configurationAssignmentName,
+                    configurationAssignment);
         if (inner != null) {
             return new ConfigurationAssignmentImpl(inner, this.manager());
         } else {
@@ -238,6 +220,23 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationAssignment delete(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        ConfigurationAssignmentInner inner =
+            this
+                .serviceClient()
+                .delete(resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName);
+        if (inner != null) {
+            return new ConfigurationAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }

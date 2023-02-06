@@ -49,6 +49,10 @@ public final class MetricValue {
     @JsonProperty(value = "count")
     private Double count;
 
+    /** Creates an instance of MetricValue class. */
+    public MetricValue() {
+    }
+
     /**
      * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
      *

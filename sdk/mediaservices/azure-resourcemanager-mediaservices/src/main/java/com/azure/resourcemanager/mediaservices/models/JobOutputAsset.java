@@ -21,6 +21,10 @@ public final class JobOutputAsset extends JobOutput {
     @JsonProperty(value = "assetName", required = true)
     private String assetName;
 
+    /** Creates an instance of JobOutputAsset class. */
+    public JobOutputAsset() {
+    }
+
     /**
      * Get the assetName property: The name of the output Asset.
      *

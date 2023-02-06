@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mixedreality.fluent.OperationsClient;
 import com.azure.resourcemanager.mixedreality.fluent.models.OperationInner;
 import com.azure.resourcemanager.mixedreality.models.Operation;
 import com.azure.resourcemanager.mixedreality.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackingRecordType. */
+/** The tracking record type. */
 public final class TrackingRecordType extends ExpandableStringEnum<TrackingRecordType> {
     /** Static value NotSpecified for TrackingRecordType. */
     public static final TrackingRecordType NOT_SPECIFIED = fromString("NotSpecified");
@@ -64,6 +64,15 @@ public final class TrackingRecordType extends ExpandableStringEnum<TrackingRecor
         fromString("EdifactTransactionSetAcknowledgment");
 
     /**
+     * Creates a new instance of TrackingRecordType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackingRecordType() {
+    }
+
+    /**
      * Creates or finds a TrackingRecordType from its string representation.
      *
      * @param name a name to look for.
@@ -74,7 +83,11 @@ public final class TrackingRecordType extends ExpandableStringEnum<TrackingRecor
         return fromString(name, TrackingRecordType.class);
     }
 
-    /** @return known TrackingRecordType values. */
+    /**
+     * Gets known TrackingRecordType values.
+     *
+     * @return known TrackingRecordType values.
+     */
     public static Collection<TrackingRecordType> values() {
         return values(TrackingRecordType.class);
     }

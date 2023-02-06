@@ -62,6 +62,12 @@ public final class RestorePointSourceMetadata {
     @JsonProperty(value = "location")
     private String location;
 
+    /*
+     * UserData associated with the source VM for which restore point is captured, which is a base-64 encoded value.
+     */
+    @JsonProperty(value = "userData")
+    private String userData;
+
     /** Creates an instance of RestorePointSourceMetadata class. */
     public RestorePointSourceMetadata() {
     }
@@ -223,6 +229,28 @@ public final class RestorePointSourceMetadata {
      */
     public RestorePointSourceMetadata withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is a
+     * base-64 encoded value.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Set the userData property: UserData associated with the source VM for which restore point is captured, which is a
+     * base-64 encoded value.
+     *
+     * @param userData the userData value to set.
+     * @return the RestorePointSourceMetadata object itself.
+     */
+    public RestorePointSourceMetadata withUserData(String userData) {
+        this.userData = userData;
         return this;
     }
 

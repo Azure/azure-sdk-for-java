@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagepool.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResourceSkuRestrictionsReasonCode. */
+/** The reason for restriction. */
 public enum ResourceSkuRestrictionsReasonCode {
     /** Enum value QuotaId. */
     QUOTA_ID("QuotaId"),
@@ -30,6 +30,9 @@ public enum ResourceSkuRestrictionsReasonCode {
      */
     @JsonCreator
     public static ResourceSkuRestrictionsReasonCode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceSkuRestrictionsReasonCode[] items = ResourceSkuRestrictionsReasonCode.values();
         for (ResourceSkuRestrictionsReasonCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ResourceSkuRestrictionsReasonCode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

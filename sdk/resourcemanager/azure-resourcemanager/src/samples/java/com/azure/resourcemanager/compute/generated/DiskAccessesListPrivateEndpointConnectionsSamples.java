@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses ListPrivateEndpointConnections. */
 public final class DiskAccessesListPrivateEndpointConnectionsSamples {
     /*
@@ -23,6 +21,6 @@ public final class DiskAccessesListPrivateEndpointConnectionsSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .listPrivateEndpointConnections("myResourceGroup", "myDiskAccess", Context.NONE);
+            .listPrivateEndpointConnections("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

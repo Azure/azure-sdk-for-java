@@ -58,11 +58,13 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withTag("tag1", "value1")
                 .withHnsEnabled(true)
                 .withAzureFilesAadIntegrationEnabled(false)
+                .withInfrastructureEncryption()
                 .createAsync();
         StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
         Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccount.skuType().name());
         Assertions.assertTrue(storageAccount.isHnsEnabled());
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
         // Assertions.assertFalse(storageAccount.isAzureFilesAadIntegrationEnabled());
         // List
         PagedIterable<StorageAccount> accounts = storageManager.storageAccounts().listByResourceGroup(rgName);
@@ -95,6 +97,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 break;
             }
         }
+
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
 
         Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
         Assertions.assertNotNull(statuses);

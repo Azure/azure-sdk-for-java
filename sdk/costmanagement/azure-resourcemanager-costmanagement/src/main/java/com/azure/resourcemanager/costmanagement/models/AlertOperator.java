@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertOperator. */
+/** operator used to compare currentSpend with amount. */
 public final class AlertOperator extends ExpandableStringEnum<AlertOperator> {
     /** Static value None for AlertOperator. */
     public static final AlertOperator NONE = fromString("None");
@@ -29,6 +29,15 @@ public final class AlertOperator extends ExpandableStringEnum<AlertOperator> {
     public static final AlertOperator LESS_THAN_OR_EQUAL_TO = fromString("LessThanOrEqualTo");
 
     /**
+     * Creates a new instance of AlertOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertOperator() {
+    }
+
+    /**
      * Creates or finds a AlertOperator from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class AlertOperator extends ExpandableStringEnum<AlertOperator> {
         return fromString(name, AlertOperator.class);
     }
 
-    /** @return known AlertOperator values. */
+    /**
+     * Gets known AlertOperator values.
+     *
+     * @return known AlertOperator values.
+     */
     public static Collection<AlertOperator> values() {
         return values(AlertOperator.class);
     }

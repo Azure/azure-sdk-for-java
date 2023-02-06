@@ -21,6 +21,10 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VMInsightsOnboardingStatusProperties innerProperties;
 
+    /** Creates an instance of VMInsightsOnboardingStatusInner class. */
+    public VMInsightsOnboardingStatusInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -23,6 +23,15 @@ public final class VMGuestPatchRebootBehavior extends ExpandableStringEnum<VMGue
     public static final VMGuestPatchRebootBehavior CAN_REQUEST_REBOOT = fromString("CanRequestReboot");
 
     /**
+     * Creates a new instance of VMGuestPatchRebootBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchRebootBehavior() {
+    }
+
+    /**
      * Creates or finds a VMGuestPatchRebootBehavior from its string representation.
      *
      * @param name a name to look for.

@@ -67,7 +67,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesLi")
-    private interface LiveEventsService {
+    public interface LiveEventsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
@@ -586,24 +586,6 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a live event.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveEventInner get(String resourceGroupName, String accountName, String liveEventName) {
-        return getAsync(resourceGroupName, accountName, liveEventName).block();
-    }
-
-    /**
-     * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -614,6 +596,24 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     public Response<LiveEventInner> getWithResponse(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, liveEventName, context).block();
+    }
+
+    /**
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a live event.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveEventInner get(String resourceGroupName, String accountName, String liveEventName) {
+        return getWithResponse(resourceGroupName, accountName, liveEventName, Context.NONE).getValue();
     }
 
     /**
@@ -796,6 +796,36 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param parameters Live event properties needed for creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the live event.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LiveEventInner>, LiveEventInner> beginCreateAsync(
+        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters) {
+        final Boolean autoStart = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart);
+        return this
+            .client
+            .<LiveEventInner, LiveEventInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LiveEventInner.class,
+                LiveEventInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param parameters Live event properties needed for creation.
      * @param autoStart The flag indicates if the resource should be automatically started on creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,7 +859,6 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param parameters Live event properties needed for creation.
-     * @param autoStart The flag indicates if the resource should be automatically started on creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -837,12 +866,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventInner parameters,
-        Boolean autoStart) {
-        return beginCreateAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart).getSyncPoller();
+        String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters) {
+        final Boolean autoStart = null;
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart)
+            .getSyncPoller();
     }
 
     /**
@@ -869,7 +897,8 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         LiveEventInner parameters,
         Boolean autoStart,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart, context)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart, context)
             .getSyncPoller();
     }
 
@@ -950,31 +979,6 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         return beginCreateAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param parameters Live event properties needed for creation.
-     * @param autoStart The flag indicates if the resource should be automatically started on creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the live event.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveEventInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        LiveEventInner parameters,
-        Boolean autoStart) {
-        return createAsync(resourceGroupName, accountName, liveEventName, parameters, autoStart).block();
     }
 
     /**
@@ -1220,7 +1224,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LiveEventInner>, LiveEventInner> beginUpdate(
         String resourceGroupName, String accountName, String liveEventName, LiveEventInner parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, liveEventName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, liveEventName, parameters).getSyncPoller();
     }
 
     /**
@@ -1243,7 +1247,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         String liveEventName,
         LiveEventInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, liveEventName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, liveEventName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1506,7 +1512,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName) {
-        return beginDeleteAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
     }
 
     /**
@@ -1526,7 +1532,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
     }
 
     /**
@@ -1781,7 +1787,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAllocate(
         String resourceGroupName, String accountName, String liveEventName) {
-        return beginAllocateAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
+        return this.beginAllocateAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
     }
 
     /**
@@ -1801,7 +1807,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAllocate(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
-        return beginAllocateAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
+        return this.beginAllocateAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
     }
 
     /**
@@ -2055,7 +2061,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, String liveEventName) {
-        return beginStartAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
     }
 
     /**
@@ -2075,7 +2081,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
-        return beginStartAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
     }
 
     /**
@@ -2354,7 +2360,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String accountName, String liveEventName, LiveEventActionInput parameters) {
-        return beginStopAsync(resourceGroupName, accountName, liveEventName, parameters).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, accountName, liveEventName, parameters).getSyncPoller();
     }
 
     /**
@@ -2379,7 +2385,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         String liveEventName,
         LiveEventActionInput parameters,
         Context context) {
-        return beginStopAsync(resourceGroupName, accountName, liveEventName, parameters, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, accountName, liveEventName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2658,7 +2664,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReset(
         String resourceGroupName, String accountName, String liveEventName) {
-        return beginResetAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
+        return this.beginResetAsync(resourceGroupName, accountName, liveEventName).getSyncPoller();
     }
 
     /**
@@ -2680,7 +2686,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReset(
         String resourceGroupName, String accountName, String liveEventName, Context context) {
-        return beginResetAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
+        return this.beginResetAsync(resourceGroupName, accountName, liveEventName, context).getSyncPoller();
     }
 
     /**
@@ -2905,24 +2911,6 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live event operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
-        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
-    }
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2933,6 +2921,24 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     public Response<AsyncOperationResultInner> asyncOperationWithResponse(
         String resourceGroupName, String accountName, String operationId, Context context) {
         return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponse(resourceGroupName, accountName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -3085,26 +3091,6 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live event operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveEventInner operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String operationId) {
-        return operationLocationAsync(resourceGroupName, accountName, liveEventName, operationId).block();
-    }
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3116,6 +3102,27 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         String resourceGroupName, String accountName, String liveEventName, String operationId, Context context) {
         return operationLocationWithResponseAsync(resourceGroupName, accountName, liveEventName, operationId, context)
             .block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveEventInner operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String operationId) {
+        return operationLocationWithResponse(resourceGroupName, accountName, liveEventName, operationId, Context.NONE)
+            .getValue();
     }
 
     /**

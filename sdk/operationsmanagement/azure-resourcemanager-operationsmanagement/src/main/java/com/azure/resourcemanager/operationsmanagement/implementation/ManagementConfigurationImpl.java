@@ -44,6 +44,10 @@ public final class ManagementConfigurationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ManagementConfigurationInner innerModel() {
         return this.innerObject;
     }

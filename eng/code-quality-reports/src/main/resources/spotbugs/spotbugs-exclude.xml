@@ -28,7 +28,10 @@
   intention that a null could be passed in. In the original code, it would have thrown a
   NullReferenceException. -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+	  <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
+    </Or>
     <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
   </Match>
 
@@ -2308,13 +2311,13 @@
 
   <!-- This match should be removed after fixing https://github.com/Azure/azure-sdk-for-java/issues/26356 -->
   <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultOperation"/>
+    <Class name="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation"/>
     <Field name="timer"/>
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
+    <Class name="com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
     <Field name="beanFactory"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
@@ -2322,6 +2325,19 @@
   <Match>
     <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <!-- Suppressing error for using anonymous inner classes. -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier"/>
+    <Method name="is2_6"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier"/>
+    <Method name="is2_5"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <!-- The transient fields are not used if deserialization happens. -->
@@ -2661,10 +2677,24 @@
       <Class name="com.azure.core.implementation.util.FileContent"/>
       <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.ListByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.SerializableContent"/>
       <Class name="com.azure.core.implementation.util.StringContent"/>
     </Or>
     <Field name="bytes"/>
+  </Match>
+
+  <!-- Test classes that create clients in setup instead of constructor. -->
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    <Or>
+      <Class name="com.azure.search.documents.GeographyPointTests"/>
+      <Field name="searchAsyncClient"/>
+    </Or>
+    <Or>
+      <Class name="com.azure.search.documents.GeographyPointTests"/>
+      <Field name="searchClient"/>
+    </Or>
   </Match>
 
 </FindBugsFilter>

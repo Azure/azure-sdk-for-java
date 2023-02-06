@@ -59,7 +59,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface ComponentVersionsService {
+    public interface ComponentVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

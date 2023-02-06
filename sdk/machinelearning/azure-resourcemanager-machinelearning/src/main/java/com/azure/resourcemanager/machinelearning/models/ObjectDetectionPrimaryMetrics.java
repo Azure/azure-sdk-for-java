@@ -14,6 +14,15 @@ public final class ObjectDetectionPrimaryMetrics extends ExpandableStringEnum<Ob
     public static final ObjectDetectionPrimaryMetrics MEAN_AVERAGE_PRECISION = fromString("MeanAveragePrecision");
 
     /**
+     * Creates a new instance of ObjectDetectionPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ObjectDetectionPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a ObjectDetectionPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

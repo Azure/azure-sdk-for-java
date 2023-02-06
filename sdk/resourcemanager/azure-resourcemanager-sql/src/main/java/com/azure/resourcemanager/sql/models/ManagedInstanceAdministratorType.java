@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedInstanceAdministratorType. */
+/** Type of the managed instance administrator. */
 public final class ManagedInstanceAdministratorType extends ExpandableStringEnum<ManagedInstanceAdministratorType> {
     /** Static value ActiveDirectory for ManagedInstanceAdministratorType. */
     public static final ManagedInstanceAdministratorType ACTIVE_DIRECTORY = fromString("ActiveDirectory");

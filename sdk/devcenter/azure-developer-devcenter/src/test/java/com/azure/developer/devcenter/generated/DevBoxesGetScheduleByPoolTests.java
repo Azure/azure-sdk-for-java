@@ -17,11 +17,11 @@ public final class DevBoxesGetScheduleByPoolTests extends DevCenterClientTestBas
     public void testDevBoxesGetScheduleByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "{scheduleName}", requestOptions);
+                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"{scheduleName}\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
+                                "{\"name\":\"default\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

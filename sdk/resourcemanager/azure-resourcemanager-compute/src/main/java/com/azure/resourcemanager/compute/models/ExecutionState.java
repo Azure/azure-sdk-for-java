@@ -32,6 +32,15 @@ public final class ExecutionState extends ExpandableStringEnum<ExecutionState> {
     public static final ExecutionState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ExecutionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExecutionState() {
+    }
+
+    /**
      * Creates or finds a ExecutionState from its string representation.
      *
      * @param name a name to look for.

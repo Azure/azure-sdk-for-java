@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveEvents AsyncOperation. */
 public final class LiveEventsAsyncOperationSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/async-operation-result.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/async-operation-result.json
      */
     /**
      * Sample code: Get the LiveEvent operation status.
@@ -21,6 +19,9 @@ public final class LiveEventsAsyncOperationSamples {
         manager
             .liveEvents()
             .asyncOperationWithResponse(
-                "mediaresources", "slitestmedia10", "62e4d893-d233-4005-988e-a428d9f77076", Context.NONE);
+                "mediaresources",
+                "slitestmedia10",
+                "62e4d893-d233-4005-988e-a428d9f77076",
+                com.azure.core.util.Context.NONE);
     }
 }

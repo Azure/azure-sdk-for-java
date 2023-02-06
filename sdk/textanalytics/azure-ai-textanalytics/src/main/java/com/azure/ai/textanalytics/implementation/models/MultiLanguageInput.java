@@ -29,6 +29,9 @@ public final class MultiLanguageInput {
     @JsonProperty(value = "language")
     private String language;
 
+    /** Creates an instance of MultiLanguageInput class. */
+    public MultiLanguageInput() {}
+
     /**
      * Get the id property: A unique, non-empty document identifier.
      *

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
+import java.util.Map;
 
 /** An immutable client-side representation of Subscription. */
 public interface Subscription {
@@ -37,6 +38,20 @@ public interface Subscription {
      * @return the state value.
      */
     SubscriptionState state();
+
+    /**
+     * Gets the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     *
+     * @return the tenantId value.
+     */
+    String tenantId();
+
+    /**
+     * Gets the tags property: Tags for the subscription.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the subscriptionPolicies property: The subscription policies.

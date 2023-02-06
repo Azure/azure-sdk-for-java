@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.EarlyTerminationPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EarlyTerminationPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EarlyTerminationPolicy model =
             BinaryData
                 .fromString(
@@ -21,8 +20,8 @@ public final class EarlyTerminationPolicyTests {
         Assertions.assertEquals(935954000, model.evaluationInterval());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EarlyTerminationPolicy model =
             new EarlyTerminationPolicy().withDelayEvaluation(1491450827).withEvaluationInterval(935954000);
         model = BinaryData.fromObject(model).toObject(EarlyTerminationPolicy.class);

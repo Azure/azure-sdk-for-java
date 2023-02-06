@@ -14,24 +14,24 @@ public interface DataProtections {
      *
      * @param location The location parameter.
      * @param parameters Feature support request object.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response}.
      */
-    FeatureValidationResponseBase checkFeatureSupport(String location, FeatureValidationRequestBase parameters);
+    Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
+        String location, FeatureValidationRequestBase parameters, Context context);
 
     /**
      * Validates if a feature is supported.
      *
      * @param location The location parameter.
      * @param parameters Feature support request object.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for Backup Feature support.
      */
-    Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context);
+    FeatureValidationResponseBase checkFeatureSupport(String location, FeatureValidationRequestBase parameters);
 }

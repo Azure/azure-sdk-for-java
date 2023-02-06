@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class JobInput {
+    /** Creates an instance of JobInput class. */
+    public JobInput() {
+    }
+
     /**
      * Validates the instance.
      *

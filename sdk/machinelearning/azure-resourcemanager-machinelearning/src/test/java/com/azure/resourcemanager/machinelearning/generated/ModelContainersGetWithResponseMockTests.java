@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ModelContainer;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class ModelContainersGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ModelContainer response =
-            manager.modelContainers().getWithResponse("wihbnnxemv", "nuqqkotauratnicp", "fzs", Context.NONE).getValue();
+            manager
+                .modelContainers()
+                .getWithResponse("wihbnnxemv", "nuqqkotauratnicp", "fzs", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("noqayrehjuqwvap", response.properties().description());
         Assertions.assertEquals("zhpzihacenqqzlx", response.properties().properties().get("qzubfonfd"));

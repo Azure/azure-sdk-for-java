@@ -35,6 +35,10 @@ public final class MediaServiceUpdate {
     @JsonProperty(value = "identity")
     private MediaServiceIdentity identity;
 
+    /** Creates an instance of MediaServiceUpdate class. */
+    public MediaServiceUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

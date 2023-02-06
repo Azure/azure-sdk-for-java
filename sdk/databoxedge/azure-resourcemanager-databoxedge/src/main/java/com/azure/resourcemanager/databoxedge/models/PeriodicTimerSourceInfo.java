@@ -6,27 +6,22 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Periodic timer event source. */
 @Fluent
 public final class PeriodicTimerSourceInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeriodicTimerSourceInfo.class);
-
     /*
-     * The time of the day that results in a valid trigger. Schedule is
-     * computed with reference to the time specified upto seconds. If timezone
-     * is not specified the time will considered to be in device timezone. The
-     * value will always be returned as UTC time.
+     * The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified
+     * upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will
+     * always be returned as UTC time.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * Periodic frequency at which timer event needs to be raised. Supports
-     * daily, hourly, minutes, and seconds.
+     * Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
      */
     @JsonProperty(value = "schedule", required = true)
     private String schedule;
@@ -36,6 +31,10 @@ public final class PeriodicTimerSourceInfo {
      */
     @JsonProperty(value = "topic")
     private String topic;
+
+    /** Creates an instance of PeriodicTimerSourceInfo class. */
+    public PeriodicTimerSourceInfo() {
+    }
 
     /**
      * Get the startTime property: The time of the day that results in a valid trigger. Schedule is computed with
@@ -110,16 +109,18 @@ public final class PeriodicTimerSourceInfo {
      */
     public void validate() {
         if (startTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property startTime in model PeriodicTimerSourceInfo"));
         }
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schedule in model PeriodicTimerSourceInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeriodicTimerSourceInfo.class);
 }

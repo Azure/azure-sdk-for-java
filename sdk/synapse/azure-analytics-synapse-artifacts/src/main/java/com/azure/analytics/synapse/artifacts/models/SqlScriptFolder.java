@@ -16,6 +16,9 @@ public final class SqlScriptFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of SqlScriptFolder class. */
+    public SqlScriptFolder() {}
+
     /**
      * Get the name property: The name of the folder that this SQL script is in.
      *

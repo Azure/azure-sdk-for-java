@@ -43,6 +43,10 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     @JsonProperty(value = "ignoreDataBefore")
     private OffsetDateTime ignoreDataBefore;
 
+    /** Creates an instance of DynamicMetricCriteria class. */
+    public DynamicMetricCriteria() {
+    }
+
     /**
      * Get the operator property: The operator used to compare the metric value against the threshold.
      *

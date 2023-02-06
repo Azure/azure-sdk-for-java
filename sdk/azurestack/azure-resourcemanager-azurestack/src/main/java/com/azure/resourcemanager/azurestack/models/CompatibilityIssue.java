@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompatibilityIssue. */
+/** Compatibility issue. */
 public final class CompatibilityIssue extends ExpandableStringEnum<CompatibilityIssue> {
     /** Static value HigherDeviceVersionRequired for CompatibilityIssue. */
     public static final CompatibilityIssue HIGHER_DEVICE_VERSION_REQUIRED = fromString("HigherDeviceVersionRequired");
@@ -45,6 +45,15 @@ public final class CompatibilityIssue extends ExpandableStringEnum<Compatibility
         fromString("DisconnectedEnvironmentRequired");
 
     /**
+     * Creates a new instance of CompatibilityIssue value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompatibilityIssue() {
+    }
+
+    /**
      * Creates or finds a CompatibilityIssue from its string representation.
      *
      * @param name a name to look for.
@@ -55,7 +64,11 @@ public final class CompatibilityIssue extends ExpandableStringEnum<Compatibility
         return fromString(name, CompatibilityIssue.class);
     }
 
-    /** @return known CompatibilityIssue values. */
+    /**
+     * Gets known CompatibilityIssue values.
+     *
+     * @return known CompatibilityIssue values.
+     */
     public static Collection<CompatibilityIssue> values() {
         return values(CompatibilityIssue.class);
     }

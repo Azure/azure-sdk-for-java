@@ -12,11 +12,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobBaseResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobBaseResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class JobBaseResourceArmPaginatedResultTests {
         Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobBaseResourceArmPaginatedResult model =
             new JobBaseResourceArmPaginatedResult()
                 .withNextLink("zoggculapz")

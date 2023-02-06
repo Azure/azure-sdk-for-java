@@ -6,27 +6,26 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The participant profile property reference. */
 @Fluent
 public final class ParticipantProfilePropertyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParticipantProfilePropertyReference.class);
-
     /*
-     * The source interaction property that maps to the target profile
-     * property.
+     * The source interaction property that maps to the target profile property.
      */
     @JsonProperty(value = "interactionPropertyName", required = true)
     private String interactionPropertyName;
 
     /*
-     * The target profile property that maps to the source interaction
-     * property.
+     * The target profile property that maps to the source interaction property.
      */
     @JsonProperty(value = "profilePropertyName", required = true)
     private String profilePropertyName;
+
+    /** Creates an instance of ParticipantProfilePropertyReference class. */
+    public ParticipantProfilePropertyReference() {
+    }
 
     /**
      * Get the interactionPropertyName property: The source interaction property that maps to the target profile
@@ -77,17 +76,19 @@ public final class ParticipantProfilePropertyReference {
      */
     public void validate() {
         if (interactionPropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property interactionPropertyName in model"
                             + " ParticipantProfilePropertyReference"));
         }
         if (profilePropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property profilePropertyName in model ParticipantProfilePropertyReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ParticipantProfilePropertyReference.class);
 }

@@ -45,6 +45,10 @@ public final class ContentKeyPolicyPropertiesInner {
     @JsonProperty(value = "options", required = true)
     private List<ContentKeyPolicyOption> options;
 
+    /** Creates an instance of ContentKeyPolicyPropertiesInner class. */
+    public ContentKeyPolicyPropertiesInner() {
+    }
+
     /**
      * Get the policyId property: The legacy Policy ID.
      *

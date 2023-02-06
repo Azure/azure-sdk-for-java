@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestGauge;
+import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.MetricsOptions;
@@ -16,6 +16,8 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +61,12 @@ public class MetricsHelperTests {
 
 
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), testProvider);
-        helper.reportCheckpoint(checkpoint, "ns/eh/ch/0", true);
+        helper.reportCheckpoint(checkpoint, "ns/eh/ch/0", true, null);
 
         verify(meter, atLeastOnce()).isEnabled();
         verify(meter, never()).createAttributes(anyMap());
         verify(meter, never()).createLongGauge(any(), any(), any());
-        verify(meter, never()).createLongCounter(any(), any(), any());
+        verify(meter, never()).createDoubleHistogram(any(), any(), any());
     }
 
     @Test
@@ -80,11 +82,11 @@ public class MetricsHelperTests {
         Meter meter = mock(Meter.class);
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> meter);
         MetricsHelper helper = new MetricsHelper(new MetricsOptions().setEnabled(false), testProvider);
-        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true, null);
 
         verify(meter, never()).createAttributes(anyMap());
         verify(meter, never()).createLongGauge(any(), any(), any());
-        verify(meter, never()).createLongCounter(any(), any(), any());
+        verify(meter, never()).createDoubleHistogram(any(), any(), any());
     }
 
     @Test
@@ -105,7 +107,8 @@ public class MetricsHelperTests {
         });
 
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), testProvider);
-        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
+        Instant startTime = Instant.now().minus(10, ChronoUnit.SECONDS);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true, startTime);
 
         assertTrue(meter.getGauges().containsKey("messaging.eventhubs.checkpoint.sequence_number"));
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
@@ -119,14 +122,13 @@ public class MetricsHelperTests {
         assertEquals(2L, seqNoMeasurement.getValue());
         assertCommonAttributes(checkpoint, seqNoMeasurement.getAttributes());
 
-        assertTrue(meter.getCounters().containsKey("messaging.eventhubs.checkpoints"));
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        assertEquals(1, checkpoints.getMeasurements().size());
-        TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
-        assertEquals(1, checkpointMeasurements.getValue());
-        assertStatusAttributes(checkpoint, "ok", checkpointMeasurements.getAttributes());
+        assertTrue(meter.getHistograms().containsKey("messaging.eventhubs.checkpoint.duration"));
+        TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        assertEquals(1, checkpointDuration.getMeasurements().size());
+        TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
+        assertEquals(10000d, durationMeasurements.getValue(), 1000d);
+        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
     }
-
 
     @Test
     public void testUpdateEnabledMetricsFailure() {
@@ -139,16 +141,17 @@ public class MetricsHelperTests {
             .setOffset(100L);
 
         TestMeter meter = new TestMeter();
+        Instant startTime = Instant.now().minus(1, ChronoUnit.SECONDS);
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
-        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", false);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", false, startTime);
 
         // sequence number is only reported for successful checkpoints
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
-        assertEquals(1, checkpointMeasurements.getValue());
-        assertStatusAttributes(checkpoint, "error", checkpointMeasurements.getAttributes());
+        TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
+        assertEquals(1000d, durationMeasurements.getValue(), 1000d);
+        assertStatusAttributes(checkpoint, "error", durationMeasurements.getAttributes());
     }
 
     @Test
@@ -161,15 +164,16 @@ public class MetricsHelperTests {
             .setOffset(100L);
 
         TestMeter meter = new TestMeter();
+        Instant startTime = Instant.now();
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
-        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true, startTime);
 
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
-        assertEquals(1, checkpointMeasurements.getValue());
-        assertStatusAttributes(checkpoint, "ok", checkpointMeasurements.getAttributes());
+        TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
+        assertEquals(0d, durationMeasurements.getValue(), 1000d);
+        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
     }
 
     @Test
@@ -186,7 +190,7 @@ public class MetricsHelperTests {
             .collect(Collectors.toList());
 
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
-        checkpoints.forEach(ch -> helper.reportCheckpoint(ch, "ns/eh/cg/" + ch.getPartitionId(), true));
+        checkpoints.forEach(ch -> helper.reportCheckpoint(ch, "ns/eh/cg/" + ch.getPartitionId(), true, Instant.now()));
 
         List<TestGauge.Subscription> subscriptions = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions();
         assertEquals(MAX_ATTRIBUTES_SETS, subscriptions.size());
@@ -201,14 +205,14 @@ public class MetricsHelperTests {
             i[0]++;
         });
 
-        TestCounter checkpointCounter = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        assertEquals(MAX_ATTRIBUTES_SETS, checkpointCounter.getMeasurements().size());
+        TestHistogram durationHistogram = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        assertEquals(MAX_ATTRIBUTES_SETS, durationHistogram.getMeasurements().size());
 
-        final int[] j = {0};
-        checkpointCounter.getMeasurements().forEach(m -> {
-            assertEquals(1, m.getValue());
-            assertStatusAttributes(checkpoints.get(j[0]), "ok", m.getAttributes());
-            j[0]++;
+        final int[] k = {0};
+        durationHistogram.getMeasurements().forEach(m -> {
+            assertEquals(0d, m.getValue(), 1000d);
+            assertStatusAttributes(checkpoints.get(k[0]), "ok", m.getAttributes());
+            k[0]++;
         });
     }
 
@@ -232,8 +236,8 @@ public class MetricsHelperTests {
 
         TestMeter meter = new TestMeter();
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
-        helper.reportCheckpoint(checkpoint1, "ns/eh/cg/0", true);
-        helper.reportCheckpoint(checkpoint2, "ns/eh/cg/0", true);
+        helper.reportCheckpoint(checkpoint1, "ns/eh/cg/0", true, Instant.now().minus(10, ChronoUnit.SECONDS));
+        helper.reportCheckpoint(checkpoint2, "ns/eh/cg/0", true, Instant.now());
 
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
         TestGauge.Subscription subs = seqNo.getSubscriptions().get(0);
@@ -242,12 +246,12 @@ public class MetricsHelperTests {
         TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
         assertEquals(42L, seqNoMeasurement.getValue());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        assertEquals(2, checkpoints.getMeasurements().size());
+        TestHistogram duration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        assertEquals(2, duration.getMeasurements().size());
 
-        assertEquals(1, checkpoints.getMeasurements().get(0).getValue());
-        assertEquals(1, checkpoints.getMeasurements().get(1).getValue());
-        assertStatusAttributes(checkpoint2, "ok", checkpoints.getMeasurements().get(1).getAttributes());
+        assertEquals(10000d, duration.getMeasurements().get(0).getValue(), 1000d);
+        assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
+        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
     }
 
     @Test
@@ -271,8 +275,8 @@ public class MetricsHelperTests {
         TestMeter meter = new TestMeter();
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
 
-        helper.reportCheckpoint(checkpoint1, "ns/eh1/cg/0", true);
-        helper.reportCheckpoint(checkpoint2, "ns/eh2/cg/0", true);
+        helper.reportCheckpoint(checkpoint1, "ns/eh1/cg/0", true, Instant.now());
+        helper.reportCheckpoint(checkpoint2, "ns/eh2/cg/0", true, Instant.now());
 
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
         assertEquals(2, seqNo.getSubscriptions().size());
@@ -289,13 +293,13 @@ public class MetricsHelperTests {
         assertEquals(42L, seqNoMeasurement2.getValue());
         assertCommonAttributes(checkpoint2, seqNoMeasurement2.getAttributes());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
-        assertEquals(2, checkpoints.getMeasurements().size());
+        TestHistogram duration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
+        assertEquals(2, duration.getMeasurements().size());
 
-        assertEquals(1, checkpoints.getMeasurements().get(0).getValue());
-        assertStatusAttributes(checkpoint1, "ok", checkpoints.getMeasurements().get(0).getAttributes());
-        assertEquals(1, checkpoints.getMeasurements().get(1).getValue());
-        assertStatusAttributes(checkpoint2, "ok", checkpoints.getMeasurements().get(1).getAttributes());
+        assertEquals(0d, duration.getMeasurements().get(0).getValue(), 1000d);
+        assertStatusAttributes(checkpoint1, "ok", duration.getMeasurements().get(0).getAttributes());
+        assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
+        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
     }
 
 

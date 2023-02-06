@@ -6,17 +6,14 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the client certificate details using common name. */
 @Fluent
 public final class ClientCertificateCommonName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientCertificateCommonName.class);
-
     /*
-     * Indicates if the client certificate has admin access to the cluster. Non
-     * admin clients can perform only read only operations on the cluster.
+     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
+     * only operations on the cluster.
      */
     @JsonProperty(value = "isAdmin", required = true)
     private boolean isAdmin;
@@ -32,6 +29,10 @@ public final class ClientCertificateCommonName {
      */
     @JsonProperty(value = "certificateIssuerThumbprint", required = true)
     private String certificateIssuerThumbprint;
+
+    /** Creates an instance of ClientCertificateCommonName class. */
+    public ClientCertificateCommonName() {
+    }
 
     /**
      * Get the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
@@ -102,16 +103,18 @@ public final class ClientCertificateCommonName {
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateCommonName in model ClientCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateIssuerThumbprint in model ClientCertificateCommonName"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCommonName.class);
 }

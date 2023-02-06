@@ -17,6 +17,15 @@ public final class FabricName extends ExpandableStringEnum<FabricName> {
     public static final FabricName AZURE = fromString("Azure");
 
     /**
+     * Creates a new instance of FabricName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FabricName() {
+    }
+
+    /**
      * Creates or finds a FabricName from its string representation.
      *
      * @param name a name to look for.

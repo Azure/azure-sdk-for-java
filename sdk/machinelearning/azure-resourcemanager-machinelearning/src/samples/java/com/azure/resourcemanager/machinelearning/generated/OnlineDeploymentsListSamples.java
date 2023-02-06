@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments List. */
 public final class OnlineDeploymentsListSamples {
     /*
@@ -19,6 +17,7 @@ public final class OnlineDeploymentsListSamples {
     public static void listOnlineDeployments(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .list("test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, Context.NONE);
+            .list(
+                "test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, com.azure.core.util.Context.NONE);
     }
 }

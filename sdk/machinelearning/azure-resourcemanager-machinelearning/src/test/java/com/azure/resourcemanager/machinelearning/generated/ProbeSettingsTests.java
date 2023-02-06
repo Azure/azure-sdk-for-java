@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ProbeSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProbeSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProbeSettings model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class ProbeSettingsTests {
         Assertions.assertEquals(Duration.parse("PT78H24M37S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProbeSettings model =
             new ProbeSettings()
                 .withFailureThreshold(1906628483)

@@ -56,7 +56,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupProtectionIntentsService {
+    public interface BackupProtectionIntentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

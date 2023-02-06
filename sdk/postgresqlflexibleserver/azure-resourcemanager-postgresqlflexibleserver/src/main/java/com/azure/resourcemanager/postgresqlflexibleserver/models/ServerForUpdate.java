@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerPropertiesForUpdate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,19 +13,17 @@ import java.util.Map;
 /** Represents a server to be updated. */
 @Fluent
 public final class ServerForUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerForUpdate.class);
-
-    /*
-     * The location the resource resides in.
-     */
-    @JsonProperty(value = "location")
-    private String location;
-
     /*
      * The SKU (pricing tier) of the server.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * Describes the identity of the application.
+     */
+    @JsonProperty(value = "identity")
+    private UserAssignedIdentity identity;
 
     /*
      * Properties of the server.
@@ -42,24 +38,8 @@ public final class ServerForUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /**
-     * Get the location property: The location the resource resides in.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location the resource resides in.
-     *
-     * @param location the location value to set.
-     * @return the ServerForUpdate object itself.
-     */
-    public ServerForUpdate withLocation(String location) {
-        this.location = location;
-        return this;
+    /** Creates an instance of ServerForUpdate class. */
+    public ServerForUpdate() {
     }
 
     /**
@@ -79,6 +59,26 @@ public final class ServerForUpdate {
      */
     public ServerForUpdate withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Describes the identity of the application.
+     *
+     * @return the identity value.
+     */
+    public UserAssignedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the application.
+     *
+     * @param identity the identity value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withIdentity(UserAssignedIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -131,6 +131,29 @@ public final class ServerForUpdate {
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    /**
+     * Get the version property: PostgreSQL Server version.
+     *
+     * @return the version value.
+     */
+    public ServerVersion version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: PostgreSQL Server version.
+     *
+     * @param version the version value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withVersion(ServerVersion version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -227,6 +250,52 @@ public final class ServerForUpdate {
     }
 
     /**
+     * Get the authConfig property: AuthConfig properties of a server.
+     *
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().authConfig();
+    }
+
+    /**
+     * Set the authConfig property: AuthConfig properties of a server.
+     *
+     * @param authConfig the authConfig value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withAuthConfig(AuthConfig authConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withAuthConfig(authConfig);
+        return this;
+    }
+
+    /**
+     * Get the dataEncryption property: Data encryption properties of a server.
+     *
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEncryption();
+    }
+
+    /**
+     * Set the dataEncryption property: Data encryption properties of a server.
+     *
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withDataEncryption(DataEncryption dataEncryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withDataEncryption(dataEncryption);
+        return this;
+    }
+
+    /**
      * Get the createMode property: The mode to update a new PostgreSQL server.
      *
      * @return the createMode value.
@@ -250,6 +319,29 @@ public final class ServerForUpdate {
     }
 
     /**
+     * Get the replicationRole property: Replication role of the server.
+     *
+     * @return the replicationRole value.
+     */
+    public ReplicationRole replicationRole() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
+    }
+
+    /**
+     * Set the replicationRole property: Replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withReplicationRole(ReplicationRole replicationRole) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withReplicationRole(replicationRole);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -257,6 +349,9 @@ public final class ServerForUpdate {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

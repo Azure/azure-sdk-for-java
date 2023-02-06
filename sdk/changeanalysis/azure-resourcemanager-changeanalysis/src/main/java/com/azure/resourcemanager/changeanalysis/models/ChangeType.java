@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChangeType. */
+/** The type of the change. */
 public final class ChangeType extends ExpandableStringEnum<ChangeType> {
     /** Static value Add for ChangeType. */
     public static final ChangeType ADD = fromString("Add");
@@ -18,6 +18,15 @@ public final class ChangeType extends ExpandableStringEnum<ChangeType> {
 
     /** Static value Update for ChangeType. */
     public static final ChangeType UPDATE = fromString("Update");
+
+    /**
+     * Creates a new instance of ChangeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChangeType() {
+    }
 
     /**
      * Creates or finds a ChangeType from its string representation.
@@ -30,7 +39,11 @@ public final class ChangeType extends ExpandableStringEnum<ChangeType> {
         return fromString(name, ChangeType.class);
     }
 
-    /** @return known ChangeType values. */
+    /**
+     * Gets known ChangeType values.
+     *
+     * @return known ChangeType values.
+     */
     public static Collection<ChangeType> values() {
         return values(ChangeType.class);
     }

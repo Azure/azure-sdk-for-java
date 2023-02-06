@@ -13,7 +13,9 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -277,7 +279,7 @@ public class DataLakeFileClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileClient#uploadFromFileWithResponse(String, ParallelTransferOptions,
-     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration)}
+     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void uploadFromFileWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
@@ -413,6 +415,39 @@ public class DataLakeFileClientJavaDocSamples {
             requestConditions, timeout, new Context(key1, value1));
         System.out.printf("Flush data completed with status %d%n", response.getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileClient#flushWithResponse(long, DataLakeFileFlushOptions, Duration, Context)}
+     */
+    public void flushWithOptionsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-DataLakeFileFlushOptions-Duration-Context
+        FileRange range = new FileRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        boolean retainUncommittedData = false;
+        boolean close = false;
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        Integer leaseDuration = 15;
+
+        DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
+            .setUncommittedDataRetained(retainUncommittedData)
+            .setClose(close)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setLeaseAction(LeaseAction.ACQUIRE)
+            .setLeaseDuration(leaseDuration)
+            .setProposedLeaseId(leaseId);
+
+        Response<PathInfo> response = client.flushWithResponse(position, flushOptions, timeout,
+            new Context(key1, value1));
+        System.out.printf("Flush data completed with status %d%n", response.getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-DataLakeFileFlushOptions-Duration-Context
     }
 
     /**

@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.7.8</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-metrics-opentelemetry</artifactId>
-      <version>1.0.0-beta.3</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+      <version>1.0.0-beta.5</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
     </dependency>
 
     <!-- Dependencies required for logback -->
@@ -73,7 +73,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>3.0.0-M5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
+        <version>2.7.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -91,7 +91,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:applicationinsights-core:[3.4.1]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[3.0.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.codehaus.janino:janino:[3.1.9]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>
             </bannedDependencies>

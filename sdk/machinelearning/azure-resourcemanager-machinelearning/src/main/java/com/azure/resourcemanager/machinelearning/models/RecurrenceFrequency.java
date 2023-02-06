@@ -26,6 +26,15 @@ public final class RecurrenceFrequency extends ExpandableStringEnum<RecurrenceFr
     public static final RecurrenceFrequency MONTH = fromString("Month");
 
     /**
+     * Creates a new instance of RecurrenceFrequency value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecurrenceFrequency() {
+    }
+
+    /**
      * Creates or finds a RecurrenceFrequency from its string representation.
      *
      * @param name a name to look for.

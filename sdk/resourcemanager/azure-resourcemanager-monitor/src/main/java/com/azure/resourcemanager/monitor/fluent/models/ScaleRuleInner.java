@@ -25,6 +25,10 @@ public final class ScaleRuleInner {
     @JsonProperty(value = "scaleAction", required = true)
     private ScaleAction scaleAction;
 
+    /** Creates an instance of ScaleRuleInner class. */
+    public ScaleRuleInner() {
+    }
+
     /**
      * Get the metricTrigger property: the trigger that results in a scaling action.
      *

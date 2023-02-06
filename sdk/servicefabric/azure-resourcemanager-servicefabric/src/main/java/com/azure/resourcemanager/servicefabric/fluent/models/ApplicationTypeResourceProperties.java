@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The application type name properties. */
 @Immutable
 public final class ApplicationTypeResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeResourceProperties.class);
-
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * The current deployment or provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /** Creates an instance of ApplicationTypeResourceProperties class. */
+    public ApplicationTypeResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the

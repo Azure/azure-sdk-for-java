@@ -26,6 +26,10 @@ public final class MetricAlertAction {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
+    /** Creates an instance of MetricAlertAction class. */
+    public MetricAlertAction() {
+    }
+
     /**
      * Get the actionGroupId property: the id of the action group to use.
      *

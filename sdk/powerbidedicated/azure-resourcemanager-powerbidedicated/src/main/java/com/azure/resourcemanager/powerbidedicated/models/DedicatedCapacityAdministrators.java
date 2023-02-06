@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of administrator user identities. */
 @Fluent
 public final class DedicatedCapacityAdministrators {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCapacityAdministrators.class);
-
     /*
      * An array of administrator user identities.
      */
     @JsonProperty(value = "members")
     private List<String> members;
+
+    /** Creates an instance of DedicatedCapacityAdministrators class. */
+    public DedicatedCapacityAdministrators() {
+    }
 
     /**
      * Get the members property: An array of administrator user identities.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Migrate.SqlServer.AzureSqlDb.Sync")
 @Fluent
 public final class MigrateSqlServerSqlDbSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +26,10 @@ public final class MigrateSqlServerSqlDbSyncTaskProperties extends ProjectTaskPr
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrateSqlServerSqlDbSyncTaskOutput> output;
+
+    /** Creates an instance of MigrateSqlServerSqlDbSyncTaskProperties class. */
+    public MigrateSqlServerSqlDbSyncTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

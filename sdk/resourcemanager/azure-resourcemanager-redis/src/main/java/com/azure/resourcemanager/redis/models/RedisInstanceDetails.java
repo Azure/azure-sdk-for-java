@@ -23,8 +23,7 @@ public final class RedisInstanceDetails {
     private Integer nonSslPort;
 
     /*
-     * If the Cache uses availability zones, specifies availability zone where
-     * this instance is located.
+     * If the Cache uses availability zones, specifies availability zone where this instance is located.
      */
     @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
@@ -46,6 +45,10 @@ public final class RedisInstanceDetails {
      */
     @JsonProperty(value = "isPrimary", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrimary;
+
+    /** Creates an instance of RedisInstanceDetails class. */
+    public RedisInstanceDetails() {
+    }
 
     /**
      * Get the sslPort property: Redis instance SSL port.
