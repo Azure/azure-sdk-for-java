@@ -3,14 +3,26 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.EventPerfTest;
 import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Sends an event data batch with {@link EventHubsOptions#getCount()} number of events in the batch.
  */
-public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
+public class SendEventDataBatchTest extends EventPerfTest<EventHubsOptions> {
+    private final EventHubsTestHelper<EventHubsOptions> testHelper;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
+    private EventHubClient client;
+    private CompletableFuture<EventHubClient> clientFuture;
+    private Disposable subscription;
 
     /**
      * Creates an instance of performance test.
@@ -19,6 +31,8 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
      */
     public SendEventDataBatchTest(EventHubsOptions options) {
         super(options);
+
+        this.testHelper = new EventHubsTestHelper<>(options);
     }
 
     /**
@@ -26,37 +40,55 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
      */
     @Override
     public Mono<Void> setupAsync() {
-        if (options.isSync() && client == null) {
-            client = createEventHubClient();
-        } else if (!options.isSync() && clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
+        if (isRunning.getAndSet(true)) {
+            return Mono.empty();
         }
 
-        return super.setupAsync();
+        if (options.isSync() && client == null) {
+            this.client = testHelper.createEventHubClient();
+            this.subscription = Mono.fromRunnable(() -> sendEvents())
+                .repeat(() -> isRunning.get())
+                .subscribe();
+        } else if (!options.isSync() && clientFuture == null) {
+            this.clientFuture = testHelper.createEventHubClientAsync();
+
+            this.subscription = sendEventsAsync()
+                .repeat(() -> isRunning.get())
+                .subscribe();
+        }
+
+        return Mono.empty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void run() {
-        final EventDataBatch batch = createEventDataBatch(client, options.getCount());
+    public Mono<Void> cleanupAsync() {
+        if (!isRunning.getAndSet(false)) {
+            return Mono.empty();
+        }
+
+        subscription.dispose();
+
+        // Dispose of the scheduler at the very end.
+        return testHelper.cleanupAsync(client, clientFuture)
+            .doFinally(signal -> testHelper.close());
+    }
+
+    private void sendEvents() {
+        final EventDataBatch batch = testHelper.createEventDataBatch(client, options.getCount());
         try {
             client.sendSync(batch);
+            eventRaised();
         } catch (EventHubException e) {
             throw new RuntimeException("Unable to send EventDataBatch.", e);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Void> runAsync() {
-        return Mono.fromCompletionStage(clientFuture
-            .thenComposeAsync(client -> {
-                final EventDataBatch batch = createEventDataBatch(client, options.getCount());
-                return client.send(batch);
-            }));
+    private Mono<Void> sendEventsAsync() {
+        final CompletableFuture<Void> sendBatch = clientFuture.thenComposeAsync(client -> {
+            final EventDataBatch batch = testHelper.createEventDataBatch(client, options.getCount());
+            return client.send(batch);
+        });
+
+        return Mono.fromCompletionStage(sendBatch.thenRun(() -> eventRaised()));
     }
 }
