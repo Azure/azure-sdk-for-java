@@ -95,11 +95,9 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
             }
         });
 
-        azureMessage.getProperties().forEach((key, value) -> {
-            if (key.equals(TARGET_PROTOCOL)) {
-                azureMessage.getProperties().put(key, "amqp");
-            }
-        });
+        if (azureMessage.getProperties().containsKey(TARGET_PROTOCOL)) {
+            azureMessage.getProperties().put(TARGET_PROTOCOL, "amqp");
+        }
 
         ignoredHeaders.forEach(header -> LOGGER.info("Message headers {} is not supported to be set and will be "
             + "ignored.", header));
