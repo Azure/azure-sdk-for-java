@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HttpClient implementation for the URL Connection HttpClient.
+ * A {@link HttpClient} that uses the JDK {@link HttpURLConnection}.
  */
 public class HttpURLConnectionHttpClient implements HttpClient {
 
