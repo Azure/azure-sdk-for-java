@@ -110,6 +110,8 @@ class AzureAuthenticationTemplateTest {
             }
             TimeUnit.SECONDS.sleep(TOKEN_EXPIRE_SECONDS);
             assertEquals(TOKEN_2, template.getTokenAsPassword());
+
+            assertNotNull(identityClientMock);
         }
     }
 
