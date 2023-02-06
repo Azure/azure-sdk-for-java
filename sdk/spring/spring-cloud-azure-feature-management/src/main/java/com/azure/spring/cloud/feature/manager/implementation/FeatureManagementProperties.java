@@ -9,9 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,12 +35,9 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
      */
     private Map<String, Boolean> onOff;
 
-    private transient Map<String, DynamicFeature> dynamicFeatures;
-
     public FeatureManagementProperties() {
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
-        dynamicFeatures = new HashMap<>();
     }
 
     @Override
@@ -54,7 +49,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         // Need to reset or switch between on/off to conditional doesn't work
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
-        dynamicFeatures = new HashMap<>();
 
         Map<? extends String, ? extends Object> features = removePrefixes(m, "featureManagement");
 
@@ -100,18 +94,13 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             onOff.put(combined + key, (Boolean) featureValue);
         } else {
             Feature feature = null;
-            DynamicFeature dynamicFeature = null;
             try {
                 feature = MAPPER.convertValue(featureValue, Feature.class);
-                dynamicFeature = MAPPER.convertValue(featureValue, DynamicFeature.class);
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureValue.toString());
             }
             // When coming from a file "feature.flag" is not a possible flag name
-            if (dynamicFeature != null && StringUtils.hasText(dynamicFeature.getAssigner())
-                && dynamicFeature.getVariants().size() > 0) {
-                dynamicFeatures.put(key, dynamicFeature);
-            } else if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
+            if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
                 if (LinkedHashMap.class.isAssignableFrom(featureValue.getClass())) {
                     features = (LinkedHashMap<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {
@@ -139,13 +128,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
      */
     public Map<String, Boolean> getOnOff() {
         return onOff;
-    }
-
-    /**
-     * @return the dynamicFeatures
-     */
-    public Map<String, DynamicFeature> getDynamicFeatures() {
-        return dynamicFeatures;
     }
 
 }

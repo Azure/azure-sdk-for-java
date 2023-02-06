@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -31,20 +30,4 @@ class FeatureManagementConfiguration {
         FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties) {
         return new FeatureManager(context, featureManagementConfigurations, properties);
     }
-
-    /**
-     * Creates Dynamic Feature Manager
-     * 
-     * @param context ApplicationContext
-     * @param propertiesProvider Object Provider for accessing client IDynamicFeatureProperties
-     * @param featureManagementConfigurations Configuration Properties for Feature Flags
-     * @return DynamicFeatureManager
-     */
-    @Bean
-    DynamicFeatureManager dynamicFeatureManager(ApplicationContext context,
-        ObjectProvider<IDynamicFeatureProperties> propertiesProvider,
-        FeatureManagementProperties featureManagementConfigurations) {
-        return new DynamicFeatureManager(context, propertiesProvider, featureManagementConfigurations);
-    }
-
 }
