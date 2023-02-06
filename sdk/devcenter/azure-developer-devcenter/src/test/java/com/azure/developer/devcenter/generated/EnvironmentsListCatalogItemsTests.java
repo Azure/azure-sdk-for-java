@@ -19,7 +19,7 @@ public final class EnvironmentsListCatalogItemsTests extends DevCenterClientTest
         PagedIterable<BinaryData> response = environmentsClient.listCatalogItems("myProject", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"{itemName}\",\"catalogName\":\"main\",\"id\":\"foo\"}")
+                BinaryData.fromString("{\"name\":\"foo\",\"catalogName\":\"main\",\"id\":\"foo\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

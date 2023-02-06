@@ -63,7 +63,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientW")
-    private interface WorkloadGroupsService {
+    public interface WorkloadGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

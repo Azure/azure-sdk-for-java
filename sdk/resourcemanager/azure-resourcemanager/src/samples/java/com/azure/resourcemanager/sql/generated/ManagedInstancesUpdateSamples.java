@@ -58,7 +58,7 @@ public final class ManagedInstancesUpdateSamples {
                     .withSku(new Sku().withName("GP_Gen4").withTier("GeneralPurpose").withCapacity(8))
                     .withTags(mapOf("tagKey1", "TagValue1"))
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("PLACEHOLDER")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withLicenseType(ManagedInstanceLicenseType.BASE_PRICE)
                     .withVCores(8)
                     .withStorageSizeInGB(448)

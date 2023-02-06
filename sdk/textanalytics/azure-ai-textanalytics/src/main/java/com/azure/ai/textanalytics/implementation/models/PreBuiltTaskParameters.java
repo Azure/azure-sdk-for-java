@@ -16,6 +16,9 @@ public class PreBuiltTaskParameters extends TaskParameters {
     @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
+    /** Creates an instance of PreBuiltTaskParameters class. */
+    public PreBuiltTaskParameters() {}
+
     /**
      * Get the modelVersion property: The modelVersion property.
      *

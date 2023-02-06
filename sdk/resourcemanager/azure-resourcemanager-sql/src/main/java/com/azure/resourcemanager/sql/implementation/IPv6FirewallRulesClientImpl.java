@@ -58,7 +58,7 @@ public final class IPv6FirewallRulesClientImpl implements IPv6FirewallRulesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientI")
-    private interface IPv6FirewallRulesService {
+    public interface IPv6FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

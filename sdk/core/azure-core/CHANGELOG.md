@@ -1,6 +1,6 @@
 # Release History
 
-## 1.36.0-beta.1 (Unreleased)
+## 1.37.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.36.0 (2023-02-01)
+
+### Features Added
+
+- Added explicit support for `text`-based serialization, this is done by adding `SerializerEncoding.TEXT`. Previously,
+  `text` was being implicitly supported by using `SerializerEncoding.JSON` but there were edge cases when a `String`
+  wasn't a JSON string (`string` vs `"string"`). ([#32277](https://github.com/Azure/azure-sdk-for-java/pull/32277))
+- Added `BinaryData.fromListByteBuffer(List<ByteBuffer>)` to support additional ways to create `BinaryData`. ([#32932](https://github.com/Azure/azure-sdk-for-java/pull/32932))
+- Added `TracingOptions` to make tracing configurable. ([#32573](https://github.com/Azure/azure-sdk-for-java/pull/32573))
+- Added support for links, start timestamp, W3C trace-context propagation, and numerical attributes in tracing.
+- Tracing plugins are no longer required to implement `AfterRetryPolicyProvider` as tracing is now handled by
+  `InstrumentationPolicy` using the provided `Tracer` implementation.
+
+### Breaking Changes
+
+- Deprecated messaging-specific methods in tracing abstractions.
+
+### Bugs Fixed
+
+- Fixed a bug where `PollingStrategy.getResult` would guard getting results for `POST`-based on containing a `Location`
+  header which isn't guaranteed to exist. If the header doesn't exist the body of the last polling operation is used
+  as the final result. ([#32815](https://github.com/Azure/azure-sdk-for-java/pull/32815))
+- Fixed a bug where `HEAD`-based requests were checking for a body before deserializing. `HEAD` requests shouldn't have
+  a body or if they do it should be ignored. ([#32833](https://github.com/Azure/azure-sdk-for-java/pull/32833))
+
+### Other Changes
+
+- Exceptions when deserializing error HTTP responses now include the deserialization exception as the causal exception
+  in addition to logging it.
+- `ExpandableStringEnum` now uses `MethodHandle` instead of `Constructor` to create subtype instances when using
+  `fromString(String, Class<T>)`.
 
 ## 1.35.0 (2023-01-05)
 

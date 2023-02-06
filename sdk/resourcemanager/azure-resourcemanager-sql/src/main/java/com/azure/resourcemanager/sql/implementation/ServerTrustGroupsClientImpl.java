@@ -63,7 +63,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerTrustGroupsService {
+    public interface ServerTrustGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
