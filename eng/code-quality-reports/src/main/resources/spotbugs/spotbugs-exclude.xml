@@ -2698,4 +2698,11 @@
     </Or>
   </Match>
 
+<!-- Derived type changes this field as a marker. -->
+  <Match>
+    <Class name="com.azure.core.test.TestBase"/>
+    <Field name="enableTestProxy"/>
+    <Bug pattern="MS_SHOULD_BE_FINAL"/>
+  </Match>
+
 </FindBugsFilter>
