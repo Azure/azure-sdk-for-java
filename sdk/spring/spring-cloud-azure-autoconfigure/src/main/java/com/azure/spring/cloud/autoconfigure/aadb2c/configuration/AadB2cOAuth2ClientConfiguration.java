@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilder;
-import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderConfigurer;
+import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationsBuilder;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.slf4j.Logger;
@@ -67,15 +67,15 @@ public class AadB2cOAuth2ClientConfiguration {
 
     /**
      * Declare ClientRegistrationRepository bean.
-     * @param oAuth2ClientPropertiesProvider the {@link OAuth2ClientProperties} provider.
-     * @param configurersProvider the {@link AadB2cClientRegistrationRepositoryBuilderConfigurer} provider.
+     * @param clientProperties the {@link OAuth2ClientProperties} provider.
+     * @param customizers the {@link AadB2cClientRegistrationRepositoryBuilderCustomizer} provider.
      * @return ClientRegistrationRepository bean
      */
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository(
-        ObjectProvider<OAuth2ClientProperties> oAuth2ClientPropertiesProvider,
-        ObjectProvider<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurersProvider) {
+        ObjectProvider<OAuth2ClientProperties> clientProperties,
+        ObjectProvider<AadB2cClientRegistrationRepositoryBuilderCustomizer> customizers) {
         final AadB2cClientRegistrationRepositoryBuilder repositoryBuilder = new AadB2cClientRegistrationRepositoryBuilder();
         final AadB2cClientRegistrationsBuilder clientRegistrationsBuilder = new AadB2cClientRegistrationsBuilder()
                 .clientId(properties.getCredential().getClientId())
@@ -100,8 +100,8 @@ public class AadB2cOAuth2ClientConfiguration {
                           entry.getValue().getScopes().toArray(new String[0])
                       )
             );
-        repositoryBuilder.b2cClientRegistrations(clientRegistrationsBuilder);
-        oAuth2ClientPropertiesProvider.ifAvailable(properties -> {
+        repositoryBuilder.aadB2cClientRegistrations(clientRegistrationsBuilder.build());
+        clientProperties.ifAvailable(properties -> {
             Collection<ClientRegistration> oauth2Registrations = getClientRegistrations(properties).values();
             repositoryBuilder.clientRegistrations(oauth2Registrations.toArray(new ClientRegistration[0]));
             repositoryBuilder.nonSignInClientRegistrationIds(
@@ -110,7 +110,7 @@ public class AadB2cOAuth2ClientConfiguration {
                                    .map(ClientRegistration::getRegistrationId)
                                    .toArray(String[]::new));
         });
-        configurersProvider.orderedStream().forEach(repositoryBuilder::addRepositoryBuilderConfigurer);
+        customizers.orderedStream().forEach(repositoryBuilder::addBuilderCustomizer);
         return repositoryBuilder.build();
     }
 

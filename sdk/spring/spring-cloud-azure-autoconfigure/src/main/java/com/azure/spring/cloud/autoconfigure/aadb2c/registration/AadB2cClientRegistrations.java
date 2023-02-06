@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents client registrations and non sign in client registration ids, it's built by {@link AadB2cClientRegistrationsBuilder#build()}.
+ * Represents client registrations and non sign in client registration ids for an
+ * AD B2C application, it's built by {@link AadB2cClientRegistrationsBuilder#build()}.
  */
-public final class AadB2cClientRegistrations {
+public class AadB2cClientRegistrations {
     private final List<ClientRegistration> clientRegistrations;
     private final Set<String> nonSignInClientRegistrationIds = new HashSet<>();
 

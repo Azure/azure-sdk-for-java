@@ -32,7 +32,7 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.CL
  * for Azure AD B2C OAuth2 Client, they serve as a set of client registration information corresponding
  * to an application registered in Azure AD B2C.
  */
-public final class AadB2cClientRegistrationsBuilder {
+public class AadB2cClientRegistrationsBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadB2cClientRegistrationsBuilder.class);
     private String clientId;
@@ -49,7 +49,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the client identifier.
      *
      * @param clientId the client identifier
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder clientId(String clientId) {
         this.clientId = clientId;
@@ -60,7 +60,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the client secret.
      *
      * @param clientSecret the client secret
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder clientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
@@ -70,7 +70,7 @@ public final class AadB2cClientRegistrationsBuilder {
     /**
      * Sets the id of the AD B2C tenant, it's required when setting the authorization clients.
      * @param tenantId the id of the AD B2C tenant.
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder tenantId(String tenantId) {
         this.tenantId = tenantId;
@@ -81,7 +81,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the username attribute name.
      *
      * @param userNameAttributeName the username attribute name
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder userNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
@@ -92,8 +92,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the uri for the redirection endpoint.
      *
      * @param replyUrl the uri for the redirection endpoint
-     * @return the {@link AadB2cClientRegistrationsBuilder}
-     * @since 5.4
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder replyUrl(String replyUrl) {
         this.replyUrl = replyUrl;
@@ -104,7 +103,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the Azure AD B2C endpoint base uri.
      *
      * @param baseUri the base uri for the authorization endpoint
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder baseUri(String baseUri) {
         this.baseUri = baseUri;
@@ -115,7 +114,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * Sets the primary sign-in flow instance id, no need to set this value in {@link #userFlows} anymore.
      *
      * @param signInUserFlow the key for the primary sign-in or sign-up user flow id
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder signInUserFlow(String signInUserFlow) {
         this.signInUserFlow = signInUserFlow;
@@ -125,7 +124,7 @@ public final class AadB2cClientRegistrationsBuilder {
     /**
      * Sets the user flow instance id set, which should not include the sign in user flow instance id.
      * @param userFlows the user flow instance id for each user flow type.
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     public AadB2cClientRegistrationsBuilder userFlows(String... userFlows) {
         if (userFlows != null && userFlows.length > 0) {
@@ -140,7 +139,7 @@ public final class AadB2cClientRegistrationsBuilder {
      * @param registrationId the client registration id of OAuth2 client.
      * @param authorizationGrantType the authorization grant type of OAuth2 client.
      * @param scopes the scope set of OAuth2 client.
-     * @return the {@link AadB2cClientRegistrationsBuilder}
+     * @return the updated {@link AadB2cClientRegistrationsBuilder}
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public AadB2cClientRegistrationsBuilder authorizationClient(String registrationId,

@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * Configure bean: AADB2CProperties.
+ * Configure bean: AadB2cProperties.
  */
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @EnableConfigurationProperties
@@ -33,9 +33,9 @@ public class AadB2cPropertiesConfiguration {
     }
 
     /**
-     * Declare AADB2CProperties bean.
+     * Declare AadB2cProperties bean.
      *
-     * @return AADB2CProperties bean
+     * @return AadB2cProperties bean
      */
     @Bean
     @ConfigurationProperties(prefix = AadB2cProperties.PREFIX)

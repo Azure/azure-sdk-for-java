@@ -469,7 +469,7 @@
         {
           "code": "java.method.numberOfParametersChanged",
           "old": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository()",
-          "new": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository(org.springframework.beans.factory.ObjectProvider<org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties>, org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderConfigurer>)",
+          "new": "method org.springframework.security.oauth2.client.registration.ClientRegistrationRepository com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::clientRegistrationRepository(org.springframework.beans.factory.ObjectProvider<org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties>, org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.autoconfigure.aadb2c.registration.AadB2cClientRegistrationRepositoryBuilderCustomizer>)",
           "justification": "To support multiple client registrations for Azure AD B2C."
         },
         {

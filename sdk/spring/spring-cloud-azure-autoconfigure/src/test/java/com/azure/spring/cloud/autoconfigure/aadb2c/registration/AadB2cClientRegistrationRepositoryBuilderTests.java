@@ -20,7 +20,7 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.CL
 class AadB2cClientRegistrationRepositoryBuilderTests {
 
     private AadB2cClientRegistrationRepositoryBuilder repositoryBuilder;
-    private static AadB2cClientRegistrationsBuilder registrationBuilder;
+    private static AadB2cClientRegistrations aadB2cClientRegistrations;
     private static final String SIGN_IN_USER_FLOW_ID = "B2C_1_signuporsignin";
     private static final String SIGN_IN_CLIENT_SECRET = "xxx";
     private static final String PASSWORD_RESET_USER_FLOW_ID = "B2C_1_passwordreset";
@@ -28,15 +28,15 @@ class AadB2cClientRegistrationRepositoryBuilderTests {
 
     @BeforeAll
     static void setupClass() {
-        registrationBuilder = new AadB2cClientRegistrationsBuilder();
-        registrationBuilder.baseUri("https://xxx.b2clogin.com/xxx.onmicrosoft.com/")
-                           .clientId("xxx")
-                           .clientSecret(SIGN_IN_CLIENT_SECRET)
-                           .tenantId("xxx")
-                           .signInUserFlow(SIGN_IN_USER_FLOW_ID)
-                           .userFlows(PASSWORD_RESET_USER_FLOW_ID)
-                           .authorizationClient(AUTHORIZATION_CLIENT_REGISTRATION_ID, CLIENT_CREDENTIALS, "http://localhost/xxx/.default")
-                           .build();
+        aadB2cClientRegistrations = new AadB2cClientRegistrationsBuilder()
+            .baseUri("https://xxx.b2clogin.com/xxx.onmicrosoft.com/")
+            .clientId("xxx")
+            .clientSecret(SIGN_IN_CLIENT_SECRET)
+            .tenantId("xxx")
+            .signInUserFlow(SIGN_IN_USER_FLOW_ID)
+            .userFlows(PASSWORD_RESET_USER_FLOW_ID)
+            .authorizationClient(AUTHORIZATION_CLIENT_REGISTRATION_ID, CLIENT_CREDENTIALS, "http://localhost/xxx/.default")
+            .build();
     }
 
     @BeforeEach
@@ -71,7 +71,7 @@ class AadB2cClientRegistrationRepositoryBuilderTests {
     @Test
     @SuppressWarnings("unchecked")
     void setB2cClientRegistrations() {
-        repositoryBuilder.b2cClientRegistrations(registrationBuilder);
+        repositoryBuilder.aadB2cClientRegistrations(aadB2cClientRegistrations);
         List<ClientRegistration> clientRegistrations = (List<ClientRegistration>) ReflectionTestUtils.getField(repositoryBuilder, "clientRegistrations");
         Set<String> nonSignInClientRegistrationIds = (Set<String>) ReflectionTestUtils.getField(repositoryBuilder, "nonSignInClientRegistrationIds");
         Assertions.assertNotNull(clientRegistrations);
@@ -83,10 +83,10 @@ class AadB2cClientRegistrationRepositoryBuilderTests {
 
     @Test
     @SuppressWarnings("unchecked")
-    void setAddRepositoryBuilderConfigurer() {
-        AadB2cClientRegistrationRepositoryBuilderConfigurer configurer =
-            (repositoryBuilder) -> repositoryBuilder.b2cClientRegistrations(registrationBuilder);
-        repositoryBuilder.addRepositoryBuilderConfigurer(configurer).build();
+    void setAddRepositoryBuilderCustomizer() {
+        AadB2cClientRegistrationRepositoryBuilderCustomizer customizer =
+            (repositoryBuilder) -> repositoryBuilder.aadB2cClientRegistrations(aadB2cClientRegistrations);
+        repositoryBuilder.addBuilderCustomizer(customizer).build();
         List<ClientRegistration> clientRegistrations = (List<ClientRegistration>) ReflectionTestUtils.getField(repositoryBuilder, "clientRegistrations");
         Set<String> nonSignInClientRegistrationIds = (Set<String>) ReflectionTestUtils.getField(repositoryBuilder, "nonSignInClientRegistrationIds");
         Assertions.assertNotNull(clientRegistrations);
@@ -99,7 +99,7 @@ class AadB2cClientRegistrationRepositoryBuilderTests {
     @Test
     void buildRepository() {
         AadB2cClientRegistrationRepository repository =
-            (AadB2cClientRegistrationRepository) repositoryBuilder.b2cClientRegistrations(registrationBuilder)
+            (AadB2cClientRegistrationRepository) repositoryBuilder.aadB2cClientRegistrations(aadB2cClientRegistrations)
                                                                   .build();
         ClientRegistration signInClient = repository.iterator().next();
         Assertions.assertEquals(SIGN_IN_USER_FLOW_ID, signInClient.getRegistrationId());
@@ -112,7 +112,7 @@ class AadB2cClientRegistrationRepositoryBuilderTests {
 
     @Test
     void repeatBuildRepository() {
-        repositoryBuilder.b2cClientRegistrations(registrationBuilder).build();
+        repositoryBuilder.aadB2cClientRegistrations(aadB2cClientRegistrations).build();
         Assertions.assertThrows(IllegalStateException.class, () -> repositoryBuilder.build());
     }
 }
