@@ -4,50 +4,43 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.workloads.fluent.ResourceProvidersClient;
-import com.azure.resourcemanager.workloads.fluent.models.SapAvailabilityZoneDetailsResultInner;
-import com.azure.resourcemanager.workloads.fluent.models.SapDiskConfigurationsResultInner;
-import com.azure.resourcemanager.workloads.fluent.models.SapSizingRecommendationResultInner;
-import com.azure.resourcemanager.workloads.fluent.models.SapSupportedResourceSkusResultInner;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-/**
- * Resource collection API of ResourceProviders.
- */
+/** Resource collection API of ResourceProviders. */
 public interface ResourceProviders {
     /**
-     * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database tier.
-     * 
+     * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database
+     * tier.
+     *
      * @param location The name of Azure region.
      * @param sapSizingRecommendation SAP Sizing Recommendation Request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP sizing recommendations by providing input SAPS for application tier and memory required for database tier along with {@link Response}.
+     * @return sAP sizing recommendations by providing input SAPS for application tier and memory required for database
+     *     tier along with {@link Response}.
      */
-    Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context);
+    Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(
+        String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context);
 
     /**
-     * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database tier.
-     * 
+     * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database
+     * tier.
+     *
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP sizing recommendations by providing input SAPS for application tier and memory required for database tier.
+     * @return sAP sizing recommendations by providing input SAPS for application tier and memory required for database
+     *     tier.
      */
     SapSizingRecommendationResult sapSizingRecommendations(String location);
 
     /**
      * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
-     * 
+     *
      * @param location The name of Azure region.
      * @param sapSupportedSku SAP Supported SKU Request body.
      * @param context The context to associate with this operation.
@@ -56,11 +49,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SAP supported SKUs for ASCS, Application and Database tier along with {@link Response}.
      */
-    Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(String location, SapSupportedSkusRequest sapSupportedSku, Context context);
+    Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(
+        String location, SapSupportedSkusRequest sapSupportedSku, Context context);
 
     /**
      * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
-     * 
+     *
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,7 +65,7 @@ public interface ResourceProviders {
 
     /**
      * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
-     * 
+     *
      * @param location The name of Azure region.
      * @param sapDiskConfigurations SAP Disk Configurations Request body.
      * @param context The context to associate with this operation.
@@ -80,11 +74,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Disk Configuration Layout prod/non-prod SAP System along with {@link Response}.
      */
-    Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
+    Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(
+        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
 
     /**
      * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
-     * 
+     *
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +90,7 @@ public interface ResourceProviders {
 
     /**
      * Get the recommended SAP Availability Zone Pair Details for your region.
-     * 
+     *
      * @param location The name of Azure region.
      * @param sapAvailabilityZoneDetails SAP Availability Zone Details Request body.
      * @param context The context to associate with this operation.
@@ -104,11 +99,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the recommended SAP Availability Zone Pair Details for your region along with {@link Response}.
      */
-    Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
+    Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(
+        String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
 
     /**
      * Get the recommended SAP Availability Zone Pair Details for your region.
-     * 
+     *
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

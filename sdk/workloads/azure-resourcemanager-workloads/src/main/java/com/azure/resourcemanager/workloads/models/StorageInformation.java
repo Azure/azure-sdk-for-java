@@ -4,17 +4,10 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Storage details of all the Storage accounts attached to the VM. For e.g. NFS on AFS Shared Storage.
- */
+/** Storage details of all the Storage accounts attached to the VM. For e.g. NFS on AFS Shared Storage. */
 @Immutable
 public final class StorageInformation {
     /*
@@ -23,15 +16,13 @@ public final class StorageInformation {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /**
-     * Creates an instance of StorageInformation class.
-     */
+    /** Creates an instance of StorageInformation class. */
     public StorageInformation() {
     }
 
     /**
      * Get the id property: The id property.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -40,7 +31,7 @@ public final class StorageInformation {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

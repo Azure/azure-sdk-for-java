@@ -4,18 +4,11 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Standard error object.
- */
+/** Standard error object. */
 @Immutable
 public class Error {
     /*
@@ -48,15 +41,13 @@ public class Error {
     @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorInnerError innerError;
 
-    /**
-     * Creates an instance of Error class.
-     */
+    /** Creates an instance of Error class. */
     public Error() {
     }
 
     /**
      * Get the code property: Server-defined set of error codes.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -65,7 +56,7 @@ public class Error {
 
     /**
      * Get the message property: Human-readable representation of the error.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -74,7 +65,7 @@ public class Error {
 
     /**
      * Get the target property: Target of the error.
-     * 
+     *
      * @return the target value.
      */
     public String target() {
@@ -83,7 +74,7 @@ public class Error {
 
     /**
      * Get the details property: Array of details about specific errors that led to this reported error.
-     * 
+     *
      * @return the details value.
      */
     public List<Error> details() {
@@ -91,9 +82,8 @@ public class Error {
     }
 
     /**
-     * Get the innerError property: Object containing more specific information than  the current object about the
-     * error.
-     * 
+     * Get the innerError property: Object containing more specific information than the current object about the error.
+     *
      * @return the innerError value.
      */
     public ErrorInnerError innerError() {
@@ -102,7 +92,7 @@ public class Error {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

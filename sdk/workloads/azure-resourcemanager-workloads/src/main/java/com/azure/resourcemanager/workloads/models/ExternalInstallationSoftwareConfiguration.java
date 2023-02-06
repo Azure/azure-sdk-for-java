@@ -5,18 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
-/**
- * The SAP Software configuration Input when the software is installed externally outside the service.
- */
+/** The SAP Software configuration Input when the software is installed externally outside the service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "softwareInstallationType")
 @JsonTypeName("External")
 @Fluent
@@ -27,16 +20,14 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
     @JsonProperty(value = "centralServerVmId")
     private String centralServerVmId;
 
-    /**
-     * Creates an instance of ExternalInstallationSoftwareConfiguration class.
-     */
+    /** Creates an instance of ExternalInstallationSoftwareConfiguration class. */
     public ExternalInstallationSoftwareConfiguration() {
     }
 
     /**
      * Get the centralServerVmId property: The resource ID of the virtual machine containing the central server
      * instance.
-     * 
+     *
      * @return the centralServerVmId value.
      */
     public String centralServerVmId() {
@@ -46,7 +37,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
     /**
      * Set the centralServerVmId property: The resource ID of the virtual machine containing the central server
      * instance.
-     * 
+     *
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the ExternalInstallationSoftwareConfiguration object itself.
      */
@@ -57,7 +48,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

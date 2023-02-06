@@ -4,29 +4,18 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Defines the provider instance errors.
- */
+/** Defines the provider instance errors. */
 @Immutable
 public final class ProviderInstancePropertiesErrors extends Error {
-    /**
-     * Creates an instance of ProviderInstancePropertiesErrors class.
-     */
+    /** Creates an instance of ProviderInstancePropertiesErrors class. */
     public ProviderInstancePropertiesErrors() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

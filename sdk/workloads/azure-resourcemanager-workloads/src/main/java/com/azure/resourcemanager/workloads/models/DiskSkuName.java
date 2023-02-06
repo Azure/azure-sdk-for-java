@@ -8,48 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines the disk sku name.
- */
+/** Defines the disk sku name. */
 public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
-    /**
-     * Static value Standard_LRS for DiskSkuName.
-     */
+    /** Static value Standard_LRS for DiskSkuName. */
     public static final DiskSkuName STANDARD_LRS = fromString("Standard_LRS");
 
-    /**
-     * Static value Premium_LRS for DiskSkuName.
-     */
+    /** Static value Premium_LRS for DiskSkuName. */
     public static final DiskSkuName PREMIUM_LRS = fromString("Premium_LRS");
 
-    /**
-     * Static value StandardSSD_LRS for DiskSkuName.
-     */
+    /** Static value StandardSSD_LRS for DiskSkuName. */
     public static final DiskSkuName STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
-    /**
-     * Static value UltraSSD_LRS for DiskSkuName.
-     */
+    /** Static value UltraSSD_LRS for DiskSkuName. */
     public static final DiskSkuName ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
-    /**
-     * Static value Premium_ZRS for DiskSkuName.
-     */
+    /** Static value Premium_ZRS for DiskSkuName. */
     public static final DiskSkuName PREMIUM_ZRS = fromString("Premium_ZRS");
 
-    /**
-     * Static value StandardSSD_ZRS for DiskSkuName.
-     */
+    /** Static value StandardSSD_ZRS for DiskSkuName. */
     public static final DiskSkuName STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
-    /**
-     * Static value PremiumV2_LRS for DiskSkuName.
-     */
+    /** Static value PremiumV2_LRS for DiskSkuName. */
     public static final DiskSkuName PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
      * Creates a new instance of DiskSkuName value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,7 +42,7 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
 
     /**
      * Creates or finds a DiskSkuName from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DiskSkuName.
      */
@@ -69,7 +53,7 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
 
     /**
      * Gets known DiskSkuName values.
-     * 
+     *
      * @return known DiskSkuName values.
      */
     public static Collection<DiskSkuName> values() {

@@ -4,22 +4,19 @@
 
 package com.azure.resourcemanager.workloads.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.SingleServerRecommendationResult;
 import com.azure.resourcemanager.workloads.models.ThreeTierRecommendationResult;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
-/**
- * The SAP sizing recommendation result.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType", defaultImpl = SapSizingRecommendationResultInner.class)
+/** The SAP sizing recommendation result. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "deploymentType",
+    defaultImpl = SapSizingRecommendationResultInner.class)
 @JsonTypeName("SapSizingRecommendationResult")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SingleServer", value = SingleServerRecommendationResult.class),
@@ -27,15 +24,13 @@ import java.util.regex.Pattern;
 })
 @Immutable
 public class SapSizingRecommendationResultInner {
-    /**
-     * Creates an instance of SapSizingRecommendationResultInner class.
-     */
+    /** Creates an instance of SapSizingRecommendationResultInner class. */
     public SapSizingRecommendationResultInner() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

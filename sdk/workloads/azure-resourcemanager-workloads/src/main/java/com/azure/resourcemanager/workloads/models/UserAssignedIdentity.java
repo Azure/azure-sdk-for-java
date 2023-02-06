@@ -4,18 +4,11 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
-/**
- * User assigned identity properties.
- */
+/** User assigned identity properties. */
 @Immutable
 public class UserAssignedIdentity {
     /*
@@ -30,15 +23,13 @@ public class UserAssignedIdentity {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
-    /**
-     * Creates an instance of UserAssignedIdentity class.
-     */
+    /** Creates an instance of UserAssignedIdentity class. */
     public UserAssignedIdentity() {
     }
 
     /**
      * Get the principalId property: The principal ID of the assigned identity.
-     * 
+     *
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -47,7 +38,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the clientId property: The client ID of the assigned identity.
-     * 
+     *
      * @return the clientId value.
      */
     public UUID clientId() {
@@ -56,7 +47,7 @@ public class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

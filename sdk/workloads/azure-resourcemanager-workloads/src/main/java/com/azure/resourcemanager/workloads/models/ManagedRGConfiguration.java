@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Managed resource group configuration.
- */
+/** Managed resource group configuration. */
 @Fluent
 public final class ManagedRGConfiguration {
     /*
@@ -23,15 +16,13 @@ public final class ManagedRGConfiguration {
     @JsonProperty(value = "name")
     private String name;
 
-    /**
-     * Creates an instance of ManagedRGConfiguration class.
-     */
+    /** Creates an instance of ManagedRGConfiguration class. */
     public ManagedRGConfiguration() {
     }
 
     /**
      * Get the name property: Managed resource group name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -40,7 +31,7 @@ public final class ManagedRGConfiguration {
 
     /**
      * Set the name property: Managed resource group name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ManagedRGConfiguration object itself.
      */
@@ -51,7 +42,7 @@ public final class ManagedRGConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

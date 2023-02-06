@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Gets or sets certificate preference if secure communication is enabled.
- */
+/** Gets or sets certificate preference if secure communication is enabled. */
 public final class SslPreference extends ExpandableStringEnum<SslPreference> {
-    /**
-     * Static value Disabled for SslPreference.
-     */
+    /** Static value Disabled for SslPreference. */
     public static final SslPreference DISABLED = fromString("Disabled");
 
-    /**
-     * Static value RootCertificate for SslPreference.
-     */
+    /** Static value RootCertificate for SslPreference. */
     public static final SslPreference ROOT_CERTIFICATE = fromString("RootCertificate");
 
-    /**
-     * Static value ServerCertificate for SslPreference.
-     */
+    /** Static value ServerCertificate for SslPreference. */
     public static final SslPreference SERVER_CERTIFICATE = fromString("ServerCertificate");
 
     /**
      * Creates a new instance of SslPreference value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +30,7 @@ public final class SslPreference extends ExpandableStringEnum<SslPreference> {
 
     /**
      * Creates or finds a SslPreference from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SslPreference.
      */
@@ -49,7 +41,7 @@ public final class SslPreference extends ExpandableStringEnum<SslPreference> {
 
     /**
      * Gets known SslPreference values.
-     * 
+     *
      * @return known SslPreference values.
      */
     public static Collection<SslPreference> values() {

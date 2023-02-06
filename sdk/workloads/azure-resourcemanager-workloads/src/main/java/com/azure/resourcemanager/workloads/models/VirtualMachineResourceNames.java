@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-/**
- * The resource names object for virtual machine and related resources.
- */
+/** The resource names object for virtual machine and related resources. */
 @Fluent
 public final class VirtualMachineResourceNames {
     /*
@@ -59,19 +53,17 @@ public final class VirtualMachineResourceNames {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> dataDiskNames;
 
-    /**
-     * Creates an instance of VirtualMachineResourceNames class.
-     */
+    /** Creates an instance of VirtualMachineResourceNames class. */
     public VirtualMachineResourceNames() {
     }
 
     /**
      * Get the vmName property: The full name for virtual machine. The length of this field can be upto 64 characters.
-     * If name is not provided, service uses a default name based on the deployment type. For SingleServer, default
-     * name is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an
-     * incrementor at the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name
-     * will be {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer.
-     * 
+     * If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name
+     * is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an incrementor at
+     * the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name will be
+     * {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer.
+     *
      * @return the vmName value.
      */
     public String vmName() {
@@ -80,11 +72,11 @@ public final class VirtualMachineResourceNames {
 
     /**
      * Set the vmName property: The full name for virtual machine. The length of this field can be upto 64 characters.
-     * If name is not provided, service uses a default name based on the deployment type. For SingleServer, default
-     * name is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an
-     * incrementor at the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name
-     * will be {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer.
-     * 
+     * If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name
+     * is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an incrementor at
+     * the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name will be
+     * {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer.
+     *
      * @param vmName the vmName value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
@@ -97,7 +89,7 @@ public final class VirtualMachineResourceNames {
      * Get the hostname property: The full name for virtual-machine's host (computer name). Currently, ACSS only
      * supports host names which are less than or equal to 13 characters long. If this value is not provided, vmName
      * will be used as host name.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -108,7 +100,7 @@ public final class VirtualMachineResourceNames {
      * Set the hostname property: The full name for virtual-machine's host (computer name). Currently, ACSS only
      * supports host names which are less than or equal to 13 characters long. If this value is not provided, vmName
      * will be used as host name.
-     * 
+     *
      * @param hostname the hostname value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
@@ -120,7 +112,7 @@ public final class VirtualMachineResourceNames {
     /**
      * Get the networkInterfaces property: The list of network interface name objects for the selected virtual machine.
      * Currently, only one network interface is supported per virtual machine.
-     * 
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceResourceNames> networkInterfaces() {
@@ -130,7 +122,7 @@ public final class VirtualMachineResourceNames {
     /**
      * Set the networkInterfaces property: The list of network interface name objects for the selected virtual machine.
      * Currently, only one network interface is supported per virtual machine.
-     * 
+     *
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
@@ -140,10 +132,10 @@ public final class VirtualMachineResourceNames {
     }
 
     /**
-     * Get the osDiskName property: The full name for OS disk attached to the VM. If this value is not provided, it
-     * will be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk
-     * attached per Virtual Machine.
-     * 
+     * Get the osDiskName property: The full name for OS disk attached to the VM. If this value is not provided, it will
+     * be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk attached
+     * per Virtual Machine.
+     *
      * @return the osDiskName value.
      */
     public String osDiskName() {
@@ -151,10 +143,10 @@ public final class VirtualMachineResourceNames {
     }
 
     /**
-     * Set the osDiskName property: The full name for OS disk attached to the VM. If this value is not provided, it
-     * will be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk
-     * attached per Virtual Machine.
-     * 
+     * Set the osDiskName property: The full name for OS disk attached to the VM. If this value is not provided, it will
+     * be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk attached
+     * per Virtual Machine.
+     *
      * @param osDiskName the osDiskName value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
@@ -166,9 +158,9 @@ public final class VirtualMachineResourceNames {
     /**
      * Get the dataDiskNames property: The full resource names for virtual machine data disks. This is a dictionary
      * containing list of names of data disks per volume. Currently supported volumes for database layer are
-     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only
-     * 'default' volume is supported.
-     * 
+     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default'
+     * volume is supported.
+     *
      * @return the dataDiskNames value.
      */
     public Map<String, List<String>> dataDiskNames() {
@@ -178,9 +170,9 @@ public final class VirtualMachineResourceNames {
     /**
      * Set the dataDiskNames property: The full resource names for virtual machine data disks. This is a dictionary
      * containing list of names of data disks per volume. Currently supported volumes for database layer are
-     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only
-     * 'default' volume is supported.
-     * 
+     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default'
+     * volume is supported.
+     *
      * @param dataDiskNames the dataDiskNames value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
@@ -191,7 +183,7 @@ public final class VirtualMachineResourceNames {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

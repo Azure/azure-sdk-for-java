@@ -5,17 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * The disk sku.
- */
+/** The disk sku. */
 @Fluent
 public final class DiskSku {
     /*
@@ -24,15 +16,13 @@ public final class DiskSku {
     @JsonProperty(value = "name")
     private DiskSkuName name;
 
-    /**
-     * Creates an instance of DiskSku class.
-     */
+    /** Creates an instance of DiskSku class. */
     public DiskSku() {
     }
 
     /**
      * Get the name property: Defines the disk sku name.
-     * 
+     *
      * @return the name value.
      */
     public DiskSkuName name() {
@@ -41,7 +31,7 @@ public final class DiskSku {
 
     /**
      * Set the name property: Defines the disk sku name.
-     * 
+     *
      * @param name the name value to set.
      * @return the DiskSku object itself.
      */
@@ -52,7 +42,7 @@ public final class DiskSku {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,18 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerInstanceInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Defines the collection of SAP Application Server Instance resources.
- */
+/** Defines the collection of SAP Application Server Instance resources. */
 @Fluent
 public final class SapApplicationServerInstanceList {
     /*
@@ -31,15 +24,13 @@ public final class SapApplicationServerInstanceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of SapApplicationServerInstanceList class.
-     */
+    /** Creates an instance of SapApplicationServerInstanceList class. */
     public SapApplicationServerInstanceList() {
     }
 
     /**
      * Get the value property: Gets the list of SAP Application Server instance resources.
-     * 
+     *
      * @return the value value.
      */
     public List<SapApplicationServerInstanceInner> value() {
@@ -48,7 +39,7 @@ public final class SapApplicationServerInstanceList {
 
     /**
      * Set the value property: Gets the list of SAP Application Server instance resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the SapApplicationServerInstanceList object itself.
      */
@@ -59,7 +50,7 @@ public final class SapApplicationServerInstanceList {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +59,7 @@ public final class SapApplicationServerInstanceList {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SapApplicationServerInstanceList object itself.
      */
@@ -79,7 +70,7 @@ public final class SapApplicationServerInstanceList {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

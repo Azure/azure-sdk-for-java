@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Gets or sets the database configuration.
- */
+/** Gets or sets the database configuration. */
 @Fluent
 public final class DatabaseConfiguration {
     /*
@@ -48,15 +41,13 @@ public final class DatabaseConfiguration {
     @JsonProperty(value = "diskConfiguration")
     private DiskConfiguration diskConfiguration;
 
-    /**
-     * Creates an instance of DatabaseConfiguration class.
-     */
+    /** Creates an instance of DatabaseConfiguration class. */
     public DatabaseConfiguration() {
     }
 
     /**
      * Get the databaseType property: The database type.
-     * 
+     *
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -65,7 +56,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the databaseType property: The database type.
-     * 
+     *
      * @param databaseType the databaseType value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -76,7 +67,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Get the subnetId property: The subnet id.
-     * 
+     *
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -85,7 +76,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the subnetId property: The subnet id.
-     * 
+     *
      * @param subnetId the subnetId value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -96,7 +87,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     * 
+     *
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -105,18 +96,19 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     * 
+     *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
-    public DatabaseConfiguration withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
+    public DatabaseConfiguration withVirtualMachineConfiguration(
+        VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the instanceCount property: The number of database VMs.
-     * 
+     *
      * @return the instanceCount value.
      */
     public long instanceCount() {
@@ -125,7 +117,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the instanceCount property: The number of database VMs.
-     * 
+     *
      * @param instanceCount the instanceCount value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -136,7 +128,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Get the diskConfiguration property: Gets or sets the disk configuration.
-     * 
+     *
      * @return the diskConfiguration value.
      */
     public DiskConfiguration diskConfiguration() {
@@ -145,7 +137,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the diskConfiguration property: Gets or sets the disk configuration.
-     * 
+     *
      * @param diskConfiguration the diskConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -156,15 +148,20 @@ public final class DatabaseConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

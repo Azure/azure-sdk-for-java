@@ -5,14 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
 /**
  * The resource name object where the specified values will be full resource names of the corresponding resources in a
@@ -48,15 +43,13 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     @JsonProperty(value = "sharedStorage")
     private SharedStorageResourceNames sharedStorage;
 
-    /**
-     * Creates an instance of ThreeTierFullResourceNames class.
-     */
+    /** Creates an instance of ThreeTierFullResourceNames class. */
     public ThreeTierFullResourceNames() {
     }
 
     /**
      * Get the centralServer property: The full resource names object for central server layer resources.
-     * 
+     *
      * @return the centralServer value.
      */
     public CentralServerFullResourceNames centralServer() {
@@ -65,7 +58,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Set the centralServer property: The full resource names object for central server layer resources.
-     * 
+     *
      * @param centralServer the centralServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -75,9 +68,9 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     }
 
     /**
-     * Get the applicationServer property: The full resource names object for application layer resources. The number
-     * of entries in this list should be equal to the number VMs to be created for application layer.
-     * 
+     * Get the applicationServer property: The full resource names object for application layer resources. The number of
+     * entries in this list should be equal to the number VMs to be created for application layer.
+     *
      * @return the applicationServer value.
      */
     public ApplicationServerFullResourceNames applicationServer() {
@@ -85,9 +78,9 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     }
 
     /**
-     * Set the applicationServer property: The full resource names object for application layer resources. The number
-     * of entries in this list should be equal to the number VMs to be created for application layer.
-     * 
+     * Set the applicationServer property: The full resource names object for application layer resources. The number of
+     * entries in this list should be equal to the number VMs to be created for application layer.
+     *
      * @param applicationServer the applicationServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -99,7 +92,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Get the databaseServer property: The full resource names object for database layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for database layer.
-     * 
+     *
      * @return the databaseServer value.
      */
     public DatabaseServerFullResourceNames databaseServer() {
@@ -109,7 +102,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /**
      * Set the databaseServer property: The full resource names object for database layer resources. The number of
      * entries in this list should be equal to the number VMs to be created for database layer.
-     * 
+     *
      * @param databaseServer the databaseServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -120,7 +113,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Get the sharedStorage property: The resource names object for shared storage.
-     * 
+     *
      * @return the sharedStorage value.
      */
     public SharedStorageResourceNames sharedStorage() {
@@ -129,7 +122,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Set the sharedStorage property: The resource names object for shared storage.
-     * 
+     *
      * @param sharedStorage the sharedStorage value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
@@ -140,7 +133,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * The SAP request to get list of availability zones.
- */
+/** The SAP request to get list of availability zones. */
 @Fluent
 public final class SapAvailabilityZoneDetailsRequest {
     /*
@@ -36,15 +29,13 @@ public final class SapAvailabilityZoneDetailsRequest {
     @JsonProperty(value = "databaseType", required = true)
     private SapDatabaseType databaseType;
 
-    /**
-     * Creates an instance of SapAvailabilityZoneDetailsRequest class.
-     */
+    /** Creates an instance of SapAvailabilityZoneDetailsRequest class. */
     public SapAvailabilityZoneDetailsRequest() {
     }
 
     /**
      * Get the appLocation property: The geo-location where the SAP resources will be created.
-     * 
+     *
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -53,7 +44,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the appLocation property: The geo-location where the SAP resources will be created.
-     * 
+     *
      * @param appLocation the appLocation value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -64,7 +55,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     * 
+     *
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -73,7 +64,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     * 
+     *
      * @param sapProduct the sapProduct value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -84,7 +75,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Get the databaseType property: The database type. Eg: HANA, DB2, etc.
-     * 
+     *
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -93,7 +84,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the databaseType property: The database type. Eg: HANA, DB2, etc.
-     * 
+     *
      * @param databaseType the databaseType value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -104,18 +95,27 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
         }
     }
 

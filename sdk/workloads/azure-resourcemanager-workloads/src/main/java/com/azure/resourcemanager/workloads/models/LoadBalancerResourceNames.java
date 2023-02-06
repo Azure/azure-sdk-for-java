@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * The resource names object for load balancer and related resources.
- */
+/** The resource names object for load balancer and related resources. */
 @Fluent
 public final class LoadBalancerResourceNames {
     /*
@@ -46,16 +39,14 @@ public final class LoadBalancerResourceNames {
     @JsonProperty(value = "healthProbeNames")
     private List<String> healthProbeNames;
 
-    /**
-     * Creates an instance of LoadBalancerResourceNames class.
-     */
+    /** Creates an instance of LoadBalancerResourceNames class. */
     public LoadBalancerResourceNames() {
     }
 
     /**
      * Get the loadBalancerName property: The full resource name for load balancer. If this value is not provided, load
      * balancer will be name as {ASCS/DB}-loadBalancer.
-     * 
+     *
      * @return the loadBalancerName value.
      */
     public String loadBalancerName() {
@@ -65,7 +56,7 @@ public final class LoadBalancerResourceNames {
     /**
      * Set the loadBalancerName property: The full resource name for load balancer. If this value is not provided, load
      * balancer will be name as {ASCS/DB}-loadBalancer.
-     * 
+     *
      * @param loadBalancerName the loadBalancerName value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
@@ -75,9 +66,9 @@ public final class LoadBalancerResourceNames {
     }
 
     /**
-     * Get the frontendIpConfigurationNames property: The list of frontend IP configuration names. If provided as
-     * input, size of this list should be 2 for cs layer and should be 1 for database layer.
-     * 
+     * Get the frontendIpConfigurationNames property: The list of frontend IP configuration names. If provided as input,
+     * size of this list should be 2 for cs layer and should be 1 for database layer.
+     *
      * @return the frontendIpConfigurationNames value.
      */
     public List<String> frontendIpConfigurationNames() {
@@ -85,9 +76,9 @@ public final class LoadBalancerResourceNames {
     }
 
     /**
-     * Set the frontendIpConfigurationNames property: The list of frontend IP configuration names. If provided as
-     * input, size of this list should be 2 for cs layer and should be 1 for database layer.
-     * 
+     * Set the frontendIpConfigurationNames property: The list of frontend IP configuration names. If provided as input,
+     * size of this list should be 2 for cs layer and should be 1 for database layer.
+     *
      * @param frontendIpConfigurationNames the frontendIpConfigurationNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
@@ -99,7 +90,7 @@ public final class LoadBalancerResourceNames {
     /**
      * Get the backendPoolNames property: The list of backend pool names. Currently, ACSS deploys only one backend pool
      * and hence, size of this list should be 1.
-     * 
+     *
      * @return the backendPoolNames value.
      */
     public List<String> backendPoolNames() {
@@ -109,7 +100,7 @@ public final class LoadBalancerResourceNames {
     /**
      * Set the backendPoolNames property: The list of backend pool names. Currently, ACSS deploys only one backend pool
      * and hence, size of this list should be 1.
-     * 
+     *
      * @param backendPoolNames the backendPoolNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
@@ -119,9 +110,9 @@ public final class LoadBalancerResourceNames {
     }
 
     /**
-     * Get the healthProbeNames property: The list of health probe names. If provided as input, size of this list
-     * should be 2 for cs layer and should be 1 for database layer.
-     * 
+     * Get the healthProbeNames property: The list of health probe names. If provided as input, size of this list should
+     * be 2 for cs layer and should be 1 for database layer.
+     *
      * @return the healthProbeNames value.
      */
     public List<String> healthProbeNames() {
@@ -129,9 +120,9 @@ public final class LoadBalancerResourceNames {
     }
 
     /**
-     * Set the healthProbeNames property: The list of health probe names. If provided as input, size of this list
-     * should be 2 for cs layer and should be 1 for database layer.
-     * 
+     * Set the healthProbeNames property: The list of health probe names. If provided as input, size of this list should
+     * be 2 for cs layer and should be 1 for database layer.
+     *
      * @param healthProbeNames the healthProbeNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
@@ -142,7 +133,7 @@ public final class LoadBalancerResourceNames {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

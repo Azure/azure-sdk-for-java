@@ -5,12 +5,7 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
 /**
  * The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format.
@@ -31,15 +26,13 @@ public final class SshKeyPair {
     @JsonProperty(value = "privateKey")
     private String privateKey;
 
-    /**
-     * Creates an instance of SshKeyPair class.
-     */
+    /** Creates an instance of SshKeyPair class. */
     public SshKeyPair() {
     }
 
     /**
      * Get the publicKey property: SSH public key.
-     * 
+     *
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -48,7 +41,7 @@ public final class SshKeyPair {
 
     /**
      * Set the publicKey property: SSH public key.
-     * 
+     *
      * @param publicKey the publicKey value to set.
      * @return the SshKeyPair object itself.
      */
@@ -59,7 +52,7 @@ public final class SshKeyPair {
 
     /**
      * Get the privateKey property: SSH private key.
-     * 
+     *
      * @return the privateKey value.
      */
     public String privateKey() {
@@ -68,7 +61,7 @@ public final class SshKeyPair {
 
     /**
      * Set the privateKey property: SSH private key.
-     * 
+     *
      * @param privateKey the privateKey value to set.
      * @return the SshKeyPair object itself.
      */
@@ -79,7 +72,7 @@ public final class SshKeyPair {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * The disk configuration required for the selected volume.
- */
+/** The disk configuration required for the selected volume. */
 @Fluent
 public final class DiskVolumeConfiguration {
     /*
@@ -35,15 +28,13 @@ public final class DiskVolumeConfiguration {
     @JsonProperty(value = "sku")
     private DiskSku sku;
 
-    /**
-     * Creates an instance of DiskVolumeConfiguration class.
-     */
+    /** Creates an instance of DiskVolumeConfiguration class. */
     public DiskVolumeConfiguration() {
     }
 
     /**
      * Get the count property: The total number of disks required for the concerned volume.
-     * 
+     *
      * @return the count value.
      */
     public Long count() {
@@ -52,7 +43,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the count property: The total number of disks required for the concerned volume.
-     * 
+     *
      * @param count the count value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -63,7 +54,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Get the sizeGB property: The disk size in GB.
-     * 
+     *
      * @return the sizeGB value.
      */
     public Long sizeGB() {
@@ -72,7 +63,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the sizeGB property: The disk size in GB.
-     * 
+     *
      * @param sizeGB the sizeGB value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -83,7 +74,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Get the sku property: The disk SKU details.
-     * 
+     *
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -92,7 +83,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Set the sku property: The disk SKU details.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
@@ -103,7 +94,7 @@ public final class DiskVolumeConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

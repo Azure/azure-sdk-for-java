@@ -4,36 +4,31 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
 /**
  * The resource-names input to specify custom names for underlying azure resources that are part of a three tier SAP
  * system.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "namingPatternType", defaultImpl = ThreeTierCustomResourceNames.class)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "namingPatternType",
+    defaultImpl = ThreeTierCustomResourceNames.class)
 @JsonTypeName("ThreeTierCustomResourceNames")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "FullResourceName", value = ThreeTierFullResourceNames.class)
-})
+@JsonSubTypes({@JsonSubTypes.Type(name = "FullResourceName", value = ThreeTierFullResourceNames.class)})
 @Immutable
 public class ThreeTierCustomResourceNames {
-    /**
-     * Creates an instance of ThreeTierCustomResourceNames class.
-     */
+    /** Creates an instance of ThreeTierCustomResourceNames class. */
     public ThreeTierCustomResourceNames() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

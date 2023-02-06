@@ -4,57 +4,51 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.workloads.fluent.ProviderInstancesClient;
-import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.workloads.fluent.models.ProviderInstanceInner;
-import com.azure.resourcemanager.workloads.implementation.ProviderInstanceImpl;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-/**
- * Resource collection API of ProviderInstances.
- */
+/** Resource collection API of ProviderInstances. */
 public interface ProviderInstances {
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link PagedIterable}.
+     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ProviderInstance> list(String resourceGroupName, String monitorName);
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link PagedIterable}.
+     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ProviderInstance> list(String resourceGroupName, String monitorName, Context context);
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -62,30 +56,35 @@ public interface ProviderInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response}.
      */
-    Response<ProviderInstance> getWithResponse(String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    Response<ProviderInstance> getWithResponse(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name.
      */
     ProviderInstance get(String resourceGroupName, String monitorName, String providerInstanceName);
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -98,9 +97,10 @@ public interface ProviderInstances {
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -110,40 +110,46 @@ public interface ProviderInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    OperationStatusResult delete(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response}.
      */
     ProviderInstance getById(String id);
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response}.
      */
     Response<ProviderInstance> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -154,9 +160,10 @@ public interface ProviderInstances {
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +175,7 @@ public interface ProviderInstances {
 
     /**
      * Begins definition for a new ProviderInstance resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new ProviderInstance definition.
      */

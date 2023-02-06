@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * The current status of an async operation.
- */
+/** The current status of an async operation. */
 @Fluent
 public final class OperationStatusResultInner {
     /*
@@ -68,15 +62,13 @@ public final class OperationStatusResultInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /**
-     * Creates an instance of OperationStatusResultInner class.
-     */
+    /** Creates an instance of OperationStatusResultInner class. */
     public OperationStatusResultInner() {
     }
 
     /**
      * Get the id property: Fully qualified ID for the async operation.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -85,7 +77,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the id property: Fully qualified ID for the async operation.
-     * 
+     *
      * @param id the id value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -96,7 +88,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the name property: Name of the async operation.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -105,7 +97,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the name property: Name of the async operation.
-     * 
+     *
      * @param name the name value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -116,7 +108,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the status property: Operation status.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -125,7 +117,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the status property: Operation status.
-     * 
+     *
      * @param status the status value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -136,7 +128,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the percentComplete property: Percent of the operation that is complete.
-     * 
+     *
      * @return the percentComplete value.
      */
     public Float percentComplete() {
@@ -145,7 +137,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the percentComplete property: Percent of the operation that is complete.
-     * 
+     *
      * @param percentComplete the percentComplete value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -156,7 +148,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -165,7 +157,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -176,7 +168,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -185,7 +177,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -196,7 +188,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the operations property: The operations list.
-     * 
+     *
      * @return the operations value.
      */
     public List<OperationStatusResultInner> operations() {
@@ -205,7 +197,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the operations property: The operations list.
-     * 
+     *
      * @param operations the operations value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -216,7 +208,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Get the error property: If present, details of the operation error.
-     * 
+     *
      * @return the error value.
      */
     public ManagementError error() {
@@ -225,7 +217,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the error property: If present, details of the operation error.
-     * 
+     *
      * @param error the error value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -236,12 +228,15 @@ public final class OperationStatusResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property status in model OperationStatusResultInner"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property status in model OperationStatusResultInner"));
         }
         if (operations() != null) {
             operations().forEach(e -> e.validate());

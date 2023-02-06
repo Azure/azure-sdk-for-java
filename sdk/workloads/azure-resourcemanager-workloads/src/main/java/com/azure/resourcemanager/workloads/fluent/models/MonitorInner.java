@@ -5,25 +5,17 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.MonitorPropertiesErrors;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
 import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * SAP monitor info on Azure (ARM properties and SAP monitor properties).
- */
+/** SAP monitor info on Azure (ARM properties and SAP monitor properties). */
 @Fluent
 public final class MonitorInner extends Resource {
     /*
@@ -44,15 +36,13 @@ public final class MonitorInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of MonitorInner class.
-     */
+    /** Creates an instance of MonitorInner class. */
     public MonitorInner() {
     }
 
     /**
      * Get the identity property: Managed service identity (user assigned identities).
-     * 
+     *
      * @return the identity value.
      */
     public UserAssignedServiceIdentity identity() {
@@ -61,7 +51,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity (user assigned identities).
-     * 
+     *
      * @param identity the identity value to set.
      * @return the MonitorInner object itself.
      */
@@ -72,7 +62,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the innerProperties property: SAP monitor properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private MonitorProperties innerProperties() {
@@ -81,25 +71,21 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MonitorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MonitorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -108,7 +94,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the provisioningState property: State of provisioning of the SAP monitor.
-     * 
+     *
      * @return the provisioningState value.
      */
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -117,7 +103,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the errors property: Defines the SAP monitor errors.
-     * 
+     *
      * @return the errors value.
      */
     public MonitorPropertiesErrors errors() {
@@ -125,9 +111,9 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The
-     * subnet region should be same as the SAP monitoring region.
-     * 
+     * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
+     *
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -135,9 +121,9 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The
-     * subnet region should be same as the SAP monitoring region.
-     * 
+     * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
+     *
      * @param appLocation the appLocation value to set.
      * @return the MonitorInner object itself.
      */
@@ -152,7 +138,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     * 
+     *
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -162,7 +148,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     * 
+     *
      * @param routingPreference the routingPreference value to set.
      * @return the MonitorInner object itself.
      */
@@ -177,7 +163,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     * 
+     *
      * @return the zoneRedundancyPreference value.
      */
     public String zoneRedundancyPreference() {
@@ -187,7 +173,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     * 
+     *
      * @param zoneRedundancyPreference the zoneRedundancyPreference value to set.
      * @return the MonitorInner object itself.
      */
@@ -201,7 +187,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
-     * 
+     *
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
@@ -210,11 +196,12 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed resource group configuration.
-     * 
+     *
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the MonitorInner object itself.
      */
-    public MonitorInner withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public MonitorInner withManagedResourceGroupConfiguration(
+        ManagedRGConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -225,7 +212,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     * 
+     *
      * @return the logAnalyticsWorkspaceArmId value.
      */
     public String logAnalyticsWorkspaceArmId() {
@@ -235,7 +222,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     * 
+     *
      * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set.
      * @return the MonitorInner object itself.
      */
@@ -249,7 +236,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     * 
+     *
      * @return the monitorSubnet value.
      */
     public String monitorSubnet() {
@@ -258,7 +245,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     * 
+     *
      * @param monitorSubnet the monitorSubnet value to set.
      * @return the MonitorInner object itself.
      */
@@ -272,7 +259,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
-     * 
+     *
      * @return the msiArmId value.
      */
     public String msiArmId() {
@@ -281,7 +268,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the storageAccountArmId property: The ARM ID of the Storage account used for SAP monitoring.
-     * 
+     *
      * @return the storageAccountArmId value.
      */
     public String storageAccountArmId() {
@@ -290,7 +277,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

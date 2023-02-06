@@ -5,19 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Gets or sets the SQL server provider properties.
- */
+/** Gets or sets the SQL server provider properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
 @JsonTypeName("MsSqlServer")
 @Fluent
@@ -70,15 +62,13 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
     @JsonProperty(value = "sslCertificateUri")
     private String sslCertificateUri;
 
-    /**
-     * Creates an instance of MsSqlServerProviderInstanceProperties class.
-     */
+    /** Creates an instance of MsSqlServerProviderInstanceProperties class. */
     public MsSqlServerProviderInstanceProperties() {
     }
 
     /**
      * Get the hostname property: Gets or sets the SQL server host name.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -87,7 +77,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the hostname property: Gets or sets the SQL server host name.
-     * 
+     *
      * @param hostname the hostname value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -98,7 +88,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPort property: Gets or sets the database sql port.
-     * 
+     *
      * @return the dbPort value.
      */
     public String dbPort() {
@@ -107,7 +97,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPort property: Gets or sets the database sql port.
-     * 
+     *
      * @param dbPort the dbPort value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -118,7 +108,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbUsername property: Gets or sets the database user name.
-     * 
+     *
      * @return the dbUsername value.
      */
     public String dbUsername() {
@@ -127,7 +117,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbUsername property: Gets or sets the database user name.
-     * 
+     *
      * @param dbUsername the dbUsername value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -138,7 +128,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPassword property: Gets or sets the database password.
-     * 
+     *
      * @return the dbPassword value.
      */
     public String dbPassword() {
@@ -147,7 +137,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPassword property: Gets or sets the database password.
-     * 
+     *
      * @param dbPassword the dbPassword value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -158,7 +148,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     * 
+     *
      * @return the dbPasswordUri value.
      */
     public String dbPasswordUri() {
@@ -167,7 +157,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     * 
+     *
      * @param dbPasswordUri the dbPasswordUri value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -178,7 +168,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     * 
+     *
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -187,7 +177,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     * 
+     *
      * @param sapSid the sapSid value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -198,7 +188,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     * 
+     *
      * @return the sslPreference value.
      */
     public SslPreference sslPreference() {
@@ -207,7 +197,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     * 
+     *
      * @param sslPreference the sslPreference value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -218,7 +208,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
-     * 
+     *
      * @return the sslCertificateUri value.
      */
     public String sslCertificateUri() {
@@ -227,7 +217,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
-     * 
+     *
      * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -238,7 +228,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

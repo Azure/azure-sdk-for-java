@@ -5,18 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
-/**
- * Gets or sets the file share configuration for file share created with the VIS case.
- */
+/** Gets or sets the file share configuration for file share created with the VIS case. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
 @JsonTypeName("CreateAndMount")
 @Fluent
@@ -33,16 +26,14 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     @JsonProperty(value = "storageAccountName")
     private String storageAccountName;
 
-    /**
-     * Creates an instance of CreateAndMountFileShareConfiguration class.
-     */
+    /** Creates an instance of CreateAndMountFileShareConfiguration class. */
     public CreateAndMountFileShareConfiguration() {
     }
 
     /**
      * Get the resourceGroup property: The name of file share resource group. The app rg is used in case of missing
      * input.
-     * 
+     *
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -52,7 +43,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Set the resourceGroup property: The name of file share resource group. The app rg is used in case of missing
      * input.
-     * 
+     *
      * @param resourceGroup the resourceGroup value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
@@ -64,7 +55,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Get the storageAccountName property: The name of file share storage account name . A custom name is used in case
      * of missing input.
-     * 
+     *
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -74,7 +65,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Set the storageAccountName property: The name of file share storage account name . A custom name is used in case
      * of missing input.
-     * 
+     *
      * @param storageAccountName the storageAccountName value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
@@ -85,7 +76,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

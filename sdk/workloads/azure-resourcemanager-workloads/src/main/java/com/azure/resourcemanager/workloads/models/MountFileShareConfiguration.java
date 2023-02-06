@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
-/**
- * Gets or sets the file share configuration for externally mounted cases.
- */
+/** Gets or sets the file share configuration for externally mounted cases. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
 @JsonTypeName("Mount")
 @Fluent
@@ -33,15 +27,13 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
     @JsonProperty(value = "privateEndpointId", required = true)
     private String privateEndpointId;
 
-    /**
-     * Creates an instance of MountFileShareConfiguration class.
-     */
+    /** Creates an instance of MountFileShareConfiguration class. */
     public MountFileShareConfiguration() {
     }
 
     /**
      * Get the id property: The fileshare resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -50,7 +42,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
 
     /**
      * Set the id property: The fileshare resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the MountFileShareConfiguration object itself.
      */
@@ -61,7 +53,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
 
     /**
      * Get the privateEndpointId property: The private endpoint resource ID.
-     * 
+     *
      * @return the privateEndpointId value.
      */
     public String privateEndpointId() {
@@ -70,7 +62,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
 
     /**
      * Set the privateEndpointId property: The private endpoint resource ID.
-     * 
+     *
      * @param privateEndpointId the privateEndpointId value to set.
      * @return the MountFileShareConfiguration object itself.
      */
@@ -81,17 +73,22 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model MountFileShareConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model MountFileShareConfiguration"));
         }
         if (privateEndpointId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property privateEndpointId in model MountFileShareConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property privateEndpointId in model MountFileShareConfiguration"));
         }
     }
 

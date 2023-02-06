@@ -4,19 +4,11 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Database VM details.
- */
+/** Database VM details. */
 @Immutable
 public final class DatabaseVmDetails {
     /*
@@ -38,15 +30,13 @@ public final class DatabaseVmDetails {
     @JsonProperty(value = "storageDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageInformation> storageDetails;
 
-    /**
-     * Creates an instance of DatabaseVmDetails class.
-     */
+    /** Creates an instance of DatabaseVmDetails class. */
     public DatabaseVmDetails() {
     }
 
     /**
      * Get the virtualMachineId property: The virtualMachineId property.
-     * 
+     *
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -55,7 +45,7 @@ public final class DatabaseVmDetails {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     * 
+     *
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -65,7 +55,7 @@ public final class DatabaseVmDetails {
     /**
      * Get the storageDetails property: Storage details of all the Storage Accounts attached to the Database Virtual
      * Machine. For e.g. NFS on AFS Shared Storage.
-     * 
+     *
      * @return the storageDetails value.
      */
     public List<StorageInformation> storageDetails() {
@@ -74,7 +64,7 @@ public final class DatabaseVmDetails {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

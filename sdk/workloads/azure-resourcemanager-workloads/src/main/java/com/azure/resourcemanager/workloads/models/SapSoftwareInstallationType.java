@@ -8,28 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The SAP software installation Type.
- */
+/** The SAP software installation Type. */
 public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapSoftwareInstallationType> {
-    /**
-     * Static value ServiceInitiated for SapSoftwareInstallationType.
-     */
+    /** Static value ServiceInitiated for SapSoftwareInstallationType. */
     public static final SapSoftwareInstallationType SERVICE_INITIATED = fromString("ServiceInitiated");
 
-    /**
-     * Static value SAPInstallWithoutOSConfig for SapSoftwareInstallationType.
-     */
-    public static final SapSoftwareInstallationType SAPINSTALL_WITHOUT_OSCONFIG = fromString("SAPInstallWithoutOSConfig");
+    /** Static value SAPInstallWithoutOSConfig for SapSoftwareInstallationType. */
+    public static final SapSoftwareInstallationType SAPINSTALL_WITHOUT_OSCONFIG =
+        fromString("SAPInstallWithoutOSConfig");
 
-    /**
-     * Static value External for SapSoftwareInstallationType.
-     */
+    /** Static value External for SapSoftwareInstallationType. */
     public static final SapSoftwareInstallationType EXTERNAL = fromString("External");
 
     /**
      * Creates a new instance of SapSoftwareInstallationType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +31,7 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
 
     /**
      * Creates or finds a SapSoftwareInstallationType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SapSoftwareInstallationType.
      */
@@ -49,7 +42,7 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
 
     /**
      * Gets known SapSoftwareInstallationType values.
-     * 
+     *
      * @return known SapSoftwareInstallationType values.
      */
     public static Collection<SapSoftwareInstallationType> values() {

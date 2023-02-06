@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -50,10 +50,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * Entry point to WorkloadsManager.
- * Workloads client provides access to various workload operations.
- */
+/** Entry point to WorkloadsManager. Workloads client provides access to various workload operations. */
 public final class WorkloadsManager {
     private ResourceProviders resourceProviders;
 
@@ -78,17 +75,18 @@ public final class WorkloadsManager {
     private WorkloadsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new WorkloadsClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-            .subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval)
-            .buildClient();
+        this.clientObject =
+            new WorkloadsClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .defaultPollInterval(defaultPollInterval)
+                .buildClient();
     }
 
     /**
      * Creates an instance of Workloads service API entry point.
-     * 
+     *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Workloads service API instance.
@@ -101,7 +99,7 @@ public final class WorkloadsManager {
 
     /**
      * Creates an instance of Workloads service API entry point.
-     * 
+     *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Workloads service API instance.
@@ -114,16 +112,14 @@ public final class WorkloadsManager {
 
     /**
      * Gets a Configurable instance that can be used to create WorkloadsManager with optional configuration.
-     * 
+     *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new WorkloadsManager.Configurable();
     }
 
-    /**
-     * The Configurable allowing configurations to be set.
-     */
+    /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -195,8 +191,8 @@ public final class WorkloadsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         * <p>
-         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -213,9 +209,11 @@ public final class WorkloadsManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -232,13 +230,15 @@ public final class WorkloadsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java")
+            userAgentBuilder
+                .append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.workloads")
                 .append("/")
                 .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (")
+                userAgentBuilder
+                    .append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -263,30 +263,38 @@ public final class WorkloadsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(
-                this.policies.stream()
-                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                    .collect(Collectors.toList()));
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(
-                this.policies.stream()
-                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                    .collect(Collectors.toList()));
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+            HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                    .httpClient(httpClient)
+                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                    .build();
             return new WorkloadsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     * 
+     *
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -298,7 +306,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of SapVirtualInstances. It manages SapVirtualInstance.
-     * 
+     *
      * @return Resource collection API of SapVirtualInstances.
      */
     public SapVirtualInstances sapVirtualInstances() {
@@ -310,7 +318,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of SapCentralInstances. It manages SapCentralServerInstance.
-     * 
+     *
      * @return Resource collection API of SapCentralInstances.
      */
     public SapCentralInstances sapCentralInstances() {
@@ -322,7 +330,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of SapDatabaseInstances. It manages SapDatabaseInstance.
-     * 
+     *
      * @return Resource collection API of SapDatabaseInstances.
      */
     public SapDatabaseInstances sapDatabaseInstances() {
@@ -334,19 +342,20 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of SapApplicationServerInstances. It manages SapApplicationServerInstance.
-     * 
+     *
      * @return Resource collection API of SapApplicationServerInstances.
      */
     public SapApplicationServerInstances sapApplicationServerInstances() {
         if (this.sapApplicationServerInstances == null) {
-            this.sapApplicationServerInstances = new SapApplicationServerInstancesImpl(clientObject.getSapApplicationServerInstances(), this);
+            this.sapApplicationServerInstances =
+                new SapApplicationServerInstancesImpl(clientObject.getSapApplicationServerInstances(), this);
         }
         return sapApplicationServerInstances;
     }
 
     /**
      * Gets the resource collection API of Monitors. It manages Monitor.
-     * 
+     *
      * @return Resource collection API of Monitors.
      */
     public Monitors monitors() {
@@ -358,7 +367,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of ProviderInstances. It manages ProviderInstance.
-     * 
+     *
      * @return Resource collection API of ProviderInstances.
      */
     public ProviderInstances providerInstances() {
@@ -370,7 +379,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of SapLandscapeMonitors.
-     * 
+     *
      * @return Resource collection API of SapLandscapeMonitors.
      */
     public SapLandscapeMonitors sapLandscapeMonitors() {
@@ -382,7 +391,7 @@ public final class WorkloadsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     * 
+     *
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -393,7 +402,8 @@ public final class WorkloadsManager {
     }
 
     /**
-     * @return Wrapped service client WorkloadsClient providing direct access to the underlying auto-generated API implementation, based on Azure REST API.
+     * @return Wrapped service client WorkloadsClient providing direct access to the underlying auto-generated API
+     *     implementation, based on Azure REST API.
      */
     public WorkloadsClient serviceClient() {
         return this.clientObject;

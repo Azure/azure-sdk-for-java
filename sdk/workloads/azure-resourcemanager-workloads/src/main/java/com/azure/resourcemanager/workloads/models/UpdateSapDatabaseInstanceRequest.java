@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-/**
- * Defines the request body for updating SAP Database Instance.
- */
+/** Defines the request body for updating SAP Database Instance. */
 @Fluent
 public final class UpdateSapDatabaseInstanceRequest {
     /*
@@ -25,15 +19,13 @@ public final class UpdateSapDatabaseInstanceRequest {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of UpdateSapDatabaseInstanceRequest class.
-     */
+    /** Creates an instance of UpdateSapDatabaseInstanceRequest class. */
     public UpdateSapDatabaseInstanceRequest() {
     }
 
     /**
      * Get the tags property: Gets or sets the Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -42,7 +34,7 @@ public final class UpdateSapDatabaseInstanceRequest {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the UpdateSapDatabaseInstanceRequest object itself.
      */
@@ -53,7 +45,7 @@ public final class UpdateSapDatabaseInstanceRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

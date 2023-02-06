@@ -18,7 +18,7 @@ public final class UserAssignedServiceIdentityTests {
         UserAssignedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"eho\":{\"principalId\":\"ecc39b75-13af-4369-9afb-37588461e1be\",\"clientId\":\"90966e84-f1a1-4462-aeb6-9e5231235cec\"}}}")
+                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"eho\":{\"principalId\":\"161af4f8-ad51-4764-8ae1-0259c906157b\",\"clientId\":\"9f64091b-23dc-4fb0-a301-23b3a6fe8a8b\"}}}")
                 .toObject(UserAssignedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }

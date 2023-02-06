@@ -8,38 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines the provisioning states.
- */
-public final class SapVirtualInstanceProvisioningState extends ExpandableStringEnum<SapVirtualInstanceProvisioningState> {
-    /**
-     * Static value Succeeded for SapVirtualInstanceProvisioningState.
-     */
+/** Defines the provisioning states. */
+public final class SapVirtualInstanceProvisioningState
+    extends ExpandableStringEnum<SapVirtualInstanceProvisioningState> {
+    /** Static value Succeeded for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Updating for SapVirtualInstanceProvisioningState.
-     */
+    /** Static value Updating for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState UPDATING = fromString("Updating");
 
-    /**
-     * Static value Creating for SapVirtualInstanceProvisioningState.
-     */
+    /** Static value Creating for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState CREATING = fromString("Creating");
 
-    /**
-     * Static value Failed for SapVirtualInstanceProvisioningState.
-     */
+    /** Static value Failed for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState FAILED = fromString("Failed");
 
-    /**
-     * Static value Deleting for SapVirtualInstanceProvisioningState.
-     */
+    /** Static value Deleting for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of SapVirtualInstanceProvisioningState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +37,7 @@ public final class SapVirtualInstanceProvisioningState extends ExpandableStringE
 
     /**
      * Creates or finds a SapVirtualInstanceProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceProvisioningState.
      */
@@ -59,7 +48,7 @@ public final class SapVirtualInstanceProvisioningState extends ExpandableStringE
 
     /**
      * Gets known SapVirtualInstanceProvisioningState values.
-     * 
+     *
      * @return known SapVirtualInstanceProvisioningState values.
      */
     public static Collection<SapVirtualInstanceProvisioningState> values() {

@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.ApplicationServerVmDetails;
 import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Define the SAP Application Server Instance resource.
- */
+/** Define the SAP Application Server Instance resource. */
 @Fluent
 public final class SapApplicationServerInstanceInner extends Resource {
     /*
@@ -40,15 +32,13 @@ public final class SapApplicationServerInstanceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of SapApplicationServerInstanceInner class.
-     */
+    /** Creates an instance of SapApplicationServerInstanceInner class. */
     public SapApplicationServerInstanceInner() {
     }
 
     /**
      * Get the innerProperties property: Defines the SAP Application Server instance properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private SapApplicationServerProperties innerProperties() {
@@ -57,25 +47,21 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapApplicationServerInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapApplicationServerInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -84,7 +70,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the instanceNo property: Application server Instance Number.
-     * 
+     *
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -93,7 +79,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the subnet property: Application server Subnet.
-     * 
+     *
      * @return the subnet value.
      */
     public String subnet() {
@@ -102,7 +88,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the hostname property: Application server instance SAP hostname.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -110,8 +96,8 @@ public final class SapApplicationServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the kernelVersion property:  Application server instance SAP Kernel Version.
-     * 
+     * Get the kernelVersion property: Application server instance SAP Kernel Version.
+     *
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -120,7 +106,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the kernelPatch property: Application server instance SAP Kernel Patch level.
-     * 
+     *
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -128,8 +114,8 @@ public final class SapApplicationServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the ipAddress property:  Application server instance SAP IP Address.
-     * 
+     * Get the ipAddress property: Application server instance SAP IP Address.
+     *
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -138,7 +124,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the gatewayPort property: Application server instance gateway Port.
-     * 
+     *
      * @return the gatewayPort value.
      */
     public Long gatewayPort() {
@@ -147,7 +133,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the icmHttpPort property: Application server instance ICM HTTP Port.
-     * 
+     *
      * @return the icmHttpPort value.
      */
     public Long icmHttpPort() {
@@ -156,7 +142,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the icmHttpsPort property: Application server instance ICM HTTPS Port.
-     * 
+     *
      * @return the icmHttpsPort value.
      */
     public Long icmHttpsPort() {
@@ -166,7 +152,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
     /**
      * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Application
      * Server Virtual Machines.
-     * 
+     *
      * @return the loadBalancerDetails value.
      */
     public LoadBalancerDetails loadBalancerDetails() {
@@ -175,7 +161,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the vmDetails property: The list of virtual machines.
-     * 
+     *
      * @return the vmDetails value.
      */
     public List<ApplicationServerVmDetails> vmDetails() {
@@ -184,7 +170,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     * 
+     *
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -193,7 +179,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     * 
+     *
      * @return the health value.
      */
     public SapHealthState health() {
@@ -202,7 +188,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     * 
+     *
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -211,7 +197,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Get the errors property: Defines the Application Instance errors.
-     * 
+     *
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -220,7 +206,7 @@ public final class SapApplicationServerInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Gets or sets the Threshold Values for Top Metrics Health.
- */
+/** Gets or sets the Threshold Values for Top Metrics Health. */
 @Fluent
 public final class SapLandscapeMonitorMetricThresholds {
     /*
@@ -41,15 +34,13 @@ public final class SapLandscapeMonitorMetricThresholds {
     @JsonProperty(value = "red")
     private Float red;
 
-    /**
-     * Creates an instance of SapLandscapeMonitorMetricThresholds class.
-     */
+    /** Creates an instance of SapLandscapeMonitorMetricThresholds class. */
     public SapLandscapeMonitorMetricThresholds() {
     }
 
     /**
      * Get the name property: Gets or sets the name of the threshold.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -58,7 +49,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the name property: Gets or sets the name of the threshold.
-     * 
+     *
      * @param name the name value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -69,7 +60,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the green property: Gets or sets the threshold value for Green.
-     * 
+     *
      * @return the green value.
      */
     public Float green() {
@@ -78,7 +69,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the green property: Gets or sets the threshold value for Green.
-     * 
+     *
      * @param green the green value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -89,7 +80,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the yellow property: Gets or sets the threshold value for Yellow.
-     * 
+     *
      * @return the yellow value.
      */
     public Float yellow() {
@@ -98,7 +89,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the yellow property: Gets or sets the threshold value for Yellow.
-     * 
+     *
      * @param yellow the yellow value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -109,7 +100,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the red property: Gets or sets the threshold value for Red.
-     * 
+     *
      * @return the red value.
      */
     public Float red() {
@@ -118,7 +109,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the red property: Gets or sets the threshold value for Red.
-     * 
+     *
      * @param red the red value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -129,7 +120,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

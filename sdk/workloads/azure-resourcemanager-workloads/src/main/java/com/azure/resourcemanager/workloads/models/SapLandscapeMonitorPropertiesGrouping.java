@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Gets or sets the SID groupings by landscape and Environment.
- */
+/** Gets or sets the SID groupings by landscape and Environment. */
 @Fluent
 public final class SapLandscapeMonitorPropertiesGrouping {
     /*
@@ -30,15 +23,13 @@ public final class SapLandscapeMonitorPropertiesGrouping {
     @JsonProperty(value = "sapApplication")
     private List<SapLandscapeMonitorSidMapping> sapApplication;
 
-    /**
-     * Creates an instance of SapLandscapeMonitorPropertiesGrouping class.
-     */
+    /** Creates an instance of SapLandscapeMonitorPropertiesGrouping class. */
     public SapLandscapeMonitorPropertiesGrouping() {
     }
 
     /**
      * Get the landscape property: Gets or sets the list of landscape to SID mappings.
-     * 
+     *
      * @return the landscape value.
      */
     public List<SapLandscapeMonitorSidMapping> landscape() {
@@ -47,7 +38,7 @@ public final class SapLandscapeMonitorPropertiesGrouping {
 
     /**
      * Set the landscape property: Gets or sets the list of landscape to SID mappings.
-     * 
+     *
      * @param landscape the landscape value to set.
      * @return the SapLandscapeMonitorPropertiesGrouping object itself.
      */
@@ -58,7 +49,7 @@ public final class SapLandscapeMonitorPropertiesGrouping {
 
     /**
      * Get the sapApplication property: Gets or sets the list of Sap Applications to SID mappings.
-     * 
+     *
      * @return the sapApplication value.
      */
     public List<SapLandscapeMonitorSidMapping> sapApplication() {
@@ -67,18 +58,19 @@ public final class SapLandscapeMonitorPropertiesGrouping {
 
     /**
      * Set the sapApplication property: Gets or sets the list of Sap Applications to SID mappings.
-     * 
+     *
      * @param sapApplication the sapApplication value to set.
      * @return the SapLandscapeMonitorPropertiesGrouping object itself.
      */
-    public SapLandscapeMonitorPropertiesGrouping withSapApplication(List<SapLandscapeMonitorSidMapping> sapApplication) {
+    public SapLandscapeMonitorPropertiesGrouping withSapApplication(
+        List<SapLandscapeMonitorSidMapping> sapApplication) {
         this.sapApplication = sapApplication;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

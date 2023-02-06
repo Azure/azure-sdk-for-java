@@ -4,21 +4,20 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
 
 /**
  * File Share configuration details, populated with information on storage configuration mounted on the VIS. The
  * createAndMount option is selected in case of missing input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType", defaultImpl = FileShareConfiguration.class)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "configurationType",
+    defaultImpl = FileShareConfiguration.class)
 @JsonTypeName("FileShareConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Skip", value = SkipFileShareConfiguration.class),
@@ -27,15 +26,13 @@ import java.util.regex.Pattern;
 })
 @Immutable
 public class FileShareConfiguration {
-    /**
-     * Creates an instance of FileShareConfiguration class.
-     */
+    /** Creates an instance of FileShareConfiguration class. */
     public FileShareConfiguration() {
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Gets or sets the storage configuration.
- */
+/** Gets or sets the storage configuration. */
 @Fluent
 public final class StorageConfiguration {
     /*
@@ -24,16 +17,14 @@ public final class StorageConfiguration {
     @JsonProperty(value = "transportFileShareConfiguration")
     private FileShareConfiguration transportFileShareConfiguration;
 
-    /**
-     * Creates an instance of StorageConfiguration class.
-     */
+    /** Creates an instance of StorageConfiguration class. */
     public StorageConfiguration() {
     }
 
     /**
      * Get the transportFileShareConfiguration property: The properties of the transport directory attached to the VIS.
      * The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing.
-     * 
+     *
      * @return the transportFileShareConfiguration value.
      */
     public FileShareConfiguration transportFileShareConfiguration() {
@@ -43,18 +34,19 @@ public final class StorageConfiguration {
     /**
      * Set the transportFileShareConfiguration property: The properties of the transport directory attached to the VIS.
      * The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing.
-     * 
+     *
      * @param transportFileShareConfiguration the transportFileShareConfiguration value to set.
      * @return the StorageConfiguration object itself.
      */
-    public StorageConfiguration withTransportFileShareConfiguration(FileShareConfiguration transportFileShareConfiguration) {
+    public StorageConfiguration withTransportFileShareConfiguration(
+        FileShareConfiguration transportFileShareConfiguration) {
         this.transportFileShareConfiguration = transportFileShareConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

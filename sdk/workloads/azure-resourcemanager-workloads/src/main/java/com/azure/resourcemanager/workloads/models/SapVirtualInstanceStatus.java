@@ -8,48 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines the SAP Instance status.
- */
+/** Defines the SAP Instance status. */
 public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirtualInstanceStatus> {
-    /**
-     * Static value Starting for SapVirtualInstanceStatus.
-     */
+    /** Static value Starting for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus STARTING = fromString("Starting");
 
-    /**
-     * Static value Running for SapVirtualInstanceStatus.
-     */
+    /** Static value Running for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus RUNNING = fromString("Running");
 
-    /**
-     * Static value Stopping for SapVirtualInstanceStatus.
-     */
+    /** Static value Stopping for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus STOPPING = fromString("Stopping");
 
-    /**
-     * Static value Offline for SapVirtualInstanceStatus.
-     */
+    /** Static value Offline for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus OFFLINE = fromString("Offline");
 
-    /**
-     * Static value PartiallyRunning for SapVirtualInstanceStatus.
-     */
+    /** Static value PartiallyRunning for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus PARTIALLY_RUNNING = fromString("PartiallyRunning");
 
-    /**
-     * Static value Unavailable for SapVirtualInstanceStatus.
-     */
+    /** Static value Unavailable for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus UNAVAILABLE = fromString("Unavailable");
 
-    /**
-     * Static value SoftShutdown for SapVirtualInstanceStatus.
-     */
+    /** Static value SoftShutdown for SapVirtualInstanceStatus. */
     public static final SapVirtualInstanceStatus SOFT_SHUTDOWN = fromString("SoftShutdown");
 
     /**
      * Creates a new instance of SapVirtualInstanceStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,7 +42,7 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
 
     /**
      * Creates or finds a SapVirtualInstanceStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceStatus.
      */
@@ -69,7 +53,7 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
 
     /**
      * Gets known SapVirtualInstanceStatus values.
-     * 
+     *
      * @return known SapVirtualInstanceStatus values.
      */
     public static Collection<SapVirtualInstanceStatus> values() {

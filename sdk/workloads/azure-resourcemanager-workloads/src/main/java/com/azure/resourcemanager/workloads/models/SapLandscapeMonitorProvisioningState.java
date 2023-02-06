@@ -8,38 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * State of provisioning of the SAP monitor.
- */
-public final class SapLandscapeMonitorProvisioningState extends ExpandableStringEnum<SapLandscapeMonitorProvisioningState> {
-    /**
-     * Static value Accepted for SapLandscapeMonitorProvisioningState.
-     */
+/** State of provisioning of the SAP monitor. */
+public final class SapLandscapeMonitorProvisioningState
+    extends ExpandableStringEnum<SapLandscapeMonitorProvisioningState> {
+    /** Static value Accepted for SapLandscapeMonitorProvisioningState. */
     public static final SapLandscapeMonitorProvisioningState ACCEPTED = fromString("Accepted");
 
-    /**
-     * Static value Created for SapLandscapeMonitorProvisioningState.
-     */
+    /** Static value Created for SapLandscapeMonitorProvisioningState. */
     public static final SapLandscapeMonitorProvisioningState CREATED = fromString("Created");
 
-    /**
-     * Static value Failed for SapLandscapeMonitorProvisioningState.
-     */
+    /** Static value Failed for SapLandscapeMonitorProvisioningState. */
     public static final SapLandscapeMonitorProvisioningState FAILED = fromString("Failed");
 
-    /**
-     * Static value Succeeded for SapLandscapeMonitorProvisioningState.
-     */
+    /** Static value Succeeded for SapLandscapeMonitorProvisioningState. */
     public static final SapLandscapeMonitorProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Canceled for SapLandscapeMonitorProvisioningState.
-     */
+    /** Static value Canceled for SapLandscapeMonitorProvisioningState. */
     public static final SapLandscapeMonitorProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of SapLandscapeMonitorProvisioningState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +37,7 @@ public final class SapLandscapeMonitorProvisioningState extends ExpandableString
 
     /**
      * Creates or finds a SapLandscapeMonitorProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SapLandscapeMonitorProvisioningState.
      */
@@ -59,7 +48,7 @@ public final class SapLandscapeMonitorProvisioningState extends ExpandableString
 
     /**
      * Gets known SapLandscapeMonitorProvisioningState values.
-     * 
+     *
      * @return known SapLandscapeMonitorProvisioningState values.
      */
     public static Collection<SapLandscapeMonitorProvisioningState> values() {

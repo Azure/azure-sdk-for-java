@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Gets or sets the high availability configuration.
- */
+/** Gets or sets the high availability configuration. */
 @Fluent
 public final class HighAvailabilityConfiguration {
     /*
@@ -24,15 +17,13 @@ public final class HighAvailabilityConfiguration {
     @JsonProperty(value = "highAvailabilityType", required = true)
     private SapHighAvailabilityType highAvailabilityType;
 
-    /**
-     * Creates an instance of HighAvailabilityConfiguration class.
-     */
+    /** Creates an instance of HighAvailabilityConfiguration class. */
     public HighAvailabilityConfiguration() {
     }
 
     /**
      * Get the highAvailabilityType property: The high availability type.
-     * 
+     *
      * @return the highAvailabilityType value.
      */
     public SapHighAvailabilityType highAvailabilityType() {
@@ -41,7 +32,7 @@ public final class HighAvailabilityConfiguration {
 
     /**
      * Set the highAvailabilityType property: The high availability type.
-     * 
+     *
      * @param highAvailabilityType the highAvailabilityType value to set.
      * @return the HighAvailabilityConfiguration object itself.
      */
@@ -52,12 +43,15 @@ public final class HighAvailabilityConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (highAvailabilityType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property highAvailabilityType in model HighAvailabilityConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property highAvailabilityType in model HighAvailabilityConfiguration"));
         }
     }
 

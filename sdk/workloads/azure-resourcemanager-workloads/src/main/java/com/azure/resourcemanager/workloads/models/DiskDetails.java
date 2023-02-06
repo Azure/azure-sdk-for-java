@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * The supported disk size details for a disk type.
- */
+/** The supported disk size details for a disk type. */
 @Fluent
 public final class DiskDetails {
     /*
@@ -59,15 +52,13 @@ public final class DiskDetails {
     @JsonProperty(value = "diskTier")
     private String diskTier;
 
-    /**
-     * Creates an instance of DiskDetails class.
-     */
+    /** Creates an instance of DiskDetails class. */
     public DiskDetails() {
     }
 
     /**
      * Get the sku property: The disk sku.
-     * 
+     *
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -76,7 +67,7 @@ public final class DiskDetails {
 
     /**
      * Set the sku property: The disk sku.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the DiskDetails object itself.
      */
@@ -87,7 +78,7 @@ public final class DiskDetails {
 
     /**
      * Get the sizeGB property: The disk size in GB.
-     * 
+     *
      * @return the sizeGB value.
      */
     public Long sizeGB() {
@@ -96,7 +87,7 @@ public final class DiskDetails {
 
     /**
      * Set the sizeGB property: The disk size in GB.
-     * 
+     *
      * @param sizeGB the sizeGB value to set.
      * @return the DiskDetails object itself.
      */
@@ -107,7 +98,7 @@ public final class DiskDetails {
 
     /**
      * Get the minimumSupportedDiskCount property: The minimum supported disk count.
-     * 
+     *
      * @return the minimumSupportedDiskCount value.
      */
     public Long minimumSupportedDiskCount() {
@@ -116,7 +107,7 @@ public final class DiskDetails {
 
     /**
      * Set the minimumSupportedDiskCount property: The minimum supported disk count.
-     * 
+     *
      * @param minimumSupportedDiskCount the minimumSupportedDiskCount value to set.
      * @return the DiskDetails object itself.
      */
@@ -127,7 +118,7 @@ public final class DiskDetails {
 
     /**
      * Get the maximumSupportedDiskCount property: The maximum supported disk count.
-     * 
+     *
      * @return the maximumSupportedDiskCount value.
      */
     public Long maximumSupportedDiskCount() {
@@ -136,7 +127,7 @@ public final class DiskDetails {
 
     /**
      * Set the maximumSupportedDiskCount property: The maximum supported disk count.
-     * 
+     *
      * @param maximumSupportedDiskCount the maximumSupportedDiskCount value to set.
      * @return the DiskDetails object itself.
      */
@@ -147,7 +138,7 @@ public final class DiskDetails {
 
     /**
      * Get the iopsReadWrite property: The disk Iops.
-     * 
+     *
      * @return the iopsReadWrite value.
      */
     public Long iopsReadWrite() {
@@ -156,7 +147,7 @@ public final class DiskDetails {
 
     /**
      * Set the iopsReadWrite property: The disk Iops.
-     * 
+     *
      * @param iopsReadWrite the iopsReadWrite value to set.
      * @return the DiskDetails object itself.
      */
@@ -167,7 +158,7 @@ public final class DiskDetails {
 
     /**
      * Get the mbpsReadWrite property: The disk provisioned throughput in MBps.
-     * 
+     *
      * @return the mbpsReadWrite value.
      */
     public Long mbpsReadWrite() {
@@ -176,7 +167,7 @@ public final class DiskDetails {
 
     /**
      * Set the mbpsReadWrite property: The disk provisioned throughput in MBps.
-     * 
+     *
      * @param mbpsReadWrite the mbpsReadWrite value to set.
      * @return the DiskDetails object itself.
      */
@@ -187,7 +178,7 @@ public final class DiskDetails {
 
     /**
      * Get the diskTier property: The disk tier, e.g. P10, E10.
-     * 
+     *
      * @return the diskTier value.
      */
     public String diskTier() {
@@ -196,7 +187,7 @@ public final class DiskDetails {
 
     /**
      * Set the diskTier property: The disk tier, e.g. P10, E10.
-     * 
+     *
      * @param diskTier the diskTier value to set.
      * @return the DiskDetails object itself.
      */
@@ -207,7 +198,7 @@ public final class DiskDetails {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

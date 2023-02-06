@@ -4,26 +4,15 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.workloads.fluent.SapVirtualInstancesClient;
-import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.workloads.fluent.models.SapVirtualInstanceInner;
-import com.azure.resourcemanager.workloads.implementation.SapVirtualInstanceImpl;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-/**
- * Resource collection API of SapVirtualInstances.
- */
+/** Resource collection API of SapVirtualInstances. */
 public interface SapVirtualInstances {
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -32,11 +21,12 @@ public interface SapVirtualInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Virtual Instance for SAP solutions resource along with {@link Response}.
      */
-    Response<SapVirtualInstance> getByResourceGroupWithResponse(String resourceGroupName, String sapVirtualInstanceName, Context context);
+    Response<SapVirtualInstance> getByResourceGroupWithResponse(
+        String resourceGroupName, String sapVirtualInstanceName, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,8 +37,9 @@ public interface SapVirtualInstances {
     SapVirtualInstance getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName);
 
     /**
-     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central Services Instance, Application Server Instances and Database Instance.
-     * 
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,8 +50,9 @@ public interface SapVirtualInstances {
     OperationStatusResult deleteByResourceGroup(String resourceGroupName, String sapVirtualInstanceName);
 
     /**
-     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central Services Instance, Application Server Instances and Database Instance.
-     * 
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -73,50 +65,54 @@ public interface SapVirtualInstances {
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SapVirtualInstance> list();
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SapVirtualInstance> list(Context context);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +124,7 @@ public interface SapVirtualInstances {
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -141,7 +137,7 @@ public interface SapVirtualInstances {
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +149,7 @@ public interface SapVirtualInstances {
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body The Virtual Instance for SAP solutions resource stop request body.
@@ -163,11 +159,12 @@ public interface SapVirtualInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    OperationStatusResult stop(
+        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     * 
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,7 +175,7 @@ public interface SapVirtualInstances {
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     * 
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,8 +186,9 @@ public interface SapVirtualInstances {
     Response<SapVirtualInstance> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central Services Instance, Application Server Instances and Database Instance.
-     * 
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -200,8 +198,9 @@ public interface SapVirtualInstances {
     OperationStatusResult deleteById(String id);
 
     /**
-     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central Services Instance, Application Server Instances and Database Instance.
-     * 
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +212,7 @@ public interface SapVirtualInstances {
 
     /**
      * Begins definition for a new SapVirtualInstance resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new SapVirtualInstance definition.
      */

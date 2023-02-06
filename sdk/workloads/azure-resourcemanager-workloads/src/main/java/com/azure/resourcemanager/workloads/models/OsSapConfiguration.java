@@ -5,16 +5,9 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Defines the OS and SAP Configurations for Deployment.
- */
+/** Defines the OS and SAP Configurations for Deployment. */
 @Fluent
 public final class OsSapConfiguration {
     /*
@@ -29,15 +22,13 @@ public final class OsSapConfiguration {
     @JsonProperty(value = "sapFqdn")
     private String sapFqdn;
 
-    /**
-     * Creates an instance of OsSapConfiguration class.
-     */
+    /** Creates an instance of OsSapConfiguration class. */
     public OsSapConfiguration() {
     }
 
     /**
      * Get the deployerVmPackages property: The url and storage account ID where deployer VM packages are uploaded.
-     * 
+     *
      * @return the deployerVmPackages value.
      */
     public DeployerVmPackages deployerVmPackages() {
@@ -46,7 +37,7 @@ public final class OsSapConfiguration {
 
     /**
      * Set the deployerVmPackages property: The url and storage account ID where deployer VM packages are uploaded.
-     * 
+     *
      * @param deployerVmPackages the deployerVmPackages value to set.
      * @return the OsSapConfiguration object itself.
      */
@@ -57,7 +48,7 @@ public final class OsSapConfiguration {
 
     /**
      * Get the sapFqdn property: The FQDN to set for the SAP system.
-     * 
+     *
      * @return the sapFqdn value.
      */
     public String sapFqdn() {
@@ -66,7 +57,7 @@ public final class OsSapConfiguration {
 
     /**
      * Set the sapFqdn property: The FQDN to set for the SAP system.
-     * 
+     *
      * @param sapFqdn the sapFqdn value to set.
      * @return the OsSapConfiguration object itself.
      */
@@ -77,7 +68,7 @@ public final class OsSapConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

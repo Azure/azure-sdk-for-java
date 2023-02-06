@@ -9,22 +9,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The high availability Type. AvailabilitySet guarantees 99.95% availability. Availability Zone guarantees 99.99% availability.
+ * The high availability Type. AvailabilitySet guarantees 99.95% availability. Availability Zone guarantees 99.99%
+ * availability.
  */
 public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighAvailabilityType> {
-    /**
-     * Static value AvailabilitySet for SapHighAvailabilityType.
-     */
+    /** Static value AvailabilitySet for SapHighAvailabilityType. */
     public static final SapHighAvailabilityType AVAILABILITY_SET = fromString("AvailabilitySet");
 
-    /**
-     * Static value AvailabilityZone for SapHighAvailabilityType.
-     */
+    /** Static value AvailabilityZone for SapHighAvailabilityType. */
     public static final SapHighAvailabilityType AVAILABILITY_ZONE = fromString("AvailabilityZone");
 
     /**
      * Creates a new instance of SapHighAvailabilityType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +30,7 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
 
     /**
      * Creates or finds a SapHighAvailabilityType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SapHighAvailabilityType.
      */
@@ -44,7 +41,7 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
 
     /**
      * Gets known SapHighAvailabilityType values.
-     * 
+     *
      * @return known SapHighAvailabilityType values.
      */
     public static Collection<SapHighAvailabilityType> values() {

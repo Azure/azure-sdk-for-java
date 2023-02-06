@@ -4,18 +4,11 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Error definition.
- */
+/** Error definition. */
 @Immutable
 public final class ErrorDefinition {
     /*
@@ -36,15 +29,13 @@ public final class ErrorDefinition {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorDefinition> details;
 
-    /**
-     * Creates an instance of ErrorDefinition class.
-     */
+    /** Creates an instance of ErrorDefinition class. */
     public ErrorDefinition() {
     }
 
     /**
      * Get the code property: Service specific error code which serves as the substatus for the HTTP error code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -53,7 +44,7 @@ public final class ErrorDefinition {
 
     /**
      * Get the message property: Description of the error.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -62,7 +53,7 @@ public final class ErrorDefinition {
 
     /**
      * Get the details property: Internal error details.
-     * 
+     *
      * @return the details value.
      */
     public List<ErrorDefinition> details() {
@@ -71,7 +62,7 @@ public final class ErrorDefinition {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

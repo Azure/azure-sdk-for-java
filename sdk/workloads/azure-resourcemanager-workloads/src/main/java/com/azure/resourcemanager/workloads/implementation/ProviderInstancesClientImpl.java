@@ -25,46 +25,36 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloads.fluent.ProviderInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.fluent.models.ProviderInstanceInner;
 import com.azure.resourcemanager.workloads.models.ProviderInstanceListResult;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in ProviderInstancesClient.
- */
+/** An instance of this class provides access to all the operations defined in ProviderInstancesClient. */
 public final class ProviderInstancesClientImpl implements ProviderInstancesClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ProviderInstancesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final WorkloadsClientImpl client;
 
     /**
      * Initializes an instance of ProviderInstancesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
-     ProviderInstancesClientImpl(WorkloadsClientImpl client) {
-        this.service = RestProxy.create(ProviderInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    ProviderInstancesClientImpl(WorkloadsClientImpl client) {
+        this.service =
+            RestProxy.create(ProviderInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -75,119 +65,207 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientProvi")
     public interface ProviderInstancesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
+                + "/{monitorName}/providerInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderInstanceListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ProviderInstanceListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
+                + "/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderInstanceInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @PathParam("providerInstanceName") String providerInstanceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ProviderInstanceInner>> get(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("monitorName") String monitorName,
+            @PathParam("providerInstanceName") String providerInstanceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
+                + "/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @PathParam("providerInstanceName") String providerInstanceName, @BodyParam("application/json") ProviderInstanceInner providerInstanceParameter, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("monitorName") String monitorName,
+            @PathParam("providerInstanceName") String providerInstanceName,
+            @BodyParam("application/json") ProviderInstanceInner providerInstanceParameter,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
+                + "/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName, @PathParam("providerInstanceName") String providerInstanceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("monitorName") String monitorName,
+            @PathParam("providerInstanceName") String providerInstanceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderInstanceListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ProviderInstanceListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of provider instances in the specified SAP monitor along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProviderInstanceInner>> listSinglePageAsync(String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<ProviderInstanceInner>> listSinglePageAsync(
+        String resourceGroupName, String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
-            .<PagedResponse<ProviderInstanceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            monitorName,
+                            accept,
+                            context))
+            .<PagedResponse<ProviderInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of provider instances in the specified SAP monitor along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProviderInstanceInner>> listSinglePageAsync(String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<ProviderInstanceInner>> listSinglePageAsync(
+        String resourceGroupName, String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                monitorName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,15 +276,15 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProviderInstanceInner> listAsync(String resourceGroupName, String monitorName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -224,15 +302,17 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link PagedIterable}.
+     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInstanceInner> list(String resourceGroupName, String monitorName) {
@@ -241,16 +321,18 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Gets a list of provider instances in the specified SAP monitor.
-     * 
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each provider instances.
-     * 
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link PagedIterable}.
+     * @return a list of provider instances in the specified SAP monitor as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInstanceInner> list(String resourceGroupName, String monitorName, Context context) {
@@ -259,44 +341,68 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProviderInstanceInner>> getWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName) {
+    private Mono<Response<ProviderInstanceInner>> getWithResponseAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            monitorName,
+                            providerInstanceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -304,53 +410,77 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProviderInstanceInner>> getWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    private Mono<Response<ProviderInstanceInner>> getWithResponseAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                monitorName,
+                providerInstanceName,
+                accept,
+                context);
     }
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name on successful completion of {@link Mono}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInstanceInner> getAsync(String resourceGroupName, String monitorName, String providerInstanceName) {
+    private Mono<ProviderInstanceInner> getAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         return getWithResponseAsync(resourceGroupName, monitorName, providerInstanceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -358,25 +488,29 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name along with {@link Response}.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProviderInstanceInner> getWithResponse(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    public Response<ProviderInstanceInner> getWithResponse(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, context).block();
     }
 
     /**
      * Gets properties of a provider instance.
-     * 
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInstanceInner get(String resourceGroupName, String monitorName, String providerInstanceName) {
@@ -385,9 +519,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -395,40 +530,70 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provider instance associated with SAP monitor along with {@link Response} on successful completion of {@link Mono}.
+     * @return a provider instance associated with SAP monitor along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         if (providerInstanceParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceParameter is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter providerInstanceParameter is required and cannot be null."));
         } else {
             providerInstanceParameter.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            monitorName,
+                            providerInstanceName,
+                            providerInstanceParameter,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -437,40 +602,68 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provider instance associated with SAP monitor along with {@link Response} on successful completion of {@link Mono}.
+     * @return a provider instance associated with SAP monitor along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         if (providerInstanceParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceParameter is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter providerInstanceParameter is required and cannot be null."));
         } else {
             providerInstanceParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, accept, context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                monitorName,
+                providerInstanceName,
+                providerInstanceParameter,
+                accept,
+                context);
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -481,16 +674,29 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link PollerFlux} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreateAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter);
-        return this.client.<ProviderInstanceInner, ProviderInstanceInner>getLroResult(mono, this.client.getHttpPipeline(), ProviderInstanceInner.class, ProviderInstanceInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreateAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter);
+        return this
+            .client
+            .<ProviderInstanceInner, ProviderInstanceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ProviderInstanceInner.class,
+                ProviderInstanceInner.class,
+                this.client.getContext());
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -502,17 +708,28 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link PollerFlux} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreateAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter, Context context) {
+    private PollerFlux<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreateAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context);
-        return this.client.<ProviderInstanceInner, ProviderInstanceInner>getLroResult(mono, this.client.getHttpPipeline(), ProviderInstanceInner.class, ProviderInstanceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(
+                resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context);
+        return this
+            .client
+            .<ProviderInstanceInner, ProviderInstanceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ProviderInstanceInner.class, ProviderInstanceInner.class, context);
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -523,15 +740,22 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link SyncPoller} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter) {
-        return this.beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter).getSyncPoller();
+    public SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter) {
+        return this
+            .beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter)
+            .getSyncPoller();
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -543,15 +767,23 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link SyncPoller} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter, Context context) {
-        return this.beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context).getSyncPoller();
+    public SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter,
+        Context context) {
+        return this
+            .beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -562,7 +794,11 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return a provider instance associated with SAP monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInstanceInner> createAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter) {
+    private Mono<ProviderInstanceInner> createAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter) {
         return beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -570,9 +806,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -584,17 +821,24 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return a provider instance associated with SAP monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProviderInstanceInner> createAsync(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter, Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
+    private Mono<ProviderInstanceInner> createAsync(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter,
+        Context context) {
+        return beginCreateAsync(
+                resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -605,15 +849,20 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInstanceInner create(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter) {
+    public ProviderInstanceInner create(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter) {
         return createAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter).block();
     }
 
     /**
      * Creates a provider instance.
-     * 
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -625,50 +874,80 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInstanceInner create(String resourceGroupName, String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter, Context context) {
-        return createAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context).block();
+    public ProviderInstanceInner create(
+        String resourceGroupName,
+        String monitorName,
+        String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter,
+        Context context) {
+        return createAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
+            .block();
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            monitorName,
+                            providerInstanceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -676,35 +955,55 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (providerInstanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter providerInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, monitorName, providerInstanceName, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                monitorName,
+                providerInstanceName,
+                accept,
+                context);
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -714,16 +1013,26 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(String resourceGroupName, String monitorName, String providerInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, providerInstanceName);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono, this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, this.client.getContext());
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, monitorName, providerInstanceName);
+        return this
+            .client
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -734,17 +1043,27 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono, this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, monitorName, providerInstanceName, context);
+        return this
+            .client
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -754,15 +1073,17 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName, String monitorName, String providerInstanceName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         return this.beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName).getSyncPoller();
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -773,15 +1094,17 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName, context).getSyncPoller();
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -791,7 +1114,8 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String monitorName, String providerInstanceName) {
+    private Mono<OperationStatusResultInner> deleteAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         return beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -799,9 +1123,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -812,7 +1137,8 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         return beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -820,9 +1146,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -832,15 +1159,17 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner delete(String resourceGroupName, String monitorName, String providerInstanceName) {
+    public OperationStatusResultInner delete(
+        String resourceGroupName, String monitorName, String providerInstanceName) {
         return deleteAsync(resourceGroupName, monitorName, providerInstanceName).block();
     }
 
     /**
      * Deletes a provider instance.
-     * 
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
-     * 
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param providerInstanceName Name of the provider instance.
@@ -851,20 +1180,21 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner delete(String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
+    public OperationStatusResultInner delete(
+        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         return deleteAsync(resourceGroupName, monitorName, providerInstanceName, context).block();
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List provider instances operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response from the List provider instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -872,31 +1202,37 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProviderInstanceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProviderInstanceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List provider instances operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response from the List provider instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -904,17 +1240,23 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

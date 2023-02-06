@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.models.SapDiskConfiguration;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-/**
- * The list of disk configuration for vmSku which are part of SAP deployment.
- */
+/** The list of disk configuration for vmSku which are part of SAP deployment. */
 @Fluent
 public final class SapDiskConfigurationsResultInner {
     /*
@@ -27,16 +21,14 @@ public final class SapDiskConfigurationsResultInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SapDiskConfiguration> volumeConfigurations;
 
-    /**
-     * Creates an instance of SapDiskConfigurationsResultInner class.
-     */
+    /** Creates an instance of SapDiskConfigurationsResultInner class. */
     public SapDiskConfigurationsResultInner() {
     }
 
     /**
      * Get the volumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes are:
      * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
-     * 
+     *
      * @return the volumeConfigurations value.
      */
     public Map<String, SapDiskConfiguration> volumeConfigurations() {
@@ -46,23 +38,31 @@ public final class SapDiskConfigurationsResultInner {
     /**
      * Set the volumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes are:
      * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
-     * 
+     *
      * @param volumeConfigurations the volumeConfigurations value to set.
      * @return the SapDiskConfigurationsResultInner object itself.
      */
-    public SapDiskConfigurationsResultInner withVolumeConfigurations(Map<String, SapDiskConfiguration> volumeConfigurations) {
+    public SapDiskConfigurationsResultInner withVolumeConfigurations(
+        Map<String, SapDiskConfiguration> volumeConfigurations) {
         this.volumeConfigurations = volumeConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (volumeConfigurations() != null) {
-            volumeConfigurations().values().forEach(e -> { if (e != null) { e.validate(); } });
+            volumeConfigurations()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

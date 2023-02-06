@@ -5,18 +5,11 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Defines the collection of SAP Database Instances.
- */
+/** Defines the collection of SAP Database Instances. */
 @Fluent
 public final class SapDatabaseInstanceList {
     /*
@@ -31,15 +24,13 @@ public final class SapDatabaseInstanceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of SapDatabaseInstanceList class.
-     */
+    /** Creates an instance of SapDatabaseInstanceList class. */
     public SapDatabaseInstanceList() {
     }
 
     /**
      * Get the value property: Gets the list of SAP Database instances.
-     * 
+     *
      * @return the value value.
      */
     public List<SapDatabaseInstanceInner> value() {
@@ -48,7 +39,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Set the value property: Gets the list of SAP Database instances.
-     * 
+     *
      * @param value the value value to set.
      * @return the SapDatabaseInstanceList object itself.
      */
@@ -59,7 +50,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +59,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SapDatabaseInstanceList object itself.
      */
@@ -79,7 +70,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

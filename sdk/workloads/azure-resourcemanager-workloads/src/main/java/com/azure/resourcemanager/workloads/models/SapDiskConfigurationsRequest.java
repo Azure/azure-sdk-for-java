@@ -5,17 +5,10 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * The SAP request to get list of disk configurations.
- */
+/** The SAP request to get list of disk configurations. */
 @Fluent
 public final class SapDiskConfigurationsRequest {
     /*
@@ -54,15 +47,13 @@ public final class SapDiskConfigurationsRequest {
     @JsonProperty(value = "dbVmSku", required = true)
     private String dbVmSku;
 
-    /**
-     * Creates an instance of SapDiskConfigurationsRequest class.
-     */
+    /** Creates an instance of SapDiskConfigurationsRequest class. */
     public SapDiskConfigurationsRequest() {
     }
 
     /**
      * Get the appLocation property: The geo-location where the SAP resources will be created.
-     * 
+     *
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -71,7 +62,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the appLocation property: The geo-location where the SAP resources will be created.
-     * 
+     *
      * @param appLocation the appLocation value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -82,7 +73,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Get the environment property: Defines the environment type - Production/Non Production.
-     * 
+     *
      * @return the environment value.
      */
     public SapEnvironmentType environment() {
@@ -91,7 +82,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the environment property: Defines the environment type - Production/Non Production.
-     * 
+     *
      * @param environment the environment value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -102,7 +93,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     * 
+     *
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -111,7 +102,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     * 
+     *
      * @param sapProduct the sapProduct value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -122,7 +113,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Get the databaseType property: The database type. Eg: HANA, DB2, etc.
-     * 
+     *
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -131,7 +122,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the databaseType property: The database type. Eg: HANA, DB2, etc.
-     * 
+     *
      * @param databaseType the databaseType value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -142,7 +133,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Get the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     * 
+     *
      * @return the deploymentType value.
      */
     public SapDeploymentType deploymentType() {
@@ -151,7 +142,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     * 
+     *
      * @param deploymentType the deploymentType value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -162,7 +153,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Get the dbVmSku property: The VM SKU for database instance.
-     * 
+     *
      * @return the dbVmSku value.
      */
     public String dbVmSku() {
@@ -171,7 +162,7 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Set the dbVmSku property: The VM SKU for database instance.
-     * 
+     *
      * @param dbVmSku the dbVmSku value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
@@ -182,27 +173,45 @@ public final class SapDiskConfigurationsRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property appLocation in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property appLocation in model SapDiskConfigurationsRequest"));
         }
         if (environment() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property environment in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property environment in model SapDiskConfigurationsRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property sapProduct in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sapProduct in model SapDiskConfigurationsRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property databaseType in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property databaseType in model SapDiskConfigurationsRequest"));
         }
         if (deploymentType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property deploymentType in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property deploymentType in model SapDiskConfigurationsRequest"));
         }
         if (dbVmSku() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property dbVmSku in model SapDiskConfigurationsRequest"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dbVmSku in model SapDiskConfigurationsRequest"));
         }
     }
 

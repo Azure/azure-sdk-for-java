@@ -5,19 +5,12 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Gets or sets the single server configuration.
- */
+/** Gets or sets the single server configuration. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType")
 @JsonTypeName("SingleServer")
 @Fluent
@@ -58,15 +51,13 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     @JsonProperty(value = "customResourceNames")
     private SingleServerCustomResourceNames customResourceNames;
 
-    /**
-     * Creates an instance of SingleServerConfiguration class.
-     */
+    /** Creates an instance of SingleServerConfiguration class. */
     public SingleServerConfiguration() {
     }
 
     /**
      * Get the networkConfiguration property: Network configuration for the server.
-     * 
+     *
      * @return the networkConfiguration value.
      */
     public NetworkConfiguration networkConfiguration() {
@@ -75,7 +66,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the networkConfiguration property: Network configuration for the server.
-     * 
+     *
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -86,7 +77,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the databaseType property: The database type.
-     * 
+     *
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -95,7 +86,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the databaseType property: The database type.
-     * 
+     *
      * @param databaseType the databaseType value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -106,7 +97,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the subnetId property: The subnet id.
-     * 
+     *
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -115,7 +106,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the subnetId property: The subnet id.
-     * 
+     *
      * @param subnetId the subnetId value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -126,7 +117,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     * 
+     *
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -135,18 +126,19 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     * 
+     *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
-    public SingleServerConfiguration withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
+    public SingleServerConfiguration withVirtualMachineConfiguration(
+        VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the dbDiskConfiguration property: Gets or sets the disk configuration.
-     * 
+     *
      * @return the dbDiskConfiguration value.
      */
     public DiskConfiguration dbDiskConfiguration() {
@@ -155,7 +147,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Set the dbDiskConfiguration property: Gets or sets the disk configuration.
-     * 
+     *
      * @param dbDiskConfiguration the dbDiskConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -167,7 +159,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /**
      * Get the customResourceNames property: The set of custom names to be used for underlying azure resources that are
      * part of the SAP system.
-     * 
+     *
      * @return the customResourceNames value.
      */
     public SingleServerCustomResourceNames customResourceNames() {
@@ -177,7 +169,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /**
      * Set the customResourceNames property: The set of custom names to be used for underlying azure resources that are
      * part of the SAP system.
-     * 
+     *
      * @param customResourceNames the customResourceNames value to set.
      * @return the SingleServerConfiguration object itself.
      */
@@ -186,9 +178,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SingleServerConfiguration withAppResourceGroup(String appResourceGroup) {
         super.withAppResourceGroup(appResourceGroup);
@@ -197,7 +187,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -207,10 +197,16 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
             networkConfiguration().validate();
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property subnetId in model SingleServerConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property subnetId in model SingleServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

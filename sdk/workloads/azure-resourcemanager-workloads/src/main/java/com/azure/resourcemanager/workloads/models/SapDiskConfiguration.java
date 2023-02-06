@@ -5,13 +5,8 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * The SAP Disk Configuration contains 'recommended disk' details and list of supported disks detail for a volume type.
@@ -30,15 +25,13 @@ public final class SapDiskConfiguration {
     @JsonProperty(value = "supportedConfigurations")
     private List<DiskDetails> supportedConfigurations;
 
-    /**
-     * Creates an instance of SapDiskConfiguration class.
-     */
+    /** Creates an instance of SapDiskConfiguration class. */
     public SapDiskConfiguration() {
     }
 
     /**
      * Get the recommendedConfiguration property: The recommended disk details for a given VM Sku.
-     * 
+     *
      * @return the recommendedConfiguration value.
      */
     public DiskVolumeConfiguration recommendedConfiguration() {
@@ -47,7 +40,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Set the recommendedConfiguration property: The recommended disk details for a given VM Sku.
-     * 
+     *
      * @param recommendedConfiguration the recommendedConfiguration value to set.
      * @return the SapDiskConfiguration object itself.
      */
@@ -58,7 +51,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Get the supportedConfigurations property: The list of supported disks for a given VM Sku.
-     * 
+     *
      * @return the supportedConfigurations value.
      */
     public List<DiskDetails> supportedConfigurations() {
@@ -67,7 +60,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Set the supportedConfigurations property: The list of supported disks for a given VM Sku.
-     * 
+     *
      * @param supportedConfigurations the supportedConfigurations value to set.
      * @return the SapDiskConfiguration object itself.
      */
@@ -78,7 +71,7 @@ public final class SapDiskConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

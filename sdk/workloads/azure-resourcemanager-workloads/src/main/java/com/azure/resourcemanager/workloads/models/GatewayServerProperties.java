@@ -4,18 +4,10 @@
 
 package com.azure.resourcemanager.workloads.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-/**
- * Defines the SAP Gateway Server properties.
- */
+/** Defines the SAP Gateway Server properties. */
 @Immutable
 public final class GatewayServerProperties {
     /*
@@ -30,15 +22,13 @@ public final class GatewayServerProperties {
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
-    /**
-     * Creates an instance of GatewayServerProperties class.
-     */
+    /** Creates an instance of GatewayServerProperties class. */
     public GatewayServerProperties() {
     }
 
     /**
      * Get the port property: Gateway Port.
-     * 
+     *
      * @return the port value.
      */
     public Long port() {
@@ -47,7 +37,7 @@ public final class GatewayServerProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     * 
+     *
      * @return the health value.
      */
     public SapHealthState health() {
@@ -56,7 +46,7 @@ public final class GatewayServerProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

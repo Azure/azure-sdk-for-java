@@ -8,48 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * State of provisioning of the SAP monitor.
- */
+/** State of provisioning of the SAP monitor. */
 public final class WorkloadMonitorProvisioningState extends ExpandableStringEnum<WorkloadMonitorProvisioningState> {
-    /**
-     * Static value Accepted for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Accepted for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState ACCEPTED = fromString("Accepted");
 
-    /**
-     * Static value Creating for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Creating for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState CREATING = fromString("Creating");
 
-    /**
-     * Static value Updating for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Updating for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState UPDATING = fromString("Updating");
 
-    /**
-     * Static value Failed for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Failed for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState FAILED = fromString("Failed");
 
-    /**
-     * Static value Succeeded for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Succeeded for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Deleting for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Deleting for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState DELETING = fromString("Deleting");
 
-    /**
-     * Static value Migrating for WorkloadMonitorProvisioningState.
-     */
+    /** Static value Migrating for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState MIGRATING = fromString("Migrating");
 
     /**
      * Creates a new instance of WorkloadMonitorProvisioningState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,7 +42,7 @@ public final class WorkloadMonitorProvisioningState extends ExpandableStringEnum
 
     /**
      * Creates or finds a WorkloadMonitorProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding WorkloadMonitorProvisioningState.
      */
@@ -69,7 +53,7 @@ public final class WorkloadMonitorProvisioningState extends ExpandableStringEnum
 
     /**
      * Gets known WorkloadMonitorProvisioningState values.
-     * 
+     *
      * @return known WorkloadMonitorProvisioningState values.
      */
     public static Collection<WorkloadMonitorProvisioningState> values() {
