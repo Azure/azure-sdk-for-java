@@ -4,19 +4,24 @@
 package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
 class AzureAuthenticationTemplateTest {
@@ -72,6 +78,39 @@ class AzureAuthenticationTemplateTest {
 
         assertNotEquals(template1.getTokenAsPasswordAsync(), template2.getTokenAsPasswordAsync());
 
+    }
+
+    @Test
+    void testGetTokenAsPassword() throws InterruptedException {
+        // setup
+        String TOKEN_1 = "token1";
+        String TOKEN_2 = "token2";
+        int TOKEN_EXPIRE_SECONDS = 2;
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(TOKEN_EXPIRE_SECONDS);
+        when(mockTokenCredential.getToken(any()))
+            .thenAnswer(u -> {
+                if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                    return Mono.just(new AccessToken(TOKEN_1, offsetDateTime));
+                } else {
+                    return Mono.just(new AccessToken(TOKEN_2, offsetDateTime.plusSeconds(TOKEN_EXPIRE_SECONDS)));
+                }
+            });
+        // mock
+        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock
+                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+        })) {
+            Properties properties = new Properties();
+
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+            for (int i = 0; i < 5; i++) {
+                assertEquals(TOKEN_1, template.getTokenAsPassword());
+            }
+            TimeUnit.SECONDS.sleep(TOKEN_EXPIRE_SECONDS);
+            assertEquals(TOKEN_2, template.getTokenAsPassword());
+        }
     }
 
     private static ClientSecretCredential getClientSecretCredential() {
