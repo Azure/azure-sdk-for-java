@@ -28,6 +28,7 @@ import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.qpid.proton.amqp.Symbol.getSymbol;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventDataTest {
@@ -152,5 +153,25 @@ public class EventDataTest {
         final BinaryData actualBinary = eventData.getBodyAsBinaryData();
         Assertions.assertNotNull(actualBinary);
         Assertions.assertArrayEquals(PAYLOAD_BYTES, actualBinary.toBytes());
+    }
+
+    /**
+     * Fixes:  https://github.com/Azure/azure-sdk-for-java/issues/33327
+     */
+    @Test
+    void emptyEventDataDoesNotOverwriteProperties() {
+        // Arrange
+        final String property1 = "property1";
+
+        // Act
+        EventData eventData1 = new EventData();
+        eventData1.getProperties().put(property1, 1);
+
+        EventData eventData2 = new EventData();
+        eventData2.getProperties().put(property1, 2);
+
+        // Assert
+        assertEquals(1, eventData1.getProperties().get(property1));
+        assertEquals(2, eventData2.getProperties().get(property1));
     }
 }
