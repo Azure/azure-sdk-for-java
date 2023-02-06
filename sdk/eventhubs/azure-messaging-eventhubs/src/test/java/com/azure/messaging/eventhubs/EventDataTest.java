@@ -159,7 +159,7 @@ public class EventDataTest {
      * Fixes:  https://github.com/Azure/azure-sdk-for-java/issues/33327
      */
     @Test
-    void emptyEventDataDoesNotOverwriteProperties() {
+    public void emptyEventDataDoesNotOverwriteProperties() {
         // Arrange
         final String property1 = "property1";
 
