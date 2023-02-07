@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.purview.azure-test.com/workflow/workflows/4afb5752-e47f-43a1-8ba7-c696bf8d2745?api-version=2022-05-01-preview",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflows/4afb5752-e47f-43a1-8ba7-c696bf8d2745?api-version=2022-05-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8ab3abf2-563b-4624-b6b8-acabe053f768",

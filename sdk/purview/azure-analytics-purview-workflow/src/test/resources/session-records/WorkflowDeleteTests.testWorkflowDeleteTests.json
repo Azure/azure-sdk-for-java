@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.purview.azure-test.com/workflow/workflows/af1ecae-16ee-4b2d-8972-00d611dd2f99?api-version=2022-05-01-preview",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflows/af1ecae-16ee-4b2d-8972-00d611dd2f99?api-version=2022-05-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d09b97e1-449a-42b4-b9d5-0f1b159889a3"

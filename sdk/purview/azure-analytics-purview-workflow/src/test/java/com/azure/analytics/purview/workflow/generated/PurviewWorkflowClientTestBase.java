@@ -31,6 +31,7 @@ class PurviewWorkflowClientTestBase extends TestBase {
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             purviewWorkflowClientbuilder
+                    .endpoint("https://REDACTED.purview.azure.com")
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {

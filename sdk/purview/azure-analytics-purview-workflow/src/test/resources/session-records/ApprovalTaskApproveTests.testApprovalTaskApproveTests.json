@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.purview.azure-test.com/workflow/workflowtasks/69b57a00-f5de-4a17-a44a-6479adae373d/approve-approval?api-version=2022-05-01-preview",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflowtasks/69b57a00-f5de-4a17-a44a-6479adae373d/approve-approval?api-version=2022-05-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
       "x-ms-client-request-id" : "aeb135a9-726a-479b-9dad-5ae2c7253392",
