@@ -21,7 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.Mockito.when;
 
-public class EventHubsMessageChannelBinderTests {
+class EventHubsMessageChannelBinderTests {
 
     @Mock
     private ProducerDestination producerDestination;
