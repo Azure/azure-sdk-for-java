@@ -277,7 +277,13 @@ class ServiceBusSessionManager implements AutoCloseable {
         }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
-                .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
+                .filter(e -> e == AmqpEndpointState.ACTIVE)
+                .next()
+                // When link is CLOSED directly from UNINITIALIZED state, and if the error condition in the closed event
+                // is null, the endpointStates will emit complete signal. In this case, we switch Mono.empty() to
+                // Mono.error() in order to do the retryWhen().
+                .switchIfEmpty(Mono.error(() ->
+                    new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
@@ -294,6 +300,9 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
+                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                } else if (failure instanceof AmqpException
+                    && ((AmqpException) failure).isTransient()) {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else {
                     return Mono.<Long>error(failure);
