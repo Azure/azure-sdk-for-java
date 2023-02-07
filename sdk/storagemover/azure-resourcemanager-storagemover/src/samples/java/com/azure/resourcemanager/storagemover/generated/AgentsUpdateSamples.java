@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagemover.models.Agent;
 /** Samples for Agents Update. */
 public final class AgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_Update.json
      */
     /**
      * Sample code: Agents_Update.

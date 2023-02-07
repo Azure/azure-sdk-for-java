@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagemover.models.Endpoint;
 /** Samples for Endpoints Update. */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Update.json
      */
     /**
      * Sample code: Endpoints_Update.
