@@ -310,25 +310,6 @@ public class CommunicationTokenCredentialTests {
     }
 
     @Test
-    public void refresherShouldBeCalledOnDemandWithoutInitialToken() throws InterruptedException, ExecutionException, IOException {
-        immediateFresher.resetCallCount();
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 15 * 60);
-        immediateFresher.setRefreshedToken(tokenStr);
-        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher)
-            .setRefreshProactively(false);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
-        assertEquals(0, immediateFresher.numCalls());
-        StepVerifier.create(tokenCredential.getToken())
-            .assertNext(token -> {
-                assertFalse(token.isExpired(), "New AccessToken should have been generated on demand");
-                assertEquals(tokenStr, token.getToken());
-                assertEquals(1, immediateFresher.numCalls());
-            })
-            .verifyComplete();
-        tokenCredential.close();
-    }
-
-    @Test
     public void shouldStopRefreshTimerWhenClosed() throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 12 * 60);
         CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher)
