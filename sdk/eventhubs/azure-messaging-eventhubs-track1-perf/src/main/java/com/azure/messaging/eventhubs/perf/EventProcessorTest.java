@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.EventPerfTest;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventprocessorhost.EventProcessorHost;
 import com.microsoft.azure.storage.StorageCredentials;
@@ -21,7 +22,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -31,25 +31,24 @@ import java.util.function.Consumer;
 /**
  * Tests Event Processor Host.
  */
-public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
+public class EventProcessorTest extends EventPerfTest<EventProcessorOptions> {
     private static final String STORAGE_PREFIX = "perf";
     private static final String HEADERS = String.join("\t", "Id", "Index", "Count",
         "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
-    // Minimum duration is 2 minutes so we can give it time to claim all the partitions.
+    // Minimum duration is 2 minutes, so we can give it time to claim all the partitions.
     private static final int MINIMUM_DURATION = 2 * 60;
+
+    private final EventHubsTestHelper<EventHubsOptions> testHelper;
 
     private final SampleEventProcessorFactory processorFactory;
     private final ConcurrentHashMap<String, SamplePartitionProcessor> partitionProcessorMap;
-    private final Duration testDuration;
-
-    private volatile long startTime;
-    private volatile long endTime;
 
     private String containerName;
     private StorageCredentials storageCredentials;
     private CloudBlobContainer containerReference;
+    private EventProcessorHost processor;
 
     /**
      * Creates an instance of performance test.
@@ -59,13 +58,14 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     public EventProcessorTest(EventProcessorOptions options) {
         super(options);
 
-        partitionProcessorMap = new ConcurrentHashMap<>();
-        processorFactory = new SampleEventProcessorFactory(partitionProcessorMap);
-
-        // End the test 2 seconds
-        testDuration = Duration.ofSeconds(options.getDuration() - 1);
+        this.partitionProcessorMap = new ConcurrentHashMap<>();
+        this.processorFactory = new SampleEventProcessorFactory(partitionProcessorMap);
+        this.testHelper = new EventHubsTestHelper<>(options);
     }
 
+    /**
+     * Sends {@link EventProcessorOptions#getEventsToSend()} number of events to each partition.
+     */
     @Override
     public Mono<Void> globalSetupAsync() {
         // It is the default duration or less than 2 minutes.
@@ -94,17 +94,17 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         }
 
         return Mono.usingWhen(
-            Mono.fromCompletionStage(createEventHubClientAsync()),
+            Mono.fromCompletionStage(testHelper.createEventHubClientAsync()),
             client -> Mono.fromCompletionStage(client.getRuntimeInformation())
                 .flatMapMany(runtimeInformation -> {
                     for (String id : runtimeInformation.getPartitionIds()) {
-                        partitionProcessorMap.put(id, new SamplePartitionProcessor());
+                        partitionProcessorMap.put(id, new SamplePartitionProcessor(() -> eventRaised()));
                     }
                     return Flux.fromArray(runtimeInformation.getPartitionIds());
                 })
                 .flatMap(partitionId -> {
                     if (options.publishMessages()) {
-                        return sendMessages(client, partitionId, options.getEventsToSend());
+                        return testHelper.sendMessages(client, partitionId, options.getEventsToSend());
                     } else {
                         return Mono.empty();
                     }
@@ -114,41 +114,27 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     }
 
     @Override
-    public void run() {
-        runAsync().block();
+    public Mono<Void> setupAsync() {
+        final ConnectionStringBuilder connectionStringBuilder = testHelper.getConnectionStringBuilder();
+        final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
+            EventProcessorHost.EventProcessorHostBuilder.newBuilder(
+                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+                .useAzureStorageCheckpointLeaseManager(storageCredentials, containerName, STORAGE_PREFIX)
+                .useEventHubConnectionString(connectionStringBuilder.toString())
+                .setExecutor(testHelper.getScheduler());
+
+        this.processor = builder.build();
+
+        return Mono.fromCompletionStage(this.processor.registerEventProcessorFactory(processorFactory));
     }
 
     @Override
-    public Mono<Void> runAsync() {
-        final Mono<EventProcessorHost> createProcessor = Mono.fromCallable(() -> {
-            final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
-            final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
-                EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
-                    .useAzureStorageCheckpointLeaseManager(storageCredentials, containerName, STORAGE_PREFIX)
-                    .useEventHubConnectionString(connectionStringBuilder.toString())
-                    .setExecutor(getScheduler());
+    public Mono<Void> cleanupAsync() {
+        if (processor == null) {
+            return Mono.empty();
+        }
 
-            return builder.build();
-        });
-
-        final Mono<Long> timeout = Mono.delay(testDuration);
-        return Mono.usingWhen(
-            createProcessor,
-            processor -> {
-                startTime = System.nanoTime();
-
-                return Mono.fromCompletionStage(
-                    processor.registerEventProcessorFactory(processorFactory))
-                    .then(Mono.when(timeout));
-            },
-            processor -> {
-                endTime = System.nanoTime();
-
-                System.out.println("Completed run.");
-                return Mono.fromCompletionStage(processor.unregisterEventProcessor());
-            })
-            .doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
+        return Mono.fromCompletionStage(processor.unregisterEventProcessor());
     }
 
     @Override
@@ -186,31 +172,25 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         }
 
         System.out.println("Done.");
-        return super.cleanupAsync();
+
+        return Mono.empty();
     }
 
     private void outputPartitionResults(Consumer<String> onOutput) {
         onOutput.accept(HEADERS);
 
-        long total = 0;
         for (SamplePartitionProcessor processor : partitionProcessorMap.values()) {
             processor.onStop();
             final List<EventsCounter> counters = processor.getCounters();
             for (int i = 0; i < counters.size(); i++) {
                 final EventsCounter eventsCounter = counters.get(i);
-                total += eventsCounter.totalEvents();
                 final String result = getResults(i, eventsCounter);
                 onOutput.accept(result);
             }
         }
 
-        double elapsedTime = (endTime - startTime) * 0.000000001;
-        double eventsPerSecond = total / elapsedTime;
-
         onOutput.accept("");
-        onOutput.accept(String.format("Total Events\t%d%n", total));
-        onOutput.accept(String.format("Total Duration (s)\t%.2f%n", elapsedTime));
-        onOutput.accept(String.format("Rate (events/s)\t%.2f%n", eventsPerSecond));
+        onOutput.accept(String.format("Total Events\t%d%n", getCompletedOperations()));
     }
 
     private static String getResults(int index, EventsCounter eventsCounter) {
