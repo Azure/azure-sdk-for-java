@@ -52,7 +52,7 @@ public class SendEventDataBatchTest extends EventPerfTest<EventHubsOptions> {
         } else if (!options.isSync() && clientFuture == null) {
             this.clientFuture = testHelper.createEventHubClientAsync();
 
-            this.subscription = sendEventsAsync()
+            this.subscription = Mono.defer(() ->sendEventsAsync())
                 .repeat(() -> isRunning.get())
                 .subscribe();
         }
