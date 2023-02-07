@@ -38,6 +38,9 @@ public final class PrioritizedFields {
     @JsonProperty(value = "prioritizedKeywordsFields")
     private List<SemanticField> prioritizedKeywordsFields;
 
+    /** Creates an instance of PrioritizedFields class. */
+    public PrioritizedFields() {}
+
     /**
      * Get the titleField property: Defines the title field to be used for semantic ranking, captions, highlights, and
      * answers. If you don't have a title field in your index, leave this blank.

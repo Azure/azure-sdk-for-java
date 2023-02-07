@@ -6,12 +6,12 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines a specific configuration to be used in the context of semantic capabilities. */
-@Fluent
+@Immutable
 public final class SemanticConfiguration {
     /*
      * The name of the semantic configuration.
