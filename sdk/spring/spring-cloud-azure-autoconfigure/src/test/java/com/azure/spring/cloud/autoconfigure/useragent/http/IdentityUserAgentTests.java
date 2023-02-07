@@ -32,10 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Isolated("Run this by itself as it captures System.out")
 @ExtendWith(OutputCaptureExtension.class)
-public class IdentityUserAgentTests {
+class IdentityUserAgentTests {
 
     @Test
-    public void userAgentTest(CapturedOutput output) {
+    void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
