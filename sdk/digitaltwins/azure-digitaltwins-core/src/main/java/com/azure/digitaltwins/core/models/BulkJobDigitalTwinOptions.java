@@ -5,12 +5,11 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.ImportJobsDeleteOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listBulkImportJobs(BulkJobDigitalTwinOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listImportJobs(BulkJobDigitalTwinOptions, Context)} and
  * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listBulkImportJobs(BulkJobDigitalTwinOptions)}
  */
 @Fluent

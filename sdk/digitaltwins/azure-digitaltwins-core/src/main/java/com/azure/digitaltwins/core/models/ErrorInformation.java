@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Error definition. */
 @Fluent
-public final class ImportError {
+public final class ErrorInformation {
     /*
      * Service specific error code which serves as the substatus for the HTTP
      * error code.
@@ -29,7 +29,7 @@ public final class ImportError {
      * Internal error details.
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ImportError> details;
+    private List<ErrorInformation> details;
 
     /*
      * An object containing more specific information than the current object
@@ -38,7 +38,7 @@ public final class ImportError {
     @JsonProperty(value = "innererror")
     private InnerError innerError;
 
-    public ImportError(String code, String message, List<ImportError> details) {
+    public ErrorInformation(String code, String message, List<ErrorInformation> details) {
         this.code = code;
         this.message= message;
         this.details = details;
@@ -67,7 +67,7 @@ public final class ImportError {
      *
      * @return the details value.
      */
-    public List<ImportError> getDetails() {
+    public List<ErrorInformation> getDetails() {
         return this.details;
     }
 
@@ -88,7 +88,7 @@ public final class ImportError {
      * @param innerError the innerError value to set.
      * @return the Error object itself.
      */
-    public ImportError setInnerError(InnerError innerError) {
+    public ErrorInformation setInnerError(InnerError innerError) {
         this.innerError = innerError;
         return this;
     }

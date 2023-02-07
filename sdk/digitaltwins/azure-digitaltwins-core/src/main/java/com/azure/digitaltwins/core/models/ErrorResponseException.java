@@ -26,12 +26,12 @@ public final class ErrorResponseException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public ErrorResponseException(String message, HttpResponse response, ImportErrorResponse value) {
+    public ErrorResponseException(String message, HttpResponse response, ErrorResponse value) {
         super(message, response, value);
     }
 
     @Override
-    public ImportErrorResponse getValue() {
-        return (ImportErrorResponse) super.getValue();
+    public ErrorResponse getValue() {
+        return (ErrorResponse) super.getValue();
     }
 }

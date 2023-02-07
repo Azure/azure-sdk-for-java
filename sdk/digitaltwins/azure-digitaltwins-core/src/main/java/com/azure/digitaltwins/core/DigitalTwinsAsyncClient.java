@@ -25,6 +25,7 @@ import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDa
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
+import com.azure.digitaltwins.core.implementation.models.BulkImportJob;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
@@ -34,7 +35,7 @@ import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsBulkJob;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
@@ -2419,11 +2420,11 @@ public final class DigitalTwinsAsyncClient {
 
     //region Import APIs
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsBulkJob>> createBulkImportJob(String id, DigitalTwinsBulkJob importJob) {
+    public Mono<Response<DigitalTwinsImportJob>> createBulkImportJob(String id, DigitalTwinsImportJob importJob) {
         return withContext(context -> createBulkImportJob(id, importJob, context));
     }
 
-    Mono<Response<DigitalTwinsBulkJob>> createBulkImportJob(String id, DigitalTwinsBulkJob importJob, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> createBulkImportJob(String id, DigitalTwinsImportJob importJob, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2441,18 +2442,14 @@ public final class DigitalTwinsAsyncClient {
                 BulkJobConverter.map(bulkImportJobResponse.getValue())));
     }
 
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteBulkImportJob(String id, BulkJobDigitalTwinOptions options) {
-        return withContext(context -> deleteBulkImportJob(id, options, context));
+    public Mono<Response<Void>> deleteBulkImportJob(String id) {
+        return withContext(context -> deleteBulkImportJob(id, context));
     }
 
-    Mono<Response<Void>> deleteBulkImportJob(String id, BulkJobDigitalTwinOptions options, Context context) {
+    Mono<Response<Void>> deleteBulkImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
-        }
-        if (options == null) {
-            options = new BulkJobDigitalTwinOptions();
         }
 
         return protocolLayer
@@ -2464,11 +2461,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsBulkJob>> cancelBulkImportJob(String id) {
+    public Mono<Response<DigitalTwinsImportJob>> cancelBulkImportJob(String id) {
         return withContext(context -> cancelBulkImportJob(id, context));
     }
 
-    Mono<Response<DigitalTwinsBulkJob>> cancelBulkImportJob(String id, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> cancelBulkImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2487,11 +2484,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsBulkJob>> getBulkImportJob(String id) {
+    public Mono<Response<DigitalTwinsImportJob>> getBulkImportJob(String id) {
         return withContext(context -> getBulkImportJob(id, context));
     }
 
-    Mono<Response<DigitalTwinsBulkJob>> getBulkImportJob(String id, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> getBulkImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2510,24 +2507,24 @@ public final class DigitalTwinsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsBulkJob> listBulkImportJobs() {
+    public PagedFlux<DigitalTwinsImportJob> listBulkImportJobs() {
         return listBulkImportJobs(null);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsBulkJob> listBulkImportJobs(BulkJobDigitalTwinOptions options) {
+    public PagedFlux<DigitalTwinsImportJob> listBulkImportJobs(BulkJobDigitalTwinOptions options) {
         return new PagedFlux<>(
             () -> withContext(context -> listBulkImportFirstPage(options, context)),
             nextLink -> withContext(context -> listBulkImportNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsBulkJob> listBulkImportJobs(BulkJobDigitalTwinOptions options, Context context) {
+    PagedFlux<DigitalTwinsImportJob> listBulkImportJobs(BulkJobDigitalTwinOptions options, Context context) {
         return new PagedFlux<>(
             () -> listBulkImportFirstPage(options, context != null ? context : Context.NONE),
             nextLink -> listBulkImportNextPage(nextLink, options, context != null ? context : Context.NONE));
     }
 
-    Mono<PagedResponse<DigitalTwinsBulkJob>> listBulkImportFirstPage(BulkJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listBulkImportFirstPage(BulkJobDigitalTwinOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2543,7 +2540,7 @@ public final class DigitalTwinsAsyncClient {
             .map(pagedBulkImportJobFunction);
     }
 
-    Mono<PagedResponse<DigitalTwinsBulkJob>> listBulkImportNextPage(String nextLink, BulkJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listBulkImportNextPage(String nextLink, BulkJobDigitalTwinOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2560,8 +2557,8 @@ public final class DigitalTwinsAsyncClient {
             .map(pagedBulkImportJobFunction);
     }
 
-    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.BulkImportJob>, PagedResponse<DigitalTwinsBulkJob>> pagedBulkImportJobFunction = (pagedBulkImportResponse) -> {
-        List<DigitalTwinsBulkJob> convertedList = pagedBulkImportResponse.getValue().stream()
+    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.BulkImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedBulkImportJobFunction = (pagedBulkImportResponse) -> {
+        List<DigitalTwinsImportJob> convertedList = pagedBulkImportResponse.getValue().stream()
             .map(BulkJobConverter::map)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());

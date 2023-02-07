@@ -10,21 +10,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error response. */
 @Fluent
-public final class ImportErrorResponse {
+public final class ErrorResponse {
     /*
      * The error details.
      */
     @JsonProperty(value = "error", required = true)
-    private ImportError error;
+    private ErrorInformation errorInformation;
 
     /**
      * Creates an instance of ErrorResponse class.
      *
-     * @param error the error value to set.
+     * @param errorInformation the error value to set.
      */
     @JsonCreator
-    public ImportErrorResponse(@JsonProperty(value = "error", required = true) ImportError error) {
-        this.error = error;
+    public ErrorResponse(@JsonProperty(value = "error", required = true) ErrorInformation errorInformation) {
+        this.errorInformation = errorInformation;
     }
 
     /**
@@ -32,7 +32,7 @@ public final class ImportErrorResponse {
      *
      * @return the error value.
      */
-    public ImportError getError() {
-        return this.error;
+    public ErrorInformation getError() {
+        return this.errorInformation;
     }
 }

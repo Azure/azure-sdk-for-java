@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
  * event route can point towards an Azure EventHub as a consumer of published telemetry.
  */
 @Fluent
-public final class DigitalTwinsBulkJob {
+public final class DigitalTwinsImportJob {
     /*
      * The identifier of the bulk import job.
      */
@@ -76,7 +76,7 @@ public final class DigitalTwinsBulkJob {
      * Details of the error(s) that occurred executing the bulk job.
      */
     @JsonProperty(value = "error")
-    private ImportError error;
+    private ErrorInformation errorInformation;
 
     /**
      * Creates an instance of BulkImportJob class.
@@ -85,7 +85,7 @@ public final class DigitalTwinsBulkJob {
      * @param outputBlobUri the outputBlobUri value to set.
      */
     @JsonCreator
-    public DigitalTwinsBulkJob(
+    public DigitalTwinsImportJob(
             @JsonProperty(value = "inputBlobUri", required = true) String inputBlobUri,
             @JsonProperty(value = "outputBlobUri", required = true) String outputBlobUri) {
         this.inputBlobUri = inputBlobUri;
@@ -104,15 +104,15 @@ public final class DigitalTwinsBulkJob {
      * @param finishedDateTime
      * @param purgeDateTime
      */
-    public DigitalTwinsBulkJob( String id,
-                                String inputBlobUri,
-                                String outputBlobUri,
-                                Status status,
-                                OffsetDateTime createdDateTime,
-                                OffsetDateTime lastActionDateTime,
-                                OffsetDateTime finishedDateTime,
-                                OffsetDateTime purgeDateTime,
-                                ImportError error) {
+    public DigitalTwinsImportJob(String id,
+                                 String inputBlobUri,
+                                 String outputBlobUri,
+                                 Status status,
+                                 OffsetDateTime createdDateTime,
+                                 OffsetDateTime lastActionDateTime,
+                                 OffsetDateTime finishedDateTime,
+                                 OffsetDateTime purgeDateTime,
+                                 ErrorInformation errorInformation) {
         this.id = id;
         this.inputBlobUri = inputBlobUri;
         this.outputBlobUri = outputBlobUri;
@@ -121,7 +121,7 @@ public final class DigitalTwinsBulkJob {
         this.lastActionDateTime = lastActionDateTime;
         this.finishedDateTime = finishedDateTime;
         this.purgeDateTime = purgeDateTime;
-        this.error = error;
+        this.errorInformation = errorInformation;
     }
 
     /**
@@ -207,18 +207,18 @@ public final class DigitalTwinsBulkJob {
      *
      * @return the error value.
      */
-    public ImportError getError() {
-        return this.error;
+    public ErrorInformation getError() {
+        return this.errorInformation;
     }
 
     /**
      * Set the error property: Details of the error(s) that occurred executing the bulk job.
      *
-     * @param error the error value to set.
+     * @param errorInformation the error value to set.
      * @return the BulkImportJob object itself.
      */
-    public DigitalTwinsBulkJob setError(ImportError error) {
-        this.error = error;
+    public DigitalTwinsImportJob setError(ErrorInformation errorInformation) {
+        this.errorInformation = errorInformation;
         return this;
     }
 }

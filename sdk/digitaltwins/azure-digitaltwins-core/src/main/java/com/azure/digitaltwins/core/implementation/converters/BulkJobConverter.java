@@ -4,7 +4,7 @@
 package com.azure.digitaltwins.core.implementation.converters;
 
 import com.azure.digitaltwins.core.models.*;
-import com.azure.digitaltwins.core.models.ImportError;
+import com.azure.digitaltwins.core.models.ErrorInformation;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,12 +20,12 @@ public final class BulkJobConverter {
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.EventRoute} to
      * {@link DigitalTwinsEventRoute}. If the input is null, then the output will be null as well.
      */
-    public static DigitalTwinsBulkJob map(com.azure.digitaltwins.core.implementation.models.BulkImportJob input) {
+    public static DigitalTwinsImportJob map(com.azure.digitaltwins.core.implementation.models.BulkImportJob input) {
         if (input == null) {
             return null;
         }
 
-        return new DigitalTwinsBulkJob(
+        return new DigitalTwinsImportJob(
             input.getId(),
             input.getInputBlobUri(),
             input.getOutputBlobUri(),
@@ -38,10 +38,10 @@ public final class BulkJobConverter {
     }
 
     /**
-     * Maps from {@link DigitalTwinsBulkJob} to
+     * Maps from {@link DigitalTwinsImportJob} to
      * {@link com.azure.digitaltwins.core.implementation.models.BulkImportJob}. If the input is null, then the output will be null as well.
      */
-    public static com.azure.digitaltwins.core.implementation.models.BulkImportJob map(DigitalTwinsBulkJob input) {
+    public static com.azure.digitaltwins.core.implementation.models.BulkImportJob map(DigitalTwinsImportJob input) {
         if (input == null) {
             return null;
         }
@@ -49,16 +49,16 @@ public final class BulkJobConverter {
         return new com.azure.digitaltwins.core.implementation.models.BulkImportJob(input.getInputBlobUri(), input.getOutputBlobUri());
     }
 
-    public static ImportError mapError(com.azure.digitaltwins.core.implementation.models.Error input) {
+    public static ErrorInformation mapError(com.azure.digitaltwins.core.implementation.models.Error input) {
         if(input == null){
             return null;
         }
-        ImportError error = new ImportError(input.getCode(), input.getMessage(), mapDetails(input.getDetails()));
-        error.setInnerError(mapInnerError(input.getInnererror()));
-        return error;
+        ErrorInformation errorInformation = new ErrorInformation(input.getCode(), input.getMessage(), mapDetails(input.getDetails()));
+        errorInformation.setInnerError(mapInnerError(input.getInnererror()));
+        return errorInformation;
     }
 
-    public static List<ImportError> mapDetails(List<com.azure.digitaltwins.core.implementation.models.Error> inputList) {
+    public static List<ErrorInformation> mapDetails(List<com.azure.digitaltwins.core.implementation.models.Error> inputList) {
         if(inputList == null){
             return null;
         }
