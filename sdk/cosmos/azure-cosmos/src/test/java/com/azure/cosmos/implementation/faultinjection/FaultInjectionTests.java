@@ -76,7 +76,7 @@ public class FaultInjectionTests {
             .enabled(true)
             .build();
 
-        container.addFaultInjectionRules(Arrays.asList(serverErrorInjectionRule, connectionFaultInjectionRule)).block();
+        container.configFaultInjectionRules(Arrays.asList(serverErrorInjectionRule, connectionFaultInjectionRule)).block();
 
         System.out.println("Physical addresses for serverErrorInjectionRule: " + serverErrorInjectionRule.getEndpointAddresses());
 

@@ -5,16 +5,16 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -62,7 +62,7 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        this.storeClient.addFaultInjectionRule(rule);
+    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        this.storeClient.configFaultInjectionRule(rule);
     }
 }

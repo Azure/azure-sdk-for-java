@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

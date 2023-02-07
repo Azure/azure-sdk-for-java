@@ -4,10 +4,11 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -19,7 +20,7 @@ public class FaultInjectionRule {
     private final int requestHitLimit;
     private final String id;
     private boolean enabled;
-    private IFaultInjectionRuleInternal effectiveFaultInjectionRule;
+    private IFaultInjectionRuleInternal effectiveRule;
 
     public FaultInjectionRule(
         String id,
@@ -71,20 +72,24 @@ public class FaultInjectionRule {
         this.enabled = false;
     }
 
-    void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveFaultInjectionRule) {
-        this.effectiveFaultInjectionRule = effectiveFaultInjectionRule;
+    public List<String> getEndpointAddresses() {
+        return this.effectiveRule
+            .getPhysicalAddresses()
+            .stream()
+            .map(uri -> uri.getURI().getAuthority())
+            .collect(Collectors.toList());
     }
 
-    public List<String> getEndpointAddresses() {
-        return this.effectiveFaultInjectionRule.getEndpointAddresses();
+    void setEffectiveFaultInjectionRule(IFaultInjectionRuleInternal effectiveRule) {
+        this.effectiveRule = effectiveRule;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosFaultInjectionRuleHelper.setCosmosFaultInjectionRuleAccessor(
-            new ImplementationBridgeHelpers.CosmosFaultInjectionRuleHelper.CosmosFaultInjectionRuleAccessor() {
+        ImplementationBridgeHelpers.FaultInjectionRuleHelper.setFaultInjectionRuleAccessor(
+            new ImplementationBridgeHelpers.FaultInjectionRuleHelper.FaultInjectionRuleAccessor() {
                 @Override
                 public void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal) {
                     rule.setEffectiveFaultInjectionRule(ruleInternal);

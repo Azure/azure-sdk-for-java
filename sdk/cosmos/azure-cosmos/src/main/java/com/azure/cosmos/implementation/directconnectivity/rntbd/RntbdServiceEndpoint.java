@@ -289,8 +289,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
-    public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
-        this.channelPool.injectConnectionErrors(ruleId, faultInjectionConnectionErrorResult);
+    public void injectConnectionErrors(
+        String faultInjectionRuleId,
+        FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult) {
+
+        this.channelPool.injectConnectionErrors(faultInjectionRuleId, faultInjectionConnectionErrorResult);
     }
 
     // endregion

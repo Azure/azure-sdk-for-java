@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -60,5 +60,5 @@ public interface RxStoreModel {
      * @return a flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
-    void addFaultInjectionRule(IFaultInjectionRuleInternal rule);
+    void configFaultInjectionRule(IFaultInjectionRuleInternal rule);
 }

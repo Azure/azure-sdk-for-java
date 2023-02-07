@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -23,23 +24,24 @@ public class RntbdConnectionErrorInjector {
         this.endpointProvider = endpointProvider;
     }
 
-    public Mono<Void> addFaultInjectionRule(FaultInjectionConnectionErrorRule rule) {
-        this.ruleMap.put(rule.getRuleId(), rule);
-        CosmosSchedulers.FAULT_INJECTION_CONNECTION_ERROR_BOUNDED_ELASTIC.schedule(
-            () -> this.injectConnectionErrorTask(rule).subscribe()
-        );
+    public void configFaultInjectionRule(FaultInjectionConnectionErrorRule rule) {
+        this.ruleMap.computeIfAbsent(rule.getId(), ruleId -> {
+            CosmosSchedulers.FAULT_INJECTION_CONNECTION_ERROR_BOUNDED_ELASTIC.schedule(
+                () -> this.injectConnectionErrorTask(rule).subscribe()
+            );
 
-        return Mono.empty();
+            return rule;
+        });
     }
 
     public Mono<Void> injectConnectionErrorTask(FaultInjectionConnectionErrorRule rule) {
         return Mono.delay(rule.getResult().getInterval())
             .flatMapMany(t -> {
                 //check whether the rule still valid
-                if (this.ruleMap.containsKey(rule.getRuleId()) && rule.isValid()) {
-                    return Flux.fromIterable(rule.getAddresses())
+                if (this.isEffectiveRule(rule)) {
+                    return Flux.fromIterable(rule.getCondition().getPhysicalAddresses())
                         .flatMap(addressUri -> {
-                            this.endpointProvider.get(addressUri.getURI()).injectConnectionErrors(rule.getRuleId(), rule.getResult());
+                            this.endpointProvider.get(addressUri.getURI()).injectConnectionErrors(rule.getId(), rule.getResult());
                             return Mono.empty();
                         });
                 }
@@ -47,10 +49,17 @@ public class RntbdConnectionErrorInjector {
                 return Mono.empty();
             })
             .onErrorResume(throwable -> {
-                logger.warn("Inject connection error failed due to", throwable);
+                logger.warn("Inject connection error for rule [{}] failed due to", rule.getId(), throwable);
                 return Mono.empty();
             })
-            .repeat(() -> this.ruleMap.containsKey(rule.getRuleId()) && rule.isValid())
-            .then();
+            .repeat(() -> this.isEffectiveRule(rule))
+            .then()
+            .doFinally(signalType -> {
+                this.ruleMap.remove(rule.getId()); // important steps
+            });
+    }
+
+    private boolean isEffectiveRule(FaultInjectionConnectionErrorRule rule) {
+        return this.ruleMap.containsKey(rule.getId()) && rule.isValid();
     }
 }

@@ -585,10 +585,9 @@ public final class CosmosAsyncClient implements Closeable {
         this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
-    Mono<Void> addFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
+    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
-        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null nor empty");
-        return this.asyncDocumentClient.addFaultInjectionRules(rules, containerNameLink);
+        return this.asyncDocumentClient.configFaultInjectionRules(rules, containerNameLink);
     }
 
     /**

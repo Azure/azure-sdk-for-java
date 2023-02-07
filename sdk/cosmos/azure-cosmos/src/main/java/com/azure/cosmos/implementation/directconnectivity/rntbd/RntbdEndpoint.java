@@ -73,7 +73,9 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     long usedHeapMemory();
 
-    void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult);
+    void injectConnectionErrors(
+        String faultInjectionRuleId,
+        FaultInjectionConnectionErrorResult faultInjectionConnectionErrorResult);
 
     // endregion
 

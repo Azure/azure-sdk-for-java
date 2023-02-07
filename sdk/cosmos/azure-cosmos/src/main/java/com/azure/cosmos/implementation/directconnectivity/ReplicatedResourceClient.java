@@ -10,13 +10,13 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,7 +194,7 @@ public class ReplicatedResourceClient {
         return this.addressSelector.openConnectionsAndInitCaches(containerLink);
     }
 
-    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
-        this.transportClient.addFaultInjectionRule(rule);
+    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        this.transportClient.configFaultInjectionRule(rule);
     }
 }

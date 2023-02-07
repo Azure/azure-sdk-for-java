@@ -26,8 +26,8 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
-import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -843,8 +843,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
 
-            // check if there is any fault injection rules can apply
-            if (this.serverErrorInjector != null && this.serverErrorInjector.applyRule(requestRecord, storeResponse)) {
+            // should we also inject when a solid server error is being thrown
+            if (this.serverErrorInjector != null
+                && this.serverErrorInjector.applyServerLatencyRule(requestRecord, storeResponse)) {
                 return;
             }
 
@@ -969,9 +970,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
 
-            if (this.serverErrorInjector != null && this.serverErrorInjector.applyRule(requestRecord, cause)) {
-                return;
-            }
             requestRecord.completeExceptionally(cause);
         }
     }

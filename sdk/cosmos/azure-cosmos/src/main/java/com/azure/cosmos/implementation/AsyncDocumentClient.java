@@ -1656,7 +1656,7 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    Mono<Void> addFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
+    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
 
     /***
      *  Warming up the caches and connections to all replicas of the container for the current read region.

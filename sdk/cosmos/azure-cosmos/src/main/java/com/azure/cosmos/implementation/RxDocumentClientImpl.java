@@ -562,6 +562,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
             this.faultInjectionRulesProcessor = new FaultInjectionRulesProcessor(
+                this.connectionPolicy.getConnectionMode(),
                 this.storeModel,
                 this.gatewayProxy,
                 this.collectionCache,
@@ -4314,19 +4315,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<Void> addFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
+    public Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> rules, String containerNameLink) {
         checkNotNull(rules, "Argument 'rules' can not be null");
-        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null nor empty");
-
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && rules.stream().anyMatch(rule -> rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT)) {
-            return Mono.error(
-                new IllegalArgumentException("Fault injection rule can not be applied as client is not in direct connection mode"));
-        }
-
-        return Flux.fromIterable(rules)
-            .flatMap(rule -> this.faultInjectionRulesProcessor.addFaultInjectionRule(rule, containerNameLink))
-            .then();
+        return this.faultInjectionRulesProcessor.processFaultInjectionRule(rules, containerNameLink);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

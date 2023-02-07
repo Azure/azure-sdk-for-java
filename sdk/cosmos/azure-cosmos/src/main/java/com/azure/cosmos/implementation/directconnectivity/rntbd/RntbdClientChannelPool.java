@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
-import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
-import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.model.RntbdFaultInjectionConnectionResetEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -1342,15 +1342,19 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return null;
     }
 
-    public void injectConnectionErrors(String ruleId, FaultInjectionConnectionErrorResult faultInjectionResult) {
+    public void injectConnectionErrors(
+        String faultInjectionRuleId,
+        FaultInjectionConnectionErrorResult faultInjectionResult) {
         if (this.executor.inEventLoop()) {
-            this.injectConnectionErrorsInternal(ruleId, faultInjectionResult);
+            this.injectConnectionErrorsInternal(faultInjectionRuleId, faultInjectionResult);
         } else {
-            this.executor.submit(() -> this.injectConnectionErrorsInternal(ruleId, faultInjectionResult)).awaitUninterruptibly(); // block until complete
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionRuleId, faultInjectionResult)).awaitUninterruptibly(); // block until complete
         }
     }
 
-    private void injectConnectionErrorsInternal(String ruleId, FaultInjectionConnectionErrorResult faultInjectionResult) {
+    private void injectConnectionErrorsInternal(
+        String faultInjectionRuleId,
+        FaultInjectionConnectionErrorResult faultInjectionResult) {
         int channelsToBeClosed = (int) Math.ceil(this.channels(false) * faultInjectionResult.getThreshold());
         List<Channel> channelsToBeClosedList = this.acquiredChannels.values().stream().limit(channelsToBeClosed).collect(Collectors.toList());
 
@@ -1364,12 +1368,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         for (Channel channel: channelsToBeClosedList) {
             switch (faultInjectionResult.getErrorTypes()) {
                 case CONNECTION_CLOSE:
-                    channel.pipeline().context(RntbdRequestManager.class)
-                            .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(ruleId));
+                    channel.pipeline().firstContext() // TODO: should I just got the RntbdRequestManager handler
+                            .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
                     break;
                 case CONNECTION_RESET:
                     channel.pipeline().firstContext()
-                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(ruleId));
+                        .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(faultInjectionRuleId));
                     break;
                 default:
                     throw new IllegalStateException("ConnectionErrorType " + faultInjectionResult.getErrorTypes() + " is not supported");

@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -531,8 +531,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void addFaultInjectionRule(IFaultInjectionRuleInternal faultInjectionRule) {
-        // to be implemented
+    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+        //To be implemented
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

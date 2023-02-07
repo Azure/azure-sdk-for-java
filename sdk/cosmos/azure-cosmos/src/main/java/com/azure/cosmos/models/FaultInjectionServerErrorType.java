@@ -11,5 +11,6 @@ public enum FaultInjectionServerErrorType {
     TOO_MANY_REQUEST,
     NOT_FOUND_READ_SESSION_NOT_AVAILABLE,
     SERVER_TIMEOUT,
-    SERVER_DELAY
+    SERVER_DELAY,
+    SERVER_CONNECTION_UNRESPONSIVE // this is for high connection acquisition time
 }

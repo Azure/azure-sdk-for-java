@@ -4,6 +4,6 @@
 package com.azure.cosmos.models;
 
 public enum FaultInjectionConnectionType {
-    DIRECT
-    // TODO: Add support for Gateway
+    DIRECT,
+    GATEWAY
 }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -11,24 +12,29 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxGatewayStoreModel;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConditionInternal;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
+import com.azure.cosmos.models.FaultInjectionCondition;
 import com.azure.cosmos.models.FaultInjectionConnectionErrorResult;
+import com.azure.cosmos.models.FaultInjectionConnectionType;
 import com.azure.cosmos.models.FaultInjectionEndpoints;
 import com.azure.cosmos.models.FaultInjectionOperationType;
-import com.azure.cosmos.models.FaultInjectionConnectionType;
 import com.azure.cosmos.models.FaultInjectionRule;
 import com.azure.cosmos.models.FaultInjectionServerErrorResult;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -36,90 +42,81 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Mapping to internal rule model
  */
 public class FaultInjectionRulesProcessor {
+    private final ConnectionMode connectionMode;
     private final RxStoreModel storeModel;
     private final RxGatewayStoreModel gatewayStoreModel;
     private final RxCollectionCache collectionCache;
     private final AddressSelector addressSelector;
 
     public FaultInjectionRulesProcessor(
+        ConnectionMode connectionMode,
         RxStoreModel storeModel,
         RxGatewayStoreModel gatewayStoreModel,
         RxCollectionCache collectionCache,
         AddressSelector addressSelector) {
+
+        this.connectionMode = connectionMode;
         this.storeModel = storeModel;
         this.gatewayStoreModel = gatewayStoreModel;
         this.collectionCache = collectionCache;
         this.addressSelector = addressSelector;
     }
 
-    public Mono<Void> addFaultInjectionRule(FaultInjectionRule rule, String containerNameLink) {
-        checkNotNull(rule, "Argument 'rule' can not be null");
-        checkArgument(StringUtils.isNotEmpty(containerNameLink), "Argument 'containerNameLink' can not be null");
+    public Mono<Void> processFaultInjectionRule(List<FaultInjectionRule> rules, String containerNameLink) {
+        checkNotNull(rules, "Argument 'rules' can not be null");
 
-        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT) {
-            return this.getApplicableAddresses(
-                    rule.getCondition().getEndpoints(),
-                    rule.getCondition().getRegion(),
-                    containerNameLink)
-                .flatMap(addresses -> {
-                    if (rule.getResult() instanceof FaultInjectionServerErrorResult) {
-                        FaultInjectionServerErrorRule serverErrorRule =
-                            new FaultInjectionServerErrorRule(
-                                rule.getId(),
-                                this.getOperationType(rule.getCondition().getOperationType()),
-                                (FaultInjectionServerErrorResult) rule.getResult(),
-                                rule.isEnabled(),
-                                rule.getDuration(),
-                                rule.getRequestHitLimit(),
-                                addresses);
-                        this.storeModel.addFaultInjectionRule(serverErrorRule);
-                        ImplementationBridgeHelpers
-                            .CosmosFaultInjectionRuleHelper
-                            .getFaultInjectionRuleAccessor()
-                            .setEffectiveFaultInjectionRule(rule, serverErrorRule);
-                    } else if (rule.getResult() instanceof FaultInjectionConnectionErrorResult) {
-                        FaultInjectionConnectionErrorRule connectionErrorRule =
-                            new FaultInjectionConnectionErrorRule(
-                                rule.getId(),
-                                (FaultInjectionConnectionErrorResult) rule.getResult(),
-                                rule.isEnabled(),
-                                rule.getDuration(),
-                                addresses);
-                        this.storeModel.addFaultInjectionRule(connectionErrorRule);
-                        ImplementationBridgeHelpers
-                            .CosmosFaultInjectionRuleHelper
-                            .getFaultInjectionRuleAccessor()
-                            .setEffectiveFaultInjectionRule(rule, connectionErrorRule);
-                    }
+        return Flux.fromIterable(rules)
+            .flatMap(rule -> {
+                validateRule(rule);
+                return resolvePhysicalAddresses(rule, containerNameLink)
+                    .flatMap(addresses -> {
+                        // create effective internal rules
+                        IFaultInjectionRuleInternal effectiveRule =
+                            this.getEffectiveRule(rule, containerNameLink, addresses);
 
-                    return Mono.empty();
-                });
-        } else {
-            FaultInjectionServerErrorRule serverErrorRule =
-                new FaultInjectionServerErrorRule(
-                    rule.getId(),
-                    this.getOperationType(rule.getCondition().getOperationType()),
-                    (FaultInjectionServerErrorResult) rule.getResult(),
-                    rule.isEnabled(),
-                    rule.getDuration(),
-                    rule.getRequestHitLimit(),
-                    Collections.emptyList());
-            this.gatewayStoreModel.addFaultInjectionRule(serverErrorRule);
-            return Mono.empty();
+                        ImplementationBridgeHelpers
+                            .FaultInjectionRuleHelper
+                            .getFaultInjectionRuleAccessor()
+                            .setEffectiveFaultInjectionRule(rule, effectiveRule);
+
+                        switch (rule.getCondition().getConnectionType()) {
+                            case DIRECT:
+                                this.storeModel.configFaultInjectionRule(effectiveRule);
+                                break;
+                            case GATEWAY:
+                                this.gatewayStoreModel.configFaultInjectionRule(effectiveRule);
+                                break;
+                            default:
+                                return Mono.error(new IllegalStateException("Connection type is not supported"));
+                        }
+
+                        return Mono.empty();
+                    });
+            })
+            .then();
+    }
+
+    private void validateRule(FaultInjectionRule rule) {
+        // TODO: Discussion: Do we really need to define the connection type? By the operation type, SDK should be able to defer
+        // which connection it is targeted for
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT
+        && this.connectionMode != ConnectionMode.DIRECT) {
+            throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
         }
     }
 
-    private Mono<List<Uri>> getApplicableAddresses(
-        FaultInjectionEndpoints faultInjectionEndpoints,
-        String region,
-        String containerLink) {
-
-        // TODO: bad implementation, need to change
-        if (faultInjectionEndpoints == null) {
+    private Mono<List<Uri>> resolvePhysicalAddresses(FaultInjectionRule rule, String containerNameLink) {
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
             return Mono.just(Collections.emptyList());
         }
 
-        String path = Utils.joinPath(containerLink, null);
+        if (rule.getCondition().getEndpoints() == null) {
+            return Mono.just(Collections.emptyList());
+        }
+
+        // TODO: bad implementation, need to find a better way
+        FaultInjectionEndpoints endpoints = rule.getCondition().getEndpoints();
+        String path = Utils.joinPath(containerNameLink, null);
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(
                 null,
@@ -129,21 +126,36 @@ public class FaultInjectionRulesProcessor {
                 new ConcurrentHashMap<>(),
                 null);
 
-        request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(faultInjectionEndpoints.getPartitionKey()));
+        request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(endpoints.getPartitionKey()));
         return this.collectionCache
-            .resolveByNameAsync(null, containerLink, null)
+            .resolveByNameAsync(null, containerNameLink, null)
             .flatMap(documentCollection -> {
                 request.requestContext.resolvedCollectionRid = documentCollection.getResourceId();
-                request.requestContext.faultInjectionLocationToRoute = region;
+                request.requestContext.faultInjectionLocationToRoute = rule.getCondition().getRegion();
 
-
-                return this.addressSelector.resolveAllUriAsync(
-                    request,
-                    faultInjectionEndpoints.isIncludePrimary(),
-                    true);
+                if (rule.getCondition().getOperationType() == FaultInjectionOperationType.CREATE) {
+                    return this.addressSelector.resolvePrimaryUriAsync(request, true)
+                        .map(primaryUri -> Arrays.asList(primaryUri));
+                } else {
+                    return this.addressSelector.resolveAllUriAsync(
+                        request,
+                        rule.getCondition().getEndpoints().isIncludePrimary(),
+                        true
+                    );
+                }
             })
-            // TODO: always sort the address list so the result can be deterministic across different clients
-            .map(allAddresses -> allAddresses.stream().limit(faultInjectionEndpoints.getReplicaCount()).collect(Collectors.toList()));
+            .map(allAddresses -> {
+                return allAddresses
+                    .stream()
+                    .sorted() // Always sort the addresses so the results can be deterministic across different clients
+                    .limit(
+                        ImplementationBridgeHelpers
+                            .FaultInjectionConditionHelper
+                            .getFaultInjectionConditionAccessor()
+                            .getEffectiveReplicaCount(rule.getCondition()))
+                    .collect(Collectors.toList());
+
+            });
     }
 
     private OperationType getOperationType(FaultInjectionOperationType faultInjectionOperationType) {
@@ -153,7 +165,51 @@ public class FaultInjectionRulesProcessor {
             case CREATE:
                 return OperationType.Create;
             default:
-                throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported in RntbdFaultInjector");
+                throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
+    }
+
+    private FaultInjectionConditionInternal getEffectiveCondition(
+        FaultInjectionCondition condition,
+        String containerNameLink,
+        List<Uri> physicalAddresses) {
+
+        return new FaultInjectionConditionInternal(
+            this.getOperationType(condition.getOperationType()),
+            condition.getRegion(),
+            containerNameLink,
+            physicalAddresses
+        );
+    }
+
+    private IFaultInjectionRuleInternal getEffectiveRule(
+        FaultInjectionRule rule,
+        String containerNameLink,
+        List<Uri> physicalAddresses) {
+
+        FaultInjectionConditionInternal effectiveCondition =
+            this.getEffectiveCondition(rule.getCondition(), containerNameLink, physicalAddresses);
+
+        IFaultInjectionRuleInternal effectiveRule;
+        if (rule.getResult() instanceof FaultInjectionServerErrorResult) {
+            effectiveRule = new FaultInjectionServerErrorRule(
+                rule.getId(),
+                effectiveCondition,
+                (FaultInjectionServerErrorResult) rule.getResult(),
+                rule.getDuration(),
+                rule.getRequestHitLimit(),
+                rule.isEnabled());
+        } else if (rule.getResult() instanceof FaultInjectionConnectionErrorResult) {
+            effectiveRule = new FaultInjectionConnectionErrorRule(
+                rule.getId(),
+                effectiveCondition,
+                (FaultInjectionConnectionErrorResult) rule.getResult(),
+                rule.getDuration(),
+                rule.isEnabled());
+        } else {
+            throw new IllegalStateException("Cannot handle rule with result type " + rule.getResult().getClass());
+        }
+
+        return effectiveRule;
     }
 }

@@ -14,12 +14,17 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
-import com.azure.cosmos.implementation.faultinjection.FaultInjectionConnectionErrorRule;
-import com.azure.cosmos.implementation.faultinjection.FaultInjectionServerErrorRule;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.faultinjection.RntbdConnectionErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionConnectionErrorRule;
+import com.azure.cosmos.implementation.faultinjection.model.FaultInjectionServerErrorRule;
+import com.azure.cosmos.implementation.faultinjection.model.IFaultInjectionRuleInternal;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -340,11 +345,11 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public void addFaultInjectionRule(IFaultInjectionRuleInternal rule) {
+    public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {
         if (rule instanceof FaultInjectionServerErrorRule) {
-            this.serverErrorInjector.addFaultInjectionRule((FaultInjectionServerErrorRule) rule);
+            this.serverErrorInjector.configFaultInjectionRule((FaultInjectionServerErrorRule) rule);
         } else if (rule instanceof FaultInjectionConnectionErrorRule) {
-            this.connectionErrorInjector.addFaultInjectionRule((FaultInjectionConnectionErrorRule) rule);
+            this.connectionErrorInjector.configFaultInjectionRule((FaultInjectionConnectionErrorRule) rule);
         }
     }
 
