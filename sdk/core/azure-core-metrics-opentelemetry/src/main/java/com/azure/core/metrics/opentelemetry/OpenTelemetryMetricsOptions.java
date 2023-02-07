@@ -13,6 +13,12 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
     private MeterProvider provider;
 
     /**
+     * Creates an instance of {@link OpenTelemetryMetricsOptions}.
+     */
+    public OpenTelemetryMetricsOptions() {
+    }
+
+    /**
      * Gets implementation-specific state containing all configuration needed for the implementation such as OpenTelemetry MeterProvider.
      * Check out OpenTelemetry Metrics plugin documentation for the details and examples.
      *

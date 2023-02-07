@@ -9,7 +9,6 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -69,17 +68,8 @@ public final class SearchDocumentsResult {
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of SearchDocumentsResult class.
-     *
-     * @param results the results value to set.
-     */
-    @JsonCreator
-    public SearchDocumentsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchResult> results) {
-        this.results = results;
-    }
+    /** Creates an instance of SearchDocumentsResult class. */
+    public SearchDocumentsResult() {}
 
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
