@@ -3,18 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.useragent.http;
 
+import ch.qos.logback.classic.Level;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.ConfigurationPropertyBuilder;
-import com.azure.core.util.ConfigurationSource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
@@ -23,18 +16,16 @@ import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.context.annotation.Bean;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,17 +43,18 @@ public class IdentityUserAgentTests {
             ))
             .withUserConfiguration(CredentialCustomizerConfiguration.class)
             .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=",
-                "spring.cloud.azure.credential.client-id=",
-                "spring.cloud.azure.credential.client-secret=",
-                "spring.cloud.azure.client.http.logging.level=headers",
-                "spring.cloud.azure.client.http.logging.allowed-header-names=User-Agent",
+                "spring.cloud.azure.profile.tenant-id=sample",
+                "spring.cloud.azure.credential.client-id=sample",
+                "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.retry.fixed.delay=1",
                 "spring.cloud.azure.retry.fixed.max-retries=0",
-                "spring.cloud.azure.retry.mode=fixed",
-                "logging.level.root=DEBUG"
+                "spring.cloud.azure.retry.mode=fixed"
             )
             .run(context -> {
+                // see https://github.com/Azure/azure-sdk-for-java/blob/c8aecbf72f6826de8e465bdf6ae1ddcf2d09fe4e/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLoggingPolicy.java#L456
+                ch.qos.logback.classic.Logger httpLoggingPolicyLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("");
+                httpLoggingPolicyLogger.setLevel(Level.DEBUG);
+
                 assertThat(context).hasSingleBean(TokenCredential.class);
 
                 TokenCredential tokenCredential = context.getBean(TokenCredential.class);
@@ -70,6 +62,7 @@ public class IdentityUserAgentTests {
                     final TokenRequestContext request = new TokenRequestContext();
                     request.setScopes(Arrays.asList("https://servicebus.azure.net/.default"));
                     tokenCredential.getTokenSync(request);
+
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
@@ -88,7 +81,8 @@ public class IdentityUserAgentTests {
                 final HttpLogOptions httpLogOptions = new HttpLogOptions();
                 httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS);
                 Set<String> allowedHeaderNames = new HashSet<>();
-                allowedHeaderNames.add("user-agent");
+                allowedHeaderNames.add("User-Agent");
+                httpLogOptions.setAllowedHeaderNames(allowedHeaderNames);
                 builder.httpLogOptions(httpLogOptions);
             };
         }
