@@ -45,14 +45,15 @@ public class SendEventDataTest extends EventPerfTest<EventHubsOptions> {
         }
 
         if (options.isSync() && client == null) {
-            this.client = testHelper.createEventHubClient();
-            this.subscription = Mono.fromRunnable(() -> sendEvents())
+            client = testHelper.createEventHubClient();
+
+            subscription = Mono.fromRunnable(() -> sendEvents())
                 .repeat()
                 .subscribe();
         } else if (!options.isSync() && clientFuture == null) {
-            this.clientFuture = testHelper.createEventHubClientAsync();
+            clientFuture = testHelper.createEventHubClientAsync();
 
-            this.subscription = Mono.defer(() -> sendEventsAsync())
+            subscription = Mono.defer(() -> sendEventsAsync())
                 .repeat()
                 .subscribe();
         }
