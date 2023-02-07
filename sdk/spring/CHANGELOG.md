@@ -1,6 +1,6 @@
 # Release History
 
-## 4.6.0 (2023-01-31)
+## 4.6.0 (2023-02-07)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.8. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
 
