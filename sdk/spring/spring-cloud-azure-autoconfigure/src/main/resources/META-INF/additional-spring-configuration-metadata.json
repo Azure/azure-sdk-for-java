@@ -981,6 +981,30 @@
       }
     },
     {
+      "name": "spring.jms.servicebus.password",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The password can be parsed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
+      }
+    },
+    {
+      "name": "spring.jms.servicebus.username",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The username can be parsed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
+      }
+    },
+    {
+      "name": "spring.jms.servicebus.remote-url",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "The remote URL can be constructed from the connection string, use 'spring.jms.servicebus.connection-string' instead."
+      }
+    },
+    {
       "name": "spring.cloud.azure.active-directory.enabled",
       "type": "java.lang.Boolean",
       "description": "Whether to enable Azure Active Directory related auto-configuration.",

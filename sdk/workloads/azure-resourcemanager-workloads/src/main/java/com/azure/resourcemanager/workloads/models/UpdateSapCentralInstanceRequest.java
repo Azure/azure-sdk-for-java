@@ -19,6 +19,10 @@ public final class UpdateSapCentralInstanceRequest {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of UpdateSapCentralInstanceRequest class. */
+    public UpdateSapCentralInstanceRequest() {
+    }
+
     /**
      * Get the tags property: Gets or sets the Resource tags.
      *

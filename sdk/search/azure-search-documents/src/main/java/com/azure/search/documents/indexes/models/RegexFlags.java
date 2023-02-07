@@ -10,7 +10,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegexFlags. */
+/**
+ * Defines flags that can be combined to control how regular expressions are used in the pattern analyzer and pattern
+ * tokenizer.
+ */
 public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     /** Static value CANON_EQ for RegexFlags. */
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
