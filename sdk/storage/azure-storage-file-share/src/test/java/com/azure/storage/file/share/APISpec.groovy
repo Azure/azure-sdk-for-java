@@ -12,6 +12,8 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
+import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
@@ -83,6 +85,25 @@ class APISpec extends StorageSpec {
 
                 shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
             }
+        }
+    }
+
+    def getOAuthServiceClient(ShareServiceClientBuilder builder) {
+        if (builder == null) builder = new ShareServiceClientBuilder()
+        builder.endpoint(environment.primaryAccount.fileEndpoint)
+
+        instrument(builder)
+
+        return setOauthCredentials(builder).buildClient()
+    }
+
+    def setOauthCredentials(ShareServiceClientBuilder builder) {
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(environment.primaryAccount.credential)
         }
     }
 

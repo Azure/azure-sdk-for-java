@@ -7,7 +7,9 @@ package com.azure.storage.file.share.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ShareFileRequestIntent. */
+/**
+ *  The intent for whether the file should be backed up.
+ */
 public enum ShareFileRequestIntent {
     /** Enum value none. */
     NONE("none"),
