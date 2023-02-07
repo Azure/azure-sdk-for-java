@@ -40,7 +40,7 @@ public class TestResourceNamer extends ResourceNamer {
             false,
             null,
             null,
-            null);
+            storage);
 
     }
 
@@ -97,7 +97,7 @@ public class TestResourceNamer extends ResourceNamer {
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
 
-        if (testMode != TestMode.LIVE && !doNotRecord) {
+        if (this.allowedToReadRecordedValues || this.allowedToRecordValues) {
             if (storage != null) {
                 this.storeVariable = storage::addVariable;
                 this.getVariable = storage::removeVariable;
