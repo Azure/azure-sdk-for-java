@@ -37,6 +37,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -61,6 +62,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -69,6 +71,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -454,8 +457,8 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
     }
 
-    /***
-     *  Best effort to initializes the container by warming up the caches and connections for the current read region.
+    /**
+     *  Best effort to initialize the container by warming up the caches and connections for the current read region.
      *
      *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
      *  to get an estimated time:
@@ -471,28 +474,96 @@ public class CosmosAsyncContainer {
      */
     public Mono<Void> openConnectionsAndInitCaches() {
 
-        if(isInitialized.compareAndSet(false, true)) {
-            return withContext(context -> openConnectionsAndInitCachesInternal()
+        if (isInitialized.compareAndSet(false, true)) {
+
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+                    .setProactiveConnectionRegions(1)
+                    .build();
+
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
                                             .flatMap(openResult -> {
                                                 logger.info("OpenConnectionsAndInitCaches: {}", openResult);
                                                 return Mono.empty();
                                             }));
         } else {
+            logger.warn("OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            return Mono.empty();
+        }
+    }
+
+    /**
+     *  Best effort to initialize the container by warming up the caches and connections to a specified no.
+     *  of regions from the  preferred list of regions.
+     *
+     *  Depending on how many partitions the container has, the total time needed will also change. But
+     *  generally you can use the following formula to get an estimated time:
+     *  If it took 200ms to establish a connection, and you have 100 partitions in your container
+     *  then it will take around (100 * 4 / (10 * CPUCores)) * 200ms * RegionsWithProactiveConnections to open all
+     *  connections after get the address list
+     *
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
+     * <p>
+     * In order to minimize latencies associated with warming up caches and opening connections
+     * the no. of proactive connection regions cannot be more
+     * than {@link CosmosContainerProactiveInitConfigBuilder#MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS}.
+     * </p>
+     *
+     * @param numProactiveConnectionRegions the no of regions to proactively connect to
+     * @return Mono of Void.
+     */
+    public Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
+
+        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
+        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
+
+        checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
+
+        if (numProactiveConnectionRegions > 1) {
+            checkArgument(
+                endpointDiscoveryEnabled,
+                "endpoint discovery should be enabled when no. " +
+                    "of proactive regions is greater than 1");
+            checkArgument(
+                preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions,
+                "no. of proactive connection " +
+                    "regions should be lesser than the no. of preferred regions.");
+        }
+
+        if (isInitialized.compareAndSet(false, true)) {
+
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
+                new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
+                    .setProactiveConnectionRegions(numProactiveConnectionRegions)
+                    .build();
+
+            return withContext(context -> openConnectionsAndInitCachesInternal(proactiveContainerInitConfig)
+                    .flatMap(
+                        openResult -> {
+                            logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                            return Mono.empty();
+                        }));
+        } else {
             logger.warn(
-                    String.format(
-                        "OpenConnectionsAndInitCaches is already called once on Container %s, no operation will take place in this call",
-                        this.getId()));
+                "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
+                this.getId());
             return Mono.empty();
         }
     }
 
     /***
-     * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
+     * Internal implementation to try to initialize the container by warming up the caches and
+     * connections for the current read region.
      *
      * @return a string represents the open result.
      */
-    private Mono<String> openConnectionsAndInitCachesInternal() {
-        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+    private Mono<String> openConnectionsAndInitCachesInternal(
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(proactiveContainerInitConfig)
                 .collectList()
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
@@ -513,8 +584,11 @@ public class CosmosAsyncContainer {
                     }
 
                     long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
-                    return Mono.just(String.format(
-                            "EndpointsConnected: %s, Failed: %s", endpointConnected, endPointOpenConnectionsStatistics.size() - endpointConnected));
+                    return Mono.just(
+                        String.format(
+                            "EndpointsConnected: %s, Failed: %s",
+                            endpointConnected,
+                            endPointOpenConnectionsStatistics.size() - endpointConnected));
                 });
     }
 
@@ -1751,7 +1825,7 @@ public class CosmosAsyncContainer {
      */
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup, null);
     }
 
     /**
@@ -1783,10 +1857,25 @@ public class CosmosAsyncContainer {
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig) {
 
+        this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, null);
+    }
+
+    /***
+     * Only used internally.
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     * @param throughputQueryMono The throughput query mono.
+     */
+    void enableGlobalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        GlobalThroughputControlConfig globalControlConfig,
+        Mono<Integer> throughputQueryMono) {
+
         GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-        this.database.getClient().enableThroughputControlGroup(globalControlGroup);
+        this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1794,7 +1883,24 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
-            CosmosAsyncContainer::queryChangeFeedInternalFunc);
+            new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+                    Class<T> classType) {
+                    return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
+                }
+
+                @Override
+                public void enableGlobalThroughputControlGroup(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    ThroughputControlGroupConfig groupConfig,
+                    GlobalThroughputControlConfig globalControlConfig,
+                    Mono<Integer> throughputQueryMono) {
+                    cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, throughputQueryMono);
+                }
+            });
     }
 
     static { initialize(); }

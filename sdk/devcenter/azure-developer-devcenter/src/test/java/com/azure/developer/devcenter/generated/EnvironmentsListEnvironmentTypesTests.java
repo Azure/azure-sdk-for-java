@@ -19,7 +19,7 @@ public final class EnvironmentsListEnvironmentTypesTests extends DevCenterClient
         PagedIterable<BinaryData> response = environmentsClient.listEnvironmentTypes("myProject", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"{environmentTypeName}\"}").toObject(Object.class),
+                BinaryData.fromString("{\"name\":\"devtestenv\"}").toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }
 }
