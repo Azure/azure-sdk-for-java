@@ -8,7 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-- Change feed pull API is suing an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+- Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
 
 #### Other Changes
 
