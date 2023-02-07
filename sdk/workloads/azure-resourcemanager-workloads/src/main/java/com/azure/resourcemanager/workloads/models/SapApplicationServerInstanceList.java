@@ -9,11 +9,11 @@ import com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerIns
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the collection of SAP Application Server Instances. */
+/** Defines the collection of SAP Application Server Instance resources. */
 @Fluent
 public final class SapApplicationServerInstanceList {
     /*
-     * Gets the list of SAP Application Server instances.
+     * Gets the list of SAP Application Server instance resources.
      */
     @JsonProperty(value = "value")
     private List<SapApplicationServerInstanceInner> value;
@@ -24,8 +24,12 @@ public final class SapApplicationServerInstanceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SapApplicationServerInstanceList class. */
+    public SapApplicationServerInstanceList() {
+    }
+
     /**
-     * Get the value property: Gets the list of SAP Application Server instances.
+     * Get the value property: Gets the list of SAP Application Server instance resources.
      *
      * @return the value value.
      */
@@ -34,7 +38,7 @@ public final class SapApplicationServerInstanceList {
     }
 
     /**
-     * Set the value property: Gets the list of SAP Application Server instances.
+     * Set the value property: Gets the list of SAP Application Server instance resources.
      *
      * @param value the value value to set.
      * @return the SapApplicationServerInstanceList object itself.
