@@ -27,6 +27,16 @@ public class TestContextManager {
      *
      * @param testMethod Test method being ran.
      * @param testMode The {@link TestMode} the test is running in.
+     */
+    public TestContextManager(Method testMethod, TestMode testMode) {
+        this(testMethod, testMode, false);
+    }
+
+    /**
+     * Constructs a {@link TestContextManager} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
      * @param enableTestProxy True if the external test proxy is in use.
      */
     public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy) {
