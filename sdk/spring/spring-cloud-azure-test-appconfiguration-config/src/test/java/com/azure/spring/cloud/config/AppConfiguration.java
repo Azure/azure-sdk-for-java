@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfiguration {
 
     @Bean
-    public MyCredentials azureCredentials() {
-        return new MyCredentials();
+    public CustomClient azureCredentials() {
+        return new CustomClient();
     }
 }
