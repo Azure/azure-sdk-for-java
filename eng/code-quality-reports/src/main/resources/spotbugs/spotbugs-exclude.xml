@@ -2189,6 +2189,7 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosContainerIdentityHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
@@ -2677,6 +2678,7 @@
       <Class name="com.azure.core.implementation.util.FileContent"/>
       <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.ListByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.SerializableContent"/>
       <Class name="com.azure.core.implementation.util.StringContent"/>
     </Or>

@@ -60,7 +60,7 @@ public class ContainerRegistryBlobAsyncClient {
     private final String endpoint;
     private final String repositoryName;
 
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobAsyncClient.class);
 
     ContainerRegistryBlobAsyncClient(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         this.repositoryName = repositoryName;
@@ -104,7 +104,7 @@ public class ContainerRegistryBlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadManifestResult> uploadManifest(OciManifest manifest) {
         if (manifest == null) {
-            return monoError(logger, new NullPointerException("'manifest' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'manifest' can't be null."));
         }
 
         return withContext(context -> this.uploadManifestWithResponse(new UploadManifestOptions(manifest), context)).flatMap(FluxUtil::toMono);
@@ -125,7 +125,7 @@ public class ContainerRegistryBlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadManifestResult> uploadManifest(UploadManifestOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'options' can't be null."));
         }
 
         return withContext(context -> this.uploadManifestWithResponse(options, context)).flatMap(FluxUtil::toMono);
@@ -147,7 +147,7 @@ public class ContainerRegistryBlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'options' can't be null."));
         }
 
         return withContext(context -> this.uploadManifestWithResponse(options, context));
@@ -155,7 +155,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     private Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'options' can't be null."));
         }
 
         ByteBuffer data = options.getManifest().toByteBuffer();
@@ -192,7 +192,7 @@ public class ContainerRegistryBlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadBlobResult> uploadBlob(BinaryData data) {
         if (data == null) {
-            return monoError(logger, new NullPointerException("'data' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'data' can't be null."));
         }
 
         return withContext(context -> this.uploadBlobWithResponse(data.toByteBuffer(), context)).flatMap(FluxUtil::toMono);
@@ -217,7 +217,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     private Mono<Response<UploadBlobResult>> uploadBlobWithResponse(ByteBuffer data, Context context) {
         if (data == null) {
-            return monoError(logger, new NullPointerException("'data' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'data' can't be null."));
         }
 
         String digest = UtilsImpl.computeDigest(data);
@@ -268,7 +268,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'options' can't be null."));
         }
 
         String tagOrDigest = options.getTag() != null ? options.getTag() : options.getDigest();
@@ -295,7 +295,7 @@ public class ContainerRegistryBlobAsyncClient {
 
                     return Mono.just(res);
                 } else {
-                    return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
+                    return monoError(LOGGER, new ServiceResponseException("The digest in the response does not match the expected digest."));
                 }
             }).onErrorMap(UtilsImpl::mapException);
     }
@@ -328,7 +328,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     private Mono<Response<DownloadBlobResult>> downloadBlobWithResponse(String digest, Context context) {
         if (digest == null) {
-            return monoError(logger, new NullPointerException("'digest' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'digest' can't be null."));
         }
 
         return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context).flatMap(streamResponse -> {
@@ -347,7 +347,7 @@ public class ContainerRegistryBlobAsyncClient {
 
                 return Mono.just(response);
             } else {
-                return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
+                return monoError(LOGGER, new ServiceResponseException("The digest in the response does not match the expected digest."));
             }
         }).onErrorMap(UtilsImpl::mapException);
     }
@@ -380,7 +380,7 @@ public class ContainerRegistryBlobAsyncClient {
 
     private Mono<Response<Void>> deleteBlobWithResponse(String digest, Context context) {
         if (digest == null) {
-            return monoError(logger, new NullPointerException("'digest' can't be null."));
+            return monoError(LOGGER, new NullPointerException("'digest' can't be null."));
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)

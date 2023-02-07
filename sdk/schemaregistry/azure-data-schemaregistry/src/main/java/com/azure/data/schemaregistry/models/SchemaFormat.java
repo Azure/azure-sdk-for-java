@@ -17,6 +17,16 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     public static final SchemaFormat AVRO = fromString("avro");
 
     /**
+     * JSON schema format.
+     */
+    public static final SchemaFormat JSON = fromString("json");
+
+    /**
+     * Custom schema format.
+     */
+    public static final SchemaFormat CUSTOM = fromString("custom");
+
+    /**
      * Returns the {@link SchemaFormat} associated with the name.
      * @param name The name of the serialization type.
      * @return The {@link SchemaFormat} associated with this name.

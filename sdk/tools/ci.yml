@@ -23,7 +23,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: tools
-    SkipAggregateReports: true
     Artifacts:
       - name: azure-sdk-archetype
         groupId: com.azure.tools

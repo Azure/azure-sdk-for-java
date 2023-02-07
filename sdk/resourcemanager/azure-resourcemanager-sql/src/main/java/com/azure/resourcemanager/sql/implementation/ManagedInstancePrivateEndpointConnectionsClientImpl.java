@@ -71,7 +71,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstancePrivateEndpointConnectionsService {
+    public interface ManagedInstancePrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

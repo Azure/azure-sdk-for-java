@@ -15,7 +15,7 @@ public final class GetParticipantsResponseInternal {
      * List of the current participants in the call.
      */
     @JsonProperty(value = "values")
-    private List<AcsCallParticipantInternal> values;
+    private List<CallParticipantInternal> values;
 
     /*
      * Continue of the list of participants
@@ -28,7 +28,7 @@ public final class GetParticipantsResponseInternal {
      *
      * @return the values value.
      */
-    public List<AcsCallParticipantInternal> getValues() {
+    public List<CallParticipantInternal> getValues() {
         return this.values;
     }
 
@@ -38,7 +38,7 @@ public final class GetParticipantsResponseInternal {
      * @param values the values value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
-    public GetParticipantsResponseInternal setValues(List<AcsCallParticipantInternal> values) {
+    public GetParticipantsResponseInternal setValues(List<CallParticipantInternal> values) {
         this.values = values;
         return this;
     }

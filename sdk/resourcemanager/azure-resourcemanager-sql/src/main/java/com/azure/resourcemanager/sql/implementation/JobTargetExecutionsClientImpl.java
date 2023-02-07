@@ -57,7 +57,7 @@ public final class JobTargetExecutionsClientImpl implements JobTargetExecutionsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobTargetExecutionsService {
+    public interface JobTargetExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
