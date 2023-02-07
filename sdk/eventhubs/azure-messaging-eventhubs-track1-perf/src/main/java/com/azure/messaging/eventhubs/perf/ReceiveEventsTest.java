@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
@@ -22,8 +23,12 @@ import java.util.stream.StreamSupport;
  * Receives a single set of events then stops. {@link EventHubsReceiveOptions#getCount()} represents the batch size to
  * receive.
  */
-public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
+public class ReceiveEventsTest extends PerfStressTest<EventHubsReceiveOptions> {
     private PartitionReceiver receiver;
+
+    private final EventHubsTestHelper<EventHubsReceiveOptions> testHelper;
+    private EventHubClient client;
+    private CompletableFuture<EventHubClient> clientFuture;
 
     /**
      * Creates an instance of performance test.
@@ -32,6 +37,8 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     public ReceiveEventsTest(EventHubsReceiveOptions options) {
         super(options);
+
+        this.testHelper = new EventHubsTestHelper<>(options);
     }
 
     /**
@@ -42,8 +49,8 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.usingWhen(
-            Mono.fromCompletionStage(createEventHubClientAsync()),
-            client -> sendMessages(client, options.getPartitionId(), options.getCount()),
+            Mono.fromCompletionStage(testHelper.createEventHubClientAsync()),
+            client -> testHelper.sendMessages(client, options.getPartitionId(), options.getCount()),
             client -> Mono.fromCompletionStage(client.close()));
     }
 
@@ -56,14 +63,14 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     public Mono<Void> setupAsync() {
         if (options.isSync()) {
             try {
-                client = createEventHubClient();
+                client = testHelper.createEventHubClient();
                 receiver = client.createReceiverSync(options.getConsumerGroup(),
                     options.getPartitionId(), EventPosition.fromStartOfStream());
             } catch (EventHubException e) {
                 throw new RuntimeException("Unable to create PartitionReceiver.", e);
             }
         } else {
-            clientFuture = createEventHubClientAsync();
+            clientFuture = testHelper.createEventHubClientAsync();
         }
 
         return Mono.empty();
