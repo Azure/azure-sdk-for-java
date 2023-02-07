@@ -82,11 +82,13 @@ public final class Utility {
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+        STATIC_ENABLE_REST_PROXY_CONTEXT = Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
 
         JacksonAdapter adapter = new JacksonAdapter();
 
@@ -220,13 +222,17 @@ public final class Utility {
             throw new HttpResponseException(exception.getMessage(), exception.getResponse());
         } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
             throw new HttpResponseException(exception.getMessage(), exception.getResponse());
-        }  catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     public static Context enableSyncRestProxy(Context context) {
-        return context != null ? context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true) : null;
+        if (context == null || context == Context.NONE) {
+            return STATIC_ENABLE_REST_PROXY_CONTEXT;
+        } else {
+            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        }
     }
 
     private Utility() {

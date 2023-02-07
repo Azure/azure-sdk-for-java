@@ -16,11 +16,13 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
+import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
+import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -44,6 +46,7 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -620,22 +623,25 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<Object> response = restClient.getDocuments().getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
+
+        try {
+            Response<Object> response = restClient.getDocuments()
+                .getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
             if (serializer == null) {
-                try {
-                    return new SimpleResponse<>(response, Utility.convertValue(response.getValue(), modelClass));
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(
-                        new RuntimeException("Failed to deserialize document.", ex));
-                }
+                return new SimpleResponse<>(response, Utility.convertValue(response.getValue(), modelClass));
             }
             ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
             serializer.serialize(sourceStream, response.getValue());
             T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
                 createInstance(modelClass));
             return new SimpleResponse<>(response, doc);
-        });
+        } catch (SearchErrorException ex) {
+            throw LOGGER.logExceptionAsError(DocumentResponseConversions.mapSearchErrorException(ex));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to deserialize document.", ex));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**

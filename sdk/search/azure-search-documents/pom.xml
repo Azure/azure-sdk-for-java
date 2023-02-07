@@ -22,6 +22,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- Coverage levels are being dropped as a good chunk of code is dead code in Autorest layer which is to be removed via Autorest changes. -->
     <jacoco.min.linecoverage>0.65</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->

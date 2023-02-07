@@ -805,12 +805,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
-        try {
-            return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingExternalSearchIndexer(restClient.getIndexers()
                 .getWithResponse(indexerName, null, Utility.enableSyncRestProxy(context))));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
     }
 
     /**
