@@ -104,8 +104,12 @@ public class EventProcessorTest extends EventPerfTest<EventProcessorOptions> {
                 })
                 .flatMap(partitionId -> {
                     if (options.publishMessages()) {
+                        System.out.printf("Publishing %d messages to %s.%n", options.getEventsToSend(), partitionId);
+
                         return testHelper.sendMessages(client, partitionId, options.getEventsToSend());
                     } else {
+                        System.out.printf("Not publishing messages to %s.%n", partitionId);
+
                         return Mono.empty();
                     }
                 })
@@ -141,6 +145,13 @@ public class EventProcessorTest extends EventPerfTest<EventProcessorOptions> {
     public Mono<Void> globalCleanupAsync() {
         System.out.println("Cleaning up.");
 
+        if (containerReference == null) {
+            System.out.println("Container reference was not instantiated.");
+            outputPartitionResults(System.out::println);
+
+            return Mono.empty();
+        }
+
         CloudBlockBlob blob = null;
         try {
             blob = containerReference.getBlockBlobReference("results.txt");
@@ -149,9 +160,9 @@ public class EventProcessorTest extends EventPerfTest<EventProcessorOptions> {
         }
 
         if (blob == null) {
-            System.out.println(HEADERS);
             outputPartitionResults(System.out::println);
-            return super.cleanupAsync();
+
+            return Mono.empty();
         }
 
         try (BlobOutputStream blobOutputStream = blob.openOutputStream();

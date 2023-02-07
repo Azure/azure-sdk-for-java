@@ -113,7 +113,6 @@ class EventHubsTestHelper<T extends EventHubsOptions> implements Closeable {
 
             try {
                 if (!batch.tryAdd(event)) {
-                    System.out.printf("Only added %s of %s events.%n", i, numberOfMessages);
                     break;
                 }
             } catch (PayloadSizeExceededException e) {

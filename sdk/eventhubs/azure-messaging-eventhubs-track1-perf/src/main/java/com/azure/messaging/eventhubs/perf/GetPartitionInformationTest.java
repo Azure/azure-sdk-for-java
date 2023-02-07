@@ -49,13 +49,13 @@ public class GetPartitionInformationTest extends EventPerfTest<EventHubsPartitio
             if (options.isSync() && client == null) {
                 this.client = testHelper.createEventHubClient();
                 this.subscription = Mono.fromRunnable(() -> getPartitionInformation())
-                    .repeat(() -> isRunning.get())
+                    .repeat()
                     .subscribe();
             } else if (!options.isSync() && clientFuture == null) {
                 this.clientFuture = testHelper.createEventHubClientAsync();
 
                 this.subscription = Mono.defer(() -> getPartitionInformationAsync())
-                    .repeat(() -> isRunning.get())
+                    .repeat()
                     .subscribe();
             }
         });
