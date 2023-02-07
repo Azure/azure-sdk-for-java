@@ -46,7 +46,7 @@ public class TestProxyManager {
 
         try {
             ProcessBuilder builder = new ProcessBuilder(Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
+                TestProxyUtils.getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
                 .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
@@ -78,19 +78,6 @@ public class TestProxyManager {
     public void stopProxy() {
         if (proxy.isAlive()) {
             proxy.destroy();
-        }
-    }
-
-    private String getProxyProcessName() {
-        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        if (osName.contains("windows")) {
-            return "test-proxy.exe";
-        } else if (osName.contains("linux")) {
-            return "test-proxy";
-        } else if (osName.contains("mac os x")) {
-            return "test-proxy";
-        } else {
-            throw new UnsupportedOperationException();
         }
     }
 }

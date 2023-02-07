@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +83,23 @@ public class TestProxyUtils {
             request.setUrl(proxyUrlBuilder.toUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Gets the process name of the test proxy binary.
+     * @return The platform specific process name.
+     */
+    public static String getProxyProcessName() {
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        if (osName.contains("windows")) {
+            return "test-proxy.exe";
+        } else if (osName.contains("linux")) {
+            return "test-proxy";
+        } else if (osName.contains("mac os x")) {
+            return "test-proxy";
+        } else {
+            throw new UnsupportedOperationException();
         }
     }
 

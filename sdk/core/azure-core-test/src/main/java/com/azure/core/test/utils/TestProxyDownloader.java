@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
@@ -96,15 +97,6 @@ public final class TestProxyDownloader {
             ArchiveEntry entry = archive.getNextEntry();
 
             while (entry != null) {
-                int mode = 0;
-                if(entry instanceof ZipArchiveEntry) {
-                    mode = ((ZipArchiveEntry)entry).getUnixMode();
-                } else if (entry instanceof TarArchiveEntry) {
-                    mode = ((TarArchiveEntry)entry).getMode();
-                }
-                if (!archive.canReadEntryData(entry)) {
-                    throw new RuntimeException("Could not read zip archive");
-                }
 
                 File outputFile = getOutputFile(entry);
                 if (entry.isDirectory()) {
@@ -118,10 +110,8 @@ public final class TestProxyDownloader {
                     }
                     try (OutputStream outputStream = Files.newOutputStream(outputFile.toPath())) {
                         IOUtils.copy(archive, outputStream);
-                        // If we have a file mode, set the file executable if it had the execute bit.
-                        // 73 == 0111
-                        if (mode > 0) {
-                            outputFile.setExecutable((mode & 73) > 0, false);
+                        if (outputFile.getName().equals(TestProxyUtils.getProxyProcessName())) {
+                            outputFile.setExecutable(true, false);
                         }
                     }
                 }
