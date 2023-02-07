@@ -61,7 +61,7 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 
 // update the throughput
 spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
-  s"SET TBLPROPERTIES(manualThroughput = '1100')")
+  s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // COMMAND ----------
 
