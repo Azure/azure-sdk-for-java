@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 /**
  * Configuration Properties for Feature Management. Processes the configurations to be usable by Feature Management.
@@ -21,7 +22,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+            .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
 
