@@ -122,6 +122,10 @@ class EventHubsTestHelper<T extends EventHubsOptions> implements Closeable {
         }
     }
 
+    ScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
+
     /**
      * Creates a new instance of {@link EventHubClient}.
      *
