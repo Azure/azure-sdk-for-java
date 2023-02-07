@@ -57,7 +57,11 @@ spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName};")
 
 // create a cosmos container
 spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
-    s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')")
+    s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
+
+// update the throughput
+spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
+  s"SET TBLPROPERTIES(manualThroughput = '1100')")
 
 // COMMAND ----------
 
