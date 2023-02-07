@@ -16,7 +16,7 @@ public final class DevBoxesStopDevBoxTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesStopDevBoxTests() {
-        RequestOptions requestOptions = new RequestOptions();
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("hibernate", "true");
         SyncPoller<BinaryData, BinaryData> response =
                 devBoxesClient.beginStopDevBox("myProject", "me", "MyDevBox", requestOptions);
         Assertions.assertEquals(
