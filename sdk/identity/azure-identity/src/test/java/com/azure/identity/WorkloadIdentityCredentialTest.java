@@ -25,66 +25,50 @@ public class WorkloadIdentityCredentialTest {
 
     @Test
     public void testWorkloadIdentityFlow() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "dummy-clientId");
+        configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-file");
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
 
-        try {
-            // setup
-            String endpoint = "https://localhost";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
-            configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "dummy-clientId");
-            configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-file");
-            configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
-
-            // mock
-            try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-            })) {
-                // test
-                WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
-                StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(token -> token1.equals(token.getToken())
-                        && expiresAt.getSecond() == token.getExpiresAt().getSecond())
-                    .verifyComplete();
-                Assert.assertNotNull(identityClientMock);
-            }
-        } finally {
-            // clean up
-            configuration.remove(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-            configuration.remove(Configuration.PROPERTY_AZURE_CLIENT_ID);
-            configuration.remove(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE);
-            configuration.remove(Configuration.PROPERTY_AZURE_TENANT_ID);
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        })) {
+            // test
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
     @Test
     public void testWorkloadIdentityFlowFailure() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "dummy-clientId");
 
-        try {
-            // setup
-            String endpoint = "https://localhost";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
-            configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, "dummy-clientId");
-
-            // mock
-            try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-            })) {
-                // test
-                WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
-                StepVerifier.create(credential.getToken(request1)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("WorkloadIdentityCredential authentication unavailable. ")).verify();
-                Assert.assertNotNull(identityClientMock);
-            }
-        } finally {
-            // clean up
-            configuration.remove(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-            configuration.remove(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        })) {
+            // test
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
+            StepVerifier.create(credential.getToken(request1)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("WorkloadIdentityCredential authentication unavailable. ")).verify();
+            Assert.assertNotNull(identityClientMock);
         }
     }
 }

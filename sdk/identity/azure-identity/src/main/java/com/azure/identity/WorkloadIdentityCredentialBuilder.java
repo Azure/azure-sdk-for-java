@@ -3,38 +3,33 @@
 
 package com.azure.identity;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-
-import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
  * Fluent credential builder for instantiating a {@link WorkloadIdentityCredential}.
  *
  * @see WorkloadIdentityCredential
  */
-public class WorkloadIdentityCredentialBuilder extends CredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
+public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
-    private String clientId;
+    private String tokenFilePath;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
      */
-    public WorkloadIdentityCredentialBuilder() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-    }
+    public WorkloadIdentityCredentialBuilder() { }
+
 
     /**
-     * Specifies the client ID of managed identity, when this credential is running
-     * in Azure Kubernetes. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used.
+     * Configure the path to a file containing a Kubernetes service account token that authenticates the identity.
+     * The file path is required to authenticate.
      *
-     * @param clientId the client ID
-     * @return the WorkloadIdentityCredentialBuilder itself
+     * @param tokenFilePath the path to the file containing the token to use for authentication.
+     * @return An updated instance of this builder with the tenant id set as specified.
      */
-    public WorkloadIdentityCredentialBuilder clientId(String clientId) {
-        this.clientId = clientId;
+    public WorkloadIdentityCredentialBuilder tokenFilePath(String tokenFilePath) {
+        this.tokenFilePath = tokenFilePath;
         return this;
     }
 
@@ -44,14 +39,9 @@ public class WorkloadIdentityCredentialBuilder extends CredentialBuilderBase<Wor
      * @return a {@link WorkloadIdentityCredential} with the current configurations.
      */
     public WorkloadIdentityCredential build() {
-        Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+        ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientId,
+            "Tenant ID", tenantId, "Service Token File Path", tokenFilePath);
 
-        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String federatedTokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
-        String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-
-        return new WorkloadIdentityCredential(clientId, tenantId, federatedTokenFilePath,
-                azureAuthorityHost, identityClientOptions.clone());
+        return new WorkloadIdentityCredential(clientId, tenantId, tokenFilePath, identityClientOptions.clone());
     }
 }

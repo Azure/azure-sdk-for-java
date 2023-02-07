@@ -188,7 +188,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = getWorkloadIdentityCredentialIfAvailable();
+        WorkloadIdentityCredential workloadIdentityCredential = CoreUtils.isNullOrEmpty(managedIdentityClientId) ?  null : getWorkloadIdentityCredentialIfAvailable();
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         if (workloadIdentityCredential != null) {
@@ -215,8 +215,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
             || CoreUtils.isNullOrEmpty(managedIdentityClientId)
             || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(managedIdentityClientId, tenantId, federatedTokenFilePath,
-                azureAuthorityHost, identityClientOptions.clone());
+            return new WorkloadIdentityCredential(managedIdentityClientId, tenantId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
         }
         return null;
     }
