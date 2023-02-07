@@ -5,14 +5,15 @@ package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestHeaders;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkResponse;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
+import com.azure.containers.containerregistry.models.BlobDownloadAsyncResult;
 import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
@@ -25,7 +26,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -40,25 +40,15 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.byteArrayToHex;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -77,7 +67,6 @@ public class ContainerRegistryBlobAsyncClient {
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
     private final String repositoryName;
-    private final Object lck = new Object();
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobAsyncClient.class);
 
@@ -320,19 +309,6 @@ public class ContainerRegistryBlobAsyncClient {
     }
 
     /**
-     * Download the blob associated with the given digest.
-     *
-     * @param digest The digest for the given image layer.
-     * @return The image associated with the given digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code digest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadBlob(String digest, OutputStream stream) {
-        return this.downloadBlobWithResponse(digest, stream);
-    }
-
-    /**
      * Download the blob\layer associated with the given digest.
      *
      * @param digest The digest for the given image layer.
@@ -341,49 +317,42 @@ public class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadBlobWithResponse(String digest, OutputStream stream) {
-        return withContext(context -> this.downloadBlobWithResponse(digest, stream, context));
+    public Mono<BlobDownloadAsyncResult> downloadStream(String digest) {
+        return withContext(context -> downloadBlobInternal(digest, context));
     }
 
-    private Mono<Void> downloadBlob(String digest, OutputStream stream, Context context) {
+    private Mono<BlobDownloadAsyncResult> downloadBlobInternal(String digest, Context context) {
         if (digest == null) {
             return monoError(LOGGER, new NullPointerException("'digest' can't be null."));
         }
 
-        MessageDigest sha256 = createSha256();
-
-        return writeChunk(digest, new HttpRange(0, CHUNK_SIZE), stream, sha256, context)
-            .flatMap(firstResponse -> {
-                long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-                long pos = firstResponse.getValue().getLength();
-                if (pos >= blobSize) {
-                    return Mono.empty();
-                } else {
-                    Mono<ContainerRegistryBlobsGetChunkResponse> other = writeChunk(digest, new HttpRange(pos, CHUNK_SIZE), stream, sha256, context);
-                    pos += CHUNK_SIZE;
-                    for (; pos < blobSize; pos += CHUNK_SIZE) {
-                        other = other.then(writeChunk(digest, new HttpRange(pos, CHUNK_SIZE), stream, sha256, context));
-                    }
-
-                    return other;
-                }
-            })
-            .doOnSuccess(i -> {
-                validateDigest(sha256, digest);
-                try {
-                    stream.flush();
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                }
-            })
-           .onErrorMap(UtilsImpl::mapException)
-           .then();
+        Flux<ByteBuffer> content =
+            blobsImpl.getChunkWithResponseAsync(repositoryName, digest, new HttpRange(0, (long) CHUNK_SIZE).toString(), context)
+                .flatMapMany(firstResponse -> getAllChunks(firstResponse, digest, context))
+                .flatMapSequential(chunk -> chunk.getValue().toFluxByteBuffer(), 1);
+        return Mono.just(ConstructorAccessors.createBlobDownloadResult(digest, content));
     }
 
-    private Mono<ContainerRegistryBlobsGetChunkResponse> writeChunk(String digest, HttpRange range, OutputStream outputStream, MessageDigest sha256, Context context) {
-        return blobsImpl.getChunkWithResponseAsync(repositoryName, digest, range.toString(), context)
-            .doOnNext(response -> UtilsImpl.chunkToStream(response, outputStream, sha256));
+    private Flux<ContainerRegistryBlobsGetChunkResponse> getAllChunks(ContainerRegistryBlobsGetChunkResponse firstResponse, String digest, Context context) {
+        String responseHeaderDigest = firstResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+        if (!digest.equals(responseHeaderDigest)) {
+            return Flux.error(LOGGER.atError()
+                .addKeyValue("requestedDigest", digest)
+                .addKeyValue("responseDigest", responseHeaderDigest)
+                .log(new ServiceResponseException("The digest in the response header does not match the expected digest.")));
+        }
+
+        long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+        List<Mono<ContainerRegistryBlobsGetChunkResponse>> others = new ArrayList<>();
+        others.add(Mono.just(firstResponse));
+        for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+            HttpRange range = new HttpRange(p, (long) CHUNK_SIZE);
+            others.add(blobsImpl.getChunkWithResponseAsync(repositoryName, digest, range.toString(), context));
+        }
+
+        return Flux.concat(others);
     }
+
     /**
      * Delete the image associated with the given digest
      *

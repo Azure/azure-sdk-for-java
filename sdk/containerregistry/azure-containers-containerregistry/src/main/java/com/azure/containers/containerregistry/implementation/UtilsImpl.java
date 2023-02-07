@@ -39,7 +39,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -48,8 +47,6 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -78,7 +75,7 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
     public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
     public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
-    public static final long CHUNK_SIZE =  4 * 1024 * 1024;
+    public static final int CHUNK_SIZE = 4 * 1024 * 1024;
     private UtilsImpl() { }
 
     /**
@@ -204,19 +201,11 @@ public final class UtilsImpl {
         if (!requestedDigest.endsWith(sha256)
             || !requestedDigest.startsWith("sha256:")
             || requestedDigest.length() != 71) {
-            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("actualDigest", () -> "sha256:" + sha256)
+                .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
-    }
-
-    public static void chunkToStream(Response<BinaryData> response, OutputStream outputStream, MessageDigest sha256) {
-        byte[] buffer = response.getValue().toBytes();
-        try {
-            outputStream.write(buffer);
-            outputStream.flush();
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-        sha256.update(buffer);
     }
 
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
@@ -438,10 +427,10 @@ public final class UtilsImpl {
         if (contentRangeHeader != null) {
             int slashInd = contentRangeHeader.getValue().indexOf('/');
             if (slashInd > 0) {
-                return Long.valueOf(contentRangeHeader.getValue().substring(slashInd + 1));
+                return Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
             }
         }
 
-        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid response. Did not get Content-Range header from service. " + contentRangeHeader));
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
     }
 }

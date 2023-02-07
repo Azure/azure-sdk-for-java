@@ -27,21 +27,22 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Random;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegistryClientsTestBase {
+    private static final Random RANDOM = new Random();
     private ContainerRegistryBlobClient client;
     private ContainerRegistryBlobAsyncClient asyncClient;
 
@@ -250,37 +251,74 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void downloadBlob(HttpClient httpClient) {
-        BinaryData content = BinaryData.fromFile(Paths.get("C:\\Users\\neska\\Downloads\\ddmsetup.exe"));
+    public void downloadBlob(HttpClient httpClient) throws IOException {
+        BinaryData content = generateStream((int) (CHUNK_SIZE * 2.1d));
         client = getBlobClient("oci-artifact", httpClient);
         UploadBlobResult uploadResult = client.uploadBlob(content);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        client.downloadBlob(uploadResult.getDigest(), stream);
+        client.downloadStream(uploadResult.getDigest(), Channels.newChannel(stream));
 
+        stream.flush();
+        assertArrayEquals(content.toBytes(), stream.toByteArray());
+    }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void downloadSmallBlob(HttpClient httpClient) throws IOException {
+        BinaryData content = generateStream(CHUNK_SIZE - 1);
+        client = getBlobClient("oci-artifact", httpClient);
+        UploadBlobResult uploadResult = client.uploadBlob(content);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        client.downloadStream(uploadResult.getDigest(), Channels.newChannel(stream));
+
+        stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void downloadBlobAsync(HttpClient httpClient) {
-        ContainerRegistryBlobAsyncClient asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
+    public void downloadBlobAsync(HttpClient httpClient) throws IOException {
+        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
-        BinaryData content = BinaryData.fromFile(Paths.get("C:\\Users\\neska\\Downloads\\ddmsetup.exe"));
-        //BinaryData content = BinaryData.fromString("foobarbaz123456789012345678901234567890foobarbaz123456789012345678901234567890foobarbaz123456789012345678901234567890");
-        AtomicReference<String> digest = new AtomicReference<>(null);
+        BinaryData content = generateStream((int) (CHUNK_SIZE * 2.5d));
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         StepVerifier.create(asyncClient
                 .uploadBlob(content)
-                .flatMap(uploadResult ->  {
-                    digest.set(uploadResult.getDigest());
-                    return asyncClient.downloadBlob(uploadResult.getDigest(), stream);
-                }))
+                .flatMap(uploadResult ->
+                    asyncClient.downloadStream(uploadResult.getDigest()))
+                .flatMap(r -> r.writeValueTo(Channels.newChannel(stream))))
             .verifyComplete();
 
-        //System.out.println(BinaryData.fromBytes(stream.toByteArray()).toString());
+        stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void downloadSmallBlobAsync(HttpClient httpClient) throws IOException {
+        asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
+
+        BinaryData content = generateStream(CHUNK_SIZE / 2);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        StepVerifier.create(asyncClient
+                .uploadBlob(content)
+                .flatMap(uploadResult ->
+                    asyncClient.downloadStream(uploadResult.getDigest()))
+                .flatMap(r -> r.writeValueTo(Channels.newChannel(stream))))
+            .verifyComplete();
+
+        stream.flush();
+        assertArrayEquals(content.toBytes(), stream.toByteArray());
+    }
+
+    private static BinaryData generateStream(int size) {
+        byte[] content = new byte[size];
+        for (int i = 0; i < size; i++) {
+            content[i] = (byte) (i % 127);
+        }
+        return BinaryData.fromBytes(content);
+    }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void downloadManifest(HttpClient httpClient) {

@@ -39,14 +39,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+<<<<<<< HEAD
 import java.io.OutputStream;
+=======
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
+>>>>>>> 48889fb47d9 (cleanup and tests)
 import java.security.MessageDigest;
 import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
+<<<<<<< HEAD
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.chunkToStream;
+=======
+>>>>>>> 48889fb47d9 (cleanup and tests)
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
@@ -314,38 +323,65 @@ public class ContainerRegistryBlobClient {
      * Download the blob associated with the given digest.
      *
      * @param digest The digest for the given image layer.
+     * @param channel The channel to write content to.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
-    public void downloadBlob(String digest, OutputStream stream) {
-        downloadBlobWithResponse(digest, stream, Context.NONE);
+    public void downloadStream(String digest, WritableByteChannel channel) {
+        downloadBlobInternal(digest, channel, Context.NONE);
     }
 
     /**
      * Download the blob\layer associated with the given digest.
      *
      * @param digest The digest for the given image layer.
+     * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
-    public void downloadBlobWithResponse(String digest, OutputStream stream, Context context) {
+    public void downloadStream(String digest, WritableByteChannel channel, Context context) {
+        downloadBlobInternal(digest, channel, context);
+    }
+
+    private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         context = enableSync(getTracingContext(context));
         MessageDigest sha256 = createSha256();
-        Response<BinaryData> firstChunk = writeChunk(digest, 0, stream, sha256, context);
-        long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-        for (long pos = firstChunk.getValue().getLength(); pos < blobSize; pos += CHUNK_SIZE) {
-            writeChunk(digest, pos, stream, sha256, context);
+
+        try {
+            Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
+
+            String responseHeaderDigest = firstChunk.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+            if (!digest.equals(responseHeaderDigest)) {
+                throw LOGGER.atError()
+                    .addKeyValue("requestedDigest", digest)
+                    .addKeyValue("responseDigest", responseHeaderDigest)
+                    .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
+            }
+
+            long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+            for (long p = firstChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            }
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
 
         validateDigest(sha256, digest);
     }
 
-    private Response<BinaryData> writeChunk(String digest, long position, OutputStream outputStream, MessageDigest sha256, Context context) {
-        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, new HttpRange(position, CHUNK_SIZE).toString(), context);
-        chunkToStream(response, outputStream, sha256);
+    private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
+        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+        ByteBuffer buffer = response.getValue().toByteBuffer();
+        try {
+            channel.write(buffer);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+        buffer.flip();
+        sha256.update(buffer);
         return response;
     }
 
