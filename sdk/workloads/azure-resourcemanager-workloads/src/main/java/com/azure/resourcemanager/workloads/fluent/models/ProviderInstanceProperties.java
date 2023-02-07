@@ -31,6 +31,10 @@ public final class ProviderInstanceProperties {
     @JsonProperty(value = "providerSettings")
     private ProviderSpecificProperties providerSettings;
 
+    /** Creates an instance of ProviderInstanceProperties class. */
+    public ProviderInstanceProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of provisioning of the provider instance.
      *

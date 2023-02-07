@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderInstances Get. */
 public final class ProviderInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Get.json
      */
     /**
      * Sample code: Get properties of a SAP monitor Hana provider.
@@ -20,11 +18,11 @@ public final class ProviderInstancesGetSamples {
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Get.json
      */
     /**
      * Sample code: Get properties of a PrometheusHaCluster provider.
@@ -35,11 +33,11 @@ public final class ProviderInstancesGetSamples {
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/PrometheusOSProviderInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusOSProviderInstances_Get.json
      */
     /**
      * Sample code: Get properties of a OS provider.
@@ -49,11 +47,11 @@ public final class ProviderInstancesGetSamples {
     public static void getPropertiesOfAOSProvider(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/Db2ProviderInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/Db2ProviderInstances_Get.json
      */
     /**
      * Sample code: Get properties of a Db2 provider.
@@ -63,11 +61,11 @@ public final class ProviderInstancesGetSamples {
     public static void getPropertiesOfADb2Provider(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Get.json
      */
     /**
      * Sample code: Get properties of a MsSqlServer provider.
@@ -78,11 +76,11 @@ public final class ProviderInstancesGetSamples {
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Get.json
      */
     /**
      * Sample code: Get properties of a SAP monitor NetWeaver provider.
@@ -93,6 +91,6 @@ public final class ProviderInstancesGetSamples {
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         manager
             .providerInstances()
-            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", Context.NONE);
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
     }
 }

@@ -216,10 +216,6 @@ public final class SapVirtualInstanceImpl
         return serviceManager.sapVirtualInstances().start(resourceGroupName, sapVirtualInstanceName, context);
     }
 
-    public OperationStatusResult stop(StopRequest body) {
-        return serviceManager.sapVirtualInstances().stop(resourceGroupName, sapVirtualInstanceName, body);
-    }
-
     public OperationStatusResult stop() {
         return serviceManager.sapVirtualInstances().stop(resourceGroupName, sapVirtualInstanceName);
     }
