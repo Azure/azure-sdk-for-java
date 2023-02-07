@@ -89,6 +89,7 @@ public class TestProxyUtils {
     /**
      * Gets the process name of the test proxy binary.
      * @return The platform specific process name.
+     * @throws UnsupportedOperationException The current OS is not recognized.
      */
     public static String getProxyProcessName() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
