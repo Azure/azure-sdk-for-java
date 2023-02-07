@@ -15,6 +15,7 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -113,6 +114,8 @@ public class EventProcessorTest extends EventPerfTest<EventProcessorOptions> {
                         return Mono.empty();
                     }
                 })
+                .parallel()
+                .runOn(Schedulers.parallel())
                 .then(),
             client -> Mono.fromCompletionStage(client.close()));
     }

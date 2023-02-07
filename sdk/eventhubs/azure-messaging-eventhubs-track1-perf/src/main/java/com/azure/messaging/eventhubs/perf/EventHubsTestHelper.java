@@ -225,11 +225,11 @@ class EventHubsTestHelper<T extends EventHubsOptions> implements Closeable {
                         sender.sendSync(currentBatch);
                         numberOfMessages = numberOfMessages - currentBatch.getSize();
                     } catch (EventHubException e) {
-                        System.err.println("Could not send batch. Error: " + e);
+                        System.err.println("[" + partitionId + "] Could not send batch. Error: " + e);
                     }
                 }
 
-                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend);
+                System.out.printf("[%s] Sent %d messages.%n", partitionId, totalMessagesToSend);
                 return Mono.empty();
             },
             sender -> Mono.fromCompletionStage(sender.close()));
