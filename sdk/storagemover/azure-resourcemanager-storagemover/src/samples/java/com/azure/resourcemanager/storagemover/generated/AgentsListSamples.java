@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagemover.generated;
 /** Samples for Agents List. */
 public final class AgentsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_List.json
      */
     /**
      * Sample code: Agents_List.

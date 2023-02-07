@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagemover.generated;
 /** Samples for Endpoints Delete. */
 public final class EndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Delete.json
      */
     /**
      * Sample code: Endpoints_Delete.

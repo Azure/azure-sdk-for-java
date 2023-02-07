@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagemover.models.CopyMode;
 /** Samples for JobDefinitions CreateOrUpdate. */
 public final class JobDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate.

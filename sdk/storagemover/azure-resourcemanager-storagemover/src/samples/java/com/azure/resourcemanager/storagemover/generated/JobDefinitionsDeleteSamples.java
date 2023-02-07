@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagemover.generated;
 /** Samples for JobDefinitions Delete. */
 public final class JobDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_Delete.json
      */
     /**
      * Sample code: Projects_Delete.

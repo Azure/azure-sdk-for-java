@@ -58,7 +58,7 @@
 /** Samples for Agents CreateOrUpdate. */
 public final class AgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_CreateOrUpdate.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate.
@@ -85,7 +85,7 @@ public final class AgentsCreateOrUpdateSamples {
 /** Samples for Agents Delete. */
 public final class AgentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_Delete.json
      */
     /**
      * Sample code: Agents_Delete.
@@ -106,7 +106,7 @@ public final class AgentsDeleteSamples {
 /** Samples for Agents Get. */
 public final class AgentsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_Get.json
      */
     /**
      * Sample code: Agents_Get.
@@ -128,7 +128,7 @@ public final class AgentsGetSamples {
 /** Samples for Agents List. */
 public final class AgentsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_List.json
      */
     /**
      * Sample code: Agents_List.
@@ -149,7 +149,7 @@ import com.azure.resourcemanager.storagemover.models.Agent;
 /** Samples for Agents Update. */
 public final class AgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Agents_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Agents_Update.json
      */
     /**
      * Sample code: Agents_Update.
@@ -176,7 +176,7 @@ import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
 /** Samples for Endpoints CreateOrUpdate. */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate.
@@ -200,7 +200,7 @@ public final class EndpointsCreateOrUpdateSamples {
 /** Samples for Endpoints Delete. */
 public final class EndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Delete.json
      */
     /**
      * Sample code: Endpoints_Delete.
@@ -222,7 +222,7 @@ public final class EndpointsDeleteSamples {
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Get.json
      */
     /**
      * Sample code: Endpoints_Get.
@@ -244,7 +244,7 @@ public final class EndpointsGetSamples {
 /** Samples for Endpoints List. */
 public final class EndpointsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_List.json
      */
     /**
      * Sample code: Endpoints_List.
@@ -265,7 +265,7 @@ import com.azure.resourcemanager.storagemover.models.Endpoint;
 /** Samples for Endpoints Update. */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Endpoints_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Endpoints_Update.json
      */
     /**
      * Sample code: Endpoints_Update.
@@ -295,7 +295,7 @@ import com.azure.resourcemanager.storagemover.models.CopyMode;
 /** Samples for JobDefinitions CreateOrUpdate. */
 public final class JobDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate.
@@ -326,7 +326,7 @@ public final class JobDefinitionsCreateOrUpdateSamples {
 /** Samples for JobDefinitions Delete. */
 public final class JobDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_Delete.json
      */
     /**
      * Sample code: Projects_Delete.
@@ -352,7 +352,7 @@ public final class JobDefinitionsDeleteSamples {
 /** Samples for JobDefinitions Get. */
 public final class JobDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_Get.json
      */
     /**
      * Sample code: JobDefinitions_Get.
@@ -378,7 +378,7 @@ public final class JobDefinitionsGetSamples {
 /** Samples for JobDefinitions List. */
 public final class JobDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_List.json
      */
     /**
      * Sample code: JobDefinitions_List.
@@ -399,7 +399,7 @@ public final class JobDefinitionsListSamples {
 /** Samples for JobDefinitions StartJob. */
 public final class JobDefinitionsStartJobSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_StartJob.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_StartJob.json
      */
     /**
      * Sample code: JobDefinitions_StartJob.
@@ -425,7 +425,7 @@ public final class JobDefinitionsStartJobSamples {
 /** Samples for JobDefinitions StopJob. */
 public final class JobDefinitionsStopJobSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_StopJob.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_StopJob.json
      */
     /**
      * Sample code: JobDefinitions_StopJob.
@@ -453,7 +453,7 @@ import com.azure.resourcemanager.storagemover.models.JobDefinition;
 /** Samples for JobDefinitions Update. */
 public final class JobDefinitionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobDefinitions_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobDefinitions_Update.json
      */
     /**
      * Sample code: JobDefinitions_Update.
@@ -486,7 +486,7 @@ public final class JobDefinitionsUpdateSamples {
 /** Samples for JobRuns Get. */
 public final class JobRunsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobRuns_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobRuns_Get.json
      */
     /**
      * Sample code: JobRuns_Get.
@@ -513,7 +513,7 @@ public final class JobRunsGetSamples {
 /** Samples for JobRuns List. */
 public final class JobRunsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/JobRuns_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/JobRuns_List.json
      */
     /**
      * Sample code: JobRuns_List.
@@ -539,7 +539,7 @@ public final class JobRunsListSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -558,7 +558,7 @@ public final class OperationsListSamples {
 /** Samples for Projects CreateOrUpdate. */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Projects_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Projects_CreateOrUpdate.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.
@@ -582,7 +582,7 @@ public final class ProjectsCreateOrUpdateSamples {
 /** Samples for Projects Delete. */
 public final class ProjectsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Projects_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Projects_Delete.json
      */
     /**
      * Sample code: Projects_Delete.
@@ -604,7 +604,7 @@ public final class ProjectsDeleteSamples {
 /** Samples for Projects Get. */
 public final class ProjectsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Projects_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Projects_Get.json
      */
     /**
      * Sample code: Projects_Get.
@@ -626,7 +626,7 @@ public final class ProjectsGetSamples {
 /** Samples for Projects List. */
 public final class ProjectsListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Projects_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Projects_List.json
      */
     /**
      * Sample code: Projects_List.
@@ -647,7 +647,7 @@ import com.azure.resourcemanager.storagemover.models.Project;
 /** Samples for Projects Update. */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/Projects_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/Projects_Update.json
      */
     /**
      * Sample code: Projects_Update.
@@ -678,7 +678,7 @@ import java.util.Map;
 /** Samples for StorageMovers CreateOrUpdate. */
 public final class StorageMoversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageMovers_CreateOrUpdate.
@@ -715,7 +715,7 @@ public final class StorageMoversCreateOrUpdateSamples {
 /** Samples for StorageMovers Delete. */
 public final class StorageMoversDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_Delete.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_Delete.json
      */
     /**
      * Sample code: StorageMovers_Delete.
@@ -734,7 +734,7 @@ public final class StorageMoversDeleteSamples {
 /** Samples for StorageMovers GetByResourceGroup. */
 public final class StorageMoversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_Get.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_Get.json
      */
     /**
      * Sample code: StorageMovers_Get.
@@ -756,7 +756,7 @@ public final class StorageMoversGetByResourceGroupSamples {
 /** Samples for StorageMovers List. */
 public final class StorageMoversListSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_ListBySubscription.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_ListBySubscription.json
      */
     /**
      * Sample code: StorageMovers_List.
@@ -775,7 +775,7 @@ public final class StorageMoversListSamples {
 /** Samples for StorageMovers ListByResourceGroup. */
 public final class StorageMoversListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_List.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_List.json
      */
     /**
      * Sample code: StorageMovers_List.
@@ -796,7 +796,7 @@ import com.azure.resourcemanager.storagemover.models.StorageMover;
 /** Samples for StorageMovers Update. */
 public final class StorageMoversUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2022-07-01-preview/examples/StorageMovers_Update.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-03-01/examples/StorageMovers_Update.json
      */
     /**
      * Sample code: StorageMovers_Update.
