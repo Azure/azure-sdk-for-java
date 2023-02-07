@@ -7,7 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 
@@ -94,6 +96,12 @@ public final class TestProxyDownloader {
             ArchiveEntry entry = archive.getNextEntry();
 
             while (entry != null) {
+                int mode = 0;
+                if(entry instanceof ZipArchiveEntry) {
+                    mode = ((ZipArchiveEntry)entry).getUnixMode();
+                } else if (entry instanceof TarArchiveEntry) {
+                    mode = ((TarArchiveEntry)entry).getMode();
+                }
                 if (!archive.canReadEntryData(entry)) {
                     throw new RuntimeException("Could not read zip archive");
                 }
@@ -110,6 +118,11 @@ public final class TestProxyDownloader {
                     }
                     try (OutputStream outputStream = Files.newOutputStream(outputFile.toPath())) {
                         IOUtils.copy(archive, outputStream);
+                        // If we have a file mode, set the file executable if it had the execute bit.
+                        // 73 == 0111
+                        if (mode > 0) {
+                            outputFile.setExecutable((mode & 73) > 0, false);
+                        }
                     }
                 }
                 entry = archive.getNextEntry();
