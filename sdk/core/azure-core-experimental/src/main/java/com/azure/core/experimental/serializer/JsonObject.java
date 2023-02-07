@@ -16,11 +16,15 @@ public interface JsonObject extends JsonNode {
     }
 
     /**
+     * A {@link Stream} iterating over all fields in the object.
+     *
      * @return {@link Stream} for all fields in the object.
      */
     Stream<Map.Entry<String, JsonNode>> fields();
 
     /**
+     * A {@link Stream} iterating over all field names in the object.
+     *
      * @return {@link Stream} for all field names in the object.
      */
     Stream<String> fieldNames();
