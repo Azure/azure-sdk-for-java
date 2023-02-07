@@ -12,10 +12,13 @@ Represents performance tests for legacy Event Hubs client.
     - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
 - Azure Event Hubs instance
     - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
+- Azure Blob Storage instance
+    - Step-by-step guide for [creating a Storage account][blob_storage_create]
+    - **NOTE:** You **must disable** "Secure transfer required."  See ["Storage require secure transfer"][blob_storage_secure_transfer] to find this configuration setting.
 
 ### Create the jar package
 
-Execute: `mvn package -pl com.azure:azure-messaging-eventhubs-track1-perf`
+Execute: `mvn package -am -pl com.azure:azure-messaging-eventhubs-track1-perf`
 
 ## Key concepts
 
@@ -111,6 +114,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- links -->
+[blob_storage_create]: https://learn.microsoft.com/azure/storage/common/storage-account-create
+[blob_storage_secure_transfer]: https://learn.microsoft.com/azure/storage/common/storage-require-secure-transfer
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
