@@ -6,6 +6,7 @@ package com.azure.spring.cloud.service.implementation.credential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
@@ -13,6 +14,7 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.service.implementation.AzureHttpClientBuilderFactoryBaseTests;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -97,10 +99,7 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
 
     @Override
     protected void verifyRetryOptionsCalled(DefaultAzureCredentialBuilder builder, AzureIdentityTestProperties properties, VerificationMode mode) {
-        RetryProperties retry = properties.getRetry();
-        Integer maxRetries = RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retry.getMode())
-            ? retry.getExponential().getMaxRetries() : retry.getFixed().getMaxRetries();
-        verify(builder, mode).maxRetry(maxRetries);
+        verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
 
     private ThreadPoolExecutor getThreadPoolExecutor() {
