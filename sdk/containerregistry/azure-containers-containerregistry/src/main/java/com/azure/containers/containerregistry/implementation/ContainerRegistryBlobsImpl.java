@@ -1449,7 +1449,8 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerRegistryBlobsGetChunkResponse> getChunkWithResponseAsync(
             String name, String digest, String range, Context context) {
-        return service.getChunk(this.client.getUrl(), name, digest, range, "application/octet-stream", context);
+        final String accept = "application/octet-stream";
+        return service.getChunk(this.client.getUrl(), name, digest, range, accept, context);
     }
 
     /**

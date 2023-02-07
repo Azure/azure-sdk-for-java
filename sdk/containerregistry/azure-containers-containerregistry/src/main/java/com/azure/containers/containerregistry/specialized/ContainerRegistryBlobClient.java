@@ -39,23 +39,15 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-<<<<<<< HEAD
-import java.io.OutputStream;
-=======
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
->>>>>>> 48889fb47d9 (cleanup and tests)
 import java.security.MessageDigest;
 import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
-<<<<<<< HEAD
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.chunkToStream;
-=======
->>>>>>> 48889fb47d9 (cleanup and tests)
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
@@ -326,7 +318,9 @@ public class ContainerRegistryBlobClient {
      * @param channel The channel to write content to.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel) {
         downloadBlobInternal(digest, channel, Context.NONE);
     }
@@ -339,7 +333,9 @@ public class ContainerRegistryBlobClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
+     * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel, Context context) {
         downloadBlobInternal(digest, channel, context);
     }

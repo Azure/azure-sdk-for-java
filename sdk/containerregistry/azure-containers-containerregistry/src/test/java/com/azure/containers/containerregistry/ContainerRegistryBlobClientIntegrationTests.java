@@ -42,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegistryClientsTestBase {
-    private static final Random RANDOM = new Random();
     private ContainerRegistryBlobClient client;
     private ContainerRegistryBlobAsyncClient asyncClient;
 
