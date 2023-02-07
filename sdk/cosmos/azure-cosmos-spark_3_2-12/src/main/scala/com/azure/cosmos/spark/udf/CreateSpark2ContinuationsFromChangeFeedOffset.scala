@@ -110,7 +110,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
         if (minLsn.isDefined) {
           lsnsByPkRangeId.put(
             pkRange.getId.toInt,
-            SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken))
+            Math.max(0, SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken) - 1))
         }
       })
 

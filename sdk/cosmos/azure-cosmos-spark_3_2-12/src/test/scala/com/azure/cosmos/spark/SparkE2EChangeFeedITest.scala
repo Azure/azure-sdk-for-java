@@ -728,7 +728,7 @@ class SparkE2EChangeFeedITest
             filteredCompositeContinuations should have size 1
 
             val quotedToken = filteredCompositeContinuations.head.getToken
-            val lsn: Long = quotedToken.substring(1, quotedToken.length - 1).toLong
+            val lsn: Long = Math.max(0, quotedToken.substring(1, quotedToken.length - 1).toLong - 1)
 
             tokenMap += (pkRangeId -> lsn)
           })

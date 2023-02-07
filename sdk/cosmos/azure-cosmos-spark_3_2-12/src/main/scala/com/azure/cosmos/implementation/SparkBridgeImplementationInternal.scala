@@ -274,7 +274,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val continuations = tokens
       .map(token => {
         val pkRangeId = token._1
-        val lsn: Long = token._2
+        val lsn: Long = token._2 + 1
 
         val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {
           pkRangesByPkRangeId.get(pkRangeId).get.toRange
