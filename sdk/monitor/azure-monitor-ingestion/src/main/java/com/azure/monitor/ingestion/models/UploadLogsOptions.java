@@ -28,7 +28,7 @@ public final class UploadLogsOptions {
     /**
      * Sets the serializer to use to convert the log objects to JSON.
      * @param objectSerializer the serializer to use to convert the log objects to JSON.
-     * @return the update {@link UploadLogsOptions} instance.
+     * @return the updated {@link UploadLogsOptions} instance.
      */
     public UploadLogsOptions setObjectSerializer(ObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
@@ -46,7 +46,7 @@ public final class UploadLogsOptions {
     /**
      * Sets the max concurrent requests to send to the Azure Monitor service when uploading logs.
      * @param maxConcurrency the max concurrent requests to send to the Azure Monitor service when uploading logs.
-     * @return the update {@link UploadLogsOptions} instance.
+     * @return the updated {@link UploadLogsOptions} instance.
      */
     public UploadLogsOptions setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
@@ -54,15 +54,17 @@ public final class UploadLogsOptions {
     }
 
     /**
-     * @return
+     * Returns the error handler that is called when a request to the Azure Monitor service to upload logs fails.
+     * @return the error handler that is called when a request to the Azure Monitor service to upload logs fails.
      */
     public Consumer<UploadLogsError> getUploadLogsErrorConsumer() {
         return uploadLogsErrorConsumer;
     }
 
     /**
-     * @param uploadLogsErrorConsumer
-     * @return
+     * Sets  the error handler that is called when a request to the Azure Monitor service to upload logs fails.
+     * @param uploadLogsErrorConsumer the error handler that is called when a request to the Azure Monitor service to upload logs fails.
+     * @return the updated {@link UploadLogsOptions} instance.
      */
     public UploadLogsOptions setUploadLogsErrorConsumer(Consumer<UploadLogsError> uploadLogsErrorConsumer) {
         this.uploadLogsErrorConsumer = uploadLogsErrorConsumer;

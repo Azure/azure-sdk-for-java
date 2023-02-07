@@ -1,22 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d10412ea-2df3-4fff-9293-596a985a4887",
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1b153d10-14a4-4ac5-a746-63978ee69594",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
       "x-ms-error-code" : "ContentLengthLimitExceeded",
       "retry-after" : "0",
       "StatusCode" : "413",
-      "x-ms-request-id" : "d2ac85b1-70fe-462f-ae41-d26192d61a50",
+      "x-ms-request-id" : "2ce51607-d0e6-46f4-910c-a1c734eaa827",
       "Body" : "{\"error\":{\"code\":\"ContentLengthLimitExceeded\",\"message\":\"Maximum allowed content length: 1048576 bytes (1 MB). Provided content length: 2821441 bytes.\"}}",
-      "x-ms-client-request-id" : "d10412ea-2df3-4fff-9293-596a985a4887",
-      "Date" : "Fri, 09 Sep 2022 21:14:55 GMT",
+      "Date" : "Tue, 07 Feb 2023 07:40:38 GMT",
+      "x-ms-client-request-id" : "1b153d10-14a4-4ac5-a746-63978ee69594",
       "Content-Type" : "application/json"
     },
     "Exception" : null

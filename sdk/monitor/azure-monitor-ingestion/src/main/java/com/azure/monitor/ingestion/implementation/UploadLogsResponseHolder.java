@@ -4,6 +4,7 @@
 package com.azure.monitor.ingestion.implementation;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 
 /**
@@ -11,32 +12,20 @@ import com.azure.core.models.ResponseError;
  */
 @Immutable
 public final class UploadLogsResponseHolder {
-    private String status;
-    private ResponseError responseError;
 
-    /**
-     * Creates and instance of {@link UploadLogsResponseHolder}.
-     * @param status The status of the logs upload request.
-     * @param responseError The error details of the upload request, if any.
-     */
-    public UploadLogsResponseHolder(String status, ResponseError responseError) {
-        this.status = status;
-        this.responseError = responseError;
+    private final HttpResponseException exception;
+    private final LogsIngestionRequest request;
+
+    public UploadLogsResponseHolder(LogsIngestionRequest request, HttpResponseException ex) {
+        this.request = request;
+        this.exception = ex;
     }
 
-    /**
-     * Returns the status of the logs upload request.
-     * @return the status of the logs upload request.
-     */
-    public String getStatus() {
-        return status;
+    public LogsIngestionRequest getRequest() {
+        return request;
     }
 
-    /**
-     * Returns the error details of the upload request, if any.
-     * @return the error details of the upload request, if any.
-     */
-    public ResponseError getResponseError() {
-        return responseError;
+    public HttpResponseException getException() {
+        return exception;
     }
 }

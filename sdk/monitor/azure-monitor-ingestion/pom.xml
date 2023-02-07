@@ -47,6 +47,7 @@
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
         <javaModulesSurefireArgLine>
             --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=ALL-UNNAMED
         </javaModulesSurefireArgLine>
     </properties>

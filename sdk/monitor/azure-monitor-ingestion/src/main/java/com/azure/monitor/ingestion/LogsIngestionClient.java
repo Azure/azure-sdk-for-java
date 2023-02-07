@@ -16,8 +16,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.monitor.ingestion.models.UploadLogsOptions;
 
-import java.util.List;
-
 /**
  * The synchronous client for uploading logs to Azure Monitor.
  *
@@ -58,12 +56,11 @@ public final class LogsIngestionClient {
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upload(String ruleId, String streamName, List<Object> logs) {
+    public void upload(String ruleId, String streamName, Iterable<Object> logs) {
         asyncClient.upload(ruleId, streamName, logs).block();
     }
 
@@ -87,7 +84,6 @@ public final class LogsIngestionClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
@@ -109,7 +105,6 @@ public final class LogsIngestionClient {
      * @param options the options to configure the upload request.
      * @param context additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */

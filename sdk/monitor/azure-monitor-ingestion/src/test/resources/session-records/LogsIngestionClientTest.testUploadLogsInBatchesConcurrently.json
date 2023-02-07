@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1",
+      "x-ms-client-request-id" : "dfd0c7ee-f240-496b-9491-c1c4e27ef7da",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,9 +13,9 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "2b2ea788-aeab-4d2b-83b6-0a1d643916c3",
+      "x-ms-request-id" : "2a063275-2eec-413c-80b3-95200f528e1f",
       "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
-      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1"
+      "x-ms-client-request-id" : "dfd0c7ee-f240-496b-9491-c1c4e27ef7da"
     },
     "Exception" : null
   }, {
@@ -23,7 +23,7 @@
     "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45",
+      "x-ms-client-request-id" : "fd94667f-47c6-43f2-b387-77fb5eeaeb99",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -32,9 +32,9 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "15dc5dec-6f67-4325-b86a-68b19cfbf721",
-      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
-      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45"
+      "x-ms-request-id" : "a3c199cb-a29a-41bc-8982-0d0e08c2a939",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "fd94667f-47c6-43f2-b387-77fb5eeaeb99"
     },
     "Exception" : null
   } ],

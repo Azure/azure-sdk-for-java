@@ -4,7 +4,7 @@
 package com.azure.monitor.ingestion;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.Disposable;
+import com.azure.monitor.ingestion.models.UploadLogsException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -37,37 +37,26 @@ public class UploadLogsAsyncClientSample {
 
         CountDownLatch countdownLatch = new CountDownLatch(1);
         List<Object> dataList = getLogs();
-        try {
-
-            // More details on Mono<> can be found in the project reactor documentation at :
-            // https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html
-
-            Mono<Void> resultMono = client.upload("<data-collection-rule-id>",
+        // More details on Mono<> can be found in the project reactor documentation at :
+        // https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html
+        Mono<Void> resultMono = client.upload("<data-collection-rule-id>",
                 "<stream-name>", dataList);
 
-            // Disposable subscription = resultMono.subscribe(
-            //     uploadLogsResult -> {
-            //         // Upload operation has finished and the result object is populated.
-            //         if (uploadLogsResult == null) {
-            //             throw new RuntimeException();
-            //         }
-            //         System.out.println(uploadLogsResult.getStatus());
-            //     },
-            //     error -> {
-            //         // If any exceptions are throw, they are handled here.
-            //         throw new RuntimeException("Unexpected error calling upload.", error);
-            //     });
-            //
-            // // Subscribe is not a blocking call, so we wait here so the program does not terminate.
-            // countdownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-            //
-            // // Disposing of the subscription will cancel the upload() operation.
-            // subscription.dispose();
-            
-        } catch (RuntimeException runtimeException) {
-            // RuntimeException can be thrown by calling Mono.block() if an error occurs or if the operation times out.
-            // Handling operation timeout, logging and so on would go here.
-        }
+        resultMono.subscribe(
+                ignored -> {
+                    // returns void
+                },
+                error -> {
+                    // If any exceptions are thrown, they are handled here.
+                    if (error instanceof UploadLogsException) {
+                        UploadLogsException ex = (UploadLogsException) error;
+                        System.out.println("Failed to upload " + ex.getFailedLogsCount() + "logs.");
+                    }
+                },
+                countdownLatch::countDown);
+
+        // Subscribe is not a blocking call, so we wait here so the program does not terminate.
+        countdownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
     }
 
     private static List<Object> getLogs() {
