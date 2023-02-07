@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapVirtualInstanceProvisioningState. */
+/** Defines the provisioning states. */
 public final class SapVirtualInstanceProvisioningState
     extends ExpandableStringEnum<SapVirtualInstanceProvisioningState> {
     /** Static value Succeeded for SapVirtualInstanceProvisioningState. */
@@ -25,6 +25,15 @@ public final class SapVirtualInstanceProvisioningState
 
     /** Static value Deleting for SapVirtualInstanceProvisioningState. */
     public static final SapVirtualInstanceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of SapVirtualInstanceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapVirtualInstanceProvisioningState() {
+    }
 
     /**
      * Creates or finds a SapVirtualInstanceProvisioningState from its string representation.

@@ -76,8 +76,8 @@ public interface SapVirtualInstance {
     SapProductType sapProduct();
 
     /**
-     * Gets the configuration property: Defines if an existing SAP system is being registered or a new SAP system is
-     * being created.
+     * Gets the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
+     * (ACSS) or if an existing SAP system is being registered with ACSS.
      *
      * @return the configuration value.
      */
@@ -98,7 +98,7 @@ public interface SapVirtualInstance {
     SapVirtualInstanceStatus status();
 
     /**
-     * Gets the health property: Defines the SAP Instance health.
+     * Gets the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */
@@ -119,7 +119,7 @@ public interface SapVirtualInstance {
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
-     * Gets the errors property: Defines the Virtual Instance for SAP errors.
+     * Gets the errors property: Indicates any errors on the Virtual Instance for SAP solutions resource.
      *
      * @return the errors value.
      */
@@ -219,11 +219,11 @@ public interface SapVirtualInstance {
         /** The stage of the SapVirtualInstance definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
-             * Specifies the configuration property: Defines if an existing SAP system is being registered or a new SAP
-             * system is being created.
+             * Specifies the configuration property: Defines if the SAP system is being created using Azure Center for
+             * SAP solutions (ACSS) or if an existing SAP system is being registered with ACSS.
              *
-             * @param configuration Defines if an existing SAP system is being registered or a new SAP system is being
-             *     created.
+             * @param configuration Defines if the SAP system is being created using Azure Center for SAP solutions
+             *     (ACSS) or if an existing SAP system is being registered with ACSS.
              * @return the next definition stage.
              */
             WithCreate withConfiguration(SapConfiguration configuration);
@@ -345,7 +345,7 @@ public interface SapVirtualInstance {
     SapVirtualInstance refresh(Context context);
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,7 +354,7 @@ public interface SapVirtualInstance {
     OperationStatusResult start();
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,18 +365,7 @@ public interface SapVirtualInstance {
     OperationStatusResult start(Context context);
 
     /**
-     * Stops the SAP System.
-     *
-     * @param body The Virtual Instances for SAP stop request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
-    OperationStatusResult stop(StopRequest body);
-
-    /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -385,9 +374,9 @@ public interface SapVirtualInstance {
     OperationStatusResult stop();
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
