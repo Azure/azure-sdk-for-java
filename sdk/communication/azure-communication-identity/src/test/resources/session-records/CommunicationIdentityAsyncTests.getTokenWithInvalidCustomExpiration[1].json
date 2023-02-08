@@ -1,35 +1,35 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4ad1a8a7-c551-422b-92da-59e5adc8e764",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "713941fe-4a12-4360-9d2a-6ab00f5e53c0",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "101",
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Thu, 12 Jan 2023 09:57:01 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:00 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "106ms",
-      "MS-CV" : "SN6bGJ0XU0qD0V7iI5S3oA.2.0",
-      "X-Azure-Ref" : "0bdm/YwAAAACZSZN/QLxbSqH1qFXF19sNSEVMMDFFREdFMjAxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Content-Length" : "101",
+      "X-Processing-Time" : "37ms",
+      "MS-CV" : "sN3PhOG7EUGK1wh8r5icGQ.0",
+      "X-Azure-Ref" : "0JEQWYwAAAAABTwNPPPDPQbZBcjWyPIKaUFJHMDFFREdFMDkyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
-      "x-ms-client-request-id" : "4ad1a8a7-c551-422b-92da-59e5adc8e764",
-      "Request-Context" : "appId=",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-client-request-id" : "713941fe-4a12-4360-9d2a-6ab00f5e53c0",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED/:issueAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities/REDACTED/:issueAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4c89361f-d138-40ab-9978-0297dd76b07e",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0081f7a1-e78c-4e1b-b868-409810a9d750",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -38,15 +38,15 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 12 Jan 2023 09:57:01 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:00 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "70ms",
-      "MS-CV" : "8jHdPJkiYEClNfyLyCj9iQ.2.0",
-      "X-Azure-Ref" : "0bdm/YwAAAACVYiY94ieKQIHmphJGcl61SEVMMDFFREdFMjAwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid. Value must be within the [60, 1440] interval.\",\"target\":\"ExpiresInMinutes\"}}",
-      "x-ms-client-request-id" : "4c89361f-d138-40ab-9978-0297dd76b07e",
-      "Request-Context" : "appId=",
-      "Content-Type" : "application/json"
+      "X-Processing-Time" : "30ms",
+      "MS-CV" : "rlDd8yCunEqT1B5WBjXHKw.0",
+      "X-Azure-Ref" : "0JEQWYwAAAABAseAPHyhGQKUtdewVgtuLUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid.\",\"target\":\"ExpiresInMinutes\"}}",
+      "x-ms-client-request-id" : "0081f7a1-e78c-4e1b-b868-409810a9d750",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   } ],
