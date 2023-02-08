@@ -1,8 +1,8 @@
-Service: storage-blob
+Service: storage-file-share
 
 Project: sdk/storage/azure-storage-perf
 
-PrimaryPackage: 'com.azure:azure-storage-blob'
+PrimaryPackage: 'com.azure:azure-storage-file-share'
 
 PackageVersions:
 - 'com.azure:azure-storage-common': 12.19.1
@@ -26,29 +26,13 @@ PackageVersions:
 
 Tests:
 - Test: download
-  Class: downloadblob
+  Class: downloadfileshare
   Arguments: &sizes
   - --size 10240 --parallel 64
   - --size 10485760 --parallel 32
   - --size 1073741824 --parallel 1 --warmup 60 --duration 60
   - --size 1073741824 --parallel 8 --warmup 60 --duration 60
 
-- Test: download-file
-  Class: downloadblobtofile
-  Arguments: &file-sizes
-  - --size 10485760 --parallel 32
-
 - Test: upload
-  Class: uploadblob
+  Class: uploadfileshare
   Arguments: *sizes
-
-- Test: upload-file
-  Class: uploadfromfile
-  Arguments: *file-sizes
-
-- Test: list-blobs
-  Class: listblobs
-  Arguments:
-  - --count 5 --parallel 64
-  - --count 500 --parallel 32
-  - --count 50000 --parallel 32 --warmup 60 --duration 60
