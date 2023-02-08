@@ -64,7 +64,7 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 os.chdir(cadl_dir)
                 try:
                     # copy "eng/emitter-package.json" to "package.json" in current project
-                    shutil.copyfile(os.path.join(sdk_root, 'eng/emitter-package.json'),
+                    shutil.copyfile(os.path.join(sdk_root, 'eng', 'emitter-package.json'),
                                     os.path.join(cadl_dir, 'package.json'))
 
                     # install dependencies
