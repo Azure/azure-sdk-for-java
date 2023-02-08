@@ -1,6 +1,8 @@
 ## Release History
 
 ### 3.32.0-beta.1 (Unreleased)
+#### Features Added
+* Added support for multi-tenancy at the Container level via `CosmosFactory`
 
 #### Features Added
 
