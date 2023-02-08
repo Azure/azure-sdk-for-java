@@ -39,14 +39,14 @@ class EventHubsMessageChannelBinderTests {
             null, null);
 
     @BeforeEach
-    public void init() {
+    void init() {
         MockitoAnnotations.openMocks(this);
         when(producerDestination.getName()).thenReturn("producer-test");
         binder.setApplicationContext(new GenericApplicationContext());
     }
 
     @Test
-    public void withoutPartitionConfig() {
+    void withoutPartitionConfig() {
         MessageHandler handler = binder.createProducerMessageHandler(producerDestination,
             producerProperties, errorChannel);
 
@@ -55,7 +55,7 @@ class EventHubsMessageChannelBinderTests {
     }
 
     @Test
-    public void withPartitionConfig() {
+    void withPartitionConfig() {
         producerProperties.setPartitionKeyExpression(new SpelExpressionParser().parseExpression("payload"));
         MessageHandler handler = binder.createProducerMessageHandler(producerDestination,
             producerProperties, errorChannel);
