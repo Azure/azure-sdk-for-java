@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -134,6 +135,10 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                 byte[] bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
                 this.body = ByteBuffer.wrap(bytes);
             } catch (IOException e) {
+                String mismatch = this.connection.getHeaderField("x-request-mismatch-error");
+                if (mismatch != null) {
+                    throw new RuntimeException(new String(Base64.getDecoder().decode(mismatch)), e);
+                }
                 throw new RuntimeException(e);
             }
 
