@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listImportJobs(BulkJobDigitalTwinOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listBulkImportJobs(BulkJobDigitalTwinOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listImportJobs(ImportJobDigitalTwinOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listImportJobs(ImportJobDigitalTwinOptions)}
  */
 @Fluent
-public final class BulkJobDigitalTwinOptions {
+public final class ImportJobDigitalTwinOptions {
     /*
      * The maximum number of items to retrieve per request. The server may
      * choose to return less than the requested number.
@@ -38,7 +38,7 @@ public final class BulkJobDigitalTwinOptions {
      * @param maxItemsPerPage the maxItemsPerPage value to set.
      * @return the BulkJobDigitalTwinOptions object itself.
      */
-    public BulkJobDigitalTwinOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
+    public ImportJobDigitalTwinOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
         this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }

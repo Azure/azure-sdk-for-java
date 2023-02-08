@@ -14,7 +14,7 @@ import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelat
 import com.azure.digitaltwins.core.implementation.models.EventRoutesListOptions;
 import com.azure.digitaltwins.core.implementation.models.ImportJobsListOptions;
 import com.azure.digitaltwins.core.implementation.models.QueryTwinsOptions;
-import com.azure.digitaltwins.core.models.BulkJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -121,7 +121,7 @@ public final class OptionsConverter {
             .setMaxItemsPerPage(options.getMaxItemsPerPage());
     }
 
-    public static ImportJobsListOptions toProtocolLayerOptions(BulkJobDigitalTwinOptions options) {
+    public static ImportJobsListOptions toProtocolLayerOptions(ImportJobDigitalTwinOptions options) {
         if (options == null) {
             return null;
         }

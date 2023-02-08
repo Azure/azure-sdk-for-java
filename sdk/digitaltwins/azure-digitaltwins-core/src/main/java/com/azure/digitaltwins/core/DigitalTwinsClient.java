@@ -11,7 +11,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.BulkJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -1756,22 +1756,22 @@ public final class DigitalTwinsClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DigitalTwinsImportJob> createImportJob(String id, DigitalTwinsImportJob importJob) {
-        return this.digitalTwinsAsyncClient.createBulkImportJob(id, importJob).block();
+        return this.digitalTwinsAsyncClient.createImportJob(id, importJob).block();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteImportJob(String id, Context context) {
-        return this.digitalTwinsAsyncClient.deleteBulkImportJob(id, context).block();
+    public Response<Void> deleteImportJob(String id) {
+        return this.digitalTwinsAsyncClient.deleteImportJob(id, Context.NONE).block();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DigitalTwinsImportJob> cancelImportJob(String id) {
-        return this.digitalTwinsAsyncClient.cancelBulkImportJob(id, Context.NONE).block();
+        return this.digitalTwinsAsyncClient.cancelImportJob(id, Context.NONE).block();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DigitalTwinsImportJob> getImportJob(String id) {
-        return this.digitalTwinsAsyncClient.getBulkImportJob(id, Context.NONE).block();
+        return this.digitalTwinsAsyncClient.getImportJob(id, Context.NONE).block();
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1780,7 +1780,7 @@ public final class DigitalTwinsClient {
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinsImportJob> listImportJobs(BulkJobDigitalTwinOptions options, Context context) {
-        return new PagedIterable<>(this.digitalTwinsAsyncClient.listBulkImportJobs(options, context));
+    public PagedIterable<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options, Context context) {
+        return new PagedIterable<>(this.digitalTwinsAsyncClient.listImportJobs(options, context));
     }
 }

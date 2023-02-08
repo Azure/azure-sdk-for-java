@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * A converter between {@link com.azure.digitaltwins.core.implementation.models.EventRoute} and
  * {@link DigitalTwinsEventRoute}.
  */
-public final class BulkJobConverter {
+public final class ImportJobConverter {
 
     /**
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.EventRoute} to
@@ -63,7 +63,7 @@ public final class BulkJobConverter {
             return null;
         }
         return inputList.stream()
-            .map(BulkJobConverter::mapError)
+            .map(ImportJobConverter::mapError)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
     }
@@ -78,5 +78,5 @@ public final class BulkJobConverter {
         return error;
     }
 
-    private BulkJobConverter() { }
+    private ImportJobConverter() { }
 }

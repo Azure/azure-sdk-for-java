@@ -40,17 +40,20 @@ public class ImportAsyncTest extends ImportTestBase {
         String outputFile = OUTPUT_FILE.replace("jobId", jobId);
         DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob(IMPORT_FILE, outputFile);
         List<DigitalTwinsImportJob> responseList = new ArrayList<>();
+
+        // Validate create import job
         StepVerifier
-            .create(asyncClient.createBulkImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
+            .create(asyncClient.createImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
             .verifyComplete();
 
         assertTrue(responseList.size()> 0);
         assertEquals(responseList.get(0).getId(), jobId);
 
+        // Validate list import job
         List<String> importJobList = new ArrayList<>();
         StepVerifier
-            .create(asyncClient.listBulkImportJobs())
+            .create(asyncClient.listImportJobs())
             .thenConsumeWhile(importJob -> importJobList.add(importJob.getId()))
             .verifyComplete();
 
@@ -59,27 +62,31 @@ public class ImportAsyncTest extends ImportTestBase {
             .as("Import list contains the newly created job.")
             .contains(jobId);
 
+        // Validate get import job
         StepVerifier
-            .create(asyncClient.getBulkImportJob(jobId))
+            .create(asyncClient.getImportJob(jobId))
             .assertNext(importJobResponse -> assertThat(importJobResponse.getValue().getId())
                 .isEqualTo(jobId)
                 .as("Retrieved JobId -> Output Job"))
             .verifyComplete();
 
+        // Validate cancel import job
         StepVerifier
-            .create(asyncClient.cancelBulkImportJob(jobId))
+            .create(asyncClient.cancelImportJob(jobId))
             .assertNext(importJobResponse -> assertThat(importJobResponse.getStatusCode())
                 .isEqualTo(HTTP_OK))
             .verifyComplete();
 
+        // Validate delete import job
         StepVerifier
-            .create(asyncClient.deleteBulkImportJob(jobId))
+            .create(asyncClient.deleteImportJob(jobId))
             .assertNext(importJobResponse -> assertThat(importJobResponse.getStatusCode())
                 .isEqualTo(HTTP_NO_CONTENT))
             .verifyComplete();
 
+        // Validate get import job
         StepVerifier
-            .create(asyncClient.getBulkImportJob(jobId))
+            .create(asyncClient.getImportJob(jobId))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_NOT_FOUND));
     }
 
@@ -92,7 +99,7 @@ public class ImportAsyncTest extends ImportTestBase {
         DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob("invalidUri", "invalidOutputUri");
         List<DigitalTwinsImportJob> responseList = new ArrayList<>();
         StepVerifier
-            .create(asyncClient.createBulkImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
+            .create(asyncClient.createImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_BAD_REQUEST));
     }
@@ -107,7 +114,7 @@ public class ImportAsyncTest extends ImportTestBase {
         DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob(IMPORT_FILE, outputFile);
         List<DigitalTwinsImportJob> responseList = new ArrayList<>();
         StepVerifier
-            .create(asyncClient.createBulkImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
+            .create(asyncClient.createImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
             .verifyComplete();
 
@@ -115,7 +122,7 @@ public class ImportAsyncTest extends ImportTestBase {
         assertEquals(responseList.get(0).getId(), jobId);
 
         StepVerifier
-            .create(asyncClient.createBulkImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
+            .create(asyncClient.createImportJob(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.TOO_MANY_REQUESTS.code()));
     }

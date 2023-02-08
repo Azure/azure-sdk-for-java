@@ -20,7 +20,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
-import com.azure.digitaltwins.core.implementation.converters.BulkJobConverter;
+import com.azure.digitaltwins.core.implementation.converters.ImportJobConverter;
 import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
@@ -29,7 +29,7 @@ import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
-import com.azure.digitaltwins.core.models.BulkJobDigitalTwinOptions;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
@@ -2419,11 +2419,11 @@ public final class DigitalTwinsAsyncClient {
 
     //region Import APIs
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsImportJob>> createBulkImportJob(String id, DigitalTwinsImportJob importJob) {
-        return withContext(context -> createBulkImportJob(id, importJob, context));
+    public Mono<Response<DigitalTwinsImportJob>> createImportJob(String id, DigitalTwinsImportJob importJob) {
+        return withContext(context -> createImportJob(id, importJob, context));
     }
 
-    Mono<Response<DigitalTwinsImportJob>> createBulkImportJob(String id, DigitalTwinsImportJob importJob, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> createImportJob(String id, DigitalTwinsImportJob importJob, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2431,22 +2431,22 @@ public final class DigitalTwinsAsyncClient {
             .getImportJobs()
             .addWithResponseAsync(
                 id,
-                BulkJobConverter.map(importJob),
+                ImportJobConverter.map(importJob),
                 null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
-            .map(bulkImportJobResponse -> new SimpleResponse<>(
-                bulkImportJobResponse.getRequest(),
-                bulkImportJobResponse.getStatusCode(),
-                bulkImportJobResponse.getHeaders(),
-                BulkJobConverter.map(bulkImportJobResponse.getValue())));
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteBulkImportJob(String id) {
-        return withContext(context -> deleteBulkImportJob(id, context));
+    public Mono<Response<Void>> deleteImportJob(String id) {
+        return withContext(context -> deleteImportJob(id, context));
     }
 
-    Mono<Response<Void>> deleteBulkImportJob(String id, Context context) {
+    Mono<Response<Void>> deleteImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2460,11 +2460,11 @@ public final class DigitalTwinsAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsImportJob>> cancelBulkImportJob(String id) {
-        return withContext(context -> cancelBulkImportJob(id, context));
+    public Mono<Response<DigitalTwinsImportJob>> cancelImportJob(String id) {
+        return withContext(context -> cancelImportJob(id, context));
     }
 
-    Mono<Response<DigitalTwinsImportJob>> cancelBulkImportJob(String id, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> cancelImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2475,19 +2475,19 @@ public final class DigitalTwinsAsyncClient {
                 id,
                 null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
-            .map(bulkImportJobResponse -> new SimpleResponse<>(
-                bulkImportJobResponse.getRequest(),
-                bulkImportJobResponse.getStatusCode(),
-                bulkImportJobResponse.getHeaders(),
-                BulkJobConverter.map(bulkImportJobResponse.getValue())));
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DigitalTwinsImportJob>> getBulkImportJob(String id) {
-        return withContext(context -> getBulkImportJob(id, context));
+    public Mono<Response<DigitalTwinsImportJob>> getImportJob(String id) {
+        return withContext(context -> getImportJob(id, context));
     }
 
-    Mono<Response<DigitalTwinsImportJob>> getBulkImportJob(String id, Context context) {
+    Mono<Response<DigitalTwinsImportJob>> getImportJob(String id, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
@@ -2498,37 +2498,37 @@ public final class DigitalTwinsAsyncClient {
                 id,
                 null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
-            .map(bulkImportJobResponse -> new SimpleResponse<>(
-                bulkImportJobResponse.getRequest(),
-                bulkImportJobResponse.getStatusCode(),
-                bulkImportJobResponse.getHeaders(),
-                BulkJobConverter.map(bulkImportJobResponse.getValue())));
+            .map(importJobResponse -> new SimpleResponse<>(
+                importJobResponse.getRequest(),
+                importJobResponse.getStatusCode(),
+                importJobResponse.getHeaders(),
+                ImportJobConverter.map(importJobResponse.getValue())));
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsImportJob> listBulkImportJobs() {
-        return listBulkImportJobs(null);
+    public PagedFlux<DigitalTwinsImportJob> listImportJobs() {
+        return listImportJobs(null);
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsImportJob> listBulkImportJobs(BulkJobDigitalTwinOptions options) {
+    public PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options) {
         return new PagedFlux<>(
-            () -> withContext(context -> listBulkImportFirstPage(options, context)),
-            nextLink -> withContext(context -> listBulkImportNextPage(nextLink, options, context)));
+            () -> withContext(context -> listImportFirstPage(options, context)),
+            nextLink -> withContext(context -> listImportNextPage(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsImportJob> listBulkImportJobs(BulkJobDigitalTwinOptions options, Context context) {
+    PagedFlux<DigitalTwinsImportJob> listImportJobs(ImportJobDigitalTwinOptions options, Context context) {
         return new PagedFlux<>(
-            () -> listBulkImportFirstPage(options, context != null ? context : Context.NONE),
-            nextLink -> listBulkImportNextPage(nextLink, options, context != null ? context : Context.NONE));
+            () -> listImportFirstPage(options, context != null ? context : Context.NONE),
+            nextLink -> listImportNextPage(nextLink, options, context != null ? context : Context.NONE));
     }
 
-    Mono<PagedResponse<DigitalTwinsImportJob>> listBulkImportFirstPage(BulkJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportFirstPage(ImportJobDigitalTwinOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
         if (options == null) {
-            options = new BulkJobDigitalTwinOptions();
+            options = new ImportJobDigitalTwinOptions();
         }
 
         return protocolLayer
@@ -2536,15 +2536,15 @@ public final class DigitalTwinsAsyncClient {
             .listSinglePageAsync(
                 OptionsConverter.toProtocolLayerOptions(options),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
-            .map(pagedBulkImportJobFunction);
+            .map(pagedImportJobFunction);
     }
 
-    Mono<PagedResponse<DigitalTwinsImportJob>> listBulkImportNextPage(String nextLink, BulkJobDigitalTwinOptions options, Context context) {
+    Mono<PagedResponse<DigitalTwinsImportJob>> listImportNextPage(String nextLink, ImportJobDigitalTwinOptions options, Context context) {
         if (context == null) {
             context = Context.NONE;
         }
         if (options == null) {
-            options = new BulkJobDigitalTwinOptions();
+            options = new ImportJobDigitalTwinOptions();
         }
 
         return protocolLayer
@@ -2553,22 +2553,22 @@ public final class DigitalTwinsAsyncClient {
                 nextLink,
                 OptionsConverter.toProtocolLayerOptions(options),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
-            .map(pagedBulkImportJobFunction);
+            .map(pagedImportJobFunction);
     }
 
-    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.ImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedBulkImportJobFunction = (pagedBulkImportResponse) -> {
-        List<DigitalTwinsImportJob> convertedList = pagedBulkImportResponse.getValue().stream()
-            .map(BulkJobConverter::map)
+    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.ImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedImportJobFunction = (pagedImportResponse) -> {
+        List<DigitalTwinsImportJob> convertedList = pagedImportResponse.getValue().stream()
+            .map(ImportJobConverter::map)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
         return new PagedResponseBase<>(
-            pagedBulkImportResponse.getRequest(),
-            pagedBulkImportResponse.getStatusCode(),
-            pagedBulkImportResponse.getHeaders(),
+            pagedImportResponse.getRequest(),
+            pagedImportResponse.getStatusCode(),
+            pagedImportResponse.getHeaders(),
             convertedList,
-            pagedBulkImportResponse.getContinuationToken(),
-            ((PagedResponseBase) pagedBulkImportResponse).getDeserializedHeaders());
+            pagedImportResponse.getContinuationToken(),
+            ((PagedResponseBase) pagedImportResponse).getDeserializedHeaders());
     };
 
     //endregion Import APIs
