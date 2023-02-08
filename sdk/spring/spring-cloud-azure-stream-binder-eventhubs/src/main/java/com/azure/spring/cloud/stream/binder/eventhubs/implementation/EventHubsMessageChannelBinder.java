@@ -43,8 +43,6 @@ import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.core.MessageProducer;
-import org.springframework.integration.expression.FunctionExpression;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.util.Assert;
@@ -117,8 +115,6 @@ public class EventHubsMessageChannelBinder extends
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
                 EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
-        } else {
-            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
         return handler;
     }
