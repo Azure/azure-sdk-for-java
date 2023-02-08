@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;

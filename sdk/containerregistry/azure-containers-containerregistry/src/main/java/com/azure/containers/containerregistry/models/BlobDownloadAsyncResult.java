@@ -37,13 +37,10 @@ public final class BlobDownloadAsyncResult {
      * @param digest The requested digest.
      * @param content The content of the blob.
      */
-    BlobDownloadAsyncResult(String digest, Flux<ByteBuffer> content) {
+    private BlobDownloadAsyncResult(String digest, Flux<ByteBuffer> content) {
         this.sha256 = UtilsImpl.createSha256();
         this.content = content
-            .doOnNext(buffer -> {
-                sha256.update(buffer);
-                buffer.flip();
-            })
+            .doOnNext(buffer -> sha256.update(buffer.asReadOnlyBuffer()))
             .doOnComplete(() -> validateDigest(sha256, digest))
             .doOnError(UtilsImpl::mapException);
     }

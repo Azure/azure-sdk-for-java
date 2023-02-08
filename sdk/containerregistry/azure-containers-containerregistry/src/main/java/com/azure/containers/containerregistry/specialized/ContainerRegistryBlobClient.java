@@ -40,6 +40,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
@@ -56,6 +57,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -284,7 +286,7 @@ public class ContainerRegistryBlobClient {
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
-        String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
+        String digest = response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         ManifestWrapper wrapper = response.getValue();
 
         // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
@@ -348,14 +350,7 @@ public class ContainerRegistryBlobClient {
 
         try {
             Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
-
-            String responseHeaderDigest = firstChunk.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
-            if (!digest.equals(responseHeaderDigest)) {
-                throw LOGGER.atError()
-                    .addKeyValue("requestedDigest", digest)
-                    .addKeyValue("responseDigest", responseHeaderDigest)
-                    .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
-            }
+            validateResponseHeaderDigest(digest, firstChunk.getHeaders());
 
             long blobSize = getBlobSize(firstChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
             for (long p = firstChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
@@ -370,14 +365,15 @@ public class ContainerRegistryBlobClient {
 
     private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
         Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+
         ByteBuffer buffer = response.getValue().toByteBuffer();
+        sha256.update(buffer.asReadOnlyBuffer());
         try {
             channel.write(buffer);
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
-        buffer.flip();
-        sha256.update(buffer);
+
         return response;
     }
 

@@ -198,9 +198,9 @@ public final class UtilsImpl {
 
     public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
         String sha256 = byteArrayToHex(messageDigest.digest());
-        if (!requestedDigest.endsWith(sha256)
+        if (requestedDigest.length() != 71
             || !requestedDigest.startsWith("sha256:")
-            || requestedDigest.length() != 71) {
+            || !requestedDigest.endsWith(sha256)) {
             throw LOGGER.atError()
                 .addKeyValue("requestedDigest", requestedDigest)
                 .addKeyValue("actualDigest", () -> "sha256:" + sha256)
@@ -397,13 +397,14 @@ public final class UtilsImpl {
         }).collect(Collectors.toList());
     }
 
-    /**
-     * Get the digest from the response header if available.
-     * @param headers The headers to parse.
-     * @return The digest value.
-     */
-    public static <T> String getDigestFromHeader(HttpHeaders headers) {
-        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+    public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
+        String responseHeaderDigest = headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+        if (!requestedDigest.equals(responseHeaderDigest)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("responseDigest", responseHeaderDigest)
+                .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
+        }
     }
 
     public static Context enableSync(Context tracingContext) {

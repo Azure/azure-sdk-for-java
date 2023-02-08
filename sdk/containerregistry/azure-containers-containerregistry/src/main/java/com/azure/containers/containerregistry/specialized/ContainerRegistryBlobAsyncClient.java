@@ -49,6 +49,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.CH
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -283,7 +284,7 @@ public class ContainerRegistryBlobAsyncClient {
 
         return this.registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, context)
             .flatMap(response -> {
-                String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
+                String digest = response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
                 ManifestWrapper wrapper = response.getValue();
 
                 // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
@@ -334,13 +335,7 @@ public class ContainerRegistryBlobAsyncClient {
     }
 
     private Flux<ContainerRegistryBlobsGetChunkResponse> getAllChunks(ContainerRegistryBlobsGetChunkResponse firstResponse, String digest, Context context) {
-        String responseHeaderDigest = firstResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
-        if (!digest.equals(responseHeaderDigest)) {
-            return Flux.error(LOGGER.atError()
-                .addKeyValue("requestedDigest", digest)
-                .addKeyValue("responseDigest", responseHeaderDigest)
-                .log(new ServiceResponseException("The digest in the response header does not match the expected digest.")));
-        }
+        validateResponseHeaderDigest(digest, firstResponse.getHeaders());
 
         long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
         List<Mono<ContainerRegistryBlobsGetChunkResponse>> others = new ArrayList<>();
