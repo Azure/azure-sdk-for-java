@@ -699,7 +699,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T, ID> Iterable<T> findByIds(Iterable<ID> ids, Class<T> domainType, String containerName) {
-        containerName = getContainerName(domainType);
+        containerName = getContainerNameOverride(containerName);
         Assert.notNull(ids, "Id list should not be null");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
@@ -1016,7 +1016,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                                @NonNull Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        containerName = getContainerName(domainType);
+        containerName = getContainerNameOverride(containerName);
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
         cosmosQueryRequestOptions.setMaxBufferedItemCount(this.maxBufferedItemCount);
@@ -1085,7 +1085,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
-        containerName = getContainerName(domainType);
+        containerName = getContainerNameOverride(containerName);
 
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
