@@ -29,7 +29,7 @@ import java.util.Set;
  * <p><strong>Instantiate checkpoint store</strong></p>
  * Demonstrates one way to instantiate the checkpoint store. {@link JedisPool} has multiple ways to create an instance.
  *
- * <!-- src_embed com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
+ * <!-- src_embed com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->
  * <pre>
  * JedisClientConfig clientConfig = DefaultJedisClientConfig.builder&#40;&#41;
  *     .password&#40;&quot;&lt;YOUR_REDIS_PRIMARY_ACCESS_KEY&gt;&quot;&#41;
@@ -52,7 +52,7 @@ import java.util.Set;
  *     .consumerGroup&#40;&quot;&lt;YOUR_CONSUMER_GROUP_NAME&gt;&quot;&#41;
  *     .buildEventProcessorClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->
  *
  * @see EventProcessorClient
  * @see EventProcessorClientBuilder

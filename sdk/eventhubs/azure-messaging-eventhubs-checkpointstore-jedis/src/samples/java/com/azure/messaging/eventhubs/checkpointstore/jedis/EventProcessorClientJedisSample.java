@@ -28,7 +28,7 @@ public class EventProcessorClientJedisSample {
      * @throws Exception an Exception will be thrown in case of errors while running the sample
      */
     public static void main(String[] args) throws Exception {
-        // To create the JedisRedisCheckpointStore, an instance of JedisPool is required.
+        // To create the JedisCheckpointStore, an instance of JedisPool is required.
         // 1. Create a redis service.  The following link describes how to create one for Azure Redis Cache.
         //    https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
         // 2. Go to your Azure Redis service.

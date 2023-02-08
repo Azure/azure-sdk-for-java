@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Sample that demonstrates the use of {@link JedisRedisCheckpointStoreSample} for storing and updating partition
+ * Sample that demonstrates the use of {@link JedisCheckpointStoreSample} for storing and updating partition
  * ownership records in Azure Redis Cache.
  */
-public class JedisRedisCheckpointStoreSample {
+public class JedisCheckpointStoreSample {
     private static final String EVENT_HUB_NAMESPACE = "{your-namespace}.servicebus.windows.net";
     private static final String EVENT_HUB_NAME = "{event-hub-name}";
     private static final String CONSUMER_GROUP = "$DEFAULT";

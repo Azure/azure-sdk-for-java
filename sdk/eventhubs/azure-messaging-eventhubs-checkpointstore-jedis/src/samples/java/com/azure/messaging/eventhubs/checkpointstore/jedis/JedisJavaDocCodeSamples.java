@@ -16,12 +16,12 @@ import redis.clients.jedis.JedisPool;
 /**
  * Javadoc samples for {@link JedisCheckpointStore}.
  */
-public class JedisRedisJavaDocCodeSamples {
+public class JedisJavaDocCodeSamples {
     /**
      * Demonstrates how to instantiate the checkpoint store.
      */
     public void instantiation() {
-        // BEGIN: com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.jedischeckpointstore.instantiation
         JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
             .password("<YOUR_REDIS_PRIMARY_ACCESS_KEY>")
             .ssl(true)
@@ -42,6 +42,6 @@ public class JedisRedisJavaDocCodeSamples {
             .credential(credential)
             .consumerGroup("<YOUR_CONSUMER_GROUP_NAME>")
             .buildEventProcessorClient();
-        // END: com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation
+        // END: com.azure.messaging.eventhubs.jedischeckpointstore.instantiation
     }
 }
