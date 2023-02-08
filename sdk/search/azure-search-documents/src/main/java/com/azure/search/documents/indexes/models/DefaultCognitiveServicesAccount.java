@@ -28,6 +28,9 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
+    /** Creates an instance of DefaultCognitiveServicesAccount class. */
+    public DefaultCognitiveServicesAccount() {}
+
     /** {@inheritDoc} */
     @Override
     public DefaultCognitiveServicesAccount setDescription(String description) {

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -1656,12 +1657,14 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
-
-    /***
-     *  Warming up the caches and connections to all replicas of the container for the current read region.
+    /**
+     * Warm up caches and open connections for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
-     * @param containerLink the container link.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
+     * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Mono<Void> configFaultInjectionRules(List<FaultInjectionRule> faultInjectionRules, String containerNameLink);
 }

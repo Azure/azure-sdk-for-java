@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -526,7 +527,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return Flux.empty();
     }
 

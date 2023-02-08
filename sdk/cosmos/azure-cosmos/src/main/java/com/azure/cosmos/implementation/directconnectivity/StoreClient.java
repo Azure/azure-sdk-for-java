@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -135,8 +136,8 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(containerLink);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configFaultInjectionRule(IFaultInjectionRuleInternal rule) {

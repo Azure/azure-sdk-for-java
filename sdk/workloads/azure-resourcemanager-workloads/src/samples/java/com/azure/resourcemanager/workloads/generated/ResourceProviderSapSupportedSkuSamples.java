@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProvider SapSupportedSku. */
 public final class ResourceProviderSapSupportedSkuSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_SingleServer.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_SingleServer.json
      */
     /**
      * Sample code: SAPSupportedSkus_SingleServer.
@@ -17,11 +15,11 @@ public final class ResourceProviderSapSupportedSkuSamples {
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPSupportedSkusSingleServer(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, Context.NONE);
+        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_Distributed.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_Distributed.json
      */
     /**
      * Sample code: SAPSupportedSkus_Distributed.
@@ -29,11 +27,11 @@ public final class ResourceProviderSapSupportedSkuSamples {
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPSupportedSkusDistributed(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, Context.NONE);
+        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_DistributedHA_AvZone.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_DistributedHA_AvZone.json
      */
     /**
      * Sample code: SAPSupportedSkus_DistributedHA_AvZone.
@@ -42,11 +40,11 @@ public final class ResourceProviderSapSupportedSkuSamples {
      */
     public static void sAPSupportedSkusDistributedHAAvZone(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, Context.NONE);
+        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_DistributedHA_AvSet.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSupportedSkus_DistributedHA_AvSet.json
      */
     /**
      * Sample code: SAPSupportedSkus_DistributedHA_AvSet.
@@ -55,6 +53,6 @@ public final class ResourceProviderSapSupportedSkuSamples {
      */
     public static void sAPSupportedSkusDistributedHAAvSet(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, Context.NONE);
+        manager.resourceProviders().sapSupportedSkuWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 }

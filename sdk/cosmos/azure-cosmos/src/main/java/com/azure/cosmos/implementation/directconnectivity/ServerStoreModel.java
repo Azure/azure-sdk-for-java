@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
@@ -57,8 +58,8 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.storeClient.openConnectionsAndInitCaches(containerLink);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.storeClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
     @Override
