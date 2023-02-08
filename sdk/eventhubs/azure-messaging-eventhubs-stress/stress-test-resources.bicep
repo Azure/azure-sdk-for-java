@@ -1,10 +1,10 @@
 @description('The base resource name.')
-param baseName string = resourceGroup().name
+param baseResourceName string = resourceGroup().name
 
 @description('The location of the resources. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-var subBaseName = '${substring(baseName, 0, min(length(baseName), 12))}-${substring(guid(baseName), 0, 4)}'
+var subBaseName = '${substring(baseResourceName, 0, min(length(baseResourceName), 12))}-${substring(guid(baseResourceName), 0, 4)}'
 var eventHubsNamespaceName = '${subBaseName}-ehns'
 var eventHubName = 'test-event-hub'
 var eventHubsAuthRulesName = '${subBaseName}-ehrl'
