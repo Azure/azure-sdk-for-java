@@ -609,7 +609,7 @@ public final class SearchAsyncClient {
             .collect(Collectors.toList());
 
         boolean throwOnAnyError = options == null || options.throwOnAnyError();
-        return Utility.indexDocumentsWithResponse(restClient, indexActions, throwOnAnyError, context, LOGGER);
+        return Utility.indexDocumentsWithResponseAsync(restClient, indexActions, throwOnAnyError, context, LOGGER);
     }
 
     /**
@@ -875,7 +875,7 @@ public final class SearchAsyncClient {
                 SearchDocumentsResult result = response.getValue();
 
                 SearchPagedResponse page = new SearchPagedResponse(
-                    new SimpleResponse<>(response, getSearchResults(result)),
+                    new SimpleResponse<>(response, getSearchResults(result, serializer)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
                     result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
@@ -885,18 +885,18 @@ public final class SearchAsyncClient {
             });
     }
 
-    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    static List<SearchResult> getSearchResults(SearchDocumentsResult result, JsonSerializer jsonSerializer) {
         return result.getResults().stream()
-            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
+            .map(searchResult -> SearchResultConverter.map(searchResult, jsonSerializer))
             .collect(Collectors.toList());
     }
 
-    private static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
+    static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
     }
 
-    private static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
+    static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
         if (result.getFacets() == null) {
             return null;
         }
@@ -987,7 +987,7 @@ public final class SearchAsyncClient {
             });
     }
 
-    private static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result) {
+    static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result) {
         return result.getResults().stream()
             .map(SuggestResultConverter::map)
             .collect(Collectors.toList());
@@ -1065,7 +1065,7 @@ public final class SearchAsyncClient {
      * @param options search options
      * @return SearchRequest
      */
-    private static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
+    static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
         SearchRequest request = new SearchRequest().setSearchText(searchText);
 
         if (options == null) {
@@ -1146,7 +1146,7 @@ public final class SearchAsyncClient {
      * @param options suggest options
      * @return SuggestRequest
      */
-    private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
+    static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions options) {
         SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
@@ -1173,7 +1173,7 @@ public final class SearchAsyncClient {
      * @param options autocomplete options
      * @return AutocompleteRequest
      */
-    private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
+    static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions options) {
         AutocompleteRequest request = new AutocompleteRequest(searchText, suggesterName);
 
@@ -1199,7 +1199,7 @@ public final class SearchAsyncClient {
         return String.join(",", elements);
     }
 
-    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+    static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

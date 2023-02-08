@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstance;
 import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for SapVirtualInstances Update. */
 public final class SapVirtualInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Update.json
      */
     /**
      * Sample code: SAPVirtualInstances_Update.
@@ -23,7 +22,10 @@ public final class SapVirtualInstancesUpdateSamples {
      */
     public static void sAPVirtualInstancesUpdate(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
         SapVirtualInstance resource =
-            manager.sapVirtualInstances().getByResourceGroupWithResponse("test-rg", "X00", Context.NONE).getValue();
+            manager
+                .sapVirtualInstances()
+                .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("key1", "svi1"))

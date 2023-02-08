@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast

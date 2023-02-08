@@ -29,6 +29,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
@@ -57,7 +58,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRepository {
-    private final ClientLogger logger = new ClientLogger(ContainerRepository.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRepository.class);
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
     private final String endpoint;
@@ -76,12 +77,9 @@ public final class ContainerRepository {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     ContainerRepository(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null."));
-        }
-
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
         if (repositoryName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
         AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
@@ -101,7 +99,7 @@ public final class ContainerRepository {
             this.registryLoginServer = endpointUrl.getHost();
         } catch (MalformedURLException ex) {
             // This will not happen.
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
     }
 
@@ -151,7 +149,7 @@ public final class ContainerRepository {
                 this.serviceClient.deleteRepositoryWithResponse(repositoryName, enableSync(getTracingContext(context)));
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -205,7 +203,7 @@ public final class ContainerRepository {
         try {
             return this.serviceClient.getPropertiesWithResponse(repositoryName, enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -355,7 +353,7 @@ public final class ContainerRepository {
 
     private PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
 
         final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
@@ -367,7 +365,7 @@ public final class ContainerRepository {
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -378,7 +376,7 @@ public final class ContainerRepository {
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -440,9 +438,7 @@ public final class ContainerRepository {
     }
 
     private Response<ContainerRepositoryProperties> updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
-        if (repositoryProperties == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'value' cannot be null."));
-        }
+        Objects.requireNonNull(repositoryProperties, "'repositoryProperties' cannot be null");
 
         RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
             .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
@@ -455,7 +451,7 @@ public final class ContainerRepository {
             return this.serviceClient.updatePropertiesWithResponse(repositoryName, writableProperties,
                 enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 

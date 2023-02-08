@@ -26,6 +26,14 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
     public static final MetricClass SATURATION = fromString("Saturation");
 
     /**
+     * Creates a new instance of MetricClass value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricClass() {}
+
+    /**
      * Creates or finds a MetricClass from its string representation.
      *
      * @param name a name to look for.

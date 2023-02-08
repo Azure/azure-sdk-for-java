@@ -506,6 +506,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 Instant.now().minus(10, ChronoUnit.SECONDS),
                 FeedRange.forFullRange());
 
+        Thread.sleep(1000);
+
         String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
 
         // applying updates
@@ -761,7 +763,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                             emptyResultCount));
 
                     try {
-                        Thread.sleep(500 / changeFeedRequestOptions.size());
+                        Thread.sleep(1000 / changeFeedRequestOptions.size());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

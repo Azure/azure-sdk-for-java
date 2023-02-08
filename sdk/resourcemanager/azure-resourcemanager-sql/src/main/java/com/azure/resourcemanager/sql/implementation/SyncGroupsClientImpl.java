@@ -72,7 +72,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface SyncGroupsService {
+    public interface SyncGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/syncDatabaseIds")
         @ExpectedResponses({200})

@@ -4,19 +4,19 @@
 package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
+import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
-import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
-import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
 class AzureAuthenticationTemplateTest {
@@ -74,36 +75,38 @@ class AzureAuthenticationTemplateTest {
 
     }
 
-    private static ClientSecretCredential getClientSecretCredential() {
-        ClientSecretCredential delegate = mock(ClientSecretCredential.class);
-        when(delegate.getToken(any()))
-            .thenReturn(Mono.just(new AccessToken("fake-access-token-1", OffsetDateTime.now().plusHours(2))))
-            .thenReturn(Mono.just(new AccessToken("fake-access-token-2", OffsetDateTime.now().plusHours(2))));
-        return delegate;
+    @Test
+    void testGetTokenAsPassword() throws InterruptedException {
+        // setup
+        String token1 = "token1";
+        String token2 = "token2";
+        int tokenExpireSeconds = 2;
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
+        when(mockTokenCredential.getToken(any()))
+            .thenAnswer(u -> {
+                if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                    return Mono.just(new AccessToken(token1, offsetDateTime));
+                } else {
+                    return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
+                }
+            });
+        // mock
+        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+        })) {
+            Properties properties = new Properties();
+
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+            for (int i = 0; i < 5; i++) {
+                assertEquals(token1, template.getTokenAsPassword());
+            }
+            TimeUnit.SECONDS.sleep(tokenExpireSeconds);
+            assertEquals(token2, template.getTokenAsPassword());
+
+            assertNotNull(identityClientMock);
+        }
     }
 
-
-    private static TokenCredentialProvider getTokenCredentialProvider() {
-        ClientSecretCredential credential = getClientSecretCredential();
-
-        TokenCredentialProvider tokenCredentialProvider = mock(TokenCredentialProvider.class);
-        when(tokenCredentialProvider.get()).thenReturn(credential);
-        return tokenCredentialProvider;
-    }
-
-    private static AccessTokenResolver getAccessTokenResolver() {
-        AccessTokenResolverOptions resolverOptions = new AccessTokenResolverOptions();
-        resolverOptions.setTenantId("fake-tenant-id");
-        resolverOptions.setScopes(new String[]{OSSRDBMS_SCOPE});
-        return AccessTokenResolver.createDefault(resolverOptions);
-    }
-
-    private static TokenCredentialProviderOptions getProviderOptions() {
-        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions();
-        providerOptions.setTenantId("fake-tenant-id");
-        providerOptions.setClientId("fake-client-id");
-        providerOptions.setClientSecret("fake-client-secret");
-        providerOptions.setAuthorityHost("fake-authority-host");
-        return providerOptions;
-    }
 }

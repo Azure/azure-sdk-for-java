@@ -24,20 +24,22 @@ public class RedisCreateProperties extends RedisCommonProperties {
     private Sku sku;
 
     /*
-     * The full resource ID of a subnet in a virtual network to deploy the
-     * Redis cache in. Example format:
+     * The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
-     * Static IP address. Optionally, may be specified when deploying a Redis
-     * cache inside an existing Azure Virtual Network; auto assigned by
-     * default.
+     * Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual
+     * Network; auto assigned by default.
      */
     @JsonProperty(value = "staticIP")
     private String staticIp;
+
+    /** Creates an instance of RedisCreateProperties class. */
+    public RedisCreateProperties() {
+    }
 
     /**
      * Get the sku property: The SKU of the Redis cache to deploy.

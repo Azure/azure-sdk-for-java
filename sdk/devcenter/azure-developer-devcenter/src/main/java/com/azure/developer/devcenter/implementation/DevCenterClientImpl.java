@@ -15,40 +15,16 @@ import com.azure.developer.devcenter.DevCenterServiceVersion;
 
 /** Initializes a new instance of the DevCenterClient type. */
 public final class DevCenterClientImpl {
-    /** The tenant to operate on. */
-    private final String tenantId;
+    /** The DevCenter-specific URI to operate on. */
+    private final String endpoint;
 
     /**
-     * Gets The tenant to operate on.
+     * Gets The DevCenter-specific URI to operate on.
      *
-     * @return the tenantId value.
+     * @return the endpoint value.
      */
-    public String getTenantId() {
-        return this.tenantId;
-    }
-
-    /** The DevCenter to operate on. */
-    private final String devCenter;
-
-    /**
-     * Gets The DevCenter to operate on.
-     *
-     * @return the devCenter value.
-     */
-    public String getDevCenter() {
-        return this.devCenter;
-    }
-
-    /** The DNS suffix used as the base for all devcenter requests. */
-    private final String devCenterDnsSuffix;
-
-    /**
-     * Gets The DNS suffix used as the base for all devcenter requests.
-     *
-     * @return the devCenterDnsSuffix value.
-     */
-    public String getDevCenterDnsSuffix() {
-        return this.devCenterDnsSuffix;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Service version. */
@@ -126,21 +102,16 @@ public final class DevCenterClientImpl {
     /**
      * Initializes an instance of DevCenterClient client.
      *
-     * @param tenantId The tenant to operate on.
-     * @param devCenter The DevCenter to operate on.
-     * @param devCenterDnsSuffix The DNS suffix used as the base for all devcenter requests.
+     * @param endpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
-    public DevCenterClientImpl(
-            String tenantId, String devCenter, String devCenterDnsSuffix, DevCenterServiceVersion serviceVersion) {
+    public DevCenterClientImpl(String endpoint, DevCenterServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                tenantId,
-                devCenter,
-                devCenterDnsSuffix,
+                endpoint,
                 serviceVersion);
     }
 
@@ -148,24 +119,11 @@ public final class DevCenterClientImpl {
      * Initializes an instance of DevCenterClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param tenantId The tenant to operate on.
-     * @param devCenter The DevCenter to operate on.
-     * @param devCenterDnsSuffix The DNS suffix used as the base for all devcenter requests.
+     * @param endpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
-    public DevCenterClientImpl(
-            HttpPipeline httpPipeline,
-            String tenantId,
-            String devCenter,
-            String devCenterDnsSuffix,
-            DevCenterServiceVersion serviceVersion) {
-        this(
-                httpPipeline,
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                tenantId,
-                devCenter,
-                devCenterDnsSuffix,
-                serviceVersion);
+    public DevCenterClientImpl(HttpPipeline httpPipeline, String endpoint, DevCenterServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -173,23 +131,17 @@ public final class DevCenterClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param tenantId The tenant to operate on.
-     * @param devCenter The DevCenter to operate on.
-     * @param devCenterDnsSuffix The DNS suffix used as the base for all devcenter requests.
+     * @param endpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
     public DevCenterClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String tenantId,
-            String devCenter,
-            String devCenterDnsSuffix,
+            String endpoint,
             DevCenterServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.tenantId = tenantId;
-        this.devCenter = devCenter;
-        this.devCenterDnsSuffix = devCenterDnsSuffix;
+        this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.devCenters = new DevCentersImpl(this);
         this.devBoxes = new DevBoxesImpl(this);

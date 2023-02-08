@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SystemAssignedIdentities GetByScope. */
 public final class SystemAssignedIdentitiesGetByScopeSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/SystemAssignedIdentityGet.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/SystemAssignedIdentityGet.json
      */
     /**
      * Sample code: MsiOperationsList.
@@ -22,6 +20,6 @@ public final class SystemAssignedIdentitiesGetByScopeSamples {
             .manager()
             .serviceClient()
             .getSystemAssignedIdentities()
-            .getByScopeWithResponse("scope", Context.NONE);
+            .getByScopeWithResponse("scope", com.azure.core.util.Context.NONE);
     }
 }
