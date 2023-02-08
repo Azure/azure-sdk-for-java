@@ -31,13 +31,13 @@ public class WorkloadIdentityCredential implements TokenCredential {
      * @param identityClientOptions The identity client options to use for authentication.
      */
     WorkloadIdentityCredential(String tenantId, String clientId, String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         identityClient = new IdentityClientBuilder()
             .clientAssertionPath(federatedTokenFilePath)
             .clientId(clientId)
             .tenantId(tenantId)
             .identityClientOptions(identityClientOptions)
             .build();
-        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
     }
 
     @Override
