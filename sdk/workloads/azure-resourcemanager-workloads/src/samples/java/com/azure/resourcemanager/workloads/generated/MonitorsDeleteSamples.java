@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Monitors Delete. */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_Delete.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_Delete.json
      */
     /**
      * Sample code: Deletes a SAP monitor.
@@ -17,6 +15,6 @@ public final class MonitorsDeleteSamples {
      * @param manager Entry point to WorkloadsManager.
      */
     public static void deletesASAPMonitor(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.monitors().delete("myResourceGroup", "mySapMonitor", Context.NONE);
+        manager.monitors().delete("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE);
     }
 }

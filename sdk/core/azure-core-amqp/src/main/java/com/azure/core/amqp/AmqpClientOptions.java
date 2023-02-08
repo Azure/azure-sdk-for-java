@@ -12,6 +12,12 @@ import com.azure.core.util.Header;
 public final class AmqpClientOptions extends ClientOptions {
     private String identifier;
 
+    /**
+     * Creates an instance of {@link AmqpClientOptions}.
+     */
+    public AmqpClientOptions() {
+    }
+
     /** {@inheritDoc} **/
     @Override
     public AmqpClientOptions setApplicationId(String applicationId) {

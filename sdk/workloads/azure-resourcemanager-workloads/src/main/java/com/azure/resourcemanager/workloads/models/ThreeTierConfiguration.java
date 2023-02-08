@@ -45,6 +45,22 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
     @JsonProperty(value = "highAvailabilityConfig")
     private HighAvailabilityConfiguration highAvailabilityConfig;
 
+    /*
+     * The storage configuration.
+     */
+    @JsonProperty(value = "storageConfiguration")
+    private StorageConfiguration storageConfiguration;
+
+    /*
+     * The set of custom names to be used for underlying azure resources that are part of the SAP system.
+     */
+    @JsonProperty(value = "customResourceNames")
+    private ThreeTierCustomResourceNames customResourceNames;
+
+    /** Creates an instance of ThreeTierConfiguration class. */
+    public ThreeTierConfiguration() {
+    }
+
     /**
      * Get the networkConfiguration property: Network configuration common to all servers.
      *
@@ -145,6 +161,48 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
         return this;
     }
 
+    /**
+     * Get the storageConfiguration property: The storage configuration.
+     *
+     * @return the storageConfiguration value.
+     */
+    public StorageConfiguration storageConfiguration() {
+        return this.storageConfiguration;
+    }
+
+    /**
+     * Set the storageConfiguration property: The storage configuration.
+     *
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the ThreeTierConfiguration object itself.
+     */
+    public ThreeTierConfiguration withStorageConfiguration(StorageConfiguration storageConfiguration) {
+        this.storageConfiguration = storageConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the customResourceNames property: The set of custom names to be used for underlying azure resources that are
+     * part of the SAP system.
+     *
+     * @return the customResourceNames value.
+     */
+    public ThreeTierCustomResourceNames customResourceNames() {
+        return this.customResourceNames;
+    }
+
+    /**
+     * Set the customResourceNames property: The set of custom names to be used for underlying azure resources that are
+     * part of the SAP system.
+     *
+     * @param customResourceNames the customResourceNames value to set.
+     * @return the ThreeTierConfiguration object itself.
+     */
+    public ThreeTierConfiguration withCustomResourceNames(ThreeTierCustomResourceNames customResourceNames) {
+        this.customResourceNames = customResourceNames;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ThreeTierConfiguration withAppResourceGroup(String appResourceGroup) {
@@ -189,6 +247,12 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
         }
         if (highAvailabilityConfig() != null) {
             highAvailabilityConfig().validate();
+        }
+        if (storageConfiguration() != null) {
+            storageConfiguration().validate();
+        }
+        if (customResourceNames() != null) {
+            customResourceNames().validate();
         }
     }
 

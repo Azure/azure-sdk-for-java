@@ -11,6 +11,9 @@ parameters:
   - name: Artifacts
     type: object
     default: []
+  - name: ReleaseArtifacts
+    type: object
+    default: []
   - name: AdditionalModules
     type: object
     default: []
@@ -186,11 +189,12 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.Artifacts}}
+          Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
