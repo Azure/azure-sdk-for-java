@@ -59,7 +59,7 @@ public class WorkloadIdentityCredentialTest {
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
 
         // test
-        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration)
+        new WorkloadIdentityCredentialBuilder().configuration(configuration)
             .clientId(CLIENT_ID).tokenFilePath("dummy-path").build();
     }
 
@@ -71,7 +71,7 @@ public class WorkloadIdentityCredentialTest {
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
 
         // test
-        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration)
+        new WorkloadIdentityCredentialBuilder().configuration(configuration)
             .tenantId("TENANT_ID").tokenFilePath("dummy-path").build();
     }
 
@@ -83,7 +83,7 @@ public class WorkloadIdentityCredentialTest {
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
 
         // test
-        WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().configuration(configuration)
+        new WorkloadIdentityCredentialBuilder().configuration(configuration)
             .tenantId("tenant-id").clientId("client-id").build();
     }
 }

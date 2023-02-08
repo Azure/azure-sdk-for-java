@@ -29,6 +29,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     private String tenantId;
     private String managedIdentityClientId;
+    private String workloadIdentityClientId;
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants = IdentityUtil
         .getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
@@ -104,6 +105,20 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
         this.managedIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specifies the client ID of Azure AD app to be used for AKS workload identity authentication.
+     * if unset, {@link DefaultAzureCredentialBuilder#managedIdentityClientId(String)} will be used.
+     * If both values are unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If none are set, the default value is null and Workload Identity authentication will not be attempted.
+     *
+     * @param clientId the client ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder workloadIdentityClientId(String clientId) {
+        this.workloadIdentityClientId = clientId;
         return this;
     }
 
@@ -188,7 +203,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = CoreUtils.isNullOrEmpty(managedIdentityClientId) ?  null : getWorkloadIdentityCredentialIfAvailable();
+        WorkloadIdentityCredential workloadIdentityCredential = (CoreUtils.isNullOrEmpty(managedIdentityClientId) && CoreUtils.isNullOrEmpty(workloadIdentityClientId)) ?  null : getWorkloadIdentityCredentialIfAvailable();
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         if (workloadIdentityCredential != null) {
@@ -213,7 +228,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
         if (!(CoreUtils.isNullOrEmpty(tenantId)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            || CoreUtils.isNullOrEmpty(managedIdentityClientId)
+            || (CoreUtils.isNullOrEmpty(managedIdentityClientId) && CoreUtils.isNullOrEmpty(workloadIdentityClientId))
             || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
             return new WorkloadIdentityCredential(managedIdentityClientId, tenantId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
         }
