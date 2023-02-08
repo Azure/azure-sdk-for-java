@@ -2,13 +2,9 @@
 
 ## 2.24.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that `Permission.dataActions()` wrongly returns `actions` instead of `dataActions`.
 
 ## 2.23.0 (2023-01-27)
 

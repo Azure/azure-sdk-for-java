@@ -2581,6 +2581,10 @@ public final class Utils {
             for (String notAction : permission.notActions()) {
                 builder.append("\n\t\t\tName :").append(notAction);
             }
+            builder.append("\n\t\tPermission Data Actions: " + permission.dataActions().size());
+            for (String notAction : permission.dataActions()) {
+                builder.append("\n\t\t\tName :").append(notAction);
+            }
         }
 
         Set<String> assignableScopes = role.assignableScopes();
