@@ -6,6 +6,8 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.models.TestProxyMatcher;
+import com.azure.core.test.models.TestProxyMatcherType;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
@@ -37,8 +39,10 @@ public class TestProxyUtils {
         "(?:User ID=)(?<secret>.*)(?:;)", "(?:<PrimaryKey>)(?<secret>.*)(?:</PrimaryKey>)",
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
-    private static final String URL_REGEX =
-        "(?<=http://|https://)(?:[^@\\\\]+@)?(?:www\\\\.)?([^:\\\\/]+)";
+    private static final List<String> EXCLUDED_HEADERS =
+        new ArrayList<>(Arrays.asList("Connection", "Content-Length"));
+
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
@@ -117,6 +121,21 @@ public class TestProxyUtils {
         return sanitizers;
     }
 
+    public static List<TestProxyMatcher> loadMatchers() {
+        List<TestProxyMatcher> matchers = new ArrayList<>();
+        matchers.add(addDefaultCustomDefaultMatcher());
+        return matchers;
+    }
+
+    private static TestProxyMatcher addDefaultCustomDefaultMatcher() {
+        return new TestProxyMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS)).setTestProxyMatcherType(TestProxyMatcherType.CUSTOM);
+    }
+
+    private static String createCustomMatcherRequestBody(String ignoredHeaders, String excludedHeaders, boolean compareBodies, String ignoredQueryParameters) {
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\"}", ignoredHeaders, excludedHeaders, compareBodies, ignoredQueryParameters);
+        // return String.format("{\"excludedHeaders\":\"%s\"}", excludedHeaders);
+    }
+
     private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
     }
@@ -173,6 +192,38 @@ public class TestProxyUtils {
                 = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
                 .setBody(requestBody);
             request.setHeader("x-abstraction-identifier", sanitizerType);
+            return request;
+        }).collect(Collectors.toList());
+    }
+
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyMatcher> matchers) {
+        return matchers.stream().map(testProxyMatcher -> {
+            HttpRequest request;
+            String matcherType;
+            switch (testProxyMatcher.getType()) {
+                case HEADERLESS:
+                    matcherType = TestProxyMatcherType.HEADERLESS.getName();
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                    break;
+                case BODILESS:
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                    matcherType = TestProxyMatcherType.BODILESS.getName();
+                    break;
+                case CUSTOM:
+                    String requestBody = createCustomMatcherRequestBody(testProxyMatcher.getIgnoredHeaders(),
+                        testProxyMatcher.getExcludedHeaders(), testProxyMatcher.isIgnoreQueryOrdering(),
+                        testProxyMatcher.getIgnoredQueryParameters());
+                    matcherType = TestProxyMatcherType.CUSTOM.getName();
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);
+                    break;
+                default:
+                    throw new RuntimeException(String.format("Matcher type {%s} not supported", testProxyMatcher.getType()));
+            }
+
+            request.setHeader("x-abstraction-identifier", matcherType);
             return request;
         }).collect(Collectors.toList());
     }

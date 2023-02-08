@@ -9,6 +9,7 @@ import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.test.models.TestProxyMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.test.policy.TestProxyRecordPolicy;
@@ -74,6 +75,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private List<TestProxySanitizer> recordSanitizers;
+    private List<TestProxyMatcher> customMatcher;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -300,7 +302,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
-            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers);
+            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers, this.customMatcher);
             proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             return testProxyPlaybackClient;
         } else {
