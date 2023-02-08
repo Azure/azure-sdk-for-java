@@ -32,6 +32,9 @@ public final class FacetResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of FacetResult class. */
+    public FacetResult() {}
+
     /**
      * Get the count property: The approximate count of documents falling within the bucket described by this facet.
      *

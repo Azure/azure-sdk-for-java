@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SapConfiguration {
+    /** Creates an instance of SapConfiguration class. */
+    public SapConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

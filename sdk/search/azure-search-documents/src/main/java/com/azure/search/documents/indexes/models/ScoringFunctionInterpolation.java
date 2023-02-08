@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ScoringFunctionInterpolation. */
+/** Defines the function used to interpolate score boosting across a range of documents. */
 public enum ScoringFunctionInterpolation {
     /** Enum value linear. */
     LINEAR("linear"),
@@ -50,6 +50,7 @@ public enum ScoringFunctionInterpolation {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

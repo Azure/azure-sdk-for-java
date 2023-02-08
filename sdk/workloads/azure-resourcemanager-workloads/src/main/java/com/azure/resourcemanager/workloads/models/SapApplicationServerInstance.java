@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.fluent.models.SapApplicationServerInstanceInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of SapApplicationServerInstance. */
@@ -55,74 +56,82 @@ public interface SapApplicationServerInstance {
     SystemData systemData();
 
     /**
-     * Gets the instanceNo property: The application server instance id.
+     * Gets the instanceNo property: Application server Instance Number.
      *
      * @return the instanceNo value.
      */
     String instanceNo();
 
     /**
-     * Gets the subnet property: The application server subnet.
+     * Gets the subnet property: Application server Subnet.
      *
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the hostname property: The application server SAP host name.
+     * Gets the hostname property: Application server instance SAP hostname.
      *
      * @return the hostname value.
      */
     String hostname();
 
     /**
-     * Gets the kernelVersion property: The application server SAP kernel version.
+     * Gets the kernelVersion property: Application server instance SAP Kernel Version.
      *
      * @return the kernelVersion value.
      */
     String kernelVersion();
 
     /**
-     * Gets the kernelPatch property: The application server SAP kernel patch.
+     * Gets the kernelPatch property: Application server instance SAP Kernel Patch level.
      *
      * @return the kernelPatch value.
      */
     String kernelPatch();
 
     /**
-     * Gets the ipAddress property: The application server SAP IP Address.
+     * Gets the ipAddress property: Application server instance SAP IP Address.
      *
      * @return the ipAddress value.
      */
     String ipAddress();
 
     /**
-     * Gets the gatewayPort property: The application server gateway Port.
+     * Gets the gatewayPort property: Application server instance gateway Port.
      *
      * @return the gatewayPort value.
      */
     Long gatewayPort();
 
     /**
-     * Gets the icmHttpPort property: The application server ICM HTTP Port.
+     * Gets the icmHttpPort property: Application server instance ICM HTTP Port.
      *
      * @return the icmHttpPort value.
      */
     Long icmHttpPort();
 
     /**
-     * Gets the icmHttpsPort property: The application server ICM HTTPS Port.
+     * Gets the icmHttpsPort property: Application server instance ICM HTTPS Port.
      *
      * @return the icmHttpsPort value.
      */
     Long icmHttpsPort();
 
     /**
-     * Gets the virtualMachineId property: The virtual machine.
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Application
+     * Server Virtual Machines.
      *
-     * @return the virtualMachineId value.
+     * @return the loadBalancerDetails value.
      */
-    String virtualMachineId();
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines.
+     *
+     * @return the vmDetails value.
+     */
+    List<ApplicationServerVmDetails> vmDetails();
 
     /**
      * Gets the status property: Defines the SAP Instance status.
@@ -132,7 +141,7 @@ public interface SapApplicationServerInstance {
     SapVirtualInstanceStatus status();
 
     /**
-     * Gets the health property: Defines the SAP Instance health.
+     * Gets the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */
@@ -216,7 +225,7 @@ public interface SapApplicationServerInstance {
              * Specifies resourceGroupName, sapVirtualInstanceName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
@@ -303,4 +312,45 @@ public interface SapApplicationServerInstance {
      * @return the refreshed resource.
      */
     SapApplicationServerInstance refresh(Context context);
+
+    /**
+     * Starts the SAP Application Server Instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the SAP Application Server Instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the SAP Application Server Instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the SAP Application Server Instance.
+     *
+     * @param body SAP Application server instance stop request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

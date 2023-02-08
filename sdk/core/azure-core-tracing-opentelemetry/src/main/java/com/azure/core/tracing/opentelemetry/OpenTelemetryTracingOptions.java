@@ -14,6 +14,12 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
     private OpenTelemetrySchemaVersion schemaVersion;
 
     /**
+     * Creates an instance of {@link OpenTelemetryTracingOptions}.
+     */
+    public OpenTelemetryTracingOptions() {
+    }
+
+    /**
      * Gets implementation-specific state containing all configuration needed for the implementation such as OpenTelemetry MeterProvider.
      * Check out OpenTelemetry Metrics plugin documentation for the details and examples.
      *

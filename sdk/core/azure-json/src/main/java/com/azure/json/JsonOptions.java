@@ -12,6 +12,12 @@ public final class JsonOptions {
     private boolean nonNumericNumbersSupported = true;
 
     /**
+     * Creates an instance of {@link JsonOptions}.
+     */
+    public JsonOptions() {
+    }
+
+    /**
      * Whether non-numeric numbers such as {@code NaN} and {@code INF} and {@code -INF} are supported.
      * <p>
      * By default, this is configured to true.

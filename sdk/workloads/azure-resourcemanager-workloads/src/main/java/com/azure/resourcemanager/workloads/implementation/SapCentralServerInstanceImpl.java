@@ -12,12 +12,15 @@ import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
 import com.azure.resourcemanager.workloads.models.GatewayServerProperties;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.MessageServerProperties;
+import com.azure.resourcemanager.workloads.models.OperationStatusResult;
 import com.azure.resourcemanager.workloads.models.SapCentralServerInstance;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
+import com.azure.resourcemanager.workloads.models.StopRequest;
 import com.azure.resourcemanager.workloads.models.UpdateSapCentralInstanceRequest;
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +91,10 @@ public final class SapCentralServerInstanceImpl
 
     public String kernelPatch() {
         return this.innerModel().kernelPatch();
+    }
+
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.innerModel().loadBalancerDetails();
     }
 
     public List<CentralServerVmDetails> vmDetails() {
@@ -226,6 +233,30 @@ public final class SapCentralServerInstanceImpl
                 .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context)
                 .getValue();
         return this;
+    }
+
+    public OperationStatusResult startInstance() {
+        return serviceManager
+            .sapCentralInstances()
+            .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    }
+
+    public OperationStatusResult startInstance(Context context) {
+        return serviceManager
+            .sapCentralInstances()
+            .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+    }
+
+    public OperationStatusResult stopInstance() {
+        return serviceManager
+            .sapCentralInstances()
+            .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    }
+
+    public OperationStatusResult stopInstance(StopRequest body, Context context) {
+        return serviceManager
+            .sapCentralInstances()
+            .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
     }
 
     public SapCentralServerInstanceImpl withRegion(Region location) {
