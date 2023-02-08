@@ -44,7 +44,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.DO
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
 
@@ -159,7 +158,7 @@ public class ContainerRegistryBlobClient {
                 data,
                 data.getLength(),
                 UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
 
             return new ResponseBase<ContainerRegistriesCreateManifestHeaders, UploadManifestResult>(
                 response.getRequest(),
@@ -207,7 +206,7 @@ public class ContainerRegistryBlobClient {
     public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
 
         String digest = UtilsImpl.computeDigest(data.toByteBuffer());
         try {
@@ -271,7 +270,7 @@ public class ContainerRegistryBlobClient {
         try {
             response =
                 this.registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
+                    OCI_MANIFEST_MEDIA_TYPE, enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -328,7 +327,7 @@ public class ContainerRegistryBlobClient {
     public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
         Response<BinaryData> streamResponse;
         try {
             streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
@@ -379,10 +378,10 @@ public class ContainerRegistryBlobClient {
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
         try {
             Response<BinaryData> streamResponse =
-                this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(getTracingContext(context)));
+                this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(context));
             return deleteResponseToSuccess(streamResponse);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
@@ -425,10 +424,10 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteManifestWithResponse(String digest, Context context) {
-        context = enableSync(getTracingContext(context));
+        context = enableSync(context);
         try {
             Response<Void> response = this.registriesImpl.deleteManifestWithResponse(repositoryName, digest,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
