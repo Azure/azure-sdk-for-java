@@ -75,4 +75,4 @@ output SERVICEBUS_QUEUE_NAME string = serviceBusQueueName
 output SERVICEBUS_SESSION_QUEUE_NAME string = serviceBusSessionQueueName
 output SERVICEBUS_TOPIC_NAME string = serviceBusTopicName 
 output SERVICEBUS_SUBSCRIPTION_NAME string = serviceBusSubscriptionName
-output RVICEBUS_SESSION_SUBSCRIPTION_NAME string = serviceBusSessionSubscriptionName
+output SERVICEBUS_SESSION_SUBSCRIPTION_NAME string = serviceBusSessionSubscriptionName
