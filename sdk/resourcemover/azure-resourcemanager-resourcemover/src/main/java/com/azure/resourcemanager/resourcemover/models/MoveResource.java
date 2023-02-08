@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 
@@ -36,6 +37,13 @@ public interface MoveResource {
      * @return the properties value.
      */
     MoveResourceProperties properties();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner object.

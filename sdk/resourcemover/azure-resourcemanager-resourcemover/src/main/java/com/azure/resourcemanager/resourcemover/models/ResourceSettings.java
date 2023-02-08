@@ -43,6 +43,12 @@ public class ResourceSettings {
     @JsonProperty(value = "targetResourceName", required = true)
     private String targetResourceName;
 
+    /*
+     * Gets or sets the target resource group name.
+     */
+    @JsonProperty(value = "targetResourceGroupName")
+    private String targetResourceGroupName;
+
     /** Creates an instance of ResourceSettings class. */
     public ResourceSettings() {
     }
@@ -64,6 +70,26 @@ public class ResourceSettings {
      */
     public ResourceSettings withTargetResourceName(String targetResourceName) {
         this.targetResourceName = targetResourceName;
+        return this;
+    }
+
+    /**
+     * Get the targetResourceGroupName property: Gets or sets the target resource group name.
+     *
+     * @return the targetResourceGroupName value.
+     */
+    public String targetResourceGroupName() {
+        return this.targetResourceGroupName;
+    }
+
+    /**
+     * Set the targetResourceGroupName property: Gets or sets the target resource group name.
+     *
+     * @param targetResourceGroupName the targetResourceGroupName value to set.
+     * @return the ResourceSettings object itself.
+     */
+    public ResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        this.targetResourceGroupName = targetResourceGroupName;
         return this;
     }
 

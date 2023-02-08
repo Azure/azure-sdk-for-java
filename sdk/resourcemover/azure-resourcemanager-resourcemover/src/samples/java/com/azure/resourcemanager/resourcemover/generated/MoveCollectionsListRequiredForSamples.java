@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcemover.generated;
 /** Samples for MoveCollections ListRequiredFor. */
 public final class MoveCollectionsListRequiredForSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/RequiredFor_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/RequiredFor_Get.json
      */
     /**
      * Sample code: RequiredFor_Get.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcemover.generated;
 /** Samples for MoveCollections List. */
 public final class MoveCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
      */
     /**
      * Sample code: MoveCollections_ListMoveCollectionsBySubscription.

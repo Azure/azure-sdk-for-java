@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections Commit. */
 public final class MoveCollectionsCommitSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Commit.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Commit.json
      */
     /**
      * Sample code: MoveCollections_Commit.

@@ -40,7 +40,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections BulkRemove. */
 public final class MoveCollectionsBulkRemoveSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_BulkRemove.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_BulkRemove.json
      */
     /**
      * Sample code: MoveCollections_BulkRemove.
@@ -73,7 +73,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections Commit. */
 public final class MoveCollectionsCommitSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Commit.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Commit.json
      */
     /**
      * Sample code: MoveCollections_Commit.
@@ -107,7 +107,7 @@ import com.azure.resourcemanager.resourcemover.models.ResourceIdentityType;
 /** Samples for MoveCollections Create. */
 public final class MoveCollectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Create.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Create.json
      */
     /**
      * Sample code: MoveCollections_Create.
@@ -133,7 +133,7 @@ public final class MoveCollectionsCreateSamples {
 /** Samples for MoveCollections Delete. */
 public final class MoveCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Delete.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Delete.json
      */
     /**
      * Sample code: MoveCollections_Delete.
@@ -155,7 +155,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections Discard. */
 public final class MoveCollectionsDiscardSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Discard.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Discard.json
      */
     /**
      * Sample code: MoveCollections_Discard.
@@ -185,7 +185,7 @@ public final class MoveCollectionsDiscardSamples {
 /** Samples for MoveCollections GetByResourceGroup. */
 public final class MoveCollectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Get.json
      */
     /**
      * Sample code: MoveCollections_Get.
@@ -209,7 +209,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections InitiateMove. */
 public final class MoveCollectionsInitiateMoveSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_InitiateMove.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_InitiateMove.json
      */
     /**
      * Sample code: MoveCollections_InitiateMove.
@@ -240,7 +240,7 @@ public final class MoveCollectionsInitiateMoveSamples {
 /** Samples for MoveCollections List. */
 public final class MoveCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
      */
     /**
      * Sample code: MoveCollections_ListMoveCollectionsBySubscription.
@@ -260,7 +260,7 @@ public final class MoveCollectionsListSamples {
 /** Samples for MoveCollections ListByResourceGroup. */
 public final class MoveCollectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_ListMoveCollectionsByResourceGroup.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_ListMoveCollectionsByResourceGroup.json
      */
     /**
      * Sample code: MoveCollections_ListMoveCollectionsByResourceGroup.
@@ -280,7 +280,7 @@ public final class MoveCollectionsListByResourceGroupSamples {
 /** Samples for MoveCollections ListRequiredFor. */
 public final class MoveCollectionsListRequiredForSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/RequiredFor_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/RequiredFor_Get.json
      */
     /**
      * Sample code: RequiredFor_Get.
@@ -308,7 +308,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections Prepare. */
 public final class MoveCollectionsPrepareSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Prepare.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Prepare.json
      */
     /**
      * Sample code: MoveCollections_Prepare.
@@ -338,7 +338,7 @@ public final class MoveCollectionsPrepareSamples {
 /** Samples for MoveCollections ResolveDependencies. */
 public final class MoveCollectionsResolveDependenciesSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_ResolveDependencies.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_ResolveDependencies.json
      */
     /**
      * Sample code: MoveCollections_ResolveDependencies.
@@ -364,7 +364,7 @@ import java.util.Map;
 /** Samples for MoveCollections Update. */
 public final class MoveCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Update.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Update.json
      */
     /**
      * Sample code: MoveCollections_Update.
@@ -409,7 +409,7 @@ import java.util.Arrays;
 /** Samples for MoveResources Create. */
 public final class MoveResourcesCreateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_Create.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_Create.json
      */
     /**
      * Sample code: MoveResources_Create.
@@ -428,6 +428,10 @@ public final class MoveResourcesCreateSamples {
                     .withResourceSettings(
                         new VirtualMachineResourceSettings()
                             .withTargetResourceName("westusvm1")
+                            .withUserManagedIdentities(
+                                Arrays
+                                    .asList(
+                                        "/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi1"))
                             .withTargetAvailabilityZone(TargetAvailabilityZone.TWO)
                             .withTargetAvailabilitySetId(
                                 "/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.Compute/availabilitySets/avset1"))
@@ -450,7 +454,7 @@ public final class MoveResourcesCreateSamples {
 /** Samples for MoveResources Delete. */
 public final class MoveResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_Delete.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_Delete.json
      */
     /**
      * Sample code: MoveResources_Delete.
@@ -469,7 +473,7 @@ public final class MoveResourcesDeleteSamples {
 /** Samples for MoveResources Get. */
 public final class MoveResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_Get.json
      */
     /**
      * Sample code: MoveResources_Get.
@@ -490,7 +494,7 @@ public final class MoveResourcesGetSamples {
 /** Samples for MoveResources List. */
 public final class MoveResourcesListSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_List.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_List.json
      */
     /**
      * Sample code: MoveResources_List.
@@ -509,7 +513,7 @@ public final class MoveResourcesListSamples {
 /** Samples for OperationsDiscovery Get. */
 public final class OperationsDiscoveryGetSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/OperationsDiscovery_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/OperationsDiscovery_Get.json
      */
     /**
      * Sample code: OperationsDiscovery_Get.
@@ -528,7 +532,7 @@ public final class OperationsDiscoveryGetSamples {
 /** Samples for UnresolvedDependencies Get. */
 public final class UnresolvedDependenciesGetSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/UnresolvedDependencies_Get.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/UnresolvedDependencies_Get.json
      */
     /**
      * Sample code: UnresolvedDependencies_Get.

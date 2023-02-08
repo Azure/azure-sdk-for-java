@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for MoveResources Create. */
 public final class MoveResourcesCreateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_Create.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_Create.json
      */
     /**
      * Sample code: MoveResources_Create.
@@ -32,6 +32,10 @@ public final class MoveResourcesCreateSamples {
                     .withResourceSettings(
                         new VirtualMachineResourceSettings()
                             .withTargetResourceName("westusvm1")
+                            .withUserManagedIdentities(
+                                Arrays
+                                    .asList(
+                                        "/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi1"))
                             .withTargetAvailabilityZone(TargetAvailabilityZone.TWO)
                             .withTargetAvailabilitySetId(
                                 "/subscriptions/subid/resourceGroups/eastusRG/providers/Microsoft.Compute/availabilitySets/avset1"))

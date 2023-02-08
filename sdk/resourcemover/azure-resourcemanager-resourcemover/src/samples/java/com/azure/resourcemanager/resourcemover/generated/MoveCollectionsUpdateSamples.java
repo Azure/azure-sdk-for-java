@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for MoveCollections Update. */
 public final class MoveCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Update.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Update.json
      */
     /**
      * Sample code: MoveCollections_Update.

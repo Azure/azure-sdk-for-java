@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resourcemover.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 import com.azure.resourcemanager.resourcemover.models.MoveResource;
@@ -34,6 +35,10 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
 
     public MoveResourceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public MoveResourceInner innerModel() {

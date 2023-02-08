@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for MoveCollections Discard. */
 public final class MoveCollectionsDiscardSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveCollections_Discard.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveCollections_Discard.json
      */
     /**
      * Sample code: MoveCollections_Discard.

@@ -5,15 +5,31 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Gets or sets the virtual machine resource settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Microsoft.Compute/virtualMachines")
 @Fluent
 public final class VirtualMachineResourceSettings extends ResourceSettings {
+    /*
+     * Gets or sets the Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
+     * Gets or sets user-managed identities
+     */
+    @JsonProperty(value = "userManagedIdentities")
+    private List<String> userManagedIdentities;
+
     /*
      * Gets or sets the target availability zone.
      */
@@ -34,6 +50,46 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /** Creates an instance of VirtualMachineResourceSettings class. */
     public VirtualMachineResourceSettings() {
+    }
+
+    /**
+     * Get the tags property: Gets or sets the Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Gets or sets the Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the VirtualMachineResourceSettings object itself.
+     */
+    public VirtualMachineResourceSettings withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the userManagedIdentities property: Gets or sets user-managed identities.
+     *
+     * @return the userManagedIdentities value.
+     */
+    public List<String> userManagedIdentities() {
+        return this.userManagedIdentities;
+    }
+
+    /**
+     * Set the userManagedIdentities property: Gets or sets user-managed identities.
+     *
+     * @param userManagedIdentities the userManagedIdentities value to set.
+     * @return the VirtualMachineResourceSettings object itself.
+     */
+    public VirtualMachineResourceSettings withUserManagedIdentities(List<String> userManagedIdentities) {
+        this.userManagedIdentities = userManagedIdentities;
+        return this;
     }
 
     /**
@@ -102,6 +158,13 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
     @Override
     public VirtualMachineResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
         return this;
     }
 

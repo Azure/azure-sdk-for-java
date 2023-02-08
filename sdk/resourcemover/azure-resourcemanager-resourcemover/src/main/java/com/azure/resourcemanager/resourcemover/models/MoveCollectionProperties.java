@@ -30,6 +30,12 @@ public final class MoveCollectionProperties {
     private ProvisioningState provisioningState;
 
     /*
+     * Gets or sets the version of move collection.
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
+    /*
      * Defines the move collection errors.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
@@ -86,6 +92,26 @@ public final class MoveCollectionProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the version property: Gets or sets the version of move collection.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Gets or sets the version of move collection.
+     *
+     * @param version the version value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**

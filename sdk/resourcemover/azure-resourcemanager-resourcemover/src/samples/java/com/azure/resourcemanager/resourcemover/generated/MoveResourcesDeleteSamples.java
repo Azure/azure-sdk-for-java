@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcemover.generated;
 /** Samples for MoveResources Delete. */
 public final class MoveResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-01-01/examples/MoveResources_Delete.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2022-08-01/examples/MoveResources_Delete.json
      */
     /**
      * Sample code: MoveResources_Delete.

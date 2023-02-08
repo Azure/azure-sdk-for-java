@@ -24,6 +24,13 @@ public final class ResourceGroupResourceSettings extends ResourceSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ResourceGroupResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

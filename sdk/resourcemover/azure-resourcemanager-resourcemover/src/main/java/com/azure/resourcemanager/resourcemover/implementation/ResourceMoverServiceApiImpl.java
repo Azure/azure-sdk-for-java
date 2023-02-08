@@ -181,7 +181,7 @@ public final class ResourceMoverServiceApiImpl implements ResourceMoverServiceAp
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2022-08-01";
         this.moveCollections = new MoveCollectionsClientImpl(this);
         this.moveResources = new MoveResourcesClientImpl(this);
         this.unresolvedDependencies = new UnresolvedDependenciesClientImpl(this);
