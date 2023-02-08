@@ -40,16 +40,16 @@ import java.util.Set;
  * HostAndPort hostAndPort = new HostAndPort&#40;redisHostName, 6380&#41;;
  * JedisPool jedisPool = new JedisPool&#40;hostAndPort, clientConfig&#41;;
  *
- * CheckpointStore checkpointStore = new JedisRedisCheckpointStore&#40;jedisPool&#41;;
+ * CheckpointStore checkpointStore = new JedisCheckpointStore&#40;jedisPool&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
  *
  * @see EventProcessorClient
  * @see EventProcessorClientBuilder
  */
-public final class JedisRedisCheckpointStore implements CheckpointStore {
+public final class JedisCheckpointStore implements CheckpointStore {
 
-    private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JedisCheckpointStore.class);
     static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
     static final byte[] CHECKPOINT = "checkpoint".getBytes(StandardCharsets.UTF_8);
     static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
@@ -61,7 +61,7 @@ public final class JedisRedisCheckpointStore implements CheckpointStore {
      * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
      * @throws IllegalArgumentException thrown when JedisPool object supplied is null
      */
-    public JedisRedisCheckpointStore(JedisPool jedisPool) {
+    public JedisCheckpointStore(JedisPool jedisPool) {
         if (jedisPool == null) {
             throw LOGGER.logExceptionAsError(Exceptions
                 .propagate(new IllegalArgumentException(

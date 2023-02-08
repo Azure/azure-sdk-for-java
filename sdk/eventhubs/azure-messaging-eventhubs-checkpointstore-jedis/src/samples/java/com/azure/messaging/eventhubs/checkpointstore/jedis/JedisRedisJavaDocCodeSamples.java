@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.JedisPool;
 
 /**
- * Javadoc samples for {@link JedisRedisCheckpointStore}.
+ * Javadoc samples for {@link JedisCheckpointStore}.
  */
 public class JedisRedisJavaDocCodeSamples {
     /**
@@ -27,7 +27,7 @@ public class JedisRedisJavaDocCodeSamples {
         HostAndPort hostAndPort = new HostAndPort(redisHostName, 6380);
         JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
-        CheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
+        CheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
         // END: com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation
     }
 }

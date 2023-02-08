@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for using {@link JedisRedisCheckpointStore} with {@link EventProcessorClient}.
+ * Sample for using {@link JedisCheckpointStore} with {@link EventProcessorClient}.
  */
 public class EventProcessorClientJedisSample {
     /**
@@ -42,7 +42,7 @@ public class EventProcessorClientJedisSample {
         JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
         // Instantiate an instance of the checkpoint store with configured JedisPool.
-        CheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
+        CheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString("event-hub-namespace-connection-string}", "{event-hub-name}")

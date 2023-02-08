@@ -48,7 +48,7 @@ public class JedisRedisCheckpointStoreSample {
         JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
         // Instantiate an instance of the checkpoint store with configured JedisPool.
-        CheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
+        CheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
 
         System.out.println("1. Listing existing partition ownerships.");
 

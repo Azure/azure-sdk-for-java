@@ -128,7 +128,7 @@ EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
     .connectionString("<< EVENT HUB NAMESPACE CONNECTION STRING >>")
     .eventHubName("<< EVENT HUB NAME >>")
-    .checkpointStore(new JedisRedisCheckpointStore(jedisPool))
+    .checkpointStore(new JedisCheckpointStore(jedisPool))
     .processEvent(eventContext -> {
         System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
