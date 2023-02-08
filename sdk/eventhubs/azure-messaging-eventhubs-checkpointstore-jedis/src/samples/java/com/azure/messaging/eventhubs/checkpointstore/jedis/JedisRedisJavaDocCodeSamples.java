@@ -3,7 +3,11 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisClientConfig;
@@ -28,6 +32,16 @@ public class JedisRedisJavaDocCodeSamples {
         JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
         CheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
+
+        // DefaultAzureCredential tries to resolve the best credential to use based on your environment.
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        EventProcessorClient processorClient = new EventProcessorClientBuilder()
+            .checkpointStore(checkpointStore)
+            .fullyQualifiedNamespace("<YOUR_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE>")
+            .eventHubName("<YOUR_EVENT_HUB_NAME>")
+            .credential(credential)
+            .consumerGroup("<YOUR_CONSUMER_GROUP_NAME>")
+            .buildEventProcessorClient();
         // END: com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation
     }
 }

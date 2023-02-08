@@ -41,6 +41,16 @@ import java.util.Set;
  * JedisPool jedisPool = new JedisPool&#40;hostAndPort, clientConfig&#41;;
  *
  * CheckpointStore checkpointStore = new JedisCheckpointStore&#40;jedisPool&#41;;
+ *
+ * &#47;&#47; DefaultAzureCredential tries to resolve the best credential to use based on your environment.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventProcessorClient processorClient = new EventProcessorClientBuilder&#40;&#41;
+ *     .checkpointStore&#40;checkpointStore&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;&lt;YOUR_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE&gt;&quot;&#41;
+ *     .eventHubName&#40;&quot;&lt;YOUR_EVENT_HUB_NAME&gt;&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .consumerGroup&#40;&quot;&lt;YOUR_CONSUMER_GROUP_NAME&gt;&quot;&#41;
+ *     .buildEventProcessorClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
  *
