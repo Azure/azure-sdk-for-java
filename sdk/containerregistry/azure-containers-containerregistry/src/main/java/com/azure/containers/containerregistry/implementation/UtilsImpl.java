@@ -13,6 +13,8 @@ import com.azure.containers.containerregistry.implementation.models.TagAttribute
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -41,6 +43,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -79,8 +82,7 @@ public final class UtilsImpl {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-
+    public static final ManifestMediaType SUPPORTED_MANIFEST_TYPES = ManifestMediaType.fromString(ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST);
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
@@ -191,16 +193,9 @@ public final class UtilsImpl {
      * @return SHA-256 digest for the given buffer.
      */
     public static String computeDigest(ByteBuffer buffer) {
-        ByteBuffer readOnlyBuffer = buffer.asReadOnlyBuffer();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(readOnlyBuffer);
-            byte[] digest = md.digest();
-            return "sha256:" + byteArrayToHex(digest);
-
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        MessageDigest md = createSha256();
+        md.update(buffer.asReadOnlyBuffer());
+        return "sha256:" + byteArrayToHex(md.digest());
     }
 
     public static MessageDigest createSha256() {
@@ -214,14 +209,31 @@ public final class UtilsImpl {
 
     public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
         String sha256 = byteArrayToHex(messageDigest.digest());
-        if (requestedDigest.length() != 71
-            || !requestedDigest.startsWith("sha256:")
-            || !requestedDigest.endsWith(sha256)) {
+        if (isDigest(requestedDigest) && !requestedDigest.endsWith(sha256)) {
             throw LOGGER.atError()
                 .addKeyValue("requestedDigest", requestedDigest)
                 .addKeyValue("actualDigest", () -> "sha256:" + sha256)
                 .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
+    }
+
+    public static Response<DownloadManifestResult> toDownloadManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+        String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+        String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
+
+        if (!Objects.equals(responseSha256, digest)
+            || (isDigest(tagOrDigest) && !Objects.equals(responseSha256, tagOrDigest))) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+        }
+
+        String contentType = rawResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        ManifestMediaType responseMediaType = contentType != null ? ManifestMediaType.fromString(contentType) : null;
+
+        return new SimpleResponse<>(
+            rawResponse.getRequest(),
+            rawResponse.getStatusCode(),
+            rawResponse.getHeaders(),
+            ConstructorAccessors.createManifestDownloadResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
@@ -468,5 +480,15 @@ public final class UtilsImpl {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+    }
+
+    /**
+     * Checks if string represents tag or digest.
+     *
+     * @param tagOrDigest string to check
+     * @return true if digest, false otherwise.
+     */
+    public static boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.length() == 71 && tagOrDigest.startsWith("sha256:");
     }
 }

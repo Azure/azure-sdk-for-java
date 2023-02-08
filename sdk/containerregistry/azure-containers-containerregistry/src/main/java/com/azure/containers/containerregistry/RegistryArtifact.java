@@ -33,6 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
