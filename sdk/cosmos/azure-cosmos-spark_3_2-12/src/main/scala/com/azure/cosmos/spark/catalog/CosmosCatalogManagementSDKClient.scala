@@ -501,7 +501,9 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
             throughputUpdateParameter)
           .asScala
           .map(result => {
-            if (!result.resource().offerReplacePending().toBoolean) {
+            if (!result.resource().offerReplacePending().toBoolean &&
+              result.resource().offerReplacePending() != "null" &&
+              !result.resource().offerReplacePending().toBoolean) {
               logInfo(s"Updated throughput synchronously " +
                 s"(${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
               true
