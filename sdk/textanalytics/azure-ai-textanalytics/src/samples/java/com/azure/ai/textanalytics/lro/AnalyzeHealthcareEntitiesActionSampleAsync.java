@@ -19,10 +19,11 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,8 +37,8 @@ public class AnalyzeHealthcareEntitiesActionSampleAsync {
      */
     public static void main(String[] args) {
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-                                              .credential(new AzureKeyCredential("{key}"))
-                                              .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
                                               .buildAsyncClient();
 
         List<String> documents = Arrays.asList(
@@ -116,7 +117,7 @@ public class AnalyzeHealthcareEntitiesActionSampleAsync {
                         }
                         System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
                         // FHIR bundle in JSON format
-                        final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                        final BinaryData fhirBundle = healthcareEntitiesResult.getFhirBundle();
                         if (fhirBundle != null) {
                             System.out.printf("FHIR bundle: %s%n", fhirBundle);
                         }

@@ -42,8 +42,31 @@ enable-sync-stack: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
+customization-class: TextAnalyticsCustomization
 custom-types-subpackage: models
 context-client-method-parameter: true
 service-interface-as-public: true
 generic-response-type: true
+```
+
+### Customization
+
+```java
+import org.slf4j.Logger;
+
+/**
+ * This class contains the customization code to customize the AutoRest generated code for TextAnalytics.
+ */
+public class TextAnalyticsCustomization extends Customization {
+    @Override
+    public void customize(LibraryCustomization customization, Logger logger) {
+        
+        PackageCustomization models = customization.getPackage("com.azure.ai.textanalytics.implementation.models");
+        
+        ClassCustomization analyzeTextsImpl = models.getClass("AnalyzeTextsImpl");
+        analyzeTextsImpl.setModifier(Modifier.PUBLIC);
+       
+    }
+}
+
 ```

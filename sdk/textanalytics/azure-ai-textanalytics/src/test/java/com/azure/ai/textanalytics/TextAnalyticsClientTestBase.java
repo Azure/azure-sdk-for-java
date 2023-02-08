@@ -1979,7 +1979,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
         AnalyzeHealthcareEntitiesResult actual) {
         if (expected.getFhirBundle() != null) {
-            assertTrue(actual.getFhirBundle() != null && actual.getFhirBundle().size() != 0);
+            assertTrue(actual.getFhirBundle() != null);
         } else {
             assertNull(actual.getFhirBundle());
         }
