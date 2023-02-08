@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of bulk import job objects. */
+/** A collection of import job objects. */
 @Fluent
-public final class BulkImportJobCollection {
+public final class ImportJobCollection {
     /*
-     * The list of bulk import job objects.
+     * The list of import job objects.
      */
     @JsonProperty(value = "value", required = true)
-    private List<BulkImportJob> value;
+    private List<ImportJob> value;
 
     /*
      * A URI to retrieve the next page of results.
@@ -25,21 +25,21 @@ public final class BulkImportJobCollection {
     private String nextLink;
 
     /**
-     * Creates an instance of BulkImportJobCollection class.
+     * Creates an instance of ImportJobCollection class.
      *
      * @param value the value value to set.
      */
     @JsonCreator
-    public BulkImportJobCollection(@JsonProperty(value = "value", required = true) List<BulkImportJob> value) {
+    public ImportJobCollection(@JsonProperty(value = "value", required = true) List<ImportJob> value) {
         this.value = value;
     }
 
     /**
-     * Get the value property: The list of bulk import job objects.
+     * Get the value property: The list of import job objects.
      *
      * @return the value value.
      */
-    public List<BulkImportJob> getValue() {
+    public List<ImportJob> getValue() {
         return this.value;
     }
 
@@ -56,9 +56,9 @@ public final class BulkImportJobCollection {
      * Set the nextLink property: A URI to retrieve the next page of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the BulkImportJobCollection object itself.
+     * @return the ImportJobCollection object itself.
      */
-    public BulkImportJobCollection setNextLink(String nextLink) {
+    public ImportJobCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
@@ -70,7 +70,7 @@ public final class BulkImportJobCollection {
      */
     public void validate() {
         if (getValue() == null) {
-            throw new IllegalArgumentException("Missing required property value in model BulkImportJobCollection");
+            throw new IllegalArgumentException("Missing required property value in model ImportJobCollection");
         } else {
             getValue().forEach(e -> e.validate());
         }

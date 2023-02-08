@@ -24,9 +24,9 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.BulkImportJob;
-import com.azure.digitaltwins.core.implementation.models.BulkImportJobCollection;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.ImportJob;
+import com.azure.digitaltwins.core.implementation.models.ImportJobCollection;
 import com.azure.digitaltwins.core.implementation.models.ImportJobsAddOptions;
 import com.azure.digitaltwins.core.implementation.models.ImportJobsCancelOptions;
 import com.azure.digitaltwins.core.implementation.models.ImportJobsDeleteOptions;
@@ -63,7 +63,7 @@ public final class ImportJobsImpl {
         @Get("/jobs/imports")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BulkImportJobCollection>> list(
+        Mono<Response<ImportJobCollection>> list(
                 @HostParam("$host") String host,
                 @HeaderParam("traceparent") String traceparent,
                 @HeaderParam("tracestate") String tracestate,
@@ -74,19 +74,19 @@ public final class ImportJobsImpl {
         @Put("/jobs/imports/{id}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BulkImportJob>> add(
+        Mono<Response<ImportJob>> add(
                 @HostParam("$host") String host,
                 @HeaderParam("traceparent") String traceparent,
                 @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BulkImportJob importJob,
+                @BodyParam("application/json") ImportJob importJob,
                 Context context);
 
         @Get("/jobs/imports/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BulkImportJob>> getById(
+        Mono<Response<ImportJob>> getById(
                 @HostParam("$host") String host,
                 @HeaderParam("traceparent") String traceparent,
                 @HeaderParam("tracestate") String tracestate,
@@ -108,7 +108,7 @@ public final class ImportJobsImpl {
         @Post("/jobs/imports/{id}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BulkImportJob>> cancel(
+        Mono<Response<ImportJob>> cancel(
                 @HostParam("$host") String host,
                 @HeaderParam("traceparent") String traceparent,
                 @HeaderParam("tracestate") String tracestate,
@@ -119,7 +119,7 @@ public final class ImportJobsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BulkImportJobCollection>> listNext(
+        Mono<Response<ImportJobCollection>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("traceparent") String traceparent,
@@ -129,17 +129,17 @@ public final class ImportJobsImpl {
     }
 
     /**
-     * Retrieves all bulk import jobs. Status codes: * 200 OK.
+     * Retrieves all import jobs. Status codes: * 200 OK.
      *
      * @param importJobsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of bulk import job objects.
+     * @return a collection of import job objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BulkImportJob>> listSinglePageAsync(
+    public Mono<PagedResponse<ImportJob>> listSinglePageAsync(
             ImportJobsListOptions importJobsListOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
@@ -182,10 +182,10 @@ public final class ImportJobsImpl {
     }
 
     /**
-     * Creates a bulk import job. Status codes: * 201 Created * 400 Bad Request * JobLimitReached - The maximum number
-     * of bulk import jobs allowed has been reached. * ValidationFailed - The bulk job request is not valid.
+     * Creates an import job. Status codes: * 201 Created * 400 Bad Request * JobLimitReached - The maximum number of
+     * import jobs allowed has been reached. * ValidationFailed - The import job request is not valid.
      *
-     * @param id The id for the bulk import job. The id is unique within the service and case sensitive.
+     * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJob A job which contains a reference to the operations to perform, results, and execution metadata.
      * @param importJobsAddOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -195,8 +195,8 @@ public final class ImportJobsImpl {
      * @return a job which contains a reference to the operations to perform, results, and execution metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BulkImportJob>> addWithResponseAsync(
-            String id, BulkImportJob importJob, ImportJobsAddOptions importJobsAddOptions, Context context) {
+    public Mono<Response<ImportJob>> addWithResponseAsync(
+            String id, ImportJob importJob, ImportJobsAddOptions importJobsAddOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -227,9 +227,10 @@ public final class ImportJobsImpl {
     }
 
     /**
-     * Retrieves a bulk job. Status codes: * 200 OK * 404 Not Found * BulkJobNotFound - The bulk job was not found.
+     * Retrieves an import job. Status codes: * 200 OK * 404 Not Found * ImportJobNotFound - The import job was not
+     * found.
      *
-     * @param id The id for the bulk import job. The id is unique within the service and case sensitive.
+     * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsGetByIdOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +239,7 @@ public final class ImportJobsImpl {
      * @return a job which contains a reference to the operations to perform, results, and execution metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BulkImportJob>> getByIdWithResponseAsync(
+    public Mono<Response<ImportJob>> getByIdWithResponseAsync(
             String id, ImportJobsGetByIdOptions importJobsGetByIdOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
@@ -265,10 +266,10 @@ public final class ImportJobsImpl {
     }
 
     /**
-     * Deletes a bulk import job. Status codes: * 204 No Content * 400 Bad Request * ValidationFailed - The bulk job
+     * Deletes an import job. Status codes: * 204 No Content * 400 Bad Request * ValidationFailed - The import job
      * request is not valid.
      *
-     * @param id The id for the bulk import job. The id is unique within the service and case sensitive.
+     * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsDeleteOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,10 +304,10 @@ public final class ImportJobsImpl {
     }
 
     /**
-     * Cancels a bulk import job. Status codes: * 200 Request Accepted * 400 Bad Request * ValidationFailed - The bulk
-     * job request is not valid.
+     * Cancels an import job. Status codes: * 200 Request Accepted * 400 Bad Request * ValidationFailed - The import job
+     * request is not valid.
      *
-     * @param id The id for the bulk import job. The id is unique within the service and case sensitive.
+     * @param id The id for the import job. The id is unique within the service and case sensitive.
      * @param importJobsCancelOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +316,7 @@ public final class ImportJobsImpl {
      * @return a job which contains a reference to the operations to perform, results, and execution metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BulkImportJob>> cancelWithResponseAsync(
+    public Mono<Response<ImportJob>> cancelWithResponseAsync(
             String id, ImportJobsCancelOptions importJobsCancelOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
@@ -349,10 +350,10 @@ public final class ImportJobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of bulk import job objects.
+     * @return a collection of import job objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BulkImportJob>> listNextSinglePageAsync(
+    public Mono<PagedResponse<ImportJob>> listNextSinglePageAsync(
             String nextLink, ImportJobsListOptions importJobsListOptions, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

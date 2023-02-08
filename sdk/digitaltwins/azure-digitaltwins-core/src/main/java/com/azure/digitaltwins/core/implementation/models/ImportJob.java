@@ -11,9 +11,9 @@ import java.time.OffsetDateTime;
 
 /** A job which contains a reference to the operations to perform, results, and execution metadata. */
 @Fluent
-public final class BulkImportJob {
+public final class ImportJob {
     /*
-     * The identifier of the bulk import job.
+     * The identifier of the import job.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -67,19 +67,19 @@ public final class BulkImportJob {
     private OffsetDateTime purgeDateTime;
 
     /*
-     * Details of the error(s) that occurred executing the bulk job.
+     * Details of the error(s) that occurred executing the import job.
      */
     @JsonProperty(value = "error")
     private Error error;
 
     /**
-     * Creates an instance of BulkImportJob class.
+     * Creates an instance of ImportJob class.
      *
      * @param inputBlobUri the inputBlobUri value to set.
      * @param outputBlobUri the outputBlobUri value to set.
      */
     @JsonCreator
-    public BulkImportJob(
+    public ImportJob(
             @JsonProperty(value = "inputBlobUri", required = true) String inputBlobUri,
             @JsonProperty(value = "outputBlobUri", required = true) String outputBlobUri) {
         this.inputBlobUri = inputBlobUri;
@@ -87,7 +87,7 @@ public final class BulkImportJob {
     }
 
     /**
-     * Get the id property: The identifier of the bulk import job.
+     * Get the id property: The identifier of the import job.
      *
      * @return the id value.
      */
@@ -165,7 +165,7 @@ public final class BulkImportJob {
     }
 
     /**
-     * Get the error property: Details of the error(s) that occurred executing the bulk job.
+     * Get the error property: Details of the error(s) that occurred executing the import job.
      *
      * @return the error value.
      */
@@ -174,12 +174,12 @@ public final class BulkImportJob {
     }
 
     /**
-     * Set the error property: Details of the error(s) that occurred executing the bulk job.
+     * Set the error property: Details of the error(s) that occurred executing the import job.
      *
      * @param error the error value to set.
-     * @return the BulkImportJob object itself.
+     * @return the ImportJob object itself.
      */
-    public BulkImportJob setError(Error error) {
+    public ImportJob setError(Error error) {
         this.error = error;
         return this;
     }
@@ -191,10 +191,10 @@ public final class BulkImportJob {
      */
     public void validate() {
         if (getInputBlobUri() == null) {
-            throw new IllegalArgumentException("Missing required property inputBlobUri in model BulkImportJob");
+            throw new IllegalArgumentException("Missing required property inputBlobUri in model ImportJob");
         }
         if (getOutputBlobUri() == null) {
-            throw new IllegalArgumentException("Missing required property outputBlobUri in model BulkImportJob");
+            throw new IllegalArgumentException("Missing required property outputBlobUri in model ImportJob");
         }
         if (getError() != null) {
             getError().validate();

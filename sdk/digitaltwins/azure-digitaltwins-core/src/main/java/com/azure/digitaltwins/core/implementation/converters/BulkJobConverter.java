@@ -20,7 +20,7 @@ public final class BulkJobConverter {
      * Maps from {@link com.azure.digitaltwins.core.implementation.models.EventRoute} to
      * {@link DigitalTwinsEventRoute}. If the input is null, then the output will be null as well.
      */
-    public static DigitalTwinsImportJob map(com.azure.digitaltwins.core.implementation.models.BulkImportJob input) {
+    public static DigitalTwinsImportJob map(com.azure.digitaltwins.core.implementation.models.ImportJob input) {
         if (input == null) {
             return null;
         }
@@ -39,14 +39,14 @@ public final class BulkJobConverter {
 
     /**
      * Maps from {@link DigitalTwinsImportJob} to
-     * {@link com.azure.digitaltwins.core.implementation.models.BulkImportJob}. If the input is null, then the output will be null as well.
+     * {@link com.azure.digitaltwins.core.implementation.models.ImportJob}. If the input is null, then the output will be null as well.
      */
-    public static com.azure.digitaltwins.core.implementation.models.BulkImportJob map(DigitalTwinsImportJob input) {
+    public static com.azure.digitaltwins.core.implementation.models.ImportJob map(DigitalTwinsImportJob input) {
         if (input == null) {
             return null;
         }
 
-        return new com.azure.digitaltwins.core.implementation.models.BulkImportJob(input.getInputBlobUri(), input.getOutputBlobUri());
+        return new com.azure.digitaltwins.core.implementation.models.ImportJob(input.getInputBlobUri(), input.getOutputBlobUri());
     }
 
     public static ErrorInformation mapError(com.azure.digitaltwins.core.implementation.models.Error input) {

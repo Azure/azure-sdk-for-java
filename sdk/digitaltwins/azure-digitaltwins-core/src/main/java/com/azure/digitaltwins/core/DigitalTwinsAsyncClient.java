@@ -25,7 +25,6 @@ import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDa
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
-import com.azure.digitaltwins.core.implementation.models.BulkImportJob;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
@@ -2557,7 +2556,7 @@ public final class DigitalTwinsAsyncClient {
             .map(pagedBulkImportJobFunction);
     }
 
-    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.BulkImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedBulkImportJobFunction = (pagedBulkImportResponse) -> {
+    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.ImportJob>, PagedResponse<DigitalTwinsImportJob>> pagedBulkImportJobFunction = (pagedBulkImportResponse) -> {
         List<DigitalTwinsImportJob> convertedList = pagedBulkImportResponse.getValue().stream()
             .map(BulkJobConverter::map)
             .filter(Objects::nonNull)
