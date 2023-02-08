@@ -5,8 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
@@ -379,7 +381,6 @@ public final class TestHelpers {
                 SerializerEncoding.JSON);
 
             SearchIndexClient searchIndexClient = createSharedSearchIndexClient();
-
             searchIndexClient.createOrUpdateIndex(index);
 
             if (indexData != null) {
@@ -392,11 +393,19 @@ public final class TestHelpers {
         }
     }
 
+    public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((httpRequest, context) -> false)
+            .assertSync()
+            .build();
+    }
+
     public static SearchIndexClient createSharedSearchIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
             .buildClient();
     }
 

@@ -74,7 +74,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         String indexName = createHotelIndex();
         this.indexToDelete = indexName;
 
-        this.clientBuilder = getSearchClientBuilder(indexName, false);
+        // TODO: Use getSearchClientBuilder once SearchIndexingBufferedSender has Sync Flow integrated.
+        this.clientBuilder = getSearchClientBuilderWithoutAssertingClient(indexName, false);
     }
 
     @Override
