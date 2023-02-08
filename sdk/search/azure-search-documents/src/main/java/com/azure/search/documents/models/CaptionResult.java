@@ -38,6 +38,9 @@ public final class CaptionResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CaptionResult class. */
+    public CaptionResult() {}
+
     /**
      * Get the text property: A representative text passage extracted from the document most relevant to the search
      * query.

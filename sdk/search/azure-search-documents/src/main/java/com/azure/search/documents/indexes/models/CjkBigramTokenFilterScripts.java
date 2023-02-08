@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CjkBigramTokenFilterScripts. */
+/** Scripts that can be ignored by CjkBigramTokenFilter. */
 public enum CjkBigramTokenFilterScripts {
     /** Enum value han. */
     HAN("han"),
@@ -50,6 +50,7 @@ public enum CjkBigramTokenFilterScripts {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
