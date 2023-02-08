@@ -18,6 +18,10 @@ public final class SapSupportedResourceSkusResultInner {
     @JsonProperty(value = "supportedSkus")
     private List<SapSupportedSku> supportedSkus;
 
+    /** Creates an instance of SapSupportedResourceSkusResultInner class. */
+    public SapSupportedResourceSkusResultInner() {
+    }
+
     /**
      * Get the supportedSkus property: Gets the list of SAP supported SKUs.
      *

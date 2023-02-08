@@ -67,9 +67,9 @@ public final class EnvironmentsImpl {
      * The interface defining all the services for DevCenterEnvironments to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("https://{tenantId}-{devCenter}.{devCenterDnsSuffix}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "DevCenterEnvironment")
-    private interface EnvironmentsService {
+    public interface EnvironmentsService {
         @Get("/projects/{projectName}/environments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -83,9 +83,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironments(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @HeaderParam("Accept") String accept,
@@ -105,9 +103,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsByUser(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -128,9 +124,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEnvironmentByUser(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -152,9 +146,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateEnvironment(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -177,9 +169,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateEnvironment(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -202,9 +192,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteEnvironment(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -226,34 +214,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deployEnvironmentAction(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("projectName") String projectName,
-                @PathParam("userId") String userId,
-                @PathParam("environmentName") String environmentName,
-                @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/projects/{projectName}/users/{userId}/environments/{environmentName}:delete")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteEnvironmentAction(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
@@ -276,63 +237,12 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> customEnvironmentAction(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("userId") String userId,
                 @PathParam("environmentName") String environmentName,
                 @BodyParam("application/json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}/artifacts")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listArtifactsByEnvironment(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("projectName") String projectName,
-                @PathParam("userId") String userId,
-                @PathParam("environmentName") String environmentName,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}/artifacts/{artifactPath}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listArtifactsByEnvironmentAndPath(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("projectName") String projectName,
-                @PathParam("userId") String userId,
-                @PathParam("environmentName") String environmentName,
-                @PathParam("artifactPath") String artifactPath,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -350,9 +260,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItems(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @HeaderParam("Accept") String accept,
@@ -372,9 +280,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCatalogItem(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogItemId") String catalogItemId,
@@ -395,9 +301,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItemVersions(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogItemId") String catalogItemId,
@@ -418,9 +322,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCatalogItemVersion(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @PathParam("catalogItemId") String catalogItemId,
@@ -442,9 +344,7 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypes(
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @HeaderParam("Accept") String accept,
@@ -465,9 +365,7 @@ public final class EnvironmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -486,51 +384,7 @@ public final class EnvironmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsByUserNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listArtifactsByEnvironmentNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listArtifactsByEnvironmentAndPathNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -549,9 +403,7 @@ public final class EnvironmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItemsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -570,9 +422,7 @@ public final class EnvironmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItemVersionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -591,9 +441,7 @@ public final class EnvironmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("tenantId") String tenantId,
-                @HostParam("devCenter") String devCenter,
-                @HostParam("devCenterDnsSuffix") String devCenterDnsSuffix,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -632,7 +480,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -654,9 +502,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironments(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
@@ -706,7 +552,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -765,7 +611,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -817,7 +663,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -841,9 +687,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentsByUser(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         projectName,
                                         userId,
@@ -894,7 +738,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -956,7 +800,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1001,7 +845,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1025,9 +869,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getEnvironmentByUser(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1060,7 +902,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1106,7 +948,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1132,7 +974,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1157,9 +999,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateEnvironment(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1193,7 +1033,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1219,7 +1059,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1247,7 +1087,7 @@ public final class EnvironmentsImpl {
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1279,7 +1119,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1305,7 +1145,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1374,7 +1214,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1399,9 +1239,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.updateEnvironment(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1456,7 +1294,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -1481,7 +1319,7 @@ public final class EnvironmentsImpl {
     }
 
     /**
-     * Deletes an environment and all it's associated resources.
+     * Deletes an environment and all its associated resources.
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1501,9 +1339,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteEnvironment(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1514,7 +1350,7 @@ public final class EnvironmentsImpl {
     }
 
     /**
-     * Deletes an environment and all it's associated resources.
+     * Deletes an environment and all its associated resources.
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1535,7 +1371,7 @@ public final class EnvironmentsImpl {
                 () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1545,7 +1381,7 @@ public final class EnvironmentsImpl {
     }
 
     /**
-     * Deletes an environment and all it's associated resources.
+     * Deletes an environment and all its associated resources.
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1595,9 +1431,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deployEnvironmentAction(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1642,7 +1476,7 @@ public final class EnvironmentsImpl {
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1683,124 +1517,6 @@ public final class EnvironmentsImpl {
     }
 
     /**
-     * Executes a delete action.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     actionId: String (Required)
-     *     parameters: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Action properties overriding the environment's default values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteEnvironmentActionWithResponseAsync(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteEnvironmentAction(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
-                                this.client.getServiceVersion().getVersion(),
-                                projectName,
-                                userId,
-                                environmentName,
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Executes a delete action.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     actionId: String (Required)
-     *     parameters: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Action properties overriding the environment's default values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteEnvironmentActionAsync(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () ->
-                        this.deleteEnvironmentActionWithResponseAsync(
-                                projectName, userId, environmentName, body, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        null,
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Executes a delete action.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     actionId: String (Required)
-     *     parameters: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Action properties overriding the environment's default values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteEnvironmentAction(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.beginDeleteEnvironmentActionAsync(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
-    }
-
-    /**
      * Executes a custom action.
      *
      * <p><strong>Request Body Schema</strong>
@@ -1831,9 +1547,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.customEnvironmentAction(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 userId,
@@ -1878,7 +1592,7 @@ public final class EnvironmentsImpl {
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
-                        null,
+                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1916,291 +1630,6 @@ public final class EnvironmentsImpl {
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
         return this.beginCustomEnvironmentActionAsync(projectName, userId, environmentName, body, requestOptions)
                 .getSyncPoller();
-    }
-
-    /**
-     * Lists the artifacts for an environment.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentSinglePageAsync(
-            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listArtifactsByEnvironment(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        projectName,
-                                        userId,
-                                        environmentName,
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Lists the artifacts for an environment.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listArtifactsByEnvironmentAsync(
-            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listArtifactsByEnvironmentSinglePageAsync(projectName, userId, environmentName, requestOptions),
-                nextLink -> listArtifactsByEnvironmentNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists the artifacts for an environment.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listArtifactsByEnvironment(
-            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                listArtifactsByEnvironmentAsync(projectName, userId, environmentName, requestOptions));
-    }
-
-    /**
-     * Lists the artifacts for an environment at a specified path, or returns the file at the path.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param artifactPath The path of the artifact.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathSinglePageAsync(
-            String projectName,
-            String userId,
-            String environmentName,
-            String artifactPath,
-            RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listArtifactsByEnvironmentAndPath(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        projectName,
-                                        userId,
-                                        environmentName,
-                                        artifactPath,
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Lists the artifacts for an environment at a specified path, or returns the file at the path.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param artifactPath The path of the artifact.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listArtifactsByEnvironmentAndPathAsync(
-            String projectName,
-            String userId,
-            String environmentName,
-            String artifactPath,
-            RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () ->
-                        listArtifactsByEnvironmentAndPathSinglePageAsync(
-                                projectName, userId, environmentName, artifactPath, requestOptions),
-                nextLink -> listArtifactsByEnvironmentAndPathNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists the artifacts for an environment at a specified path, or returns the file at the path.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param artifactPath The path of the artifact.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listArtifactsByEnvironmentAndPath(
-            String projectName,
-            String userId,
-            String environmentName,
-            String artifactPath,
-            RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                listArtifactsByEnvironmentAndPathAsync(
-                        projectName, userId, environmentName, artifactPath, requestOptions));
     }
 
     /**
@@ -2242,9 +1671,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listCatalogItems(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
@@ -2369,9 +1796,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCatalogItem(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 catalogItemId,
@@ -2484,9 +1909,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listCatalogItemVersions(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         projectName,
                                         catalogItemId,
@@ -2726,9 +2149,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCatalogItemVersion(
-                                this.client.getTenantId(),
-                                this.client.getDevCenter(),
-                                this.client.getDevCenterDnsSuffix(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 projectName,
                                 catalogItemId,
@@ -2842,9 +2263,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentTypes(
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         projectName,
                                         accept,
@@ -2963,7 +2382,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -2986,13 +2405,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentsNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3027,7 +2440,7 @@ public final class EnvironmentsImpl {
      *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
-     *     owner: String (Optional)
+     *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
      * }
@@ -3050,117 +2463,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentsByUserNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listArtifactsByEnvironmentNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     downloadUri: String (Optional)
-     *     fileSize: Float (Optional)
-     *     createdTime: OffsetDateTime (Optional)
-     *     lastModifiedTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the artifact list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listArtifactsByEnvironmentAndPathNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3202,13 +2505,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listCatalogItemsNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3286,13 +2583,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listCatalogItemVersionsNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3334,13 +2625,7 @@ public final class EnvironmentsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listEnvironmentTypesNext(
-                                        nextLink,
-                                        this.client.getTenantId(),
-                                        this.client.getDevCenter(),
-                                        this.client.getDevCenterDnsSuffix(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

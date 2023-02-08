@@ -566,9 +566,9 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromListByteBuffer#List -->
      * <pre>
-     * final List&lt;ByteBuffer&gt; data = Stream.of("Some ", "data")
-     *     .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-     *     .collect(Collectors.toList());
+     * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
+     *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
      * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
      * System.out.println&#40;binaryData&#41;;
      * </pre>

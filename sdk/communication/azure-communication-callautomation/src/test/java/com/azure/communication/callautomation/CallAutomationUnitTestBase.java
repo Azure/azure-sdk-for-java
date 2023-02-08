@@ -10,10 +10,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
@@ -76,7 +76,7 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateGetParticipantResponse(String callerId, boolean isMuted) {
-        AcsCallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
+        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
         return serializeObject(callParticipant);
     }
 
