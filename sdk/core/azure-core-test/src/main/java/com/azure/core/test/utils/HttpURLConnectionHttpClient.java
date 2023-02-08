@@ -137,7 +137,8 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             } catch (IOException e) {
                 String mismatch = this.connection.getHeaderField("x-request-mismatch-error");
                 if (mismatch != null) {
-                    throw new RuntimeException(new String(Base64.getDecoder().decode(mismatch)), e);
+
+                    throw new RuntimeException(new String(Base64.getDecoder().decode(mismatch), StandardCharsets.UTF_8), e);
                 }
                 throw new RuntimeException(e);
             }
