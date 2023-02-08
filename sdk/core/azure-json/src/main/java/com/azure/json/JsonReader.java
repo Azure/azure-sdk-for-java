@@ -3,6 +3,8 @@
 
 package com.azure.json;
 
+import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.Objects;
  * Reads a JSON encoded value as a stream of tokens.
  */
 public abstract class JsonReader implements Closeable {
+    private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
+
     /**
      * Creates an instance of {@link JsonReader}.
      */
@@ -355,7 +359,7 @@ public abstract class JsonReader implements Closeable {
         }
 
         if (token == JsonToken.FIELD_NAME) {
-            buffer.append("{\"").append(getText()).append("\":");
+            buffer.append("{\"").append(ENCODER.quoteAsString(getText())).append("\":");
             token = nextToken();
         }
 
@@ -406,9 +410,9 @@ public abstract class JsonReader implements Closeable {
         // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
         //  Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
-            buffer.append("\"").append(getFieldName()).append("\":");
+            buffer.append("\"").append(ENCODER.quoteAsString(getFieldName())).append("\":");
         } else if (token == JsonToken.STRING) {
-            buffer.append("\"").append(getString()).append("\"");
+            buffer.append("\"").append(ENCODER.quoteAsString(getString())).append("\"");
         } else {
             buffer.append(getText());
         }
