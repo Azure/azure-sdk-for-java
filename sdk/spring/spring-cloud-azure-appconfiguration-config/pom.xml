@@ -75,12 +75,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
-      <version>4.5.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;dependency} -->
+      <version>4.6.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
-      <version>4.5.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;dependency} -->
+      <version>4.6.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test Dependencies -->
@@ -122,16 +122,10 @@
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.4.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
-                <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
-                <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.7.8]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-context:[3.1.5]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.5]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.25]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
