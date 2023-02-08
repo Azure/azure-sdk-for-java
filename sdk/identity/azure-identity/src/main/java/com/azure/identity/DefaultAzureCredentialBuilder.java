@@ -226,11 +226,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         String federatedTokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
+        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
         if (!(CoreUtils.isNullOrEmpty(tenantId)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            || (CoreUtils.isNullOrEmpty(managedIdentityClientId) && CoreUtils.isNullOrEmpty(workloadIdentityClientId))
+            || CoreUtils.isNullOrEmpty(clientId)
             || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(managedIdentityClientId, tenantId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
+            return new WorkloadIdentityCredential(clientId, tenantId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
         }
         return null;
     }
