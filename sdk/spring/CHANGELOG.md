@@ -12,6 +12,12 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fixed `GraphClient` exceptions handling when switching `HttpURLConnection` to `RestTemplate`. [#32779](https://github.com/Azure/azure-sdk-for-java/issues/32779)
 
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fixed Event Hubs Message header `source-type` from `kafka` to `amqp` when using `StreamBridge#send`. [#32777](https://github.com/Azure/azure-sdk-for-java/issues/32777)
+
 ## 5.0.0 (2023-01-17)
 - This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
