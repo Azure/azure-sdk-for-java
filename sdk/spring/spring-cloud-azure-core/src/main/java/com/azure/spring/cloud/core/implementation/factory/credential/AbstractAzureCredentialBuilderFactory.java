@@ -16,7 +16,6 @@ import com.azure.spring.cloud.core.implementation.credential.descriptor.Authenti
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
