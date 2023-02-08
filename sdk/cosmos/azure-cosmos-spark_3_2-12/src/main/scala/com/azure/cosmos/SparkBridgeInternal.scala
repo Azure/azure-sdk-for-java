@@ -78,5 +78,6 @@ private[cosmos] object SparkBridgeInternal {
     clientWrapper
       .getCollectionCache()
       .resolveByNameAsync(null, link, null, obsoleteValue)
+      .block()
   }
 }
