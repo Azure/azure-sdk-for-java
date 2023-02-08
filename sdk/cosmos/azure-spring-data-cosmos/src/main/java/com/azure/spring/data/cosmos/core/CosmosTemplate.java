@@ -351,7 +351,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        containerName = getContainerName(domainType);
+        String finalContainerName = getContainerName(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
         final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
@@ -360,7 +360,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
         options.setMaxBufferedItemCount(this.maxBufferedItemCount);
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
-        String finalContainerName = containerName;
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
@@ -547,14 +546,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return CosmosEntityInformation.getInstance(domainType).getContainerName();
     }
 
-    public String getContainerName(CosmosEntityInformation<?, ?> information) {
-        if (this.cosmosFactory.getContainerName() != null) {
-            return this.cosmosFactory.getContainerName();
-        }
-        Assert.notNull(information, "information should not be null");
-        return information.getContainerName();
-    }
-
     public String getContainerName(String containerName) {
         if (this.cosmosFactory.getContainerName() != null) {
             return this.cosmosFactory.getContainerName();
@@ -576,7 +567,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosDatabaseResponse.getDiagnostics(), null);
 
                 final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(getContainerName(information), information.getPartitionKeyPath());
+                    new CosmosContainerProperties(getContainerName(information.getContainerName()), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -767,11 +758,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(query, "DocumentQuery should not be null.");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-        containerName = getContainerName(domainType);
+        String finalContainerName = getContainerName(containerName);
 
         final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
         assert results != null;
-        String finalContainerName = containerName;
         return results.stream()
             .map(item -> deleteItem(item, finalContainerName, domainType))
             .collect(Collectors.toList());
@@ -1081,8 +1071,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private <T> Iterable<T> findItems(@NonNull CosmosQuery query,
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
-        containerName = getContainerName(containerName);
-        String finalContainerName = containerName;
+        String finalContainerName = getContainerName(containerName);
         return findItemsAsFlux(query, containerName, domainType)
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, jsonNode))
             .toIterable();

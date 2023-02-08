@@ -27,6 +27,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
-public class MultiTenantContainerCosmosFactoryIT {
+public class ReactiveMultiTenantContainerCosmosFactoryIT {
 
     private final String testDB1 = "Database1";
 
@@ -65,7 +67,7 @@ public class MultiTenantContainerCosmosFactoryIT {
     private CosmosClientBuilder cosmosClientBuilder;
 
     private MultiTenantContainerCosmosFactory cosmosFactory;
-    private CosmosTemplate cosmosTemplate;
+    private ReactiveCosmosTemplate reactiveCosmosTemplate;
     private CosmosAsyncClient client;
     private CosmosEntityInformation<Person, String> personInfo;
 
@@ -83,7 +85,7 @@ public class MultiTenantContainerCosmosFactoryIT {
         }
 
         final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter, null);
+        reactiveCosmosTemplate = new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter, null);
         personInfo = new CosmosEntityInformation<>(Person.class);
     }
 
@@ -91,33 +93,35 @@ public class MultiTenantContainerCosmosFactoryIT {
     public void testGetContainerFunctionality() {
         // Create testContainer1 and add TEST_PERSON_1 to it
         cosmosFactory.manuallySetContainerName = testContainer1;
-        cosmosTemplate.createContainerIfNotExists(personInfo);
-        cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
+        reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
         assertThat(cosmosFactory.getContainerName()).isEqualTo(testContainer1);
-        cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
+        reactiveCosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1))).block();
 
         // Create testContainer1 and add TEST_PERSON_2 to it
         cosmosFactory.manuallySetContainerName = testContainer2;
-        cosmosTemplate.createContainerIfNotExists(personInfo);
-        cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
+        reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
         assertThat(cosmosFactory.getContainerName()).isEqualTo(testContainer2);
-        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        reactiveCosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
 
         // Check that testContainer2 has the correct contents
         List<Person> expectedResultsContainer2 = new ArrayList<>();
         expectedResultsContainer2.add(TEST_PERSON_2);
-        Iterable<Person> iterableDB2 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        Flux<Person> fluxDB2 = reactiveCosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        StepVerifier.create(fluxDB2).expectNextCount(1).verifyComplete();
         List<Person> resultDB2 = new ArrayList<>();
-        iterableDB2.forEach(resultDB2::add);
+        fluxDB2.toIterable().forEach(resultDB2::add);
         Assert.assertEquals(expectedResultsContainer2, resultDB2);
 
         // Check that testContainer1 has the correct contents
         cosmosFactory.manuallySetContainerName = testContainer1;
         List<Person> expectedResultsContainer1 = new ArrayList<>();
         expectedResultsContainer1.add(TEST_PERSON_1);
-        Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        Flux<Person> fluxDB1 = reactiveCosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        StepVerifier.create(fluxDB1).expectNextCount(1).verifyComplete();
         List<Person> resultDB1 = new ArrayList<>();
-        iterableDB1.forEach(resultDB1::add);
+        fluxDB1.toIterable().forEach(resultDB1::add);
         Assert.assertEquals(expectedResultsContainer1, resultDB1);
 
         //Cleanup
