@@ -2582,8 +2582,12 @@ public final class Utils {
                 builder.append("\n\t\t\tName :").append(notAction);
             }
             builder.append("\n\t\tPermission Data Actions: " + permission.dataActions().size());
-            for (String notAction : permission.dataActions()) {
-                builder.append("\n\t\t\tName :").append(notAction);
+            for (String dataActions : permission.dataActions()) {
+                builder.append("\n\t\t\tName :").append(dataActions);
+            }
+            builder.append("\n\t\tPermission Not Data Actions: " + permission.notDataActions().size());
+            for (String notDataActions : permission.notDataActions()) {
+                builder.append("\n\t\t\tName :").append(notDataActions);
             }
         }
 

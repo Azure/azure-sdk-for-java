@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fixed a bug that `Permission.dataActions()` wrongly returns `actions` instead of `dataActions`.
+- Fixed a bug that `Permission.dataActions()` and `Permission.notDataActions()` return wrong results.
 
 ## 2.23.0 (2023-01-27)
 
