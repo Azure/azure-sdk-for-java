@@ -351,7 +351,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        String finalContainerName = getContainerName(containerName);
+        String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
         final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
@@ -539,14 +539,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public String getContainerName(Class<?> domainType) {
-        if (this.cosmosFactory.getContainerName() != null) {
-            return this.cosmosFactory.getContainerName();
-        }
         Assert.notNull(domainType, "domainType should not be null");
-        return CosmosEntityInformation.getInstance(domainType).getContainerName();
+        return getContainerNameOverride(CosmosEntityInformation.getInstance(domainType).getContainerName());
     }
-
-    public String getContainerName(String containerName) {
+    public String getContainerNameOverride(String containerName) {
         if (this.cosmosFactory.getContainerName() != null) {
             return this.cosmosFactory.getContainerName();
         }
@@ -567,7 +563,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosDatabaseResponse.getDiagnostics(), null);
 
                 final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(getContainerName(information.getContainerName()), information.getPartitionKeyPath());
+                    new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -619,7 +615,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public CosmosContainerProperties getContainerProperties(String containerName) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         final CosmosContainerResponse response = this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
@@ -661,7 +657,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      */
     @Override
     public <T> void deleteEntity(String containerName, T entity) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         Assert.notNull(entity, "entity to be deleted should not be null");
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entity.getClass();
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
@@ -673,7 +669,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private void deleteById(String containerName, Object id, PartitionKey partitionKey,
                             CosmosItemRequestOptions options) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         String idToDelete = CosmosUtils.getStringIDValue(id);
         LOGGER.debug("execute deleteById in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -758,7 +754,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(query, "DocumentQuery should not be null.");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-        String finalContainerName = getContainerName(containerName);
+        String finalContainerName = getContainerNameOverride(containerName);
 
         final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
         assert results != null;
@@ -789,7 +785,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final SqlQuerySpec countQuerySpec = new CountQueryGenerator().generateCosmos(query);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
@@ -799,7 +795,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
         return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName, partitionKeyValue);
@@ -816,7 +812,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                         Pageable pageable, Sort sort,
                                         Class<T> returnType, String containerName,
                                         Optional<Object> partitionKeyValue) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName, partitionKeyValue);
         final long total = getCountValue(countQuerySpec, containerName);
         return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
@@ -829,7 +825,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
@@ -922,7 +918,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public long count(String containerName) {
         Assert.hasText(containerName, "container name should not be empty");
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.ALL));
         final Long count = getCountValue(query, containerName);
         assert count != null;
@@ -931,7 +927,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> long count(CosmosQuery query, String containerName) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "container name should not be empty");
 
         final Long count = getCountValue(query, containerName);
@@ -941,7 +937,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> long count(SqlQuerySpec querySpec, String containerName) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         Assert.hasText(containerName, "container name should not be empty");
 
         final Long count = getCountValue(querySpec, containerName);
@@ -985,7 +981,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
         options.setMaxBufferedItemCount(this.maxBufferedItemCount);
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
 
         return executeQuery(querySpec, containerName, options)
             .publishOn(Schedulers.parallel())
@@ -1002,7 +998,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private Flux<FeedResponse<JsonNode>> executeQuery(SqlQuerySpec sqlQuerySpec,
                                                       String containerName,
                                                       CosmosQueryRequestOptions options) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .queryItems(sqlQuerySpec, options, JsonNode.class)
@@ -1049,7 +1045,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
         cosmosQueryRequestOptions.setMaxBufferedItemCount(this.maxBufferedItemCount);
         cosmosQueryRequestOptions.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
 
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
@@ -1071,7 +1067,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private <T> Iterable<T> findItems(@NonNull CosmosQuery query,
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
-        String finalContainerName = getContainerName(containerName);
+        String finalContainerName = getContainerNameOverride(containerName);
         return findItemsAsFlux(query, containerName, domainType)
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, jsonNode))
             .toIterable();
@@ -1100,7 +1096,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
-        containerName = getContainerName(containerName);
+        containerName = getContainerNameOverride(containerName);
         maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
         return toDomainObject(domainType, responseJsonNode);
     }
