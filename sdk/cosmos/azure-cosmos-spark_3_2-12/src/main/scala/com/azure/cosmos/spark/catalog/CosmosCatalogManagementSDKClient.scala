@@ -4,12 +4,14 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource}
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters}
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
 import reactor.core.publisher.Mono
 import reactor.core.scala.publisher.SMono.{PimpJFlux, PimpJMono}
 import reactor.core.scala.publisher.{SFlux, SMono}
@@ -28,7 +30,8 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                                                            databaseAccountName: String,
                                                            cosmosManager: CosmosManager,
                                                            cosmosAsyncClient: CosmosAsyncClient)
-    extends CosmosCatalogClient {
+    extends CosmosCatalogClient
+      with BasicLoggingTrait {
 
     private val objectMapper: ObjectMapper = new ObjectMapper()
     objectMapper.setSerializationInclusion(Include.NON_NULL)
@@ -412,4 +415,104 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 }
             })
     }
+
+    override def alterContainer
+    (
+      databaseName: String,
+      containerName: String,
+      finalThroughputProperty: TableChange.SetProperty
+    ): SMono[Boolean] = {
+
+        readContainerThroughputProperties(databaseName, containerName)
+            .flatMap(throughPutPropertiesTuple => {
+              if (throughPutPropertiesTuple._2) {
+                throw new UnsupportedOperationException(
+                  "ALTER TABLE cannot be used to modify throughput of a container using shared database throughput.")
+              }
+
+              val throughputUpdateParameter = if (CosmosThroughputProperties.manualThroughputFieldName
+                .equalsIgnoreCase(finalThroughputProperty.property())) {
+
+                new ThroughputSettingsUpdateParameters()
+                  .withResource(new ThroughputSettingsResource().withThroughput(finalThroughputProperty.value().toInt))
+              } else {
+                new ThroughputSettingsUpdateParameters()
+                  .withResource(new ThroughputSettingsResource()
+                    .withAutoscaleSettings(
+                      new AutoscaleSettingsResource()
+                        .withMaxThroughput(finalThroughputProperty.value().toInt)))
+              }
+
+              sqlResourcesClient
+                .updateSqlContainerThroughputAsync(
+                  resourceGroupName,
+                  databaseAccountName,
+                  databaseName,
+                  containerName,
+                  throughputUpdateParameter)
+                .asScala
+                .map(result => {
+                  if (result.resource().offerReplacePending() != null &&
+                    result.resource().offerReplacePending() != "null" &&
+                    !result.resource().offerReplacePending().toBoolean) {
+
+                    logInfo(s"Updated throughput synchronously " +
+                      s"(${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+                    true
+                  } else {
+                    logWarning(s"Throughput will be updated asynchronously " +
+                      s"(${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+                    false
+                  }
+                })
+            })
+    }
+
+  override def alterDatabase
+  (
+    databaseName: String,
+    finalThroughputProperty: NamespaceChange.SetProperty): SMono[Boolean] = {
+
+    readDatabaseThroughput(databaseName)
+      .flatMap(throughPutPropertiesMap => {
+        if (throughPutPropertiesMap.size == 0) {
+          throw new UnsupportedOperationException(
+            "ALTER NAMESPACE can only be used to modify throughput of a database with shared throughput being enabled.")
+        }
+
+        val throughputUpdateParameter = if (CosmosThroughputProperties.manualThroughputFieldName
+          .equalsIgnoreCase(finalThroughputProperty.property())) {
+
+          new ThroughputSettingsUpdateParameters()
+            .withResource(new ThroughputSettingsResource().withThroughput(finalThroughputProperty.value().toInt))
+        } else {
+          new ThroughputSettingsUpdateParameters()
+            .withResource(new ThroughputSettingsResource()
+              .withAutoscaleSettings(
+                new AutoscaleSettingsResource()
+                  .withMaxThroughput(finalThroughputProperty.value().toInt)))
+        }
+
+        sqlResourcesClient
+          .updateSqlDatabaseThroughputAsync(
+            resourceGroupName,
+            databaseAccountName,
+            databaseName,
+            throughputUpdateParameter)
+          .asScala
+          .map(result => {
+            if (!result.resource().offerReplacePending().toBoolean &&
+              result.resource().offerReplacePending() != "null" &&
+              !result.resource().offerReplacePending().toBoolean) {
+              logInfo(s"Updated throughput synchronously " +
+                s"(${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+              true
+            } else {
+              logWarning(s"Throughput will be updated asynchronously " +
+                s"(${finalThroughputProperty.property()}: ${finalThroughputProperty.value()}).")
+              false
+            }
+          })
+      })
+  }
 }

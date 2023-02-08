@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.catalog.{CosmosCatalogConflictException, CosmosCatalogException, CosmosCatalogNotFoundException}
+import com.azure.cosmos.spark.catalog.{CosmosCatalogConflictException, CosmosCatalogException, CosmosCatalogNotFoundException, CosmosThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
@@ -217,10 +217,43 @@ class CosmosCatalogBase
     @throws(classOf[UnsupportedOperationException])
     def alterNamespaceBase(namespace: Array[String],
                            changes: Seq[NamespaceChange]): Unit = {
-        checkNamespace(namespace)
-        // TODO: moderakh we can support changing database level throughput?
-        throw new UnsupportedOperationException("altering namespace not supported")
+      checkNamespace(namespace)
+
+      if (changes.size > 0) {
+        val invalidChangesCount = changes
+          .count(change => !CosmosThroughputProperties.isThroughputProperty(change))
+        if (invalidChangesCount > 0) {
+          throw new UnsupportedOperationException("ALTER NAMESPACE contains unsupported changes.")
+        }
+
+        val finalThroughputProperty = changes.last.asInstanceOf[NamespaceChange.SetProperty]
+
+        val databaseName = toCosmosDatabaseName(namespace.head)
+
+        alterNamespaceImpl(databaseName, finalThroughputProperty)
+      }
     }
+
+  //scalastyle:off method.length
+  private def alterNamespaceImpl(databaseName: String, finalThroughputProperty: NamespaceChange.SetProperty): Unit = {
+    logInfo(s"alterNamespace DB:$databaseName")
+
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).alterNamespace($databaseName)"
+        ))
+      ))
+      .to(cosmosClientCacheItems => {
+        cosmosClientCacheItems(0).get
+          .sparkCatalogClient
+          .alterDatabase(databaseName, finalThroughputProperty)
+          .block()
+      })
+  }
+  //scalastyle:on method.length
 
     /**
      * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
@@ -364,8 +397,29 @@ class CosmosCatalogBase
 
     @throws(classOf[UnsupportedOperationException])
     override def alterTable(ident: Identifier, changes: TableChange*): Table = {
-        // TODO: moderakh we can support updating indexing policy and throughput
-        throw new UnsupportedOperationException
+        checkNamespace(ident.namespace())
+
+      if (changes.size > 0) {
+        val invalidChangesCount = changes
+          .count(change => !CosmosThroughputProperties.isThroughputProperty(change))
+        if (invalidChangesCount > 0) {
+          throw new UnsupportedOperationException("ALTER TABLE contains unsupported changes.")
+        }
+
+        val finalThroughputProperty = changes.last.asInstanceOf[TableChange.SetProperty]
+
+        val tableBeforeModification = loadTableImpl(ident)
+        if (!tableBeforeModification.isInstanceOf[ItemsTable]) {
+          throw new UnsupportedOperationException("ALTER TABLE cannot be applied to Cosmos views.")
+        }
+
+        val databaseName = toCosmosDatabaseName(ident.namespace().head)
+        val containerName = toCosmosContainerName(ident.name())
+
+        alterPhysicalTable(databaseName, containerName, finalThroughputProperty)
+      }
+
+      loadTableImpl(ident)
     }
 
     override def dropTable(ident: Identifier): Boolean = {
@@ -487,6 +541,29 @@ class CosmosCatalogBase
         }
     }
     //scalastyle:on method.length
+
+  //scalastyle:off method.length
+  private def alterPhysicalTable(databaseName: String,
+                                 containerName: String,
+                                 finalThroughputProperty: TableChange.SetProperty): Unit = {
+    logInfo(s"alterPhysicalTable DB:$databaseName, Container: $containerName")
+
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).alterPhysicalTable($databaseName, $containerName)"
+        ))
+      ))
+      .to(cosmosClientCacheItems => {
+        cosmosClientCacheItems(0).get
+          .sparkCatalogClient
+          .alterContainer(databaseName, containerName, finalThroughputProperty)
+          .block()
+      })
+  }
+  //scalastyle:on method.length
 
     private def deletePhysicalTable(databaseName: String, containerName: String): Boolean = {
         try {
