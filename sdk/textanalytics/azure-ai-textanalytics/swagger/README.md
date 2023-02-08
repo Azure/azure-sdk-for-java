@@ -58,14 +58,15 @@ import org.slf4j.Logger;
  * This class contains the customization code to customize the AutoRest generated code for TextAnalytics.
  */
 public class TextAnalyticsCustomization extends Customization {
+    
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+        PackageCustomization implementationPackage = customization.getPackage("com.azure.ai.textanalytics.implementation");
         
-        PackageCustomization models = customization.getPackage("com.azure.ai.textanalytics.implementation.models");
-        
-        ClassCustomization analyzeTextsImpl = models.getClass("AnalyzeTextsImpl");
-        analyzeTextsImpl.setModifier(Modifier.PUBLIC);
-       
+        ClassCustomization analyzeTextsImpl = implementationPackage.getClass("AnalyzeTextsImpl");
+
+        ConstructorCustomization constructor = analyzeTextsImpl.getConstructor("AnalyzeTextsImpl(MicrosoftCognitiveLanguageServiceTextAnalysisImpl client)");
+        constructor.setModifier(1);
     }
 }
 
