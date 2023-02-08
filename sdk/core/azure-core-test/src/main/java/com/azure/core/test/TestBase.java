@@ -7,14 +7,12 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
-import com.azure.core.test.utils.TestProxyManager;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +21,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -81,7 +80,10 @@ public abstract class TestBase implements BeforeEachCallback {
         }
     }
 
-    private static TestMode testMode;
+    /**
+     * The {@link TestMode} used for this execution.
+     */
+    static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
@@ -105,7 +107,6 @@ public abstract class TestBase implements BeforeEachCallback {
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
 
-    private static TestProxyManager testProxyManager;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
@@ -115,10 +116,6 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
-        if (useTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testProxyManager = new TestProxyManager(InterceptorManager.getRecordFolder());
-            testProxyManager.startProxy();
-        }
     }
 
     @Override
@@ -173,16 +170,6 @@ public abstract class TestBase implements BeforeEachCallback {
         if (testContextManager != null && testContextManager.didTestRun()) {
             afterTest();
             interceptorManager.close();
-        }
-    }
-
-    /**
-     * Performs cleanup actions after all tests are executed.
-     */
-    @AfterAll
-    public static void teardownClass() {
-        if (testProxyManager != null) {
-            testProxyManager.stopProxy();
         }
     }
 
