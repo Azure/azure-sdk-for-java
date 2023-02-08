@@ -4,6 +4,12 @@
 module com.azure.core.serializer.json.jackson {
     requires transitive com.azure.core;
 
+    requires transitive com.fasterxml.jackson.core;
+    requires transitive com.fasterxml.jackson.databind;
+
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.dataformat.xml;
+
     exports com.azure.core.serializer.json.jackson;
 
     provides com.azure.core.util.serializer.MemberNameConverterProvider
