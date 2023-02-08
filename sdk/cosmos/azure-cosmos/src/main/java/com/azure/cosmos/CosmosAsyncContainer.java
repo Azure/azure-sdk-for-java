@@ -758,6 +758,14 @@ public class CosmosAsyncContainer {
             queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType));
     }
 
+    String getLinkWithoutTrailingSlash() {
+        if (this.link.startsWith("/")) {
+            return this.link.substring(1);
+        }
+
+        return this.link;
+    }
+
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         Class<T> classType) {
@@ -789,7 +797,7 @@ public class CosmosAsyncContainer {
                 .getCollectionCache()
                 .resolveByNameAsync(
                     null,
-                    this.link,
+                    this.getLinkWithoutTrailingSlash(),
                     null)
                 .flatMapMany(
                     collection -> {
@@ -1776,7 +1784,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.link, null)
+            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal
@@ -1795,7 +1803,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.link, null)
+            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal

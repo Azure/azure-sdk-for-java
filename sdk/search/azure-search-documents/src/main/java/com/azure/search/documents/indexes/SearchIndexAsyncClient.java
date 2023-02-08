@@ -111,11 +111,11 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the service client configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName)
+        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer)
             .buildAsyncClient();
     }
 
-    SearchClientBuilder getSearchClientBuilder(String indexName) {
+    static SearchClientBuilder getSearchClientBuilder(String indexName, String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline, JsonSerializer serializer) {
         return new SearchClientBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
