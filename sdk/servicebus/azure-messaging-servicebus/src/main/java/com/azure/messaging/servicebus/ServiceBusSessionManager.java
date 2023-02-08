@@ -279,9 +279,9 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMap(link -> link.getEndpointStates()
                 .filter(e -> e == AmqpEndpointState.ACTIVE)
                 .next()
-                // When link is CLOSED directly from UNINITIALIZED state, and if the error condition in the closed event
-                // is null, the endpointStates will emit complete signal. In this case, we switch Mono.empty() to
-                // Mono.error() in order to do the retryWhen().
+                // It is possible that link is CLOSED directly from UNINITIALIZED state. This may happen when remote
+                // refuses to attach link and the error condition in 'onLinkRemoteClose()' is null, so 'endpointStates'
+                // will emit the complete signal. In this case, we switch to Mono.error() in order to do the retry.
                 .switchIfEmpty(Mono.error(() ->
                     new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
