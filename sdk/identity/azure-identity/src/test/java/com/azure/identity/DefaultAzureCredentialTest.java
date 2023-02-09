@@ -150,9 +150,6 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testUseWorkloadIdentityCredentialWithClientIdFlow() throws Exception {
         // setup
-        String token1 = "token1";
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
         Configuration configuration = new ConfigurationBuilder(source, source, source).build();
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
