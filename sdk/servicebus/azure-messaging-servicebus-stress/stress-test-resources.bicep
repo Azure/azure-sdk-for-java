@@ -4,9 +4,9 @@ param baseResourceName string = resourceGroup().name
 @description('The location of the resources. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-var subBaseName = '${substring(baseResourceName, 0, min(length(baseResourceName), 12))}-${substring(guid(baseResourceName), 0, 4)}'
-var serviceBusNamespaceName = '${subBaseName}-sbns'
-var serviceBusAuthRulesName = '${subBaseName}-sbrl'
+var subBaseName = '${substring(baseResourceName, 0, min(length(baseResourceName), 22))}-${substring(guid(baseResourceName), 0, 5)}'
+var serviceBusNamespaceName = '${subBaseName}-namespace'
+var serviceBusAuthRulesName = 'stress-test-auth-rule'
 var serviceBusQueueName = 'test-queue'
 var serviceBusSessionQueueName = 'test-session-queue'
 var serviceBusTopicName = 'test-topic'
