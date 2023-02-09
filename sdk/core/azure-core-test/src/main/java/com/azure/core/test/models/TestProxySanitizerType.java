@@ -14,7 +14,7 @@ public enum TestProxySanitizerType {
     /**
      * Sanitize the response body.
      */
-    BODY("BodyKeySanitizer"),
+    BODY_KEY("BodyKeySanitizer"),
 
     BODY_REGEX("BodyRegexSanitizer"),
     /**

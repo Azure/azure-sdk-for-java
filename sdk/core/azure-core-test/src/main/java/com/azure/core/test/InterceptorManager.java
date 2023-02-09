@@ -433,9 +433,17 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add text replacement rule (regex as key, the replacement text as value) into {@code recordSanitizers}
-     * @param recordSanitizers the list of replacement regex and rules.
+     * @param testProxySanitizers the list of replacement regex and rules.
      */
-    public void addRecordSanitizers(List<TestProxySanitizer> recordSanitizers) {
-        this.recordSanitizers = recordSanitizers;
+    public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
+        this.recordSanitizers = testProxySanitizers;
+    }
+
+    /**
+     * Add matcher rules to match recorded data in playback.
+     * @param testProxyMatchers the list of matcher rules when playing back recorded data.
+     */
+    public void addMatchers(List<TestProxyMatcher> testProxyMatchers) {
+        this.customMatcher = testProxyMatchers;
     }
 }

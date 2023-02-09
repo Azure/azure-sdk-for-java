@@ -6,8 +6,8 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyMatcher;
-import com.azure.core.test.models.TestProxyMatcherType;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
@@ -128,7 +128,7 @@ public class TestProxyUtils {
     }
 
     private static TestProxyMatcher addDefaultCustomDefaultMatcher() {
-        return new TestProxyMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS)).setTestProxyMatcherType(TestProxyMatcherType.CUSTOM);
+        return new CustomMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS));
     }
 
     private static String createCustomMatcherRequestBody(String ignoredHeaders, String excludedHeaders, boolean compareBodies, String ignoredQueryParameters) {
@@ -175,10 +175,10 @@ public class TestProxyUtils {
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
                     break;
-                case BODY:
+                case BODY_KEY:
                     requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.BODY.getName();
+                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
                     break;
                 case HEADER:
                     requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
@@ -202,20 +202,21 @@ public class TestProxyUtils {
             String matcherType;
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
-                    matcherType = TestProxyMatcherType.HEADERLESS.getName();
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.HEADERLESS.getName();
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
                     break;
                 case BODILESS:
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
-                    matcherType = TestProxyMatcherType.BODILESS.getName();
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.BODILESS.getName();
                     break;
                 case CUSTOM:
-                    String requestBody = createCustomMatcherRequestBody(testProxyMatcher.getIgnoredHeaders(),
-                        testProxyMatcher.getExcludedHeaders(), testProxyMatcher.isIgnoreQueryOrdering(),
-                        testProxyMatcher.getIgnoredQueryParameters());
-                    matcherType = TestProxyMatcherType.CUSTOM.getName();
+                    CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
+                    String requestBody = createCustomMatcherRequestBody(customMatcher.getIgnoredHeaders(),
+                        customMatcher.getExcludedHeaders(), customMatcher.isIgnoreQueryOrdering(),
+                        customMatcher.getIgnoredQueryParameters());
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.CUSTOM.getName();
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);
                     break;
@@ -236,7 +237,7 @@ public class TestProxyUtils {
         return JSON_PROPERTIES_TO_REDACT.stream()
             .map(jsonProperty ->
                 new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE,
-                    TestProxySanitizerType.BODY))
+                    TestProxySanitizerType.BODY_KEY))
             .collect(Collectors.toList());
     }
 

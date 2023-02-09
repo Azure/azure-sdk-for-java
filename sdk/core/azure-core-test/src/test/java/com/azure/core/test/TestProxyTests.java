@@ -50,7 +50,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public static final String REDACTED = "REDACTED";
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
     }
 
@@ -153,7 +153,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -192,7 +192,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -220,7 +220,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
