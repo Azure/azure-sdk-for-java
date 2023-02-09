@@ -4,6 +4,7 @@
 package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpHeaderName
 import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -24,6 +25,7 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
+import com.azure.storage.file.share.models.ShareFileRequestIntent
 import com.azure.storage.file.share.models.ShareFileUploadOptions
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -214,6 +216,26 @@ class FileAPITests extends APISpec {
         compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Create file oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirName = generatePathName()
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+
+        when:
+        def result = fileClient.createWithResponse(Constants.KB, null, null, null, null, null, null)
+
+        then:
+        fileClient.getShareName() == shareName
+        def filePath = fileClient.getFilePath().split("/")
+        fileName == filePath[1] // compare with filename
+        result.getValue().getETag() == result.getHeaders().getValue(HttpHeaderName.ETAG)
+    }
+
     def "Create file with args error"() {
         when:
         primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null)
@@ -275,6 +297,39 @@ class FileAPITests extends APISpec {
         assertResponseStatusCode(uploadResponse, 201)
         assertResponseStatusCode(downloadResponse, 206)
         downloadResponse.getDeserializedHeaders().getContentLength() == data.defaultDataSizeLong
+
+        data.defaultBytes == stream.toByteArray()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Upload and download data oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+        fileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def uploadResponse = fileClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSizeLong, null, null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = fileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200, 206)
+        headers.getContentLength() == data.defaultDataSizeLong
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
 
         data.defaultBytes == stream.toByteArray()
     }
@@ -511,6 +566,36 @@ class FileAPITests extends APISpec {
         bodyStr == data.defaultText
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Download oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+
+        fileClient.create(data.defaultDataSizeLong)
+        fileClient.uploadRange(data.defaultInputStream, data.defaultDataSizeLong)
+        def properties = fileClient.getProperties()
+
+        when:
+        def stream = new ByteArrayOutputStream()
+        def response = fileClient.downloadWithResponse(stream, null, null, null)
+        def body = stream.toByteArray()
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body == data.defaultBytes
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() == properties.getContentLength()
+        headers.getContentType() == properties.getContentType()
+        headers.getContentMd5() == properties.getContentMd5()
+        headers.getContentEncoding() == properties.getContentEncoding()
+        headers.getCacheControl() == properties.getCacheControl()
+        headers.getContentDisposition() == properties.getContentDisposition()
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Upload Range 4TB"() {
         given:
@@ -545,6 +630,41 @@ class FileAPITests extends APISpec {
         _ || 4 * Constants.MB // max put range
         _ || 5 * Constants.MB
 
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Upload range oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+
+        fileClient.create(data.defaultDataSizeLong)
+
+        when:
+        def uploadResponse = fileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(data.defaultInputStream, data.defaultDataSizeLong), null, null)
+        def stream = new ByteArrayOutputStream()
+        def downloadResponse = fileClient.downloadWithResponse(stream, null, null, null, null)
+        def headers = downloadResponse.getDeserializedHeaders()
+
+        then:
+        assertResponseStatusCode(uploadResponse, 201)
+        assertResponseStatusCode(downloadResponse, 200, 206)
+        headers.getContentLength() == data.defaultDataSizeLong
+        headers.getETag()
+        headers.getLastModified()
+        headers.getFilePermissionKey()
+        headers.getFileAttributes()
+        headers.getFileLastWriteTime()
+        headers.getFileCreationTime()
+        headers.getFileChangeTime()
+        headers.getFileParentId()
+        headers.getFileId()
+
+        data.defaultBytes == stream.toByteArray()
     }
 
     @Unroll
@@ -664,6 +784,31 @@ class FileAPITests extends APISpec {
         primaryFileClient.clearRangeWithResponse(7, 1, null, null)
         def stream = new ByteArrayOutputStream()
         primaryFileClient.downloadWithResponse(stream, new ShareFileRange(1, 7), false, null, null)
+
+        then:
+        for (def b : stream.toByteArray()) {
+            b == 0
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Upload and clear range oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+
+        def fullInfoString = "please clear the range"
+        def fullInfoData = getInputStream(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        fileClient.create(fullInfoString.length())
+        fileClient.uploadRange(fullInfoData, fullInfoString.length())
+
+        when:
+        fileClient.clearRange(7)
+        def stream = new ByteArrayOutputStream()
+        fileClient.downloadWithResponse(stream, new ShareFileRange(0, 6), false, null, null)
 
         then:
         for (def b : stream.toByteArray()) {
@@ -1344,6 +1489,31 @@ class FileAPITests extends APISpec {
         false        | false         | false     | true
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Start copy oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def sourceClient = dirClient.getFileClient(generatePathName())
+        sourceClient.create(data.defaultDataSizeLong)
+        def destClient = dirClient.getFileClient(generatePathName())
+        destClient.create(data.defaultDataSizeLong)
+
+        sourceClient.uploadRange(data.defaultInputStream, data.defaultDataSizeLong)
+
+        def sourceURL = sourceClient.getFileUrl()
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = sourceClient.beginCopy(sourceURL, null, null)
+
+        def pollResponse = poller.poll()
+
+        then:
+        pollResponse.getValue().getCopyId() != null
+    }
+
     def "Abort copy"() {
         given:
         def fileSize = Constants.MB
@@ -1438,6 +1608,37 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Abort copy oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def sourceClient = dirClient.getFileClient(fileName)
+        sourceClient.create(data.defaultDataSizeLong)
+        sourceClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        def sourceURL = sourceClient.getFileUrl()
+
+        def destClient = dirClient.getFileClient(generatePathName())
+        destClient.create(data.defaultDataSizeLong)
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = destClient.beginCopy(sourceURL, null, null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        destClient.abortCopy(pollResponse.getValue().getCopyId())
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
     def "Abort copy error"() {
         when:
         primaryFileClient.abortCopy("randomId")
@@ -1453,6 +1654,21 @@ class FileAPITests extends APISpec {
 
         expect:
         assertResponseStatusCode(primaryFileClient.deleteWithResponse(null, null), 202)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Delete file oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirName = generatePathName()
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+        fileClient.create(Constants.KB)
+
+        expect:
+        assertResponseStatusCode(fileClient.deleteWithResponse(null, null), 202)
     }
 
     def "Delete file error"() {
@@ -1528,6 +1744,30 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Get properties oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+
+        when:
+        def createInfo = fileClient.create(Constants.KB)
+        def properties = fileClient.getProperties()
+
+        then:
+        createInfo.getETag() == properties.getETag()
+        createInfo.getLastModified() == properties.getLastModified()
+        createInfo.getSmbProperties().getFilePermissionKey() == properties.getSmbProperties().getFilePermissionKey()
+        createInfo.getSmbProperties().getNtfsFileAttributes() == properties.getSmbProperties().getNtfsFileAttributes()
+        createInfo.getSmbProperties().getFileLastWriteTime() == properties.getSmbProperties().getFileLastWriteTime()
+        createInfo.getSmbProperties().getFileCreationTime() == properties.getSmbProperties().getFileCreationTime()
+        createInfo.getSmbProperties().getFileChangeTime() == properties.getSmbProperties().getFileChangeTime()
+        createInfo.getSmbProperties().getParentId() == properties.getSmbProperties().getParentId()
+        createInfo.getSmbProperties().getFileId() == properties.getSmbProperties().getFileId()
+    }
+
     def "Get properties error"() {
         when:
         primaryFileClient.getProperties()
@@ -1596,6 +1836,36 @@ class FileAPITests extends APISpec {
         compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Set httpHeaders oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirName = generatePathName()
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+        httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("application/octet-stream")
+            .setContentDisposition("attachment")
+            .setCacheControl("no-transform")
+            .setContentEncoding("gzip")
+            .setContentMd5(new byte[0])
+            .setContentLanguage("en")
+
+        def res = fileClient.setPropertiesWithResponse(Constants.KB, httpHeaders, null, null, null, null)
+        def properties = fileClient.getProperties()
+
+        expect:
+        assertResponseStatusCode(res, 200)
+        res.getValue().getETag() == res.getHeaders().getValue(HttpHeaderName.ETAG)
+        properties.getContentType() == "application/octet-stream"
+        properties.getContentDisposition() == "attachment"
+        properties.getCacheControl() == "no-transform"
+        properties.getContentEncoding() == "gzip"
+        properties.getContentMd5() == new byte[0]
+    }
+
     def "Set httpHeaders error"() {
         given:
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
@@ -1615,6 +1885,27 @@ class FileAPITests extends APISpec {
         def getPropertiesBefore = primaryFileClient.getProperties()
         def setPropertiesResponse = primaryFileClient.setMetadataWithResponse(updatedMetadata, null, null)
         def getPropertiesAfter = primaryFileClient.getProperties()
+
+        then:
+        testMetadata == getPropertiesBefore.getMetadata()
+        assertResponseStatusCode(setPropertiesResponse, 200)
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Set metadata oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def updatedMetadata = Collections.singletonMap("update", "value")
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.createWithResponse(Constants.KB, null, null, null, testMetadata, null, null)
+
+        when:
+        def getPropertiesBefore = fileClient.getProperties()
+        def setPropertiesResponse = fileClient.setMetadataWithResponse(updatedMetadata, null, null)
+        def getPropertiesAfter = fileClient.getProperties()
 
         then:
         testMetadata == getPropertiesBefore.getMetadata()
@@ -1716,6 +2007,28 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), fileName)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "List ranges oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileName = generatePathName()
+        def fileClient = dirClient.getFileClient(fileName)
+        fileClient.create(Constants.KB)
+        def uploadFile = createRandomFileWithLength(1024, testFolder, fileName)
+        fileClient.uploadFromFile(uploadFile)
+
+        expect:
+        fileClient.listRanges().each {
+            assert it.getStart() == 0
+            assert it.getEnd() == 1023
+        }
+
+        cleanup:
+        deleteFileIfExists(testFolder.getPath(), fileName)
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "List ranges diff"() {
@@ -1765,6 +2078,58 @@ class FileAPITests extends APISpec {
         createFileRanges()                   | createFileRanges(0, 511)                | createFileRanges()                   | createClearRanges(0, 511)
         createFileRanges(0, 511)             | createFileRanges(512, 1023)             | createFileRanges(0, 511)             | createClearRanges(512, 1023)
         createFileRanges(0, 511, 1024, 1535) | createFileRanges(512, 1023, 1536, 2047) | createFileRanges(0, 511, 1024, 1535) | createClearRanges(512, 1023, 1536, 2047)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "List ranges diff oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+        fileClient.uploadRange(new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB)
+        def snapshotId = primaryFileServiceClient.getShareClient(fileClient.getShareName())
+            .createSnapshot()
+            .getSnapshot()
+
+        def rangesToUpdate = createFileRanges()
+        def rangesToClear = createFileRanges()
+        def expectedRanges = createFileRanges()
+        def expectedClearRanges = createFileRanges()
+
+
+        rangesToUpdate.forEach({
+            def size = it.getEnd() - it.getStart() + 1
+            fileClient.uploadWithResponse(new ByteArrayInputStream(getRandomBuffer((int) size)), size,
+                it.getStart(), null, null)
+        })
+
+        rangesToClear.forEach({
+            def size = it.getEnd() - it.getStart() + 1
+            fileClient.clearRangeWithResponse(size, it.getStart(), null, null)
+        })
+
+        when:
+        def rangeDiff = fileClient.listRangesDiff(snapshotId)
+
+        then:
+        rangeDiff.getRanges().size() == expectedRanges.size()
+        rangeDiff.getClearRanges().size() == expectedClearRanges.size()
+
+        for (def i = 0; i < expectedRanges.size(); i++) {
+            def actualRange = rangeDiff.getRanges().get(i)
+            def expectedRange = expectedRanges.get(i)
+            expectedRange.getStart() == actualRange.getStart()
+            expectedRange.getEnd() == actualRange.getEnd()
+        }
+
+        for (def i = 0; i < expectedClearRanges.size(); i++) {
+            def actualRange = rangeDiff.getClearRanges().get(i)
+            def expectedRange = expectedClearRanges.get(i)
+            expectedRange.getStart() == actualRange.getStart()
+            expectedRange.getEnd() == actualRange.getEnd()
+        }
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
@@ -1868,6 +2233,19 @@ class FileAPITests extends APISpec {
         primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "List handles oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(Constants.KB)
+
+        expect:
+        fileClient.listHandles().size() == 0
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
@@ -1891,6 +2269,24 @@ class FileAPITests extends APISpec {
 
         then:
         thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Force close handle oAuth"() {
+        given:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+        fileClient.create(512)
+
+        when:
+        def handlesClosedInfo = fileClient.forceCloseHandle("1")
+
+        then:
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
+        notThrown(ShareStorageException)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")

@@ -7,9 +7,11 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceVersion;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 
 import java.net.URL;
 import java.util.Objects;
@@ -79,6 +81,7 @@ public final class ShareLeaseClientBuilder {
     private boolean isShareFile;
     private String accountName;
     private ShareServiceVersion serviceVersion;
+    private ShareFileRequestIntent fileRequestIntent;
 
     /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
@@ -97,7 +100,7 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
         return new ShareLeaseAsyncClient(pipeline, url, shareName, shareSnapshot, resourcePath, getLeaseId(),
-            isShareFile, accountName, version.getVersion());
+            isShareFile, accountName, version.getVersion(), fileRequestIntent);
     }
 
     /**
@@ -195,5 +198,16 @@ public final class ShareLeaseClientBuilder {
 
     private String getLeaseId() {
         return (leaseId == null) ? UUID.randomUUID().toString() : leaseId;
+    }
+
+    /**
+     * Sets the {@link ShareFileRequestIntent} that specifies whether there is intent for a file to be backed up.
+     *
+     * @param fileRequestIntent the {@link ShareFileRequestIntent} value.
+     * @return the updated ShareLeaseClientBuilder object
+     */
+    public ShareLeaseClientBuilder fileRequestIntent(ShareFileRequestIntent fileRequestIntent) {
+        this.fileRequestIntent = fileRequestIntent;
+        return this;
     }
 }
