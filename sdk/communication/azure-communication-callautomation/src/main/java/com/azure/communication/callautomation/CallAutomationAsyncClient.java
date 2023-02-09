@@ -113,7 +113,7 @@ public final class CallAutomationAsyncClient {
      * Create a call connection request from a source identity to a target identity.
      *
      * @param source The caller of the call.
-     * @param targets The list of targets.
+     * @param callInvite Call invitee's information
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,15 +208,15 @@ public final class CallAutomationAsyncClient {
     
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
             Context context) {
-    	try {
+        try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
             createCallOptions.setRepeatabilityHeaders(handleApiIdempotency(createCallOptions.getRepeatabilityHeaders()));
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-            		createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-            				createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                            createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -236,8 +236,8 @@ public final class CallAutomationAsyncClient {
     }
     
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
-    	List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>(); 
-        		targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTarget()));
+        List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>(); 
+        targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTarget()));
 
         CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallOptions.getSource());
         CreateCallRequestInternal request = new CreateCallRequestInternal()
