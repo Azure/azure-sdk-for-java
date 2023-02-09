@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Stats for the storage service. */
-@JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
+@JacksonXmlRootElement(localName = "StorageServiceStats")
 public final class QueueServiceStatistics {
 
     /*
