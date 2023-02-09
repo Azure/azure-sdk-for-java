@@ -4,7 +4,7 @@ package com.azure.messaging.eventhubs.perf;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.JedisRedisCheckpointStore;
+import com.azure.messaging.eventhubs.checkpointstore.jedis.JedisCheckpointStore;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -37,7 +37,7 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         JedisPool jedisPool = new JedisPool(poolConfig, options.getHostName(), 6380, 5000, 1000, options.getPassword(), Protocol.DEFAULT_DATABASE, options.getUserName(), true, null, null, null);
-        JedisRedisCheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
 
         Consumer<ErrorContext> errorProcessor = errorContext -> super.errorRaised(errorContext.getThrowable());
         Consumer<EventContext> eventProcessor = eventContext -> {

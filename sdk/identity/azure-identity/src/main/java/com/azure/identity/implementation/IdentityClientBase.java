@@ -711,4 +711,22 @@ public abstract class IdentityClientBase {
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
     }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
+    }
 }

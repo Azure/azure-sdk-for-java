@@ -28,7 +28,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -85,8 +84,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
     public Response<Void> deleteWithResponse(Context context) {
         String res = this.getDigest();
         try {
-            Response<Void> response = this.serviceClient.deleteManifestWithResponse(getRepositoryName(), res,
-                enableSync(getTracingContext(context)));
+            Response<Void> response = this.serviceClient.deleteManifestWithResponse(getRepositoryName(), res, enableSync(context));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
@@ -156,8 +154,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
         }
         try {
-            Response<Void> response = this.serviceClient.deleteTagWithResponse(getRepositoryName(), tag,
-                enableSync(getTracingContext(context)));
+            Response<Void> response = this.serviceClient.deleteTagWithResponse(getRepositoryName(), tag, enableSync(context));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
@@ -220,7 +217,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
     public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(Context context) {
         String res = this.getDigest();
         try {
-            return this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(getTracingContext(context)));
+            return this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(context));
         } catch (HttpResponseException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -286,7 +283,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         }
 
         try {
-            return this.serviceClient.getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(getTracingContext(context)));
+            return this.serviceClient.getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -436,7 +433,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         try {
             PagedResponse<TagAttributesBase> response =
                 this.serviceClient.getTagsSinglePage(getRepositoryName(), null, pageSize, orderString, res,
-                    enableSync(getTracingContext(context)));
+                    enableSync(context));
 
             return UtilsImpl.getPagedResponseWithContinuationToken(response,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
@@ -448,7 +445,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
     private PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<TagAttributesBase> res = this.serviceClient.getTagsNextSinglePage(nextLink,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
@@ -500,7 +497,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
 
         try {
             return this.serviceClient.updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties,
-                enableSync(getTracingContext(context)));
+                enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -571,7 +568,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
 
         String res = getDigest();
         try {
-            return this.serviceClient.updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties, enableSync(getTracingContext(context)));
+            return this.serviceClient.updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties, enableSync(context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
