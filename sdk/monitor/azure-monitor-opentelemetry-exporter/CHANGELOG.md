@@ -4,8 +4,8 @@
 
 ### Enhancements
 - Update OpenTelemetry SDK version, which
-  - Introduces a new zero-bucket for histograms
-  - Renames several alpha Logging Exporter classes
+  - Introduce a new zero-bucket for histograms
+  - Rename several alpha Logging Exporter classes
 - Replace System.getenv usage with Azure SDK Configuration
 - Update copies of SemanticAttributes and ResourceAttributes from alpha opentelemetry-semconv
 - Some test cleanup
