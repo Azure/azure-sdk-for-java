@@ -2525,12 +2525,4 @@
     </Or>
   </Match>
 
-  <Match>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-    <Or>
-      <Class name="com.azure.core.serializer.json.jackson.implementation.School"/>
-      <Class name="com.azure.core.serializer.json.jackson.implementation.Teacher"/>
-    </Or>
-  </Match>
-
 </FindBugsFilter>
