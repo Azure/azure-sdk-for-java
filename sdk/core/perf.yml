@@ -1,6 +1,6 @@
 parameters:
 - name: LanguageVersion
-  displayName: LanguageVersion (17, 11, 8)
+  displayName: LanguageVersion (8, 11, 17)
   type: string
   default: '17'
 - name: PackageVersions
