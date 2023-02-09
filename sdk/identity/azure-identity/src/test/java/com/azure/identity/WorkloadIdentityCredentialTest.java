@@ -56,7 +56,7 @@ public class WorkloadIdentityCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)
@@ -68,7 +68,7 @@ public class WorkloadIdentityCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)
@@ -80,7 +80,7 @@ public class WorkloadIdentityCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)
