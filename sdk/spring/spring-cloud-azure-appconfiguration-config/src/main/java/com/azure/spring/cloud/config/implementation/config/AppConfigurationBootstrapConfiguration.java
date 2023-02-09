@@ -61,7 +61,7 @@ public class AppConfigurationBootstrapConfiguration {
     }
 
     @Bean
-    AppConfigurationKeyVaultClientFactory keyVaultClientFactory(Environment environment)
+    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment)
         throws IllegalArgumentException {
         AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
             AzureGlobalProperties.class);
