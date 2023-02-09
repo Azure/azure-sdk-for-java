@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,12 +46,6 @@ public final class PathsFlushDataHeaders {
     private String xMsEncryptionKeySha256;
 
     /*
-     * The x-ms-lease-renewed property.
-     */
-    @JsonProperty(value = "x-ms-lease-renewed")
-    private Boolean xMsLeaseRenewed;
-
-    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
@@ -76,18 +69,6 @@ public final class PathsFlushDataHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
-
-    private static final HttpHeaderName X_MS_LEASE_RENEWED = HttpHeaderName.fromString("x-ms-lease-renewed");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsFlushDataHeaders class.
@@ -95,31 +76,27 @@ public final class PathsFlushDataHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsFlushDataHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        String xMsLeaseRenewed = rawHeaders.getValue(X_MS_LEASE_RENEWED);
-        if (xMsLeaseRenewed != null) {
-            this.xMsLeaseRenewed = Boolean.parseBoolean(xMsLeaseRenewed);
-        }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
     }
 
     /**
@@ -226,26 +203,6 @@ public final class PathsFlushDataHeaders {
      */
     public PathsFlushDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseRenewed property: The x-ms-lease-renewed property.
-     *
-     * @return the xMsLeaseRenewed value.
-     */
-    public Boolean isXMsLeaseRenewed() {
-        return this.xMsLeaseRenewed;
-    }
-
-    /**
-     * Set the xMsLeaseRenewed property: The x-ms-lease-renewed property.
-     *
-     * @param xMsLeaseRenewed the xMsLeaseRenewed value to set.
-     * @return the PathsFlushDataHeaders object itself.
-     */
-    public PathsFlushDataHeaders setXMsLeaseRenewed(Boolean xMsLeaseRenewed) {
-        this.xMsLeaseRenewed = xMsLeaseRenewed;
         return this;
     }
 

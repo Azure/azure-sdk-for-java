@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/59eb6953059eb6953507922451ad2110eebaa4681b96/59eb6953259eb695350711448e1a467c3d40540728c0?resource=directory&sv=2021-12-02&se=2022-07-23T20%3A22%3A06Z&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/59eb6953059eb6953507922451ad2110eebaa4681b96/59eb6953259eb695350711448e1a467c3d40540728c0?resource=directory&sv=2021-10-04&se=2022-07-23T20%3A22%3A06Z&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
     "Headers" : {
       "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
@@ -67,7 +67,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/59eb6953059eb6953507922451ad2110eebaa4681b96/59eb6953259eb695350711448e1a467c3d40540728c0?sv=2021-12-02&se=2022-07-23T20%3A22%3A06Z&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
+    "Uri" : "https://REDACTED.blob.core.windows.net/59eb6953059eb6953507922451ad2110eebaa4681b96/59eb6953259eb695350711448e1a467c3d40540728c0?sv=2021-10-04&se=2022-07-23T20%3A22%3A06Z&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
     "Headers" : {
       "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.19.0-beta.1 azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
