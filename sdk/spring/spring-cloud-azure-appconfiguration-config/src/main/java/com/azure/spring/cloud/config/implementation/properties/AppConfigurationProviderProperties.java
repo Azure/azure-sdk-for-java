@@ -9,14 +9,12 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
 /**
  * Properties defining connection to Azure App Configuration.
  */
 @Validated
-@PropertySource("classpath:appConfiguration.properties")
 @ConfigurationProperties(prefix = AppConfigurationProviderProperties.CONFIG_PREFIX)
 public class AppConfigurationProviderProperties {
 
