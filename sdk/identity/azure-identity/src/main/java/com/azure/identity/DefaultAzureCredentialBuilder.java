@@ -201,8 +201,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private void loadFallbackValuesFromEnvironment() {
-        Configuration configuration = identityClientOptions.getConfiguration() == null ?
-            Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
         tenantId = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
         managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : managedIdentityClientId;
     }
