@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collection;
+
 import com.azure.communication.identity.models.CommunicationTokenScope;
 
 public class CommunicationTokenScopeTests {
@@ -13,7 +15,7 @@ public class CommunicationTokenScopeTests {
         CommunicationTokenScope scope = CommunicationTokenScope.fromString("new");
 
         // Action
-        var actual = scope.toString();
+        String actual = scope.toString();
 
         // Assert
         assertEquals("new", actual);
@@ -22,11 +24,11 @@ public class CommunicationTokenScopeTests {
     @Test
     public void valuesContainWellKnownScopes() {
         // Arrange
-        var expectedScope1 = CommunicationTokenScope.CHAT;
-        var expectedScope2 = CommunicationTokenScope.VOIP;
+        CommunicationTokenScope expectedScope1 = CommunicationTokenScope.CHAT;
+        CommunicationTokenScope expectedScope2 = CommunicationTokenScope.VOIP;
 
         // Action
-        var actual = CommunicationTokenScope.values();
+        Collection<CommunicationTokenScope> actual = CommunicationTokenScope.values();
 
         // Assert
         assertTrue(actual.contains(expectedScope1));
