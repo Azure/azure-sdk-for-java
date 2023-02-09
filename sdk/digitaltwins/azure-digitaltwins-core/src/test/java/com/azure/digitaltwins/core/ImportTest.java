@@ -8,19 +8,13 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,7 +37,7 @@ public class ImportTest extends ImportTestBase {
         DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob(IMPORT_FILE, outputFile);
 
         // Validate create import job
-        DigitalTwinsImportJob response = client.createImportJob(jobId, digitalTwinsImportJob).getValue();
+        DigitalTwinsImportJob response = client.createImportJob(jobId, digitalTwinsImportJob);
         assertEquals(response.getId(), jobId);
 
         // Validate list import job
@@ -52,15 +46,15 @@ public class ImportTest extends ImportTestBase {
         assertTrue(assertId(importJobList, response));
 
         // Validate get import job
-        DigitalTwinsImportJob importJob = client.getImportJob(jobId).getValue();
+        DigitalTwinsImportJob importJob = client.getImportJob(jobId);
         assertEquals(importJob.getId(), jobId);
 
         // Validate cancel import job
-        Response<DigitalTwinsImportJob> cancelJob = client.cancelImportJob(jobId);
+        Response<DigitalTwinsImportJob> cancelJob = client.cancelImportJobWithResponse(jobId);
         assertEquals(cancelJob.getStatusCode(), HTTP_OK);
 
         // Validate delete import job
-        Response<Void> deleteImportJob = client.deleteImportJob(jobId);
+        Response<Void> deleteImportJob = client.deleteImportJobWithResponse(jobId);
         assertEquals(deleteImportJob.getStatusCode(), HTTP_NO_CONTENT);
 
         assertRestException(
@@ -99,7 +93,7 @@ public class ImportTest extends ImportTestBase {
         String outputFile = OUTPUT_FILE.replace("jobId", jobId);
         DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob(IMPORT_FILE, outputFile);
 
-        DigitalTwinsImportJob response = client.createImportJob(jobId, digitalTwinsImportJob).getValue();
+        DigitalTwinsImportJob response = client.createImportJobWithResponse(jobId, digitalTwinsImportJob).getValue();
         assertEquals(response.getId(), jobId);
 
         assertRestException(

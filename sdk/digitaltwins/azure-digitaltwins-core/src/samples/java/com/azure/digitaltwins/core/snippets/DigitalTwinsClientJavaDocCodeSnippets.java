@@ -10,7 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.BasicDigitalTwin;
 import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;
 import com.azure.digitaltwins.core.BasicRelationship;
-import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
+import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
@@ -18,7 +18,9 @@ import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
 import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
+import com.azure.digitaltwins.core.models.DigitalTwinsImportJob;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.ImportJobDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import com.azure.digitaltwins.core.models.ListModelsOptions;
@@ -821,7 +823,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region QuerySnippets
     /**
      * Generates code samples for using {@link DigitalTwinsClient#query(String, Class)} and
-     * {@link DigitalTwinsAsyncClient#query(String, Class, QueryOptions)}
+     * {@link DigitalTwinsClient#query(String, Class, QueryOptions, Context)}
      */
     @Override
     public void query() {
@@ -1113,6 +1115,165 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             + responseObject.getStatusCode());
         // END: com.azure.digitaltwins.core.DigitalTwinsClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#Object
     }
-
     //endregion TelemetrySnippets
+
+    //region Import APIs
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#createImportJob(String, DigitalTwinsImportJob)}
+     */
+    @Override
+    public void createImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.createImportJob#String-DigitalTwinsImportJob
+        DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob("inputBlobUri", "outputBlobUri");
+
+        DigitalTwinsImportJob response = digitalTwinsSyncClient.createImportJob(
+            "myImportId",
+            digitalTwinsImportJob);
+
+        System.out.println("Created an import job with Id: " + response.getId());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.createImportJob#String-DigitalTwinsImportJob
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#createImportJobWithResponse(String, DigitalTwinsImportJob)}
+     */
+    @Override
+    public void createImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.createImportJobWithResponse#String-DigitalTwinsImportJob
+
+        DigitalTwinsImportJob digitalTwinsImportJob = new DigitalTwinsImportJob("inputBlobUri", "outputBlobUri");
+
+        Response<DigitalTwinsImportJob> response = digitalTwinsSyncClient.createImportJobWithResponse(
+            "myImportId",
+            digitalTwinsImportJob);
+
+        System.out.println("Created an import job with Http Status code: " + response.getStatusCode());
+
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.createImportJobWithResponse#String-DigitalTwinsImportJob
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#deleteImportJob(String)}
+     */
+    @Override
+    public void deleteImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.deleteImportJob#String
+        digitalTwinsSyncClient.deleteImportJob(
+            "myImportJobId");
+
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.deleteImportJob#String
+
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#deleteImportJobWithResponse(String)}
+     */
+    @Override
+    public void deleteImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.deleteImportJobWithResponse#String
+        Response<Void> response = digitalTwinsSyncClient.deleteImportJobWithResponse(
+            "myImportJobId");
+
+        System.out.println("Deleted an import job with Http Status code: " + response.getStatusCode());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.deleteImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#cancelImportJob(String)}
+     */
+    @Override
+    public void cancelImportJob() {
+
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.cancelImportJob#String
+        DigitalTwinsImportJob cancelResponse = digitalTwinsSyncClient.cancelImportJob(
+            "myImportJobId");
+
+        System.out.println(
+                    "Received cancel import job operation response with Id: "
+                        + cancelResponse.getId());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.cancelImportJob#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#cancelImportJobWithResponse(String)}
+     */
+    @Override
+    public void cancelImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.cancelImportJobWithResponse#String
+        Response<DigitalTwinsImportJob> cancelResponse = digitalTwinsSyncClient.cancelImportJobWithResponse(
+            "myImportJobId");
+
+        System.out.println(
+            "Received cancel import job operation response with HTTP status code: "
+                + cancelResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.cancelImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#getImportJob(String)}
+     */
+    @Override
+    public void getImportJob() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.getImportJob#String
+        DigitalTwinsImportJob importJobResponse = digitalTwinsSyncClient.getImportJob(
+            "myImportJobId");
+
+        System.out.println("Received get import job details operation response with Id: "
+                    + importJobResponse.getId());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.getImportJob#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#getImportJobWithResponse(String)}
+     */
+    @Override
+    public void getImportJobWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.getImportJobWithResponse#String
+        Response<DigitalTwinsImportJob> importJobResponse = digitalTwinsSyncClient.getImportJobWithResponse(
+            "myImportJobId");
+
+        System.out.println(
+            "Received get import job details operation response with HTTP status code: "
+                + importJobResponse.getStatusCode());
+        System.out.println(
+            "Retrieved import job with Id: "
+                + importJobResponse.getValue().getId());
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.getImportJobWithResponse#String
+    }
+
+    /**
+     * Generates code samples for using
+     * {@link DigitalTwinsClient#listImportJobs()}
+     */
+    @Override
+    public void listImportJobs() {
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs
+
+        PagedIterable<DigitalTwinsImportJob> digitalTwinsImportJobs = digitalTwinsSyncClient.listImportJobs();
+        digitalTwinsImportJobs.forEach(importJob -> System.out.println("Retrieved import job with Id: " +
+            importJob.getId()));
+
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs
+
+        // BEGIN: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs#ImportJobDigitalTwinOptions-Context
+
+        PagedIterable<DigitalTwinsImportJob> importJobsWithOptions = digitalTwinsSyncClient.listImportJobs(
+            new ImportJobDigitalTwinOptions().setMaxItemsPerPage(5),
+            new Context("key", "value"));
+        importJobsWithOptions.forEach(importJob -> System.out.println("Retrieved import job with Id: " +
+            importJob.getId()));
+
+        // END: com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs#ImportJobDigitalTwinOptions-Context
+
+    }
+    //endregion Import APIs
+
 }
