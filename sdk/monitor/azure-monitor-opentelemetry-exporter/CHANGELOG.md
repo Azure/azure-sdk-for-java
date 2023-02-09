@@ -7,8 +7,6 @@
   - Introduce a new zero-bucket for histograms
   - Rename several alpha Logging Exporter classes
 - Replace System.getenv usage with Azure SDK Configuration
-- Update copies of SemanticAttributes and ResourceAttributes from alpha opentelemetry-semconv
-- Some test cleanup
 
 ### Breaking Changes
 - Change the Exporter implementations from public to package-private
