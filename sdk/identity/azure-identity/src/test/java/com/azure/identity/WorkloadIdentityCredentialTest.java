@@ -31,7 +31,7 @@ public class WorkloadIdentityCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint); // This must stay to signal we are in an app service context
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
