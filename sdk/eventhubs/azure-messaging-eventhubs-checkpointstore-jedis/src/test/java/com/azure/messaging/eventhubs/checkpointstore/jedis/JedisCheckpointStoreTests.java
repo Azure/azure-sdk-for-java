@@ -29,28 +29,28 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link JedisRedisCheckpointStore}
+ * Unit tests for {@link JedisCheckpointStore}
  */
-public class JedisRedisCheckpointStoreTests {
+public class JedisCheckpointStoreTests {
     private static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
     private static final String FULLY_QUALIFIED_NAMESPACE = "fullyQualifiedNamespace";
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String CONSUMER_GROUP = "consumerGroup";
     private static final String PARTITION_ID = "1";
-    private static final byte[] PREFIX = JedisRedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
-    private static final byte[] KEY = JedisRedisCheckpointStore.keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+    private static final byte[] PREFIX = JedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
+    private static final byte[] KEY = JedisCheckpointStore.keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
 
     @Mock
     private JedisPool jedisPool;
     @Mock
     private Jedis jedis;
-    private JedisRedisCheckpointStore store;
+    private JedisCheckpointStore store;
     private AutoCloseable closeable;
 
     @BeforeEach
     public void setup() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.store = new JedisRedisCheckpointStore(jedisPool);
+        this.store = new JedisCheckpointStore(jedisPool);
     }
 
     @AfterEach
@@ -71,7 +71,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(list);
+            eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(list);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(checkpointTest -> {
@@ -100,7 +100,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(nullList);
+            eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(nullList);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .verifyComplete();
@@ -117,7 +117,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.PARTITION_OWNERSHIP))).thenReturn(list);
+            eq(JedisCheckpointStore.PARTITION_OWNERSHIP))).thenReturn(list);
 
         StepVerifier.create(store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(partitionOwnershipTest -> {
@@ -144,7 +144,7 @@ public class JedisRedisCheckpointStoreTests {
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
+        when(jedis.hmget(KEY, JedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
         when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
@@ -165,7 +165,7 @@ public class JedisRedisCheckpointStoreTests {
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
+        when(jedis.hmget(KEY, JedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
         when(jedis.multi()).thenReturn(transaction);
         when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
@@ -187,7 +187,7 @@ public class JedisRedisCheckpointStoreTests {
         Transaction transaction = mock(Transaction.class);
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
+        when(jedis.hmget(KEY, JedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
         when(jedis.watch(KEY)).thenThrow(RuntimeException.class);
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))

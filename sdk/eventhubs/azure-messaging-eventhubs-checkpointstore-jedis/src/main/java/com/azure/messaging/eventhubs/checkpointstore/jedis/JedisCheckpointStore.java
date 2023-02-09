@@ -29,7 +29,7 @@ import java.util.Set;
  * <p><strong>Instantiate checkpoint store</strong></p>
  * Demonstrates one way to instantiate the checkpoint store. {@link JedisPool} has multiple ways to create an instance.
  *
- * <!-- src_embed com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
+ * <!-- src_embed com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->
  * <pre>
  * JedisClientConfig clientConfig = DefaultJedisClientConfig.builder&#40;&#41;
  *     .password&#40;&quot;&lt;YOUR_REDIS_PRIMARY_ACCESS_KEY&gt;&quot;&#41;
@@ -40,16 +40,26 @@ import java.util.Set;
  * HostAndPort hostAndPort = new HostAndPort&#40;redisHostName, 6380&#41;;
  * JedisPool jedisPool = new JedisPool&#40;hostAndPort, clientConfig&#41;;
  *
- * CheckpointStore checkpointStore = new JedisRedisCheckpointStore&#40;jedisPool&#41;;
+ * CheckpointStore checkpointStore = new JedisCheckpointStore&#40;jedisPool&#41;;
+ *
+ * &#47;&#47; DefaultAzureCredential tries to resolve the best credential to use based on your environment.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * EventProcessorClient processorClient = new EventProcessorClientBuilder&#40;&#41;
+ *     .checkpointStore&#40;checkpointStore&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;&lt;YOUR_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE&gt;&quot;&#41;
+ *     .eventHubName&#40;&quot;&lt;YOUR_EVENT_HUB_NAME&gt;&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .consumerGroup&#40;&quot;&lt;YOUR_CONSUMER_GROUP_NAME&gt;&quot;&#41;
+ *     .buildEventProcessorClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.jedisredischeckpointstore.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->
  *
  * @see EventProcessorClient
  * @see EventProcessorClientBuilder
  */
-public final class JedisRedisCheckpointStore implements CheckpointStore {
+public final class JedisCheckpointStore implements CheckpointStore {
 
-    private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JedisCheckpointStore.class);
     static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
     static final byte[] CHECKPOINT = "checkpoint".getBytes(StandardCharsets.UTF_8);
     static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
@@ -61,7 +71,7 @@ public final class JedisRedisCheckpointStore implements CheckpointStore {
      * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
      * @throws IllegalArgumentException thrown when JedisPool object supplied is null
      */
-    public JedisRedisCheckpointStore(JedisPool jedisPool) {
+    public JedisCheckpointStore(JedisPool jedisPool) {
         if (jedisPool == null) {
             throw LOGGER.logExceptionAsError(Exceptions
                 .propagate(new IllegalArgumentException(
