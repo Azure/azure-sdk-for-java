@@ -1003,7 +1003,7 @@ public class ShareDirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    ModelHelper.transformHandleItems(response.getValue().getHandleList()),
+                    response.getValue().getHandleList(),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
@@ -2134,25 +2134,15 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
-                        true,
-                        directoryItem.getFileId(),
-                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                        directoryItem.getPermissionKey(),
-                        null));
-                });
+                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
+                    directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
+                    null)));
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                        false,
-                        fileItem.getFileId(),
-                        ModelHelper.transformFileProperty(fileItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
-                        fileItem.getPermissionKey(),
-                        fileItem.getProperties().getContentLength()));
-                });
+                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
+                    fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
+                    fileItem.getProperties().getContentLength())));
         }
 
         return new ArrayList<>(shareFileItems);

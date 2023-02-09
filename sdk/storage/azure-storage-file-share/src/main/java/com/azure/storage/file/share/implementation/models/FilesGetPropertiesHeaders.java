@@ -7,7 +7,6 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -212,50 +211,6 @@ public final class FilesGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
-    private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
-
-    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
-
-    private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
-
-    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
-
-    private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
-
-    private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION =
-            HttpHeaderName.fromString("x-ms-copy-status-description");
-
-    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY =
-            HttpHeaderName.fromString("x-ms-file-permission-key");
-
-    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
-
-    private static final HttpHeaderName X_MS_COPY_SOURCE = HttpHeaderName.fromString("x-ms-copy-source");
-
-    private static final HttpHeaderName X_MS_COPY_PROGRESS = HttpHeaderName.fromString("x-ms-copy-progress");
-
-    private static final HttpHeaderName X_MS_COPY_COMPLETION_TIME =
-            HttpHeaderName.fromString("x-ms-copy-completion-time");
-
-    private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
-
-    private static final HttpHeaderName X_MS_TYPE = HttpHeaderName.fromString("x-ms-type");
-
-    private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
-
-    private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
-
-    private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
-
-    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME =
-            HttpHeaderName.fromString("x-ms-file-last-write-time");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesGetPropertiesHeaders class.
@@ -263,72 +218,72 @@ public final class FilesGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
-        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        this.xMsFileId = rawHeaders.getValue("x-ms-file-id");
+        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
-        String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
+        String xMsFileCreationTime = rawHeaders.getValue("x-ms-file-creation-time");
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
         }
-        String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
-        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
-        this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
-        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
+        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         }
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
-        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
-        this.xMsCopySource = rawHeaders.getValue(X_MS_COPY_SOURCE);
-        this.xMsCopyProgress = rawHeaders.getValue(X_MS_COPY_PROGRESS);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsFilePermissionKey = rawHeaders.getValue("x-ms-file-permission-key");
+        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
+        this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
+        this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        String contentMD5 = rawHeaders.getValue("Content-MD5");
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
-        String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
+        String xMsCopyCompletionTime = rawHeaders.getValue("x-ms-copy-completion-time");
         if (xMsCopyCompletionTime != null) {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
         }
-        String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
+        String xMsServerEncrypted = rawHeaders.getValue("x-ms-server-encrypted");
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
         }
-        this.xMsType = rawHeaders.getValue(X_MS_TYPE);
-        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
-        String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
+        this.xMsType = rawHeaders.getValue("x-ms-type");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        String xMsFileChangeTime = rawHeaders.getValue("x-ms-file-change-time");
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
         }
-        this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
-        String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
+        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
+        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
         }
-        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
-        String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        String xMsFileLastWriteTime = rawHeaders.getValue("x-ms-file-last-write-time");
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }

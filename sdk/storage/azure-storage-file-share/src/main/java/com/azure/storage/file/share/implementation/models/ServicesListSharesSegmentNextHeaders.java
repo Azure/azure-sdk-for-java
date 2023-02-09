@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -26,10 +25,6 @@ public final class ServicesListSharesSegmentNextHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ServicesListSharesSegmentNextHeaders class.
@@ -37,8 +32,8 @@ public final class ServicesListSharesSegmentNextHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesListSharesSegmentNextHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
     }
 
     /**

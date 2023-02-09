@@ -28,12 +28,12 @@ public class ShareAcquireLeaseOptions {
     }
 
     /**
-     * @param durationInSeconds The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
-     * Note: Share files only support infinite lease.
+     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     *                 Note: Share files only support infinite lease.
      * @return The updated options.
      */
-    public ShareAcquireLeaseOptions setDuration(int durationInSeconds) {
-        this.duration = durationInSeconds;
+    public ShareAcquireLeaseOptions setDuration(int duration) {
+        this.duration = duration;
         return this;
     }
 }
