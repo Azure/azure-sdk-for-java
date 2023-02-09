@@ -1,14 +1,17 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.7 (2023-02-09)
 
-### Features Added
+### Enhancements
+- Update OpenTelemetry SDK version, which
+  - Introduces a new zero-bucket for histograms
+  - Renames several alpha Logging Exporter classes
+- Replace System.getenv usage with Azure SDK Configuration
+- Update copies of SemanticAttributes and ResourceAttributes from alpha opentelemetry-semconv
+- Some test cleanup
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Change the Exporter implementations from public to package-private
 
 ## 1.0.0-beta.6 (2022-09-06)
 
