@@ -17,12 +17,16 @@ final class CommunicationIdentityClientUtils {
 
     static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
 
-    static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
-        Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresIn,
-        ClientLogger logger) {
+    private CommunicationIdentityClientUtils() {
+    }
 
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
+    static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
+            Iterable<CommunicationTokenScope> scopes,
+            Duration tokenExpiresIn,
+            ClientLogger logger) {
+
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false)
+                .collect(Collectors.toList());
 
         CommunicationIdentityCreateRequest createRequest = new CommunicationIdentityCreateRequest();
         createRequest.setCreateTokenWithScopes(scopesInput);
@@ -36,11 +40,12 @@ final class CommunicationIdentityClientUtils {
     }
 
     static CommunicationIdentityAccessTokenRequest createCommunicationIdentityAccessTokenRequest(
-        Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresIn,
-        ClientLogger logger) {
+            Iterable<CommunicationTokenScope> scopes,
+            Duration tokenExpiresIn,
+            ClientLogger logger) {
 
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false)
+                .collect(Collectors.toList());
 
         CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
         tokenRequest.setScopes(scopesInput);
@@ -57,7 +62,8 @@ final class CommunicationIdentityClientUtils {
         try {
             return Math.toIntExact(tokenExpiresIn.toMinutes());
         } catch (ArithmeticException ex) {
-            IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(TOKEN_EXPIRATION_OVERFLOW_MESSAGE, ex);
+            IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(
+                    TOKEN_EXPIRATION_OVERFLOW_MESSAGE, ex);
             throw logger.logExceptionAsError(expiresAfterOverflowEx);
         }
     }
