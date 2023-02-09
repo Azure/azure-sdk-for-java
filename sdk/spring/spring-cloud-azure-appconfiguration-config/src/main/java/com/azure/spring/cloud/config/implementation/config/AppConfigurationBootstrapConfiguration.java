@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -42,6 +43,7 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
  * <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
  */
 @Configuration
+@PropertySource("classpath:appConfiguration.properties")
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
@@ -82,10 +84,11 @@ public class AppConfigurationBootstrapConfiguration {
             .getIfAvailable();
 
         SecretClientBuilderFactory secretClientBuilderFactory = new SecretClientBuilderFactory(clientProperties);
-        
+
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
 
-        return new AppConfigurationKeyVaultClientFactory(keyVaultClientProvider, keyVaultSecretProvider, secretClientBuilderFactory, credentialConfigured);
+        return new AppConfigurationKeyVaultClientFactory(keyVaultClientProvider, keyVaultSecretProvider,
+            secretClientBuilderFactory, credentialConfigured);
     }
 
     /**
@@ -133,12 +136,12 @@ public class AppConfigurationBootstrapConfiguration {
 
         clientFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
         customizers.orderedStream().forEach(clientFactory::addBuilderCustomizer);
-        
+
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
 
         AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
             appProperties.getMaxRetries(), clientFactory, credentialConfigured);
-        
+
         clientBuilder
             .setClientProvider(context.getBeanProvider(ConfigurationClientCustomizer.class)
                 .getIfAvailable());
@@ -147,7 +150,7 @@ public class AppConfigurationBootstrapConfiguration {
 
         return clientBuilder;
     }
-    
+
     private boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {
         if (properties.getCredential() != null) {
             TokenCredentialConfigurationProperties tokenProps = properties.getCredential();
@@ -165,10 +168,8 @@ public class AppConfigurationBootstrapConfiguration {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
-    
 
 }
