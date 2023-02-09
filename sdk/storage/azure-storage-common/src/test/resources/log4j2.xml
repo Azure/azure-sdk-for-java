@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <File name="file" fileName="target/test.log" append="false">
+      <PatternLayout>
+        <Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} %msg%n</Pattern>
+      </PatternLayout>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.azure" level="debug" additivity="false">
+      <appender-ref ref="file" />
+    </Logger>
+    <Root level="info">
+      <appender-ref ref="file" />
+    </Root>
+  </Loggers>
+</Configuration>

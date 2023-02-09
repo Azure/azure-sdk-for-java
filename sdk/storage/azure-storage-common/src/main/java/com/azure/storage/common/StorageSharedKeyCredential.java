@@ -5,7 +5,6 @@ package com.azure.storage.common;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,14 +18,11 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.URL;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-
-import static com.azure.storage.common.Utility.urlDecode;
 
 /**
  * SharedKey credential policy that is put into a header to authorize requests.
@@ -39,9 +35,6 @@ public final class StorageSharedKeyCredential {
     // Pieces of the connection string that are needed.
     private static final String ACCOUNT_KEY = "accountkey";
     private static final String ACCOUNT_NAME = "accountname";
-
-    private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
-    private static final Collator ROOT_COLLATOR = Collator.getInstance(Locale.ROOT);
 
     private final AzureNamedKeyCredential azureNamedKeyCredential;
 
@@ -178,26 +171,26 @@ public final class StorageSharedKeyCredential {
 
     private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
         boolean logStringToSign) {
-        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = headers.getValue("Content-Length");
         contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.getValue(X_MS_DATE) != null)
-            ? "" : getStandardHeaderValue(headers, HttpHeaderName.DATE);
+        String dateHeader = (headers.getValue("x-ms-date") != null) ? ""
+            : getStandardHeaderValue(headers, "Date");
 
         String stringToSign =  String.join("\n",
             httpMethod,
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_ENCODING),
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_LANGUAGE),
+            getStandardHeaderValue(headers, "Content-Encoding"),
+            getStandardHeaderValue(headers, "Content-Language"),
             contentLength,
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_MD5),
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_TYPE),
+            getStandardHeaderValue(headers, "Content-MD5"),
+            getStandardHeaderValue(headers, "Content-Type"),
             dateHeader,
-            getStandardHeaderValue(headers, HttpHeaderName.IF_MODIFIED_SINCE),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_MATCH),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_NONE_MATCH),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_UNMODIFIED_SINCE),
-            getStandardHeaderValue(headers, HttpHeaderName.RANGE),
+            getStandardHeaderValue(headers, "If-Modified-Since"),
+            getStandardHeaderValue(headers, "If-Match"),
+            getStandardHeaderValue(headers, "If-None-Match"),
+            getStandardHeaderValue(headers, "If-Unmodified-Since"),
+            getStandardHeaderValue(headers, "Range"),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));
 
@@ -211,13 +204,17 @@ public final class StorageSharedKeyCredential {
     /*
      * Returns an empty string if the header value is null or empty.
      */
-    private String getStandardHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
+    private String getStandardHeaderValue(HttpHeaders headers, String headerName) {
         final Header header = headers.get(headerName);
         return header == null ? "" : header.getValue();
     }
 
-    private static String getAdditionalXmsHeaders(HttpHeaders headers) {
-        List<Header> xmsHeaders = new ArrayList<>();
+    private String getAdditionalXmsHeaders(HttpHeaders headers) {
+        // Add only headers that begin with 'x-ms-'
+        Map<String, String> sortedXmsHeaders = new TreeMap<>(
+            /* Culture-sensitive word sort */
+            Collator.getInstance(Locale.ROOT)
+        );
 
         int stringBuilderSize = 0;
         for (HttpHeader header : headers) {
@@ -229,26 +226,24 @@ public final class StorageSharedKeyCredential {
             String headerValue = header.getValue();
             stringBuilderSize += headerName.length() + headerValue.length();
 
-            xmsHeaders.add(header);
+            sortedXmsHeaders.put(headerName.toLowerCase(Locale.ROOT), headerValue);
         }
 
-        if (xmsHeaders.isEmpty()) {
+        if (sortedXmsHeaders.isEmpty()) {
             return "";
         }
 
         final StringBuilder canonicalizedHeaders = new StringBuilder(
-            stringBuilderSize + (2 * xmsHeaders.size()) - 1);
+            stringBuilderSize + (2 * sortedXmsHeaders.size()) - 1);
 
-        xmsHeaders.sort((o1, o2) -> ROOT_COLLATOR.compare(o1.getName(), o2.getName()));
-
-        for (Header xmsHeader : xmsHeaders) {
+        sortedXmsHeaders.forEach((name, value) -> {
             if (canonicalizedHeaders.length() > 0) {
                 canonicalizedHeaders.append('\n');
             }
-            canonicalizedHeaders.append(xmsHeader.getName().toLowerCase(Locale.ROOT))
+            canonicalizedHeaders.append(name)
                 .append(':')
-                .append(xmsHeader.getValue());
-        }
+                .append(value);
+        });
 
         return canonicalizedHeaders.toString();
     }
@@ -256,64 +251,33 @@ public final class StorageSharedKeyCredential {
     private String getCanonicalizedResource(URL requestURL) {
 
         // Resource path
-        String resourcePath = azureNamedKeyCredential.getAzureNamedKey().getName();
+        final StringBuilder canonicalizedResource = new StringBuilder("/");
+        canonicalizedResource.append(azureNamedKeyCredential.getAzureNamedKey().getName());
 
         // Note that AbsolutePath starts with a '/'.
-        String absolutePath = requestURL.getPath();
-        if (CoreUtils.isNullOrEmpty(absolutePath)) {
-            absolutePath = "/";
+        if (requestURL.getPath().length() > 0) {
+            canonicalizedResource.append(requestURL.getPath());
+        } else {
+            canonicalizedResource.append('/');
         }
 
         // check for no query params and return
-        String query = requestURL.getQuery();
-        if (CoreUtils.isNullOrEmpty(query)) {
-            return "/" + resourcePath + absolutePath;
+        if (requestURL.getQuery() == null) {
+            return canonicalizedResource.toString();
         }
 
-        int stringBuilderSize = 1 + resourcePath.length() + absolutePath.length() + query.length();
+        // The URL object's query field doesn't include the '?'. The QueryStringDecoder expects it.
+        // The Map returned is already sorted with all keys lower cased.
+        Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestURL.getQuery());
 
-        // First split by comma and decode each piece to prevent confusing legitimate separate query values from query
-        // values that contain a comma.
-        //
-        // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
-        // Example 2: prefix=a,2 => prefix={decode(a),decode(b) => prefix={"a","b"}
-        TreeMap<String, List<String>> pieces = new TreeMap<>(ROOT_COLLATOR);
-
-        StorageImplUtils.parseQueryParameters(query).forEachRemaining(kvp -> {
-            String key = urlDecode(kvp.getKey()).toLowerCase(Locale.ROOT);
-
-            pieces.compute(key, (k, values) -> {
-                if (values == null) {
-                    values = new ArrayList<>();
-                }
-
-                for (String value : kvp.getValue().split(",")) {
-                    values.add(urlDecode(value));
-                }
-
-                return values;
-            });
-        });
-
-        stringBuilderSize += pieces.size();
-
-        StringBuilder canonicalizedResource = new StringBuilder(stringBuilderSize)
-            .append('/').append(resourcePath).append(absolutePath);
-
-        for (Map.Entry<String, List<String>> queryParam : pieces.entrySet()) {
-            List<String> queryParamValues = queryParam.getValue();
-            queryParamValues.sort(ROOT_COLLATOR);
-            canonicalizedResource.append('\n').append(queryParam.getKey()).append(':');
-
-            int size = queryParamValues.size();
-            for (int i = 0; i < size; i++) {
-                String queryParamValue = queryParamValues.get(i);
-                if (i > 0) {
-                    canonicalizedResource.append(',');
-                }
-
-                canonicalizedResource.append(queryParamValue);
-            }
+        for (Map.Entry<String, String[]> queryParam : queryParams.entrySet()) {
+            String[] queryParamValues = queryParam.getValue();
+            Arrays.sort(queryParamValues);
+            String queryParamValuesStr = String.join(",", queryParamValues);
+            canonicalizedResource.append('\n')
+                .append(queryParam.getKey())
+                .append(':')
+                .append(queryParamValuesStr);
         }
 
         // append to main string builder the join of completed params with new line
@@ -321,7 +285,7 @@ public final class StorageSharedKeyCredential {
     }
 
     /**
-     * Searches for a {@link StorageSharedKeyCredential} in the {@link HttpPipeline}.
+     * Searches for a {@link StorageSharedKeyCredential} in the passed {@link HttpPipeline}.
      *
      * @param httpPipeline Pipeline being searched
      * @return a StorageSharedKeyCredential if the pipeline contains one, otherwise null.
