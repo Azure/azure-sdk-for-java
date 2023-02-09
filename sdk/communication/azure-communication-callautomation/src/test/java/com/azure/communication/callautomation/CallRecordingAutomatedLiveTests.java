@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
 import com.azure.communication.callautomation.models.CallSource;
-import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.RecordingChannel;
@@ -63,7 +63,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
-            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(source), Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(source), Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
                 .setRepeatabilityHeaders(null);
             CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
@@ -143,7 +143,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
-            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(source), Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(source), Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
                 .setRepeatabilityHeaders(null);
             CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();

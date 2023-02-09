@@ -7,7 +7,7 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallSource;
-import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
@@ -50,7 +50,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(new CallSource(caller), targets, CALL_CALLBACK_URL);
+        CreateGroupCallOptions callOptions = new CreateGroupCallOptions(new CallSource(caller), targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
 
