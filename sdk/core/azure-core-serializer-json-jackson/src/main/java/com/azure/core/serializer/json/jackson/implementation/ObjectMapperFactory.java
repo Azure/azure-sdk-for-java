@@ -43,14 +43,6 @@ final class ObjectMapperFactory {
         return initializeMapperBuilder(JsonMapper.builder()).build();
     }
 
-    public ObjectMapper createDefaultMapper() {
-        return new ObjectMapper();
-    }
-
-    public ObjectMapper createPrettyPrintMapper() {
-        return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-    }
-
     public ObjectMapper createHeaderMapper() {
         return initializeMapperBuilder(JsonMapper.builder())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
@@ -58,7 +50,7 @@ final class ObjectMapperFactory {
     }
 
     @SuppressWarnings("deprecation")
-    static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
+    static MapperBuilder<?, ?> initializeMapperBuilder(MapperBuilder<?, ?> mapper) {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)

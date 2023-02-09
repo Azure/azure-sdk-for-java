@@ -120,23 +120,21 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeList(List<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeList(values, format);
+        String actualSerializedString = JacksonAdapter.defaultSerializerAdapter().serializeList(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeIterable(Iterable<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeIterable(values, format);
+        String actualSerializedString = JacksonAdapter.defaultSerializerAdapter().serializeIterable(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter.defaultSerializerAdapter()
             .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
@@ -170,7 +168,7 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("deserializeXmlSupplier")
     public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter.defaultSerializerAdapter()
             .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
@@ -210,7 +208,7 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders = com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
+        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.defaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
@@ -220,15 +218,14 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
 
-        assertThrows(DateTimeParseException.class, () -> com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter()
+        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.defaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class));
     }
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            com.azure.core.util.serializer.JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
-                InvalidStronglyTypedHeaders.class);
+            JacksonAdapter.defaultSerializerAdapter().deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {

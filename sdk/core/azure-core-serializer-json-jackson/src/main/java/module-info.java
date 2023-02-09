@@ -8,7 +8,6 @@ module com.azure.core.serializer.json.jackson {
     requires transitive com.fasterxml.jackson.databind;
 
     requires com.fasterxml.jackson.annotation;
-    requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.core.serializer.json.jackson;
 
