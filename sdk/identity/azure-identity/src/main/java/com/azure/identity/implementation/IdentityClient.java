@@ -1252,24 +1252,6 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     /**
-     * Get the configured tenant id.
-     *
-     * @return the tenant id.
-     */
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    /**
-     * Get the configured client id.
-     *
-     * @return the client id.
-     */
-    public String getClientId() {
-        return clientId;
-    }
-
-    /**
      * Get the configured identity client options.
      *
      * @return the client options.

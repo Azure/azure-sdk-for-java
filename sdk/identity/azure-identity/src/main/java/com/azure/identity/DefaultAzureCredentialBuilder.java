@@ -39,9 +39,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Creates an instance of a DefaultAzureCredentialBuilder.
      */
     public DefaultAzureCredentialBuilder() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
     }
 
@@ -192,6 +189,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public DefaultAzureCredential build() {
+        loadFallbackValuesFromEnvironment();
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
@@ -202,8 +200,15 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
+    private void loadFallbackValuesFromEnvironment() {
+        Configuration configuration = identityClientOptions.getConfiguration() == null ?
+            Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+        tenantId = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
+        managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : managedIdentityClientId;
+    }
+
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = (CoreUtils.isNullOrEmpty(managedIdentityClientId) && CoreUtils.isNullOrEmpty(workloadIdentityClientId)) ?  null : getWorkloadIdentityCredentialIfAvailable();
+        WorkloadIdentityCredential workloadIdentityCredential = getWorkloadIdentityCredentialIfAvailable();
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         if (workloadIdentityCredential != null) {
@@ -231,7 +236,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
             || CoreUtils.isNullOrEmpty(clientId)
             || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(clientId, tenantId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
+            return new WorkloadIdentityCredential(tenantId, clientId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
         }
         return null;
     }

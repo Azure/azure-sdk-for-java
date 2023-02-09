@@ -136,17 +136,57 @@ public class DefaultAzureCredentialTest {
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithExchangeToken(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         })) {
-
-
             // test
+            String clientId = "dummy-client-id";
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                .workloadIdentityClientId("dummy-client-id")
+                .workloadIdentityClientId(clientId)
                 .configuration(configuration)
                 .build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
             Assert.assertNotNull(mocked);
         }
     }
+
+    @Test
+    public void testUseWorkloadIdentityCredentialWithClientIdFlow() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
+        configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-path");
+
+        // test
+        String clientId = "dummy-client-id";
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+            .workloadIdentityClientId(clientId)
+            .configuration(configuration)
+            .build();
+        WorkloadIdentityCredential workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+
+        credential = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(clientId)
+            .configuration(configuration)
+            .build();
+        workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, clientId);
+        credential = new DefaultAzureCredentialBuilder()
+            .configuration(configuration)
+            .build();
+        workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+    }
+
+
 
     @Test
     public void testUseAzureCliCredential() throws Exception {

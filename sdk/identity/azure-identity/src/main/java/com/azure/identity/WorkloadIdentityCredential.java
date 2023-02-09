@@ -44,5 +44,9 @@ public class WorkloadIdentityCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithExchangeToken(request);
     }
+
+    String getClientId() {
+        return this.identityClient.getClientId();
+    }
 }
 
