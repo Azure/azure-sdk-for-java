@@ -14,6 +14,6 @@ public interface SecretClientCustomizer {
      * @param builder SecretClientBuilder
      * @param endpoint String
      */
-    void setup(SecretClientBuilder builder, String endpoint);
+    void customize(SecretClientBuilder builder, String endpoint);
 
 }

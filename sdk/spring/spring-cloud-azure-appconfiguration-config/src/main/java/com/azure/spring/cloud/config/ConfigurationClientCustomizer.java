@@ -15,6 +15,6 @@ public interface ConfigurationClientCustomizer {
      * @param builder ConfigurationClientBuilder
      * @param endpoint String
      */
-    void setup(ConfigurationClientBuilder builder, String endpoint);
+    void customize(ConfigurationClientBuilder builder, String endpoint);
 
 }

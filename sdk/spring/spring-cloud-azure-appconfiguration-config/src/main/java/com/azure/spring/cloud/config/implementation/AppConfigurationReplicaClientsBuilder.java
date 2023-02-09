@@ -185,7 +185,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured, replicaCount));
 
         if (clientProvider != null) {
-            clientProvider.setup(builder, endpoint);
+            clientProvider.customize(builder, endpoint);
         }
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient());
     }

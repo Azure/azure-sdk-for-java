@@ -50,15 +50,6 @@ public class AppConfigurationBootstrapConfiguration {
     @Autowired
     private transient ApplicationContext context;
 
-    /**
-     *
-     * @param properties Client properties
-     * @param appProperties Library properties
-     * @param clientFactory Store Connections
-     * @param keyVaultClientFactory keyVaultClientFactory
-     * @return AppConfigurationPropertySourceLocator
-     * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
-     */
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
@@ -69,10 +60,6 @@ public class AppConfigurationBootstrapConfiguration {
             properties.getRefreshInterval(), properties.getStores());
     }
 
-    /**
-     * @param clientProperties AzureKeyVaultSecretProvider client properties
-     * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
-     */
     @Bean
     AppConfigurationKeyVaultClientFactory keyVaultClientFactory(Environment environment)
         throws IllegalArgumentException {

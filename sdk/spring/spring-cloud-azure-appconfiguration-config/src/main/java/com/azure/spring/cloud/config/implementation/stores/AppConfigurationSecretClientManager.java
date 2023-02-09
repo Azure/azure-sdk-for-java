@@ -35,10 +35,10 @@ public final class AppConfigurationSecretClientManager {
     /**
      * Creates a Client for connecting to Key Vault
      * @param endpoint Key Vault endpoint
-     * @param tokenCredentialProvider optional provider of the Token Credential for connecting to Key Vault
      * @param keyVaultClientProvider optional provider for overriding the Key Vault Client
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
-     * @param authClientId clientId used to authenticate with to App Configuration (Optional)
+     * @param secretClientFactory Factory for building clients to Key Vault
+     * @param credentialConfigured Is a credential configured with Global Configurations or Service Configurations
      */
     public AppConfigurationSecretClientManager(String endpoint, SecretClientCustomizer keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory, boolean credentialConfigured) {
@@ -59,7 +59,7 @@ public final class AppConfigurationSecretClientManager {
         builder.vaultUrl(endpoint);
 
         if (keyVaultClientProvider != null) {
-            keyVaultClientProvider.setup(builder, endpoint);
+            keyVaultClientProvider.customize(builder, endpoint);
         }
 
         secretClient = builder.buildAsyncClient();

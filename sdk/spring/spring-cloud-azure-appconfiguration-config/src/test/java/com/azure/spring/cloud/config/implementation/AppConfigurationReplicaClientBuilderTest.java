@@ -126,7 +126,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
         assertEquals(0, replicaClient.getFailedAttempts());
 
-        verify(modifierMock, times(1)).setup(Mockito.eq(builderMock), Mockito.eq(TEST_ENDPOINT));
+        verify(modifierMock, times(1)).customize(Mockito.eq(builderMock), Mockito.eq(TEST_ENDPOINT));
     }
 
     @Test

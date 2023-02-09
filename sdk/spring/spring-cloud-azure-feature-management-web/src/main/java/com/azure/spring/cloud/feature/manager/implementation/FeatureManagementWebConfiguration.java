@@ -30,7 +30,7 @@ public class FeatureManagementWebConfiguration {
      */
     @Bean
     @RequestScope
-    public FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
+    FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
         return new FeatureManagerSnapshot(featureManager);
     }
 
@@ -43,7 +43,7 @@ public class FeatureManagementWebConfiguration {
      * @return FeatureHandler
      */
     @Bean
-    public FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
+    FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
         @Autowired(required = false) IDisabledFeaturesHandler disabledFeaturesHandler) {
         return new FeatureHandler(featureManager, snapshot, disabledFeaturesHandler);
     }
@@ -55,7 +55,7 @@ public class FeatureManagementWebConfiguration {
      * @return FeatureConfig
      */
     @Bean
-    public FeatureConfig featureConfig(FeatureHandler featureHandler) {
+    FeatureConfig featureConfig(FeatureHandler featureHandler) {
         return new FeatureConfig(featureHandler);
     }
 

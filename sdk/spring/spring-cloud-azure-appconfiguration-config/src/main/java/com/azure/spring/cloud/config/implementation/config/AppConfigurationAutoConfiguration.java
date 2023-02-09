@@ -29,11 +29,11 @@ public class AppConfigurationAutoConfiguration {
      */
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
-    public static class AppConfigurationWatchAutoConfiguration {
+    static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
+        AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
                 appProperties.getDefaultMinBackoff());

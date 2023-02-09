@@ -43,9 +43,6 @@ class AppConfigurationWebAutoConfiguration {
         return new AppConfigurationEventListener(appConfigurationRefresh);
     }
 
-    /**
-     * Refresh from Pull Requests
-     */
     @Configuration
     @ConditionalOnClass(name = {
         "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
