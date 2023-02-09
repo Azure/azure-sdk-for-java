@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -15,14 +16,15 @@ public interface IAddressResolver {
             RxDocumentServiceRequest request,
             boolean forceRefreshPartitionAddresses);
 
-    /***
-     * Warm up caches and open connections to all replicas of the container for the current read region.
+    /**
+     * Warm up caches and open connections for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
-     * @param containerLink the container link.
-     *
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
      * Set the open connection handler so SDK can proactively create connections based on need.
