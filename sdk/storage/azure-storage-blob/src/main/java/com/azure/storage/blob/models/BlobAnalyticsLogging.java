@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Azure Analytics Logging settings. */
-@JacksonXmlRootElement(localName = "Logging")
 @Fluent
+@JacksonXmlRootElement(localName = "Logging")
 public final class BlobAnalyticsLogging {
 
     /*

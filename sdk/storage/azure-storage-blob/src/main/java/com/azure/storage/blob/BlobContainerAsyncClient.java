@@ -19,8 +19,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
@@ -63,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -1343,17 +1342,14 @@ public final class BlobContainerAsyncClient {
                 }
                 return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {
-                    BlobHierarchyListSegment segment = response.getValue().getSegment();
-                    List<BlobItem> value;
-                    if (segment == null) {
-                        value = Collections.emptyList();
-                    } else {
-                        value = new ArrayList<>(segment.getBlobItems().size() + segment.getBlobPrefixes().size());
-                        segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
-                        segment.getBlobPrefixes().forEach(prefix -> value.add(new BlobItem()
-                            .setName(ModelHelper.toBlobNameString(prefix.getName()))
-                            .setIsPrefix(true)));
-                    }
+                    List<BlobItem> value = response.getValue().getSegment() == null
+                        ? Collections.emptyList()
+                        : Stream.concat(
+                        response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
+                        response.getValue().getSegment().getBlobPrefixes().stream()
+                            .map(blobPrefix -> new BlobItem()
+                                .setName(ModelHelper.toBlobNameString(blobPrefix.getName())).setIsPrefix(true))
+                    ).collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
@@ -1464,7 +1460,7 @@ public final class BlobContainerAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
-                options.getQuery(), marker, options.getMaxResultsPerPage(), null,
+                options.getQuery(), marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null

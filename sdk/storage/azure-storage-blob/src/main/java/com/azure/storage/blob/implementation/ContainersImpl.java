@@ -46,7 +46,6 @@ import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyHea
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataHeaders;
 import com.azure.storage.blob.implementation.models.ContainersSubmitBatchHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
-import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -431,7 +430,6 @@ public final class ContainersImpl {
                 @QueryParam("where") String where,
                 @QueryParam("marker") String marker,
                 @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -449,7 +447,6 @@ public final class ContainersImpl {
                 @QueryParam("where") String where,
                 @QueryParam("marker") String marker,
                 @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -3289,7 +3286,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3298,20 +3294,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersFilterBlobsHeaders, FilterBlobSegment>> filterBlobsWithResponseAsync(
-            String containerName,
-            Integer timeout,
-            String requestId,
-            String where,
-            String marker,
-            Integer maxresults,
-            List<FilterBlobsIncludeItem> include) {
+            String containerName, Integer timeout, String requestId, String where, String marker, Integer maxresults) {
         final String restype = "container";
         final String comp = "blobs";
         final String accept = "application/xml";
-        String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.filterBlobs(
@@ -3325,7 +3311,6 @@ public final class ContainersImpl {
                                 where,
                                 marker,
                                 maxresults,
-                                includeConverted,
                                 accept,
                                 context));
     }
@@ -3351,7 +3336,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -3367,15 +3351,10 @@ public final class ContainersImpl {
             String where,
             String marker,
             Integer maxresults,
-            List<FilterBlobsIncludeItem> include,
             Context context) {
         final String restype = "container";
         final String comp = "blobs";
         final String accept = "application/xml";
-        String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.filterBlobs(
                 this.client.getUrl(),
                 containerName,
@@ -3387,7 +3366,6 @@ public final class ContainersImpl {
                 where,
                 marker,
                 maxresults,
-                includeConverted,
                 accept,
                 context);
     }
@@ -3413,7 +3391,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3421,14 +3398,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilterBlobSegment> filterBlobsAsync(
-            String containerName,
-            Integer timeout,
-            String requestId,
-            String where,
-            String marker,
-            Integer maxresults,
-            List<FilterBlobsIncludeItem> include) {
-        return filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker, maxresults, include)
+            String containerName, Integer timeout, String requestId, String where, String marker, Integer maxresults) {
+        return filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker, maxresults)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3453,7 +3424,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -3468,10 +3438,8 @@ public final class ContainersImpl {
             String where,
             String marker,
             Integer maxresults,
-            List<FilterBlobsIncludeItem> include,
             Context context) {
-        return filterBlobsWithResponseAsync(
-                        containerName, timeout, requestId, where, marker, maxresults, include, context)
+        return filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker, maxresults, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3496,7 +3464,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3505,20 +3472,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FilterBlobSegment>> filterBlobsNoCustomHeadersWithResponseAsync(
-            String containerName,
-            Integer timeout,
-            String requestId,
-            String where,
-            String marker,
-            Integer maxresults,
-            List<FilterBlobsIncludeItem> include) {
+            String containerName, Integer timeout, String requestId, String where, String marker, Integer maxresults) {
         final String restype = "container";
         final String comp = "blobs";
         final String accept = "application/xml";
-        String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.filterBlobsNoCustomHeaders(
@@ -3532,7 +3489,6 @@ public final class ContainersImpl {
                                 where,
                                 marker,
                                 maxresults,
-                                includeConverted,
                                 accept,
                                 context));
     }
@@ -3558,7 +3514,6 @@ public final class ContainersImpl {
      *     listing operation crosses a partition boundary, then the service will return a continuation token for
      *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
      *     results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -3574,15 +3529,10 @@ public final class ContainersImpl {
             String where,
             String marker,
             Integer maxresults,
-            List<FilterBlobsIncludeItem> include,
             Context context) {
         final String restype = "container";
         final String comp = "blobs";
         final String accept = "application/xml";
-        String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.filterBlobsNoCustomHeaders(
                 this.client.getUrl(),
                 containerName,
@@ -3594,7 +3544,6 @@ public final class ContainersImpl {
                 where,
                 marker,
                 maxresults,
-                includeConverted,
                 accept,
                 context);
     }

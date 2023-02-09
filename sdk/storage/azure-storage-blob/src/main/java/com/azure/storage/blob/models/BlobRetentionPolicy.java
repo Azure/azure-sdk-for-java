@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** the retention policy which determines how long the associated data should persist. */
-@JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
+@JacksonXmlRootElement(localName = "RetentionPolicy")
 public final class BlobRetentionPolicy {
 
     /*

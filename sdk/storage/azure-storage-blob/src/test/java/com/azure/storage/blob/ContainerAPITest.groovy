@@ -35,7 +35,6 @@ import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
@@ -1829,53 +1828,6 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
-    }
-
-    def setupContainerForListing(BlobContainerClient containerClient) {
-        def blobNames = ["foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar", "baz/bar/foo"] as Set
-        def data = getRandomByteArray(Constants.KB)
-        def blobs = [] as Set
-
-        for (def blob : blobNames) {
-            def blockBlobClient = containerClient.getBlobClient(blob).getBlockBlobClient()
-            blobs.add(blockBlobClient)
-            blockBlobClient.upload(new ByteArrayInputStream(data), Constants.KB)
-        }
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
-    def "List blobs hier segment with version prefix and delimiter"() {
-        setup:
-        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
-        versionedCC.createIfNotExists()
-        def options = new ListBlobsOptions()
-            .setDetails(new BlobListDetails().setRetrieveVersions(true))
-            .setPrefix("baz")
-
-        setupContainerForListing(versionedCC)
-
-        def foundBlobs = [] as Set
-        def foundPrefixes = [] as Set
-
-        when:
-        versionedCC.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList())
-            .forEach { blobItem ->
-                if (blobItem.isPrefix()) {
-                    foundPrefixes << blobItem
-                } else {
-                    foundBlobs << blobItem
-                }
-            }
-
-        then:
-        foundBlobs.size() == 1
-        foundPrefixes.size() == 1
-        foundBlobs[0].getName() == "baz"
-        foundBlobs[0].getVersionId() != null
-        foundPrefixes[0].getName() == "baz/"
-
-        cleanup:
-        versionedCC.delete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
