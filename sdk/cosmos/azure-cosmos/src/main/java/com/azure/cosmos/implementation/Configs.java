@@ -110,6 +110,10 @@ public class Configs {
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
 
+    // whether to skip recording metric
+    private static final String IGNORE_METRIC_ENALBLED = "COSMOS.IGNORE_METRIC_ENABLED";
+    private static final boolean DEFAULT_IGNORE_METRIC_ENABLED = false;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -313,5 +317,11 @@ public class Configs {
         return getJVMConfigAsBoolean(
                 REPLICA_ADDRESS_VALIDATION_ENABLED,
                 DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED);
+    }
+
+    public static boolean isIgnoreMetricEnabled() {
+        return getJVMConfigAsBoolean(
+                IGNORE_METRIC_ENALBLED,
+                DEFAULT_IGNORE_METRIC_ENABLED);
     }
 }

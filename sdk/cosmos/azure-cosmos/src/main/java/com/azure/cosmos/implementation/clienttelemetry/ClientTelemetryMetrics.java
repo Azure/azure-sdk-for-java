@@ -7,12 +7,15 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -58,6 +61,8 @@ public final class ClientTelemetryMetrics {
 
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
+
+    private static final boolean ignoreMetricEnabled = Configs.isIgnoreMetricEnabled();
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -689,9 +694,12 @@ public final class ClientTelemetryMetrics {
                     storeResponseDiagnostics.getResponsePayloadLength()
                 );
 
-                recordRntbdEndpointStatistics(
-                    storeResponseDiagnostics.getRntbdEndpointStatistics(),
-                    requestTags);
+                // disable the Summary, use the gauge for the channel metrics
+                if (!ignoreMetricEnabled) {
+                    recordRntbdEndpointStatistics(
+                            storeResponseDiagnostics.getRntbdEndpointStatistics(),
+                            requestTags);
+                }
             }
         }
 
@@ -864,10 +872,12 @@ public final class ClientTelemetryMetrics {
                  .tags(tags)
                  .register(registry);
 
-            Gauge.builder(nameOf("rntbd.channels.acquired.count"), endpoint, RntbdEndpoint::channelsAcquiredMetric)
-                 .description("RNTBD acquired channel count")
-                 .tags(tags)
-                 .register(registry);
+            if (!ignoreMetricEnabled) {
+                Gauge.builder(nameOf("rntbd.channels.acquired.count"), endpoint, RntbdEndpoint::channelsAcquiredMetric)
+                .description("RNTBD acquired channel count")
+                .tags(tags)
+                .register(registry);
+            }
 
             Gauge.builder(nameOf("rntbd.channels.available.count"), endpoint, RntbdEndpoint::channelsAvailableMetric)
                  .description("RNTBD available channel count")
