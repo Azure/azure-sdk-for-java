@@ -279,9 +279,9 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMap(link -> link.getEndpointStates()
                 .filter(e -> e == AmqpEndpointState.ACTIVE)
                 .next()
-                // It is possible that link is CLOSED directly from UNINITIALIZED state. This may happen when remote
-                // refuses to attach link and the error condition in 'onLinkRemoteClose()' is null, so 'endpointStates'
-                // will emit the complete signal. In this case, we switch to Mono.error() in order to do the retry.
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error condition,
+                // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable processor recovery.
                 .switchIfEmpty(Mono.error(() ->
                     new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
@@ -301,11 +301,11 @@ class ServiceBusSessionManager implements AutoCloseable {
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
-                } else if (failure instanceof AmqpException
-                    && ((AmqpException) failure).isTransient()) {
-                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else {
-                    return Mono.<Long>error(failure);
+                    // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
+                    // non-blocking, if we use the session processor to recover the error, it requires a blocking
+                    // thread to close the client. Hence, we publish the error on the bounded elastic thread.
+                    return Mono.<Long>error(failure).publishOn(Schedulers.boundedElastic());
                 }
             })));
     }
