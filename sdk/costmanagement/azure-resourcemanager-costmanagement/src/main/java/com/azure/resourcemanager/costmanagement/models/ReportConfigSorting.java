@@ -6,19 +6,16 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The order by expression to be used in the report. */
 @Fluent
 public final class ReportConfigSorting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigSorting.class);
-
     /*
      * Direction of sort.
      */
     @JsonProperty(value = "direction")
-    private ReportConfigSortingDirection direction;
+    private ReportConfigSortingType direction;
 
     /*
      * The name of the column to sort.
@@ -26,12 +23,16 @@ public final class ReportConfigSorting {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ReportConfigSorting class. */
+    public ReportConfigSorting() {
+    }
+
     /**
      * Get the direction property: Direction of sort.
      *
      * @return the direction value.
      */
-    public ReportConfigSortingDirection direction() {
+    public ReportConfigSortingType direction() {
         return this.direction;
     }
 
@@ -41,7 +42,7 @@ public final class ReportConfigSorting {
      * @param direction the direction value to set.
      * @return the ReportConfigSorting object itself.
      */
-    public ReportConfigSorting withDirection(ReportConfigSortingDirection direction) {
+    public ReportConfigSorting withDirection(ReportConfigSortingType direction) {
         this.direction = direction;
         return this;
     }
@@ -73,9 +74,11 @@ public final class ReportConfigSorting {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ReportConfigSorting"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReportConfigSorting.class);
 }

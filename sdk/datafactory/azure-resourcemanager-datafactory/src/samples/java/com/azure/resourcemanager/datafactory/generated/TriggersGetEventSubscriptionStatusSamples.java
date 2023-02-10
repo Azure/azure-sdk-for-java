@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Triggers GetEventSubscriptionStatus. */
 public final class TriggersGetEventSubscriptionStatusSamples {
     /*
@@ -21,6 +19,6 @@ public final class TriggersGetEventSubscriptionStatusSamples {
         manager
             .triggers()
             .getEventSubscriptionStatusWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
+                "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
     }
 }

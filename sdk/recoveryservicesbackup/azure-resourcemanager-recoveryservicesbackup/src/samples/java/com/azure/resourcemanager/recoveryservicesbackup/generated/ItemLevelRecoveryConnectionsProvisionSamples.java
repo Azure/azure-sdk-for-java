@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVmilrRegistrationRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 
 /** Samples for ItemLevelRecoveryConnections Provision. */
 public final class ItemLevelRecoveryConnectionsProvisionSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Provision_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Provision_Ilr.json
      */
     /**
      * Sample code: Provision Instant Item Level Recovery for Azure Vm.
@@ -37,6 +36,6 @@ public final class ItemLevelRecoveryConnectionsProvisionSamples {
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pysdktestrg/providers/Microsoft.Compute/virtualMachines/pysdktestv2vm1")
                             .withInitiatorName("Hello World")
                             .withRenewExistingRegistration(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

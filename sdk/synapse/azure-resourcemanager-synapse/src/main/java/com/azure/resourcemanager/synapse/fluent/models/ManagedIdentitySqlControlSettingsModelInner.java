@@ -9,19 +9,29 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed Identity Sql Control Settings Sql Control Settings for workspace managed identity. */
+/**
+ * Managed Identity Sql Control Settings
+ *
+ * <p>Sql Control Settings for workspace managed identity.
+ */
 @Fluent
 public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
     /*
-     * Managed Identity Sql Control Settings Sql Control Settings for workspace
-     * managed identity
+     * Managed Identity Sql Control Settings
+     *
+     * Sql Control Settings for workspace managed identity
      */
     @JsonProperty(value = "properties")
     private ManagedIdentitySqlControlSettingsModelProperties innerProperties;
 
+    /** Creates an instance of ManagedIdentitySqlControlSettingsModelInner class. */
+    public ManagedIdentitySqlControlSettingsModelInner() {
+    }
+
     /**
-     * Get the innerProperties property: Managed Identity Sql Control Settings Sql Control Settings for workspace
-     * managed identity.
+     * Get the innerProperties property: Managed Identity Sql Control Settings
+     *
+     * <p>Sql Control Settings for workspace managed identity.
      *
      * @return the innerProperties value.
      */

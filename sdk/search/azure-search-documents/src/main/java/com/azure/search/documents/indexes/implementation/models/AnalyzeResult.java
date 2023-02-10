@@ -6,14 +6,14 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of testing an analyzer on text. */
-@Fluent
+@Immutable
 public final class AnalyzeResult {
     /*
      * The list of tokens returned by the analyzer specified in the request.

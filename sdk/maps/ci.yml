@@ -11,6 +11,14 @@ trigger:
       - sdk/maps/
     exclude:
       - sdk/maps/pom.xml
+      - sdk/maps/azure-maps-elevation/pom.xml
+      - sdk/maps/azure-maps-geolocation/pom.xml
+      - sdk/maps/azure-maps-render/pom.xml
+      - sdk/maps/azure-maps-route/pom.xml
+      - sdk/maps/azure-maps-search/pom.xml
+      - sdk/maps/azure-maps-timezone/pom.xml
+      - sdk/maps/azure-maps-traffic/pom.xml
+      - sdk/maps/azure-maps-weather/pom.xml
       - sdk/maps/azure-resourcemanager-maps/pom.xml
 
 pr:

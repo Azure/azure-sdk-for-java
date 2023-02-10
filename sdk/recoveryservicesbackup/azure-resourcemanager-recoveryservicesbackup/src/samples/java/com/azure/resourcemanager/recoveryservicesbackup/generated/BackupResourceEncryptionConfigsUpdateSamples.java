@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionAtRestType;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InfrastructureEnc
 /** Samples for BackupResourceEncryptionConfigs Update. */
 public final class BackupResourceEncryptionConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/BackupResourceEncryptionConfig_Put.json
      */
     /**
      * Sample code: Update Vault Encryption Configuration.
@@ -31,9 +30,9 @@ public final class BackupResourceEncryptionConfigsUpdateSamples {
                     .withProperties(
                         new BackupResourceEncryptionConfig()
                             .withEncryptionAtRestType(EncryptionAtRestType.CUSTOMER_MANAGED)
-                            .withKeyUri("https://gktestkv1.vault.azure.net/keys/Test1/ed2e8cdc7f86477ebf0c6462b504a9ed")
+                            .withKeyUri("fakeTokenPlaceholder")
                             .withSubscriptionId("1a2311d9-66f5-47d3-a9fb-7a37da63934b")
                             .withInfrastructureEncryptionState(InfrastructureEncryptionState.fromString("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

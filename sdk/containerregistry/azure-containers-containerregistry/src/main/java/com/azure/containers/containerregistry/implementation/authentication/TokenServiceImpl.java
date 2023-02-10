@@ -24,8 +24,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class TokenServiceImpl {
 
     private final AuthenticationsImpl authenticationsImpl;
-    private static final String REFRESHTOKEN_GRANTTYPE = "refresh_token";
-    private static final String ACCESSTOKEN_GRANTTYPE = "access_token";
 
     /**
      * Creates an instance of the token service impl class.TokenServiceImpl.java

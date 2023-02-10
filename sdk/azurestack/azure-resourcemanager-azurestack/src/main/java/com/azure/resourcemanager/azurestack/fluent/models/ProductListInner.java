@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Pageable list of products. */
 @Fluent
 public final class ProductListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductListInner.class);
-
     /*
      * URI to the next page.
      */
@@ -26,6 +22,10 @@ public final class ProductListInner {
      */
     @JsonProperty(value = "value")
     private List<ProductInner> value;
+
+    /** Creates an instance of ProductListInner class. */
+    public ProductListInner() {
+    }
 
     /**
      * Get the nextLink property: URI to the next page.

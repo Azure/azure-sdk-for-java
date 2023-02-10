@@ -22,6 +22,9 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     @JsonProperty(value = "loggingOptOut")
     private Boolean loggingOptOut;
 
+    /** Creates an instance of AbstractiveSummarizationTaskParameters class. */
+    public AbstractiveSummarizationTaskParameters() {}
+
     /**
      * Get the modelVersion property: The modelVersion property.
      *

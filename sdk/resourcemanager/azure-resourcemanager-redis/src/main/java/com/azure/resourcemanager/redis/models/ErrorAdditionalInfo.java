@@ -22,6 +22,10 @@ public final class ErrorAdditionalInfo {
     @JsonProperty(value = "info", access = JsonProperty.Access.WRITE_ONLY)
     private Object info;
 
+    /** Creates an instance of ErrorAdditionalInfo class. */
+    public ErrorAdditionalInfo() {
+    }
+
     /**
      * Get the type property: The additional info type.
      *

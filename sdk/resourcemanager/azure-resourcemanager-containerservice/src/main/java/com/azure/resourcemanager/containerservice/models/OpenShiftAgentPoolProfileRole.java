@@ -17,6 +17,15 @@ public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<Op
     public static final OpenShiftAgentPoolProfileRole INFRA = fromString("infra");
 
     /**
+     * Creates a new instance of OpenShiftAgentPoolProfileRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OpenShiftAgentPoolProfileRole() {
+    }
+
+    /**
      * Creates or finds a OpenShiftAgentPoolProfileRole from its string representation.
      *
      * @param name a name to look for.

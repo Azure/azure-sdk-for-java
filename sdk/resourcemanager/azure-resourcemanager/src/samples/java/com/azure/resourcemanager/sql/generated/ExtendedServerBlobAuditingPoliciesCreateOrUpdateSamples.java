@@ -33,8 +33,7 @@ public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
                 new ExtendedServerBlobAuditingPolicyInner()
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 
@@ -70,8 +69,7 @@ public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
                     .withQueueDelayMs(4000)
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
                 Context.NONE);
     }

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mariadb.fluent.ServerBasedPerformanceTiersClien
 import com.azure.resourcemanager.mariadb.fluent.models.PerformanceTierPropertiesInner;
 import com.azure.resourcemanager.mariadb.models.PerformanceTierProperties;
 import com.azure.resourcemanager.mariadb.models.ServerBasedPerformanceTiers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerBasedPerformanceTiersImpl implements ServerBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServerBasedPerformanceTiersImpl.class);
 
     private final ServerBasedPerformanceTiersClient innerClient;
 

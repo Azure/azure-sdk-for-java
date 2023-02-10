@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingRelationshipType. */
+/** Identifies which services and purchases are paid by a billing profile. */
 public final class BillingRelationshipType extends ExpandableStringEnum<BillingRelationshipType> {
     /** Static value Direct for BillingRelationshipType. */
     public static final BillingRelationshipType DIRECT = fromString("Direct");
@@ -23,6 +23,15 @@ public final class BillingRelationshipType extends ExpandableStringEnum<BillingR
     public static final BillingRelationshipType CSPPARTNER = fromString("CSPPartner");
 
     /**
+     * Creates a new instance of BillingRelationshipType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingRelationshipType() {
+    }
+
+    /**
      * Creates or finds a BillingRelationshipType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class BillingRelationshipType extends ExpandableStringEnum<BillingR
         return fromString(name, BillingRelationshipType.class);
     }
 
-    /** @return known BillingRelationshipType values. */
+    /**
+     * Gets known BillingRelationshipType values.
+     *
+     * @return known BillingRelationshipType values.
+     */
     public static Collection<BillingRelationshipType> values() {
         return values(BillingRelationshipType.class);
     }

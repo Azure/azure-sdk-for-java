@@ -23,6 +23,10 @@ public final class DedicatedSQLminimalTlsSettingsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DedicatedSQLminimalTlsSettingsProperties innerProperties;
 
+    /** Creates an instance of DedicatedSQLminimalTlsSettingsInner class. */
+    public DedicatedSQLminimalTlsSettingsInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

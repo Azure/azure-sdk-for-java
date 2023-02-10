@@ -17,6 +17,15 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
     public static final ScriptType NON_QUERY = fromString("NonQuery");
 
     /**
+     * Creates a new instance of ScriptType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptType() {
+    }
+
+    /**
      * Creates or finds a ScriptType from its string representation.
      *
      * @param name a name to look for.

@@ -52,7 +52,7 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface RecommendedSensitivityLabelsService {
+    public interface RecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

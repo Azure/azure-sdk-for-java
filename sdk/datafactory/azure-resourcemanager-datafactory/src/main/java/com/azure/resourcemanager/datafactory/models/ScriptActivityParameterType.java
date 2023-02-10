@@ -47,6 +47,15 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
     public static final ScriptActivityParameterType TIMESPAN = fromString("Timespan");
 
     /**
+     * Creates a new instance of ScriptActivityParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityParameterType() {
+    }
+
+    /**
      * Creates or finds a ScriptActivityParameterType from its string representation.
      *
      * @param name a name to look for.

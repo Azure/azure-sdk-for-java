@@ -63,7 +63,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceKeysService {
+    public interface ManagedInstanceKeysService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

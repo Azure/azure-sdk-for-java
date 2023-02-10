@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devspaces.fluent.models.ControllerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ControllerList model. */
 @Fluent
 public final class ControllerList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerList.class);
-
     /*
      * List of Azure Dev Spaces Controllers.
      */
@@ -23,11 +19,14 @@ public final class ControllerList {
     private List<ControllerInner> value;
 
     /*
-     * The URI that can be used to request the next page for list of Azure Dev
-     * Spaces Controllers.
+     * The URI that can be used to request the next page for list of Azure Dev Spaces Controllers.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ControllerList class. */
+    public ControllerList() {
+    }
 
     /**
      * Get the value property: List of Azure Dev Spaces Controllers.

@@ -1,5 +1,24 @@
 # Release History
 
+## 1.1.0-beta.14 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.18 (2023-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-communication-common` from `1.2.3` to version `1.2.4`.
+
 ## 1.1.0-beta.13 (2023-01-10)
 - Adds support for Azure Communication Services Phone Numbers Browse API Methods.
 

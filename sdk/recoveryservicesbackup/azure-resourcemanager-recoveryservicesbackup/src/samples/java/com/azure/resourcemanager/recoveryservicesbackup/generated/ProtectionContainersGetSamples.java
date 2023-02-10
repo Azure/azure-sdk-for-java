@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Get. */
 public final class ProtectionContainersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/ProtectionContainers_Get.json
      */
     /**
      * Sample code: Get Protection Container Details.
@@ -20,6 +18,11 @@ public final class ProtectionContainersGetSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .protectionContainers()
-            .getWithResponse("testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", Context.NONE);
+            .getWithResponse(
+                "testVault",
+                "testRg",
+                "Azure",
+                "VMAppContainer;Compute;testRG;testSQL",
+                com.azure.core.util.Context.NONE);
     }
 }

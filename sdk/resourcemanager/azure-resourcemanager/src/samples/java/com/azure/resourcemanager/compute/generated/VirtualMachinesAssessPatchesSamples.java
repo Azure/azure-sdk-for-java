@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines AssessPatches. */
 public final class VirtualMachinesAssessPatchesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
      */
     /**
      * Sample code: Assess patch state of a virtual machine.
@@ -22,6 +20,6 @@ public final class VirtualMachinesAssessPatchesSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .assessPatches("myResourceGroupName", "myVMName", Context.NONE);
+            .assessPatches("myResourceGroupName", "myVMName", com.azure.core.util.Context.NONE);
     }
 }

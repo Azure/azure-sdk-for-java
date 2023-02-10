@@ -20,6 +20,15 @@ public final class ExportJobOutputSerializationType extends ExpandableStringEnum
     public static final ExportJobOutputSerializationType EXCEL = fromString("Excel");
 
     /**
+     * Creates a new instance of ExportJobOutputSerializationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportJobOutputSerializationType() {
+    }
+
+    /**
      * Creates or finds a ExportJobOutputSerializationType from its string representation.
      *
      * @param name a name to look for.

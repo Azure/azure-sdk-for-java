@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricType. */
+/** Metric to use when displaying costs. */
 public final class MetricType extends ExpandableStringEnum<MetricType> {
     /** Static value ActualCost for MetricType. */
     public static final MetricType ACTUAL_COST = fromString("ActualCost");
@@ -18,6 +18,15 @@ public final class MetricType extends ExpandableStringEnum<MetricType> {
 
     /** Static value AHUB for MetricType. */
     public static final MetricType AHUB = fromString("AHUB");
+
+    /**
+     * Creates a new instance of MetricType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricType() {
+    }
 
     /**
      * Creates or finds a MetricType from its string representation.
@@ -30,7 +39,11 @@ public final class MetricType extends ExpandableStringEnum<MetricType> {
         return fromString(name, MetricType.class);
     }
 
-    /** @return known MetricType values. */
+    /**
+     * Gets known MetricType values.
+     *
+     * @return known MetricType values.
+     */
     public static Collection<MetricType> values() {
         return values(MetricType.class);
     }

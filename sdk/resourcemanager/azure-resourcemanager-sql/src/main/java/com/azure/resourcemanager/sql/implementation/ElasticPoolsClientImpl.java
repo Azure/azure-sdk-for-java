@@ -66,7 +66,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
-    private interface ElasticPoolsService {
+    public interface ElasticPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

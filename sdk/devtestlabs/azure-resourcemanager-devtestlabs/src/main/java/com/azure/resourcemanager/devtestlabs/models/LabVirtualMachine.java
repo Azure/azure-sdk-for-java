@@ -312,6 +312,13 @@ public interface LabVirtualMachine {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.LabVirtualMachineInner object.
      *
      * @return the inner object.
@@ -788,6 +795,18 @@ public interface LabVirtualMachine {
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a string that represents the contents of the RDP file for the virtual machine along with {@link
+     *     Response}.
+     */
+    Response<RdpConnection> getRdpFileContentsWithResponse(Context context);
+
+    /**
+     * Gets a string that represents the contents of the RDP file for the virtual machine.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a string that represents the contents of the RDP file for the virtual machine.
@@ -795,15 +814,15 @@ public interface LabVirtualMachine {
     RdpConnection getRdpFileContents();
 
     /**
-     * Gets a string that represents the contents of the RDP file for the virtual machine.
+     * Lists the applicable start/stop schedules, if any.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a string that represents the contents of the RDP file for the virtual machine.
+     * @return schedules applicable to a virtual machine along with {@link Response}.
      */
-    Response<RdpConnection> getRdpFileContentsWithResponse(Context context);
+    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context);
 
     /**
      * Lists the applicable start/stop schedules, if any.
@@ -813,17 +832,6 @@ public interface LabVirtualMachine {
      * @return schedules applicable to a virtual machine.
      */
     ApplicableSchedule listApplicableSchedules();
-
-    /**
-     * Lists the applicable start/stop schedules, if any.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine.
-     */
-    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context);
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.

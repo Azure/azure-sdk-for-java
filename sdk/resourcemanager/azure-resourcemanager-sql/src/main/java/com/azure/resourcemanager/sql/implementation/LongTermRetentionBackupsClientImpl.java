@@ -68,7 +68,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
-    private interface LongTermRetentionBackupsService {
+    public interface LongTermRetentionBackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")

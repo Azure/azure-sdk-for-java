@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
@@ -44,7 +46,7 @@ public class EventHubsConsumerPropertiesTests {
     void loadBalancingDefaults() {
         LoadBalancingProperties loadBalancing = consumerProperties.getLoadBalancing();
         assertNotNull(loadBalancing);
-        assertEquals(LoadBalancingStrategy.BALANCED, loadBalancing.getStrategy());
+        assertNull(loadBalancing.getStrategy());
     }
 
     @Test
@@ -65,8 +67,17 @@ public class EventHubsConsumerPropertiesTests {
     }
 
     @Test
+    void domainNameConfigureAsCloud() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), consumerProperties.getDomainName());
+    }
+
+    @Test
     void customDomainNameShouldSet() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
         consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
     }
 

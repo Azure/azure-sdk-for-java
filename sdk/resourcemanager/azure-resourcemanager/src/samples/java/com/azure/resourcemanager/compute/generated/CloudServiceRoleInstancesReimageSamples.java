@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceRoleInstances Reimage. */
 public final class CloudServiceRoleInstancesReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Reimage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRoleInstance_Reimage.json
      */
     /**
      * Sample code: Reimage Cloud Service Role Instance.
@@ -22,6 +20,6 @@ public final class CloudServiceRoleInstancesReimageSamples {
             .manager()
             .serviceClient()
             .getCloudServiceRoleInstances()
-            .reimage("{roleInstance-name}", "ConstosoRG", "{cs-name}", Context.NONE);
+            .reimage("{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

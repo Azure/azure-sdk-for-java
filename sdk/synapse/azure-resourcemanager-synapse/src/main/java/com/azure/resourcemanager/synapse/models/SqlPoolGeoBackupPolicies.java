@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolGeoBackupPolicies. */
 public interface SqlPoolGeoBackupPolicies {
     /**
-     * Get list of SQL pool geo backup policies.
+     * List SQL pool geo backup policies
+     *
+     * <p>Get list of SQL pool geo backup policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -24,7 +26,9 @@ public interface SqlPoolGeoBackupPolicies {
     PagedIterable<GeoBackupPolicy> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Get list of SQL pool geo backup policies.
+     * List SQL pool geo backup policies
+     *
+     * <p>Get list of SQL pool geo backup policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -39,22 +43,9 @@ public interface SqlPoolGeoBackupPolicies {
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
     /**
-     * Get the specified SQL pool geo backup policy.
+     * Get a SQL pool geo backup policy
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param geoBackupPolicyName The name of the geo backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy.
-     */
-    GeoBackupPolicy get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName);
-
-    /**
-     * Get the specified SQL pool geo backup policy.
+     * <p>Get the specified SQL pool geo backup policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -74,7 +65,26 @@ public interface SqlPoolGeoBackupPolicies {
         Context context);
 
     /**
-     * Get the specified SQL pool geo backup policy.
+     * Get a SQL pool geo backup policy
+     *
+     * <p>Get the specified SQL pool geo backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param geoBackupPolicyName The name of the geo backup policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified SQL pool geo backup policy.
+     */
+    GeoBackupPolicy get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName);
+
+    /**
+     * Get a SQL pool geo backup policy
+     *
+     * <p>Get the specified SQL pool geo backup policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +95,9 @@ public interface SqlPoolGeoBackupPolicies {
     GeoBackupPolicy getById(String id);
 
     /**
-     * Get the specified SQL pool geo backup policy.
+     * Get a SQL pool geo backup policy
+     *
+     * <p>Get the specified SQL pool geo backup policy.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

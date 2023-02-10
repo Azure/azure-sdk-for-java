@@ -20,7 +20,8 @@ public interface SystemAssignedIdentitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
+     * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SystemAssignedIdentityInner>> getByScopeWithResponseAsync(String scope);
@@ -32,10 +33,24 @@ public interface SystemAssignedIdentitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
+     * @return the systemAssignedIdentity available under the specified RP scope on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SystemAssignedIdentityInner> getByScopeAsync(String scope);
+
+    /**
+     * Gets the systemAssignedIdentity available under the specified RP scope.
+     *
+     * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SystemAssignedIdentityInner> getByScopeWithResponse(String scope, Context context);
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
@@ -48,17 +63,4 @@ public interface SystemAssignedIdentitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SystemAssignedIdentityInner getByScope(String scope);
-
-    /**
-     * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
-     * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SystemAssignedIdentityInner> getByScopeWithResponse(String scope, Context context);
 }

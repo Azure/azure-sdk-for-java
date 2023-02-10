@@ -26,6 +26,15 @@ public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
     public static final AbsoluteMarker FIRST_OF_YEAR = fromString("FirstOfYear");
 
     /**
+     * Creates a new instance of AbsoluteMarker value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AbsoluteMarker() {
+    }
+
+    /**
      * Creates or finds a AbsoluteMarker from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
         return fromString(name, AbsoluteMarker.class);
     }
 
-    /** @return known AbsoluteMarker values. */
+    /**
+     * Gets known AbsoluteMarker values.
+     *
+     * @return known AbsoluteMarker values.
+     */
     public static Collection<AbsoluteMarker> values() {
         return values(AbsoluteMarker.class);
     }

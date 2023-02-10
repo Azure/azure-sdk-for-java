@@ -13,7 +13,7 @@ public class RetryProperties implements RetryOptionsProvider.RetryOptions {
     /**
      * The mode for retry backoff.
      */
-    private RetryOptionsProvider.RetryMode mode = RetryOptionsProvider.RetryMode.EXPONENTIAL;
+    private RetryOptionsProvider.RetryMode mode;
 
     private final FixedRetryProperties fixed = new FixedRetryProperties();
 

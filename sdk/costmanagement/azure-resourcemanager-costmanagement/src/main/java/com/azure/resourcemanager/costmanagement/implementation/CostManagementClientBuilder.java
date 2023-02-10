@@ -7,7 +7,6 @@ package com.azure.resourcemanager.costmanagement.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -18,6 +17,22 @@ import java.time.Duration;
 /** A builder for creating a new instance of the CostManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {CostManagementClientImpl.class})
 public final class CostManagementClientBuilder {
+    /*
+     * ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+     */
+    private String ifMatch;
+
+    /**
+     * Sets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+     *
+     * @param ifMatch the ifMatch value.
+     * @return the CostManagementClientBuilder.
+     */
+    public CostManagementClientBuilder ifMatch(String ifMatch) {
+        this.ifMatch = ifMatch;
+        return this;
+    }
+
     /*
      * server parameter
      */
@@ -51,22 +66,6 @@ public final class CostManagementClientBuilder {
     }
 
     /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the CostManagementClientBuilder.
-     */
-    public CostManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -79,6 +78,22 @@ public final class CostManagementClientBuilder {
      */
     public CostManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the CostManagementClientBuilder.
+     */
+    public CostManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -104,26 +119,26 @@ public final class CostManagementClientBuilder {
      * @return an instance of CostManagementClientImpl.
      */
     public CostManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         CostManagementClientImpl client =
-            new CostManagementClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
+            new CostManagementClientImpl(
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                ifMatch,
+                localEndpoint);
         return client;
     }
 }

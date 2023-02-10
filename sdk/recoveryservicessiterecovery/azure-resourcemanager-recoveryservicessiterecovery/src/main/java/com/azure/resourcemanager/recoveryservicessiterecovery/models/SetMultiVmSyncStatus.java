@@ -17,6 +17,15 @@ public final class SetMultiVmSyncStatus extends ExpandableStringEnum<SetMultiVmS
     public static final SetMultiVmSyncStatus DISABLE = fromString("Disable");
 
     /**
+     * Creates a new instance of SetMultiVmSyncStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SetMultiVmSyncStatus() {
+    }
+
+    /**
      * Creates or finds a SetMultiVmSyncStatus from its string representation.
      *
      * @param name a name to look for.

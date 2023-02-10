@@ -20,10 +20,9 @@ import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvaila
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacity;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForExistingResourceResult;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForNewResourceResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CapacitiesImpl implements Capacities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CapacitiesImpl.class);
 
     private final CapacitiesClient innerClient;
 
@@ -36,16 +35,6 @@ public final class CapacitiesImpl implements Capacities {
         this.serviceManager = serviceManager;
     }
 
-    public DedicatedCapacity getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
-        DedicatedCapacityInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCapacityName);
-        if (inner != null) {
-            return new DedicatedCapacityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DedicatedCapacity> getByResourceGroupWithResponse(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
         Response<DedicatedCapacityInner> inner =
@@ -56,6 +45,16 @@ public final class CapacitiesImpl implements Capacities {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DedicatedCapacityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DedicatedCapacity getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
+        DedicatedCapacityInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCapacityName);
+        if (inner != null) {
+            return new DedicatedCapacityImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -106,15 +105,6 @@ public final class CapacitiesImpl implements Capacities {
         return Utils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
     }
 
-    public SkuEnumerationForNewResourceResult listSkus() {
-        SkuEnumerationForNewResourceResultInner inner = this.serviceClient().listSkus();
-        if (inner != null) {
-            return new SkuEnumerationForNewResourceResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SkuEnumerationForNewResourceResult> listSkusWithResponse(Context context) {
         Response<SkuEnumerationForNewResourceResultInner> inner = this.serviceClient().listSkusWithResponse(context);
         if (inner != null) {
@@ -128,12 +118,10 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
-    public SkuEnumerationForExistingResourceResult listSkusForCapacity(
-        String resourceGroupName, String dedicatedCapacityName) {
-        SkuEnumerationForExistingResourceResultInner inner =
-            this.serviceClient().listSkusForCapacity(resourceGroupName, dedicatedCapacityName);
+    public SkuEnumerationForNewResourceResult listSkus() {
+        SkuEnumerationForNewResourceResultInner inner = this.serviceClient().listSkus();
         if (inner != null) {
-            return new SkuEnumerationForExistingResourceResultImpl(inner, this.manager());
+            return new SkuEnumerationForNewResourceResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -154,12 +142,12 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
-    public CheckCapacityNameAvailabilityResult checkNameAvailability(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
-        CheckCapacityNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(location, capacityParameters);
+    public SkuEnumerationForExistingResourceResult listSkusForCapacity(
+        String resourceGroupName, String dedicatedCapacityName) {
+        SkuEnumerationForExistingResourceResultInner inner =
+            this.serviceClient().listSkusForCapacity(resourceGroupName, dedicatedCapacityName);
         if (inner != null) {
-            return new CheckCapacityNameAvailabilityResultImpl(inner, this.manager());
+            return new SkuEnumerationForExistingResourceResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -180,10 +168,21 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
+    public CheckCapacityNameAvailabilityResult checkNameAvailability(
+        String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
+        CheckCapacityNameAvailabilityResultInner inner =
+            this.serviceClient().checkNameAvailability(location, capacityParameters);
+        if (inner != null) {
+            return new CheckCapacityNameAvailabilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DedicatedCapacity getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -191,7 +190,7 @@ public final class CapacitiesImpl implements Capacities {
         }
         String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
@@ -202,7 +201,7 @@ public final class CapacitiesImpl implements Capacities {
     public Response<DedicatedCapacity> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +209,7 @@ public final class CapacitiesImpl implements Capacities {
         }
         String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
@@ -221,7 +220,7 @@ public final class CapacitiesImpl implements Capacities {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -229,7 +228,7 @@ public final class CapacitiesImpl implements Capacities {
         }
         String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
@@ -240,7 +239,7 @@ public final class CapacitiesImpl implements Capacities {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -248,7 +247,7 @@ public final class CapacitiesImpl implements Capacities {
         }
         String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));

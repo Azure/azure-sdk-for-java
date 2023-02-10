@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.ServerSecurityAlertPoliciesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerSecurityAlertPoliciesClient. */
 public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecurityAlertPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerSecurityAlertPoliciesService service;
 
@@ -68,7 +65,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
-    private interface ServerSecurityAlertPoliciesService {
+    public interface ServerSecurityAlertPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
@@ -137,7 +134,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
+     * @return a server's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -194,7 +191,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
+     * @return a server's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -247,20 +244,31 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
+     * @return a server's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> getAsync(
         String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName)
-            .flatMap(
-                (Response<ServerSecurityAlertPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a server's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server's security alert policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServerSecurityAlertPolicyInner> getWithResponse(
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName, context).block();
     }
 
     /**
@@ -277,25 +285,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerSecurityAlertPolicyInner get(
         String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
-        return getAsync(resourceGroupName, serverName, securityAlertPolicyName).block();
-    }
-
-    /**
-     * Get a server's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName, context).block();
+        return getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -308,7 +298,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -375,7 +365,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -439,9 +429,9 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return the {@link PollerFlux} for polling of a server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -457,7 +447,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
                 this.client.getHttpPipeline(),
                 ServerSecurityAlertPolicyInner.class,
                 ServerSecurityAlertPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -471,9 +461,9 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return the {@link PollerFlux} for polling of a server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -505,15 +495,16 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return the {@link SyncPoller} for polling of a server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
             .getSyncPoller();
     }
 
@@ -528,16 +519,17 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return the {@link SyncPoller} for polling of a server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
             .getSyncPoller();
     }
 
@@ -551,7 +543,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return a server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -575,7 +567,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy.
+     * @return a server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -641,7 +633,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(
@@ -700,7 +693,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(
@@ -755,7 +749,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -773,7 +767,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(
@@ -791,7 +785,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(String resourceGroupName, String serverName) {
@@ -807,7 +801,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(
@@ -818,11 +812,13 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's security alert policies.
+     * @return a list of the server's security alert policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -853,12 +849,14 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's security alert policies.
+     * @return a list of the server's security alert policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(

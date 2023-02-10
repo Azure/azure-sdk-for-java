@@ -28,6 +28,10 @@ public final class BuiltInStandardEncoderPreset extends Preset {
     @JsonProperty(value = "presetName", required = true)
     private EncoderNamedPreset presetName;
 
+    /** Creates an instance of BuiltInStandardEncoderPreset class. */
+    public BuiltInStandardEncoderPreset() {
+    }
+
     /**
      * Get the configurations property: Optional configuration settings for encoder. Configurations is only supported
      * for ContentAwareEncoding and H265ContentAwareEncoding BuiltInStandardEncoderPreset.

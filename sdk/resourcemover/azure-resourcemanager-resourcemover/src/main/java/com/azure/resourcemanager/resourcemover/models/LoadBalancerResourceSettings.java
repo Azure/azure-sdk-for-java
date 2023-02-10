@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Microsoft.Network/loadBalancers")
 @Fluent
 public final class LoadBalancerResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerResourceSettings.class);
-
     /*
      * Gets or sets load balancer sku (Basic/Standard).
      */
@@ -38,12 +34,15 @@ public final class LoadBalancerResourceSettings extends ResourceSettings {
     private List<LBBackendAddressPoolResourceSettings> backendAddressPools;
 
     /*
-     * Gets or sets the csv list of zones common for all frontend IP
-     * configurations. Note this is given
+     * Gets or sets the csv list of zones common for all frontend IP configurations. Note this is given
      * precedence only if frontend IP configurations settings are not present.
      */
     @JsonProperty(value = "zones")
     private String zones;
+
+    /** Creates an instance of LoadBalancerResourceSettings class. */
+    public LoadBalancerResourceSettings() {
+    }
 
     /**
      * Get the sku property: Gets or sets load balancer sku (Basic/Standard).

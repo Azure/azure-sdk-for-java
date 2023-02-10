@@ -49,6 +49,10 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this.innerModel().source();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConfigurationInner innerModel() {
         return this.innerObject;
     }

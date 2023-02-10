@@ -5,247 +5,34 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The integration account schema. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountSchemaInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSchemaInner.class);
-
+public final class IntegrationAccountSchemaInner extends Resource {
     /*
-     * The schema type.
+     * The integration account schema properties.
      */
-    @JsonProperty(value = "properties.schemaType", required = true)
-    private SchemaType schemaType;
+    @JsonProperty(value = "properties", required = true)
+    private IntegrationAccountSchemaProperties innerProperties = new IntegrationAccountSchemaProperties();
 
-    /*
-     * The target namespace of the schema.
-     */
-    @JsonProperty(value = "properties.targetNamespace")
-    private String targetNamespace;
-
-    /*
-     * The document name.
-     */
-    @JsonProperty(value = "properties.documentName")
-    private String documentName;
-
-    /*
-     * The file name.
-     */
-    @JsonProperty(value = "properties.fileName")
-    private String fileName;
-
-    /*
-     * The created time.
-     */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The content.
-     */
-    @JsonProperty(value = "properties.content")
-    private String content;
-
-    /*
-     * The content type.
-     */
-    @JsonProperty(value = "properties.contentType")
-    private String contentType;
-
-    /*
-     * The content link.
-     */
-    @JsonProperty(value = "properties.contentLink", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentLink contentLink;
-
-    /**
-     * Get the schemaType property: The schema type.
-     *
-     * @return the schemaType value.
-     */
-    public SchemaType schemaType() {
-        return this.schemaType;
+    /** Creates an instance of IntegrationAccountSchemaInner class. */
+    public IntegrationAccountSchemaInner() {
     }
 
     /**
-     * Set the schemaType property: The schema type.
+     * Get the innerProperties property: The integration account schema properties.
      *
-     * @param schemaType the schemaType value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
+     * @return the innerProperties value.
      */
-    public IntegrationAccountSchemaInner withSchemaType(SchemaType schemaType) {
-        this.schemaType = schemaType;
-        return this;
-    }
-
-    /**
-     * Get the targetNamespace property: The target namespace of the schema.
-     *
-     * @return the targetNamespace value.
-     */
-    public String targetNamespace() {
-        return this.targetNamespace;
-    }
-
-    /**
-     * Set the targetNamespace property: The target namespace of the schema.
-     *
-     * @param targetNamespace the targetNamespace value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withTargetNamespace(String targetNamespace) {
-        this.targetNamespace = targetNamespace;
-        return this;
-    }
-
-    /**
-     * Get the documentName property: The document name.
-     *
-     * @return the documentName value.
-     */
-    public String documentName() {
-        return this.documentName;
-    }
-
-    /**
-     * Set the documentName property: The document name.
-     *
-     * @param documentName the documentName value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withDocumentName(String documentName) {
-        this.documentName = documentName;
-        return this;
-    }
-
-    /**
-     * Get the fileName property: The file name.
-     *
-     * @return the fileName value.
-     */
-    public String fileName() {
-        return this.fileName;
-    }
-
-    /**
-     * Set the fileName property: The file name.
-     *
-     * @param fileName the fileName value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withFileName(String fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the content property: The content.
-     *
-     * @return the content value.
-     */
-    public String content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
-     * Get the contentType property: The content type.
-     *
-     * @return the contentType value.
-     */
-    public String contentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The content type.
-     *
-     * @param contentType the contentType value to set.
-     * @return the IntegrationAccountSchemaInner object itself.
-     */
-    public IntegrationAccountSchemaInner withContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Get the contentLink property: The content link.
-     *
-     * @return the contentLink value.
-     */
-    public ContentLink contentLink() {
-        return this.contentLink;
+    private IntegrationAccountSchemaProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -263,19 +50,208 @@ public class IntegrationAccountSchemaInner extends Resource {
     }
 
     /**
+     * Get the schemaType property: The schema type.
+     *
+     * @return the schemaType value.
+     */
+    public SchemaType schemaType() {
+        return this.innerProperties() == null ? null : this.innerProperties().schemaType();
+    }
+
+    /**
+     * Set the schemaType property: The schema type.
+     *
+     * @param schemaType the schemaType value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withSchemaType(SchemaType schemaType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withSchemaType(schemaType);
+        return this;
+    }
+
+    /**
+     * Get the targetNamespace property: The target namespace of the schema.
+     *
+     * @return the targetNamespace value.
+     */
+    public String targetNamespace() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetNamespace();
+    }
+
+    /**
+     * Set the targetNamespace property: The target namespace of the schema.
+     *
+     * @param targetNamespace the targetNamespace value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withTargetNamespace(String targetNamespace) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withTargetNamespace(targetNamespace);
+        return this;
+    }
+
+    /**
+     * Get the documentName property: The document name.
+     *
+     * @return the documentName value.
+     */
+    public String documentName() {
+        return this.innerProperties() == null ? null : this.innerProperties().documentName();
+    }
+
+    /**
+     * Set the documentName property: The document name.
+     *
+     * @param documentName the documentName value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withDocumentName(String documentName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withDocumentName(documentName);
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The file name.
+     *
+     * @return the fileName value.
+     */
+    public String fileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().fileName();
+    }
+
+    /**
+     * Set the fileName property: The file name.
+     *
+     * @param fileName the fileName value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withFileName(String fileName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withFileName(fileName);
+        return this;
+    }
+
+    /**
+     * Get the createdTime property: The created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the content property: The content.
+     *
+     * @return the content value.
+     */
+    public String content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The content.
+     *
+     * @param content the content value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withContent(String content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The content type.
+     *
+     * @return the contentType value.
+     */
+    public String contentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentType();
+    }
+
+    /**
+     * Set the contentType property: The content type.
+     *
+     * @param contentType the contentType value to set.
+     * @return the IntegrationAccountSchemaInner object itself.
+     */
+    public IntegrationAccountSchemaInner withContentType(String contentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSchemaProperties();
+        }
+        this.innerProperties().withContentType(contentType);
+        return this;
+    }
+
+    /**
+     * Get the contentLink property: The content link.
+     *
+     * @return the contentLink value.
+     */
+    public ContentLink contentLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentLink();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schemaType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property schemaType in model IntegrationAccountSchemaInner"));
-        }
-        if (contentLink() != null) {
-            contentLink().validate();
+                        "Missing required property innerProperties in model IntegrationAccountSchemaInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSchemaInner.class);
 }

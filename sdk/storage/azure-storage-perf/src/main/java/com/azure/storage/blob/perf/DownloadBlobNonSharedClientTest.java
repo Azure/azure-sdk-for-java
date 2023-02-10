@@ -4,6 +4,7 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -13,44 +14,50 @@ import reactor.core.publisher.Mono;
 import java.io.OutputStream;
 
 public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
     String blobName = "downloadTest";
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
+    private final OutputStream devNull = new NullOutputStream();
+
+    private final int bufferSize;
+    private final byte[] buffer;
 
     public DownloadBlobNonSharedClientTest(BlobPerfStressOptions options) {
         super(options);
+
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
+        this.buffer = new byte[bufferSize];
     }
 
     // Perform the API call to be tested here
     @Override
     public void run() {
         BlobClient blobClient = new BlobClientBuilder()
-                                    .containerName(CONTAINER_NAME)
-                                    .connectionString(connectionString)
-                                    .blobName(blobName)
-                                    .buildClient();
-        blobClient.download(DEV_NULL);
+            .containerName(CONTAINER_NAME)
+            .connectionString(connectionString)
+            .blobName(blobName)
+            .buildClient();
+
+        blobClient.download(devNull);
     }
 
     @Override
     public Mono<Void> runAsync() {
         BlobAsyncClient blobAsyncClient = new BlobClientBuilder()
-                                              .containerName(CONTAINER_NAME)
-                                              .connectionString(connectionString)
-                                              .blobName(blobName)
-                                              .buildAsyncClient();
+            .containerName(CONTAINER_NAME)
+            .connectionString(connectionString)
+            .blobName(blobName)
+            .buildAsyncClient();
+
         return blobAsyncClient.download()
-                   .map(b -> {
-                       int readCount = 0;
-                       int remaining = b.remaining();
-                       while (readCount < remaining) {
-                           int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                           b.get(buffer, 0, expectedReadCount);
-                           readCount += expectedReadCount;
-                       }
-                       return 1;
-                   }).then();
+            .map(b -> {
+                int readCount = 0;
+                int remaining = b.remaining();
+                while (readCount < remaining) {
+                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                    b.get(buffer, 0, expectedReadCount);
+                    readCount += expectedReadCount;
+                }
+                return 1;
+            }).then();
     }
 }

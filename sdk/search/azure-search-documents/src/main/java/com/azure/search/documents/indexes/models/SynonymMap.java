@@ -49,6 +49,18 @@ public final class SynonymMap {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
+    /** Creates an instance of SynonymMap class. */
+    public SynonymMap() {}
+
+    /**
+     * Get the name property: The name of the synonym map.
+     *
+     * @return the name value.
+     */
+    public String getName() {
+        return this.name;
+    }
+
     /**
      * Constructor of {@link SynonymMap}.
      *
@@ -70,15 +82,6 @@ public final class SynonymMap {
         this.format = "solr";
         this.name = name;
         this.synonyms = synonyms;
-    }
-
-    /**
-     * Get the name property: The name of the synonym map.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
     }
 
     /**

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans Delete. */
 public final class ReplicationRecoveryPlansDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationRecoveryPlansDeleteSamples {
      */
     public static void deletesTheSpecifiedRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().delete("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .delete("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }

@@ -32,6 +32,15 @@ public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventE
     public static final LiveEventEncodingType PASSTHROUGH_STANDARD = fromString("PassthroughStandard");
 
     /**
+     * Creates a new instance of LiveEventEncodingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveEventEncodingType() {
+    }
+
+    /**
      * Creates or finds a LiveEventEncodingType from its string representation.
      *
      * @param name a name to look for.

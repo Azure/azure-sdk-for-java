@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.synapse.models.RestorePointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Database restore points. */
-@Fluent
+@Immutable
 public final class RestorePointInner extends ProxyResource {
     /*
      * Resource location.
@@ -24,6 +24,10 @@ public final class RestorePointInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private RestorePointProperties innerProperties;
+
+    /** Creates an instance of RestorePointInner class. */
+    public RestorePointInner() {
+    }
 
     /**
      * Get the location property: Resource location.

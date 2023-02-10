@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems Delete. */
 public final class ReplicationMigrationItemsDeleteSamples {
     /*
@@ -27,6 +25,6 @@ public final class ReplicationMigrationItemsDeleteSamples {
                 "vmwareContainer1",
                 "virtualmachine1",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

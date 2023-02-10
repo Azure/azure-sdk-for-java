@@ -56,7 +56,7 @@ public final class BackupProtectedItemsClientImpl implements BackupProtectedItem
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupProtectedItemsService {
+    public interface BackupProtectedItemsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

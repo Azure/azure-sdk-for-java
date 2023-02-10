@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Redis ImportData. */
 public final class RedisImportDataSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheImport.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheImport.json
      */
     /**
      * Sample code: RedisCacheImport.

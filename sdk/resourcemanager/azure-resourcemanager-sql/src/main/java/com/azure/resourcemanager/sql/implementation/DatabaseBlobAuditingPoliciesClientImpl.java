@@ -59,7 +59,7 @@ public final class DatabaseBlobAuditingPoliciesClientImpl implements DatabaseBlo
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseBlobAuditingPoliciesService {
+    public interface DatabaseBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

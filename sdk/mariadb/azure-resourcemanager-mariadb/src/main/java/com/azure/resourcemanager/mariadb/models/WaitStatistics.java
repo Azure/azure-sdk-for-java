@@ -16,12 +16,14 @@ public interface WaitStatistics {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Wait Statistic.
+     * @return represents a Wait Statistic along with {@link Response}.
      */
-    WaitStatistic get(String resourceGroupName, String serverName, String waitStatisticsId);
+    Response<WaitStatistic> getWithResponse(
+        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
 
     /**
      * Retrieve wait statistics for specified identifier.
@@ -29,14 +31,12 @@ public interface WaitStatistics {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Wait Statistic.
      */
-    Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
+    WaitStatistic get(String resourceGroupName, String serverName, String waitStatisticsId);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
@@ -47,7 +47,7 @@ public interface WaitStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WaitStatistic> listByServer(
         String resourceGroupName, String serverName, WaitStatisticsInput parameters);
@@ -62,7 +62,7 @@ public interface WaitStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WaitStatistic> listByServer(
         String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);

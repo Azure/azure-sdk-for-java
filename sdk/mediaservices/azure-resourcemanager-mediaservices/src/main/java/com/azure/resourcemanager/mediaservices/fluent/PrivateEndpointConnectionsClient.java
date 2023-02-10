@@ -20,21 +20,6 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName);
-
-    /**
-     * List private endpoint connections.
-     *
-     * <p>List all private endpoint connections.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,20 +32,19 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get private endpoint connection.
+     * List private endpoint connections.
      *
-     * <p>Get the details of a private endpoint connection.
+     * <p>List all private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
-     * @param name The name parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a private endpoint connection.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String name);
+    PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName);
 
     /**
      * Get private endpoint connection.
@@ -81,22 +65,20 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, String name, Context context);
 
     /**
-     * Update a private endpoint connection.
+     * Get private endpoint connection.
      *
-     * <p>Update an existing private endpoint connection.
+     * <p>Get the details of a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the details of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String name);
 
     /**
      * Update a private endpoint connection.
@@ -122,19 +104,22 @@ public interface PrivateEndpointConnectionsClient {
         Context context);
 
     /**
-     * Delete a private endpoint connection.
+     * Update a private endpoint connection.
      *
-     * <p>Deletes a private endpoint connection.
+     * <p>Update an existing private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String name);
+    PrivateEndpointConnectionInner createOrUpdate(
+        String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete a private endpoint connection.
@@ -152,4 +137,19 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String name, Context context);
+
+    /**
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String accountName, String name);
 }

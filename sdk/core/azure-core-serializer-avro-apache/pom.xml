@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-avro-apache</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.32</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+  <version>1.0.0-beta.33</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
 
   <name>Microsoft Azure Apache Avro Serializer Library</name>
   <description>This package contains the Apache Avro serializer client plugin for azure-core.</description>
@@ -53,6 +53,10 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+
+     <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
   </properties>
 
   <developers>
@@ -66,12 +70,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.36</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>

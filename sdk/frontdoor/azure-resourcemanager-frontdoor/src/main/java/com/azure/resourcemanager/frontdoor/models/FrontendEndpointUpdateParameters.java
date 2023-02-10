@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Frontend endpoint used in routing rule. */
 @Fluent
 public class FrontendEndpointUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendEndpointUpdateParameters.class);
-
     /*
      * The host name of the frontendEndpoint. Must be a domain name.
      */
@@ -21,25 +17,26 @@ public class FrontendEndpointUpdateParameters {
     private String hostname;
 
     /*
-     * Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'
+     * Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "sessionAffinityEnabledState")
     private SessionAffinityEnabledState sessionAffinityEnabledState;
 
     /*
-     * UNUSED. This field will be ignored. The TTL to use in seconds for
-     * session affinity, if applicable.
+     * UNUSED. This field will be ignored. The TTL to use in seconds for session affinity, if applicable.
      */
     @JsonProperty(value = "sessionAffinityTtlSeconds")
     private Integer sessionAffinityTtlSeconds;
 
     /*
-     * Defines the Web Application Firewall policy for each host (if
-     * applicable)
+     * Defines the Web Application Firewall policy for each host (if applicable)
      */
     @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
+
+    /** Creates an instance of FrontendEndpointUpdateParameters class. */
+    public FrontendEndpointUpdateParameters() {
+    }
 
     /**
      * Get the hostname property: The host name of the frontendEndpoint. Must be a domain name.

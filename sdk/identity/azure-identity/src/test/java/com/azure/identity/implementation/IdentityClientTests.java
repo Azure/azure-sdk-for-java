@@ -392,7 +392,7 @@ public class IdentityClientTests {
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         // mock
-        mocForBrowserAuthenticationCodeFlow(token, request, expiresOn, () -> {
+        mockForBrowserAuthenticationCodeFlow(token, request, expiresOn, () -> {
             // test
             StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null, null))
                 .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
@@ -476,6 +476,7 @@ public class IdentityClientTests {
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
 
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -504,6 +505,7 @@ public class IdentityClientTests {
 
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -546,6 +548,7 @@ public class IdentityClientTests {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             });
             when(builder.build()).thenReturn(application);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);
@@ -571,6 +574,7 @@ public class IdentityClientTests {
                 });
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
+                when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
             })
         )  {
@@ -647,7 +651,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mocForBrowserAuthenticationCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
+    private void mockForBrowserAuthenticationCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireToken(any(InteractiveRequestParameters.class))).thenAnswer(invocation -> {
@@ -660,6 +664,7 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -691,6 +696,7 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -711,6 +717,7 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -731,6 +738,7 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();

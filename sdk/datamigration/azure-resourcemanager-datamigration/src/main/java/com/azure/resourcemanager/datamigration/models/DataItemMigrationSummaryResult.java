@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Basic summary of a data item migration. */
 @Immutable
 public class DataItemMigrationSummaryResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataItemMigrationSummaryResult.class);
-
     /*
      * Name of the item
      */
@@ -64,11 +60,14 @@ public class DataItemMigrationSummaryResult {
     private String errorPrefix;
 
     /*
-     * Wildcard string prefix to use for querying all sub-tem results of the
-     * item
+     * Wildcard string prefix to use for querying all sub-tem results of the item
      */
     @JsonProperty(value = "resultPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String resultPrefix;
+
+    /** Creates an instance of DataItemMigrationSummaryResult class. */
+    public DataItemMigrationSummaryResult() {
+    }
 
     /**
      * Get the name property: Name of the item.

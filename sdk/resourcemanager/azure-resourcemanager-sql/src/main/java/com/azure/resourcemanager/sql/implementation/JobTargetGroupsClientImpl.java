@@ -58,7 +58,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobTargetGroupsService {
+    public interface JobTargetGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

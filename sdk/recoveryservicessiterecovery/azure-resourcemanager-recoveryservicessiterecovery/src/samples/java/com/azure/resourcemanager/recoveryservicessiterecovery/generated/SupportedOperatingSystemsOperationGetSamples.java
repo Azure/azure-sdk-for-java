@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SupportedOperatingSystemsOperation Get. */
 public final class SupportedOperatingSystemsOperationGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class SupportedOperatingSystemsOperationGetSamples {
      */
     public static void getsTheDataOfSupportedOperatingSystemsBySRS(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.supportedOperatingSystemsOperations().getWithResponse("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager
+            .supportedOperatingSystemsOperations()
+            .getWithResponse("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }

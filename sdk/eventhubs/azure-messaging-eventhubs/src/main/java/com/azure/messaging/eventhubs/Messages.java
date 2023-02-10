@@ -26,11 +26,6 @@ public enum Messages {
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
 
     /**
-     * Encoder is not supported message.
-     */
-    public static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
-
-    /**
      * Process span scope type error message.
      */
     public static final String PROCESS_SPAN_SCOPE_TYPE_ERROR = getMessage("PROCESS_SPAN_SCOPE_TYPE_ERROR");
@@ -89,6 +84,11 @@ public enum Messages {
      * Exception occurred while emitting message.
      */
     public static final String EXCEPTION_OCCURRED_WHILE_EMITTING = getMessage("EXCEPTION_OCCURRED_WHILE_EMITTING");
+
+    /**
+     * Encoder is not supported message.
+     */
+    static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
 
     /**
      * @param key the key of the message to retrieve

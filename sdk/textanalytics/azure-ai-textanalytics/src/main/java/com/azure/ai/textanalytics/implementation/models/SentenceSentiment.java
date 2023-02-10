@@ -53,6 +53,9 @@ public final class SentenceSentiment {
     @JsonProperty(value = "assessments")
     private List<SentenceAssessment> assessments;
 
+    /** Creates an instance of SentenceSentiment class. */
+    public SentenceSentiment() {}
+
     /**
      * Get the text property: The sentence text.
      *

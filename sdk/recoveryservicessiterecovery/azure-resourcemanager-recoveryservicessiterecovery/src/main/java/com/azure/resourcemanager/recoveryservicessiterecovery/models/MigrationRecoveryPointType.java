@@ -20,6 +20,15 @@ public final class MigrationRecoveryPointType extends ExpandableStringEnum<Migra
     public static final MigrationRecoveryPointType CRASH_CONSISTENT = fromString("CrashConsistent");
 
     /**
+     * Creates a new instance of MigrationRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MigrationRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a MigrationRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

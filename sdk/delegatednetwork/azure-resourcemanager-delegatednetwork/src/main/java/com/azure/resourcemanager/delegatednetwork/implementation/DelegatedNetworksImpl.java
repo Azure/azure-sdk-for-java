@@ -11,10 +11,9 @@ import com.azure.resourcemanager.delegatednetwork.fluent.DelegatedNetworksClient
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedNetworks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DelegatedNetworksImpl implements DelegatedNetworks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedNetworksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DelegatedNetworksImpl.class);
 
     private final DelegatedNetworksClient innerClient;
 

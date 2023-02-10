@@ -15,15 +15,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"c\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"a7d95285-59af-4a87-9ee0-bd454b80b7d2\",\"tenantId\":\"0767b339-f1d2-4aa0-9376-ca5e47cca73f\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"jkbegibtnmxiebww\",\"tags\":{\"tzjuzgwyzmhtxo\":\"ayqcgw\",\"nftguvriuhpr\":\"gmtsavjcbpwxqpsr\"},\"sku\":{\"name\":\"dyvxqtayriww\",\"tier\":\"Premium\",\"size\":\"bexrmcq\",\"family\":\"ycnojvknmefqsg\",\"capacity\":488274582},\"id\":\"apj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"},{\"properties\":{\"groupId\":\"wjvzunluthnn\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"4309fc49-c682-45c3-95fb-71b5ff925cc8\",\"tenantId\":\"baf75139-87b9-4172-901d-b83dc3a9f4a2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"pjzu\",\"tags\":{\"kzbbtd\":\"xdult\",\"bsjyofdx\":\"umveekgpwozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"sku\":{\"name\":\"aln\",\"tier\":\"Premium\",\"size\":\"sxyawjoyaqcs\",\"family\":\"jpkiidzyexznelix\",\"capacity\":705550222},\"id\":\"tfolhbnx\",\"name\":\"nalaulppg\",\"type\":\"dtpnapnyiropuhp\"},{\"properties\":{\"groupId\":\"pgylg\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"2e79de07-6ed0-4c45-b7bb-2bffb3200d08\",\"tenantId\":\"673f6d89-2cee-45ea-865c-ec65536effdc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"rmgucnap\":\"ynqwwncwzzhxgk\",\"oellwp\":\"t\",\"qrhhu\":\"fdygpfqbuaceopz\"},\"sku\":{\"name\":\"pppcqeqxo\",\"tier\":\"Standard\",\"size\":\"hzxct\",\"family\":\"gbkdmoizpos\",\"capacity\":1176728044},\"id\":\"cfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"c\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"7350756a-3e63-4658-9b36-a4c2e5f3a6d9\",\"tenantId\":\"02570bb2-e352-4d93-9bd1-d3451723dd5b\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"jkbegibtnmxiebww\",\"tags\":{\"tzjuzgwyzmhtxo\":\"ayqcgw\",\"nftguvriuhpr\":\"gmtsavjcbpwxqpsr\"},\"sku\":{\"name\":\"dyvxqtayriww\",\"tier\":\"Premium\",\"size\":\"bexrmcq\",\"family\":\"ycnojvknmefqsg\",\"capacity\":488274582},\"id\":\"apj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"},{\"properties\":{\"groupId\":\"wjvzunluthnn\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"6cd9bb2d-0450-4976-a3e0-e2008cd6e042\",\"tenantId\":\"9dd771d6-e628-44bb-a9c6-f9185d3fbc61\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"pjzu\",\"tags\":{\"kzbbtd\":\"xdult\",\"bsjyofdx\":\"umveekgpwozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"sku\":{\"name\":\"aln\",\"tier\":\"Premium\",\"size\":\"sxyawjoyaqcs\",\"family\":\"jpkiidzyexznelix\",\"capacity\":705550222},\"id\":\"tfolhbnx\",\"name\":\"nalaulppg\",\"type\":\"dtpnapnyiropuhp\"},{\"properties\":{\"groupId\":\"pgylg\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"identity\":{\"principalId\":\"87b8d495-467b-4407-881f-0443f65da17d\",\"tenantId\":\"79df8e42-2e01-42d2-92af-39e2c1627e59\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"rmgucnap\":\"ynqwwncwzzhxgk\",\"oellwp\":\"t\",\"qrhhu\":\"fdygpfqbuaceopz\"},\"sku\":{\"name\":\"pppcqeqxo\",\"tier\":\"Standard\",\"size\":\"hzxct\",\"family\":\"gbkdmoizpos\",\"capacity\":1176728044},\"id\":\"cfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}]}")
                 .toObject(PrivateLinkResourceListResultInner.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals("jkbegibtnmxiebww", model.value().get(0).location());
@@ -35,8 +34,8 @@ public final class PrivateLinkResourceListResultInnerTests {
         Assertions.assertEquals(488274582, model.value().get(0).sku().capacity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceListResultInner model =
             new PrivateLinkResourceListResultInner()
                 .withValue(

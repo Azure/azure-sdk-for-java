@@ -37,6 +37,7 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -86,6 +87,9 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
+    private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
+    private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
+            ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -109,6 +113,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
+        this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
@@ -571,14 +576,15 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tracerProvider;
     }
 
-    /**
+    /***
      * Enable throughput control group.
      *
      * @param group Throughput control group going to be enabled.
+     * @param throughputQueryMono The throughput query mono.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group cannot be null");
-        this.asyncDocumentClient.enableThroughputControlGroup(group);
+        this.asyncDocumentClient.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
     /**
@@ -590,6 +596,47 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
+    }
+
+    void openConnectionsAndInitCaches() {
+        blockListVoidResponse(openConnectionsAndInitCachesInternal());
+    }
+
+    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
+        int concurrency = 1;
+        int prefetch = 1;
+        if (this.proactiveContainerInitConfig != null) {
+            return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
+                    .flatMap(
+                        cosmosContainerIdentity -> Mono.just(this
+                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
+                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
+                        concurrency,
+                        prefetch
+                    )
+                    .flatMap(
+                        cosmosAsyncContainer -> cosmosAsyncContainer
+                            .openConnectionsAndInitCaches(
+                                this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()),
+                        concurrency,
+                        prefetch)
+                    .collectList();
+        }
+        return Mono.empty();
+    }
+
+    private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
+        try {
+            voidListMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(throwable);
+            }
+        }
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
@@ -657,6 +704,8 @@ public final class CosmosAsyncClient implements Closeable {
             this.serviceEndpoint);
     }
 
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -687,6 +736,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client) {
                     return client.isSendClientTelemetryToServiceEnabled;
+                }
+
+                @Override
+                public List<String> getPreferredRegions(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getPreferredRegions();
+                }
+
+                @Override
+                public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
+                    return client.connectionPolicy.isEndpointDiscoveryEnabled();
                 }
             }
         );

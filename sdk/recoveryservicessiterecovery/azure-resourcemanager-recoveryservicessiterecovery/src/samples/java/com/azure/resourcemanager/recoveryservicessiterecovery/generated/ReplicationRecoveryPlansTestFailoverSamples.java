@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PossibleOperationsDirections;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanHyperVReplicaAzureFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanTestFailoverInput;
@@ -38,6 +37,6 @@ public final class ReplicationRecoveryPlansTestFailoverSamples {
                                 "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai")
                             .withProviderSpecificDetails(
                                 Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

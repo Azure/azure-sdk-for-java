@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** The properties of a change. */
 @Fluent
 public final class ChangeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeProperties.class);
-
     /*
      * The resource id that the change is attached to.
      */
@@ -30,8 +26,7 @@ public final class ChangeProperties {
 
     /*
      * The list of identities who might initiated the change.
-     * The identity could be user name (email address) or the object ID of the
-     * Service Principal.
+     * The identity could be user name (email address) or the object ID of the Service Principal.
      */
     @JsonProperty(value = "initiatedByList")
     private List<String> initiatedByList;
@@ -47,6 +42,10 @@ public final class ChangeProperties {
      */
     @JsonProperty(value = "propertyChanges")
     private List<PropertyChange> propertyChanges;
+
+    /** Creates an instance of ChangeProperties class. */
+    public ChangeProperties() {
+    }
 
     /**
      * Get the resourceId property: The resource id that the change is attached to.

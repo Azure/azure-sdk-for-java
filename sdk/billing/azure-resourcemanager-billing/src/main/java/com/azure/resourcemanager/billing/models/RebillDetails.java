@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The rebill details of an invoice. */
 @Immutable
 public final class RebillDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RebillDetails.class);
-
     /*
      * The ID of credit note.
      */
@@ -34,6 +30,10 @@ public final class RebillDetails {
     @JsonProperty(value = "rebillDetails", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RebillDetails> rebillDetails;
+
+    /** Creates an instance of RebillDetails class. */
+    public RebillDetails() {
+    }
 
     /**
      * Get the creditNoteDocumentId property: The ID of credit note.

@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the list of managed rule sets for the policy. */
 @Fluent
 public final class ManagedRuleSetList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSetList.class);
-
     /*
      * List of rule sets.
      */
     @JsonProperty(value = "managedRuleSets")
     private List<ManagedRuleSet> managedRuleSets;
+
+    /** Creates an instance of ManagedRuleSetList class. */
+    public ManagedRuleSetList() {
+    }
 
     /**
      * Get the managedRuleSets property: List of rule sets.

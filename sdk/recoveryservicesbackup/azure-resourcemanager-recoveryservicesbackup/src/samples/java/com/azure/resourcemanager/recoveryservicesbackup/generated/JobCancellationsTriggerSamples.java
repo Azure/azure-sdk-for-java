@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JobCancellations Trigger. */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerCancelJob.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.
@@ -21,6 +19,9 @@ public final class JobCancellationsTriggerSamples {
         manager
             .jobCancellations()
             .triggerWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+                "NetSDKTestRsVault",
+                "SwaggerTestRg",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

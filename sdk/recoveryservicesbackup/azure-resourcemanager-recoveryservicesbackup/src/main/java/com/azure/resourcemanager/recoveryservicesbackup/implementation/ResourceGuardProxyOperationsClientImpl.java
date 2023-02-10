@@ -58,7 +58,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ResourceGuardProxyOperationsService {
+    public interface ResourceGuardProxyOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

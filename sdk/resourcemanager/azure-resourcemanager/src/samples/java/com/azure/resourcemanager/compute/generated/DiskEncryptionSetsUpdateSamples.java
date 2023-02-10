@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetUpdate;
@@ -39,7 +38,7 @@ public final class DiskEncryptionSetsUpdateSamples {
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
                     .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -65,7 +64,7 @@ public final class DiskEncryptionSetsUpdateSamples {
                     .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
                     .withActiveKey(new KeyForDiskEncryptionSet().withKeyUrl("fakeTokenPlaceholder"))
                     .withRotationToLatestKeyVersionEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -95,7 +94,7 @@ public final class DiskEncryptionSetsUpdateSamples {
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault"))
                             .withKeyUrl("fakeTokenPlaceholder")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

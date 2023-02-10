@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base resource under Microsoft.DataProtection provider namespace. */
 @Immutable
 public final class DppBaseResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppBaseResourceInner.class);
-
     /*
      * Resource Id represents the complete path to the resource.
      */
@@ -27,11 +23,14 @@ public final class DppBaseResourceInner {
     private String name;
 
     /*
-     * Resource type represents the complete path of the form
-     * Namespace/ResourceType/ResourceType/...
+     * Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of DppBaseResourceInner class. */
+    public DppBaseResourceInner() {
+    }
 
     /**
      * Get the id property: Resource Id represents the complete path to the resource.

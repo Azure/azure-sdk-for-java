@@ -58,7 +58,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionContainerRefreshOperationResultsService {
+    public interface ProtectionContainerRefreshOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

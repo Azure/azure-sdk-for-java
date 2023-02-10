@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Defines the key vault resource settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Microsoft.KeyVault/vaults")
-@Immutable
+@Fluent
 public final class KeyVaultResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultResourceSettings.class);
+    /** Creates an instance of KeyVaultResourceSettings class. */
+    public KeyVaultResourceSettings() {
+    }
 
     /** {@inheritDoc} */
     @Override

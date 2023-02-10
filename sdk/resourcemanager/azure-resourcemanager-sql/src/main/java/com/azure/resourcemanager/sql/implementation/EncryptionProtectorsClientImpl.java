@@ -65,7 +65,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
-    private interface EncryptionProtectorsService {
+    public interface EncryptionProtectorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

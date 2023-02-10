@@ -901,7 +901,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String networkName,
         String networkMappingName,
         CreateNetworkMappingInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
             .getSyncPoller();
     }
 
@@ -931,7 +932,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String networkMappingName,
         CreateNetworkMappingInput input,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
             .getSyncPoller();
     }
@@ -1274,7 +1276,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String fabricName,
         String networkName,
         String networkMappingName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
             .getSyncPoller();
     }
 
@@ -1302,7 +1305,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String networkName,
         String networkMappingName,
         Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
             .getSyncPoller();
     }
 
@@ -1664,7 +1668,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String networkName,
         String networkMappingName,
         UpdateNetworkMappingInput input) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
             .getSyncPoller();
     }
 
@@ -1694,7 +1699,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         String networkMappingName,
         UpdateNetworkMappingInput input,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
             .getSyncPoller();
     }

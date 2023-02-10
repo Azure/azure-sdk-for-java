@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AUpdateContainerMappingInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AgentAutoUpdateStatus;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionContainerMapping;
@@ -31,7 +30,7 @@ public final class ReplicationProtectionContainerMappingsUpdateSam {
                     "cloud1",
                     "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                     "cloud1protectionprofile1",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

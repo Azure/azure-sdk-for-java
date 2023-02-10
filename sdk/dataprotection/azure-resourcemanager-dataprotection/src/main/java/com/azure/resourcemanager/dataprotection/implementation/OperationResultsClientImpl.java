@@ -20,7 +20,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtendedInfoInner;
 import com.azure.resourcemanager.dataprotection.models.OperationResultsGetResponse;
@@ -28,8 +27,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationResultsClient. */
 public final class OperationResultsClientImpl implements OperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(OperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationResultsService service;
 
@@ -53,7 +50,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface OperationResultsService {
+    public interface OperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults"
@@ -71,14 +68,16 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Gets the operation result for a resource.
+     * Gets the operation status for a resource.
+     *
+     * <p>Gets the operation result for a resource.
      *
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a resource.
+     * @return the operation result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultsGetResponse> getWithResponseAsync(String operationId, String location) {
@@ -117,7 +116,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Gets the operation result for a resource.
+     * Gets the operation status for a resource.
+     *
+     * <p>Gets the operation result for a resource.
      *
      * @param operationId The operationId parameter.
      * @param location The location parameter.
@@ -125,7 +126,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a resource.
+     * @return the operation result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultsGetResponse> getWithResponseAsync(
@@ -162,45 +163,26 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     }
 
     /**
-     * Gets the operation result for a resource.
+     * Gets the operation status for a resource.
+     *
+     * <p>Gets the operation result for a resource.
      *
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a resource.
+     * @return the operation result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationJobExtendedInfoInner> getAsync(String operationId, String location) {
-        return getWithResponseAsync(operationId, location)
-            .flatMap(
-                (OperationResultsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(operationId, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets the operation result for a resource.
+     * Gets the operation status for a resource.
      *
-     * @param operationId The operationId parameter.
-     * @param location The location parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner get(String operationId, String location) {
-        return getAsync(operationId, location).block();
-    }
-
-    /**
-     * Gets the operation result for a resource.
+     * <p>Gets the operation result for a resource.
      *
      * @param operationId The operationId parameter.
      * @param location The location parameter.
@@ -213,5 +195,22 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationResultsGetResponse getWithResponse(String operationId, String location, Context context) {
         return getWithResponseAsync(operationId, location, context).block();
+    }
+
+    /**
+     * Gets the operation status for a resource.
+     *
+     * <p>Gets the operation result for a resource.
+     *
+     * @param operationId The operationId parameter.
+     * @param location The location parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationJobExtendedInfoInner get(String operationId, String location) {
+        return getWithResponse(operationId, location, Context.NONE).getValue();
     }
 }

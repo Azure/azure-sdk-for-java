@@ -17,6 +17,15 @@ public final class EgressPublicNetworkAccessType extends ExpandableStringEnum<Eg
     public static final EgressPublicNetworkAccessType DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EgressPublicNetworkAccessType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EgressPublicNetworkAccessType() {
+    }
+
+    /**
      * Creates or finds a EgressPublicNetworkAccessType from its string representation.
      *
      * @param name a name to look for.

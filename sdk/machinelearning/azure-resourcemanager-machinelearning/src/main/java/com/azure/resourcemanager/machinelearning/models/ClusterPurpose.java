@@ -20,6 +20,15 @@ public final class ClusterPurpose extends ExpandableStringEnum<ClusterPurpose> {
     public static final ClusterPurpose DEV_TEST = fromString("DevTest");
 
     /**
+     * Creates a new instance of ClusterPurpose value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterPurpose() {
+    }
+
+    /**
      * Creates or finds a ClusterPurpose from its string representation.
      *
      * @param name a name to look for.

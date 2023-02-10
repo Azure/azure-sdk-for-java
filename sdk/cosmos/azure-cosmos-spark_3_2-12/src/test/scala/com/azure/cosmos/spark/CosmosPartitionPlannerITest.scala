@@ -332,7 +332,7 @@ class CosmosPartitionPlannerITest
       ))
       .to(clientCacheItems => {
         val container = clientCacheItems(0).get
-          .client
+          .cosmosClient
           .getDatabase(containerConfig.database)
           .getContainer(containerConfig.container)
 
