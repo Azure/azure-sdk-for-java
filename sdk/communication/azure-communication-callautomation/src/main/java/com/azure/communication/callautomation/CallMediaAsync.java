@@ -7,24 +7,26 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.DtmfTone;
+import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderType;
+import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeChoice;
+import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -151,8 +153,8 @@ public class CallMediaAsync {
                 }
 
                 if (dtmfRecognizeOptions.getStopTones() != null) {
-                    List<DtmfTone> dtmfTones = dtmfRecognizeOptions.getStopTones().stream()
-                                                .map(e -> translateDtmfToneToInternal(e))
+                    List<DtmfToneInternal> dtmfTones = dtmfRecognizeOptions.getStopTones().stream()
+                                                .map(this::translateDtmfToneInternal)
                                                 .collect(Collectors.toList());
                     dtmfOptionsInternal.setStopTones(dtmfTones);
                 }
@@ -183,7 +185,7 @@ public class CallMediaAsync {
                 CallMediaRecognizeChoiceOptions choiceRecognizeOptions = (CallMediaRecognizeChoiceOptions) recognizeOptions;
 
                 RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-                    .setChoices(translateRecognizeChoiceListtoInternal(choiceRecognizeOptions.getRecognizeChoices()))
+                    .setChoices(translateListRecognizeChoiceInternal(choiceRecognizeOptions.getRecognizeChoices()))
                     .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
                     .setTargetParticipant(CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
@@ -298,7 +300,7 @@ public class CallMediaAsync {
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
         TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
         if (playSource.getVoiceGender() != null) {
-            textSourceInternal.setVoiceGender(GenderType.fromString(playSource.getVoiceGender().toString()));
+            textSourceInternal.setVoiceGender(GenderTypeInternal.fromString(playSource.getVoiceGender().toString()));
         }
         if (playSource.getSourceLocale() != null) {
             textSourceInternal.setSourceLocale(playSource.getSourceLocale());
@@ -324,14 +326,14 @@ public class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private List<RecognizeChoice> translateRecognizeChoiceListtoInternal(List<com.azure.communication.callautomation.models.RecognizeChoice> recognizeChoices) {
+    private List<RecognizeChoiceInternal> translateListRecognizeChoiceInternal(List<RecognizeChoice> recognizeChoices) {
         return recognizeChoices.stream()
-            .map(e -> translateRecognizeChoiceToInternal(e))
+            .map(this::translateRecognizeChoiceInternal)
             .collect(Collectors.toList());
     }
 
-    private RecognizeChoice translateRecognizeChoiceToInternal(com.azure.communication.callautomation.models.RecognizeChoice recognizeChoice) {
-        RecognizeChoice internalRecognizeChoice = new RecognizeChoice();
+    private RecognizeChoiceInternal translateRecognizeChoiceInternal(RecognizeChoice recognizeChoice) {
+        RecognizeChoiceInternal internalRecognizeChoice = new RecognizeChoiceInternal();
         if (recognizeChoice.getLabel() != null) {
             internalRecognizeChoice.setLabel(recognizeChoice.getLabel());
         }
@@ -339,12 +341,12 @@ public class CallMediaAsync {
             internalRecognizeChoice.setPhrases(recognizeChoice.getPhrases());
         }
         if (recognizeChoice.getTone() != null) {
-            internalRecognizeChoice.setTone(translateDtmfToneToInternal(recognizeChoice.getTone()));
+            internalRecognizeChoice.setTone(translateDtmfToneInternal(recognizeChoice.getTone()));
         }
         return internalRecognizeChoice;
     }
 
-    private DtmfTone translateDtmfToneToInternal(com.azure.communication.callautomation.models.DtmfTone dtmfTone) {
-        return DtmfTone.fromString(dtmfTone.toString());
+    private DtmfToneInternal translateDtmfToneInternal(DtmfTone dtmfTone) {
+        return DtmfToneInternal.fromString(dtmfTone.toString());
     }
 }

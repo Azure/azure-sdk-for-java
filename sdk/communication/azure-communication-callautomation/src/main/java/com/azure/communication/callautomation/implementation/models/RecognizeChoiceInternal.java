@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RecognizeChoice model. */
+/** The RecognizeChoiceInternal model. */
 @Fluent
-public final class RecognizeChoice {
+public final class RecognizeChoiceInternal {
     /*
      * Identifier for a given choice
      */
@@ -27,7 +27,7 @@ public final class RecognizeChoice {
      * The tone property.
      */
     @JsonProperty(value = "tone")
-    private DtmfTone tone;
+    private DtmfToneInternal tone;
 
     /**
      * Get the label property: Identifier for a given choice.
@@ -42,9 +42,9 @@ public final class RecognizeChoice {
      * Set the label property: Identifier for a given choice.
      *
      * @param label the label value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognizeChoiceInternal object itself.
      */
-    public RecognizeChoice setLabel(String label) {
+    public RecognizeChoiceInternal setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -62,9 +62,9 @@ public final class RecognizeChoice {
      * Set the phrases property: List of phrases to recognize.
      *
      * @param phrases the phrases value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognizeChoiceInternal object itself.
      */
-    public RecognizeChoice setPhrases(List<String> phrases) {
+    public RecognizeChoiceInternal setPhrases(List<String> phrases) {
         this.phrases = phrases;
         return this;
     }
@@ -74,7 +74,7 @@ public final class RecognizeChoice {
      *
      * @return the tone value.
      */
-    public DtmfTone getTone() {
+    public DtmfToneInternal getTone() {
         return this.tone;
     }
 
@@ -82,9 +82,9 @@ public final class RecognizeChoice {
      * Set the tone property: The tone property.
      *
      * @param tone the tone value to set.
-     * @return the RecognizeChoice object itself.
+     * @return the RecognizeChoiceInternal object itself.
      */
-    public RecognizeChoice setTone(DtmfTone tone) {
+    public RecognizeChoiceInternal setTone(DtmfToneInternal tone) {
         this.tone = tone;
         return this;
     }

@@ -15,14 +15,14 @@ public final class CollectTonesResult {
      * The tones property.
      */
     @JsonProperty(value = "tones", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DtmfTone> tones;
+    private List<DtmfToneInternal> tones;
 
     /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
      */
-    public List<DtmfTone> getTones() {
+    public List<DtmfToneInternal> getTones() {
         return this.tones;
     }
 }
