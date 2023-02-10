@@ -1,5 +1,6 @@
 package com.azure.storage.common;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -17,9 +18,26 @@ import java.util.Objects;
  * Storage channels are opened for read OR write access, not both. Not all APIs are supported depending on the channel
  * mode and storage resource type (e.g. blob).
  */
-public abstract class StorageSeekableByteChannel implements SeekableByteChannel {
+public class StorageSeekableByteChannel implements SeekableByteChannel {
+    public interface ReadBehavior {
+        /**
+         * Reads from the backing resource.
+         * @param dst Destination to read the resource into.
+         * @param sourceOffset Offset to read from the resource.
+         * @return Number of bytes read from the resource.
+         */
+        int read(ByteBuffer dst, long sourceOffset);
+
+        /**
+         * Gets the last known length of the resource.
+         * @return The length in bytes.
+         */
+        long getCachedLength();
+    }
+
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannel.class);
 
+    private final ReadBehavior _readBehavior;
     private final StorageChannelMode _mode;
 
     private boolean _isClosed;
@@ -28,25 +46,15 @@ public abstract class StorageSeekableByteChannel implements SeekableByteChannel 
     private long _readBufferAbsolutePosition;
 
     private long _absolutePosition;
-    private long _channelSize;
 
-    /**
-     * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
-     */
-    protected volatile boolean streamFaulted;
-
-    /**
-     * Holds the last exception this stream encountered.
-     */
-    protected IOException lastError;
-
-    protected StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode) {
+    protected StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior dispatchRead) {
         _mode = Objects.requireNonNull(mode);
         if (_mode == StorageChannelMode.READ) {
             _readBuffer = ByteBuffer.allocate(chunkSize);
             _readBuffer.limit(0);
             _readBufferAbsolutePosition = 0;
         }
+        _readBehavior = dispatchRead;
     }
 
     @Override
@@ -60,6 +68,10 @@ public abstract class StorageSeekableByteChannel implements SeekableByteChannel 
         if (_readBuffer.remaining() == 0) {
             refillReadBuffer(_absolutePosition);
         }
+        // if _readBuffer is still empty after refill, there are no bytes remaining
+        if (_readBuffer.remaining() == 0) {
+            return -1;
+        }
 
         int read = Math.min(_readBuffer.remaining(), dst.remaining());
         ByteBuffer temp = _readBuffer.duplicate();
@@ -72,19 +84,11 @@ public abstract class StorageSeekableByteChannel implements SeekableByteChannel 
 
     private void refillReadBuffer(long newBufferAbsolutePosition) {
         _readBuffer.clear();
-        int read = dispatchRead(_readBuffer, newBufferAbsolutePosition);
+        int read = _readBehavior.read(_readBuffer, newBufferAbsolutePosition);
         _readBuffer.rewind();
-        _readBuffer.limit(read);
-        _readBufferAbsolutePosition = newBufferAbsolutePosition;
+        _readBuffer.limit(Math.max(read, 0));
+        _readBufferAbsolutePosition = Math.min(newBufferAbsolutePosition, _readBehavior.getCachedLength());
     }
-
-    /**
-     * Dispatches a read operation to the backing Storage resource.
-     * @param dst Destination to read the Storage resource into.
-     * @param sourceOffset Offset to read from the Storage resource.
-     * @return Number of bytes read from the Storage resource.
-     */
-    protected abstract int dispatchRead(ByteBuffer dst, long sourceOffset);
 
     @Override
     public int write(ByteBuffer src) throws IOException {
@@ -121,7 +125,7 @@ public abstract class StorageSeekableByteChannel implements SeekableByteChannel 
     @Override
     public long size() throws IOException {
         assertOpen();
-        return _channelSize;
+        return _readBehavior.getCachedLength();
     }
 
     @Override
