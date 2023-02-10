@@ -140,12 +140,11 @@ public final class ObjectMapperShim {
     }
 
     private final ObjectMapper mapper;
-    private final MemberNameConverterImpl memberNameConverter;
+    private MemberNameConverterImpl memberNameConverter;
 
 
     public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
-        this.memberNameConverter = new MemberNameConverterImpl(mapper);
     }
 
     /**
@@ -397,6 +396,13 @@ public final class ObjectMapperShim {
     }
 
     public String convertMemberName(Member member) {
+        if (memberNameConverter == null) {
+            // Defer creating the member name converter until it needs to be used.
+            // This class isn't used often and performs a lot of reflection, so best it is deferred.
+            // Don't both making this volatile or synchronized as this is very, very cheap to create.
+            memberNameConverter = new MemberNameConverterImpl(mapper);
+        }
+
         try {
             return memberNameConverter.convertMemberName(member);
         } catch (LinkageError ex) {
