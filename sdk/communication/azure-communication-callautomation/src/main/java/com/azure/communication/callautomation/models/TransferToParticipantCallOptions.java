@@ -12,38 +12,27 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class TransferToParticipantCallOptions {
-    /**
-     * A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     */
-    private final CommunicationIdentifier targetParticipant;
+	
+	/**
+	 * Iformation for TranferTarget
+	 */
+	private final CallInvite targetCallInvite;
 
     /**
      * The operational context
      */
     private String operationContext;
 
-    /**
-     * A {@link PhoneNumberIdentifier} representing the caller ID of the transferee, if transferring to a pstn number.
-     */
-    private PhoneNumberIdentifier transfereeCallerId;
 
     /**
      * Constructor
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param a {@link CallInvite}contains information for TranferTarget.
      */
-    public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
+    public TransferToParticipantCallOptions(CallInvite targetCallInvite) {
+        this.targetCallInvite = targetCallInvite;
     }
 
-    /**
-     * Get the target participant.
-     *
-     * @return the target participant.
-     */
-    public CommunicationIdentifier getTargetParticipant() {
-        return targetParticipant;
-    }
 
     /**
      * Get the operationContext.
@@ -52,15 +41,6 @@ public class TransferToParticipantCallOptions {
      */
     public String  getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Get the transfereeCallerId.
-     *
-     * @return the transfereeCallerId.
-     */
-    public PhoneNumberIdentifier getTransfereeCallerId() {
-        return transfereeCallerId;
     }
 
     /**
@@ -73,16 +53,12 @@ public class TransferToParticipantCallOptions {
         this.operationContext = operationContext;
         return this;
     }
-
+    
     /**
-     * Set the transfereeCallerId.
-     *
-     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
-     *                           if transferring to a pstn number.
-     * @return the TransferToParticipantCallOptions object itself.
+     * Get the call information to transfer target
+     * @return a {@link CallInvite} with information to transfer target
      */
-    public TransferToParticipantCallOptions setSourceCallerId(PhoneNumberIdentifier transfereeCallerId) {
-        this.transfereeCallerId = transfereeCallerId;
-        return this;
-    }
+	public CallInvite getTargetCallInvite() {
+		return targetCallInvite;
+	}
 }
