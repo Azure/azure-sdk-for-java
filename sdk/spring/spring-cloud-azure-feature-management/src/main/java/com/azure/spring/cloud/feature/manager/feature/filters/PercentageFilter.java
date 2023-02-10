@@ -6,7 +6,6 @@ import static com.azure.spring.cloud.feature.manager.FilterParameters.PERCENTAGE
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
@@ -14,7 +13,6 @@ import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 /**
  * A feature filter that can be used to activate a feature based on a random percentage.
  */
-@Component("PercentageFilter")
 public final class PercentageFilter implements IFeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PercentageFilter.class);

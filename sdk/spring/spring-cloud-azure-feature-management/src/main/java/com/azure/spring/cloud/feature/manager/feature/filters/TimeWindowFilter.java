@@ -11,7 +11,6 @@ import java.time.format.DateTimeParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.manager.models.FeatureFilterEvaluationContext;
@@ -20,7 +19,6 @@ import com.azure.spring.cloud.feature.manager.models.IFeatureFilter;
 /**
  * A feature filter that can be used at activate a feature based on a time window.
  */
-@Component("TimeWindowFilter")
 public final class TimeWindowFilter implements IFeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
