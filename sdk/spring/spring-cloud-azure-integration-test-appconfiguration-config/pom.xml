@@ -13,8 +13,8 @@
   </parent>
 
     <groupId>com.azure.spring</groupId>
-    <artifactId>spring-cloud-azure-test-appconfiguration-config</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-appconfiguration-config;current} -->
+    <artifactId>spring-cloud-azure-integration-test-appconfiguration-config</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-integration-test-appconfiguration-config;current} -->
 
     <properties>
         <skipSpringITs>true</skipSpringITs>

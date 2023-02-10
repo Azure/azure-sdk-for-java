@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
+import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;

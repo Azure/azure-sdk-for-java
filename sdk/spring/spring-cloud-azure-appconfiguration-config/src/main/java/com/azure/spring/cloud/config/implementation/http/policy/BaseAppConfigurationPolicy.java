@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.implementation.pipline.policies;
+package com.azure.spring.cloud.config.implementation.http.policy;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;

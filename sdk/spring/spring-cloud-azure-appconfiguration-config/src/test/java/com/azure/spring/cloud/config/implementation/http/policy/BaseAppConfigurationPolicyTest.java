@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.implementation.pipline.policies;
+package com.azure.spring.cloud.config.implementation.http.policy;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.CORRELATION_CONTEXT;
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
@@ -27,6 +27,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 // This test class needs to be isolated and ran sequential as it uses BaseAppConfigurationPolicy.setWatchRequests
 // which mutates a global static and can result in race condition failures.

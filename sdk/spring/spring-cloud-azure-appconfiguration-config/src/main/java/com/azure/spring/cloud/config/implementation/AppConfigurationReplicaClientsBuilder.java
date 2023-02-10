@@ -25,7 +25,7 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.config.ConfigurationClientCustomizer;
-import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
+import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
