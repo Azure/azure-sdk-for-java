@@ -3,12 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.util.List;
-import java.time.Instant;
-import java.util.UUID;
 
 /**
  * The options for creating a p2p call.

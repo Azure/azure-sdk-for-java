@@ -41,7 +41,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callSource, callInvite, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
     }
-    
+
     @Test
     public void createCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
@@ -76,13 +76,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
         assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-
-        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
-    
+
     @Test
     public void createCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
