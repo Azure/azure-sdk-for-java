@@ -5,15 +5,13 @@ package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.MetricsOptions;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -57,6 +55,7 @@ public final class CosmosClientTelemetryConfig {
     private final ProxyOptions proxy;
     private String clientCorrelationId = null;
     private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
+    private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES;
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
 
@@ -205,6 +204,62 @@ public final class CosmosClientTelemetryConfig {
         return this.metricTagNames;
     }
 
+    /**
+     * Sets the categories of metrics that should be emitted. By default the following categories will be enabled:
+     * OperationSummary, RequestSummary, DirectChannels, DirectRequests, System
+     * (the System and OperationSummary metrics are always collected and can't be disabled when enabling Cosmos metrics)
+     * For most use-cases that should be sufficient. An overview of the different metric categories can be found here:
+     * https://aka.ms/azure-cosmos-metrics
+     *
+     * @param categories - a comma-separated list of metric categories that should be emitted
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig metricCategories(String... categories) {
+        if (categories == null || categories.length == 0) {
+            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+        }
+
+        Map<String, MetricCategory> categoryMap = new HashMap<>();
+        for (MetricCategory level : MetricCategory.values()) {
+            categoryMap.put(level.toLowerCase(), level);
+        }
+
+        Stream<MetricCategory> categoryStream =
+            Arrays.stream(categories)
+                  .map(rawCategory -> rawCategory.toLowerCase(Locale.ROOT))
+                  .filter(category -> !Strings.isNullOrWhiteSpace(category))
+                  .map(category -> {
+                      String trimmedCategory = category.trim();
+
+                      if (!categoryMap.containsKey(trimmedCategory)) {
+
+                          String validCategories = String.join(
+                              ", ",
+                              (String[]) Arrays.stream(MetricCategory.values()).map(level -> level.toString()).toArray());
+
+                          throw new IllegalArgumentException(
+                              String.format(
+                                  "Metric category '%s' is invalid. Valid Metric categories are:"
+                                      + " %s",
+                                  category,
+                                  validCategories));
+                      }
+
+                      return categoryMap.get(trimmedCategory);
+                  });
+
+        EnumSet<MetricCategory> newCategories = EnumSet.of(MetricCategory.System, MetricCategory.OperationSummary);
+        categoryStream.forEach(category -> newCategories.add(category));
+
+        this.metricCategories= newCategories;
+
+        return this;
+    }
+
+    EnumSet<MetricCategory> getMetricCategories() {
+        return this.metricCategories;
+    }
+
     Duration getHttpNetworkRequestTimeout() {
         return this.httpNetworkRequestTimeout;
     }
@@ -312,6 +367,11 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public ProxyOptions getProxy(CosmosClientTelemetryConfig config) {
                     return config.getProxy();
+                }
+
+                @Override
+                public EnumSet<MetricCategory> getMetricCategories(CosmosClientTelemetryConfig config) {
+                    return config.getMetricCategories();
                 }
 
                 @Override

@@ -19,6 +19,7 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -1040,6 +1041,7 @@ public class ImplementationBridgeHelpers {
             Tag getClientCorrelationTag(CosmosAsyncClient client);
             String getAccountTagValue(CosmosAsyncClient client);
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
+            EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
             boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
@@ -1124,6 +1126,7 @@ public class ImplementationBridgeHelpers {
             int getMaxConnectionPoolSize(CosmosClientTelemetryConfig config);
             Duration getIdleHttpConnectionTimeout(CosmosClientTelemetryConfig config);
             ProxyOptions getProxy(CosmosClientTelemetryConfig config);
+            EnumSet<MetricCategory> getMetricCategories(CosmosClientTelemetryConfig config);
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);

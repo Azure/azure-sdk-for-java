@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -99,6 +100,7 @@ public interface AsyncDocumentClient {
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
         private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
+        private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -127,6 +129,12 @@ public interface AsyncDocumentClient {
 
         public Builder withMetricTagNames(EnumSet<TagName> tagNames) {
             this.metricTagNames = tagNames;
+
+            return this;
+        }
+
+        public Builder withMetricCategories(EnumSet<MetricCategory> categories) {
+            this.metricCategories = categories;
 
             return this;
         }

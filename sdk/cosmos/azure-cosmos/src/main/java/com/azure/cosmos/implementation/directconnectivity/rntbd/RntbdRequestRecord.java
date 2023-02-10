@@ -320,8 +320,12 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
                 timeCompleted, now));
     }
 
-    public long stop(Timer requests, Timer responses) {
-        return this.args.stop(requests, responses);
+    public void stop() {
+        this.args.stop();
+    }
+
+    public void stop(Timer requests, Timer responses) {
+        this.args.stop(requests, responses);
     }
 
     @Override

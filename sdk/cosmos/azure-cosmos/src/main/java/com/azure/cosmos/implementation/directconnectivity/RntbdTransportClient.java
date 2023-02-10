@@ -9,11 +9,13 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
@@ -90,6 +93,7 @@ public class RntbdTransportClient extends TransportClient {
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
+    private final EnumSet<MetricCategory> metricCategories;
 
     // endregion
 
@@ -126,6 +130,7 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
+        this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
     }
 
     RntbdTransportClient(
@@ -146,6 +151,16 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        if (clientTelemetry != null &&
+            clientTelemetry.getClientTelemetryConfig() != null) {
+
+            this.metricCategories = ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMetricCategories(clientTelemetry.getClientTelemetryConfig());
+        } else {
+            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+        }
     }
 
     // endregion
@@ -353,6 +368,10 @@ public class RntbdTransportClient extends TransportClient {
         if (this.closed.get()) {
             throw new TransportException(lenientFormat("%s is closed", this), null);
         }
+    }
+
+    public EnumSet<MetricCategory> getMetricCategories() {
+        return this.metricCategories;
     }
 
     // endregion
@@ -621,7 +640,6 @@ public class RntbdTransportClient extends TransportClient {
         public int transientTimeoutDetectionThreshold() {
             return this.transientTimeoutDetectionThreshold;
         }
-
 
         // endregion
 
