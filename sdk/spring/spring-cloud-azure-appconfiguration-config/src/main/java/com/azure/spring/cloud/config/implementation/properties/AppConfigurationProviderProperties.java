@@ -4,17 +4,15 @@ package com.azure.spring.cloud.config.implementation.properties;
 
 import java.time.Instant;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.util.Assert;
 
 /**
  * Properties defining connection to Azure App Configuration.
  */
-@Validated
 @ConfigurationProperties(prefix = AppConfigurationProviderProperties.CONFIG_PREFIX)
 public class AppConfigurationProviderProperties {
 
@@ -25,27 +23,21 @@ public class AppConfigurationProviderProperties {
 
     private static final Instant START_DATE = Instant.now();
 
-    @NotEmpty
     @Value("${version:1.0}")
     private String version;
 
-    @NotNull
     @Value("${maxRetries:2}")
     private int maxRetries;
 
-    @NotNull
     @Value("${maxRetryTime:60}")
     private int maxRetryTime;
 
-    @NotNull
     @Value("${prekillTime:5}")
     private int prekillTime;
 
-    @NotNull
     @Value("${defaultMinBackoff:30}")
     private Long defaultMinBackoff;
 
-    @NotNull
     @Value("${defaultMaxBackoff:600}")
     private Long defaultMaxBackoff;
 
@@ -138,6 +130,16 @@ public class AppConfigurationProviderProperties {
      */
     public void setDefaultMaxBackoff(Long defaultMaxBackoff) {
         this.defaultMaxBackoff = defaultMaxBackoff;
+    }
+    
+    @PostConstruct
+    public void validateAndInit() {
+        Assert.hasLength(version, "A version of app configuration should be set.");
+        Assert.notNull(maxRetries, "A number of max retries has to be configured.");
+        Assert.notNull(maxRetryTime, "A max retry value needs to be configured");
+        Assert.notNull(prekillTime, "A preKill time value needs to be configured.");
+        Assert.notNull(defaultMinBackoff, "A default minimum backoff time value needs to be set.");
+        Assert.notNull(defaultMaxBackoff, "A default max backoff time value needs to be set.");
     }
 
 }

@@ -14,12 +14,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Properties for all Azure App Configuration stores that are loaded.
  */
-@Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
 public final class AppConfigurationProperties {
 
