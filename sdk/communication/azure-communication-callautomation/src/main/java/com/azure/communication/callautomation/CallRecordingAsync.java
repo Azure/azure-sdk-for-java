@@ -21,7 +21,6 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -56,6 +55,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.ZoneId;
+import java.util.UUID;
+import java.time.Instant;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -118,15 +122,13 @@ public class CallRecordingAsync {
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
-            options.setRepeatabilityHeaders(handleApiIdempotency(options.getRepeatabilityHeaders()));
-
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
-                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                        UUID.randomUUID(),
+                        getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                         contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -572,12 +574,12 @@ public class CallRecordingAsync {
 
     //region helper functions
     /***
-     * Make sure repeatability headers of the request are correctly set.
-     *
-     * @return a verified RepeatabilityHeaders object.
+     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
+     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
      */
-    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
-        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
+        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
     //endregion
 }

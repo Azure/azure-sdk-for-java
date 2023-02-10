@@ -6,9 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The options for muting a participant.
@@ -28,18 +26,12 @@ public final class MuteParticipantsOptions {
     private String operationContext;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
-    /**
      * Constructor
      *
      * @param targetParticipant The targetParticipant to mute.
      */
     public MuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -58,26 +50,6 @@ public final class MuteParticipantsOptions {
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the RemoveParticipantsOptions object itself.
-     */
-    public MuteParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
     }
 
     /**

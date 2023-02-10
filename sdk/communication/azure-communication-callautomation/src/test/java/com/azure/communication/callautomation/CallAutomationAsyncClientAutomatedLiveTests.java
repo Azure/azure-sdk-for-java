@@ -66,7 +66,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(caller), targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
@@ -82,7 +82,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
@@ -116,7 +116,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
@@ -155,7 +155,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(caller), targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
@@ -170,7 +170,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             assertNotNull(incomingCallContext);
 
             // answer the call
-            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext).setRepeatabilityHeaders(null);
+            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
             callAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
             // check events

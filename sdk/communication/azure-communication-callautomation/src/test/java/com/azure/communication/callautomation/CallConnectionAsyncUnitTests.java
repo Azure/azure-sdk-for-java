@@ -18,7 +18,6 @@ import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
@@ -107,11 +106,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertNotNull(hangUpResponse);
         assertEquals(204, hangUpResponse.getStatusCode());
-
-        RepeatabilityHeaders repeatabilityHeaders = hangUpOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -210,11 +204,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(transferCallResultResponse);
         assertEquals(202, transferCallResultResponse.getStatusCode());
         assertNotNull(transferCallResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = transferToParticipantCallOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -252,11 +241,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
         assertNotNull(addParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = addParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -294,11 +278,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = removeParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -335,11 +314,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(muteParticipantsResultResponse);
         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
         assertNotNull(muteParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = muteParticipantsOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -444,11 +418,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(unmuteParticipantsResultResponse);
         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
         assertNotNull(unmuteParticipantsResultResponse.getValue());
-
-        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test

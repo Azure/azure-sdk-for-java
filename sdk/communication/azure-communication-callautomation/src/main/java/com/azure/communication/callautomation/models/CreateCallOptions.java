@@ -3,9 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.time.Instant;
-import java.util.UUID;
-
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -44,11 +41,6 @@ public class CreateCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-    
-    /**
      * Constructor
      * @param source The source property.
      * @param callInvite Call invitee information.
@@ -58,9 +50,8 @@ public class CreateCallOptions {
         this.source = source;
         this.callInvite = callInvite;
         this.callbackUrl = callbackUri;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
-    
+
     /**
      * Get the source.
      *
@@ -70,7 +61,7 @@ public class CreateCallOptions {
         return source;
     }
 
-    
+
     /**
      * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
@@ -80,7 +71,7 @@ public class CreateCallOptions {
     public String getAzureCognitiveServicesEndpointUrl() {
         return azureCognitiveServicesEndpointUrl;
     }
-    
+
     /**
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
@@ -92,7 +83,7 @@ public class CreateCallOptions {
         this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
-    
+
     /**
      * Get the operationContext: A customer set value used to track the answering of a call.
      *
@@ -101,7 +92,17 @@ public class CreateCallOptions {
     public String getOperationContext() {
         return operationContext;
     }
-    
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+
     /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
@@ -112,16 +113,7 @@ public class CreateCallOptions {
         this.operationContext = operationContext;
         return this;
     }
-    
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-    
+
     /**
      * Set the media streaming configuration.
      *
@@ -132,27 +124,7 @@ public class CreateCallOptions {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
-    
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-    
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
-    }
-    
+
     /**
      *  Get Call invitee information
      * @return call invitee information
@@ -160,7 +132,7 @@ public class CreateCallOptions {
     public CallInvite getCallInvite() {
         return callInvite;
     }
-    
+
     /**
      * Get the call back uri.
      *

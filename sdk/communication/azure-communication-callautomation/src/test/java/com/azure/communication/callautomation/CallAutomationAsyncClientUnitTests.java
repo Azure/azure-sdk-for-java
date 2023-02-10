@@ -13,7 +13,6 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -42,7 +41,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callSource, callInvite, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
     }
-    
+
     @Test
     public void createCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
@@ -77,13 +76,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
         assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-
-        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
-    
+
     @Test
     public void createCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
@@ -104,11 +98,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
         assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-
-        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -141,11 +130,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
         assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-
-        RepeatabilityHeaders repeatabilityHeaders = answerCallOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -173,11 +157,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(redirectCallResponse);
         assertEquals(204, redirectCallResponse.getStatusCode());
-
-        RepeatabilityHeaders repeatabilityHeaders = redirectCallOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -205,10 +184,5 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(rejectCallResponse);
         assertEquals(204, rejectCallResponse.getStatusCode());
-
-        RepeatabilityHeaders repeatabilityHeaders = rejectCallOptions.getRepeatabilityHeaders();
-        assertNotNull(repeatabilityHeaders);
-        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 }

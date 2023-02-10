@@ -34,7 +34,6 @@ import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
@@ -54,6 +53,11 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.ZoneId;
+import java.util.UUID;
+import java.time.Instant;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -150,11 +154,9 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            hangUpOptions.setRepeatabilityHeaders(handleApiIdempotency(hangUpOptions.getRepeatabilityHeaders()));
-
             return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
-                hangUpOptions.getRepeatabilityHeaders() != null ? hangUpOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                hangUpOptions.getRepeatabilityHeaders() != null ? hangUpOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                UUID.randomUUID(),
+                getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                 context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
@@ -276,12 +278,10 @@ public class CallConnectionAsync {
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            transferToParticipantCallOptions.setRepeatabilityHeaders(handleApiIdempotency(transferToParticipantCallOptions.getRepeatabilityHeaders()));
-
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-                    transferToParticipantCallOptions.getRepeatabilityHeaders() != null ? transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    transferToParticipantCallOptions.getRepeatabilityHeaders() != null ? transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                    context)
+            UUID.randomUUID(),
+            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
+            context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
@@ -329,7 +329,7 @@ public class CallConnectionAsync {
                 .setSourceDisplayName(addParticipantsOptions.getSourceDisplayName())
                 .setSourceIdentifier(CommunicationIdentifierConverter.convert(addParticipantsOptions.getSourceIdentifier()))
                 .setOperationContext(addParticipantsOptions.getOperationContext());
-                
+
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantsOptions.getInvitationTimeout() != null) {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
@@ -343,12 +343,10 @@ public class CallConnectionAsync {
                 request.setCustomContext(customContext);
             }
 
-            addParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(addParticipantsOptions.getRepeatabilityHeaders()));
-
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-                    addParticipantsOptions.getRepeatabilityHeaders() != null ? addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    addParticipantsOptions.getRepeatabilityHeaders() != null ? addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                    context)
+            UUID.randomUUID(),
+            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
+            context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -388,16 +386,14 @@ public class CallConnectionAsync {
             List<CommunicationIdentifierModel> participantModels = removeParticipantsOptions.getParticipants()
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-            removeParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(removeParticipantsOptions.getRepeatabilityHeaders()));
-
             RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
                 .setParticipantsToRemove(participantModels)
                 .setOperationContext(removeParticipantsOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request,
-                    removeParticipantsOptions.getRepeatabilityHeaders() != null ? removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    removeParticipantsOptions.getRepeatabilityHeaders() != null ? removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                    context)
+            UUID.randomUUID(),
+            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
+            context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -436,13 +432,12 @@ public class CallConnectionAsync {
                     .map(CommunicationIdentifierConverter::convert)
                     .collect(Collectors.toList()))
                 .setOperationContext(muteParticipantsOptions.getOperationContext());
-            muteParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(muteParticipantsOptions.getRepeatabilityHeaders()));
 
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
-                    muteParticipantsOptions.getRepeatabilityHeaders() != null ? muteParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    muteParticipantsOptions.getRepeatabilityHeaders() != null ? muteParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    UUID.randomUUID(),
+                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
@@ -482,13 +477,12 @@ public class CallConnectionAsync {
                     .map(CommunicationIdentifierConverter::convert)
                     .collect(Collectors.toList()))
                 .setOperationContext(unmuteParticipantsOptions.getOperationContext());
-            unmuteParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteParticipantsOptions.getRepeatabilityHeaders()));
 
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
-                    unmuteParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    unmuteParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    UUID.randomUUID(),
+                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
@@ -511,13 +505,12 @@ public class CallConnectionAsync {
 
     //region helper functions
     /***
-     * Make sure repeatability headers of the request are correctly set.
-     *
-     * @return a verified RepeatabilityHeaders object.
+     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
+     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
      */
-    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
-        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
+        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
-
     //endregion
 }
