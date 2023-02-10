@@ -171,8 +171,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
-                                       .withMetricTagNames(this.metricTagNames)
-                                       .withMetricCategories(this.metricCategories)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();

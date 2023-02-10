@@ -11,8 +11,6 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
-import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -31,7 +29,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -99,8 +96,6 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
-        private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -123,18 +118,6 @@ public interface AsyncDocumentClient {
 
         public Builder withClientCorrelationId(String clientCorrelationId) {
             this.clientCorrelationId = clientCorrelationId;
-
-            return this;
-        }
-
-        public Builder withMetricTagNames(EnumSet<TagName> tagNames) {
-            this.metricTagNames = tagNames;
-
-            return this;
-        }
-
-        public Builder withMetricCategories(EnumSet<MetricCategory> categories) {
-            this.metricCategories = categories;
 
             return this;
         }
@@ -281,8 +264,7 @@ public interface AsyncDocumentClient {
                 state,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId,
-                metricTagNames);
+                clientCorrelationId);
 
             client.init(state, null);
             return client;
