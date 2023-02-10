@@ -43,6 +43,7 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = root + os.sep + file_name
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
+                update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version)
 
 
 def contains_repositories(pom_file_content):
@@ -70,7 +71,7 @@ def get_repo_content(pom_file_content):
     if contains_repositories(pom_file_content):
         return get_repo_content_without_tag()
     else:
-        return """  
+        return """
   <repositories>
     {}
   </repositories>
@@ -101,7 +102,7 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
         insert_position = pom_file_content.find('<dependencies>')
-        if(insert_position == -1):
+        if insert_position == -1:
             # no dependencies section in pom, not adding <dependencyManagement> section
             log.warn("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
             return
@@ -120,6 +121,18 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
             repo_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
             with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
                 updated_pom_file.writelines(repo_content)
+
+def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version):
+    with open(file_path, 'r', encoding = 'utf-8') as pom_file:
+        pom_file_content = pom_file.read()
+        if pom_file_content.find('<artifactId>spring-boot-starter-parent</artifactId>') == -1:
+            log.debug("No spring-boot-starter-parent found in " + file_path + ". Not updating it.")
+            return
+        with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+            log.info("Found spring-boot-starter-parent found in " + file_path + ". Now updating it.")
+            new_content = pom_file_content.replace('<artifactId>spring-boot-starter-parent</artifactId>',
+                '<artifactId>spring-boot-starter-parent</artifactId>\n<version>{}</version>'.format(spring_boot_dependencies_version))
+            updated_pom_file.writelines(new_content)
 
 
 def get_dependency_management_content():
@@ -142,7 +155,7 @@ def get_dependency_management_content():
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
 """
 
 
@@ -151,7 +164,7 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   <properties>
     {}
   </properties>
-  
+
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
 
