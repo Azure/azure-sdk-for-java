@@ -52,6 +52,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
+    private static final String TRACKING_ID_KEY = "trackingId";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
@@ -302,11 +303,19 @@ class ServiceBusSessionManager implements AutoCloseable {
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else {
+                    final long id = System.nanoTime();
+                    LOGGER.atInfo()
+                            .addKeyValue(TRACKING_ID_KEY, id)
+                            .log("Unable to acquire new session.", failure);
                     // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
                     // non-blocking, if we use the session processor to recover the error, it requires a blocking
                     // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
-                    LOGGER.atInfo().log("Publish error on the bounded-elastic thread.");
-                    return Mono.<Long>error(failure).publishOn(Schedulers.boundedElastic());
+                    return Mono.<Long>error(failure)
+                            .publishOn(Schedulers.boundedElastic())
+                            .doOnError(e -> LOGGER.atInfo()
+                                    .addKeyValue(TRACKING_ID_KEY, id)
+                                    .log("Emitting the error signal received for session acquire attempt.", e)
+                    );
                 }
             })));
     }
