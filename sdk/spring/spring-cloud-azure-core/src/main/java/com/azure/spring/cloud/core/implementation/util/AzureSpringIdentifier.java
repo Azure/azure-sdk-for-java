@@ -81,6 +81,7 @@ public final class AzureSpringIdentifier {
      * Azure Spring B2C
      */
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
+    public static final String AZURE_SPRING_IDENTITY = "az-sp-id/" + VERSION;
 
     private static String getVersion() {
         String version = "unknown";

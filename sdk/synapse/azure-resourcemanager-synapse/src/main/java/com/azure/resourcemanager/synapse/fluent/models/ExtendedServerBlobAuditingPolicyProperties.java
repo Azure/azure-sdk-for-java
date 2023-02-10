@@ -21,15 +21,14 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
     private String predicateExpression;
 
     /*
-     * Specifies the state of the policy. If state is Enabled, storageEndpoint
-     * or isAzureMonitorTargetEnabled are required.
+     * Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
+     * required.
      */
     @JsonProperty(value = "state", required = true)
     private BlobAuditingPolicyState state;
 
     /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). If state is Enabled,
+     * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled,
      * storageEndpoint or isAzureMonitorTargetEnabled is required.
      */
     @JsonProperty(value = "storageEndpoint")
@@ -37,14 +36,12 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
 
     /*
      * Specifies the identifier key of the auditing storage account.
-     * If state is Enabled and storageEndpoint is specified, not specifying the
-     * storageAccountAccessKey will use SQL server system-assigned managed
-     * identity to access the storage.
+     * If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL
+     * server system-assigned managed identity to access the storage.
      * Prerequisites for using managed identity authentication:
-     * 1. Assign SQL Server a system-assigned managed identity in Azure Active
-     * Directory (AAD).
-     * 2. Grant SQL Server identity access to the storage account by adding
-     * 'Storage Blob Data Contributor' RBAC role to the server identity.
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role
+     * to the server identity.
      * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
      */
@@ -52,8 +49,7 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
     private String storageAccountAccessKey;
 
     /*
-     * Specifies the number of days to keep in the audit logs in the storage
-     * account.
+     * Specifies the number of days to keep in the audit logs in the storage account.
      */
     @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
@@ -61,20 +57,18 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
     /*
      * Specifies the Actions-Groups and Actions to audit.
      *
-     * The recommended set of action groups to use is the following combination
-     * - this will audit all the queries and stored procedures executed against
-     * the database, as well as successful and failed logins:
+     * The recommended set of action groups to use is the following combination - this will audit all the queries and
+     * stored procedures executed against the database, as well as successful and failed logins:
      *
      * BATCH_COMPLETED_GROUP,
      * SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
      * FAILED_DATABASE_AUTHENTICATION_GROUP.
      *
-     * This above combination is also the set that is configured by default
-     * when enabling auditing from the Azure portal.
+     * This above combination is also the set that is configured by default when enabling auditing from the Azure
+     * portal.
      *
-     * The supported action groups to audit are (note: choose only specific
-     * groups that cover your auditing needs. Using unnecessary groups could
-     * lead to very large quantities of audit records):
+     * The supported action groups to audit are (note: choose only specific groups that cover your auditing needs.
+     * Using unnecessary groups could lead to very large quantities of audit records):
      *
      * APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
      * BACKUP_RESTORE_GROUP
@@ -97,16 +91,14 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      * BATCH_STARTED_GROUP
      * BATCH_COMPLETED_GROUP
      *
-     * These are groups that cover all sql statements and stored procedures
-     * executed against the database, and should not be used in combination
-     * with other groups as this will result in duplicate audit logs.
+     * These are groups that cover all sql statements and stored procedures executed against the database, and should
+     * not be used in combination with other groups as this will result in duplicate audit logs.
      *
      * For more information, see [Database-Level Audit Action
      * Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
      *
-     * For Database auditing policy, specific Actions can also be specified
-     * (note that Actions cannot be specified for Server auditing policy). The
-     * supported actions to audit are:
+     * For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for
+     * Server auditing policy). The supported actions to audit are:
      * SELECT
      * UPDATE
      * INSERT
@@ -118,10 +110,9 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      * The general form for defining an action to be audited is:
      * {action} ON {object} BY {principal}
      *
-     * Note that <object> in the above format can refer to an object like a
-     * table, view, or stored procedure, or an entire database or schema. For
-     * the latter cases, the forms DATABASE::{db_name} and
-     * SCHEMA::{schema_name} are used, respectively.
+     * Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an
+     * entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are
+     * used, respectively.
      *
      * For example:
      * SELECT on dbo.myTable by public
@@ -141,68 +132,60 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
     private UUID storageAccountSubscriptionId;
 
     /*
-     * Specifies whether storageAccountAccessKey value is the storage's
-     * secondary key.
+     * Specifies whether storageAccountAccessKey value is the storage's secondary key.
      */
     @JsonProperty(value = "isStorageSecondaryKeyInUse")
     private Boolean isStorageSecondaryKeyInUse;
 
     /*
      * Specifies whether audit events are sent to Azure Monitor.
-     * In order to send the events to Azure Monitor, specify 'state' as
-     * 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
+     * In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as
+     * true.
      *
-     * When using REST API to configure auditing, Diagnostic Settings with
-     * 'SQLSecurityAuditEvents' diagnostic logs category on the database should
-     * be also created.
-     * Note that for server level audit you should use the 'master' database as
-     * {databaseName}.
+     * When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs
+     * category on the database should be also created.
+     * Note that for server level audit you should use the 'master' database as {databaseName}.
      *
      * Diagnostic Settings URI format:
      * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
      *
-     * For more information, see [Diagnostic Settings REST
-     * API](https://go.microsoft.com/fwlink/?linkid=2033207)
-     * or [Diagnostic Settings
-     * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
      *
      */
     @JsonProperty(value = "isAzureMonitorTargetEnabled")
     private Boolean isAzureMonitorTargetEnabled;
 
     /*
-     * Specifies the amount of time in milliseconds that can elapse before
-     * audit actions are forced to be processed.
-     * The default minimum value is 1000 (1 second). The maximum is
-     * 2,147,483,647.
+     * Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+     * The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
      */
     @JsonProperty(value = "queueDelayMs")
     private Integer queueDelayMs;
 
     /*
-     * Specifies the state of devops audit. If state is Enabled, devops logs
-     * will be sent to Azure Monitor.
-     * In order to send the events to Azure Monitor, specify 'State' as
-     * 'Enabled', 'IsAzureMonitorTargetEnabled' as true and
-     * 'IsDevopsAuditEnabled' as true
+     * Specifies the state of devops audit. If state is Enabled, devops logs will be sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled', 'IsAzureMonitorTargetEnabled' as
+     * true and 'IsDevopsAuditEnabled' as true
      *
-     * When using REST API to configure auditing, Diagnostic Settings with
-     * 'DevOpsOperationsAudit' diagnostic logs category on the master database
-     * should also be created.
+     * When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
      *
      * Diagnostic Settings URI format:
      * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
      *
-     * For more information, see [Diagnostic Settings REST
-     * API](https://go.microsoft.com/fwlink/?linkid=2033207)
-     * or [Diagnostic Settings
-     * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
      *
      */
     @JsonProperty(value = "isDevopsAuditEnabled")
     private Boolean isDevopsAuditEnabled;
+
+    /** Creates an instance of ExtendedServerBlobAuditingPolicyProperties class. */
+    public ExtendedServerBlobAuditingPolicyProperties() {
+    }
 
     /**
      * Get the predicateExpression property: Specifies condition of where clause when creating an audit.

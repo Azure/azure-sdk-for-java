@@ -19,6 +19,10 @@ public final class IntegrationRuntimeResourceInner extends EntityResource {
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
+    /** Creates an instance of IntegrationRuntimeResourceInner class. */
+    public IntegrationRuntimeResourceInner() {
+    }
+
     /**
      * Get the properties property: Integration runtime properties.
      *

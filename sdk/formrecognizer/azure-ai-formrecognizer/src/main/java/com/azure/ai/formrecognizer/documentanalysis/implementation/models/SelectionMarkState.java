@@ -17,6 +17,14 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
+     * Creates a new instance of SelectionMarkState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SelectionMarkState() {}
+
+    /**
      * Creates or finds a SelectionMarkState from its string representation.
      *
      * @param name a name to look for.
