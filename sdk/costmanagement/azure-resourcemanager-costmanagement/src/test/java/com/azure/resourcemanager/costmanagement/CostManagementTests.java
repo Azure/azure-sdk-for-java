@@ -10,17 +10,32 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.costmanagement.models.CostDetailsMetricType;
+import com.azure.resourcemanager.costmanagement.models.CostDetailsOperationResults;
+import com.azure.resourcemanager.costmanagement.models.CostDetailsTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReportRequestDefinition;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CostManagementTests extends TestBase {
 
+    @Disabled("Unsupported offer type: AIRS for get detailed report request.Unsupported offer type: AIRS for get detailed report request.")
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testOperations() {
+    public void testGenerateCostDetailsReports() {
         CostManagementManager costManagementManager = CostManagementManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        costManagementManager.operations().list().stream().count();
+        final String subscriptionId = "subscriptions/xxx";
+
+        CostDetailsOperationResults result = costManagementManager.generateCostDetailsReports().createOperation(
+            subscriptionId,
+            new GenerateCostDetailsReportRequestDefinition()
+                .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                .withTimePeriod(new CostDetailsTimePeriod().withStart("2023-01-01").withEnd("2023-01-31")));
+
+        Assertions.assertNotNull(result.name());
     }
 }
