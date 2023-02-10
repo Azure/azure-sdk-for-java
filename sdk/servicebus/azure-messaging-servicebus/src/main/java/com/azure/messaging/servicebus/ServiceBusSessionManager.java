@@ -304,7 +304,8 @@ class ServiceBusSessionManager implements AutoCloseable {
                 } else {
                     // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
                     // non-blocking, if we use the session processor to recover the error, it requires a blocking
-                    // thread to close the client. Hence, we publish the error on the bounded elastic thread.
+                    // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
+                    LOGGER.atInfo().log("Publish error on the bounded-elastic thread.");
                     return Mono.<Long>error(failure).publishOn(Schedulers.boundedElastic());
                 }
             })));
