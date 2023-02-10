@@ -52,7 +52,7 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface SqlAgentsService {
+    public interface SqlAgentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

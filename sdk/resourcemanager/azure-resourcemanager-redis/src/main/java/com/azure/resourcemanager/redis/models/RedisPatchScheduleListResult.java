@@ -24,6 +24,10 @@ public final class RedisPatchScheduleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RedisPatchScheduleListResult class. */
+    public RedisPatchScheduleListResult() {
+    }
+
     /**
      * Get the value property: Results of the list patch schedules operation.
      *

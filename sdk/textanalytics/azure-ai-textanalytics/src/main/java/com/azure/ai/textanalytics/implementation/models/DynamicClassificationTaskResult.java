@@ -20,6 +20,9 @@ public final class DynamicClassificationTaskResult extends AnalyzeTextTaskResult
     @JsonProperty(value = "results", required = true)
     private DynamicClassificationResult results;
 
+    /** Creates an instance of DynamicClassificationTaskResult class. */
+    public DynamicClassificationTaskResult() {}
+
     /**
      * Get the results property: The results property.
      *

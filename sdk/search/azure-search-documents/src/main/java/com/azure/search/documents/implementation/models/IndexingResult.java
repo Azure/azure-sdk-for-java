@@ -49,10 +49,10 @@ public final class IndexingResult {
      */
     @JsonCreator
     public IndexingResult(
-            @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
-            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
-            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int statusCode) {
+        @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
+        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
+        @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            int statusCode) {
         this.key = key;
         this.succeeded = succeeded;
         this.statusCode = statusCode;

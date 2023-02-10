@@ -15,13 +15,14 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -31,6 +32,8 @@ import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -696,6 +699,12 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
+
+            void enableGlobalThroughputControlGroup(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                ThroughputControlGroupConfig groupConfig,
+                GlobalThroughputControlConfig globalControlConfig,
+                Mono<Integer> throughputQueryMono);
         }
     }
 
@@ -1033,6 +1042,8 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
+            List<String> getPreferredRegions(CosmosAsyncClient client);
+            boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
         }
     }
 
@@ -1122,6 +1133,49 @@ public class ImplementationBridgeHelpers {
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);
+        }
+    }
+
+    public static final class CosmosContainerIdentityHelper {
+
+        private static final AtomicReference<Boolean> cosmosContainerIdentityClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosContainerIdentityAccessor> accessor = new AtomicReference<>();
+
+        private CosmosContainerIdentityHelper() {}
+
+        public static CosmosContainerIdentityAccessor getCosmosContainerIdentityAccessor() {
+
+            if (!cosmosContainerIdentityClassLoaded.get()) {
+                logger.debug("Initializing CosmosContainerIdentityAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosContainerIdentityAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosContainerIdentityAccessor is not initialized yet!");
+                System.exit(9725); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosContainerIdentityAccessor(final CosmosContainerIdentityAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosContainerIdentityAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosContainerIdentityAccessor...");
+                cosmosContainerIdentityClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosContainerIdentityAccessor {
+            String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
+            String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
+            String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
         }
     }
 }

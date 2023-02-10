@@ -16,6 +16,9 @@ public class QuantityResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of QuantityResolution class. */
+    public QuantityResolution() {}
+
     /**
      * Get the value property: The numeric value that the extracted text denotes.
      *

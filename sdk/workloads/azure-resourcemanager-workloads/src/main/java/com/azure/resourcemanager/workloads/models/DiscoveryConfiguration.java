@@ -21,10 +21,23 @@ public final class DiscoveryConfiguration extends SapConfiguration {
     private String centralServerVmId;
 
     /*
+     * The custom storage account name for the storage account created by the service in the managed resource group
+     * created as part of VIS deployment.<br><br>Refer to the storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).<br><br>If
+     * not provided, the service will create the storage account with a random name.
+     */
+    @JsonProperty(value = "managedRgStorageAccountName")
+    private String managedRgStorageAccountName;
+
+    /*
      * The geo-location where the SAP system exists.
      */
     @JsonProperty(value = "appLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String appLocation;
+
+    /** Creates an instance of DiscoveryConfiguration class. */
+    public DiscoveryConfiguration() {
+    }
 
     /**
      * Get the centralServerVmId property: The virtual machine ID of the Central Server.
@@ -43,6 +56,34 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      */
     public DiscoveryConfiguration withCentralServerVmId(String centralServerVmId) {
         this.centralServerVmId = centralServerVmId;
+        return this;
+    }
+
+    /**
+     * Get the managedRgStorageAccountName property: The custom storage account name for the storage account created by
+     * the service in the managed resource group created as part of VIS deployment.&lt;br&gt;&lt;br&gt;Refer to the
+     * storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
+     * not provided, the service will create the storage account with a random name.
+     *
+     * @return the managedRgStorageAccountName value.
+     */
+    public String managedRgStorageAccountName() {
+        return this.managedRgStorageAccountName;
+    }
+
+    /**
+     * Set the managedRgStorageAccountName property: The custom storage account name for the storage account created by
+     * the service in the managed resource group created as part of VIS deployment.&lt;br&gt;&lt;br&gt;Refer to the
+     * storage account naming rules
+     * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).&lt;br&gt;&lt;br&gt;If
+     * not provided, the service will create the storage account with a random name.
+     *
+     * @param managedRgStorageAccountName the managedRgStorageAccountName value to set.
+     * @return the DiscoveryConfiguration object itself.
+     */
+    public DiscoveryConfiguration withManagedRgStorageAccountName(String managedRgStorageAccountName) {
+        this.managedRgStorageAccountName = managedRgStorageAccountName;
         return this;
     }
 

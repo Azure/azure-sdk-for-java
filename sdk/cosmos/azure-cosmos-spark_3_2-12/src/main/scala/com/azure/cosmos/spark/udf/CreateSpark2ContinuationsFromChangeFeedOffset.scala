@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.udf
 
-import com.azure.cosmos.{CosmosAsyncClient, SparkBridgeInternal}
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration, CosmosConfig, CosmosContainerConfig, Loan}
+import com.azure.cosmos.{CosmosAsyncClient, SparkBridgeInternal}
 import org.apache.spark.sql.api.java.UDF2
 
 import scala.collection.mutable
@@ -38,7 +38,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
       ))
       .to(cosmosClientCacheItems => {
         createSpark2ContinuationsFromChangeFeedOffset(
-          cosmosClientCacheItems.head.get.client,
+          cosmosClientCacheItems.head.get.cosmosClient,
           cosmosContainerConfig.database,
           cosmosContainerConfig.container,
           changeFeedOffset
@@ -110,7 +110,9 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
         if (minLsn.isDefined) {
           lsnsByPkRangeId.put(
             pkRange.getId.toInt,
-            SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken))
+            // Spark 3 tracks the last LSN for which docs have been successfully processed
+            // Spark 2 LSN is offset by 1 because in Spark 2 the next-to-be-sent-as-continuation LSN is tracked
+            Math.max(0, SparkBridgeImplementationInternal.toLsn(minLsn.get.getToken) - 1))
         }
       })
 

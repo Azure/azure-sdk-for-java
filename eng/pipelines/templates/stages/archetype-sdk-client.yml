@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230112.1
+      ref: refs/tags/azure-sdk-build-tools_20230206.1
 
 parameters:
 - name: Artifacts
@@ -41,9 +41,6 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
-- name: SkipAggregateReports
-  type: boolean
-  default: false
 - name: PreBuildSteps
   type: object
   default: []
@@ -78,8 +75,14 @@ stages:
         TestPipeline: ${{ parameters.TestPipeline }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
+        ReleaseArtifacts:
+        - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+        - ${{ else }}:
+          - ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
@@ -109,7 +112,7 @@ stages:
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
-  - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
     - ${{ parameters.LiveTestStages }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
@@ -120,9 +123,9 @@ stages:
         parameters:
           DependsOn:
             - Build
-            # If the build depends on live tests don't let live tests results prevent from
-            # publishing the nightly dev builds.
-            - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), ne(variables['Build.Reason'],'Schedule')) }}:
+            # Only depend on live test stages if the build depends on live tests and the build reason is manual.
+            # This prevents check-in builds and scheduled builds from having a requirement on live test stages.
+            - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), eq(variables['Build.Reason'],'Manual')) }}:
               - ${{ each liveTestStage in parameters.LiveTestStages }}:
                 - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}

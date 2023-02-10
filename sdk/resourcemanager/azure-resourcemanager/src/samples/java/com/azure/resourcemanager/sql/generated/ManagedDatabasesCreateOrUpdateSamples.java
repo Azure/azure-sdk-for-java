@@ -64,7 +64,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
                     .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
-                    .withStorageContainerSasToken("sv=2015-12-11&sr=c&sp=rl&sig=1234")
+                    .withStorageContainerSasToken("fakeTokenPlaceholder")
                     .withAutoCompleteRestore(true)
                     .withLastBackupName("last_backup_name"),
                 Context.NONE);
@@ -168,7 +168,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withCreateMode(ManagedDatabaseCreateMode.RESTORE_EXTERNAL_BACKUP)
                     .withStorageContainerUri("https://myaccountname.blob.core.windows.net/backups")
-                    .withStorageContainerSasToken("sv=2015-12-11&sr=c&sp=rl&sig=1234"),
+                    .withStorageContainerSasToken("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 

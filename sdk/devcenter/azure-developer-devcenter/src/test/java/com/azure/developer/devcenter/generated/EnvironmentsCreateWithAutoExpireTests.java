@@ -21,8 +21,7 @@ public final class EnvironmentsCreateWithAutoExpireTests extends DevCenterClient
                         "{\"description\":\"Personal Dev Environment\",\"catalogItemName\":\"helloworld\",\"catalogName\":\"main\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"scheduledTasks\":{\"autoExpire\":{\"type\":\"AutoExpire\",\"startTime\":\"2022-01-01T00:01:00Z\"}}}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                environmentsClient.beginCreateOrUpdateEnvironment(
-                        "myProject", "me", "{environmentName}", body, requestOptions);
+                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "mydevenv", body, requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }
