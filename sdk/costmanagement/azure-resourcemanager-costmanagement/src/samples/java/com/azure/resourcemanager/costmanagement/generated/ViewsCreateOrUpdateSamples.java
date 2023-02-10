@@ -16,7 +16,7 @@ import com.azure.resourcemanager.costmanagement.models.PivotType;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigSorting;
-import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingDirection;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingType;
 import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for Views CreateOrUpdate. */
 public final class ViewsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateViewCreateOrUpdate.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewCreateOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdatePrivateView.
@@ -63,7 +63,7 @@ public final class ViewsCreateOrUpdateSamples {
                                 new PivotProperties().withType(PivotType.TAG_KEY).withName("swaggerTagKey")))
                     .withTypePropertiesType(ReportType.USAGE)
                     .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
-                    .withDataset(
+                    .withDataSet(
                         new ReportConfigDataset()
                             .withGranularity(ReportGranularityType.DAILY)
                             .withAggregation(
@@ -77,7 +77,7 @@ public final class ViewsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new ReportConfigSorting()
-                                            .withDirection(ReportConfigSortingDirection.ASCENDING)
+                                            .withDirection(ReportConfigSortingType.ASCENDING)
                                             .withName("UsageDate")))),
                 com.azure.core.util.Context.NONE);
     }

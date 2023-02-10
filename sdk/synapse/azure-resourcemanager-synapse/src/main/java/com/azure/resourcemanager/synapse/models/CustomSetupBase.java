@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class CustomSetupBase {
+    /** Creates an instance of CustomSetupBase class. */
+    public CustomSetupBase() {
+    }
+
     /**
      * Validates the instance.
      *

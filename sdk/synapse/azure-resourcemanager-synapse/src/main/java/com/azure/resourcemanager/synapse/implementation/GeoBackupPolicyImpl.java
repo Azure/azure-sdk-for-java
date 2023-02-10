@@ -52,6 +52,10 @@ public final class GeoBackupPolicyImpl implements GeoBackupPolicy, GeoBackupPoli
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GeoBackupPolicyInner innerModel() {
         return this.innerObject;
     }

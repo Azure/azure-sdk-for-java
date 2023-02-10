@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubs Delete. */
 public final class PrivateLinkHubsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class PrivateLinkHubsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkHubs().delete("resourceGroup1", "privateLinkHub1", Context.NONE);
+        manager.privateLinkHubs().delete("resourceGroup1", "privateLinkHub1", com.azure.core.util.Context.NONE);
     }
 }
