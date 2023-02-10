@@ -86,4 +86,61 @@ class StorageSeekableByteChannelTest extends Specification {
             assert channel.read(temp) == Math.min(temp.limit(), bufferLength - seekIndex)
         }
     }
+
+    def "Seek to new buffer"() {
+        setup:
+        def bufferLength = 5
+        def data = getRandomData(Constants.KB)
+        // each index should be outside the previous buffer
+        long[] seekIndices = [20, 500, 1, 6, 5]
+
+        StorageSeekableByteChannel.ReadBehavior behavior = Mock {
+            getCachedLength() >> data.length
+        }
+        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior)
+
+        when:
+        def temp = ByteBuffer.allocate(bufferLength * 2)
+        for (long seekIndex : seekIndices) {
+            temp.clear()
+            channel.position(seekIndex)
+            channel.read(temp)
+        }
+
+        then:
+        // expect a buffer refill at each seek index
+        for (long l : seekIndices) {
+            1 * behavior.read(_, l) >> { ByteBuffer dst, long sourceOffset ->
+                dst.put(data, (int)sourceOffset, bufferLength)
+                return bufferLength
+            }
+        }
+    }
+
+    def "Seek results in correct read"() {
+        setup:
+        def bufferLength = 5
+        def data = getRandomData(Constants.KB)
+        long seekIndex = 345
+
+        StorageSeekableByteChannel.ReadBehavior behavior = Mock {
+            getCachedLength() >> data.length
+        }
+        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior)
+
+        when:
+        ByteBuffer result = ByteBuffer.allocate(bufferLength)
+        channel.position(seekIndex)
+        channel.read(result)
+
+        then:
+        result.array() == data[seekIndex..seekIndex+bufferLength-1] as byte[]
+        // expect exactly one read at the chosen index
+        1 * behavior.read(_, seekIndex) >> { ByteBuffer dst, long sourceOffset ->
+            dst.put(data, (int)sourceOffset, bufferLength)
+            return bufferLength
+        }
+        // expect no other reads
+        0 * behavior.read(_, _)
+    }
 }
