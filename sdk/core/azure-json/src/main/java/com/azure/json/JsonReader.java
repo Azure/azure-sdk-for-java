@@ -18,6 +18,12 @@ import java.util.Objects;
  */
 public abstract class JsonReader implements Closeable {
     /**
+     * Creates an instance of {@link JsonReader}.
+     */
+    public JsonReader() {
+    }
+
+    /**
      * Gets the {@link JsonToken} that the reader currently points.
      * <p>
      * Returns null if the reader isn't pointing to a token. This happens if the reader hasn't begun to read the JSON

@@ -56,6 +56,22 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
     @JsonProperty(value = "sapSid")
     private String sapSid;
 
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     */
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
+
+    /** Creates an instance of DB2ProviderInstanceProperties class. */
+    public DB2ProviderInstanceProperties() {
+    }
+
     /**
      * Get the hostname property: Gets or sets the target virtual machine name.
      *
@@ -193,6 +209,46 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
      */
     public DB2ProviderInstanceProperties withSapSid(String sapSid) {
         this.sapSid = sapSid;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the DB2ProviderInstanceProperties object itself.
+     */
+    public DB2ProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     *
+     * @return the sslCertificateUri value.
+     */
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
+    }
+
+    /**
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     *
+     * @param sslCertificateUri the sslCertificateUri value to set.
+     * @return the DB2ProviderInstanceProperties object itself.
+     */
+    public DB2ProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
         return this;
     }
 

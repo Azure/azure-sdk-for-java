@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PiiDetectionSkillMaskingMode. */
+/** A string indicating what maskingMode to use to mask the personal information detected in the input text. */
 public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<PiiDetectionSkillMaskingMode> {
     /** Static value none for PiiDetectionSkillMaskingMode. */
     public static final PiiDetectionSkillMaskingMode NONE = fromString("none");

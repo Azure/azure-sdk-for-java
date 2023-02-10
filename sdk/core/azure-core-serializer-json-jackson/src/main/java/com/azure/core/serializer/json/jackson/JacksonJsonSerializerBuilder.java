@@ -27,6 +27,12 @@ public final class JacksonJsonSerializerBuilder {
     private ObjectMapperShim objectMapper;
 
     /**
+     * Creates an instance of {@link JacksonJsonSerializerBuilder}.
+     */
+    public JacksonJsonSerializerBuilder() {
+    }
+
+    /**
      * Constructs a new instance of {@link JacksonJsonSerializer} with the configurations set in this builder.
      *
      * @return A new instance of {@link JacksonJsonSerializer}.
