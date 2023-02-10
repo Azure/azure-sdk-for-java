@@ -4,10 +4,12 @@
 
 #### Features Added
 * Added Service Principle based AAD Auth - See [PR 32393](https://github.com/Azure/azure-sdk-for-java/pull/32393)
+* Added capability to allow modification of throughput in Spark via `ALTER TABLE` or `ALTER DATABASE` command. - See [PR 33369](https://github.com/Azure/azure-sdk-for-java/pull/33369)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+- Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
 
 #### Other Changes
 
