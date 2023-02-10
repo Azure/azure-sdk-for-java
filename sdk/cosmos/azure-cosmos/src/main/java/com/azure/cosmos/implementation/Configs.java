@@ -110,9 +110,9 @@ public class Configs {
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
 
-    // whether to skip recording metric
-    private static final String IGNORE_METRIC_ENALBLED = "COSMOS.IGNORE_METRIC_ENABLED";
-    private static final boolean DEFAULT_IGNORE_METRIC_ENABLED = false;
+    // whether to enable certain verbose metrics
+    static final String VERBOSE_METRICS_ENABLED = "COSMOS.VERBOSE_METRICS_ENABLED";
+    private static final boolean DEFAULT_VERBOSE_METRICS_ENABLED = false;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -319,9 +319,9 @@ public class Configs {
                 DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED);
     }
 
-    public static boolean isIgnoreMetricEnabled() {
+    public static boolean isVerboseMetricsEnabled() {
         return getJVMConfigAsBoolean(
-                IGNORE_METRIC_ENALBLED,
-                DEFAULT_IGNORE_METRIC_ENABLED);
+                VERBOSE_METRICS_ENABLED,
+                DEFAULT_VERBOSE_METRICS_ENABLED);
     }
 }

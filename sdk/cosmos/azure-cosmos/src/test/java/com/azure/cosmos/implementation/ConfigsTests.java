@@ -33,4 +33,32 @@ public class ConfigsTests {
         Configs config = new Configs();
         assertThat(config.getDirectHttpsMaxConnectionLimit()).isEqualTo(Runtime.getRuntime().availableProcessors() * 500);
     }
+
+    @Test(groups = { "unit" })
+    public void isVerboseMetricsEnabledDefault() {
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(false);
+    }
+
+    @Test(groups = { "unit" })
+    public void isVerboseMetricsEnabled() {
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "null");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(false);
+
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(false);
+
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "false1");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(false);
+
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "TRue");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(true);
+
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "true");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(true);
+
+        System.setProperty(Configs.VERBOSE_METRICS_ENABLED, "true ");
+        assertThat(Configs.isVerboseMetricsEnabled()).isEqualTo(false);
+
+        System.clearProperty(Configs.VERBOSE_METRICS_ENABLED);
+    }
 }

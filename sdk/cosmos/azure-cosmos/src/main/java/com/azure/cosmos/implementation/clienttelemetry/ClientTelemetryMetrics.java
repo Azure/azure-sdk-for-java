@@ -17,8 +17,6 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionEvent;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsCompletionRecorder;
@@ -60,7 +58,7 @@ public final class ClientTelemetryMetrics {
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
 
-    private static final boolean ignoreMetricEnabled = Configs.isIgnoreMetricEnabled();
+    private static final boolean verboseMetricsEnabled = Configs.isVerboseMetricsEnabled();
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -692,8 +690,7 @@ public final class ClientTelemetryMetrics {
                     storeResponseDiagnostics.getResponsePayloadLength()
                 );
 
-                // disable the Summary, use the gauge for the channel metrics
-                if (!ignoreMetricEnabled) {
+                if (verboseMetricsEnabled) {
                     recordRntbdEndpointStatistics(
                             storeResponseDiagnostics.getRntbdEndpointStatistics(),
                             requestTags);
@@ -870,12 +867,10 @@ public final class ClientTelemetryMetrics {
                  .tags(tags)
                  .register(registry);
 
-            if (!ignoreMetricEnabled) {
-                Gauge.builder(nameOf("rntbd.channels.acquired.count"), endpoint, RntbdEndpoint::channelsAcquiredMetric)
+            Gauge.builder(nameOf("rntbd.channels.acquired.count"), endpoint, RntbdEndpoint::channelsAcquiredMetric)
                 .description("RNTBD acquired channel count")
                 .tags(tags)
                 .register(registry);
-            }
 
             Gauge.builder(nameOf("rntbd.channels.available.count"), endpoint, RntbdEndpoint::channelsAvailableMetric)
                  .description("RNTBD available channel count")
