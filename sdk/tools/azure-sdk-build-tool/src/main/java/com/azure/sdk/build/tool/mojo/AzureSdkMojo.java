@@ -2,7 +2,6 @@ package com.azure.sdk.build.tool.mojo;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter;
 import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
 import com.azure.sdk.build.tool.models.BuildReport;
