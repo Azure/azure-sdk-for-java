@@ -42,7 +42,6 @@ public final class XmlMapperFactory {
     private XmlMapperFactory() {
         MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 
-
         MethodHandle createXmlMapperBuilder;
         MethodHandle defaultUseWrapper;
         MethodHandle enableWriteXmlDeclaration;
