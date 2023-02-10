@@ -560,7 +560,7 @@ public final class ClientTelemetryMetrics {
         }
 
         private void recordRntbdEndpointStatistics(RntbdEndpointStatistics endpointStatistics, Tags requestTags) {
-            if (endpointStatistics == null && this.metricCategories.contains(MetricCategory.Legacy)) {
+            if (endpointStatistics == null || !this.metricCategories.contains(MetricCategory.Legacy)) {
                 return;
             }
 
@@ -574,6 +574,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
+
             acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
 
             DistributionSummary availableChannelsMeter = DistributionSummary

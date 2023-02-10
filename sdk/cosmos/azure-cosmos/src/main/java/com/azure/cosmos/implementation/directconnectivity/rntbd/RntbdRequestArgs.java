@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -114,7 +113,8 @@ public final class RntbdRequestArgs {
 
     public long stop(Timer requests, Timer responses) {
         this.lifetime.stop();
-        return this.lifetime.elapsed(TimeUnit.MILLISECONDS);
+        this.sample.stop(requests);
+        return this.sample.stop(responses);
     }
 
     @Override
