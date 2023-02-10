@@ -263,16 +263,10 @@ class BuilderHelperTest extends Specification {
         headers.add(new Header("Authorization", "notthis"))
         headers.add(new Header("User-Agent", "overwritten"))
 
-        when:
-        def credentialPolicySupplier = new Supplier<HttpPipelinePolicy>() {
-            @Override
-            HttpPipelinePolicy get() {
-                return new StorageSharedKeyCredentialPolicy(credentials)
-            }
-        }
-
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), null, BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null,
+            null, null, new RequestRetryOptions(), null, BuilderHelper.defaultHttpLogOptions,
+            new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
+            new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
