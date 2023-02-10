@@ -119,7 +119,7 @@ Certain routes may expose application capabilities that are gated by features. T
 
 ```java
 @GetMapping("/featureT")
-@FeatureGate(feature = "feature-t" fallback= "/oldEndpoint")
+@FeatureGate(feature = "feature-t", fallback= "/oldEndpoint")
 @ResponseBody
 public String featureT() {
     ...

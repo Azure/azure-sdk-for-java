@@ -11,18 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import reactor.core.publisher.Mono;
 
 /**
  * Interceptor for Requests to check if they should be run.
  */
-@Component
-public class FeatureHandler extends HandlerInterceptorAdapter {
+public class FeatureHandler implements HandlerInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureHandler.class);
 
@@ -49,10 +47,12 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
      * Checks if the endpoint being called has the @FeatureOn annotation. Checks if the feature is on. Can redirect if
      * feature is off, or can return the disabled feature handler.
      *
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler the handler (or {@link HandlerMethod}) that started asynchronous
      * @return true if the @FeatureOn annotation is on or the feature is enabled. Else, it returns false, or is
      * redirected.
      */
-    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Method method = null;
         if (handler instanceof HandlerMethod) {
