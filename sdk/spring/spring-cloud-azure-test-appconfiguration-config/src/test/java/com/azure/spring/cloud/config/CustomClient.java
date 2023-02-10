@@ -6,14 +6,12 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 
 public class CustomClient implements ConfigurationClientCustomizer {
 
-
-
     TokenCredential buildCredential() {
         return new EnvironmentCredentialBuilder().build();
     }
 
     @Override
-    public void setup(ConfigurationClientBuilder builder, String endpoint) {
+    public void customize(ConfigurationClientBuilder builder, String endpoint) {
         builder.credential(buildCredential());
     }
 
