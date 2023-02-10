@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CollectTonesResult model. */
+/** The CollectTonesResultInternal model. */
 @Immutable
-public final class CollectTonesResult {
+public final class CollectTonesResultInternal {
     /*
      * The tones property.
      */

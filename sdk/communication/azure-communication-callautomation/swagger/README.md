@@ -159,6 +159,12 @@ directive:
 - rename-model:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: CollectTonesResult
+    to: CollectTonesResultInternal
+- rename-model:
+    from: ChoiceResult
+    to: CollectChoiceResultInternal
 
 # Remove models
 - remove-model: AddParticipantsFailed
