@@ -6,12 +6,9 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
+import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
-import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
-import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
-import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
-import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -173,9 +170,8 @@ public class NettyAsyncHttpClientBuilder {
                 DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .doOnRequest((request, connection) -> doOnRequest(request, connection, writeTimeout))
-            .doAfterRequest((request, connection) -> doAfterRequest(request, connection, responseTimeout))
-            .doOnResponse((ignored, connection) -> doOnResponse(connection, readTimeout))
+            .doOnRequest((request, connection) -> doOnRequest(request, connection, writeTimeout, responseTimeout,
+                readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> doAfterResponseSuccess(connection));
 
         Configuration buildConfiguration = (configuration == null)
@@ -504,8 +500,6 @@ public class NettyAsyncHttpClientBuilder {
         }
     }
 
-
-
     /*
      * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
      *
@@ -542,61 +536,21 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /*
-     * Adds request handlers:
-     * - write timeout handler once the request is ready to begin sending.
-     * - progress handler if progress tracking has been requested.
+     * Request has started, add the Azure SDK ChannelAdapter.
      */
-    private void doOnRequest(HttpClientRequest request, Connection connection, long writeTimeout) {
-        if (writeTimeout > 0) {
-            connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-        }
-
+    private void doOnRequest(HttpClientRequest request, Connection connection, long writeTimeout, long responseTimeout,
+        long readTimeout) {
         AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
             AzureNettyHttpClientContext.KEY, null);
-        if (attr != null && attr.getProgressReporter() != null) {
-            connection.addHandlerLast(RequestProgressReportingHandler.HANDLER_NAME,
-                new RequestProgressReportingHandler(attr.getProgressReporter()));
-        }
+
+        connection.addHandlerLast(AzureSdkHandler.HANDLER_NAME, new AzureSdkHandler(attr, writeTimeout, responseTimeout,
+            readTimeout));
     }
 
     /*
-     * After request has been sent:
-     * - Remove Progress Handler
-     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
-     * handler.
-     */
-    private static void doAfterRequest(HttpClientRequest request, Connection connection, long responseTimeout) {
-        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME);
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-
-        AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
-            AzureNettyHttpClientContext.KEY, null);
-        long responseTimeoutMillis = (attr != null && attr.getResponseTimeoutOverride() != null)
-            ? attr.getResponseTimeoutOverride()
-            : responseTimeout;
-
-        if (responseTimeoutMillis > 0) {
-            connection.addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME,
-                new ResponseTimeoutHandler(responseTimeoutMillis));
-        }
-    }
-
-    /*
-     * Remove response timeout handler from the connection as the response has been received, then add read timeout
-     * handler.
-     */
-    private static void doOnResponse(Connection connection, long readTimeout) {
-        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME);
-
-        if (readTimeout > 0) {
-            connection.addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(readTimeout));
-        }
-    }
-
-    /*
-     * Remove read timeout handler as the complete response has been received.
+     * Response has completed, remove the Azure SDK ChannelHandler.
      */
     private static void doAfterResponseSuccess(Connection connection) {
-        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
+        connection.removeHandler(AzureSdkHandler.HANDLER_NAME);
     }
 }
