@@ -5,14 +5,12 @@ package com.azure.spring.cloud.config.web.implementation.pushbusrefresh;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 
 /**
  * Listens for AppConfigurationBusRefreshEvents and sets the App Configuration watch interval to zero.
  */
-@Component
 public final class AppConfigurationBusRefreshEventListener implements ApplicationListener<AppConfigurationBusRefreshEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEventListener.class);
 

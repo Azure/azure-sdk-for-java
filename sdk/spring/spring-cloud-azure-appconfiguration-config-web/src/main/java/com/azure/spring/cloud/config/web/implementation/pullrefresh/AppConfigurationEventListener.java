@@ -9,7 +9,6 @@ import static com.azure.spring.cloud.config.web.implementation.AppConfigurationW
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
@@ -17,7 +16,6 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 /**
  * Listens for ServletRequestHandledEvents to check if the configurations need to be updated.
  */
-@Component
 public final class AppConfigurationEventListener implements ApplicationListener<ServletRequestHandledEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationEventListener.class);
