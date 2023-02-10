@@ -74,6 +74,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
@@ -1856,9 +1857,26 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withUpgradeMode(UpgradeMode.AUTOMATIC)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
-            .withCapacity(2)
+            .withCapacity(1)
             .create();
         Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
+
+        // update VMs to latest model
+        // sometimes when VMSS is created, VMs' `isLatestScaleSetUpdateApplied` is false
+        uniformVMSS.virtualMachines().updateInstances(
+            uniformVMSS.virtualMachines()
+                .list()
+                .stream()
+                .map(VirtualMachineScaleSetVM::instanceId)
+                .toArray(String[]::new));
+
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+
+        uniformVMSS.update()
+            .withCapacity(2)
+            .apply();
+
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // flex vmss with ephemeral os disk
         Network network2 =
