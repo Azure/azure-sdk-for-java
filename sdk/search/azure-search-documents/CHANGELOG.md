@@ -1,15 +1,15 @@
 # Release History
 
-## 11.6.0-beta.5 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 11.6.0-beta.5 (2023-02-10)
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.24` to version `1.2.25`.
+- 
 ## 11.6.0-beta.4 (2023-01-13)
 
 ### Other Changes
@@ -20,6 +20,16 @@
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
 
+## 11.5.3 (2023-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
+- 
 ## 11.6.0-beta.3 (2022-11-11)
 
 ### Other Changes
