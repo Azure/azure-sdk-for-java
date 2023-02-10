@@ -27,17 +27,6 @@ public final class IntegrationRuntimeNodeIpAddressOperationsImpl implements Inte
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeNodeIpAddress get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
-        IntegrationRuntimeNodeIpAddressInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
-        if (inner != null) {
-            return new IntegrationRuntimeNodeIpAddressImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeNodeIpAddress> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -54,6 +43,17 @@ public final class IntegrationRuntimeNodeIpAddressOperationsImpl implements Inte
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeNodeIpAddressImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeNodeIpAddress get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
+        IntegrationRuntimeNodeIpAddressInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
+        if (inner != null) {
+            return new IntegrationRuntimeNodeIpAddressImpl(inner, this.manager());
         } else {
             return null;
         }

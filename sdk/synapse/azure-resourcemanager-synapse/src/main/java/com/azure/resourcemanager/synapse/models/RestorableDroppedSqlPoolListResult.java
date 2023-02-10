@@ -19,6 +19,10 @@ public final class RestorableDroppedSqlPoolListResult {
     @JsonProperty(value = "value", required = true)
     private List<RestorableDroppedSqlPoolInner> value;
 
+    /** Creates an instance of RestorableDroppedSqlPoolListResult class. */
+    public RestorableDroppedSqlPoolListResult() {
+    }
+
     /**
      * Get the value property: A list of restorable dropped Sql pools.
      *

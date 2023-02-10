@@ -96,6 +96,10 @@ public final class SqlPoolOperationProperties {
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
+    /** Creates an instance of SqlPoolOperationProperties class. */
+    public SqlPoolOperationProperties() {
+    }
+
     /**
      * Get the databaseName property: The name of the Sql pool the operation is being performed on.
      *
