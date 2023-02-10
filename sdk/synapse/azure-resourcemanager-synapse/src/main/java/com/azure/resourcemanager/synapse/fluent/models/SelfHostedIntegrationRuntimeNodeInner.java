@@ -63,15 +63,13 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
     private String version;
 
     /*
-     * The time at which the integration runtime node was registered in ISO8601
-     * format.
+     * The time at which the integration runtime node was registered in ISO8601 format.
      */
     @JsonProperty(value = "registerTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime registerTime;
 
     /*
-     * The most recent time at which the integration runtime was connected in
-     * ISO8601 format.
+     * The most recent time at which the integration runtime was connected in ISO8601 format.
      */
     @JsonProperty(value = "lastConnectTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastConnectTime;
@@ -113,8 +111,7 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
     private OffsetDateTime lastEndUpdateTime;
 
     /*
-     * Indicates whether this node is the active dispatcher for integration
-     * runtime requests.
+     * Indicates whether this node is the active dispatcher for integration runtime requests.
      */
     @JsonProperty(value = "isActiveDispatcher", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isActiveDispatcher;
@@ -135,6 +132,10 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
      * Properties of Self-hosted integration runtime node.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SelfHostedIntegrationRuntimeNodeInner class. */
+    public SelfHostedIntegrationRuntimeNodeInner() {
+    }
 
     /**
      * Get the nodeName property: Name of the integration runtime node.

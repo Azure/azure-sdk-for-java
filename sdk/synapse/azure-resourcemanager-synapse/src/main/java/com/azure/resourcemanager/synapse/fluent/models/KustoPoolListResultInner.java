@@ -17,6 +17,10 @@ public final class KustoPoolListResultInner {
     @JsonProperty(value = "value")
     private List<KustoPoolInner> value;
 
+    /** Creates an instance of KustoPoolListResultInner class. */
+    public KustoPoolListResultInner() {
+    }
+
     /**
      * Get the value property: The list of Kusto pools.
      *

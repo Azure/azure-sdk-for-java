@@ -71,7 +71,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface KustoPoolAttachedDatabaseConfigurationsService {
+    public interface KustoPoolAttachedDatabaseConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -485,35 +485,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String attachedDatabaseConfigurationName,
         String resourceGroupName) {
         return getWithResponseAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
-            .flatMap(
-                (Response<AttachedDatabaseConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns an attached database configuration.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String workspaceName,
-        String kustoPoolName,
-        String attachedDatabaseConfigurationName,
-        String resourceGroupName) {
-        return getAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -539,6 +511,29 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         return getWithResponseAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, context)
             .block();
+    }
+
+    /**
+     * Returns an attached database configuration.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an attached database configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedDatabaseConfigurationInner get(
+        String workspaceName,
+        String kustoPoolName,
+        String attachedDatabaseConfigurationName,
+        String resourceGroupName) {
+        return getWithResponse(
+                workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -785,7 +780,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             String attachedDatabaseConfigurationName,
             String resourceGroupName,
             AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters)
             .getSyncPoller();
     }
@@ -813,7 +809,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             String resourceGroupName,
             AttachedDatabaseConfigurationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -1126,7 +1123,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String kustoPoolName,
         String attachedDatabaseConfigurationName,
         String resourceGroupName) {
-        return beginDeleteAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
+        return this
+            .beginDeleteAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
             .getSyncPoller();
     }
 
@@ -1150,7 +1148,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String attachedDatabaseConfigurationName,
         String resourceGroupName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, context)
             .getSyncPoller();
     }

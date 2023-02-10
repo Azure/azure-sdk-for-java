@@ -33,24 +33,6 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -69,6 +51,24 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(
+                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -124,21 +124,6 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
-    public DataConnection get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName) {
-        DataConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
-        if (inner != null) {
-            return new DataConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataConnection> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -157,6 +142,21 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataConnection get(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        String dataConnectionName) {
+        DataConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+        if (inner != null) {
+            return new DataConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

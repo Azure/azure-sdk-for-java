@@ -28,22 +28,6 @@ public final class IntegrationRuntimeAuthKeysOperationsImpl implements Integrati
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeAuthKeys regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        IntegrationRuntimeAuthKeysInner inner =
-            this
-                .serviceClient()
-                .regenerate(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters);
-        if (inner != null) {
-            return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeAuthKeys> regenerateWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -66,10 +50,15 @@ public final class IntegrationRuntimeAuthKeysOperationsImpl implements Integrati
         }
     }
 
-    public IntegrationRuntimeAuthKeys list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public IntegrationRuntimeAuthKeys regenerate(
+        String resourceGroupName,
+        String workspaceName,
+        String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         IntegrationRuntimeAuthKeysInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+            this
+                .serviceClient()
+                .regenerate(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters);
         if (inner != null) {
             return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {
@@ -87,6 +76,17 @@ public final class IntegrationRuntimeAuthKeysOperationsImpl implements Integrati
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeAuthKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeAuthKeys list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeAuthKeysInner inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {
             return null;
         }
