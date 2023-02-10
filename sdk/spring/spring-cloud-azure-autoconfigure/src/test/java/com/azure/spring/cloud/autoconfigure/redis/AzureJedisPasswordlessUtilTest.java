@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.passwordless;
+package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class PasswordlessUtilTest {
+class AzureJedisPasswordlessUtilTest {
 
     @Test
     void testGetPropertiesFromGlobalProperties() {
@@ -31,12 +32,11 @@ class PasswordlessUtilTest {
         globalProperties.getProxy().setHostname("global-proxy-hostname");
         globalProperties.getProxy().setPort(1111);
 
-        AzurePasswordlessProperties passwordlessProperties = new AzurePasswordlessProperties();
+        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
 
+        AzurePasswordlessProperties result = AzureJedisPasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
 
-        AzurePasswordlessProperties result = PasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
-
-        assertEquals(null, result.getScopes());
+        assertEquals("https://*.cacheinfra.windows.net:10225/appid/.default", result.getScopes());
         assertEquals("global-client-id", result.getCredential().getClientId());
         assertEquals("global-client-secret", result.getCredential().getClientSecret());
         assertEquals("global-password", result.getCredential().getPassword());
@@ -56,7 +56,7 @@ class PasswordlessUtilTest {
     void testGetPropertiesFromAzurePasswordlessProperties() {
         AzureGlobalProperties globalProperties = new AzureGlobalProperties();
 
-        AzurePasswordlessProperties passwordlessProperties = new AzurePasswordlessProperties();
+        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
         passwordlessProperties.setScopes("scopes-us-gov");
         passwordlessProperties.getCredential().setClientId("client-id");
         passwordlessProperties.getCredential().setClientSecret("client-secret");
@@ -72,7 +72,7 @@ class PasswordlessUtilTest {
         ((ProxyProperties) passwordlessProperties.getProxy()).setHostname("proxy-hostname");
         ((ProxyProperties) passwordlessProperties.getProxy()).setPort(2222);
 
-        AzurePasswordlessProperties result = PasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
+        AzurePasswordlessProperties result = AzureJedisPasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
 
         assertEquals("scopes-us-gov", result.getScopes());
         assertEquals("client-id", result.getCredential().getClientId());
@@ -109,7 +109,7 @@ class PasswordlessUtilTest {
         globalProperties.getProxy().setHostname("global-proxy-hostname");
         globalProperties.getProxy().setPort(1111);
 
-        AzurePasswordlessProperties passwordlessProperties = new AzurePasswordlessProperties();
+        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
         passwordlessProperties.setScopes("scope");
         passwordlessProperties.getCredential().setClientSecret("client-secret");
         passwordlessProperties.getCredential().setPassword("password");
@@ -121,7 +121,7 @@ class PasswordlessUtilTest {
         ((ProxyProperties) passwordlessProperties.getProxy()).setHostname("proxy-hostname");
         ((ProxyProperties) passwordlessProperties.getProxy()).setPort(2222);
 
-        AzurePasswordlessProperties result = PasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
+        AzurePasswordlessProperties result = AzureJedisPasswordlessUtil.mergeAzureProperties(globalProperties, passwordlessProperties);
 
         assertEquals("scope", result.getScopes());
         assertEquals("global-client-id", result.getCredential().getClientId());
