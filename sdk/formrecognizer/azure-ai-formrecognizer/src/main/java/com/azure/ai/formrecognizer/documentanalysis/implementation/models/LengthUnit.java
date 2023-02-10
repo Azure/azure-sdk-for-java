@@ -20,6 +20,14 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     public static final LengthUnit INCH = fromString("inch");
 
     /**
+     * Creates a new instance of LengthUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LengthUnit() {}
+
+    /**
      * Creates or finds a LengthUnit from its string representation.
      *
      * @param name a name to look for.

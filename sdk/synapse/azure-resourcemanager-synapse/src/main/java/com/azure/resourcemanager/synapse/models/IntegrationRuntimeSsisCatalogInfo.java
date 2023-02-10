@@ -34,8 +34,8 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     private SecureString catalogAdminPassword;
 
     /*
-     * The pricing tier for the catalog database. The valid values could be
-     * found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+     * The pricing tier for the catalog database. The valid values could be found in
+     * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
     @JsonProperty(value = "catalogPricingTier")
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
@@ -44,6 +44,10 @@ public final class IntegrationRuntimeSsisCatalogInfo {
      * Catalog information for managed dedicated integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
+    public IntegrationRuntimeSsisCatalogInfo() {
+    }
 
     /**
      * Get the catalogServerEndpoint property: The catalog database server URL.

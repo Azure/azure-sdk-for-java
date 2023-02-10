@@ -37,34 +37,6 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
     private ChoiceResult choiceResult;
 
     /**
-     * Get the recognitionType property: Determines the sub-type of the recognize operation. In case of cancel operation
-     * the this field is not set and is returned empty.
-     *
-     * @return the recognitionType value.
-     */
-    public CallMediaRecognitionType getRecognitionType() {
-        return this.recognitionType;
-    }
-
-    /**
-     * Get the collectTonesResult property: Defines the result for CallMediaRecognitionType = Dtmf.
-     *
-     * @return the collectTonesResult value.
-     */
-    public CollectTonesResult getCollectTonesResult() {
-        return this.collectTonesResult;
-    }
-
-    /**
-     * Get the choiceResult property: Defines the result for Recognize Choice.
-     *
-     * @return the choiceResult value.
-     */
-    public ChoiceResult getChoiceResult() {
-        return this.choiceResult;
-    }
-
-    /**
      * Get the collectToneResult or choiceResult property.
      *
      * @return the recognizeResult value.
