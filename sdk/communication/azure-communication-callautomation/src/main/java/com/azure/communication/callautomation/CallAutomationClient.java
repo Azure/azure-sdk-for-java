@@ -6,9 +6,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
@@ -40,7 +42,7 @@ public final class CallAutomationClient {
 
     //region Pre-call Actions
     /**
-     * Create a call connection request from a source identity to a target identity.
+     * Create a call connection request from a source identity to a list of target identity.
      *
      * @param source The caller.
      * @param targets The list of targets.
@@ -55,7 +57,39 @@ public final class CallAutomationClient {
                                        String callbackUrl) {
         return callAutomationAsyncClient.createCall(source, targets, callbackUrl).block();
     }
+    
+  //region Pre-call Actions
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param source The caller.
+     * @param callInvite call invitee's information
+     * @param callbackUrl The call back url for receiving events.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A CallConnectionDelete object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateCallResult createCall(CallSource source,
+                                       CallInvite callInvite,
+                                       String callbackUrl) {
+        return callAutomationAsyncClient.createCall(source, callInvite, callbackUrl).block();
+    }
 
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param createGroupCallOptions Options bag for creating a new group call.
+     * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateCallResult> createCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
+        return callAutomationAsyncClient.createCallWithResponseInternal(createGroupCallOptions, context).block();
+    }
+    
     /**
      * Create a call connection request from a source identity to a target identity.
      *

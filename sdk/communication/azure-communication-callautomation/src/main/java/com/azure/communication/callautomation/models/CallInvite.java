@@ -41,10 +41,10 @@ public class CallInvite {
      * @param sipHeaders custom context for pstn
      */
     public CallInvite(PhoneNumberIdentifier targetPhoneNumberIdentity, PhoneNumberIdentifier callerIdNumber, Map<String, String> sipHeaders) {
-        target = targetPhoneNumberIdentity;
-        sourceCallIdNumber = callerIdNumber;
+        this.target = targetPhoneNumberIdentity;
+        this.sourceCallIdNumber = callerIdNumber;
         this.sipHeaders = sipHeaders;
-        voipHeaders = null;
+        this.voipHeaders = null;
     }
     
     /**
@@ -52,10 +52,10 @@ public class CallInvite {
      * @param targetIdentity Target's CommunicationUserIdentifier
      */
     public CallInvite(CommunicationUserIdentifier targetIdentity) {
-        target = targetIdentity;
-        sourceCallIdNumber = null;
-        sipHeaders = null;
-        voipHeaders = null;
+        this.target = targetIdentity;
+        this.sourceCallIdNumber = null;
+        this.sipHeaders = null;
+        this.voipHeaders = null;
     }
     
     /**
@@ -64,9 +64,9 @@ public class CallInvite {
      * @param voipHeaders custom context for voip 
      */
     public CallInvite(CommunicationUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
-        target = targetIdentity;
-        sourceCallIdNumber = null;
-        sipHeaders = null;
+        this.target = targetIdentity;
+        this.sourceCallIdNumber = null;
+        this.sipHeaders = null;
         this.voipHeaders = voipHeaders;
     }
     
@@ -75,10 +75,10 @@ public class CallInvite {
      * @param targetIdentity Target's MicrosoftTeamsUserIdentifier
      */
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
-        target = targetIdentity;
-        sourceCallIdNumber = null;
-        sipHeaders = null;
-        voipHeaders = null;
+        this.target = targetIdentity;
+        this.sourceCallIdNumber = null;
+        this.sipHeaders = null;
+        this.voipHeaders = null;
     }
     
     /**
@@ -87,9 +87,9 @@ public class CallInvite {
      * @param voipHeaders custom context for voip 
      */
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
-        target = targetIdentity;
-        sourceCallIdNumber = null;
-        sipHeaders = null;
+        this.target = targetIdentity;
+        this.sourceCallIdNumber = null;
+        this.sipHeaders = null;
         this.voipHeaders = voipHeaders;
     }
 

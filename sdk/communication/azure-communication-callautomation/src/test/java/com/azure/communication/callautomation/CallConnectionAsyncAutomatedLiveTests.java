@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallSource;
-import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
@@ -70,7 +70,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
-            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);

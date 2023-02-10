@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -234,7 +235,9 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         Response<AddParticipantsResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
             new AddParticipantsOptions(new ArrayList<>(Collections.singletonList(
                 new CommunicationUserIdentifier(CALL_TARGET_ID))))
-                .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
+                .setOperationContext(CALL_OPERATION_CONTEXT)
+                .setSipHeaders(new HashMap<String, String>())
+                .setVoipHeaders(null), Context.NONE);
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
