@@ -50,16 +50,10 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def credentialPolicySupplier = new Supplier<HttpPipelinePolicy>() {
-            @Override
-            HttpPipelinePolicy get() {
-                return new StorageSharedKeyCredentialPolicy(credentials)
-            }
-        }
-
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, null,
-            BuilderHelper.defaultHttpLogOptions,
-            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null,
+            null, null, requestRetryOptions, null,
+            BuilderHelper.defaultHttpLogOptions, new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(),
+            new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -140,15 +134,11 @@ class BuilderHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def credentialPolicySupplier = new Supplier<HttpPipelinePolicy>() {
-            @Override
-            HttpPipelinePolicy get() {
-                return new StorageSharedKeyCredentialPolicy(credentials)
-            }
-        }
-
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
-            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null,
+            null, null, new RequestRetryOptions(), null,
+            new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE,
+            new ClientLogger("foo"))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -257,7 +247,7 @@ class BuilderHelperTest extends Specification {
      * Tests that a custom headers will be honored when using the default pipeline builder.
      */
     def "Custom headers client options"() {
-        setup:
+        when:
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"))
         headers.add(new Header("Authorization", "notthis"))
