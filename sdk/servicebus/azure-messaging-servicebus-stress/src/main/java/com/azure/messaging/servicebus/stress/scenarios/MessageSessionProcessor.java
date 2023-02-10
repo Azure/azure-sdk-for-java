@@ -11,6 +11,8 @@ import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * Test ServiceBusSessionProcessorClient
  */
@@ -29,6 +31,8 @@ public class MessageSessionProcessor extends ServiceBusScenario {
 
     @Override
     public void run() {
+        final CountDownLatch latch = new CountDownLatch(1);
+
         final String connectionString = options.getServicebusConnectionString();
         final EntityType entityType = options.getServicebusEntityType();
         String queueName = null;
@@ -67,5 +71,17 @@ public class MessageSessionProcessor extends ServiceBusScenario {
                 .buildProcessorClient();
 
         client.start();
+
+        // When the connection is recovering, there is a gap between the creation of new reactor-executor thread and
+        // the disposal of old reactor-executor thread. Since only the daemon threads are running, the program ends.
+        // Here we add a 'CountDownLatch' to block main thread and keep the processor running forever.
+        // In the future, we can add wait time as test parameter so that we can control the testing time.
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // We won't hit here unless we add a wait time for the 'CountDownLatch'.
+        client.close();
     }
 }
