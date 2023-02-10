@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Patch for a Big Data pool Properties patch for a Big Data pool. */
+/**
+ * Patch for a Big Data pool
+ *
+ * <p>Properties patch for a Big Data pool.
+ */
 @Fluent
 public final class BigDataPoolPatchInfo {
     /*
@@ -18,6 +22,10 @@ public final class BigDataPoolPatchInfo {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of BigDataPoolPatchInfo class. */
+    public BigDataPoolPatchInfo() {
+    }
 
     /**
      * Get the tags property: Updated tags for the Big Data pool.
