@@ -49,7 +49,7 @@ public class CallMediaAsyncUnitTests {
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");
-        playTextSource.setVoiceGender(GenderType.M);
+        playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
 

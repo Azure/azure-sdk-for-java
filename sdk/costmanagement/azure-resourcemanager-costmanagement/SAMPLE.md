@@ -8,6 +8,17 @@
 - [List](#alerts_list)
 - [ListExternal](#alerts_listexternal)
 
+## BenefitRecommendations
+
+- [List](#benefitrecommendations_list)
+
+## BenefitUtilizationSummaries
+
+- [ListByBillingAccountId](#benefitutilizationsummaries_listbybillingaccountid)
+- [ListByBillingProfileId](#benefitutilizationsummaries_listbybillingprofileid)
+- [ListBySavingsPlanId](#benefitutilizationsummaries_listbysavingsplanid)
+- [ListBySavingsPlanOrder](#benefitutilizationsummaries_listbysavingsplanorder)
+
 ## Dimensions
 
 - [ByExternalCloudProviderType](#dimensions_byexternalcloudprovidertype)
@@ -27,10 +38,56 @@
 - [ExternalCloudProviderUsage](#forecast_externalcloudproviderusage)
 - [Usage](#forecast_usage)
 
+## GenerateCostDetailsReport
+
+- [CreateOperation](#generatecostdetailsreport_createoperation)
+- [GetOperationResults](#generatecostdetailsreport_getoperationresults)
+
+## GenerateDetailedCostReport
+
+- [CreateOperation](#generatedetailedcostreport_createoperation)
+
+## GenerateDetailedCostReportOperationResults
+
+- [Get](#generatedetailedcostreportoperationresults_get)
+
+## GenerateDetailedCostReportOperationStatus
+
+- [Get](#generatedetailedcostreportoperationstatus_get)
+
+## GenerateReservationDetailsReport
+
+- [ByBillingAccountId](#generatereservationdetailsreport_bybillingaccountid)
+- [ByBillingProfileId](#generatereservationdetailsreport_bybillingprofileid)
+
+## Operations
+
+- [List](#operations_list)
+
+## PriceSheet
+
+- [Download](#pricesheet_download)
+- [DownloadByBillingProfile](#pricesheet_downloadbybillingprofile)
+
 ## Query
 
 - [Usage](#query_usage)
 - [UsageByExternalCloudProviderType](#query_usagebyexternalcloudprovidertype)
+
+## ScheduledActions
+
+- [CheckNameAvailability](#scheduledactions_checknameavailability)
+- [CheckNameAvailabilityByScope](#scheduledactions_checknameavailabilitybyscope)
+- [CreateOrUpdate](#scheduledactions_createorupdate)
+- [CreateOrUpdateByScope](#scheduledactions_createorupdatebyscope)
+- [Delete](#scheduledactions_delete)
+- [DeleteByScope](#scheduledactions_deletebyscope)
+- [Get](#scheduledactions_get)
+- [GetByScope](#scheduledactions_getbyscope)
+- [List](#scheduledactions_list)
+- [ListByScope](#scheduledactions_listbyscope)
+- [Run](#scheduledactions_run)
+- [RunByScope](#scheduledactions_runbyscope)
 
 ## Views
 
@@ -51,36 +108,37 @@ import com.azure.resourcemanager.costmanagement.models.DismissAlertPayload;
 /** Samples for Alerts Dismiss. */
 public final class AlertsDismissSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DismissSubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DismissResourceGroupAlerts.json
      */
     /**
-     * Sample code: SubscriptionAlerts.
+     * Sample code: PatchResourceGroupAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void subscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void patchResourceGroupAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .dismissWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
                 "22222222-2222-2222-2222-222222222222",
                 new DismissAlertPayload().withStatus(AlertStatus.DISMISSED),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DismissResourceGroupAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DismissSubscriptionAlerts.json
      */
     /**
-     * Sample code: ResourceGroupAlerts.
+     * Sample code: PatchSubscriptionAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void patchSubscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .dismissWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+                "subscriptions/00000000-0000-0000-0000-000000000000",
                 "22222222-2222-2222-2222-222222222222",
                 new DismissAlertPayload().withStatus(AlertStatus.DISMISSED),
                 com.azure.core.util.Context.NONE);
@@ -94,14 +152,15 @@ public final class AlertsDismissSamples {
 /** Samples for Alerts Get. */
 public final class AlertsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SingleSubscriptionAlert.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SingleSubscriptionAlert.json
      */
     /**
-     * Sample code: SubscriptionAlerts.
+     * Sample code: SingleSubscriptionAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void subscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void singleSubscriptionAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .getWithResponse(
@@ -111,14 +170,15 @@ public final class AlertsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SingleResourceGroupAlert.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SingleResourceGroupAlert.json
      */
     /**
-     * Sample code: ResourceGroupAlerts.
+     * Sample code: SingleResourceGroupAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void singleResourceGroupAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .getWithResponse(
@@ -135,7 +195,7 @@ public final class AlertsGetSamples {
 /** Samples for Alerts List. */
 public final class AlertsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionAlerts.json
      */
     /**
      * Sample code: SubscriptionAlerts.
@@ -149,7 +209,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingProfileAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingProfileAlerts.json
      */
     /**
      * Sample code: BillingProfileAlerts.
@@ -165,7 +225,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupAlerts.json
      */
     /**
      * Sample code: ResourceGroupAlerts.
@@ -181,7 +241,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentAlerts.json
      */
     /**
      * Sample code: DepartmentAlerts.
@@ -197,7 +257,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/InvoiceSectionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/InvoiceSectionAlerts.json
      */
     /**
      * Sample code: InvoiceSectionAlerts.
@@ -213,7 +273,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountAlerts.json
      */
     /**
      * Sample code: BillingAccountAlerts.
@@ -228,7 +288,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountAlerts.json
      */
     /**
      * Sample code: EnrollmentAccountAlerts.
@@ -253,7 +313,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 /** Samples for Alerts ListExternal. */
 public final class AlertsListExternalSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountAlerts.json
      */
     /**
      * Sample code: ExternalBillingAccountAlerts.
@@ -269,7 +329,7 @@ public final class AlertsListExternalSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionAlerts.json
      */
     /**
      * Sample code: ExternalSubscriptionAlerts.
@@ -286,6 +346,136 @@ public final class AlertsListExternalSamples {
 }
 ```
 
+### BenefitRecommendations_List
+
+```java
+/** Samples for BenefitRecommendations List. */
+public final class BenefitRecommendationsListSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitRecommendationsByBillingAccount.json
+     */
+    /**
+     * Sample code: BenefitRecommendationsBillingAccountList.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void benefitRecommendationsBillingAccountList(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .benefitRecommendations()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/123456",
+                "properties/lookBackPeriod eq 'Last7Days' AND properties/term eq 'P1Y'",
+                null,
+                "properties/usage,properties/allRecommendationDetails",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BenefitUtilizationSummaries_ListByBillingAccountId
+
+```java
+/** Samples for BenefitUtilizationSummaries ListByBillingAccountId. */
+public final class BenefitUtilizationSummariesListByBillingAccountIdSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
+     */
+    /**
+     * Sample code: SavingsPlanUtilizationSummaries-BillingAccount.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void savingsPlanUtilizationSummariesBillingAccount(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .benefitUtilizationSummaries()
+            .listByBillingAccountId(
+                "12345",
+                null,
+                "properties/usageDate ge 2022-10-15 and properties/usageDate le 2022-10-18",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BenefitUtilizationSummaries_ListByBillingProfileId
+
+```java
+/** Samples for BenefitUtilizationSummaries ListByBillingProfileId. */
+public final class BenefitUtilizationSummariesListByBillingProfileIdSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitUtilizationSummaries/SavingsPlan-BillingProfile.json
+     */
+    /**
+     * Sample code: SavingsPlanUtilizationSummaries-BillingProfile.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void savingsPlanUtilizationSummariesBillingProfile(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .benefitUtilizationSummaries()
+            .listByBillingProfileId(
+                "c0a00000-0e04-5ee3-000e-f0c6e00000ec:c0a00000-0e04-5ee3-000e-f0c6e00000ec",
+                "200e5e90-000e-4960-8dcd-8d00a02db000",
+                null,
+                "properties/usageDate ge 2022-10-15 and properties/usageDate le 2022-10-18",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BenefitUtilizationSummaries_ListBySavingsPlanId
+
+```java
+/** Samples for BenefitUtilizationSummaries ListBySavingsPlanId. */
+public final class BenefitUtilizationSummariesListBySavingsPlanIdSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanId-Monthly.json
+     */
+    /**
+     * Sample code: SavingsPlanUtilizationSummariesMonthlyWithSavingsPlanId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void savingsPlanUtilizationSummariesMonthlyWithSavingsPlanId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .benefitUtilizationSummaries()
+            .listBySavingsPlanId(
+                "66cccc66-6ccc-6c66-666c-66cc6c6c66c6",
+                "222d22dd-d2d2-2dd2-222d-2dd2222ddddd",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BenefitUtilizationSummaries_ListBySavingsPlanOrder
+
+```java
+/** Samples for BenefitUtilizationSummaries ListBySavingsPlanOrder. */
+public final class BenefitUtilizationSummariesListBySavingsPlanOrderSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanOrderId-Daily.json
+     */
+    /**
+     * Sample code: SavingsPlanUtilizationSummariesDaily.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void savingsPlanUtilizationSummariesDaily(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .benefitUtilizationSummaries()
+            .listBySavingsPlanOrder(
+                "66cccc66-6ccc-6c66-666c-66cc6c6c66c6", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Dimensions_ByExternalCloudProviderType
 
 ```java
@@ -294,7 +484,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 /** Samples for Dimensions ByExternalCloudProviderType. */
 public final class DimensionsByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionsDimensions.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionsDimensions.json
      */
     /**
      * Sample code: ExternalSubscriptionDimensionList.
@@ -316,7 +506,7 @@ public final class DimensionsByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountsDimensions.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountsDimensions.json
      */
     /**
      * Sample code: ExternalBillingAccountDimensionList.
@@ -345,7 +535,28 @@ public final class DimensionsByExternalCloudProviderTypeSamples {
 /** Samples for Dimensions List. */
 public final class DimensionsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsList.json
+     */
+    /**
+     * Sample code: CustomerDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsList.json
      */
     /**
      * Sample code: DepartmentDimensionsList-Legacy.
@@ -366,28 +577,49 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
      */
     /**
-     * Sample code: CustomerDimensionsList-Modern.
+     * Sample code: InvoiceSectionDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void customerDimensionsListModern(
+    public static void invoiceSectionDimensionsListWithFilterMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                "properties/category eq 'resourceId'",
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListWithFilter.json
+     */
+    /**
+     * Sample code: CustomerDimensionsListWithFilter-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                "properties/category eq 'resourceId'",
+                "properties/data",
                 null,
-                null,
-                null,
-                null,
+                5,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListWithFilter.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListWithFilter-Legacy.
@@ -408,7 +640,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsList.json
      */
     /**
      * Sample code: BillingAccountDimensionsList-Legacy.
@@ -429,7 +661,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListExpandAndTop-Legacy.
@@ -450,7 +682,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsList.json
+     */
+    /**
+     * Sample code: BillingProfileDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingProfileDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: DepartmentDimensionsListExpandAndTop-Legacy.
@@ -471,7 +724,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsList.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsList-Legacy.
@@ -492,7 +745,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: BillingAccountDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: BillingAccountDimensionsListWithFilter-Legacy.
@@ -513,28 +787,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: CustomerDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupDimensionsList.json
      */
     /**
      * Sample code: ResourceGroupDimensionsList-Legacy.
@@ -555,49 +808,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: InvoiceSectionDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void invoiceSectionDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsListWithFilter.json
-     */
-    /**
-     * Sample code: CustomerDimensionsListWithFilter-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerDimensionsListWithFilterModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                "properties/category eq 'resourceId'",
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionDimensionsList.json
      */
     /**
      * Sample code: SubscriptionDimensionsList-Legacy.
@@ -618,7 +829,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: BillingAccountDimensionsListExpandAndTop-Legacy.
@@ -639,7 +850,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsList.json
+     */
+    /**
+     * Sample code: BillingAccountDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListExpandAndTop-Legacy.
@@ -660,7 +892,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: CustomerDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListWithFilter.json
      */
     /**
      * Sample code: DepartmentDimensionsListWithFilter-Legacy.
@@ -681,19 +934,40 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsList.json
      */
     /**
-     * Sample code: BillingAccountDimensionsListExpandAndTop-Modern.
+     * Sample code: InvoiceSectionDimensionsList-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountDimensionsListExpandAndTopModern(
+    public static void invoiceSectionDimensionsListMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: InvoiceSectionDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void invoiceSectionDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
                 null,
                 "properties/data",
                 null,
@@ -702,49 +976,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: BillingProfileDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsList.json
-     */
-    /**
-     * Sample code: BillingProfileDimensionsList-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileDimensionsListModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                null,
-                null,
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsList.json
      */
     /**
      * Sample code: ManagementGroupDimensionsList-Legacy.
@@ -765,20 +997,20 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
      */
     /**
-     * Sample code: BillingAccountDimensionsListWithFilter-Modern.
+     * Sample code: BillingProfileDimensionsListExpandAndTop-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountDimensionsListWithFilterModern(
+    public static void billingProfileDimensionsListExpandAndTopMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                "properties/category eq 'resourceId'",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
                 "properties/data",
                 null,
                 5,
@@ -786,14 +1018,14 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListWithFilter.json
      */
     /**
-     * Sample code: BillingProfileDimensionsListWithFilter-Modern.
+     * Sample code: BillingProfileDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingProfileDimensionsListWithFilterModern(
+    public static void billingProfileDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
@@ -807,49 +1039,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsList.json
-     */
-    /**
-     * Sample code: BillingAccountDimensionsList-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingAccountDimensionsListModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                null,
-                null,
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
-     */
-    /**
-     * Sample code: InvoiceSectionDimensionsListWithFilter-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void invoiceSectionDimensionsListWithFilterModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                "properties/category eq 'resourceId'",
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListWithFilter-Legacy.
@@ -870,23 +1060,23 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListWithFilter.json
      */
     /**
-     * Sample code: InvoiceSectionDimensionsList-Modern.
+     * Sample code: BillingAccountDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void invoiceSectionDimensionsListModern(
+    public static void billingAccountDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                "properties/category eq 'resourceId'",
+                "properties/data",
                 null,
-                null,
-                null,
-                null,
+                5,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -914,7 +1104,7 @@ import java.util.Arrays;
 /** Samples for Exports CreateOrUpdate. */
 public final class ExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByManagementGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByManagementGroup.
@@ -960,7 +1150,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByBillingAccount.
@@ -1006,7 +1196,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByDepartment.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByDepartment.
@@ -1052,7 +1242,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByResourceGroup.
@@ -1098,7 +1288,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateBySubscription.json
      */
     /**
      * Sample code: ExportCreateOrUpdateBySubscription.
@@ -1144,7 +1334,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByEnrollmentAccount.
@@ -1197,7 +1387,7 @@ public final class ExportsCreateOrUpdateSamples {
 /** Samples for Exports Delete. */
 public final class ExportsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByBillingAccount.json
      */
     /**
      * Sample code: ExportDeleteByBillingAccount.
@@ -1213,7 +1403,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByManagementGroup.json
      */
     /**
      * Sample code: ExportDeleteByManagementGroup.
@@ -1231,7 +1421,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByResourceGroup.json
      */
     /**
      * Sample code: ExportDeleteByResourceGroup.
@@ -1249,7 +1439,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByDepartment.json
      */
     /**
      * Sample code: ExportDeleteByDepartment.
@@ -1267,7 +1457,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteBySubscription.json
      */
     /**
      * Sample code: ExportDeleteBySubscription.
@@ -1283,7 +1473,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportDeleteByEnrollmentAccount.
@@ -1308,7 +1498,7 @@ public final class ExportsDeleteSamples {
 /** Samples for Exports Execute. */
 public final class ExportsExecuteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByManagementGroup.json
      */
     /**
      * Sample code: ExportRunByManagementGroup.
@@ -1326,7 +1516,7 @@ public final class ExportsExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByBillingAccount.json
      */
     /**
      * Sample code: ExportRunByBillingAccount.
@@ -1342,7 +1532,7 @@ public final class ExportsExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunBySubscription.json
      */
     /**
      * Sample code: ExportRunBySubscription.
@@ -1357,7 +1547,7 @@ public final class ExportsExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByDepartment.json
      */
     /**
      * Sample code: ExportRunByDepartment.
@@ -1374,7 +1564,7 @@ public final class ExportsExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByResourceGroup.json
      */
     /**
      * Sample code: ExportRunByResourceGroup.
@@ -1392,7 +1582,7 @@ public final class ExportsExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunByEnrollmentAccount.
@@ -1417,7 +1607,7 @@ public final class ExportsExecuteSamples {
 /** Samples for Exports Get. */
 public final class ExportsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportGetByEnrollmentAccount.
@@ -1436,7 +1626,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByManagementGroup.json
      */
     /**
      * Sample code: ExportGetByManagementGroup.
@@ -1455,7 +1645,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByDepartment.json
      */
     /**
      * Sample code: ExportGetByDepartment.
@@ -1473,7 +1663,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetBySubscription.json
      */
     /**
      * Sample code: ExportGetBySubscription.
@@ -1491,7 +1681,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByBillingAccount.json
      */
     /**
      * Sample code: ExportGetByBillingAccount.
@@ -1510,7 +1700,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByResourceGroup.json
      */
     /**
      * Sample code: ExportGetByResourceGroup.
@@ -1536,7 +1726,7 @@ public final class ExportsGetSamples {
 /** Samples for Exports GetExecutionHistory. */
 public final class ExportsGetExecutionHistorySamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByManagementGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByManagementGroup.
@@ -1554,7 +1744,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetBySubscription.json
      */
     /**
      * Sample code: ExportRunHistoryGetBySubscription.
@@ -1570,7 +1760,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByResourceGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByResourceGroup.
@@ -1588,7 +1778,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByEnrollmentAccount.
@@ -1606,7 +1796,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByBillingAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByBillingAccount.
@@ -1622,7 +1812,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByDepartment.json
      */
     /**
      * Sample code: ExportRunHistoryGetByDepartment.
@@ -1647,7 +1837,7 @@ public final class ExportsGetExecutionHistorySamples {
 /** Samples for Exports List. */
 public final class ExportsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByResourceGroup.json
      */
     /**
      * Sample code: ExportsGetByResourceGroup.
@@ -1665,7 +1855,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByDepartment.json
      */
     /**
      * Sample code: ExportsGetByDepartment.
@@ -1682,7 +1872,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByBillingAccount.json
      */
     /**
      * Sample code: ExportsGetByBillingAccount.
@@ -1698,7 +1888,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportsGetByEnrollmentAccount.
@@ -1716,7 +1906,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetByManagementGroup.json
      */
     /**
      * Sample code: ExportsGetByManagementGroup.
@@ -1732,7 +1922,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportsGetBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportsGetBySubscription.json
      */
     /**
      * Sample code: ExportsGetBySubscription.
@@ -1753,20 +1943,27 @@ public final class ExportsListSamples {
 
 ```java
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
+import com.azure.resourcemanager.costmanagement.models.ForecastAggregation;
+import com.azure.resourcemanager.costmanagement.models.ForecastComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ForecastDataset;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
-import com.azure.resourcemanager.costmanagement.models.ForecastTimeframeType;
+import com.azure.resourcemanager.costmanagement.models.ForecastFilter;
+import com.azure.resourcemanager.costmanagement.models.ForecastOperatorType;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimeframe;
 import com.azure.resourcemanager.costmanagement.models.ForecastType;
+import com.azure.resourcemanager.costmanagement.models.FunctionName;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
-import com.azure.resourcemanager.costmanagement.models.QueryComparisonExpression;
-import com.azure.resourcemanager.costmanagement.models.QueryFilter;
-import com.azure.resourcemanager.costmanagement.models.QueryOperatorType;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for Forecast ExternalCloudProviderUsage. */
 public final class ForecastExternalCloudProviderUsageSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionForecast.json
      */
     /**
      * Sample code: ExternalSubscriptionForecast.
@@ -1782,46 +1979,56 @@ public final class ForecastExternalCloudProviderUsageSamples {
                 "100",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API"))))))),
                 null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountForecast.json
      */
     /**
      * Sample code: ExternalBillingAccountForecast.
@@ -1837,42 +2044,63 @@ public final class ForecastExternalCloudProviderUsageSamples {
                 "100",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API"))))))),
                 null,
                 com.azure.core.util.Context.NONE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1880,20 +2108,27 @@ public final class ForecastExternalCloudProviderUsageSamples {
 ### Forecast_Usage
 
 ```java
+import com.azure.resourcemanager.costmanagement.models.ForecastAggregation;
+import com.azure.resourcemanager.costmanagement.models.ForecastComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ForecastDataset;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
-import com.azure.resourcemanager.costmanagement.models.ForecastTimeframeType;
+import com.azure.resourcemanager.costmanagement.models.ForecastFilter;
+import com.azure.resourcemanager.costmanagement.models.ForecastOperatorType;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimeframe;
 import com.azure.resourcemanager.costmanagement.models.ForecastType;
+import com.azure.resourcemanager.costmanagement.models.FunctionName;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
-import com.azure.resourcemanager.costmanagement.models.QueryComparisonExpression;
-import com.azure.resourcemanager.costmanagement.models.QueryFilter;
-import com.azure.resourcemanager.costmanagement.models.QueryOperatorType;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for Forecast Usage. */
 public final class ForecastUsageSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupForecast.json
      */
     /**
      * Sample code: ResourceGroupForecast.
@@ -1907,39 +2142,49 @@ public final class ForecastUsageSamples {
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -1948,7 +2193,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountForecast.json
      */
     /**
      * Sample code: EnrollmentAccountForecast.
@@ -1963,39 +2208,49 @@ public final class ForecastUsageSamples {
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/enrollmentAccounts/456",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -2004,7 +2259,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionForecast.json
      */
     /**
      * Sample code: SubscriptionForecast.
@@ -2018,39 +2273,49 @@ public final class ForecastUsageSamples {
                 "subscriptions/00000000-0000-0000-0000-000000000000",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -2059,7 +2324,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingProfileForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingProfileForecast.json
      */
     /**
      * Sample code: BillingProfileForecast.
@@ -2073,39 +2338,49 @@ public final class ForecastUsageSamples {
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -2114,7 +2389,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentForecast.json
      */
     /**
      * Sample code: DepartmentForecast.
@@ -2128,39 +2403,49 @@ public final class ForecastUsageSamples {
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/departments/123",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -2169,7 +2454,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountForecast.json
      */
     /**
      * Sample code: BillingAccountForecast.
@@ -2183,39 +2468,49 @@ public final class ForecastUsageSamples {
                 "providers/Microsoft.Billing/billingAccounts/12345:6789",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
@@ -2224,7 +2519,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/InvoiceSectionForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/InvoiceSectionForecast.json
      */
     /**
      * Sample code: InvoiceSectionForecast.
@@ -2238,43 +2533,520 @@ public final class ForecastUsageSamples {
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API")))))))
                     .withIncludeActualCost(false)
                     .withIncludeFreshPartialCost(false),
                 null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### GenerateCostDetailsReport_CreateOperation
+
+```java
+import com.azure.resourcemanager.costmanagement.models.CostDetailsMetricType;
+import com.azure.resourcemanager.costmanagement.models.CostDetailsTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReportRequestDefinition;
+
+/** Samples for GenerateCostDetailsReport CreateOperation. */
+public final class GenerateCostDetailsReportCreateOperationSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportBySubscriptionAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportBySubscriptionAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportBySubscriptionAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByEnrollmentAccountsAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/enrollmentAccounts/1234",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByBillingProfileAndInvoiceId.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByBillingProfileAndInvoiceId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByBillingProfileAndInvoiceId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withInvoiceId("M1234567"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withBillingPeriod("202205"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withInvoiceId("M1234567"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByCustomerAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByCustomerAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByCustomerAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateCostDetailsReportByDepartmentsAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateCostDetailsReportByDepartmentsAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateCostDetailsReportByDepartmentsAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .createOperation(
+                "providers/Microsoft.Billing/departments/12345",
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateCostDetailsReport_GetOperationResults
+
+```java
+/** Samples for GenerateCostDetailsReport GetOperationResults. */
+public final class GenerateCostDetailsReportGetOperationResultsSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/CostDetailsOperationResultsBySubscriptionScope.json
+     */
+    /**
+     * Sample code: Get details of the operation result.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void getDetailsOfTheOperationResult(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateCostDetailsReports()
+            .getOperationResults(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateDetailedCostReport_CreateOperation
+
+```java
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportDefinition;
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportMetricType;
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportTimePeriod;
+
+/** Samples for GenerateDetailedCostReport CreateOperation. */
+public final class GenerateDetailedCostReportCreateOperationSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingProfileAndInvoiceId.json
+     */
+    /**
+     * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateDetailedCostReportByBillingProfileAndInvoiceId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new GenerateDetailedCostReportDefinition()
+                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withInvoiceId("M1234567"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
+     */
+    /**
+     * Sample code: GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateDetailedCostReportByBillingAccountLegacyAndBillingPeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345",
+                new GenerateDetailedCostReportDefinition()
+                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withBillingPeriod("202008"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.json
+     */
+    /**
+     * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new GenerateDetailedCostReportDefinition()
+                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withInvoiceId("M1234567")
+                    .withCustomerId("456789"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportBySubscriptionAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateDetailedCostReportBySubscriptionAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateDetailedCostReportBySubscriptionAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReports()
+            .createOperation(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                new GenerateDetailedCostReportDefinition()
+                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withTimePeriod(
+                        new GenerateDetailedCostReportTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByCustomerAndTimePeriod.json
+     */
+    /**
+     * Sample code: GenerateDetailedCostReportByCustomerAndTimePeriod.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateDetailedCostReportByCustomerAndTimePeriod(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReports()
+            .createOperation(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
+                new GenerateDetailedCostReportDefinition()
+                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+                    .withTimePeriod(
+                        new GenerateDetailedCostReportTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateDetailedCostReportOperationResults_Get
+
+```java
+/** Samples for GenerateDetailedCostReportOperationResults Get. */
+public final class GenerateDetailedCostReportOperationResultsGetSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportOperationResultsBySubscriptionScope.json
+     */
+    /**
+     * Sample code: Get details of the operation result.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void getDetailsOfTheOperationResult(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReportOperationResults()
+            .get(
+                "00000000-0000-0000-0000-000000000000",
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateDetailedCostReportOperationStatus_Get
+
+```java
+/** Samples for GenerateDetailedCostReportOperationStatus Get. */
+public final class GenerateDetailedCostReportOperationStatusGetSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportOperationStatusBySubscriptionScope.json
+     */
+    /**
+     * Sample code: Get details of the operation status.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void getDetailsOfTheOperationStatus(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateDetailedCostReportOperationStatus()
+            .getWithResponse(
+                "00000000-0000-0000-0000-000000000000",
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateReservationDetailsReport_ByBillingAccountId
+
+```java
+/** Samples for GenerateReservationDetailsReport ByBillingAccountId. */
+public final class GenerateReservationDetailsReportByBillingAccountIdSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateReservationDetailsReportByBillingAccount.json
+     */
+    /**
+     * Sample code: ReservationDetails.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void reservationDetails(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateReservationDetailsReports()
+            .byBillingAccountId("9845612", "2020-01-01", "2020-01-30", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateReservationDetailsReport_ByBillingProfileId
+
+```java
+/** Samples for GenerateReservationDetailsReport ByBillingProfileId. */
+public final class GenerateReservationDetailsReportByBillingProfileIdSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateReservationDetailsReportByBillingProfile.json
+     */
+    /**
+     * Sample code: ReservationDetails.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void reservationDetails(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .generateReservationDetailsReports()
+            .byBillingProfileId(
+                "00000000-0000-0000-0000-000000000000",
+                "CZSFR-SDFXC-DSDF",
+                "2020-01-01",
+                "2020-01-30",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/** Samples for Operations List. */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/OperationList.json
+     */
+    /**
+     * Sample code: OperationList.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void operationList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PriceSheet_Download
+
+```java
+/** Samples for PriceSheet Download. */
+public final class PriceSheetDownloadSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PricesheetDownload.json
+     */
+    /**
+     * Sample code: PricesheetDownload.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void pricesheetDownload(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .priceSheets()
+            .download(
+                "7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31",
+                "2USN-TPCD-BG7-TGB",
+                "T000940677",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PriceSheet_DownloadByBillingProfile
+
+```java
+/** Samples for PriceSheet DownloadByBillingProfile. */
+public final class PriceSheetDownloadByBillingProfileSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PricesheetDownloadByBillingProfile.json
+     */
+    /**
+     * Sample code: PricesheetDownloadByBillingProfile.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void pricesheetDownloadByBillingProfile(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .priceSheets()
+            .downloadByBillingProfile(
+                "7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31",
+                "2USN-TPCD-BG7-TGB",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2302,93 +3074,7 @@ import java.util.Map;
 /** Samples for Query Usage. */
 public final class QueryUsageSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerQueryGrouping.json
-     */
-    /**
-     * Sample code: CustomerQueryGrouping-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerQueryGroupingModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionQuery.json
-     */
-    /**
-     * Sample code: InvoiceSectionQuery-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void invoiceSectionQueryModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionQueryGrouping.json
      */
     /**
      * Sample code: SubscriptionQueryGrouping-Legacy.
@@ -2421,40 +3107,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountQueryGrouping.json
-     */
-    /**
-     * Sample code: BillingAccountQueryGrouping-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingAccountQueryGroupingModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountQueryGrouping.json
      */
     /**
      * Sample code: EnrollmentAccountQueryGrouping-Legacy.
@@ -2487,112 +3140,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerQuery.json
-     */
-    /**
-     * Sample code: CustomerQuery-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerQueryModern(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountQuery.json
-     */
-    /**
-     * Sample code: BillingAccountQuery-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingAccountQueryModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentQuery.json
      */
     /**
      * Sample code: DepartmentQuery-Legacy.
@@ -2620,7 +3168,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -2628,14 +3176,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -2644,7 +3192,59 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountQuery.json
+     */
+    /**
+     * Sample code: BillingAccountQuery-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.DAILY)
+                            .withFilter(
+                                new QueryFilter()
+                                    .withAnd(
+                                        Arrays
+                                            .asList(
+                                                new QueryFilter()
+                                                    .withOr(
+                                                        Arrays
+                                                            .asList(
+                                                                new QueryFilter()
+                                                                    .withDimensions(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("ResourceLocation")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays
+                                                                                    .asList("East US", "West Europe"))),
+                                                                new QueryFilter()
+                                                                    .withTags(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("Environment")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays.asList("UAT", "Prod"))))),
+                                                new QueryFilter()
+                                                    .withDimensions(
+                                                        new QueryComparisonExpression()
+                                                            .withName("ResourceGroup")
+                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withValues(Arrays.asList("API"))))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountQueryGrouping.json
      */
     /**
      * Sample code: BillingAccountQueryGrouping-Legacy.
@@ -2677,7 +3277,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionQuery.json
      */
     /**
      * Sample code: SubscriptionQuery-Legacy.
@@ -2705,7 +3305,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -2713,14 +3313,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -2729,7 +3329,73 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountQueryGrouping.json
+     */
+    /**
+     * Sample code: BillingAccountQueryGrouping-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountQueryGroupingMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.fromString("None"))
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                            .withGrouping(
+                                Arrays
+                                    .asList(
+                                        new QueryGrouping()
+                                            .withType(QueryColumnType.DIMENSION)
+                                            .withName("ResourceGroup")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionQueryGrouping.json
+     */
+    /**
+     * Sample code: InvoiceSectionQueryGrouping-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void invoiceSectionQueryGroupingMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.fromString("None"))
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                            .withGrouping(
+                                Arrays
+                                    .asList(
+                                        new QueryGrouping()
+                                            .withType(QueryColumnType.DIMENSION)
+                                            .withName("ResourceGroup")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountQuery.json
      */
     /**
      * Sample code: EnrollmentAccountQuery-Legacy.
@@ -2758,7 +3424,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -2766,14 +3432,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -2782,60 +3448,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileQuery.json
-     */
-    /**
-     * Sample code: BillingProfileQuery-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileQueryModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupQueryGrouping.json
      */
     /**
      * Sample code: ResourceGroupQueryGrouping-Legacy.
@@ -2868,7 +3481,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountQuery.json
      */
     /**
      * Sample code: BillingAccountQuery-Legacy.
@@ -2897,7 +3510,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -2905,14 +3518,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -2921,7 +3534,40 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileQueryGrouping.json
+     */
+    /**
+     * Sample code: BillingProfileQueryGrouping-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingProfileQueryGroupingMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.fromString("None"))
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                            .withGrouping(
+                                Arrays
+                                    .asList(
+                                        new QueryGrouping()
+                                            .withType(QueryColumnType.DIMENSION)
+                                            .withName("ResourceGroup")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupQuery.json
      */
     /**
      * Sample code: ResourceGroupQuery-Legacy.
@@ -2950,7 +3596,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -2958,14 +3604,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -2974,7 +3620,111 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionQuery.json
+     */
+    /**
+     * Sample code: InvoiceSectionQuery-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void invoiceSectionQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.DAILY)
+                            .withFilter(
+                                new QueryFilter()
+                                    .withAnd(
+                                        Arrays
+                                            .asList(
+                                                new QueryFilter()
+                                                    .withOr(
+                                                        Arrays
+                                                            .asList(
+                                                                new QueryFilter()
+                                                                    .withDimensions(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("ResourceLocation")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays
+                                                                                    .asList("East US", "West Europe"))),
+                                                                new QueryFilter()
+                                                                    .withTags(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("Environment")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays.asList("UAT", "Prod"))))),
+                                                new QueryFilter()
+                                                    .withDimensions(
+                                                        new QueryComparisonExpression()
+                                                            .withName("ResourceGroup")
+                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withValues(Arrays.asList("API"))))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerQuery.json
+     */
+    /**
+     * Sample code: CustomerQuery-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.DAILY)
+                            .withFilter(
+                                new QueryFilter()
+                                    .withAnd(
+                                        Arrays
+                                            .asList(
+                                                new QueryFilter()
+                                                    .withOr(
+                                                        Arrays
+                                                            .asList(
+                                                                new QueryFilter()
+                                                                    .withDimensions(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("ResourceLocation")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays
+                                                                                    .asList("East US", "West Europe"))),
+                                                                new QueryFilter()
+                                                                    .withTags(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("Environment")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays.asList("UAT", "Prod"))))),
+                                                new QueryFilter()
+                                                    .withDimensions(
+                                                        new QueryComparisonExpression()
+                                                            .withName("ResourceGroup")
+                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withValues(Arrays.asList("API"))))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupQuery.json
      */
     /**
      * Sample code: ManagementGroupQuery-Legacy.
@@ -3003,7 +3753,7 @@ public final class QueryUsageSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -3011,14 +3761,14 @@ public final class QueryUsageSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -3027,7 +3777,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentQueryGrouping.json
      */
     /**
      * Sample code: DepartmentQueryGrouping-Legacy.
@@ -3060,73 +3810,59 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileQuery.json
      */
     /**
-     * Sample code: InvoiceSectionQueryGrouping-Modern.
+     * Sample code: BillingProfileQuery-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void invoiceSectionQueryGroupingModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileQueryGrouping.json
-     */
-    /**
-     * Sample code: BillingProfileQueryGrouping-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileQueryGroupingModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void billingProfileQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
                     .withDataset(
                         new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                            .withGranularity(GranularityType.DAILY)
+                            .withFilter(
+                                new QueryFilter()
+                                    .withAnd(
+                                        Arrays
+                                            .asList(
+                                                new QueryFilter()
+                                                    .withOr(
+                                                        Arrays
+                                                            .asList(
+                                                                new QueryFilter()
+                                                                    .withDimensions(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("ResourceLocation")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays
+                                                                                    .asList("East US", "West Europe"))),
+                                                                new QueryFilter()
+                                                                    .withTags(
+                                                                        new QueryComparisonExpression()
+                                                                            .withName("Environment")
+                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withValues(
+                                                                                Arrays.asList("UAT", "Prod"))))),
+                                                new QueryFilter()
+                                                    .withDimensions(
+                                                        new QueryComparisonExpression()
+                                                            .withName("ResourceGroup")
+                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupQueryGrouping.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupQueryGrouping.json
      */
     /**
      * Sample code: ManagementGroupQueryGrouping-Legacy.
@@ -3139,6 +3875,39 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyMgId",
+                new QueryDefinition()
+                    .withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withDataset(
+                        new QueryDataset()
+                            .withGranularity(GranularityType.fromString("None"))
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                            .withGrouping(
+                                Arrays
+                                    .asList(
+                                        new QueryGrouping()
+                                            .withType(QueryColumnType.DIMENSION)
+                                            .withName("ResourceGroup")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerQueryGrouping.json
+     */
+    /**
+     * Sample code: CustomerQueryGrouping-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerQueryGroupingMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .queries()
+            .usageWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -3188,7 +3957,7 @@ import java.util.Arrays;
 /** Samples for Query UsageByExternalCloudProviderType. */
 public final class QueryUsageByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionsQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionsQuery.json
      */
     /**
      * Sample code: ExternalSubscriptionsQuery.
@@ -3218,7 +3987,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -3226,14 +3995,14 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -3242,7 +4011,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountsQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountsQuery.json
      */
     /**
      * Sample code: ExternalBillingAccountQueryList.
@@ -3272,7 +4041,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -3280,18 +4049,419 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
                                                             .withValues(Arrays.asList("API"))))))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_CheckNameAvailability
+
+```java
+import com.azure.resourcemanager.costmanagement.models.CheckNameAvailabilityRequest;
+
+/** Samples for ScheduledActions CheckNameAvailability. */
+public final class ScheduledActionsCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/checkNameAvailability-private-scheduledAction.json
+     */
+    /**
+     * Sample code: ScheduledActionCheckNameAvailability.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionCheckNameAvailability(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest()
+                    .withName("testName")
+                    .withType("Microsoft.CostManagement/ScheduledActions"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_CheckNameAvailabilityByScope
+
+```java
+import com.azure.resourcemanager.costmanagement.models.CheckNameAvailabilityRequest;
+
+/** Samples for ScheduledActions CheckNameAvailabilityByScope. */
+public final class ScheduledActionsCheckNameAvailabilityByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/checkNameAvailability-shared-scheduledAction.json
+     */
+    /**
+     * Sample code: ScheduledActionCheckNameAvailabilityByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionCheckNameAvailabilityByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .checkNameAvailabilityByScopeWithResponse(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                new CheckNameAvailabilityRequest()
+                    .withName("testName")
+                    .withType("Microsoft.CostManagement/ScheduledActions"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.costmanagement.fluent.models.ScheduledActionInner;
+import com.azure.resourcemanager.costmanagement.models.DaysOfWeek;
+import com.azure.resourcemanager.costmanagement.models.NotificationProperties;
+import com.azure.resourcemanager.costmanagement.models.ScheduleFrequency;
+import com.azure.resourcemanager.costmanagement.models.ScheduleProperties;
+import com.azure.resourcemanager.costmanagement.models.ScheduledActionKind;
+import com.azure.resourcemanager.costmanagement.models.ScheduledActionStatus;
+import com.azure.resourcemanager.costmanagement.models.WeeksOfMonth;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+/** Samples for ScheduledActions CreateOrUpdate. */
+public final class ScheduledActionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-createOrUpdate-private.json
+     */
+    /**
+     * Sample code: CreateOrUpdatePrivateScheduledAction.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdatePrivateScheduledAction(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .createOrUpdateWithResponse(
+                "monthlyCostByResource",
+                new ScheduledActionInner()
+                    .withKind(ScheduledActionKind.EMAIL)
+                    .withDisplayName("Monthly Cost By Resource")
+                    .withNotification(
+                        new NotificationProperties()
+                            .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                            .withSubject("Cost by resource this month"))
+                    .withSchedule(
+                        new ScheduleProperties()
+                            .withFrequency(ScheduleFrequency.MONTHLY)
+                            .withHourOfDay(10)
+                            .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
+                            .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
+                            .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                            .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+                    .withStatus(ScheduledActionStatus.ENABLED)
+                    .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_CreateOrUpdateByScope
+
+```java
+import com.azure.resourcemanager.costmanagement.models.DaysOfWeek;
+import com.azure.resourcemanager.costmanagement.models.FileDestination;
+import com.azure.resourcemanager.costmanagement.models.FileFormat;
+import com.azure.resourcemanager.costmanagement.models.NotificationProperties;
+import com.azure.resourcemanager.costmanagement.models.ScheduleFrequency;
+import com.azure.resourcemanager.costmanagement.models.ScheduleProperties;
+import com.azure.resourcemanager.costmanagement.models.ScheduledActionKind;
+import com.azure.resourcemanager.costmanagement.models.ScheduledActionStatus;
+import com.azure.resourcemanager.costmanagement.models.WeeksOfMonth;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+/** Samples for ScheduledActions CreateOrUpdateByScope. */
+public final class ScheduledActionsCreateOrUpdateByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-createOrUpdate-shared.json
+     */
+    /**
+     * Sample code: CreateOrUpdateScheduledActionByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateScheduledActionByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .define("monthlyCostByResource")
+            .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
+            .withKind(ScheduledActionKind.EMAIL)
+            .withDisplayName("Monthly Cost By Resource")
+            .withFileDestination(new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV)))
+            .withNotification(
+                new NotificationProperties()
+                    .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                    .withSubject("Cost by resource this month"))
+            .withSchedule(
+                new ScheduleProperties()
+                    .withFrequency(ScheduleFrequency.MONTHLY)
+                    .withHourOfDay(10)
+                    .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
+                    .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
+                    .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                    .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+            .withStatus(ScheduledActionStatus.ENABLED)
+            .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
+     */
+    /**
+     * Sample code: CreateOrUpdateInsightAlertScheduledActionByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateInsightAlertScheduledActionByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .define("dailyAnomalyByResource")
+            .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
+            .withKind(ScheduledActionKind.INSIGHT_ALERT)
+            .withDisplayName("Daily anomaly by resource")
+            .withNotification(
+                new NotificationProperties()
+                    .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                    .withSubject("Cost anomaly detected in the resource"))
+            .withSchedule(
+                new ScheduleProperties()
+                    .withFrequency(ScheduleFrequency.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                    .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+            .withStatus(ScheduledActionStatus.ENABLED)
+            .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample")
+            .create();
+    }
+}
+```
+
+### ScheduledActions_Delete
+
+```java
+/** Samples for ScheduledActions Delete. */
+public final class ScheduledActionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-delete-private.json
+     */
+    /**
+     * Sample code: PrivateScheduledActionDelete.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void privateScheduledActionDelete(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions().deleteWithResponse("monthlyCostByResource", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_DeleteByScope
+
+```java
+/** Samples for ScheduledActions DeleteByScope. */
+public final class ScheduledActionsDeleteByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-delete-shared.json
+     */
+    /**
+     * Sample code: ScheduledActionDeleteByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionDeleteByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .deleteByScopeWithResponse(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "monthlyCostByResource",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_Get
+
+```java
+/** Samples for ScheduledActions Get. */
+public final class ScheduledActionsGetSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-get-private.json
+     */
+    /**
+     * Sample code: PrivateScheduledAction.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void privateScheduledAction(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions().getWithResponse("monthlyCostByResource", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_GetByScope
+
+```java
+/** Samples for ScheduledActions GetByScope. */
+public final class ScheduledActionsGetByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-get-shared.json
+     */
+    /**
+     * Sample code: ScheduledActionByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .getByScopeWithResponse(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "monthlyCostByResource",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_List
+
+```java
+/** Samples for ScheduledActions List. */
+public final class ScheduledActionsListSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-listWithFilter-private.json
+     */
+    /**
+     * Sample code: PrivateScheduledActionsListFilterByViewId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void privateScheduledActionsListFilterByViewId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .list(
+                "properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-list-private.json
+     */
+    /**
+     * Sample code: PrivateScheduledActionsList.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void privateScheduledActionsList(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions().list(null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_ListByScope
+
+```java
+/** Samples for ScheduledActions ListByScope. */
+public final class ScheduledActionsListByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-listWithFilter-shared.json
+     */
+    /**
+     * Sample code: ScheduledActionsListByScopeFilterByViewId.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionsListByScopeFilterByViewId(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .listByScope(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledActions-list-shared.json
+     */
+    /**
+     * Sample code: ScheduledActionsListByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionsListByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .listByScope("subscriptions/00000000-0000-0000-0000-000000000000", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_Run
+
+```java
+/** Samples for ScheduledActions Run. */
+public final class ScheduledActionsRunSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-sendNow-private.json
+     */
+    /**
+     * Sample code: ScheduledActionSendNow.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionSendNow(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions().runWithResponse("monthlyCostByResource", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ScheduledActions_RunByScope
+
+```java
+/** Samples for ScheduledActions RunByScope. */
+public final class ScheduledActionsRunByScopeSamples {
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-sendNow-shared.json
+     */
+    /**
+     * Sample code: ScheduledActionRunByScope.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void scheduledActionRunByScope(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .scheduledActions()
+            .runByScopeWithResponse(
+                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "monthlyCostByResource",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3312,7 +4482,7 @@ import com.azure.resourcemanager.costmanagement.models.PivotType;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigSorting;
-import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingDirection;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingType;
 import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
@@ -3323,7 +4493,7 @@ import java.util.Map;
 /** Samples for Views CreateOrUpdate. */
 public final class ViewsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateViewCreateOrUpdate.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewCreateOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdatePrivateView.
@@ -3359,7 +4529,7 @@ public final class ViewsCreateOrUpdateSamples {
                                 new PivotProperties().withType(PivotType.TAG_KEY).withName("swaggerTagKey")))
                     .withTypePropertiesType(ReportType.USAGE)
                     .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
-                    .withDataset(
+                    .withDataSet(
                         new ReportConfigDataset()
                             .withGranularity(ReportGranularityType.DAILY)
                             .withAggregation(
@@ -3373,7 +4543,7 @@ public final class ViewsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new ReportConfigSorting()
-                                            .withDirection(ReportConfigSortingDirection.ASCENDING)
+                                            .withDirection(ReportConfigSortingType.ASCENDING)
                                             .withName("UsageDate")))),
                 com.azure.core.util.Context.NONE);
     }
@@ -3405,7 +4575,7 @@ import com.azure.resourcemanager.costmanagement.models.PivotType;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigSorting;
-import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingDirection;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSortingType;
 import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
@@ -3416,7 +4586,7 @@ import java.util.Map;
 /** Samples for Views CreateOrUpdateByScope. */
 public final class ViewsCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ViewCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupCreateOrUpdateView.
@@ -3451,7 +4621,7 @@ public final class ViewsCreateOrUpdateByScopeSamples {
                         new PivotProperties().withType(PivotType.TAG_KEY).withName("swaggerTagKey")))
             .withTypePropertiesType(ReportType.USAGE)
             .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
-            .withDataset(
+            .withDataSet(
                 new ReportConfigDataset()
                     .withGranularity(ReportGranularityType.DAILY)
                     .withAggregation(
@@ -3463,7 +4633,7 @@ public final class ViewsCreateOrUpdateByScopeSamples {
                         Arrays
                             .asList(
                                 new ReportConfigSorting()
-                                    .withDirection(ReportConfigSortingDirection.ASCENDING)
+                                    .withDirection(ReportConfigSortingType.ASCENDING)
                                     .withName("UsageDate"))))
             .create();
     }
@@ -3487,7 +4657,7 @@ public final class ViewsCreateOrUpdateByScopeSamples {
 /** Samples for Views Delete. */
 public final class ViewsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateViewDelete.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewDelete.json
      */
     /**
      * Sample code: DeletePrivateView.
@@ -3506,7 +4676,7 @@ public final class ViewsDeleteSamples {
 /** Samples for Views DeleteByScope. */
 public final class ViewsDeleteByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ViewDeleteByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewDeleteByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupDeleteView.
@@ -3530,7 +4700,7 @@ public final class ViewsDeleteByScopeSamples {
 /** Samples for Views Get. */
 public final class ViewsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateView.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateView.json
      */
     /**
      * Sample code: PrivateView.
@@ -3549,7 +4719,7 @@ public final class ViewsGetSamples {
 /** Samples for Views GetByScope. */
 public final class ViewsGetByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ViewByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupView.
@@ -3573,7 +4743,7 @@ public final class ViewsGetByScopeSamples {
 /** Samples for Views List. */
 public final class ViewsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/PrivateViewList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewList.json
      */
     /**
      * Sample code: PrivateViewList.
@@ -3592,7 +4762,7 @@ public final class ViewsListSamples {
 /** Samples for Views ListByScope. */
 public final class ViewsListByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ViewListByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewListByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupViewList.

@@ -45,6 +45,10 @@ public class IntegrationRuntimeStatus {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeStatus class. */
+    public IntegrationRuntimeStatus() {
+    }
+
     /**
      * Get the dataFactoryName property: The workspace name which the integration runtime belong to.
      *

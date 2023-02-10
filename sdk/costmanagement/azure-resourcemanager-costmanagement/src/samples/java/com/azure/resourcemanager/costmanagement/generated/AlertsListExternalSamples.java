@@ -9,7 +9,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 /** Samples for Alerts ListExternal. */
 public final class AlertsListExternalSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountAlerts.json
      */
     /**
      * Sample code: ExternalBillingAccountAlerts.
@@ -25,7 +25,7 @@ public final class AlertsListExternalSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionAlerts.json
      */
     /**
      * Sample code: ExternalSubscriptionAlerts.

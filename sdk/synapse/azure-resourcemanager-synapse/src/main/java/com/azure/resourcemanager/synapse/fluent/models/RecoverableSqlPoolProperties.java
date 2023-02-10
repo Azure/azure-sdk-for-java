@@ -35,6 +35,10 @@ public final class RecoverableSqlPoolProperties {
     @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAvailableBackupDate;
 
+    /** Creates an instance of RecoverableSqlPoolProperties class. */
+    public RecoverableSqlPoolProperties() {
+    }
+
     /**
      * Get the edition property: The edition of the database.
      *

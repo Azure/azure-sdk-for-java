@@ -103,6 +103,13 @@ public interface SensitivityLabel {
     SensitivityLabelRank rank();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelInner object.
      *
      * @return the inner object.
@@ -300,14 +307,6 @@ public interface SensitivityLabel {
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void enableRecommendation();
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -317,12 +316,12 @@ public interface SensitivityLabel {
     Response<Void> enableRecommendationWithResponse(Context context);
 
     /**
-     * Disables sensitivity recommendations on a given column.
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void disableRecommendation();
+    void enableRecommendation();
 
     /**
      * Disables sensitivity recommendations on a given column.
@@ -334,4 +333,12 @@ public interface SensitivityLabel {
      * @return the {@link Response}.
      */
     Response<Void> disableRecommendationWithResponse(Context context);
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void disableRecommendation();
 }

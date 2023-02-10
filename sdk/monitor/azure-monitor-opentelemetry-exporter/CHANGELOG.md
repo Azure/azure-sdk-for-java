@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.7 (2023-02-09)
 
-### Features Added
+### Enhancements
+- Updated the OpenTelemetry SDK baseline to version 1.20.0
+- Replace System.getenv usage with Azure SDK Configuration
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Change the Exporter implementations from public to package-private
 
 ## 1.0.0-beta.6 (2022-09-06)
 

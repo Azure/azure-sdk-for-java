@@ -28,6 +28,10 @@ public final class ManagedIntegrationRuntimeManagedVirtualNetworkReference {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ManagedIntegrationRuntimeManagedVirtualNetworkReference class. */
+    public ManagedIntegrationRuntimeManagedVirtualNetworkReference() {
+    }
+
     /**
      * Get the referenceName property: The reference name of the managed virtual network.
      *
