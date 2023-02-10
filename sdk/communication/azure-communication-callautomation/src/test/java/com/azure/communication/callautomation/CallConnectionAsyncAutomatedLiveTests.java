@@ -13,7 +13,6 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -71,7 +70,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -86,7 +85,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
@@ -105,20 +104,13 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             Response<AddParticipantsResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantsWithResponse(addParticipantsOptions).block();
             assertNotNull(addParticipantsResultResponse);
 
-            // check repeatabilityHeaders
-            RepeatabilityHeaders repeatabilityHeaders = addParticipantsOptions.getRepeatabilityHeaders();
-            assertNotNull(repeatabilityHeaders);
-            assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
-            assertInstanceOf(String.class, repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-            assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
-
             // wait for the incomingCallContext on another receiver
             String anotherIncomingCallContext = waitForIncomingCallContext(anotherUniqueId, Duration.ofSeconds(10));
             assertNotNull(anotherIncomingCallContext);
 
             // answer the call
             answerCallOptions = new AnswerCallOptions(anotherIncomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", anotherUniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", anotherUniqueId));
             AnswerCallResult anotherAnswerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(anotherAnswerCallResult);
             assertNotNull(anotherAnswerCallResult.getCallConnectionAsync());
@@ -149,7 +141,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.

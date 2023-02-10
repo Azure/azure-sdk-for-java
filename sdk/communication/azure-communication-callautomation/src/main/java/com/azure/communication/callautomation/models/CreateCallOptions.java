@@ -6,9 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -46,11 +44,6 @@ public class CreateCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
-    /**
      * Constructor
      *
      * @param source The source property.
@@ -61,7 +54,6 @@ public class CreateCallOptions {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -120,15 +112,6 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -147,17 +130,6 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 

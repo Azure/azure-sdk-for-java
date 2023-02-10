@@ -9,10 +9,8 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * The options for adding participants.
@@ -52,11 +50,6 @@ public final class AddParticipantsOptions {
      */
     private Duration invitationTimeout;
 
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
     /*
      * Use to put custom context for voip call
      */
@@ -74,7 +67,6 @@ public final class AddParticipantsOptions {
      */
     public AddParticipantsOptions(List<CommunicationIdentifier> participants) {
         this.participants = participants;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -132,15 +124,6 @@ public final class AddParticipantsOptions {
     }
 
     /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
      * Get the customContext for adding pstn participants
      *
      * @return the sipHeaders
@@ -156,17 +139,6 @@ public final class AddParticipantsOptions {
      */
     public Map<String, String> getVoipHeaders() {
         return voipHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the AddParticipantsOptions object itself.
-     */
-    public AddParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
     }
 
     /**

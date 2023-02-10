@@ -31,7 +31,6 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -45,12 +44,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.ZoneId;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -124,11 +125,9 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
-            createCallOptions.setRepeatabilityHeaders(handleApiIdempotency(createCallOptions.getRepeatabilityHeaders()));
-
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-                    createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    UUID.randomUUID(),
+                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -223,8 +222,6 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl());
 
-            answerCallOptions.setRepeatabilityHeaders(handleApiIdempotency(answerCallOptions.getRepeatabilityHeaders()));
-
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
                     getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
@@ -237,9 +234,9 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
-                    answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                    context)
+            UUID.randomUUID(),
+            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
+            context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -292,11 +289,9 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget()));
 
-            redirectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(redirectCallOptions.getRepeatabilityHeaders()));
-
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
-                    redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    UUID.randomUUID(),
+                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -341,11 +336,9 @@ public final class CallAutomationAsyncClient {
                 request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            rejectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(rejectCallOptions.getRepeatabilityHeaders()));
-
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
-                    rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                    rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    UUID.randomUUID(),
+                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -379,21 +372,12 @@ public final class CallAutomationAsyncClient {
 
     //region helper functions
     /***
-     * Make sure repeatability headers of the request are correctly set.
-     *
-     * @return a verified RepeatabilityHeaders object.
+     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
+     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
      */
-    static RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
-        // This case means user did not disable idempotency
-        if (repeatabilityHeaders != null) {
-            // This means user never set the repeatability headers manually.
-            if (repeatabilityHeaders.getRepeatabilityRequestId().equals(UUID.fromString("0-0-0-0-0"))
-                && repeatabilityHeaders.getRepeatabilityFirstSent() == Instant.MIN) {
-                repeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-            } // Else do nothing, use the repeatability headers that user specified.
-        } // Else do nothing, since the user disabled idempotency. Leave it as null.
-
-        return repeatabilityHeaders;
+    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
+        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
     //endregion
 }
