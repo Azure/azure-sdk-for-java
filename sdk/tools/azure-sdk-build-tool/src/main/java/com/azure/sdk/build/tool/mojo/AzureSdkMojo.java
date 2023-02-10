@@ -12,6 +12,7 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -98,7 +99,7 @@ public class AzureSdkMojo extends AbstractMojo {
     private void pingAppInsights() {
         try {
             LOGGER.info("Sending ping message to Application Insights");
-            AzureMonitorTraceExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+            SpanExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
                     .connectionString(APP_INSIGHTS_CONNECTION_STRING)
                     .buildTraceExporter();
 
