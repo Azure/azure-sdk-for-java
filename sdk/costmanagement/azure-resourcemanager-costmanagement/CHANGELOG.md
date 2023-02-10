@@ -1,14 +1,386 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2023-02-10)
 
-### Features Added
+- Azure Resource Manager CostManagement client library for Java. This package contains Microsoft Azure SDK for CostManagement Management SDK. CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ReportConfigSortingDirection` was removed
 
-### Other Changes
+* `models.ExportExecutionProperties` was removed
+
+* `models.ForecastTimeframeType` was removed
+
+* `models.ReportConfigColumnType` was removed
+
+* `models.ExportExecution` was removed
+
+#### `models.View$Update` was modified
+
+* `withDataset(models.ReportConfigDataset)` was removed
+
+#### `models.View` was modified
+
+* `dataset()` was removed
+
+#### `models.ReportConfigSorting` was modified
+
+* `withDirection(models.ReportConfigSortingDirection)` was removed
+* `models.ReportConfigSortingDirection direction()` -> `models.ReportConfigSortingType direction()`
+
+#### `models.View$Definition` was modified
+
+* `withDataset(models.ReportConfigDataset)` was removed
+
+#### `models.Forecasts` was modified
+
+* `models.QueryResult usage(java.lang.String,models.ForecastDefinition)` -> `models.ForecastResult usage(java.lang.String,models.ForecastDefinition)`
+* `models.QueryResult externalCloudProviderUsage(models.ExternalCloudProviderType,java.lang.String,models.ForecastDefinition)` -> `models.ForecastResult externalCloudProviderUsage(models.ExternalCloudProviderType,java.lang.String,models.ForecastDefinition)`
+
+#### `models.ReportConfigFilter` was modified
+
+* `tag()` was removed
+* `not()` was removed
+* `withTag(models.ReportConfigComparisonExpression)` was removed
+* `withDimension(models.ReportConfigComparisonExpression)` was removed
+* `dimension()` was removed
+* `withNot(models.ReportConfigFilter)` was removed
+
+#### `models.ForecastDefinition` was modified
+
+* `withTimeframe(models.ForecastTimeframeType)` was removed
+* `models.ForecastTimeframeType timeframe()` -> `models.ForecastTimeframe timeframe()`
+* `models.QueryTimePeriod timePeriod()` -> `models.ForecastTimePeriod timePeriod()`
+* `withTimePeriod(models.QueryTimePeriod)` was removed
+
+#### `models.ForecastDataset` was modified
+
+* `withFilter(models.QueryFilter)` was removed
+* `models.QueryFilter filter()` -> `models.ForecastFilter filter()`
+* `models.QueryDatasetConfiguration configuration()` -> `models.ForecastDatasetConfiguration configuration()`
+* `withConfiguration(models.QueryDatasetConfiguration)` was removed
+
+#### `models.Operation` was modified
+
+* `java.lang.String name()` -> `java.lang.String name()`
+* `innerModel()` was removed
+* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
+
+#### `models.QueryFilter` was modified
+
+* `dimension()` was removed
+* `withTag(models.QueryComparisonExpression)` was removed
+* `not()` was removed
+* `tag()` was removed
+* `withDimension(models.QueryComparisonExpression)` was removed
+* `withNot(models.QueryFilter)` was removed
+
+#### `models.Alert` was modified
+
+* `tags()` was removed
+
+#### `models.ReportConfigGrouping` was modified
+
+* `withType(models.ReportConfigColumnType)` was removed
+* `models.ReportConfigColumnType type()` -> `models.QueryColumnType type()`
+
+### Features Added
+
+* `models.GenerateReservationDetailsReports` was added
+
+* `models.ReportOperationStatusType` was added
+
+* `models.GenerateDetailedCostReportOperationResults` was added
+
+* `models.ForecastFilter` was added
+
+* `models.DownloadUrl` was added
+
+* `models.BenefitRecommendationProperties` was added
+
+* `models.GenerateDetailedCostReportOperationResult` was added
+
+* `models.Status` was added
+
+* `models.BlobInfo` was added
+
+* `models.BenefitKind` was added
+
+* `models.ScheduledActionStatus` was added
+
+* `models.CheckNameAvailabilityReason` was added
+
+* `models.Grain` was added
+
+* `models.ForecastAggregation` was added
+
+* `models.ScheduleFrequency` was added
+
+* `models.BenefitResource` was added
+
+* `models.DaysOfWeek` was added
+
+* `models.BenefitUtilizationSummaries` was added
+
+* `models.GenerateDetailedCostReportTimePeriod` was added
+
+* `models.CostManagementProxyResource` was added
+
+* `models.ForecastTimeframe` was added
+
+* `models.FunctionName` was added
+
+* `models.FileFormat` was added
+
+* `models.BenefitRecommendationsListResult` was added
+
+* `models.CostDetailsTimePeriod` was added
+
+* `models.GenerateDetailedCostReportDefinition` was added
+
+* `models.RecommendationUsageDetails` was added
+
+* `models.SavingsPlanUtilizationSummary` was added
+
+* `models.ReservationReportSchema` was added
+
+* `models.ForecastColumn` was added
+
+* `models.ScheduledActions` was added
+
+* `models.GenerateDetailedCostReports` was added
+
+* `models.ScheduledAction` was added
+
+* `models.BenefitUtilizationSummaryProperties` was added
+
+* `models.Term` was added
+
+* `models.OperationStatus` was added
+
+* `models.CostDetailsMetricType` was added
+
+* `models.GenerateDetailedCostReportMetricType` was added
+
+* `models.CostManagementResource` was added
+
+* `models.LookBackPeriod` was added
+
+* `models.ForecastResult` was added
+
+* `models.ForecastTimePeriod` was added
+
+* `models.SingleScopeBenefitRecommendationProperties` was added
+
+* `models.CostDetailsOperationResults` was added
+
+* `models.CheckNameAvailabilityRequest` was added
+
+* `models.GenerateCostDetailsReportRequestDefinition` was added
+
+* `models.ActionType` was added
+
+* `models.WeeksOfMonth` was added
+
+* `models.ForecastOperatorType` was added
+
+* `models.ExportRun` was added
+
+* `models.GenerateDetailedCostReportOperationStatus` was added
+
+* `models.GrainParameter` was added
+
+* `models.ExportRunProperties` was added
+
+* `models.ForecastComparisonExpression` was added
+
+* `models.BenefitUtilizationSummariesListResult` was added
+
+* `models.ScheduledAction$DefinitionStages` was added
+
+* `models.BenefitUtilizationSummary` was added
+
+* `models.BenefitRecommendations` was added
+
+* `models.PriceSheets` was added
+
+* `models.CostDetailsStatusType` was added
+
+* `models.BenefitRecommendationModel` was added
+
+* `models.ScheduledActionListResult` was added
+
+* `models.OperationStatusType` was added
+
+* `models.CostDetailsDataFormat` was added
+
+* `models.GenerateCostDetailsReports` was added
+
+* `models.ScheduledActionKind` was added
+
+* `models.CostManagementOperation` was added
+
+* `models.ScheduledAction$Definition` was added
+
+* `models.AllSavingsList` was added
+
+* `models.ScheduledAction$UpdateStages` was added
+
+* `models.CheckNameAvailabilityResponse` was added
+
+* `models.ForecastDatasetConfiguration` was added
+
+* `models.GenerateDetailedCostReportOperationStatuses` was added
+
+* `models.AllSavingsBenefitDetails` was added
+
+* `models.Origin` was added
+
+* `models.Scope` was added
+
+* `models.IncludedQuantityUtilizationSummary` was added
+
+* `models.ScheduledActionProxyResource` was added
+
+* `models.SharedScopeBenefitRecommendationProperties` was added
+
+* `models.ScheduledAction$Update` was added
+
+* `models.ScheduleProperties` was added
+
+* `models.NotificationProperties` was added
+
+* `models.FileDestination` was added
+
+* `models.ReportConfigSortingType` was added
+
+#### `models.View$Update` was modified
+
+* `withDataSet(models.ReportConfigDataset)` was added
+* `withIncludeMonetaryCommitment(java.lang.Boolean)` was added
+
+#### `models.View` was modified
+
+* `dateRange()` was added
+* `includeMonetaryCommitment()` was added
+* `dataSet()` was added
+* `currency()` was added
+
+#### `models.AlertPropertiesDetails` was modified
+
+* `departmentName()` was added
+* `companyName()` was added
+* `withDepartmentName(java.lang.String)` was added
+* `withCompanyName(java.lang.String)` was added
+* `enrollmentNumber()` was added
+* `invoicingThreshold()` was added
+* `withEnrollmentNumber(java.lang.String)` was added
+* `withEnrollmentEndDate(java.lang.String)` was added
+* `enrollmentEndDate()` was added
+* `withEnrollmentStartDate(java.lang.String)` was added
+* `withInvoicingThreshold(java.math.BigDecimal)` was added
+* `enrollmentStartDate()` was added
+
+#### `models.ReportConfigSorting` was modified
+
+* `withDirection(models.ReportConfigSortingType)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `description()` was added
+
+#### `models.View$Definition` was modified
+
+* `withDataSet(models.ReportConfigDataset)` was added
+* `withIncludeMonetaryCommitment(java.lang.Boolean)` was added
+
+#### `models.CommonExportProperties` was modified
+
+* `partitionData()` was added
+
+#### `models.Export$Definition` was modified
+
+* `withPartitionData(java.lang.Boolean)` was added
+
+#### `models.ReportConfigFilter` was modified
+
+* `withTags(models.ReportConfigComparisonExpression)` was added
+* `tags()` was added
+* `dimensions()` was added
+* `withDimensions(models.ReportConfigComparisonExpression)` was added
+
+#### `models.QueryResult` was modified
+
+* `location()` was added
+* `etag()` was added
+* `sku()` was added
+
+#### `CostManagementManager` was modified
+
+* `priceSheets()` was added
+* `benefitUtilizationSummaries()` was added
+* `generateDetailedCostReportOperationStatus()` was added
+* `generateCostDetailsReports()` was added
+* `benefitRecommendations()` was added
+* `generateDetailedCostReportOperationResults()` was added
+* `generateDetailedCostReports()` was added
+* `scheduledActions()` was added
+* `generateReservationDetailsReports()` was added
+
+#### `models.Dimension` was modified
+
+* `sku()` was added
+* `location()` was added
+* `etag()` was added
+
+#### `models.Export` was modified
+
+* `partitionData()` was added
+
+#### `models.ForecastDefinition` was modified
+
+* `withTimePeriod(models.ForecastTimePeriod)` was added
+* `withTimeframe(models.ForecastTimeframe)` was added
+
+#### `models.ForecastDataset` was modified
+
+* `withFilter(models.ForecastFilter)` was added
+* `withConfiguration(models.ForecastDatasetConfiguration)` was added
+
+#### `models.Operation` was modified
+
+* `withDisplay(models.OperationDisplay)` was added
+* `isDataAction()` was added
+* `origin()` was added
+* `validate()` was added
+* `actionType()` was added
+
+#### `models.ExportDeliveryDestination` was modified
+
+* `sasToken()` was added
+* `storageAccount()` was added
+* `withSasToken(java.lang.String)` was added
+* `withStorageAccount(java.lang.String)` was added
+
+#### `models.QueryFilter` was modified
+
+* `withTags(models.QueryComparisonExpression)` was added
+* `withDimensions(models.QueryComparisonExpression)` was added
+* `dimensions()` was added
+* `tags()` was added
+
+#### `models.Export$Update` was modified
+
+* `withPartitionData(java.lang.Boolean)` was added
+
+#### `models.Alert` was modified
+
+* `etag()` was added
+
+#### `models.ReportConfigGrouping` was modified
+
+* `withType(models.QueryColumnType)` was added
 
 ## 1.0.0-beta.4 (2023-01-13)
 
