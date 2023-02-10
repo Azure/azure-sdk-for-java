@@ -18,6 +18,9 @@ public final class DataSourceCredentials {
     @JsonProperty(value = "connectionString")
     private String connectionString;
 
+    /** Creates an instance of DataSourceCredentials class. */
+    public DataSourceCredentials() {}
+
     /**
      * Get the connectionString property: The connection string for the datasource. Set to '&lt;unchanged&gt;' if you do
      * not want the connection string updated.

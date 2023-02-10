@@ -31,11 +31,10 @@ public final class DatabasesImportMethodSamples {
                 "testdb",
                 new ImportExistingDatabaseDefinition()
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==")
+                    .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
                     .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("password")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
                 Context.NONE);
     }
@@ -62,11 +61,10 @@ public final class DatabasesImportMethodSamples {
                 "testdb",
                 new ImportExistingDatabaseDefinition()
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==")
+                    .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
                     .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("password")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql")
                     .withNetworkIsolation(
                         new NetworkIsolationSettings()

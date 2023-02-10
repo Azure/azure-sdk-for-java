@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230112.1
+      ref: refs/tags/azure-sdk-build-tools_20230206.1
 
 parameters:
 - name: Artifacts
@@ -18,9 +18,6 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
-- name: SkipAggregateReports
-  type: boolean
-  default: false
 - name: BuildParallelization
   type: string
   default: '2C'
@@ -81,7 +78,7 @@ stages:
           displayName: 'Set versions for source build'
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
-            arguments: '--build-type client --pst'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'
@@ -158,6 +155,7 @@ stages:
             arguments: >
               -SourceDirectory $(System.DefaultWorkingDirectory)/build
               -TargetDirectory $(Build.ArtifactStagingDirectory)
+              -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage)
               -InformationAction Continue
 
         - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
@@ -208,6 +206,7 @@ stages:
             Artifacts: ${{ parameters.Artifacts }}
             AdditionalModules: ${{ parameters.AdditionalModules }}
             JobType: 'AnalyzeAndVerify'
+            UseCache: false
 
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
           parameters:
@@ -219,7 +218,7 @@ stages:
           displayName: 'Set versions for source build'
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
-            arguments: '--build-type client --pst'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'

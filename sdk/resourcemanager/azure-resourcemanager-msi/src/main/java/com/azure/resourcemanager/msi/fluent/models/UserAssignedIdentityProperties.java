@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** User Assigned Identity properties. The properties associated with the user assigned identity. */
+/**
+ * User Assigned Identity properties.
+ *
+ * <p>The properties associated with the user assigned identity.
+ */
 @Immutable
 public final class UserAssignedIdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentityProperties.class);
-
     /*
      * The id of the tenant which the identity belongs to.
      */
@@ -22,18 +22,20 @@ public final class UserAssignedIdentityProperties {
     private UUID tenantId;
 
     /*
-     * The id of the service principal object associated with the created
-     * identity.
+     * The id of the service principal object associated with the created identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
-     * The id of the app associated with the identity. This is a random
-     * generated UUID by MSI.
+     * The id of the app associated with the identity. This is a random generated UUID by MSI.
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
+
+    /** Creates an instance of UserAssignedIdentityProperties class. */
+    public UserAssignedIdentityProperties() {
+    }
 
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.

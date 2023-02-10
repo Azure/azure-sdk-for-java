@@ -20,6 +20,10 @@ public class RedisFirewallRuleInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
 
+    /** Creates an instance of RedisFirewallRuleInner class. */
+    public RedisFirewallRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: redis cache firewall rule properties.
      *

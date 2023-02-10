@@ -15,8 +15,8 @@ autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
-``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a31ffeca96db3901c77b7dabbb8f224f226e78b9/specification/schemaregistry/data-plane/Microsoft.EventHub/stable/2021-10/schemaregistry.json
+```yaml
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/19aa8ab5d14b22bdeb67eab31c65b47c5380fd06/specification/schemaregistry/data-plane/Microsoft.EventHub/stable/2022-10/schemaregistry.json
 java: true
 output-folder: ../
 namespace: com.azure.data.schemaregistry
@@ -28,4 +28,76 @@ context-client-method-parameter: true
 models-subpackage: implementation.models
 ```
 
+### Add Content-Type header to GetById operation
+
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}:get-id"].post
+  transform: >
+    $.parameters.push({
+      "name": "Content-Type",
+      "in": "header",
+      "description": "Content type of the schema.",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "application/json; serialization=Avro",
+        "application/json; serialization=Json",
+        "text/plain; charset=utf-8"
+      ],
+      "x-ms-enum": {
+        "name": "SchemaFormat",
+        "modelAsString": true
+       }});
+```
+
+### Add Content-Type header to Register operation
+
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}"].put
+  transform: >
+    $.parameters.push({
+      "name": "Content-Type",
+      "in": "header",
+      "description": "Content type of the schema.",
+      "required": true,
+      "type": "string"});
+```
+
+### Enrich Content-Type header in response headers for operations returning the schema
+
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/$schemaGroups/$schemas/{id}"].get.responses["200"].headers
+  transform: >
+    $["Content-Type"]["enum"] = [
+        "application/json; serialization=Avro",
+        "application/json; serialization=Json",
+        "text/plain; charset=utf-8"
+       ];
+    $["Content-Type"]["x-ms-enum"] = {
+      "name": "SchemaFormat",
+      "modelAsString": true
+    };  
+```
+
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}/versions/{schemaVersion}"].get.responses["200"].headers
+  transform: >
+    $["Content-Type"]["enum"] = [
+        "application/json; serialization=Avro",
+        "application/json; serialization=Json",
+        "text/plain; charset=utf-8"
+       ];
+    $["Content-Type"]["x-ms-enum"] = {
+      "name": "SchemaFormat",
+      "modelAsString": true
+    };  
+```
 

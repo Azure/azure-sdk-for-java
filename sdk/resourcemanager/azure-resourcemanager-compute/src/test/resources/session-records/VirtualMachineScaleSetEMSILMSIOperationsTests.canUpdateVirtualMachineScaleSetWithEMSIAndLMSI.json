@@ -320,7 +320,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-1000486?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-1000486?api-version=2023-01-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "4fcf386e-7b65-40f3-bc2f-a17717890122",
@@ -573,7 +573,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-1000486?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-1000486?api-version=2023-01-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "4efb687f-0180-41a2-9a87-64a1dc89bf5c",
@@ -717,7 +717,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-2269770?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-2269770?api-version=2023-01-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "15600028-8f29-46a5-84aa-4f1fc47d1e54",
@@ -997,7 +997,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-2269770?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/da567a0cc15e450/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id-2269770?api-version=2023-01-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "472d0e5a-9764-4f8e-9e7e-3ab2862f465c",

@@ -34,6 +34,9 @@ public final class CurrencyResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of CurrencyResolution class. */
+    public CurrencyResolution() {}
+
     /**
      * Get the iso4217 property: The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for
      * country names. The first two letters of the ISO 4217 three-letter code are the same as the code for the country

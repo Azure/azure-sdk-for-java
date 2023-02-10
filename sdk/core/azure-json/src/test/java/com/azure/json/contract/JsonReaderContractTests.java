@@ -582,8 +582,8 @@ public abstract class JsonReaderContractTests {
 
     private static Stream<Arguments> bufferObjectSupplier() {
         return Stream.of(
-            // Arguments.of("{\"test\":\"test\"}", 1),
-            Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 2)
+            Arguments.of("{\"test\":\"test\"}", 1),
+            Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 3)
         );
     }
 
@@ -606,11 +606,10 @@ public abstract class JsonReaderContractTests {
             Arguments.of("null", 1),
             Arguments.of("true", 1),
             Arguments.of("\"hello\"", 1),
-            Arguments.of("{\"outerfield\": []}", 2),
-            Arguments.of("{\"outerfield\": 12}", 2),
-            Arguments.of("{\"outerfield\": null}", 2),
-            Arguments.of("{\"outerfield\": true}", 2),
-            Arguments.of("{\"outerfield\": \"hello\"}", 2)
+            Arguments.of("{\"outerfield\": 12}", 3),
+            Arguments.of("{\"outerfield\": null}", 3),
+            Arguments.of("{\"outerfield\": true}", 3),
+            Arguments.of("{\"outerfield\": \"hello\"}", 3)
         );
     }
 

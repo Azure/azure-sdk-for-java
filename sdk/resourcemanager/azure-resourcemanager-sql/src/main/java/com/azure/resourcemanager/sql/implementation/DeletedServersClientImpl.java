@@ -61,7 +61,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DeletedServersService {
+    public interface DeletedServersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers")
         @ExpectedResponses({200})

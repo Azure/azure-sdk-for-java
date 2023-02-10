@@ -53,7 +53,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseAutomaticTuningsService {
+    public interface DatabaseAutomaticTuningsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

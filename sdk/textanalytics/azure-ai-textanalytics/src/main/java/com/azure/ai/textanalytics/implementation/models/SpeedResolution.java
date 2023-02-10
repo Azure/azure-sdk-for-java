@@ -26,6 +26,9 @@ public final class SpeedResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of SpeedResolution class. */
+    public SpeedResolution() {}
+
     /**
      * Get the unit property: The speed Unit of measurement.
      *

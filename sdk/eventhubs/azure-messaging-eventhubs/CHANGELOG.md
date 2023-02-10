@@ -1,10 +1,24 @@
 # Release History
 
+## 5.16.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed NullPointerException when deserializing AMQP message with null body. ([#32939](https://github.com/Azure/azure-sdk-for-java/issues/32939))
+- Added filter to filter out the closed `AmqpReceiveLink` before passing to `AmqpReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
+- Fixed usage of static AmqpAnnotatedMessage when creating empty EventData. ([#33327](https://github.com/Azure/azure-sdk-for-java/issues/33327))
+
+### Other Changes
+
 ## 5.15.1 (2023-01-18)
 
 ### Features Added
 
-- Added support for setting different value types in `EventData.getProperties()`. [32518](https://github.com/Azure/azure-sdk-for-java/issues/32518)
+- Added support for setting different value types in `EventData.getProperties()`. ([#32518](https://github.com/Azure/azure-sdk-for-java/issues/32518))
 
 ### Bugs Fixed
 
