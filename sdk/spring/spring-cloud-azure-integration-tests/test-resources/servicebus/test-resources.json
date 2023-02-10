@@ -409,6 +409,10 @@
     "AZURE_SERVICE_BUS_DOMAIN_NAME": {
       "type": "string",
       "value": "[substring(parameters('serviceBusEndpointSuffix'), 1)]"
+    },
+    "SERVICEBUS_PASSWORDLESS_ENDPOINT": {
+      "type": "string",
+      "value": "[concat(variables('azureServiceBusNamespaceName'), substring(parameters('serviceBusEndpointSuffix'), 1))]"
     }
   }
 }

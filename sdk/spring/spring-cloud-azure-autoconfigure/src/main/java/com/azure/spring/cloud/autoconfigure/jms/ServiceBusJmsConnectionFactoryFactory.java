@@ -57,12 +57,19 @@ public class ServiceBusJmsConnectionFactoryFactory {
     private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
-            ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
-            String host = serviceBusConnectionString.getEndpointUri().getHost();
+            String remoteUrl = null;
+            String username = null;
+            String password = null;
+            if (properties.getConnectionString() != null) {
+                ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
+                String host = serviceBusConnectionString.getEndpointUri().getHost();
 
-            String remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
-            String username = serviceBusConnectionString.getSharedAccessKeyName();
-            String password = serviceBusConnectionString.getSharedAccessKey();
+                remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
+                username = serviceBusConnectionString.getSharedAccessKeyName();
+                password = serviceBusConnectionString.getSharedAccessKey();
+            } else if (properties.getEndpoint() != null) {
+                remoteUrl = String.format(AMQP_URI_FORMAT, properties.getEndpoint(), properties.getIdleTimeout().toMillis());
+            }
 
             if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
                 factory = factoryClass.getConstructor(String.class, String.class, String.class)

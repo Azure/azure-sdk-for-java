@@ -31,6 +31,7 @@ import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_PASSWORDLESS_SERVICE_BUS;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
@@ -45,17 +46,21 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
-@Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
+@EnableConfigurationProperties({AzureServiceBusJmsProperties.class, JmsProperties.class})
+@Import({ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class, ServiceBusJmsPasswordlessConfiguration.class})
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
+    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusCredentialSupplier> azureServiceBusCredentialSupplier) {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
             properties.put("com.microsoft:is-client-provider", true);
-            properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+            if (azureServiceBusCredentialSupplier.getIfAvailable() == null) {
+                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+            } else {
+                properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
+            }
             //set user agent
             factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                 (connection, uri) -> properties);

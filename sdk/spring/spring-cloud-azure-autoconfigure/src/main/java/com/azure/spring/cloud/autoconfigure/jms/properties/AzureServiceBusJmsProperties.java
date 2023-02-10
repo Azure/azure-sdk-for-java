@@ -29,6 +29,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     private boolean enabled = true;
 
     /**
+     * Endpoint to a Service Bus namespace.
+     */
+    private String endpoint;
+
+    /**
      * Connection string to connect to a Service Bus namespace.
      */
     private String connectionString;
@@ -79,16 +84,16 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
-     * Get the connection string to connect to a Service Bus namesapce.
-     * @return the connection string to connect to a Service Bus namesapce.
+     * Get the connection string to connect to a Service Bus namespace.
+     * @return the connection string to connect to a Service Bus namespace.
      */
     public String getConnectionString() {
         return connectionString;
     }
 
     /**
-     * Set the connection string to connect to a Service Bus namesapce.
-     * @param connectionString the connection string to connect to a Service Bus namesapce.
+     * Set the connection string to connect to a Service Bus namespace.
+     * @param connectionString the connection string to connect to a Service Bus namespace.
      */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
@@ -159,14 +164,30 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
+     * Get the endpoint to connect to a Service Bus namespace.
+     * @return the endpoint to connect to a Service Bus namespace.
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * Set the endpoint to connect to a Service Bus namespace.
+     * @param endpoint the endpoint to connect to a Service Bus namespace.
+     */
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    /**
      * Validate spring.jms.servicebus related properties.
      *
      * @throws IllegalArgumentException If connectionString is empty.
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
+        if (!StringUtils.hasText(connectionString) && !StringUtils.hasText(endpoint)) {
+            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' or 'spring.jms.servicebus.endpoint' should be provided");
         }
 
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
