@@ -6,34 +6,64 @@ package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Array received from the registry containing the list of schema groups. */
+/** Object received from the registry containing the list of schema groups and link to next batch page. */
 @Fluent
 public final class SchemaGroups {
     /*
      * Array of schema groups.
      */
     @JsonProperty(value = "schemaGroups")
-    private List<String> schemaGroups;
+    private List<String> groups;
+
+    /*
+     * URl to next batch of schema groups
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /** Creates an instance of SchemaGroups class. */
+    public SchemaGroups() {}
 
     /**
-     * Get the schemaGroups property: Array of schema groups.
+     * Get the groups property: Array of schema groups.
      *
-     * @return the schemaGroups value.
+     * @return the groups value.
      */
-    public List<String> getSchemaGroups() {
-        return this.schemaGroups;
+    public List<String> getGroups() {
+        return this.groups;
     }
 
     /**
-     * Set the schemaGroups property: Array of schema groups.
+     * Set the groups property: Array of schema groups.
      *
-     * @param schemaGroups the schemaGroups value to set.
+     * @param groups the groups value to set.
      * @return the SchemaGroups object itself.
      */
-    public SchemaGroups setSchemaGroups(List<String> schemaGroups) {
-        this.schemaGroups = schemaGroups;
+    public SchemaGroups setGroups(List<String> groups) {
+        this.groups = groups;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: URl to next batch of schema groups.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: URl to next batch of schema groups.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the SchemaGroups object itself.
+     */
+    public SchemaGroups setNextLink(String nextLink) {
+        this.nextLink = nextLink;
         return this;
     }
 }

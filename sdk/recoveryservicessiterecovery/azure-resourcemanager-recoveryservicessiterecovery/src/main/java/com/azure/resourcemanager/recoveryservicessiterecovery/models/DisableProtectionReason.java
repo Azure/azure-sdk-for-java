@@ -17,6 +17,15 @@ public final class DisableProtectionReason extends ExpandableStringEnum<DisableP
     public static final DisableProtectionReason MIGRATION_COMPLETE = fromString("MigrationComplete");
 
     /**
+     * Creates a new instance of DisableProtectionReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DisableProtectionReason() {
+    }
+
+    /**
      * Creates or finds a DisableProtectionReason from its string representation.
      *
      * @param name a name to look for.

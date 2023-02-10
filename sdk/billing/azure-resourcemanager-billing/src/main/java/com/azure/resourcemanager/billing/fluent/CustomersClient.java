@@ -22,7 +22,7 @@ public interface CustomersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -40,7 +40,7 @@ public interface CustomersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerInner> listByBillingProfile(
@@ -54,7 +54,7 @@ public interface CustomersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerInner> listByBillingAccount(String billingAccountName);
@@ -71,11 +71,28 @@ public interface CustomersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerInner> listByBillingAccount(
         String billingAccountName, String search, String filter, Context context);
+
+    /**
+     * Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft
+     * Partner Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param expand May be used to expand enabledAzurePlans and resellers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a customer by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomerInner> getWithResponse(
+        String billingAccountName, String customerName, String expand, Context context);
 
     /**
      * Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft
@@ -90,21 +107,4 @@ public interface CustomersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CustomerInner get(String billingAccountName, String customerName);
-
-    /**
-     * Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft
-     * Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @param expand May be used to expand enabledAzurePlans and resellers.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a customer by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerInner> getWithResponse(
-        String billingAccountName, String customerName, String expand, Context context);
 }

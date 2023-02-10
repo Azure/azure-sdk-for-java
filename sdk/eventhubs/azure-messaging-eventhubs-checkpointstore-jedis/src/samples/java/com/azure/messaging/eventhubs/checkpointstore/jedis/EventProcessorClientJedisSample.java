@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -15,7 +17,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for using {@link JedisRedisCheckpointStore} with {@link EventProcessorClient}.
+ * Sample for using {@link JedisCheckpointStore} with {@link EventProcessorClient}.
  */
 public class EventProcessorClientJedisSample {
     /**
@@ -26,22 +28,28 @@ public class EventProcessorClientJedisSample {
      * @throws Exception an Exception will be thrown in case of errors while running the sample
      */
     public static void main(String[] args) throws Exception {
+        // To create the JedisCheckpointStore, an instance of JedisPool is required.
+        // 1. Create a redis service.  The following link describes how to create one for Azure Redis Cache.
+        //    https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
+        // 2. Go to your Azure Redis service.
+        // 3. The host name is on the main page.  It will look similar to "{your-hostname}.redis.cache.windows.net"
+        // 4. Under Settings, select Access keys.  The primary or secondary key is the password.
+        HostAndPort hostAndPort = new HostAndPort("{your-hostname}.redis.cache.windows.net", 6380);
         JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
-            .password("<YOUR_REDIS_PRIMARY_ACCESS_KEY>")
+            .password("{your-access-key}")
             .ssl(true)
             .build();
-
-        String redisHostName = "<YOUR_REDIS_HOST_NAME>.redis.cache.windows.net";
-        HostAndPort hostAndPort = new HostAndPort(redisHostName, 6380);
         JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
+        // Instantiate an instance of the checkpoint store with configured JedisPool.
+        CheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
+
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB NAMESPACE CONNECTION STRING >>")
-            .eventHubName("<< EVENT HUB NAME >>")
+            .connectionString("event-hub-namespace-connection-string}", "{event-hub-name}")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .processEvent(eventContext -> onEvent(eventContext))
             .processError(errorContext -> onError(errorContext))
-            .checkpointStore(new JedisRedisCheckpointStore(jedisPool))
+            .checkpointStore(checkpointStore)
             .buildEventProcessorClient();
 
         // Starts the event processor
@@ -54,9 +62,10 @@ public class EventProcessorClientJedisSample {
         eventProcessorClient.stop();
     }
 
-    private static void onEvent(EventContext eventContext) {
+    public static void onEvent(EventContext eventContext) {
         System.out.printf("Processing event from partition %s with sequence number %d %n",
             eventContext.getPartitionContext().getPartitionId(), eventContext.getEventData().getSequenceNumber());
+
         if (eventContext.getEventData().getSequenceNumber() % 10 == 0) {
             eventContext.updateCheckpoint();
         }

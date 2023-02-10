@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OverallValidationStatus. */
+/** Overall validation status. */
 public enum OverallValidationStatus {
     /** Enum value AllValidToProceed. */
     ALL_VALID_TO_PROCEED("AllValidToProceed"),
@@ -33,6 +33,9 @@ public enum OverallValidationStatus {
      */
     @JsonCreator
     public static OverallValidationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OverallValidationStatus[] items = OverallValidationStatus.values();
         for (OverallValidationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum OverallValidationStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

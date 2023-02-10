@@ -6,14 +6,11 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of CheckNameAvailability API. */
 @Fluent
 public final class CheckNameAvailabilityInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);
-
     /*
      * The resource name to validate.
      */
@@ -25,6 +22,10 @@ public final class CheckNameAvailabilityInput {
      */
     @JsonProperty(value = "type", required = true)
     private Type type;
+
+    /** Creates an instance of CheckNameAvailabilityInput class. */
+    public CheckNameAvailabilityInput() {
+    }
 
     /**
      * Get the name property: The resource name to validate.
@@ -73,14 +74,16 @@ public final class CheckNameAvailabilityInput {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityInput"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model CheckNameAvailabilityInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityInput.class);
 }

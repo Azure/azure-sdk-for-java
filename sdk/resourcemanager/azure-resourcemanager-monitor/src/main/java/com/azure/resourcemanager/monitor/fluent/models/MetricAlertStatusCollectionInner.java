@@ -18,6 +18,10 @@ public final class MetricAlertStatusCollectionInner {
     @JsonProperty(value = "value")
     private List<MetricAlertStatus> value;
 
+    /** Creates an instance of MetricAlertStatusCollectionInner class. */
+    public MetricAlertStatusCollectionInner() {
+    }
+
     /**
      * Get the value property: the values for the alert rule resources.
      *

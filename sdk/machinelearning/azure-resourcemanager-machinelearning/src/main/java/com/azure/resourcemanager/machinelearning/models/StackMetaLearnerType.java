@@ -41,6 +41,15 @@ public final class StackMetaLearnerType extends ExpandableStringEnum<StackMetaLe
     public static final StackMetaLearnerType LINEAR_REGRESSION = fromString("LinearRegression");
 
     /**
+     * Creates a new instance of StackMetaLearnerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StackMetaLearnerType() {
+    }
+
+    /**
      * Creates or finds a StackMetaLearnerType from its string representation.
      *
      * @param name a name to look for.

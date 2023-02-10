@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.GlobalSchedulesClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GlobalSchedulesClient. */
 public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
-    private final ClientLogger logger = new ClientLogger(GlobalSchedulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GlobalSchedulesService service;
 
@@ -70,7 +67,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientGlo")
-    private interface GlobalSchedulesService {
+    public interface GlobalSchedulesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevTestLab/schedules")
         @ExpectedResponses({200})
@@ -229,7 +226,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(
@@ -284,7 +282,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(
@@ -335,7 +334,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listAsync(String expand, String filter, Integer top, String orderby) {
@@ -349,7 +348,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listAsync() {
@@ -373,7 +372,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listAsync(
@@ -388,7 +387,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list() {
@@ -410,7 +409,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> list(
@@ -429,7 +428,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupSinglePageAsync(
@@ -490,7 +490,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupSinglePageAsync(
@@ -547,7 +548,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByResourceGroupAsync(
@@ -564,7 +565,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -589,7 +590,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByResourceGroupAsync(
@@ -606,7 +607,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName) {
@@ -629,7 +630,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByResourceGroup(
@@ -646,7 +647,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> getByResourceGroupWithResponseAsync(
@@ -697,7 +698,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> getByResourceGroupWithResponseAsync(
@@ -740,23 +741,16 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> getByResourceGroupAsync(String resourceGroupName, String name, String expand) {
+    private Mono<ScheduleInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, expand)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -764,23 +758,17 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
+     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> getByResourceGroupAsync(String resourceGroupName, String name) {
-        final String expand = null;
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, expand)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<ScheduleInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String name, String expand, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, name, expand, context).block();
     }
 
     /**
@@ -796,25 +784,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner getByResourceGroup(String resourceGroupName, String name) {
         final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, name, expand).block();
-    }
-
-    /**
-     * Get schedule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, expand, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, name, expand, Context.NONE).getValue();
     }
 
     /**
@@ -826,7 +796,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
@@ -882,7 +852,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
@@ -934,19 +904,30 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, ScheduleInner schedule) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, schedule)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or replace an existing schedule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the schedule.
+     * @param schedule A schedule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduleInner> createOrUpdateWithResponse(
+        String resourceGroupName, String name, ScheduleInner schedule, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, name, schedule, context).block();
     }
 
     /**
@@ -962,25 +943,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner createOrUpdate(String resourceGroupName, String name, ScheduleInner schedule) {
-        return createOrUpdateAsync(resourceGroupName, name, schedule).block();
-    }
-
-    /**
-     * Create or replace an existing schedule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String name, ScheduleInner schedule, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, name, schedule, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, name, schedule, Context.NONE).getValue();
     }
 
     /**
@@ -991,7 +954,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
@@ -1039,7 +1002,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, Context context) {
@@ -1083,11 +1046,27 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        return deleteWithResponseAsync(resourceGroupName, name).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete schedule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the schedule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
@@ -1101,23 +1080,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
-        deleteAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Delete schedule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, name, context).block();
+        deleteWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -1129,7 +1092,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> updateWithResponseAsync(
@@ -1185,7 +1148,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduleInner>> updateWithResponseAsync(
@@ -1237,19 +1200,30 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return a schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduleInner> updateAsync(String resourceGroupName, String name, ScheduleFragment schedule) {
         return updateWithResponseAsync(resourceGroupName, name, schedule)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Allows modifying tags of schedules. All other properties will be ignored.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the schedule.
+     * @param schedule A schedule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduleInner> updateWithResponse(
+        String resourceGroupName, String name, ScheduleFragment schedule, Context context) {
+        return updateWithResponseAsync(resourceGroupName, name, schedule, context).block();
     }
 
     /**
@@ -1265,25 +1239,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner update(String resourceGroupName, String name, ScheduleFragment schedule) {
-        return updateAsync(resourceGroupName, name, schedule).block();
-    }
-
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName, String name, ScheduleFragment schedule, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, schedule, context).block();
+        return updateWithResponse(resourceGroupName, name, schedule, Context.NONE).getValue();
     }
 
     /**
@@ -1294,7 +1250,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String resourceGroupName, String name) {
@@ -1342,7 +1298,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(
@@ -1387,14 +1343,15 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = executeWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1406,9 +1363,9 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1426,11 +1383,11 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name) {
-        return beginExecuteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginExecuteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
@@ -1442,11 +1399,11 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name, Context context) {
-        return beginExecuteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginExecuteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
@@ -1457,7 +1414,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> executeAsync(String resourceGroupName, String name) {
@@ -1473,7 +1430,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> executeAsync(String resourceGroupName, String name, Context context) {
@@ -1520,7 +1477,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> retargetWithResponseAsync(
@@ -1579,7 +1536,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> retargetWithResponseAsync(
@@ -1634,16 +1591,17 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRetargetAsync(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             retargetWithResponseAsync(resourceGroupName, name, retargetScheduleProperties);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1656,9 +1614,9 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRetargetAsync(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context) {
         context = this.client.mergeContext(context);
@@ -1678,12 +1636,12 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties) {
-        return beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties).getSyncPoller();
+        return this.beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties).getSyncPoller();
     }
 
     /**
@@ -1696,12 +1654,12 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context) {
-        return beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties, context).getSyncPoller();
+        return this.beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties, context).getSyncPoller();
     }
 
     /**
@@ -1713,7 +1671,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> retargetAsync(
@@ -1733,7 +1691,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> retargetAsync(
@@ -1778,11 +1736,13 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1814,12 +1774,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1850,11 +1812,13 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1886,12 +1850,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupNextSinglePageAsync(

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Workload. */
+/** The workload type of the subscription. It can be either Production or DevTest. */
 public final class Workload extends ExpandableStringEnum<Workload> {
     /** Static value Production for Workload. */
     public static final Workload PRODUCTION = fromString("Production");
 
     /** Static value DevTest for Workload. */
     public static final Workload DEV_TEST = fromString("DevTest");
+
+    /**
+     * Creates a new instance of Workload value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Workload() {
+    }
 
     /**
      * Creates or finds a Workload from its string representation.
@@ -27,7 +36,11 @@ public final class Workload extends ExpandableStringEnum<Workload> {
         return fromString(name, Workload.class);
     }
 
-    /** @return known Workload values. */
+    /**
+     * Gets known Workload values.
+     *
+     * @return known Workload values.
+     */
     public static Collection<Workload> values() {
         return values(Workload.class);
     }

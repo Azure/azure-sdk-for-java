@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.models.ResourceRecommendationBaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of Advisor recommendations. */
 @Fluent
 public final class ResourceRecommendationBaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRecommendationBaseListResult.class);
-
     /*
      * The link used to get the next page of recommendations.
      */
@@ -27,6 +23,10 @@ public final class ResourceRecommendationBaseListResult {
      */
     @JsonProperty(value = "value")
     private List<ResourceRecommendationBaseInner> value;
+
+    /** Creates an instance of ResourceRecommendationBaseListResult class. */
+    public ResourceRecommendationBaseListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of recommendations.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SampleName. */
+/** The name of the sample schema to apply when creating this database. */
 public final class SampleName extends ExpandableStringEnum<SampleName> {
     /** Static value AdventureWorksLT for SampleName. */
     public static final SampleName ADVENTURE_WORKS_LT = fromString("AdventureWorksLT");

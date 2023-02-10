@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.AuthenticationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The upload registration certificate response. */
 @Fluent
 public final class UploadCertificateResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UploadCertificateResponseInner.class);
-
     /*
      * Specifies authentication type.
      */
@@ -58,11 +54,14 @@ public final class UploadCertificateResponseInner {
     private String azureManagementEndpointAudience;
 
     /*
-     * Identifier of the target resource that is the recipient of the requested
-     * token.
+     * Identifier of the target resource that is the recipient of the requested token.
      */
     @JsonProperty(value = "aadAudience", access = JsonProperty.Access.WRITE_ONLY)
     private String aadAudience;
+
+    /** Creates an instance of UploadCertificateResponseInner class. */
+    public UploadCertificateResponseInner() {
+    }
 
     /**
      * Get the authType property: Specifies authentication type.

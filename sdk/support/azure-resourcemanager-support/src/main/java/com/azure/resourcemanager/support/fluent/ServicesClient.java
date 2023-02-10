@@ -23,7 +23,7 @@ public interface ServicesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Service resources.
+     * @return collection of Service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceInner> list();
@@ -40,10 +40,23 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Service resources.
+     * @return collection of Service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceInner> list(Context context);
+
+    /**
+     * Gets a specific Azure service for support ticket creation.
+     *
+     * @param serviceName Name of the Azure service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific Azure service for support ticket creation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServiceInner> getWithResponse(String serviceName, Context context);
 
     /**
      * Gets a specific Azure service for support ticket creation.
@@ -56,17 +69,4 @@ public interface ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServiceInner get(String serviceName);
-
-    /**
-     * Gets a specific Azure service for support ticket creation.
-     *
-     * @param serviceName Name of the Azure service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure service for support ticket creation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceInner> getWithResponse(String serviceName, Context context);
 }

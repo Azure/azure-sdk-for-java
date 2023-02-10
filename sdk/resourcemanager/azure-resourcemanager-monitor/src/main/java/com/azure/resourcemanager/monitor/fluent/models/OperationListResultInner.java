@@ -27,6 +27,10 @@ public final class OperationListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OperationListResultInner class. */
+    public OperationListResultInner() {
+    }
+
     /**
      * Get the value property: List of operations supported by the Microsoft.Insights provider.
      *

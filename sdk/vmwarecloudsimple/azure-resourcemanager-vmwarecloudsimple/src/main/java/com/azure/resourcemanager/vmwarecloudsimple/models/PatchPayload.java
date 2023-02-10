@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** General patch payload modal. */
 @Fluent
 public final class PatchPayload {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchPayload.class);
-
     /*
      * The tags key:value pairs
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of PatchPayload class. */
+    public PatchPayload() {
+    }
 
     /**
      * Get the tags property: The tags key:value pairs.

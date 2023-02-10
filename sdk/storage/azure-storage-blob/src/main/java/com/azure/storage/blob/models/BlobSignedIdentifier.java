@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** signed identifier. */
-@Fluent
 @JacksonXmlRootElement(localName = "SignedIdentifier")
+@Fluent
 public final class BlobSignedIdentifier {
 
     /*

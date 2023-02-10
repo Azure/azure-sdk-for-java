@@ -5,22 +5,19 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.costmanagement.models.OperationStatusType;
+import com.azure.resourcemanager.costmanagement.models.ReservationReportSchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The status of the long running operation. */
 @Fluent
 public final class OperationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusInner.class);
-
     /*
      * The status of the long running operation.
      */
     @JsonProperty(value = "status")
-    private Status status;
+    private OperationStatusType status;
 
     /*
      * The properties of the resource generated.
@@ -28,12 +25,16 @@ public final class OperationStatusInner {
     @JsonProperty(value = "properties")
     private ReportUrl innerProperties;
 
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
+
     /**
      * Get the status property: The status of the long running operation.
      *
      * @return the status value.
      */
-    public Status status() {
+    public OperationStatusType status() {
         return this.status;
     }
 
@@ -43,7 +44,7 @@ public final class OperationStatusInner {
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
-    public OperationStatusInner withStatus(Status status) {
+    public OperationStatusInner withStatus(OperationStatusType status) {
         this.status = status;
         return this;
     }
@@ -58,21 +59,23 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Get the reportUrl property: The URL to download the generated report.
+     * Get the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
      *
      * @return the reportUrl value.
      */
-    public String reportUrl() {
+    public ReservationReportSchema reportUrl() {
         return this.innerProperties() == null ? null : this.innerProperties().reportUrl();
     }
 
     /**
-     * Set the reportUrl property: The URL to download the generated report.
+     * Set the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
      *
      * @param reportUrl the reportUrl value to set.
      * @return the OperationStatusInner object itself.
      */
-    public OperationStatusInner withReportUrl(String reportUrl) {
+    public OperationStatusInner withReportUrl(ReservationReportSchema reportUrl) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ReportUrl();
         }
@@ -109,9 +112,6 @@ public final class OperationStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

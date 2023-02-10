@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.JobService;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobBaseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobBaseInner model =
             BinaryData
                 .fromString(
@@ -35,8 +34,8 @@ public final class JobBaseInnerTests {
         Assertions.assertEquals(1053518025, model.properties().services().get("y").port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobBaseInner model =
             new JobBaseInner()
                 .withProperties(

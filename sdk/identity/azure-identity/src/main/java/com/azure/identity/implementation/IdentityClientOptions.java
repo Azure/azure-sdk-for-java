@@ -6,6 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
@@ -16,6 +21,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +29,6 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
-
 /**
  * Options to configure the IdentityClient.
  */
@@ -57,6 +62,13 @@ public final class IdentityClientOptions implements Cloneable {
     private ManagedIdentityType managedIdentityType;
     private ManagedIdentityParameters managedIdentityParameters;
     private Set<String> additionallyAllowedTenants;
+    private ClientOptions clientOptions;
+    private HttpLogOptions httpLogOptions;
+    private RetryOptions retryOptions;
+    private RetryPolicy retryPolicy;
+    private List<HttpPipelinePolicy> perCallPolicies;
+    private List<HttpPipelinePolicy> perRetryPolicies;
+    private boolean instanceDiscovery;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -67,9 +79,12 @@ public final class IdentityClientOptions implements Cloneable {
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        perCallPolicies = new ArrayList<>();
+        perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        instanceDiscovery = true;
     }
 
     /**
@@ -88,11 +103,6 @@ public final class IdentityClientOptions implements Cloneable {
         this.authorityHost = authorityHost;
         return this;
     }
-
-    /**
-     * Disables authority validation when required for Azure Active Directory token endpoint.
-     * @return IdentityClientOptions
-     */
 
     /**
      * @return the AKS Pod Authority endpoint to acquire tokens.
@@ -482,6 +492,113 @@ public final class IdentityClientOptions implements Cloneable {
         return this.additionallyAllowedTenants;
     }
 
+    /**
+     * Configure the client options.
+     * @param clientOptions the client options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setClientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured client options.
+     * @return the client options.
+     */
+    public ClientOptions getClientOptions() {
+        return this.clientOptions;
+    }
+
+    /**
+     * Configure the client options.
+     * @param httpLogOptions the Http log options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setHttpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured Http log options.
+     * @return the Http log options.
+     */
+    public HttpLogOptions getHttpLogOptions() {
+        return this.httpLogOptions;
+    }
+
+    /**
+     * Configure the retry options.
+     * @param retryOptions the retry options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setRetryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured retry options.
+     * @return the retry options.
+     */
+    public RetryOptions getRetryOptions() {
+        return this.retryOptions;
+    }
+
+    /**
+     * Configure the retry policy.
+     * @param retryPolicy the retry policy.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setRetryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Get the configured retry policy.
+     * @return the retry policy.
+     */
+    public RetryPolicy getRetryPolicy() {
+        return this.retryPolicy;
+    }
+
+    /**
+     * Add a per call policy.
+     * @param httpPipelinePolicy the http pipeline policy to add.
+     * @return the updated client options
+     */
+    public IdentityClientOptions addPerCallPolicy(HttpPipelinePolicy httpPipelinePolicy) {
+        this.perCallPolicies.add(httpPipelinePolicy);
+        return this;
+    }
+
+    /**
+     * Add a per retry policy.
+     * @param httpPipelinePolicy the retry policy to be added.
+     * @return the updated client options
+     */
+    public IdentityClientOptions addPerRetryPolicy(HttpPipelinePolicy httpPipelinePolicy) {
+        this.perRetryPolicies.add(httpPipelinePolicy);
+        return this;
+    }
+
+    /**
+     * Get the configured per retry policies.
+     * @return the per retry policies.
+     */
+    public List<HttpPipelinePolicy> getPerRetryPolicies() {
+        return this.perRetryPolicies;
+    }
+
+    /**
+     * Get the configured per call policies.
+     * @return the per call policies.
+     */
+    public List<HttpPipelinePolicy> getPerCallPolicies() {
+        return this.perCallPolicies;
+    }
 
     IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
         this.cp1Disabled = cp1Disabled;
@@ -529,6 +646,34 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setPerCallPolicies(List<HttpPipelinePolicy> perCallPolicies) {
+        this.perCallPolicies = perCallPolicies;
+        return this;
+    }
+
+    IdentityClientOptions setPerRetryPolicies(List<HttpPipelinePolicy> perRetryPolicies) {
+        this.perRetryPolicies = perRetryPolicies;
+        return this;
+    }
+
+    /**
+     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     *
+     * @return the updated client options
+     */
+    public IdentityClientOptions disableInstanceDisovery() {
+        this.instanceDiscovery = false;
+        return this;
+    }
+
+    /**
+     * Gets the instance discovery policy.
+     * @return boolean indicating if instance discovery is enabled.
+     */
+    public boolean getInstanceDiscovery() {
+        return this.instanceDiscovery;
+    }
 
     /**
      * Loads the details from the specified Configuration Store.
@@ -545,7 +690,7 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     public IdentityClientOptions clone() {
-        return new IdentityClientOptions()
+        IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
             .setAllowUnencryptedCache(this.allowUnencryptedCache)
             .setHttpClient(this.httpClient)
@@ -566,6 +711,16 @@ public final class IdentityClientOptions implements Cloneable {
             .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
             .setUserAssertion(this.userAssertion)
             .setConfigurationStore(this.configuration)
-            .setPersistenceCache(this.sharedTokenCacheEnabled);
+            .setPersistenceCache(this.sharedTokenCacheEnabled)
+            .setClientOptions(this.clientOptions)
+            .setHttpLogOptions(this.httpLogOptions)
+            .setRetryOptions(this.retryOptions)
+            .setRetryPolicy(this.retryPolicy)
+            .setPerCallPolicies(this.perCallPolicies)
+            .setPerRetryPolicies(this.perRetryPolicies);
+        if (!getInstanceDiscovery()) {
+            clone.disableInstanceDisovery();
+        }
+        return clone;
     }
 }

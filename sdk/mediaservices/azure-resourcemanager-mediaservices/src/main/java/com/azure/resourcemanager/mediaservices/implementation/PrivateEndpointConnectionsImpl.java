@@ -29,15 +29,6 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         this.serviceManager = serviceManager;
     }
 
-    public PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName) {
-        PrivateEndpointConnectionListResultInner inner = this.serviceClient().list(resourceGroupName, accountName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnectionListResult> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<PrivateEndpointConnectionListResultInner> inner =
@@ -53,10 +44,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection get(String resourceGroupName, String accountName, String name) {
-        PrivateEndpointConnectionInner inner = this.serviceClient().get(resourceGroupName, accountName, name);
+    public PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName) {
+        PrivateEndpointConnectionListResultInner inner = this.serviceClient().list(resourceGroupName, accountName);
         if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
+            return new PrivateEndpointConnectionListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,13 +68,22 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String name) {
-        this.serviceClient().delete(resourceGroupName, accountName, name);
+    public PrivateEndpointConnection get(String resourceGroupName, String accountName, String name) {
+        PrivateEndpointConnectionInner inner = this.serviceClient().get(resourceGroupName, accountName, name);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, name, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String name) {
+        this.serviceClient().delete(resourceGroupName, accountName, name);
     }
 
     public PrivateEndpointConnection getById(String id) {

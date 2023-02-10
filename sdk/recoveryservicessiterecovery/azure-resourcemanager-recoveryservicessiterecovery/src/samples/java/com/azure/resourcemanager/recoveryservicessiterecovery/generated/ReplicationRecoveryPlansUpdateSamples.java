@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlan;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanGroup;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanGroupType;
@@ -27,7 +26,7 @@ public final class ReplicationRecoveryPlansUpdateSamples {
         RecoveryPlan resource =
             manager
                 .replicationRecoveryPlans()
-                .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", Context.NONE)
+                .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -22,6 +22,10 @@ public final class Deinterlace {
     @JsonProperty(value = "mode")
     private DeinterlaceMode mode;
 
+    /** Creates an instance of Deinterlace class. */
+    public Deinterlace() {
+    }
+
     /**
      * Get the parity property: The field parity for de-interlacing, defaults to Auto.
      *

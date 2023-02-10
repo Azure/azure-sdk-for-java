@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AAddDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AVmDiskInputDetails;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksInput;
@@ -46,6 +45,6 @@ public final class ReplicationProtectedItemsAddDisksSamples {
                                                         "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage")
                                                     .withPrimaryStagingAzureStorageAccountId(
                                                         "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

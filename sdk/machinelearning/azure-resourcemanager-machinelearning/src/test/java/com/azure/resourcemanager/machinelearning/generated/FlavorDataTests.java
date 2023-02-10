@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.FlavorData;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FlavorDataTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FlavorData model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class FlavorDataTests {
         Assertions.assertEquals("bdkelvidizo", model.data().get("sdbccxjmonfdgnwn"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FlavorData model =
             new FlavorData()
                 .withData(mapOf("sdbccxjmonfdgnwn", "bdkelvidizo", "keifzzhmkdasv", "ypuuwwltvuqjctze", "cu", "lyhb"));

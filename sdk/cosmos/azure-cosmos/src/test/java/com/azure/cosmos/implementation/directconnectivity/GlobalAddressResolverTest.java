@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -22,6 +24,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -194,7 +197,11 @@ public class GlobalAddressResolverTest {
                 .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
                 .thenReturn(Flux.fromIterable(openConnectionResponses));
 
-        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(documentCollection.getSelfLink()))
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
+                .setProactiveConnectionRegions(1)
+                .build();
+
+        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))
                         .expectNext(response1)
                         .expectNext(response2)
                         .verifyComplete();

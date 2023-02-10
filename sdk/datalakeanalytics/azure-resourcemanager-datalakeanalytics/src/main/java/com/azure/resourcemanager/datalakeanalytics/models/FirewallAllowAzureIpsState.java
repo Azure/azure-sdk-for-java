@@ -7,7 +7,10 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FirewallAllowAzureIpsState. */
+/**
+ * The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is
+ * disabled, this is not enforced.
+ */
 public enum FirewallAllowAzureIpsState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +33,9 @@ public enum FirewallAllowAzureIpsState {
      */
     @JsonCreator
     public static FirewallAllowAzureIpsState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FirewallAllowAzureIpsState[] items = FirewallAllowAzureIpsState.values();
         for (FirewallAllowAzureIpsState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum FirewallAllowAzureIpsState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

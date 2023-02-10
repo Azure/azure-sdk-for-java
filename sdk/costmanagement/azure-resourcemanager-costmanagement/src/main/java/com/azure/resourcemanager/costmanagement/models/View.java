@@ -83,14 +83,14 @@ public interface View {
     OffsetDateTime modifiedOn();
 
     /**
-     * Gets the dateRange property: Selected date range for viewing cost in.
+     * Gets the dateRange property: Date range of the current view.
      *
      * @return the dateRange value.
      */
     String dateRange();
 
     /**
-     * Gets the currency property: Selected currency.
+     * Gets the currency property: Currency of the current view.
      *
      * @return the currency value.
      */
@@ -163,7 +163,7 @@ public interface View {
     ReportConfigDataset dataSet();
 
     /**
-     * Gets the includeMonetaryCommitment property: Include monetary commitment.
+     * Gets the includeMonetaryCommitment property: If true, report includes monetary commitment.
      *
      * @return the includeMonetaryCommitment value.
      */
@@ -226,7 +226,8 @@ public interface View {
                 DefinitionStages.WithTypePropertiesType,
                 DefinitionStages.WithTimeframe,
                 DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataSet {
+                DefinitionStages.WithDataSet,
+                DefinitionStages.WithIncludeMonetaryCommitment {
             /**
              * Executes the create request.
              *
@@ -402,6 +403,16 @@ public interface View {
              */
             WithCreate withDataSet(ReportConfigDataset dataSet);
         }
+        /** The stage of the View definition allowing to specify includeMonetaryCommitment. */
+        interface WithIncludeMonetaryCommitment {
+            /**
+             * Specifies the includeMonetaryCommitment property: If true, report includes monetary commitment..
+             *
+             * @param includeMonetaryCommitment If true, report includes monetary commitment.
+             * @return the next definition stage.
+             */
+            WithCreate withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
+        }
     }
     /**
      * Begins update for the View resource.
@@ -423,7 +434,8 @@ public interface View {
             UpdateStages.WithTypePropertiesType,
             UpdateStages.WithTimeframe,
             UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataSet {
+            UpdateStages.WithDataSet,
+            UpdateStages.WithIncludeMonetaryCommitment {
         /**
          * Executes the update request.
          *
@@ -600,6 +612,16 @@ public interface View {
              * @return the next definition stage.
              */
             Update withDataSet(ReportConfigDataset dataSet);
+        }
+        /** The stage of the View update allowing to specify includeMonetaryCommitment. */
+        interface WithIncludeMonetaryCommitment {
+            /**
+             * Specifies the includeMonetaryCommitment property: If true, report includes monetary commitment..
+             *
+             * @param includeMonetaryCommitment If true, report includes monetary commitment.
+             * @return the next definition stage.
+             */
+            Update withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
         }
     }
     /**

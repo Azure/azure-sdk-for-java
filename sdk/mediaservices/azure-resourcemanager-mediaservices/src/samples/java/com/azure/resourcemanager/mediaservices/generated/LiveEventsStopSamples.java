@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 
 /** Samples for LiveEvents Stop. */
 public final class LiveEventsStopSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-stop.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveevent-stop.json
      */
     /**
      * Sample code: Stop a LiveEvent.
@@ -25,6 +24,6 @@ public final class LiveEventsStopSamples {
                 "slitestmedia10",
                 "myLiveEvent1",
                 new LiveEventActionInput().withRemoveOutputsOnStop(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

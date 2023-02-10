@@ -186,6 +186,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         });
 
         assertTrue(artifacts.stream().anyMatch(prop -> prop.getTags() != null));
+
         assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
             && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
         assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())

@@ -17,6 +17,10 @@ public final class AlertRulePatchProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of AlertRulePatchProperties class. */
+    public AlertRulePatchProperties() {
+    }
+
     /**
      * Get the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.

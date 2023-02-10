@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AksNetworkingConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AksNetworkingConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AksNetworkingConfiguration model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class AksNetworkingConfigurationTests {
         Assertions.assertEquals("slmot", model.dockerBridgeCidr());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AksNetworkingConfiguration model =
             new AksNetworkingConfiguration()
                 .withSubnetId("pilguooqjag")

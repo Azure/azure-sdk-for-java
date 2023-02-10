@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobParams;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobParamsProperties;
 
@@ -27,6 +26,6 @@ public final class ReplicationJobsResumeSamples {
                 "resourceGroupPS1",
                 "58776d0b-3141-48b2-a377-9ad863eb160d",
                 new ResumeJobParams().withProperties(new ResumeJobParamsProperties().withComments(" ")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

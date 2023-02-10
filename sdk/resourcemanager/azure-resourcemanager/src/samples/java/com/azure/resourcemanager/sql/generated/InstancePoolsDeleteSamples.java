@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for InstancePools Delete. */
 public final class InstancePoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/DeleteInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteInstancePool.json
      */
     /**
      * Sample code: Delete an instance pool.

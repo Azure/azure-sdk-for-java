@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultHealth Refresh. */
 public final class ReplicationVaultHealthRefreshSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationVaultHealthRefreshSamples {
      */
     public static void refreshesHealthSummaryOfTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultHealths().refresh("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationVaultHealths().refresh("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

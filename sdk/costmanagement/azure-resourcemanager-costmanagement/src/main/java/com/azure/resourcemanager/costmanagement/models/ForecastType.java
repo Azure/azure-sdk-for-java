@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForecastType. */
+/** The type of the forecast. */
 public final class ForecastType extends ExpandableStringEnum<ForecastType> {
     /** Static value Usage for ForecastType. */
     public static final ForecastType USAGE = fromString("Usage");
@@ -18,6 +18,15 @@ public final class ForecastType extends ExpandableStringEnum<ForecastType> {
 
     /** Static value AmortizedCost for ForecastType. */
     public static final ForecastType AMORTIZED_COST = fromString("AmortizedCost");
+
+    /**
+     * Creates a new instance of ForecastType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastType() {
+    }
 
     /**
      * Creates or finds a ForecastType from its string representation.
@@ -30,7 +39,11 @@ public final class ForecastType extends ExpandableStringEnum<ForecastType> {
         return fromString(name, ForecastType.class);
     }
 
-    /** @return known ForecastType values. */
+    /**
+     * Gets known ForecastType values.
+     *
+     * @return known ForecastType values.
+     */
     public static Collection<ForecastType> values() {
         return values(ForecastType.class);
     }

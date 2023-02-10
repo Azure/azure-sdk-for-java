@@ -35,6 +35,15 @@ public final class BillingSku extends ExpandableStringEnum<BillingSku> {
     public static final BillingSku G10 = fromString("G10");
 
     /**
+     * Creates a new instance of BillingSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingSku() {
+    }
+
+    /**
      * Creates or finds a BillingSku from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CanonicalPropertyValueType. */
+/** Type of canonical property value. */
 public final class CanonicalPropertyValueType extends ExpandableStringEnum<CanonicalPropertyValueType> {
     /** Static value Numeric for CanonicalPropertyValueType. */
     public static final CanonicalPropertyValueType NUMERIC = fromString("Numeric");
@@ -23,6 +23,15 @@ public final class CanonicalPropertyValueType extends ExpandableStringEnum<Canon
     public static final CanonicalPropertyValueType DERIVED_NUMERIC = fromString("DerivedNumeric");
 
     /**
+     * Creates a new instance of CanonicalPropertyValueType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CanonicalPropertyValueType() {
+    }
+
+    /**
      * Creates or finds a CanonicalPropertyValueType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class CanonicalPropertyValueType extends ExpandableStringEnum<Canon
         return fromString(name, CanonicalPropertyValueType.class);
     }
 
-    /** @return known CanonicalPropertyValueType values. */
+    /**
+     * Gets known CanonicalPropertyValueType values.
+     *
+     * @return known CanonicalPropertyValueType values.
+     */
     public static Collection<CanonicalPropertyValueType> values() {
         return values(CanonicalPropertyValueType.class);
     }

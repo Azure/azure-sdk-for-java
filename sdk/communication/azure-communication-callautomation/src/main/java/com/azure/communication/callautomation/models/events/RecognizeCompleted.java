@@ -3,8 +3,11 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.util.Optional;
+
 import com.azure.communication.callautomation.models.CallMediaRecognitionType;
 import com.azure.communication.callautomation.models.CollectTonesResult;
+import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
@@ -34,30 +37,17 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
     private ChoiceResult choiceResult;
 
     /**
-     * Get the recognitionType property: Determines the sub-type of the recognize operation. In case of cancel operation
-     * the this field is not set and is returned empty.
+     * Get the collectToneResult or choiceResult property.
      *
-     * @return the recognitionType value.
+     * @return the recognizeResult value.
      */
-    public CallMediaRecognitionType getRecognitionType() {
-        return this.recognitionType;
-    }
+    public Optional<RecognizeResult> getRecognizeResult() {
+        if (this.recognitionType == CallMediaRecognitionType.DTMF) {
+            return Optional.ofNullable(this.collectTonesResult);
 
-    /**
-     * Get the collectTonesResult property: Defines the result for CallMediaRecognitionType = Dtmf.
-     *
-     * @return the collectTonesResult value.
-     */
-    public CollectTonesResult getCollectTonesResult() {
-        return this.collectTonesResult;
-    }
-
-    /**
-     * Get the choiceResult property: Defines the result for Recognize Choice.
-     *
-     * @return the choiceResult value.
-     */
-    public ChoiceResult getChoiceResult() {
-        return this.choiceResult;
+        } else if (this.recognitionType == CallMediaRecognitionType.CHOICES) {
+            return Optional.ofNullable(this.choiceResult);
+        }
+        return Optional.empty();
     }
 }

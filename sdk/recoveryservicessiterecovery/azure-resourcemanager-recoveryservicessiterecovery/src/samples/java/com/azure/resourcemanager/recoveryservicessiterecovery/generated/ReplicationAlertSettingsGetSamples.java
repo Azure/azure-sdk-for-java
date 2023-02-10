@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAlertSettings Get. */
 public final class ReplicationAlertSettingsGetSamples {
     /*
@@ -20,6 +18,6 @@ public final class ReplicationAlertSettingsGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationAlertSettings()
-            .getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting", Context.NONE);
+            .getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting", com.azure.core.util.Context.NONE);
     }
 }

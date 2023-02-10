@@ -17,6 +17,15 @@ public final class MultiVmGroupCreateOption extends ExpandableStringEnum<MultiVm
     public static final MultiVmGroupCreateOption USER_SPECIFIED = fromString("UserSpecified");
 
     /**
+     * Creates a new instance of MultiVmGroupCreateOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MultiVmGroupCreateOption() {
+    }
+
+    /**
      * Creates or finds a MultiVmGroupCreateOption from its string representation.
      *
      * @param name a name to look for.

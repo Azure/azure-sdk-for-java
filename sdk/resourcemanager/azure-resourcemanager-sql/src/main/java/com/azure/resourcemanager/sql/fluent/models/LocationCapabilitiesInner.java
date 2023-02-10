@@ -44,6 +44,10 @@ public final class LocationCapabilitiesInner {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of LocationCapabilitiesInner class. */
+    public LocationCapabilitiesInner() {
+    }
+
     /**
      * Get the name property: The location name.
      *

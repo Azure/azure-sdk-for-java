@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobilityServiceRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobilityServiceRequestProperties;
 
@@ -30,6 +29,6 @@ public final class ReplicationProtectedItemsUpdateMobilityServiceS {
                 "79dd20ab-2b40-11e7-9791-0050568f387e",
                 new UpdateMobilityServiceRequest()
                     .withProperties(new UpdateMobilityServiceRequestProperties().withRunAsAccountId("2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

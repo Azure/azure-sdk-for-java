@@ -5,46 +5,43 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Fields for tracking refresh job on the share or container. */
 @Fluent
 public final class RefreshDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RefreshDetails.class);
-
     /*
-     * If a refresh job is currently in progress on this share or container,
-     * this field indicates the ARM resource ID of that job. The field is empty
-     * if no job is in progress.
+     * If a refresh job is currently in progress on this share or container, this field indicates the ARM resource ID
+     * of that job. The field is empty if no job is in progress.
      */
     @JsonProperty(value = "inProgressRefreshJobId")
     private String inProgressRefreshJobId;
 
     /*
-     * Indicates the completed time for the last refresh job on this particular
-     * share or container, if any.This could be a failed job or a successful
-     * job.
+     * Indicates the completed time for the last refresh job on this particular share or container, if any.This could
+     * be a failed job or a successful job.
      */
     @JsonProperty(value = "lastCompletedRefreshJobTimeInUTC")
     private OffsetDateTime lastCompletedRefreshJobTimeInUtc;
 
     /*
-     * Indicates the relative path of the error xml for the last refresh job on
-     * this particular share or container, if any. This could be a failed job
-     * or a successful job.
+     * Indicates the relative path of the error xml for the last refresh job on this particular share or container, if
+     * any. This could be a failed job or a successful job.
      */
     @JsonProperty(value = "errorManifestFile")
     private String errorManifestFile;
 
     /*
-     * Indicates the id of the last refresh job on this particular share or
-     * container,if any. This could be a failed job or a successful job.
+     * Indicates the id of the last refresh job on this particular share or container,if any. This could be a failed
+     * job or a successful job.
      */
     @JsonProperty(value = "lastJob")
     private String lastJob;
+
+    /** Creates an instance of RefreshDetails class. */
+    public RefreshDetails() {
+    }
 
     /**
      * Get the inProgressRefreshJobId property: If a refresh job is currently in progress on this share or container,

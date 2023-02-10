@@ -39,6 +39,9 @@ public final class IntegrationRuntimeVNetProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeVNetProperties class. */
+    public IntegrationRuntimeVNetProperties() {}
+
     /**
      * Get the vNetId property: The ID of the VNet that this integration runtime will join.
      *

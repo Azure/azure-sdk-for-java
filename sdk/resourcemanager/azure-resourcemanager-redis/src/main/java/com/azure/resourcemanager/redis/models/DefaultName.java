@@ -24,7 +24,11 @@ public final class DefaultName extends ExpandableStringEnum<DefaultName> {
         return fromString(name, DefaultName.class);
     }
 
-    /** @return known DefaultName values. */
+    /**
+     * Gets known DefaultName values.
+     *
+     * @return known DefaultName values.
+     */
     public static Collection<DefaultName> values() {
         return values(DefaultName.class);
     }

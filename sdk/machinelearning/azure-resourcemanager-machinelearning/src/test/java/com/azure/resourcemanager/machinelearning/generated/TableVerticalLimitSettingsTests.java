@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.TableVerticalLimitSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TableVerticalLimitSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TableVerticalLimitSettings model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class TableVerticalLimitSettingsTests {
         Assertions.assertEquals(Duration.parse("PT5H4M5S"), model.trialTimeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TableVerticalLimitSettings model =
             new TableVerticalLimitSettings()
                 .withEnableEarlyTermination(false)

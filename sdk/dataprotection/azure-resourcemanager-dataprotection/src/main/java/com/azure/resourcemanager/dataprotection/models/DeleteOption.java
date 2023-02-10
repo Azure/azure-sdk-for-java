@@ -6,13 +6,16 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** DeleteOption Delete Option. */
+/**
+ * DeleteOption
+ *
+ * <p>Delete Option.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,13 +25,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "AbsoluteDeleteOption", value = AbsoluteDeleteOption.class)})
 @Fluent
 public class DeleteOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteOption.class);
-
     /*
      * Duration of deletion after given timespan
      */
     @JsonProperty(value = "duration", required = true)
     private String duration;
+
+    /** Creates an instance of DeleteOption class. */
+    public DeleteOption() {
+    }
 
     /**
      * Get the duration property: Duration of deletion after given timespan.
@@ -57,9 +62,11 @@ public class DeleteOption {
      */
     public void validate() {
         if (duration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property duration in model DeleteOption"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeleteOption.class);
 }

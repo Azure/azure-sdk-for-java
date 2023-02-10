@@ -20,6 +20,15 @@ public final class NetworkAccessPolicy extends ExpandableStringEnum<NetworkAcces
     public static final NetworkAccessPolicy DENY_ALL = fromString("DenyAll");
 
     /**
+     * Creates a new instance of NetworkAccessPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkAccessPolicy() {
+    }
+
+    /**
      * Creates or finds a NetworkAccessPolicy from its string representation.
      *
      * @param name a name to look for.

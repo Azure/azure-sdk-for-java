@@ -14,6 +14,15 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
     public static final Db2AuthenticationType BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of Db2AuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Db2AuthenticationType() {
+    }
+
+    /**
      * Creates or finds a Db2AuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseReadScale. */
+/**
+ * The state of read-only routing. If enabled, connections that have application intent set to readonly in their
+ * connection string may be routed to a readonly secondary replica in the same region. Not applicable to a Hyperscale
+ * database within an elastic pool.
+ */
 public final class DatabaseReadScale extends ExpandableStringEnum<DatabaseReadScale> {
     /** Static value Enabled for DatabaseReadScale. */
     public static final DatabaseReadScale ENABLED = fromString("Enabled");

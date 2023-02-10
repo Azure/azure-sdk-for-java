@@ -20,6 +20,9 @@ public class AzureEntityResource extends Resource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of AzureEntityResource class. */
+    public AzureEntityResource() {}
+
     /**
      * Get the etag property: Resource Etag.
      *

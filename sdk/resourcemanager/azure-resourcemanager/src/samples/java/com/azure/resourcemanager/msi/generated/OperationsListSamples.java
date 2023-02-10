@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/MsiOperationsList.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/MsiOperationsList.json
      */
     /**
      * Sample code: MsiOperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void msiOperationsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.identities().manager().serviceClient().getOperations().list(Context.NONE);
+        azure.identities().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A rule for NAT - exposing a VM's port (backendPort) on the public IP address using a load balancer. */
 @Fluent
 public final class InboundNatRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRule.class);
-
     /*
      * The transport protocol for the endpoint.
      */
@@ -21,9 +17,8 @@ public final class InboundNatRule {
     private TransportProtocol transportProtocol;
 
     /*
-     * The external endpoint port of the inbound connection. Possible values
-     * range between 1 and 65535, inclusive. If unspecified, a value will be
-     * allocated automatically.
+     * The external endpoint port of the inbound connection. Possible values range between 1 and 65535, inclusive. If
+     * unspecified, a value will be allocated automatically.
      */
     @JsonProperty(value = "frontendPort")
     private Integer frontendPort;
@@ -33,6 +28,10 @@ public final class InboundNatRule {
      */
     @JsonProperty(value = "backendPort")
     private Integer backendPort;
+
+    /** Creates an instance of InboundNatRule class. */
+    public InboundNatRule() {
+    }
 
     /**
      * Get the transportProtocol property: The transport protocol for the endpoint.

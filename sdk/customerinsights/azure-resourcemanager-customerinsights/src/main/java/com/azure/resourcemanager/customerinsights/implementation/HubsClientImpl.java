@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.HubsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HubsClient. */
 public final class HubsClientImpl implements HubsClient {
-    private final ClientLogger logger = new ClientLogger(HubsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HubsService service;
 
@@ -66,7 +63,7 @@ public final class HubsClientImpl implements HubsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface HubsService {
+    public interface HubsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -183,7 +180,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> createOrUpdateWithResponseAsync(
@@ -239,7 +236,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> createOrUpdateWithResponseAsync(
@@ -291,19 +288,30 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HubInner> createOrUpdateAsync(String resourceGroupName, String hubName, HubInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, parameters)
-            .flatMap(
-                (Response<HubInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a hub, or updates an existing hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the Hub.
+     * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HubInner> createOrUpdateWithResponse(
+        String resourceGroupName, String hubName, HubInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, parameters, context).block();
     }
 
     /**
@@ -319,25 +327,7 @@ public final class HubsClientImpl implements HubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubInner createOrUpdate(String resourceGroupName, String hubName, HubInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, hubName, parameters).block();
-    }
-
-    /**
-     * Creates a hub, or updates an existing hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the Hub.
-     * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HubInner> createOrUpdateWithResponse(
-        String resourceGroupName, String hubName, HubInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, parameters, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, hubName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -349,7 +339,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> updateWithResponseAsync(
@@ -405,7 +395,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> updateWithResponseAsync(
@@ -457,19 +447,30 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HubInner> updateAsync(String resourceGroupName, String hubName, HubInner parameters) {
         return updateWithResponseAsync(resourceGroupName, hubName, parameters)
-            .flatMap(
-                (Response<HubInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates a Hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the Hub.
+     * @param parameters Parameters supplied to the Update Hub operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HubInner> updateWithResponse(
+        String resourceGroupName, String hubName, HubInner parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, hubName, parameters, context).block();
     }
 
     /**
@@ -485,25 +486,7 @@ public final class HubsClientImpl implements HubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubInner update(String resourceGroupName, String hubName, HubInner parameters) {
-        return updateAsync(resourceGroupName, hubName, parameters).block();
-    }
-
-    /**
-     * Updates a Hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the Hub.
-     * @param parameters Parameters supplied to the Update Hub operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HubInner> updateWithResponse(
-        String resourceGroupName, String hubName, HubInner parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, hubName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, hubName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -514,7 +497,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hubName) {
@@ -560,7 +543,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -603,14 +586,15 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hubName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -622,9 +606,9 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hubName, Context context) {
         context = this.client.mergeContext(context);
@@ -642,11 +626,11 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName) {
-        return beginDeleteAsync(resourceGroupName, hubName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName).getSyncPoller();
     }
 
     /**
@@ -658,11 +642,11 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, Context context) {
-        return beginDeleteAsync(resourceGroupName, hubName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName, context).getSyncPoller();
     }
 
     /**
@@ -673,7 +657,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName) {
@@ -689,7 +673,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, Context context) {
@@ -735,7 +719,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
+     * @return information about the specified hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String hubName) {
@@ -783,7 +767,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
+     * @return information about the specified hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubInner>> getByResourceGroupWithResponseAsync(
@@ -828,19 +812,29 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
+     * @return information about the specified hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HubInner> getByResourceGroupAsync(String resourceGroupName, String hubName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hubName)
-            .flatMap(
-                (Response<HubInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets information about the specified hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HubInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String hubName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, hubName, context).block();
     }
 
     /**
@@ -855,24 +849,7 @@ public final class HubsClientImpl implements HubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HubInner getByResourceGroup(String resourceGroupName, String hubName) {
-        return getByResourceGroupAsync(resourceGroupName, hubName).block();
-    }
-
-    /**
-     * Gets information about the specified hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HubInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hubName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, hubName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, hubName, Context.NONE).getValue();
     }
 
     /**
@@ -882,7 +859,8 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -934,7 +912,8 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listByResourceGroupSinglePageAsync(
@@ -983,7 +962,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1000,7 +979,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1016,7 +995,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubInner> listByResourceGroup(String resourceGroupName) {
@@ -1031,7 +1010,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1043,7 +1022,8 @@ public final class HubsClientImpl implements HubsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listSinglePageAsync() {
@@ -1089,7 +1069,8 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listSinglePageAsync(Context context) {
@@ -1130,7 +1111,7 @@ public final class HubsClientImpl implements HubsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubInner> listAsync() {
@@ -1144,7 +1125,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubInner> listAsync(Context context) {
@@ -1157,7 +1138,7 @@ public final class HubsClientImpl implements HubsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubInner> list() {
@@ -1171,7 +1152,7 @@ public final class HubsClientImpl implements HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubInner> list(Context context) {
@@ -1181,11 +1162,12 @@ public final class HubsClientImpl implements HubsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of list hub operation.
+     * @return response of list hub operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1217,12 +1199,13 @@ public final class HubsClientImpl implements HubsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of list hub operation.
+     * @return response of list hub operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1253,11 +1236,12 @@ public final class HubsClientImpl implements HubsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of list hub operation.
+     * @return response of list hub operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listNextSinglePageAsync(String nextLink) {
@@ -1288,12 +1272,13 @@ public final class HubsClientImpl implements HubsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of list hub operation.
+     * @return response of list hub operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubInner>> listNextSinglePageAsync(String nextLink, Context context) {

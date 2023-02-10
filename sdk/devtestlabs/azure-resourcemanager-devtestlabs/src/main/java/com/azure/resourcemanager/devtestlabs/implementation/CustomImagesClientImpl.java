@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.CustomImagesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomImagesClient. */
 public final class CustomImagesClientImpl implements CustomImagesClient {
-    private final ClientLogger logger = new ClientLogger(CustomImagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CustomImagesService service;
 
@@ -68,7 +65,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientCus")
-    private interface CustomImagesService {
+    public interface CustomImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs"
@@ -178,7 +175,8 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listSinglePageAsync(
@@ -244,7 +242,8 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listSinglePageAsync(
@@ -312,7 +311,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomImageInner> listAsync(
@@ -330,7 +329,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomImageInner> listAsync(String resourceGroupName, String labName) {
@@ -356,7 +355,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomImageInner> listAsync(
@@ -380,7 +379,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomImageInner> list(String resourceGroupName, String labName) {
@@ -404,7 +403,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomImageInner> list(
@@ -428,7 +427,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom image.
+     * @return custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomImageInner>> getWithResponseAsync(
@@ -484,7 +483,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom image.
+     * @return custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomImageInner>> getWithResponseAsync(
@@ -532,23 +531,16 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
-     * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom image.
+     * @return custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomImageInner> getAsync(String resourceGroupName, String labName, String name, String expand) {
+    private Mono<CustomImageInner> getAsync(String resourceGroupName, String labName, String name) {
+        final String expand = null;
         return getWithResponseAsync(resourceGroupName, labName, name, expand)
-            .flatMap(
-                (Response<CustomImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -557,23 +549,17 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
+     * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom image.
+     * @return custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomImageInner> getAsync(String resourceGroupName, String labName, String name) {
-        final String expand = null;
-        return getWithResponseAsync(resourceGroupName, labName, name, expand)
-            .flatMap(
-                (Response<CustomImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<CustomImageInner> getWithResponse(
+        String resourceGroupName, String labName, String name, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, labName, name, expand, context).block();
     }
 
     /**
@@ -590,26 +576,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomImageInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
-        return getAsync(resourceGroupName, labName, name, expand).block();
-    }
-
-    /**
-     * Get custom image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the custom image.
-     * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomImageInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, labName, name, expand, context).block();
+        return getWithResponse(resourceGroupName, labName, name, expand, Context.NONE).getValue();
     }
 
     /**
@@ -622,7 +589,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -683,7 +650,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -740,9 +707,9 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return the {@link PollerFlux} for polling of a custom image.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, CustomImageInner customImage) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -750,7 +717,11 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
         return this
             .client
             .<CustomImageInner, CustomImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CustomImageInner.class, CustomImageInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CustomImageInner.class,
+                CustomImageInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -764,9 +735,9 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return the {@link PollerFlux} for polling of a custom image.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context) {
         context = this.client.mergeContext(context);
@@ -788,12 +759,12 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return the {@link SyncPoller} for polling of a custom image.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, CustomImageInner customImage) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, name, customImage).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, labName, name, customImage).getSyncPoller();
     }
 
     /**
@@ -807,12 +778,12 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return the {@link SyncPoller} for polling of a custom image.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, name, customImage, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, labName, name, customImage, context).getSyncPoller();
     }
 
     /**
@@ -825,7 +796,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomImageInner> createOrUpdateAsync(
@@ -846,7 +817,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomImageInner> createOrUpdateAsync(
@@ -902,7 +873,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -956,7 +927,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1006,14 +977,15 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1026,9 +998,9 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1047,11 +1019,11 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name) {
-        return beginDeleteAsync(resourceGroupName, labName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, labName, name).getSyncPoller();
     }
 
     /**
@@ -1064,12 +1036,12 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, labName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, labName, name, context).getSyncPoller();
     }
 
     /**
@@ -1081,7 +1053,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String name) {
@@ -1098,7 +1070,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String name, Context context) {
@@ -1148,7 +1120,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomImageInner>> updateWithResponseAsync(
@@ -1209,7 +1181,7 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomImageInner>> updateWithResponseAsync(
@@ -1266,20 +1238,32 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
+     * @return a custom image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomImageInner> updateAsync(
         String resourceGroupName, String labName, String name, CustomImageFragment customImage) {
         return updateWithResponseAsync(resourceGroupName, labName, name, customImage)
-            .flatMap(
-                (Response<CustomImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Allows modifying tags of custom images. All other properties will be ignored.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the custom image.
+     * @param customImage A custom image.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a custom image along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomImageInner> updateWithResponse(
+        String resourceGroupName, String labName, String name, CustomImageFragment customImage, Context context) {
+        return updateWithResponseAsync(resourceGroupName, labName, name, customImage, context).block();
     }
 
     /**
@@ -1297,36 +1281,19 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomImageInner update(
         String resourceGroupName, String labName, String name, CustomImageFragment customImage) {
-        return updateAsync(resourceGroupName, labName, name, customImage).block();
-    }
-
-    /**
-     * Allows modifying tags of custom images. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the custom image.
-     * @param customImage A custom image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomImageInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, CustomImageFragment customImage, Context context) {
-        return updateWithResponseAsync(resourceGroupName, labName, name, customImage, context).block();
+        return updateWithResponse(resourceGroupName, labName, name, customImage, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listNextSinglePageAsync(String nextLink) {
@@ -1357,12 +1324,14 @@ public final class CustomImagesClientImpl implements CustomImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomImageInner>> listNextSinglePageAsync(String nextLink, Context context) {

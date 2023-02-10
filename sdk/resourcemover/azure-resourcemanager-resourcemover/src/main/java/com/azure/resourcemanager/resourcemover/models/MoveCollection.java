@@ -82,6 +82,13 @@ public interface MoveCollection {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.MoveCollectionInner object.
      *
      * @return the inner object.
@@ -248,20 +255,6 @@ public interface MoveCollection {
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
      *
-     * @param body Defines the request body for initiate prepare operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus prepare(PrepareRequest body);
-
-    /**
-     * Initiates prepare for the set of resources included in the request body. The prepare operation is on the
-     * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
-     * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
-     * can call operation with validateOnly property set to true.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
@@ -282,20 +275,6 @@ public interface MoveCollection {
      * @return operation status REST resource.
      */
     OperationStatus prepare(PrepareRequest body, Context context);
-
-    /**
-     * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
-     * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
-     * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
-     * validateOnly property set to true.
-     *
-     * @param body Defines the request body for resource move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus initiateMove(ResourceMoveRequest body);
 
     /**
      * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
@@ -330,20 +309,6 @@ public interface MoveCollection {
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
      *
-     * @param body Defines the request body for commit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus commit(CommitRequest body);
-
-    /**
-     * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
-     * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
-     * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
-     * validateOnly property set to true.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
@@ -364,20 +329,6 @@ public interface MoveCollection {
      * @return operation status REST resource.
      */
     OperationStatus commit(CommitRequest body, Context context);
-
-    /**
-     * Discards the set of resources included in the request body. The discard operation is triggered on the
-     * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
-     * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
-     * operation with validateOnly property set to true.
-     *
-     * @param body Defines the request body for discard operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus discard(DiscardRequest body);
 
     /**
      * Discards the set of resources included in the request body. The discard operation is triggered on the
@@ -425,19 +376,6 @@ public interface MoveCollection {
      * @return operation status REST resource.
      */
     OperationStatus resolveDependencies(Context context);
-
-    /**
-     * Removes the set of move resources included in the request body from move collection. The orchestration is done by
-     * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
-     * set to true.
-     *
-     * @param body Defines the request body for bulk remove of move resources operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus bulkRemove(BulkRemoveRequest body);
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by

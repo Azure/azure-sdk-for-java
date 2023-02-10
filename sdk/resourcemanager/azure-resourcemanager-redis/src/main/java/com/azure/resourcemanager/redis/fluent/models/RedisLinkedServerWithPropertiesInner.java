@@ -18,6 +18,10 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RedisLinkedServerProperties innerProperties;
 
+    /** Creates an instance of RedisLinkedServerWithPropertiesInner class. */
+    public RedisLinkedServerWithPropertiesInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the linked server.
      *
@@ -103,6 +107,26 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
         }
         this.innerProperties().withServerRole(serverRole);
         return this;
+    }
+
+    /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     *
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    public String geoReplicatedPrimaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoReplicatedPrimaryHostname();
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     *
+     * @return the primaryHostname value.
+     */
+    public String primaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryHostname();
     }
 
     /**

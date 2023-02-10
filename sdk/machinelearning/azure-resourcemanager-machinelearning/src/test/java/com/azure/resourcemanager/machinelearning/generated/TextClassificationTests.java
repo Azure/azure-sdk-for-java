@@ -14,11 +14,10 @@ import com.azure.resourcemanager.machinelearning.models.NlpVerticalLimitSettings
 import com.azure.resourcemanager.machinelearning.models.TextClassification;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TextClassificationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TextClassification model =
             BinaryData
                 .fromString(
@@ -39,8 +38,8 @@ public final class TextClassificationTests {
         Assertions.assertEquals("w", model.validationData().uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TextClassification model =
             new TextClassification()
                 .withLogVerbosity(LogVerbosity.WARNING)

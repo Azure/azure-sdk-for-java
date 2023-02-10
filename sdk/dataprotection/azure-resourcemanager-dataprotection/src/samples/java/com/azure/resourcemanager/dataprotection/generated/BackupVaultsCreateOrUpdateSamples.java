@@ -4,8 +4,11 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
+import com.azure.resourcemanager.dataprotection.models.AlertsState;
+import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.MonitoringSettings;
 import com.azure.resourcemanager.dataprotection.models.StorageSetting;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingTypes;
@@ -16,7 +19,7 @@ import java.util.Map;
 /** Samples for BackupVaults CreateOrUpdate. */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/VaultCRUD/PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
@@ -31,6 +34,10 @@ public final class BackupVaultsCreateOrUpdateSamples {
             .withExistingResourceGroup("SampleResourceGroup")
             .withProperties(
                 new BackupVault()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
                     .withStorageSettings(
                         Arrays
                             .asList(
@@ -43,7 +50,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/VaultCRUD/PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.
@@ -59,6 +66,10 @@ public final class BackupVaultsCreateOrUpdateSamples {
             .withExistingResourceGroup("SampleResourceGroup")
             .withProperties(
                 new BackupVault()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
                     .withStorageSettings(
                         Arrays
                             .asList(

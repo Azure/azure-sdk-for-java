@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
+import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
 import com.azure.resourcemanager.costmanagement.models.MetricType;
 import com.azure.resourcemanager.costmanagement.models.PivotProperties;
@@ -16,29 +15,22 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** States and configurations of Cost Analysis. */
 @Fluent
-public final class ViewInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewInner.class);
-
+public final class ViewInner extends CostManagementProxyResource {
     /*
      * The properties of the view.
      */
     @JsonProperty(value = "properties")
     private ViewProperties innerProperties;
 
-    /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
+    /** Creates an instance of ViewInner class. */
+    public ViewInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the view.
@@ -49,25 +41,10 @@ public final class ViewInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @param etag the etag value to set.
-     * @return the ViewInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ViewInner withEtag(String etag) {
-        this.etag = etag;
+        super.withEtag(etag);
         return this;
     }
 
@@ -162,7 +139,7 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the dateRange property: Selected date range for viewing cost in.
+     * Get the dateRange property: Date range of the current view.
      *
      * @return the dateRange value.
      */
@@ -171,7 +148,7 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the currency property: Selected currency.
+     * Get the currency property: Currency of the current view.
      *
      * @return the currency value.
      */
@@ -393,7 +370,7 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the includeMonetaryCommitment property: Include monetary commitment.
+     * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
      *
      * @return the includeMonetaryCommitment value.
      */
@@ -402,11 +379,27 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
+     * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
+     * @return the ViewInner object itself.
+     */
+    public ViewInner withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ViewProperties();
+        }
+        this.innerProperties().withIncludeMonetaryCommitment(includeMonetaryCommitment);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

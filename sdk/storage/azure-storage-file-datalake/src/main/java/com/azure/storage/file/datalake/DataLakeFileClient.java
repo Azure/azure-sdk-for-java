@@ -32,27 +32,26 @@ import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFil
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
-import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
-import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -740,8 +739,8 @@ public class DataLakeFileClient extends DataLakePathClient {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, appendOptions, context);
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fbb, fileOffset, length,
+            appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -792,8 +791,8 @@ public class DataLakeFileClient extends DataLakePathClient {
             .setLeaseId(leaseId)
             .setContentHash(contentMd5)
             .setFlush(null);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fluxData.subscribeOn(Schedulers.boundedElastic()), fileOffset, data.getLength(), appendOptions, context);
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fluxData, fileOffset,
+            data.getLength(), appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -840,8 +839,8 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fluxData.subscribeOn(Schedulers.boundedElastic()), fileOffset, data.getLength(), appendOptions, context);
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fluxData, fileOffset,
+            data.getLength(), appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -869,10 +868,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     *
      * @return Information about the created resource.
+     * @deprecated See {@link #flush(long, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public PathInfo flush(long position) {
         return flush(position, false);
     }

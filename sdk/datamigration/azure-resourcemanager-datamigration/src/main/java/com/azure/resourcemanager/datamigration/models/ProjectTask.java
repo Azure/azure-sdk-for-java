@@ -46,6 +46,13 @@ public interface ProjectTask {
     ProjectTaskProperties properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner object.
      *
      * @return the inner object.
@@ -177,7 +184,23 @@ public interface ProjectTask {
     ProjectTask refresh(Context context);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * Cancel a task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * cancels a task if it's currently queued or running.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a task resource along with {@link Response}.
+     */
+    Response<ProjectTask> cancelWithResponse(Context context);
+
+    /**
+     * Cancel a task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
      * cancels a task if it's currently queued or running.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,16 +208,4 @@ public interface ProjectTask {
      * @return a task resource.
      */
     ProjectTask cancel();
-
-    /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
-     * cancels a task if it's currently queued or running.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
-     */
-    Response<ProjectTask> cancelWithResponse(Context context);
 }

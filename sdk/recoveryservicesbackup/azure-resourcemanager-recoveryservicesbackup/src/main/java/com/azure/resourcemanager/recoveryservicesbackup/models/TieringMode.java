@@ -27,6 +27,15 @@ public final class TieringMode extends ExpandableStringEnum<TieringMode> {
     public static final TieringMode DO_NOT_TIER = fromString("DoNotTier");
 
     /**
+     * Creates a new instance of TieringMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TieringMode() {
+    }
+
+    /**
      * Creates or finds a TieringMode from its string representation.
      *
      * @param name a name to look for.

@@ -32,6 +32,9 @@ public class WebTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path")
     private Object path;
 
+    /** Creates an instance of WebTableDataset class. */
+    public WebTableDataset() {}
+
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.

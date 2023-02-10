@@ -26,6 +26,9 @@ public final class JsonSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private JsonWriteSettings formatSettings;
 
+    /** Creates an instance of JsonSink class. */
+    public JsonSink() {}
+
     /**
      * Get the storeSettings property: Json store settings.
      *

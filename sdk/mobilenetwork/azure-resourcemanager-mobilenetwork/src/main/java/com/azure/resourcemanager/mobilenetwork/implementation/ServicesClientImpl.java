@@ -327,7 +327,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).getSyncPoller();
     }
 
     /**
@@ -346,7 +346,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).getSyncPoller();
     }
 
     /**
@@ -782,7 +782,9 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -806,7 +808,8 @@ public final class ServicesClientImpl implements ServicesClient {
         String serviceName,
         ServiceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
             .getSyncPoller();
     }
 

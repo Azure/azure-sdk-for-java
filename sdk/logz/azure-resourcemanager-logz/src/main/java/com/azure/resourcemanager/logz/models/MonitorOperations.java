@@ -15,26 +15,26 @@ public interface MonitorOperations {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
-    VMExtensionPayload vMHostPayload(String resourceGroupName, String monitorName);
+    Response<VMExtensionPayload> vMHostPayloadWithResponse(
+        String resourceGroupName, String monitorName, Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Logz.io agent on a VM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of payload to be passed while installing VM agent.
      */
-    Response<VMExtensionPayload> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    VMExtensionPayload vMHostPayload(String resourceGroupName, String monitorName);
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
@@ -44,7 +44,7 @@ public interface MonitorOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName);
 
@@ -58,7 +58,7 @@ public interface MonitorOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(
         String resourceGroupName, String monitorName, VMHostUpdateRequest body, Context context);
@@ -71,7 +71,7 @@ public interface MonitorOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName);
 
@@ -84,7 +84,7 @@ public interface MonitorOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, Context context);
 }

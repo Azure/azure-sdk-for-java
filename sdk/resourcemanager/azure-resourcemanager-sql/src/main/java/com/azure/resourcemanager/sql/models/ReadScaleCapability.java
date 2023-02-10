@@ -28,6 +28,10 @@ public final class ReadScaleCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ReadScaleCapability class. */
+    public ReadScaleCapability() {
+    }
+
     /**
      * Get the maxNumberOfReplicas property: The maximum number of read scale replicas.
      *

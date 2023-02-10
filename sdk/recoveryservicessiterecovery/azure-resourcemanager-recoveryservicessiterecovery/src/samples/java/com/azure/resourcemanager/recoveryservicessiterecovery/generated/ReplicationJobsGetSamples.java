@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Get. */
 public final class ReplicationJobsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class ReplicationJobsGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .getWithResponse("vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", Context.NONE);
+            .getWithResponse(
+                "vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", com.azure.core.util.Context.NONE);
     }
 }

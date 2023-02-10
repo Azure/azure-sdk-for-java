@@ -23,6 +23,15 @@ public final class VmReplicationProgressHealth extends ExpandableStringEnum<VmRe
     public static final VmReplicationProgressHealth NO_PROGRESS = fromString("NoProgress");
 
     /**
+     * Creates a new instance of VmReplicationProgressHealth value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VmReplicationProgressHealth() {
+    }
+
+    /**
      * Creates or finds a VmReplicationProgressHealth from its string representation.
      *
      * @param name a name to look for.

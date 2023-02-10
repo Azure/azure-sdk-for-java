@@ -18,6 +18,15 @@ public final class MultiVmSyncPointOption extends ExpandableStringEnum<MultiVmSy
     public static final MultiVmSyncPointOption USE_PER_VM_RECOVERY_POINT = fromString("UsePerVmRecoveryPoint");
 
     /**
+     * Creates a new instance of MultiVmSyncPointOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MultiVmSyncPointOption() {
+    }
+
+    /**
      * Creates or finds a MultiVmSyncPointOption from its string representation.
      *
      * @param name a name to look for.

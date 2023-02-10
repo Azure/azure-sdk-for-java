@@ -209,7 +209,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,7 +283,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -392,7 +392,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             String instanceId,
             String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
             .getSyncPoller();
     }
@@ -420,7 +421,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
             .getSyncPoller();
     }
@@ -582,7 +584,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -656,7 +658,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -765,7 +767,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             String instanceId,
             String vmExtensionName,
             VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
-        return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
             .getSyncPoller();
     }
 
@@ -792,7 +795,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             String vmExtensionName,
             VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
             Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
             .getSyncPoller();
     }
@@ -940,7 +944,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1001,7 +1005,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1079,7 +1083,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName).getSyncPoller();
     }
 
     /**
@@ -1098,7 +1102,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context)
             .getSyncPoller();
     }
 
@@ -1219,7 +1224,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1287,7 +1292,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1408,7 +1413,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1466,7 +1471,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

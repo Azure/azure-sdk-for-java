@@ -16,6 +16,10 @@ public class LogsIngestionEndpointSpec {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
+    /** Creates an instance of LogsIngestionEndpointSpec class. */
+    public LogsIngestionEndpointSpec() {
+    }
+
     /**
      * Get the endpoint property: The endpoint. This property is READ-ONLY.
      *

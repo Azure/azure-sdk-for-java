@@ -16,6 +16,21 @@ public interface Applications {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application along with {@link Response}.
+     */
+    Response<Application> getByResourceGroupWithResponse(
+        String resourceGroupName, String applicationName, Context context);
+
+    /**
+     * Gets the managed application.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
@@ -23,21 +38,6 @@ public interface Applications {
      * @return the managed application.
      */
     Application getByResourceGroup(String resourceGroupName, String applicationName);
-
-    /**
-     * Gets the managed application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationName The name of the managed application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application.
-     */
-    Response<Application> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationName, Context context);
 
     /**
      * Deletes the managed application.
@@ -72,7 +72,7 @@ public interface Applications {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the applications within a resource group.
+     * @return all the applications within a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Application> listByResourceGroup(String resourceGroupName);
 
@@ -85,7 +85,7 @@ public interface Applications {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the applications within a resource group.
+     * @return all the applications within a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Application> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -95,7 +95,7 @@ public interface Applications {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the applications within a subscription.
+     * @return all the applications within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Application> list();
 
@@ -107,9 +107,24 @@ public interface Applications {
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the applications within a subscription.
+     * @return all the applications within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Application> list(Context context);
+
+    /**
+     * Gets the managed application.
+     *
+     * @param applicationId The fully qualified ID of the managed application, including the managed application name
+     *     and the managed application resource type. Use the format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application along with {@link Response}.
+     */
+    Response<Application> getByIdWithResponse(String applicationId, Context context);
 
     /**
      * Gets the managed application.
@@ -124,21 +139,6 @@ public interface Applications {
      * @return the managed application.
      */
     Application getById(String applicationId);
-
-    /**
-     * Gets the managed application.
-     *
-     * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application.
-     */
-    Response<Application> getByIdWithResponse(String applicationId, Context context);
 
     /**
      * Deletes the managed application.
@@ -204,13 +204,15 @@ public interface Applications {
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
      *     and the managed application resource type. Use the format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * @param parameters Parameters supplied to update an existing managed application.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application.
+     * @return information about managed application along with {@link Response}.
      */
-    Application updateById(String applicationId);
+    Response<Application> updateByIdWithResponse(String applicationId, ApplicationInner parameters, Context context);
 
     /**
      * Updates an existing managed application. The only value that can be updated via PATCH currently is the tags.
@@ -218,15 +220,13 @@ public interface Applications {
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
      *     and the managed application resource type. Use the format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
-     * @param parameters Parameters supplied to update an existing managed application.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application.
      */
-    Response<Application> updateByIdWithResponse(String applicationId, ApplicationInner parameters, Context context);
+    Application updateById(String applicationId);
 
     /**
      * Begins definition for a new Application resource.

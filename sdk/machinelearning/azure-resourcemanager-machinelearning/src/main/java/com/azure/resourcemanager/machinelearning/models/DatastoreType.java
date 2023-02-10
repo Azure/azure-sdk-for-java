@@ -23,6 +23,15 @@ public final class DatastoreType extends ExpandableStringEnum<DatastoreType> {
     public static final DatastoreType AZURE_FILE = fromString("AzureFile");
 
     /**
+     * Creates a new instance of DatastoreType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatastoreType() {
+    }
+
+    /**
      * Creates or finds a DatastoreType from its string representation.
      *
      * @param name a name to look for.
