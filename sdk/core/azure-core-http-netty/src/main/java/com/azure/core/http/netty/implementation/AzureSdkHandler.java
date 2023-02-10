@@ -84,6 +84,7 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void handlerRemoved(ChannelHandlerContext ctx) {
         disposeWriteTimeoutWatcher();
         disposeResponseTimeoutWatcher();
+        disposeReadTimeoutWatcher();
     }
 
     /**
