@@ -49,12 +49,12 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
-import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
@@ -848,6 +848,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-content-type") String contentType,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -876,6 +877,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-content-type") String contentType,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -6553,6 +6555,7 @@ public final class FilesImpl {
                                 contentType,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -6666,6 +6669,7 @@ public final class FilesImpl {
                 contentType,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -6912,6 +6916,7 @@ public final class FilesImpl {
                                 contentType,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -7025,6 +7030,7 @@ public final class FilesImpl {
                 contentType,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }

@@ -36,8 +36,8 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
-import com.azure.storage.file.share.implementation.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.models.ShareFileRequestIntent;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import java.util.Map;
@@ -401,6 +401,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -429,6 +430,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareFileRequestIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -2715,6 +2717,7 @@ public final class DirectoriesImpl {
                                 metadata,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2822,6 +2825,7 @@ public final class DirectoriesImpl {
                 metadata,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3056,6 +3060,7 @@ public final class DirectoriesImpl {
                                 metadata,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3163,6 +3168,7 @@ public final class DirectoriesImpl {
                 metadata,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
