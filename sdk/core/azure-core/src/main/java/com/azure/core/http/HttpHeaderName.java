@@ -412,9 +412,4 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code x-ms-client-request-id}
      */
     public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
-
-    /**
-     * {@code x-ms-encryption-context}
-     */
-    public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = fromString("x-ms-encryption-context");
 }

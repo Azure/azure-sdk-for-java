@@ -240,6 +240,8 @@ public final class Constants {
 
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
 
+        public static final String X_MS_ENCRYPTION_CONTEXT = "x-ms-encryption-context";
+
         public static final String ETAG_WILDCARD = "*";
 
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";

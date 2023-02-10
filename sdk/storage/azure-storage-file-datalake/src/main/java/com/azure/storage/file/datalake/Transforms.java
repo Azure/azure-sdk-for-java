@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
@@ -44,6 +43,7 @@ import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
@@ -325,7 +325,7 @@ class Transforms {
         if (r == null) {
             return null;
         }
-        return r.getHeaders().getValue(HttpHeaderName.X_MS_ENCRYPTION_CONTEXT);
+        return r.getHeaders().getValue(Constants.HeaderConstants.X_MS_ENCRYPTION_CONTEXT);
     }
 
 
