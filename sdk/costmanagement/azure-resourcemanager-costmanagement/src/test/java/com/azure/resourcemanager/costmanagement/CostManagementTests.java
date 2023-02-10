@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class CostManagementTests extends TestBase {
 
-    @Disabled("Unsupported offer type: AIRS for get detailed report request.Unsupported offer type: AIRS for get detailed report request.")
+    @Disabled("Unsupported offer type: AIRS for get detailed report request.")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testGenerateCostDetailsReports() {
