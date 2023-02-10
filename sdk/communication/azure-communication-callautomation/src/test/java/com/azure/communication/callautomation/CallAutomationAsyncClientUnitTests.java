@@ -5,9 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
@@ -26,6 +28,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
+    public void createGroupCall() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
+            )));
+        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
+        CallSource callSource = new CallSource(caller);
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+
+        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callSource, callInvite, CALL_CALLBACK_URL).block();
+        assertNotNull(createCallResult);
+    }
+    
+    @Test
     public void createCall() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -41,7 +58,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
-    public void createCallWithResponse() {
+    public void createGroupCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
@@ -49,7 +66,34 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(new CallSource(caller), targets, CALL_CALLBACK_URL);
+        CreateGroupCallOptions callOptions = new CreateGroupCallOptions(new CallSource(caller), targets, CALL_CALLBACK_URL);
+        callOptions.setOperationContext(CALL_SUBJECT);
+        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+
+        Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
+
+        assertNotNull(createCallResult);
+        assertEquals(201, createCallResult.getStatusCode());
+        assertNotNull(createCallResult.getValue());
+        assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+
+        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+    }
+    
+    @Test
+    public void createCallWithResponse() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
+            )));
+        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
+        //List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        CreateCallOptions callOptions = new CreateCallOptions(new CallSource(caller), callInvite, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
 

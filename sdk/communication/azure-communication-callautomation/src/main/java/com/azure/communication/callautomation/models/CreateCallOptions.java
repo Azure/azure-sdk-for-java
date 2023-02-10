@@ -7,21 +7,23 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
+import java.time.Instant;
+import java.util.UUID;
 
 /**
- * The options for creating a call.
+ * The options for creating a p2p call.
  */
 @Fluent
 public class CreateCallOptions {
+
     /**
      * The source property.
      */
     private final CallSource source;
-
     /**
-     * The targets of the call.
+     * Call invitee information.
      */
-    private final List<CommunicationIdentifier> targets;
+    private final CallInvite callInvite;
 
     /**
      * The call back URI.
@@ -45,15 +47,14 @@ public class CreateCallOptions {
 
     /**
      * Constructor
-     *
      * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUrl The call back URI.
+     * @param callInvite Call invitee information.
+     * @param callbackUri The call back URI.
      */
-    public CreateCallOptions(CallSource source, List<CommunicationIdentifier> targets, String callbackUrl) {
+    public CreateCallOptions(CallSource source, CallInvite callInvite, String callbackUri) {
         this.source = source;
-        this.targets = targets;
-        this.callbackUrl = callbackUrl;
+        this.callInvite = callInvite;
+        this.callbackUrl = callbackUri;
     }
 
     /**
@@ -65,23 +66,6 @@ public class CreateCallOptions {
         return source;
     }
 
-    /**
-     * Get the targets.
-     *
-     * @return the targets list.
-     */
-    public List<CommunicationIdentifier> getTargets() {
-        return targets;
-    }
-
-    /**
-     * Get the call back uri.
-     *
-     * @return the call back uri.
-     */
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
 
     /**
      * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
@@ -90,7 +74,19 @@ public class CreateCallOptions {
      * @return the azureCognitiveServicesEndpointUrl value.
      */
     public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+        return azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
     }
 
     /**
@@ -110,6 +106,7 @@ public class CreateCallOptions {
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
     }
+
 
     /**
      * Set the operationContext: A customer set value used to track the answering of a call.
@@ -134,14 +131,19 @@ public class CreateCallOptions {
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
+     *  Get Call invitee information
+     * @return call invitee information
      */
-    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
-        return this;
+    public CallInvite getCallInvite() {
+        return callInvite;
+    }
+
+    /**
+     * Get the call back uri.
+     *
+     * @return the call back uri.
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 }
