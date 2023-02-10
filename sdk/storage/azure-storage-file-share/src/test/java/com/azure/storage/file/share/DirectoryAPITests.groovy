@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.http.policy.ExponentialBackoffOptions
-import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.HttpClientOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -18,7 +16,6 @@ import com.azure.storage.file.share.models.ShareFileItem
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
@@ -27,12 +24,10 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Retry
 import spock.lang.Unroll
 
-import java.net.http.HttpHeaders
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
