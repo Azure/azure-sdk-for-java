@@ -8,6 +8,9 @@ This is the 1.2.0 GA version of Azure identity extensions library for Java.
 
 - Upgrade Azure Identity to 1.8.0.
 
+### Others
+- Improve the performance of DefaultTokenCredentialProvider's `get()` method.
+
 ## 1.2.0-beta.1 (2023-02-06)
 
 ### Other Changes
