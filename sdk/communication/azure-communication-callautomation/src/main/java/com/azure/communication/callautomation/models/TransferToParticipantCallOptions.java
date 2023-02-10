@@ -3,8 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -12,11 +10,11 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class TransferToParticipantCallOptions {
-	
-	/**
-	 * Iformation for TranferTarget
-	 */
-	private final CallInvite targetCallInvite;
+    
+    /**
+     * Iformation for TranferTarget
+     */
+    private final CallInvite targetCallInvite;
 
     /**
      * The operational context
@@ -27,7 +25,7 @@ public class TransferToParticipantCallOptions {
     /**
      * Constructor
      *
-     * @param a {@link CallInvite}contains information for TranferTarget.
+     * @param targetCallInvite {@link CallInvite}contains information for TranferTarget.
      */
     public TransferToParticipantCallOptions(CallInvite targetCallInvite) {
         this.targetCallInvite = targetCallInvite;
@@ -58,7 +56,8 @@ public class TransferToParticipantCallOptions {
      * Get the call information to transfer target
      * @return a {@link CallInvite} with information to transfer target
      */
-	public CallInvite getTargetCallInvite() {
-		return targetCallInvite;
-	}
+    public CallInvite getTargetCallInvite() {
+        return targetCallInvite;
+    }
+    
 }

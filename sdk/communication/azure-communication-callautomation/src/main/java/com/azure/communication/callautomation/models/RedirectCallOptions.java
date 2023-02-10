@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -25,7 +24,7 @@ public class RedirectCallOptions {
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param Information of target of being redirected to.
+     * @param targetCallInvite Information of target of being redirected to.
      */
     public RedirectCallOptions(String incomingCallContext, CallInvite targetCallInvite) {
         this.incomingCallContext = incomingCallContext;
