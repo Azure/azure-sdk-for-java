@@ -1850,7 +1850,6 @@ class FileAPITests extends APISpec {
             .setContentDisposition("attachment")
             .setCacheControl("no-transform")
             .setContentEncoding("gzip")
-            .setContentMd5(new byte[0])
             .setContentLanguage("en")
 
         def res = fileClient.setPropertiesWithResponse(Constants.KB, httpHeaders, null, null, null, null)
@@ -1863,7 +1862,7 @@ class FileAPITests extends APISpec {
         properties.getContentDisposition() == "attachment"
         properties.getCacheControl() == "no-transform"
         properties.getContentEncoding() == "gzip"
-        properties.getContentMd5() == new byte[0]
+        properties.getContentMd5() == null
     }
 
     def "Set httpHeaders error"() {

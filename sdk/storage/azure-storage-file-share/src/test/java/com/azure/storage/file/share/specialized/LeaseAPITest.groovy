@@ -156,7 +156,7 @@ class LeaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
-    def "Break file lease trailing dot"() {
+    def "Break file lease oAuth"() {
         setup:
         def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
         def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
