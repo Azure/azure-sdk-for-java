@@ -131,9 +131,8 @@ public class TestProxyUtils {
         return new CustomMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS));
     }
 
-    private static String createCustomMatcherRequestBody(String ignoredHeaders, String excludedHeaders, boolean compareBodies, String ignoredQueryParameters) {
-        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\"}", ignoredHeaders, excludedHeaders, compareBodies, ignoredQueryParameters);
-        // return String.format("{\"excludedHeaders\":\"%s\"}", excludedHeaders);
+    private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":\"%s\"}", customMatcher.getIgnoredHeaders(), customMatcher.getExcludedHeaders(), customMatcher.isCompareBodies(), customMatcher.getIgnoredQueryParameters(), customMatcher.isIgnoreQueryOrdering());
     }
 
     private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
@@ -213,9 +212,7 @@ public class TestProxyUtils {
                     break;
                 case CUSTOM:
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
-                    String requestBody = createCustomMatcherRequestBody(customMatcher.getIgnoredHeaders(),
-                        customMatcher.getExcludedHeaders(), customMatcher.isIgnoreQueryOrdering(),
-                        customMatcher.getIgnoredQueryParameters());
+                    String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyMatcher.TestProxyMatcherType.CUSTOM.getName();
                     request
                         = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);

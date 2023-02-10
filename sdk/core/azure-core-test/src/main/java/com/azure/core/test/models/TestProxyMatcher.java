@@ -11,23 +11,22 @@ public class TestProxyMatcher {
 
     /**
      * Creates an instance of TestProxyMatcher
-     * @param testProxyMatcherType teh type of matcher
+     * @param testProxyMatcherType the type of matcher
      */
     public TestProxyMatcher(TestProxyMatcherType testProxyMatcherType) {
         this.testProxyMatcherType = testProxyMatcherType;
     }
 
     /**
-     * Get the type of proxy sanitizer
-     * @return the type of proxy sanitizer
+     * Get the type of proxy matcher
+     * @return the type of proxy matcher
      */
     public TestProxyMatcherType getType() {
         return testProxyMatcherType;
     }
 
     /**
-     * The possible record sanitizer types.
-     * Each sanitizer is optionally prefaced with the specific part of the request/response pair that it applies to.
+     * The possible types for Matcher.
      */
     public enum TestProxyMatcherType {
 
