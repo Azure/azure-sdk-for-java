@@ -1,11 +1,12 @@
 package com.azure.storage.common
 
 import com.azure.storage.common.implementation.Constants
-import com.ctc.wstx.shaded.msv_core.verifier.jarv.Const
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.NonReadableChannelException
+import java.nio.channels.NonWritableChannelException
 
 class StorageSeekableByteChannelTest extends Specification {
     private byte[] getRandomData(int size) {
@@ -31,7 +32,7 @@ class StorageSeekableByteChannelTest extends Specification {
             getCachedLength() >> data.length
         }
 
-        def channel = new StorageSeekableByteChannel(chunkSize, StorageChannelMode.READ, behavior)
+        def channel = new StorageSeekableByteChannel(chunkSize, StorageChannelMode.READ, behavior, null)
         def dest = new ByteArrayOutputStream()
 
         when:
@@ -69,7 +70,7 @@ class StorageSeekableByteChannelTest extends Specification {
             }
             getCachedLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior)
+        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior, null)
 
         expect:
         def temp = ByteBuffer.allocate(100)
@@ -97,7 +98,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getCachedLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior)
+        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior, null)
 
         when:
         def temp = ByteBuffer.allocate(bufferLength * 2)
@@ -126,7 +127,7 @@ class StorageSeekableByteChannelTest extends Specification {
         StorageSeekableByteChannel.ReadBehavior behavior = Mock {
             getCachedLength() >> data.length
         }
-        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior)
+        def channel = new StorageSeekableByteChannel(bufferLength, StorageChannelMode.READ, behavior, null)
 
         when:
         ByteBuffer result = ByteBuffer.allocate(bufferLength)
@@ -142,5 +143,68 @@ class StorageSeekableByteChannelTest extends Specification {
         }
         // expect no other reads
         0 * behavior.read(_, _)
+    }
+
+    @Unroll
+    def "Write"() {
+        setup:
+        byte[] source = getRandomData(dataSize)
+        byte[] dest = new byte[dataSize]
+        StorageSeekableByteChannel.WriteBehavior behavior = Stub() {
+            write(_, _) >> { ByteBuffer src, long destOffset ->
+                src.get(dest, (int)destOffset, src.remaining())
+            }
+        }
+        def channel = new StorageSeekableByteChannel(chunkSize, StorageChannelMode.WRITE, null, behavior)
+
+        when:
+        for (int i = 0, bytesLastWritten; i < source.length; i += bytesLastWritten) {
+            bytesLastWritten = channel.write(ByteBuffer.wrap(source, i, Math.min(writeSize, source.length - i)))
+        }
+        channel.close()
+
+        then:
+        source == dest
+
+        where:
+        dataSize         | chunkSize    | writeSize
+        8 * Constants.KB | Constants.KB | Constants.KB // easy path
+        8 * Constants.KB | Constants.KB | 100          // writes unaligned (smaller)
+        8 * Constants.KB | Constants.KB | 1500         // writes unaligned (larger)
+        8 * Constants.KB | 1000         | 1000         // buffer unaligned
+        100              | Constants.KB | Constants.KB // buffer larger than data
+    }
+
+    def "Write mode cannot seek"() {
+        setup:
+        def channel = new StorageSeekableByteChannel(Constants.KB, StorageChannelMode.WRITE, null, null)
+
+        when:
+        channel.position(0)
+
+        then:
+        thrown(NonReadableChannelException)
+    }
+
+    def "Write mode cannot read"() {
+        setup:
+        def channel = new StorageSeekableByteChannel(Constants.KB, StorageChannelMode.WRITE, null, null)
+
+        when:
+        channel.read(ByteBuffer.allocate(Constants.KB))
+
+        then:
+        thrown(NonReadableChannelException)
+    }
+
+    def "Read mode cannot write"() {
+        setup:
+        def channel = new StorageSeekableByteChannel(Constants.KB, StorageChannelMode.READ, null, null)
+
+        when:
+        channel.write(ByteBuffer.allocate(Constants.KB))
+
+        then:
+        thrown(NonWritableChannelException)
     }
 }

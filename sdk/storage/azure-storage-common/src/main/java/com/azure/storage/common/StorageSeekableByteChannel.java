@@ -1,6 +1,5 @@
 package com.azure.storage.common;
 
-import com.azure.core.http.RequestConditions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -35,26 +34,39 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         long getCachedLength();
     }
 
+    public interface WriteBehavior {
+        /**
+         * Writes to the backing resource.
+         * @param src Bytes to write.
+         * @param destOffset Offset of backing resource to write the bytes at.
+         */
+        void write(ByteBuffer src, long destOffset);
+    }
+
     private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannel.class);
 
     private final ReadBehavior _readBehavior;
+    private final WriteBehavior _writeBehavior;
     private final StorageChannelMode _mode;
 
     private boolean _isClosed;
 
-    private ByteBuffer _readBuffer;
-    private long _readBufferAbsolutePosition;
+    private ByteBuffer _buffer;
+    private long _bufferAbsolutePosition;
 
     private long _absolutePosition;
 
-    protected StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior dispatchRead) {
+    protected StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior readBehavior,
+        WriteBehavior writeBehavior) {
         _mode = Objects.requireNonNull(mode);
+        _buffer = ByteBuffer.allocate(chunkSize);
+        _readBehavior = readBehavior;
+        _writeBehavior = writeBehavior;
+
+        _bufferAbsolutePosition = 0;
         if (_mode == StorageChannelMode.READ) {
-            _readBuffer = ByteBuffer.allocate(chunkSize);
-            _readBuffer.limit(0);
-            _readBufferAbsolutePosition = 0;
+            _buffer.limit(0);
         }
-        _readBehavior = dispatchRead;
     }
 
     @Override
@@ -65,36 +77,56 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("ByteBuffer dst must support writes."));
         }
 
-        if (_readBuffer.remaining() == 0) {
+        if (_buffer.remaining() == 0) {
             refillReadBuffer(_absolutePosition);
         }
         // if _readBuffer is still empty after refill, there are no bytes remaining
-        if (_readBuffer.remaining() == 0) {
+        if (_buffer.remaining() == 0) {
             return -1;
         }
 
-        int read = Math.min(_readBuffer.remaining(), dst.remaining());
-        ByteBuffer temp = _readBuffer.duplicate();
+        int read = Math.min(_buffer.remaining(), dst.remaining());
+        ByteBuffer temp = _buffer.duplicate();
         temp.limit(temp.position() + read);
         dst.put(temp);
-        _readBuffer.position(_readBuffer.position() + read);
+        _buffer.position(_buffer.position() + read);
         _absolutePosition += read;
         return read;
     }
 
     private void refillReadBuffer(long newBufferAbsolutePosition) {
-        _readBuffer.clear();
-        int read = _readBehavior.read(_readBuffer, newBufferAbsolutePosition);
-        _readBuffer.rewind();
-        _readBuffer.limit(Math.max(read, 0));
-        _readBufferAbsolutePosition = Math.min(newBufferAbsolutePosition, _readBehavior.getCachedLength());
+        _buffer.clear();
+        int read = _readBehavior.read(_buffer, newBufferAbsolutePosition);
+        _buffer.rewind();
+        _buffer.limit(Math.max(read, 0));
+        _bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, _readBehavior.getCachedLength());
     }
 
     @Override
     public int write(ByteBuffer src) throws IOException {
         assertOpen();
         assertCanWrite();
-        throw new UnsupportedOperationException("not implemented");
+
+        int write = Math.min(src.remaining(), _buffer.remaining());
+        ByteBuffer temp = src.duplicate();
+        temp.limit(temp.position() + write);
+        _buffer.put(temp);
+        src.position(src.position() + write);
+        _absolutePosition += write;
+
+        if (_buffer.remaining() == 0) {
+            flushWriteBuffer();
+        }
+
+        return write;
+    }
+
+    private void flushWriteBuffer() {
+        _buffer.limit(_buffer.position());
+        _buffer.rewind();
+        _writeBehavior.write(_buffer, _bufferAbsolutePosition);
+        _bufferAbsolutePosition += _buffer.limit();
+        _buffer.clear();
     }
 
     @Override
@@ -109,12 +141,12 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         assertCanSeek();
 
         // seek exited the bounds of the internal buffer, invalidate it
-        if (newPosition < _readBufferAbsolutePosition || newPosition > _readBufferAbsolutePosition + _readBuffer.limit()) {
-            _readBuffer.clear();
-            _readBuffer.limit(0);
+        if (newPosition < _bufferAbsolutePosition || newPosition > _bufferAbsolutePosition + _buffer.limit()) {
+            _buffer.clear();
+            _buffer.limit(0);
         // seek is within the internal buffer, just adjust buffer position
         } else {
-            _readBuffer.position((int)(newPosition - _readBufferAbsolutePosition));
+            _buffer.position((int)(newPosition - _bufferAbsolutePosition));
         }
 
         _absolutePosition = newPosition;
@@ -126,6 +158,7 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     public long size() throws IOException {
         assertOpen();
         return _readBehavior.getCachedLength();
+        // TODO (jaschrep): what about when in write mode?
     }
 
     @Override
@@ -141,9 +174,13 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public void close() throws IOException {
+        if (_mode == StorageChannelMode.WRITE) {
+            flushWriteBuffer();
+        }
+
         // close is documented as idempotent
         _isClosed = true;
-        _readBuffer = null;
+        _buffer = null;
     }
 
     private void assertCanSeek() {
