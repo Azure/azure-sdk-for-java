@@ -278,7 +278,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -689,7 +689,7 @@
             <bannedDependencies>
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.7]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.8]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
               </includes>
             </bannedDependencies>
           </rules>
