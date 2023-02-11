@@ -49,7 +49,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
@@ -900,7 +899,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void doAcquireChannel(final ChannelPromiseWithExpiryTime promise, final Channel candidate) {
         this.ensureInEventLoop();
         acquiredChannels.put(candidate, candidate);
-        totalAcquiredChannels.incrementAndGet();
 
         final ChannelPromiseWithExpiryTime anotherPromise =
             this.newChannelPromiseForAvailableChannel(promise, candidate);
@@ -1173,6 +1171,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
+
+                    totalAcquiredChannels.incrementAndGet();
 
                     this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
                         reportIssueUnless(logger, acquiredChannel == null, this,

@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpMethod;
@@ -163,6 +164,7 @@ public class ClientTelemetry {
         return clientTelemetryInfo;
     }
 
+    @JsonIgnore
     public CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return clientTelemetryConfig;
     }
