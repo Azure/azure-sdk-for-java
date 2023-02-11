@@ -65,7 +65,7 @@ parameters:
 
 jobs:
 - job: ${{ parameters.JobName }}
-  timeoutInMinutes: 360
+  timeoutInMinutes: 720
   strategy:
     matrix:
       ${{ if contains(parameters.OperatingSystems, 'Linux') }}:
