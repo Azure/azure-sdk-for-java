@@ -35,7 +35,7 @@ module com.azure.core {
     exports com.azure.core.util.metrics;
 
     // TODO temporary until we find final shape of ObjectMapper shimming APIs
-    exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson;
+    exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson, com.azure.data.tables;
 
     // export core utilities to other core packages.
     exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp,

@@ -35,6 +35,9 @@ Licensed under the MIT License.
   <properties>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
+      --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+
       --add-opens com.azure.data.tables/com.azure.data.tables=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED

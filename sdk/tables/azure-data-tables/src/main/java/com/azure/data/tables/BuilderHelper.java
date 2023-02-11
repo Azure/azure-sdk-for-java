@@ -32,6 +32,7 @@ import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
+import com.azure.data.tables.implementation.TablesHttpResponseLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +122,8 @@ final class BuilderHelper {
         // Add per retry additional policies.
         policies.addAll(perRetryAdditionalPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies); //should this be between 3/4?
+
+        logOptions.setResponseLogger(new TablesHttpResponseLogger(logOptions));
 
         policies.add(new HttpLoggingPolicy(logOptions));
         policies.add(new TableScrubEtagPolicy());
