@@ -31,16 +31,6 @@ public interface RntbdEndpoint extends AutoCloseable {
     int channelsAcquiredMetric();
 
     /**
-     * @return total number of acquired channels.
-     */
-    int totalChannelsAcquiredMetric();
-
-    /**
-     * @return total number of closed channels.
-     */
-    int totalChannelsClosedMetric();
-
-    /**
      * @return approximate number of available channels.
      */
     int channelsAvailableMetric();
@@ -258,8 +248,33 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public int transitTimeoutDetectionThreshold() {
-            return this.options.transientTimeoutDetectionThreshold();
+        public boolean timeoutDetectionEnabled() {
+            return this.options.timeoutDetectionEnabled();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionTimeLimitInNanos() {
+            return this.options.timeoutDetectionTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionHighFrequencyThreshold() {
+            return this.options.timeoutDetectionHighFrequencyThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionHighFrequencyTimeLimitInNanos() {
+            return this.options.timeoutDetectionHighFrequencyTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionOnWriteThreshold() {
+            return this.options.timeoutDetectionOnWriteThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionOnWriteTimeLimitInNanos() {
+            return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
         }
 
         @Override

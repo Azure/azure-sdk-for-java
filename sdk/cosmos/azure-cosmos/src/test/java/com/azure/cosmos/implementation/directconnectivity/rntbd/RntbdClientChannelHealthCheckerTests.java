@@ -135,12 +135,12 @@ public class RntbdClientChannelHealthCheckerTests {
         long lastChannelWriteNanoTime = System.nanoTime();
         long lastChannelWriteAttemptNanoTime = lastChannelWriteNanoTime;
         long lastChannelReadNanoTime = lastChannelWriteNanoTime - config.receiveHangDetectionTimeInNanos() - 10;
-        long transitTimeoutCount = config.transitTimeoutDetectionThreshold();
+        int transitTimeoutCount = config.timeoutDetectionHighFrequencyThreshold();
 
         Mockito.when(timestampsMock.lastChannelWriteAttemptNanoTime()).thenReturn(lastChannelWriteAttemptNanoTime);
         Mockito.when(timestampsMock.lastChannelWriteNanoTime()).thenReturn(lastChannelWriteNanoTime);
         Mockito.when(timestampsMock.lastChannelReadNanoTime()).thenReturn(lastChannelReadNanoTime);
-        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(transitTimeoutCount);
+        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(transitTimeoutCount);
 
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);

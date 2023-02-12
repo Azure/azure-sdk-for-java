@@ -19,7 +19,6 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -85,7 +84,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
     private final EnumSet<TagName> metricTagNames;
-    private final EnumSet<MetricCategory> metricCategories;
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
@@ -141,8 +139,6 @@ public final class CosmosAsyncClient implements Closeable {
             .getClientCorrelationId(effectiveTelemetryConfig);
         this.metricTagNames = telemetryConfigAccessor
             .getMetricTagNames(effectiveTelemetryConfig);
-        this.metricCategories = telemetryConfigAccessor
-            .getMetricCategories(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -172,7 +168,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
                                        .withMetricTagNames(this.metricTagNames)
-                                       .withMetricCategories(this.metricCategories)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
@@ -731,11 +726,6 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client) {
                     return client.metricTagNames;
-                }
-
-                @Override
-                public EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client) {
-                    return client.metricCategories;
                 }
 
                 @Override

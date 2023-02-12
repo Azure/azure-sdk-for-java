@@ -48,8 +48,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
@@ -169,8 +167,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final int maxRequestsPerChannel;
     private final ChannelPoolHandler poolHandler;
     private final boolean releaseHealthCheck;
-    private final AtomicInteger totalAcquiredChannels = new AtomicInteger(0);
-    private final AtomicInteger totalClosedChannels = new AtomicInteger(0);
 
     // Because state from these fields can be requested on any thread...
 
@@ -321,24 +317,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     public int channelsAcquiredMetrics() {
         return this.acquiredChannels.size();
-    }
-
-    /**
-     * Gets the total acquired channel count.
-     *
-     * @return the total acquired channel count.
-     */
-    public int totalChannelsAcquiredMetrics() {
-        return this.totalAcquiredChannels.get();
-    }
-
-    /**
-     * Gets the total closed channel count.
-     *
-     * @return the total closed channel count.
-     */
-    public int totalChannelsClosedMetrics() {
-        return this.totalClosedChannels.get();
     }
 
     /**
@@ -838,7 +816,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void closeChannel(final Channel channel) {
         this.ensureInEventLoop();
-        totalClosedChannels.incrementAndGet();
         this.acquiredChannels.remove(channel);
         this.availableChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
@@ -900,7 +877,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void doAcquireChannel(final ChannelPromiseWithExpiryTime promise, final Channel candidate) {
         this.ensureInEventLoop();
         acquiredChannels.put(candidate, candidate);
-        totalAcquiredChannels.incrementAndGet();
 
         final ChannelPromiseWithExpiryTime anotherPromise =
             this.newChannelPromiseForAvailableChannel(promise, candidate);

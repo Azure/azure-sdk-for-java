@@ -35,6 +35,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
@@ -279,29 +280,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
-        e.setRntbdChannelTaskQueueSize(value);
-        return e;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> int getRntbdPendingRequestQueueSize(E e) {
-        return e.getRntbdPendingRequestQueueSize();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setRntbdPendingRequestQueueSize(E e, int value) {
-        e.setRntbdPendingRequestQueueSize(value);
-        return e;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> int getChannelTaskQueueSize(E e) {
-        return e.getRntbdChannelTaskQueueSize();
-    }
-
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
         e.setRntbdRequestLength(requestLen);
         return e;
@@ -349,6 +327,17 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> RntbdEndpointStatistics getServiceEndpointStatistics(E e) {
         return e.getRntbdServiceEndpointStatistics();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdChannelStatistics getChannelStatistics(E e) {
+        return e.getRntbdChannelStatistics();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelStatistics(E e, RntbdChannelStatistics rntbdChannelStatistics) {
+        e.setRntbdChannelStatistics(rntbdChannelStatistics);
+        return e;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

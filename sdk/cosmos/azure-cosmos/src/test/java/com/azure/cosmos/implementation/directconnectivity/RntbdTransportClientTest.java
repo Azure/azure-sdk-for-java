@@ -742,7 +742,7 @@ public final class RntbdTransportClientTest {
                 .build();
 
         assertEquals(options.sslHandshakeTimeoutInMillis(), sslHandshakeTimeoutInMillis);
-        assertEquals(options.transientTimeoutDetectionThreshold(), transitTimeoutDetectionThreshold);
+        assertEquals(options.timeoutDetectionTimeLimit(), transitTimeoutDetectionThreshold);
     }
 
     // TODO: add validations for other properties
@@ -760,7 +760,7 @@ public final class RntbdTransportClientTest {
                     .build();
 
             assertEquals(options.sslHandshakeTimeoutInMillis(), Duration.ofSeconds(15).toMillis());
-            assertEquals(options.transientTimeoutDetectionThreshold(), 10);
+            assertEquals(options.timeoutDetectionTimeLimit(), 10);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");
@@ -977,16 +977,6 @@ public final class RntbdTransportClientTest {
 
         @Override
         public int channelsAcquiredMetric() {
-            return 0;
-        }
-
-        @Override
-        public int totalChannelsAcquiredMetric() {
-            return 0;
-        }
-
-        @Override
-        public int totalChannelsClosedMetric() {
             return 0;
         }
 

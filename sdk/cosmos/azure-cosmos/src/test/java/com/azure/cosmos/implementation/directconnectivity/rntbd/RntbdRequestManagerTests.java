@@ -62,17 +62,17 @@ public class RntbdRequestManagerTests {
 
         // Test transitTimeout is 0 at start point
         rntbdRequestManager.write(channelHandlerContext, rntbdRequestRecord, promise);
-        assertThat(timestamps.transitTimeoutCount()).isZero();
+        assertThat(timestamps.tansitTimeoutCount()).isZero();
 
         // Test when a transit timeout happens, the transitTimeoutCount is increased
         rntbdRequestRecord.expire();
-        assertThat(timestamps.transitTimeoutCount()).isOne();
+        assertThat(timestamps.tansitTimeoutCount()).isOne();
 
         // Test when there is channelRead, transitTimeout is cleared out
         Mockito.when(channelHandlerContext.flush()).thenReturn(channelHandlerContext);
         ChannelFuture closeChannelFuture = Mockito.mock(ChannelFuture.class);
         Mockito.when(channelHandlerContext.close()).thenReturn(closeChannelFuture);
         rntbdRequestManager.channelRead(channelHandlerContext, rntbdRequestRecord);
-        assertThat(timestamps.transitTimeoutCount()).isZero();
+        assertThat(timestamps.tansitTimeoutCount()).isZero();
     }
 }

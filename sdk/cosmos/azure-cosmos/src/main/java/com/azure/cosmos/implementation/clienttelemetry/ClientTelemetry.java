@@ -163,10 +163,6 @@ public class ClientTelemetry {
         return clientTelemetryInfo;
     }
 
-    public CosmosClientTelemetryConfig getClientTelemetryConfig() {
-        return clientTelemetryConfig;
-    }
-
     public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 

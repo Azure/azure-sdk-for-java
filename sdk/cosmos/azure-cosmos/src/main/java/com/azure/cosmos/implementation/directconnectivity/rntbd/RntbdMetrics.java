@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
-import com.azure.cosmos.implementation.clienttelemetry.CosmosMetricNames;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -263,7 +262,7 @@ public final class RntbdMetrics implements RntbdMetricsCompletionRecorder {
     }
 
     private static String nameOf(final String member) {
-        return CosmosMetricNames.DisabledByDefaultLegacy.LegacyDirectTcpMetricsPrefix + member;
+        return "azure.cosmos.directTcp." + member;
     }
 
     // endregion
