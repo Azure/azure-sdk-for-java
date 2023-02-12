@@ -971,6 +971,18 @@
         "Dspotbugs",
         "Pdev"
       ]
+    },
+    {
+      "filename": "sdk/spring/**.xml",
+      "words": [
+        "failondeprecatedstatus"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.yml",
+      "words": [
+        "failondeprecatedstatus"
+      ]
     }
   ],
   "allowCompoundWords": true

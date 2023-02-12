@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.useragent.http;
+package com.azure.spring.cloud.autoconfigure.implementation.useragent.http;
 
 import ch.qos.logback.classic.Level;
 import com.azure.core.credential.TokenCredential;
