@@ -69,7 +69,11 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
         return fromString(name, DtmfTone.class);
     }
 
-    /** @return known DtmfTone values. */
+    /**
+     * Gets known DtmfTone values.
+     *
+     * @return known DtmfTone values.
+     */
     public static Collection<DtmfTone> values() {
         return values(DtmfTone.class);
     }

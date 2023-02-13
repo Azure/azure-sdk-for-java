@@ -6,18 +6,17 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** The request payload for adding participants to the call. */
+/** The request payload for adding participant to the call. */
 @Fluent
-public final class AddParticipantsRequestInternal {
+public final class AddParticipantRequestInternal {
     /*
      * The source caller Id, a phone number, that's shown to the PSTN
      * participant being invited.
      * Required only when inviting a PSTN participant.
      */
-    @JsonProperty(value = "sourceCallerId")
-    private PhoneNumberIdentifierModel sourceCallerId;
+    @JsonProperty(value = "sourceCallerIdNumber")
+    private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
      * (Optional) The display name of the source that is associated with this
@@ -34,14 +33,14 @@ public final class AddParticipantsRequestInternal {
      * is not set, the display name of the source will be used by default when
      * adding a PSTN participant or teams user.
      */
-    @JsonProperty(value = "sourceIdentifier")
-    private CommunicationIdentifierModel sourceIdentifier;
+    @JsonProperty(value = "sourceIdentity")
+    private CommunicationIdentifierModel sourceIdentity;
 
     /*
-     * The participants to invite.
+     * The participant to invite.
      */
-    @JsonProperty(value = "participantsToAdd", required = true)
-    private List<CommunicationIdentifierModel> participantsToAdd;
+    @JsonProperty(value = "participantToAdd", required = true)
+    private CommunicationIdentifierModel participantToAdd;
 
     /*
      * Gets or sets the timeout to wait for the invited participant to pickup.
@@ -58,30 +57,30 @@ public final class AddParticipantsRequestInternal {
     private String operationContext;
 
     /*
-     * The customContext property.
+     * Used by customer to send custom context to targets
      */
     @JsonProperty(value = "customContext")
     private CustomContext customContext;
 
     /**
-     * Get the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
-     * invited. Required only when inviting a PSTN participant.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when inviting a PSTN participant.
      *
-     * @return the sourceCallerId value.
+     * @return the sourceCallerIdNumber value.
      */
-    public PhoneNumberIdentifierModel getSourceCallerId() {
-        return this.sourceCallerId;
+    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
+        return this.sourceCallerIdNumber;
     }
 
     /**
-     * Set the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
-     * invited. Required only when inviting a PSTN participant.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when inviting a PSTN participant.
      *
-     * @param sourceCallerId the sourceCallerId value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setSourceCallerId(PhoneNumberIdentifierModel sourceCallerId) {
-        this.sourceCallerId = sourceCallerId;
+    public AddParticipantRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 
@@ -100,54 +99,54 @@ public final class AddParticipantsRequestInternal {
      * operation when adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      *
      * @param sourceDisplayName the sourceDisplayName value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setSourceDisplayName(String sourceDisplayName) {
+    public AddParticipantRequestInternal setSourceDisplayName(String sourceDisplayName) {
         this.sourceDisplayName = sourceDisplayName;
         return this;
     }
 
     /**
-     * Get the sourceIdentifier property: (Optional) The identifier of the source of the call for this invite operation.
+     * Get the sourceIdentity property: (Optional) The identifier of the source of the call for this invite operation.
      * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
      * participant or teams user.
      *
-     * @return the sourceIdentifier value.
+     * @return the sourceIdentity value.
      */
-    public CommunicationIdentifierModel getSourceIdentifier() {
-        return this.sourceIdentifier;
+    public CommunicationIdentifierModel getSourceIdentity() {
+        return this.sourceIdentity;
     }
 
     /**
-     * Set the sourceIdentifier property: (Optional) The identifier of the source of the call for this invite operation.
+     * Set the sourceIdentity property: (Optional) The identifier of the source of the call for this invite operation.
      * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
      * participant or teams user.
      *
-     * @param sourceIdentifier the sourceIdentifier value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @param sourceIdentity the sourceIdentity value to set.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setSourceIdentifier(CommunicationIdentifierModel sourceIdentifier) {
-        this.sourceIdentifier = sourceIdentifier;
+    public AddParticipantRequestInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
+        this.sourceIdentity = sourceIdentity;
         return this;
     }
 
     /**
-     * Get the participantsToAdd property: The participants to invite.
+     * Get the participantToAdd property: The participant to invite.
      *
-     * @return the participantsToAdd value.
+     * @return the participantToAdd value.
      */
-    public List<CommunicationIdentifierModel> getParticipantsToAdd() {
-        return this.participantsToAdd;
+    public CommunicationIdentifierModel getParticipantToAdd() {
+        return this.participantToAdd;
     }
 
     /**
-     * Set the participantsToAdd property: The participants to invite.
+     * Set the participantToAdd property: The participant to invite.
      *
-     * @param participantsToAdd the participantsToAdd value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @param participantToAdd the participantToAdd value to set.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setParticipantsToAdd(List<CommunicationIdentifierModel> participantsToAdd) {
-        this.participantsToAdd = participantsToAdd;
+    public AddParticipantRequestInternal setParticipantToAdd(CommunicationIdentifierModel participantToAdd) {
+        this.participantToAdd = participantToAdd;
         return this;
     }
 
@@ -166,9 +165,9 @@ public final class AddParticipantsRequestInternal {
      * pickup. The maximum value of this is 180 seconds.
      *
      * @param invitationTimeoutInSeconds the invitationTimeoutInSeconds value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setInvitationTimeoutInSeconds(Integer invitationTimeoutInSeconds) {
+    public AddParticipantRequestInternal setInvitationTimeoutInSeconds(Integer invitationTimeoutInSeconds) {
         this.invitationTimeoutInSeconds = invitationTimeoutInSeconds;
         return this;
     }
@@ -188,15 +187,15 @@ public final class AddParticipantsRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setOperationContext(String operationContext) {
+    public AddParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
 
     /**
-     * Get the customContext property: The customContext property.
+     * Get the customContext property: Used by customer to send custom context to targets.
      *
      * @return the customContext value.
      */
@@ -205,12 +204,12 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Set the customContext property: The customContext property.
+     * Set the customContext property: Used by customer to send custom context to targets.
      *
      * @param customContext the customContext value to set.
-     * @return the AddParticipantsRequestInternal object itself.
+     * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantsRequestInternal setCustomContext(CustomContext customContext) {
+    public AddParticipantRequestInternal setCustomContext(CustomContext customContext) {
         this.customContext = customContext;
         return this;
     }

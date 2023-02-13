@@ -27,7 +27,11 @@ public final class GenderType extends ExpandableStringEnum<GenderType> {
         return fromString(name, GenderType.class);
     }
 
-    /** @return known GenderType values. */
+    /**
+     * Gets known GenderType values.
+     *
+     * @return known GenderType values.
+     */
     public static Collection<GenderType> values() {
         return values(GenderType.class);
     }

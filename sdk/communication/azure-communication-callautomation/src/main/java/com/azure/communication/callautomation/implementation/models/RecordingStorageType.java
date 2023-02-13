@@ -27,7 +27,11 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
         return fromString(name, RecordingStorageType.class);
     }
 
-    /** @return known RecordingStorageType values. */
+    /**
+     * Gets known RecordingStorageType values.
+     *
+     * @return known RecordingStorageType values.
+     */
     public static Collection<RecordingStorageType> values() {
         return values(RecordingStorageType.class);
     }
