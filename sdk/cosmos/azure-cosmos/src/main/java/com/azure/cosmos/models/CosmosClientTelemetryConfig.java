@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -66,6 +67,7 @@ public final class CosmosClientTelemetryConfig {
         this.proxy = toBeCopied.proxy;
         this.clientCorrelationId = toBeCopied.clientCorrelationId;
         this.metricTagNames = toBeCopied.metricTagNames;
+        this.metricCategories = toBeCopied.metricCategories;
         this.clientMetricRegistry = toBeCopied.clientMetricRegistry;
         this.isClientMetricsEnabled = toBeCopied.isClientMetricsEnabled;
         this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
@@ -224,18 +226,38 @@ public final class CosmosClientTelemetryConfig {
             categoryMap.put(level.toLowerCase(), level);
         }
 
-        Stream<MetricCategory> categoryStream =
-            Arrays.stream(categories)
-                  .map(rawCategory -> rawCategory.toLowerCase(Locale.ROOT))
-                  .filter(category -> !Strings.isNullOrWhiteSpace(category))
-                  .map(category -> {
-                      String trimmedCategory = category.trim();
+        HashSet<String> categoryStrings = new HashSet<String>();
+        Arrays.stream(categories)
+              .filter(category -> !Strings.isNullOrWhiteSpace(category))
+              .forEach(rawCategory -> {
+                  String lowerCaseCategory = rawCategory.trim().toLowerCase(Locale.ROOT);
+                  if ("all".equalsIgnoreCase(lowerCaseCategory)) {
+                      MetricCategory
+                          .ALL_CATEGORIES
+                          .stream()
+                          .forEach(c -> categoryStrings.add(c.toLowerCase()));
+                  } else if ("default".equalsIgnoreCase(lowerCaseCategory)) {
+                      MetricCategory
+                          .DEFAULT_CATEGORIES
+                          .stream()
+                          .forEach(c -> categoryStrings.add(c.toLowerCase()));
+                  } else {
+                      categoryStrings.add(lowerCaseCategory);
+                  }
+              });
 
-                      if (!categoryMap.containsKey(trimmedCategory)) {
+        Stream<MetricCategory> categoryStream =
+            Arrays.stream(categoryStrings.toArray())
+                  .map(category -> {
+                      if (!categoryMap.containsKey(category)) {
+
+                          String[] transformed = Arrays.stream(MetricCategory.values())
+                                                       .map(level -> level.toLowerCase())
+                                                       .toArray(i -> new String[i]);
 
                           String validCategories = String.join(
                               ", ",
-                              (String[]) Arrays.stream(MetricCategory.values()).map(level -> level.toString()).toArray());
+                              transformed);
 
                           throw new IllegalArgumentException(
                               String.format(
@@ -245,7 +267,7 @@ public final class CosmosClientTelemetryConfig {
                                   validCategories));
                       }
 
-                      return categoryMap.get(trimmedCategory);
+                      return categoryMap.get(category);
                   });
 
         EnumSet<MetricCategory> newCategories = EnumSet.of(MetricCategory.System, MetricCategory.OperationSummary);

@@ -40,6 +40,19 @@ public enum MetricCategory {
         return this.value;
     }
 
+    public static final EnumSet<MetricCategory> ALL_CATEGORIES = EnumSet.of(
+        MetricCategory.OperationSummary,
+        MetricCategory.OperationDetails,
+        MetricCategory.RequestSummary,
+        MetricCategory.RequestDetails,
+        MetricCategory.AddressResolutions,
+        MetricCategory.DirectChannels,
+        MetricCategory.DirectEndpoints,
+        MetricCategory.DirectRequests,
+        MetricCategory.System,
+        MetricCategory.Legacy
+    );
+
     public static final EnumSet<MetricCategory> DEFAULT_CATEGORIES = EnumSet.of(
         MetricCategory.OperationSummary,
         MetricCategory.RequestSummary,
