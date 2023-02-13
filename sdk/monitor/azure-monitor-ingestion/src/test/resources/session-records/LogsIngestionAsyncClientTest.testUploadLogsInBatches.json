@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1",
+      "x-ms-client-request-id" : "88932d77-dc68-4dc9-a855-7a47ab044fe0",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,9 +13,9 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "2b2ea788-aeab-4d2b-83b6-0a1d643916c3",
-      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
-      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1"
+      "x-ms-request-id" : "ce219308-85de-417b-84d2-e069f069c24e",
+      "Date" : "Tue, 07 Feb 2023 07:41:25 GMT",
+      "x-ms-client-request-id" : "88932d77-dc68-4dc9-a855-7a47ab044fe0"
     },
     "Exception" : null
   }, {
@@ -23,7 +23,7 @@
     "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45",
+      "x-ms-client-request-id" : "35f44648-2e91-4788-9095-fdd6a3c21264",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -32,9 +32,9 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "15dc5dec-6f67-4325-b86a-68b19cfbf721",
-      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
-      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45"
+      "x-ms-request-id" : "25036923-f881-4255-a5c0-bf49f4c8bc56",
+      "Date" : "Tue, 07 Feb 2023 07:41:24 GMT",
+      "x-ms-client-request-id" : "35f44648-2e91-4788-9095-fdd6a3c21264"
     },
     "Exception" : null
   } ],
