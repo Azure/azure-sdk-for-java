@@ -5,19 +5,19 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
     private Checker checker;
 
-    @Before
+    @BeforeEach
     public void prepare() throws Exception {
         checker = createChecker(createModuleConfig(JavadocThrowsChecks.class));
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         checker.destroy();
     }
