@@ -8,8 +8,6 @@ import java.util.concurrent.Future;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.scheduling.annotation.Async;
 
-import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
-
 /**
  * Enables checking of Configuration updates.
  */
@@ -38,6 +36,6 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      *
      * @return Map of String, endpoint, and Health information.
      */
-    Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth();
+    Map<String, String> getAppConfigurationStoresHealth();
 
 }

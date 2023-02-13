@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
-import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 /**
@@ -120,7 +119,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     }
 
     @Override
-    public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
+    public Map<String, String> getAppConfigurationStoresHealth() {
         return clientFactory.getHealth();
     }
 

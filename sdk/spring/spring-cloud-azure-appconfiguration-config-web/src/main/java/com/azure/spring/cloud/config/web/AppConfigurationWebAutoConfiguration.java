@@ -45,13 +45,13 @@ class AppConfigurationWebAutoConfiguration {
     static class AppConfigurationPushRefreshConfiguration {
 
         @Bean
-        public AppConfigurationRefreshEndpoint appConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
+        AppConfigurationRefreshEndpoint appConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
             AppConfigurationProperties appConfiguration) {
             return new AppConfigurationRefreshEndpoint(contextRefresher, appConfiguration);
         }
 
         @Bean
-        public AppConfigurationRefreshEventListener appConfigurationRefreshEventListener(
+        AppConfigurationRefreshEventListener appConfigurationRefreshEventListener(
             AppConfigurationRefresh appConfigurationRefresh) {
             return new AppConfigurationRefreshEventListener(appConfigurationRefresh);
         }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 /**
@@ -80,10 +79,10 @@ public class AppConfigurationReplicaClientFactory {
      * Gets the health of the client connections to App Configuration
      * @return map of endpoint origin it's health
      */
-    Map<String, AppConfigurationStoreHealth> getHealth() {
-        Map<String, AppConfigurationStoreHealth> health = new HashMap<>();
+    Map<String, String> getHealth() {
+        Map<String, String> health = new HashMap<>();
 
-        CONNECTIONS.forEach((key, value) -> health.put(key, value.getHealth()));
+        CONNECTIONS.forEach((key, value) -> health.put(key, value.getHealth().name()));
 
         return health;
     }

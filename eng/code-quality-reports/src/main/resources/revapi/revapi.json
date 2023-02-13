@@ -786,6 +786,11 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
           "justification": "This is an Azure SDK class that is used in the public API."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "This is an Azure SDK class that is used in the public API."
         }
       ]
     }
