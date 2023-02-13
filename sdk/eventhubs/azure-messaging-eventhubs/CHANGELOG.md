@@ -8,6 +8,13 @@
 - Added filter to filter out the closed `AmqpReceiveLink` before passing to `AmqpReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
 - Fixed usage of static AmqpAnnotatedMessage when creating empty EventData. ([#33327](https://github.com/Azure/azure-sdk-for-java/issues/33327))
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.36.0`.
+- Upgraded `azure-core-amqp` to `2.8.2`.
+
 ## 5.15.1 (2023-01-18)
 
 ### Features Added
