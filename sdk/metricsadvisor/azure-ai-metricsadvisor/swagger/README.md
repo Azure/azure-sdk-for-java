@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./metricsadvisor_1.20200903_openapi.v2.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -34,6 +34,8 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,DataFeedIngestionProgress,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,IngestionStatusType,PeriodType,AnomalySeverity,SnoozeScope,AlertQueryTimeMode,DataFeedIngestionStatus,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+enable-sync-stack: true
+polling: {}
 ```
 
 ### Generated types renamed and moved to model
@@ -217,6 +219,22 @@ directive:
   - rename-model:
       from: Metric
       to: DataFeedMetric
+```
+
+### Rename MetricsAdvisorErrorCode to MetricsAdvisorError
+```yaml
+directive:
+  - rename-model:
+      from: MetricsAdvisorErrorCode
+      to: MetricsAdvisorError
+```
+
+### Rename MetricsAdvisorErrorCodeException to MetricsAdvisorResponseException
+```yaml
+directive:
+  - rename-model:
+      from: MetricsAdvisorErrorCodeException
+      to: MetricsAdvisorResponseException
 ```
 
 ### Rename Dimension to DataFeedDimension

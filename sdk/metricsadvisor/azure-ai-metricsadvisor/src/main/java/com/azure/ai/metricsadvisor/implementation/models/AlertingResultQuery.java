@@ -30,6 +30,9 @@ public final class AlertingResultQuery {
     @JsonProperty(value = "timeMode", required = true)
     private AlertQueryTimeMode timeMode;
 
+    /** Creates an instance of AlertingResultQuery class. */
+    public AlertingResultQuery() {}
+
     /**
      * Get the startTime property: start time.
      *

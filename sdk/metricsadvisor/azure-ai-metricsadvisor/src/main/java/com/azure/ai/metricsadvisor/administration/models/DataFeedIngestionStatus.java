@@ -29,6 +29,9 @@ public final class DataFeedIngestionStatus {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of DataFeedIngestionStatus class. */
+    public DataFeedIngestionStatus() {}
+
     /**
      * Get the timestamp property: data slice timestamp.
      *

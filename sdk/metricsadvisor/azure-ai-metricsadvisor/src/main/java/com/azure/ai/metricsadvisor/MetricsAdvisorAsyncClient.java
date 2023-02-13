@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDimensionQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyFeedback;
@@ -41,7 +41,6 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -61,6 +60,7 @@ import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.MetricSeriesData;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -107,7 +107,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAsyncClient {
     final ClientLogger logger = new ClientLogger(MetricsAdvisorAsyncClient.class);
-    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAsyncClient} that sends requests to the Metrics Advisor
@@ -117,7 +117,7 @@ public final class MetricsAdvisorAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
+    MetricsAdvisorAsyncClient(MetricsAdvisorImpl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }

@@ -35,6 +35,9 @@ public final class AnomalyAlert {
     @JsonProperty(value = "modifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime modifiedTime;
 
+    /** Creates an instance of AnomalyAlert class. */
+    public AnomalyAlert() {}
+
     /**
      * Get the alertId property: alert id.
      *

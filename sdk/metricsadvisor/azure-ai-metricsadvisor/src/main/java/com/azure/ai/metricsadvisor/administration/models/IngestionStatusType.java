@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IngestionStatusType. */
+/** latest ingestion task status for this data slice. */
 public final class IngestionStatusType extends ExpandableStringEnum<IngestionStatusType> {
     /** Static value NotStarted for IngestionStatusType. */
     public static final IngestionStatusType NOT_STARTED = fromString("NotStarted");
@@ -35,6 +35,14 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
     public static final IngestionStatusType PAUSED = fromString("Paused");
 
     /**
+     * Creates a new instance of IngestionStatusType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IngestionStatusType() {}
+
+    /**
      * Creates or finds a IngestionStatusType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +53,11 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
         return fromString(name, IngestionStatusType.class);
     }
 
-    /** @return known IngestionStatusType values. */
+    /**
+     * Gets known IngestionStatusType values.
+     *
+     * @return known IngestionStatusType values.
+     */
     public static Collection<IngestionStatusType> values() {
         return values(IngestionStatusType.class);
     }

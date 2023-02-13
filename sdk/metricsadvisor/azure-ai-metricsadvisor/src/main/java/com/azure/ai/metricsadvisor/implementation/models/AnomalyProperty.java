@@ -38,6 +38,9 @@ public final class AnomalyProperty {
     @JsonProperty(value = "expectedValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double expectedValue;
 
+    /** Creates an instance of AnomalyProperty class. */
+    public AnomalyProperty() {}
+
     /**
      * Get the anomalySeverity property: anomaly severity.
      *

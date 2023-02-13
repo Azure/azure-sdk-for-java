@@ -24,10 +24,9 @@ public final class ChangeThresholdCondition {
     private int shiftPoint;
 
     /*
-     * if the withinRange = true, detected data is abnormal when the value
-     * falls in the range, in this case anomalyDetectorDirection must be Both
-     * if the withinRange = false, detected data is abnormal when the value
-     * falls out of the range
+     * if the withinRange = true, detected data is abnormal when the value falls in the range, in this case
+     * anomalyDetectorDirection must be Both
+     * if the withinRange = false, detected data is abnormal when the value falls out of the range
      */
     @JsonProperty(value = "withinRange", required = true)
     private boolean withinRange;
@@ -43,6 +42,9 @@ public final class ChangeThresholdCondition {
      */
     @JsonProperty(value = "suppressCondition", required = true)
     private SuppressCondition suppressCondition;
+
+    /** Creates an instance of ChangeThresholdCondition class. */
+    public ChangeThresholdCondition() {}
 
     /**
      * Get the changePercentage property: change percentage, value range : [0, +∞).

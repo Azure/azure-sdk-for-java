@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalyDetectorDirection. */
+/** detection direction. */
 public final class AnomalyDetectorDirection extends ExpandableStringEnum<AnomalyDetectorDirection> {
     /** Static value Both for AnomalyDetectorDirection. */
     public static final AnomalyDetectorDirection BOTH = fromString("Both");
@@ -18,6 +18,14 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
 
     /** Static value Up for AnomalyDetectorDirection. */
     public static final AnomalyDetectorDirection UP = fromString("Up");
+
+    /**
+     * Creates a new instance of AnomalyDetectorDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnomalyDetectorDirection() {}
 
     /**
      * Creates or finds a AnomalyDetectorDirection from its string representation.
@@ -30,7 +38,11 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
         return fromString(name, AnomalyDetectorDirection.class);
     }
 
-    /** @return known AnomalyDetectorDirection values. */
+    /**
+     * Gets known AnomalyDetectorDirection values.
+     *
+     * @return known AnomalyDetectorDirection values.
+     */
     public static Collection<AnomalyDetectorDirection> values() {
         return values(AnomalyDetectorDirection.class);
     }

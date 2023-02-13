@@ -29,6 +29,9 @@ public final class MetricAnomalyAlertSnoozeCondition {
     @JsonProperty(value = "onlyForSuccessive", required = true)
     private boolean onlyForSuccessive;
 
+    /** Creates an instance of MetricAnomalyAlertSnoozeCondition class. */
+    public MetricAnomalyAlertSnoozeCondition() {}
+
     /**
      * Get the autoSnooze property: snooze point count, value range : [0, +∞).
      *

@@ -29,6 +29,9 @@ public final class SmartDetectionConditionPatch {
     @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
 
+    /** Creates an instance of SmartDetectionConditionPatch class. */
+    public SmartDetectionConditionPatch() {}
+
     /**
      * Get the sensitivity property: sensitivity, value range : (0, 100].
      *
