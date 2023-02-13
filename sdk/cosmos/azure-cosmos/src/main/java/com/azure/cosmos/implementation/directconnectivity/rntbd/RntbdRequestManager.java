@@ -992,9 +992,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    final static class UnhealthyChannelException extends ChannelException {
+    public final static class UnhealthyChannelException extends ChannelException {
 
-        UnhealthyChannelException(String reason) {
+        public UnhealthyChannelException(String reason) {
             super("health check failed, reason: " + reason);
         }
 
