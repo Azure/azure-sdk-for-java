@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.5 (2023-02-10)
+## 11.6.0-beta.5 (2023-02-13)
 
 ### Other Changes
 
