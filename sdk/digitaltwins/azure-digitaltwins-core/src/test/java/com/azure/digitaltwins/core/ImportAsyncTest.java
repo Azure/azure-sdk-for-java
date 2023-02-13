@@ -72,9 +72,10 @@ public class ImportAsyncTest extends ImportTestBase {
 
         // Validate cancel import job
         StepVerifier
-            .create(asyncClient.cancelImportJobWithResponse(jobId))
-            .assertNext(importJobResponse -> assertThat(importJobResponse.getStatusCode())
-                .isEqualTo(HTTP_OK))
+            .create(asyncClient.cancelImportJob(jobId))
+            .assertNext(importJobResponse -> assertTrue(
+                importJobResponse.getStatus()== Status.CANCELLING ||
+                importJobResponse.getStatus()==Status.SUCCEEDED))
             .verifyComplete();
 
         // Validate delete import job
@@ -105,7 +106,7 @@ public class ImportAsyncTest extends ImportTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validatingTooManyRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validatingDuplicateRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String jobId = getRandomIntegerStringGenerator().apply(maxRandomDigits);
         String outputFile = OUTPUT_FILE.replace("jobId", jobId);
@@ -122,6 +123,6 @@ public class ImportAsyncTest extends ImportTestBase {
         StepVerifier
             .create(asyncClient.createImportJobWithResponse(jobId, digitalTwinsImportJob)).thenConsumeWhile(digitalTwinsImportJobResponse ->
                 responseList.add(digitalTwinsImportJobResponse.getValue()))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.TOO_MANY_REQUESTS.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseStatus.CONFLICT.code()));
     }
 }

@@ -16,5 +16,5 @@ public abstract class ImportTestBase extends DigitalTwinsTestBase{
     public abstract void validatingBadRequest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void validatingTooManyRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void validatingDuplicateRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 }

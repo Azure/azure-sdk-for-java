@@ -2573,7 +2573,6 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsImportJob> cancelImportJob(String id) {
         Mono<Response<DigitalTwinsImportJob>> responseMono = cancelImportJobWithResponse(id);
-        System.out.println("Output of Cancel Response is::::" + Objects.requireNonNull(responseMono.block()).getValue());
         return responseMono.map(Response::getValue);
     }
 

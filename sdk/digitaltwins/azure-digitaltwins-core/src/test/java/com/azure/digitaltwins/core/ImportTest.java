@@ -87,7 +87,7 @@ public class ImportTest extends ImportTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validatingTooManyRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validatingDuplicateRequests(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String jobId = getRandomIntegerStringGenerator().apply(maxRandomDigits);
         String outputFile = OUTPUT_FILE.replace("jobId", jobId);
@@ -98,6 +98,6 @@ public class ImportTest extends ImportTestBase {
 
         assertRestException(
             () -> client.createImportJob(jobId, digitalTwinsImportJob),
-            HttpResponseStatus.TOO_MANY_REQUESTS.code());
+            HttpResponseStatus.CONFLICT.code());
     }
 }
