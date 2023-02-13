@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -290,7 +291,10 @@ public class RntbdTransportClient extends TransportClient {
             assert error instanceof CosmosException;
             CosmosException cosmosException = (CosmosException) error;
             BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
-            BridgeInternal.setChannelStatistics(cosmosException, record.channelStatistics());
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setRntbdChannelStatistics(cosmosException, record.channelStatistics());
             BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
             BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());

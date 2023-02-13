@@ -330,17 +330,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> RntbdChannelStatistics getChannelStatistics(E e) {
-        return e.getRntbdChannelStatistics();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setChannelStatistics(E e, RntbdChannelStatistics rntbdChannelStatistics) {
-        e.setRntbdChannelStatistics(rntbdChannelStatistics);
-        return e;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> long getLSN(E e) {
         return e.lsn;
     }

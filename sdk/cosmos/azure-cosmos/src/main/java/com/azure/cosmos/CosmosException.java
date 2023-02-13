@@ -556,6 +556,20 @@ public class CosmosException extends AzureException {
                         return cosmosException.getReplicaStatusList();
                     }
 
+                    @Override
+                    public CosmosException setRntbdChannelStatistics(
+                        CosmosException cosmosException,
+                        RntbdChannelStatistics rntbdChannelStatistics) {
+
+                        cosmosException.setRntbdChannelStatistics(rntbdChannelStatistics);
+                        return cosmosException;
+                    }
+
+                    @Override
+                    public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
+                        return cosmosException.getRntbdChannelStatistics();
+                    }
+
                 });
     }
 

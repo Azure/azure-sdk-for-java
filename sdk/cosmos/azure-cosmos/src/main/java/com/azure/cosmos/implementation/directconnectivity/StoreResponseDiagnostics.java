@@ -94,7 +94,11 @@ public class StoreResponseDiagnostics {
         this.requestTimeline = BridgeInternal.getRequestTimeline(e);
         this.channelAcquisitionTimeline = BridgeInternal.getChannelAcqusitionTimeline(e);
         this.rntbdEndpointStatistics = BridgeInternal.getServiceEndpointStatistics(e);
-        this.rntbdChannelStatistics = BridgeInternal.getChannelStatistics(e);
+        this.rntbdChannelStatistics =
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .getRntbdChannelStatistics(e);
         this.rntbdRequestLength = BridgeInternal.getRntbdRequestLength(e);
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
