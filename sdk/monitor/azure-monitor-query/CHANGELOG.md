@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2023-02-13)
+## 1.1.1 (2023-02-13)
 
 ### Bugs Fixed
 - Fixed the default scope in BearerAuthenticationPolicy (https://github.com/Azure/azure-sdk-for-java/issues/33062)
