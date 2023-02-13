@@ -3,6 +3,7 @@
 ## 7.14.0-beta.1 (Unreleased)
 
 ### Features Added
+- Offer option to call async client complete and other methods with a timeout
 
 ### Breaking Changes
 
