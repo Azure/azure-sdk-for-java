@@ -61,7 +61,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.azure.spring</groupId>
-			<artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
+			<artifactId>spring-cloud-azure-autoconfigure</artifactId>
 			<version>4.6.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;dependency} -->
 		</dependency>
 		<!-- Test Dependencies -->
