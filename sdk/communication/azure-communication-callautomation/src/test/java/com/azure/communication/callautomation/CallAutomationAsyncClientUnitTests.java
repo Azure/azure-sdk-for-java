@@ -139,7 +139,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                 new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
-        CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         callAutomationAsyncClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
     }
@@ -151,7 +151,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                 new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
-        CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
         Response<Void> redirectCallResponse = callAutomationAsyncClient.redirectCallWithResponse(redirectCallOptions).block();
 

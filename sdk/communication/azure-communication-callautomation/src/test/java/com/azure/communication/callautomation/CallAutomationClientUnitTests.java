@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
@@ -104,7 +105,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                 new SimpleEntry<>("", 204)
             ))
         );
-        CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         callAutomationClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
     }
@@ -116,7 +117,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                 new SimpleEntry<>("", 204)
             ))
         );
-        CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
 
         Response<Void> redirectCallResponse = callAutomationClient.redirectCallWithResponse(

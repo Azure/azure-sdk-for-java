@@ -343,14 +343,14 @@ public final class CallAutomationAsyncClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param target The target identity.
+     * @param targetCallInvite {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target) {
-        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, target);
+    public Mono<Void> redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, targetCallInvite);
         return redirectCallWithResponse(redirectCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -373,7 +373,7 @@ public final class CallAutomationAsyncClient {
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
-                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget()));
+                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallImvite().getTarget()));
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
                     UUID.randomUUID(),

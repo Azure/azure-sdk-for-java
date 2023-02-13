@@ -27,6 +27,7 @@ import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
@@ -244,14 +245,14 @@ public class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallInvite A {@link CallInvite} representing the target participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipantCall(CommunicationIdentifier targetParticipant) {
-        return transferToParticipantCallWithResponse(new TransferToParticipantCallOptions(targetParticipant)).flatMap(FluxUtil::toMono);
+    public Mono<TransferCallResult> transferToParticipantCall(CallInvite targetCallInvite) {
+        return transferToParticipantCallWithResponse(new TransferToParticipantCallOptions(targetCallInvite)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -274,8 +275,8 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
-                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getTarget()))
+                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getSourceCallIdNumber()))
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
