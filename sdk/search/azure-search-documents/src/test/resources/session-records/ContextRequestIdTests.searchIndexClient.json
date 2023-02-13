@@ -1,30 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315"
     },
     "Response" : {
+      "content-length" : "106",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
+      "request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
       "StatusCode" : "404",
-      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
-      "elapsed-time" : "25",
+      "client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
+      "elapsed-time" : "16",
+      "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "107",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'index' was found in the service 'alzimmer-basic'.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "6639e361-ce60-497d-b436-a3c3f600608a",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'index' was found in the service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "6639e361-ce60-497d-b436-a3c3f600608a" ]
+  "variables" : [ "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315" ]
 }

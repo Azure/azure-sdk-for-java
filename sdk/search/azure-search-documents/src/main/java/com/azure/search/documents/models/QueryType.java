@@ -9,19 +9,13 @@ package com.azure.search.documents.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the Lucene query
- * syntax and 'semantic' if query syntax is not needed.
- */
+/** Defines values for QueryType. */
 public enum QueryType {
     /** Enum value simple. */
     SIMPLE("simple"),
 
     /** Enum value full. */
-    FULL("full"),
-
-    /** Enum value semantic. */
-    SEMANTIC("semantic");
+    FULL("full");
 
     /** The actual serialized value for a QueryType instance. */
     private final String value;
@@ -50,7 +44,6 @@ public enum QueryType {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -7,8 +7,8 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +40,6 @@ public final class SearchDocumentsResult {
     private Map<String, List<FacetResult>> facets;
 
     /*
-     * The answers query results for the search operation; null if the answers query parameter was not specified or set
-     * to 'none'.
-     */
-    @JsonProperty(value = "@search.answers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AnswerResult> answers;
-
-    /*
      * Continuation JSON payload returned when Azure Cognitive Search can't return all the requested results in a
      * single Search response. You can use this JSON along with @odata.nextLink to formulate another POST Search
      * request to get the next part of the search response.
@@ -68,8 +61,17 @@ public final class SearchDocumentsResult {
     @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SearchDocumentsResult class. */
-    public SearchDocumentsResult() {}
+    /**
+     * Creates an instance of SearchDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
+    @JsonCreator
+    public SearchDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchResult> results) {
+        this.results = results;
+    }
 
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
@@ -101,16 +103,6 @@ public final class SearchDocumentsResult {
      */
     public Map<String, List<FacetResult>> getFacets() {
         return this.facets;
-    }
-
-    /**
-     * Get the answers property: The answers query results for the search operation; null if the answers query parameter
-     * was not specified or set to 'none'.
-     *
-     * @return the answers value.
-     */
-    public List<AnswerResult> getAnswers() {
-        return this.answers;
     }
 
     /**

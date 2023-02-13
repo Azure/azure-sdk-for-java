@@ -10,7 +10,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,14 +48,6 @@ public final class SearchIndexerDataSource {
     private SearchIndexerDataContainer container;
 
     /*
-     * An explicit managed identity to use for this datasource. If not specified and the connection string is a managed
-     * identity, the system-assigned managed identity is used. If not specified, the value remains unchanged. If "none"
-     * is specified, the value of this property is cleared.
-     */
-    @JsonProperty(value = "identity")
-    private SearchIndexerDataIdentity identity;
-
-    /*
      * The data change detection policy for the datasource.
      */
     @JsonProperty(value = "dataChangeDetectionPolicy")
@@ -85,9 +76,6 @@ public final class SearchIndexerDataSource {
      */
     @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
-
-    /** Creates an instance of SearchIndexerDataSource class. */
-    public SearchIndexerDataSource() {}
 
     /**
      * Get the name property: The name of the datasource.
@@ -186,30 +174,6 @@ public final class SearchIndexerDataSource {
      */
     public SearchIndexerDataSource setContainer(SearchIndexerDataContainer container) {
         this.container = container;
-        return this;
-    }
-
-    /**
-     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @return the identity value.
-     */
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchIndexerDataSource object itself.
-     */
-    public SearchIndexerDataSource setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
         return this;
     }
 

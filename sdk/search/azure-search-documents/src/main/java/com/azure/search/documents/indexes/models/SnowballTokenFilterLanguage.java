@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The language to use for a Snowball token filter. */
+/** Defines values for SnowballTokenFilterLanguage. */
 public enum SnowballTokenFilterLanguage {
     /** Enum value armenian. */
     ARMENIAN("armenian"),
@@ -104,7 +104,6 @@ public enum SnowballTokenFilterLanguage {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

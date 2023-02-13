@@ -22,18 +22,6 @@ public final class IndexerExecutionResult {
     private IndexerExecutionStatus status;
 
     /*
-     * The outcome of this indexer execution.
-     */
-    @JsonProperty(value = "statusDetail", access = JsonProperty.Access.WRITE_ONLY)
-    private IndexerExecutionStatusDetail statusDetail;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    @JsonProperty(value = "currentState", access = JsonProperty.Access.WRITE_ONLY)
-    private IndexerCurrentState currentState;
-
-    /*
      * The error message indicating the top-level error, if any.
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
@@ -99,16 +87,16 @@ public final class IndexerExecutionResult {
      */
     @JsonCreator
     public IndexerExecutionResult(
-        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            IndexerExecutionStatus status,
-        @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            List<SearchIndexerError> errors,
-        @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            List<SearchIndexerWarning> warnings,
-        @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            int itemCount,
-        @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            int failedItemCount) {
+            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    IndexerExecutionStatus status,
+            @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerError> errors,
+            @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerWarning> warnings,
+            @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int itemCount,
+            @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int failedItemCount) {
         this.status = status;
         this.errors = errors;
         this.warnings = warnings;
@@ -123,24 +111,6 @@ public final class IndexerExecutionResult {
      */
     public IndexerExecutionStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the statusDetail property: The outcome of this indexer execution.
-     *
-     * @return the statusDetail value.
-     */
-    public IndexerExecutionStatusDetail getStatusDetail() {
-        return this.statusDetail;
-    }
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 
     /**

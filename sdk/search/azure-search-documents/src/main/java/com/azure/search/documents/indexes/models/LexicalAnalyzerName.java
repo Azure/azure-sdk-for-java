@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the names of all text analyzers supported by Azure Cognitive Search. */
+/** Defines values for LexicalAnalyzerName. */
 public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnalyzerName> {
     /** Static value ar.microsoft for LexicalAnalyzerName. */
     public static final LexicalAnalyzerName AR_MICROSOFT = fromString("ar.microsoft");

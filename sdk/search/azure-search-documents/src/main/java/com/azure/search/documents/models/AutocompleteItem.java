@@ -33,9 +33,9 @@ public final class AutocompleteItem {
      */
     @JsonCreator
     public AutocompleteItem(
-        @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY) String text,
-        @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            String queryPlusText) {
+            @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY) String text,
+            @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    String queryPlusText) {
         this.text = text;
         this.queryPlusText = queryPlusText;
     }

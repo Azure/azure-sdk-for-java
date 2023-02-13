@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by CustomEntityLookupSkill. */
+/** Defines values for CustomEntityLookupSkillLanguage. */
 public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<CustomEntityLookupSkillLanguage> {
     /** Static value da for CustomEntityLookupSkillLanguage. */
     public static final CustomEntityLookupSkillLanguage DA = fromString("da");

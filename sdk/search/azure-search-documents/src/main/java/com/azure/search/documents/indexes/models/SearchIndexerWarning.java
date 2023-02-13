@@ -52,7 +52,7 @@ public final class SearchIndexerWarning {
      */
     @JsonCreator
     public SearchIndexerWarning(
-        @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
         this.message = message;
     }
 

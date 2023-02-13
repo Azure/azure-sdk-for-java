@@ -18,10 +18,15 @@ public final class PhoneticTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter(obj.getName());
 
-        return new PhoneticTokenFilter(obj.getName())
-            .setOriginalTokensReplaced(obj.isReplaceOriginalTokens())
-            .setEncoder(obj.getEncoder());
+        Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
+        phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);
+
+        if (obj.getEncoder() != null) {
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
+        }
+        return phoneticTokenFilter;
     }
 
     /**
@@ -32,10 +37,17 @@ public final class PhoneticTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter phoneticTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter(obj.getName());
 
-        return new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter(obj.getName())
-            .setReplaceOriginalTokens(obj.areOriginalTokensReplaced())
-            .setEncoder(obj.getEncoder());
+        Boolean replaceOriginalTokens = obj.areOriginalTokensReplaced();
+        phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
+
+        if (obj.getEncoder() != null) {
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
+        }
+
+        return phoneticTokenFilter;
     }
 
     private PhoneticTokenFilterConverter() {

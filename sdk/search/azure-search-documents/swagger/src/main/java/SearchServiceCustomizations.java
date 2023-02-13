@@ -6,52 +6,27 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.AssignExpr;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.ClassExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.MemberValuePair;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.NullLiteralExpr;
-import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.expr.ThisExpr;
-import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExplicitConstructorInvocationStmt;
-import com.github.javaparser.ast.stmt.IfStmt;
-import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.github.javaparser.ast.stmt.ThrowStmt;
-import com.github.javaparser.javadoc.Javadoc;
-import com.github.javaparser.javadoc.JavadocBlockTag;
-import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * Contains customizations for Azure Search's service swagger code generation.
  */
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SearchServiceCustomizations extends Customization {
+    // Common modifier combinations
+    private static final int PUBLIC_ABSTRACT = java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.ABSTRACT;
+    private static final int PUBLIC_FINAL = java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL;
+
     private static final String VARARG_METHOD_TEMPLATE = joinWithNewline(
         "public %s %s(%s... %s) {",
         "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
@@ -67,30 +42,29 @@ public class SearchServiceCustomizations extends Customization {
         PackageCustomization implCustomization = libraryCustomization.getPackage(IMPLEMENTATION_MODELS);
         PackageCustomization publicCustomization = libraryCustomization.getPackage(MODELS);
 
-        // Customize implementation models.
+        // Customize implementation.
 
         // Customize models.
         // Change class modifiers to 'public abstract'.
-        bulkAddClassModifier(publicCustomization, Modifier.Keyword.ABSTRACT, "ScoringFunction",
-            "DataChangeDetectionPolicy", "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount",
+        bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
+            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
             "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector",
-            "SearchIndexerKnowledgeStoreBlobProjectionSelector", "SearchIndexerDataIdentity");
+            "SearchIndexerKnowledgeStoreBlobProjectionSelector");
 
         // Change class modifiers to 'public final'.
-        bulkAddClassModifier(publicCustomization, Modifier.Keyword.FINAL,
-            "BM25SimilarityAlgorithm", "ClassicSimilarityAlgorithm", "HighWaterMarkChangeDetectionPolicy",
-            "SqlIntegratedChangeTrackingPolicy", "SoftDeleteColumnDeletionDetectionPolicy", "MappingCharFilter",
-            "PatternReplaceCharFilter", "DefaultCognitiveServicesAccount", "ConditionalSkill",
-            "KeyPhraseExtractionSkill", "LanguageDetectionSkill", "ShaperSkill", "MergeSkill",
-            "SplitSkill", "TextTranslationSkill", "DocumentExtractionSkill", "WebApiSkill");
+        bulkChangeClassModifiers(publicCustomization, PUBLIC_FINAL, "BM25SimilarityAlgorithm",
+            "ClassicSimilarityAlgorithm", "HighWaterMarkChangeDetectionPolicy", "SqlIntegratedChangeTrackingPolicy",
+            "SoftDeleteColumnDeletionDetectionPolicy", "MappingCharFilter", "PatternReplaceCharFilter",
+            "DefaultCognitiveServicesAccount", "ConditionalSkill", "ConditionalSkill", "KeyPhraseExtractionSkill",
+            "LanguageDetectionSkill", "ShaperSkill", "MergeSkill", "SentimentSkill", "SplitSkill",
+            "TextTranslationSkill", "DocumentExtractionSkill", "WebApiSkill");
 
         bulkRemoveMethod(publicCustomization, "getOdataType", "BM25SimilarityAlgorithm", "ClassicSimilarityAlgorithm",
-            "ConditionalSkill", "DefaultCognitiveServicesAccount", "DocumentExtractionSkill",
-            "EntityLinkingSkill", "HighWaterMarkChangeDetectionPolicy",
-            "KeyPhraseExtractionSkill", "LanguageDetectionSkill", "MappingCharFilter", "MergeSkill",
-            "PatternReplaceCharFilter", "PiiDetectionSkill", "SearchIndexerDataNoneIdentity",
-            "SearchIndexerDataUserAssignedIdentity", "ShaperSkill", "SoftDeleteColumnDeletionDetectionPolicy",
-            "SplitSkill", "SqlIntegratedChangeTrackingPolicy", "TextTranslationSkill", "WebApiSkill");
+            "ConditionalSkill", "DefaultCognitiveServicesAccount", "DocumentExtractionSkill", "EntityRecognitionSkill",
+            "HighWaterMarkChangeDetectionPolicy", "KeyPhraseExtractionSkill", "LanguageDetectionSkill",
+            "MappingCharFilter", "MergeSkill", "PatternReplaceCharFilter", "SentimentSkill", "ShaperSkill",
+            "SoftDeleteColumnDeletionDetectionPolicy", "SplitSkill", "SqlIntegratedChangeTrackingPolicy",
+            "TextTranslationSkill", "WebApiSkill");
 
         bulkRemoveMethod(publicCustomization, "getType", "DistanceScoringFunction", "FreshnessScoringFunction",
             "MagnitudeScoringFunction", "TagScoringFunction");
@@ -106,10 +80,8 @@ public class SearchServiceCustomizations extends Customization {
         customizeCognitiveServicesAccountKey(publicCustomization.getClass("CognitiveServicesAccountKey"));
         customizeOcrSkill(publicCustomization.getClass("OcrSkill"));
         customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
-        customizeEntityRecognitionSkill(publicCustomization.getClass("EntityRecognitionSkill"),
-            implCustomization.getClass("EntityRecognitionSkillV3"));
+        customizeEntityRecognitionSkill(publicCustomization.getClass("EntityRecognitionSkill"));
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
-        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
@@ -121,21 +93,18 @@ public class SearchServiceCustomizations extends Customization {
         customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
         customizeSearchIndexerSkillset(publicCustomization.getClass("SearchIndexerSkillset"));
         customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"));
-        customizeSentimentSkill(publicCustomization.getClass("SentimentSkill"),
-            implCustomization.getClass("SentimentSkillV3"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(compilationUnit ->
-            compilationUnit.getClassByName(classCustomization.getClassName()).get()
-                .addMethod("collection", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
-                .setType("SearchFieldDataType")
-                .addParameter("SearchFieldDataType", "dataType")
-                .addMarkerAnnotation("JsonCreator")
-                .setBody(new BlockStmt(new NodeList<>(new ReturnStmt("fromString(String.format(\"Collection(%s)\", dataType.toString()))"))))
-                .setJavadocComment(new Javadoc(new JavadocDescription(Collections.singletonList(() -> "Returns a collection of a specific SearchFieldDataType")))
-                    .addBlockTag(JavadocBlockTag.createParamBlockTag("dataType", "the corresponding SearchFieldDataType"))
-                    .addBlockTag("return", "a Collection of the corresponding SearchFieldDataType")));
+        classCustomization.addMethod(joinWithNewline(
+                "public static SearchFieldDataType collection(SearchFieldDataType dataType) {",
+                "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));",
+                "}"))
+            .addAnnotation("@JsonCreator")
+            .getJavadoc()
+            .setDescription("Returns a collection of a specific SearchFieldDataType")
+            .setParam("dataType", "the corresponding SearchFieldDataType")
+            .setReturn("a Collection of the corresponding SearchFieldDataType");
     }
 
     private void customizeMagnitudeScoringParameters(ClassCustomization classCustomization) {
@@ -144,13 +113,13 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSimilarityAlgorithm(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.ABSTRACT);
+        changeClassModifier(classCustomization, PUBLIC_ABSTRACT);
         classCustomization.removeAnnotation("@JsonTypeName");
         classCustomization.addAnnotation("@JsonTypeName(\"Similarity\")");
     }
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         classCustomization.addMethod(joinWithNewline(
             "/**",
@@ -167,40 +136,84 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
 
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
 
-        classCustomization.addMethod(joinWithNewline(
+        JavadocCustomization newJavadoc = classCustomization.addMethod(joinWithNewline(
                 "public Boolean setShouldDetectOrientation() {",
                 "    return this.shouldDetectOrientation;",
                 "}"))
             .addAnnotation("@Deprecated")
-            .getJavadoc()
-            .replace(javadocToCopy)
+            .getJavadoc();
+
+        copyJavadocs(javadocToCopy, newJavadoc)
             .setDeprecated("Use {@link #isShouldDetectOrientation()} instead.");
     }
 
+    private void customizeSearchIndexerSkill(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration searchIndexerSkillClass = compilationUnit.getClassByName("SearchIndexerSkill")
+                .get();
+
+            // Add the modifier 'abstract' to SearchIndexerSkill.
+            searchIndexerSkillClass.addModifier(Modifier.Keyword.ABSTRACT);
+
+            // Get the JsonSubTypes annotation.
+            AnnotationExpr jsonSubTypes = searchIndexerSkillClass.getAnnotationByName("JsonSubTypes").get();
+
+            // JsonSubTypes only has a single annotation value which is an array of Types.
+            ArrayInitializerExpr jsonSubTypesTypes = (ArrayInitializerExpr) jsonSubTypes.getChildNodes().get(1);
+
+            // All JsonSubTypes.Type with names
+            //
+            // - #Microsoft.Skills.Text.V3.EntityRecognitionSkill
+            // - #Microsoft.Skills.Text.V3.EntityLinkingSkill
+            // - #Microsoft.Skills.Text.PIIDetectionSkill
+            // - #Microsoft.Skills.Text.V3.SentimentSkill
+            //
+            // need to be removed as they aren't supported.
+            List<Node> nodesToRemove = new ArrayList<>();
+            for (Node jsonSubTypesType : jsonSubTypesTypes.getChildNodes()) {
+                jsonSubTypesType.getChildNodes().stream()
+                    .filter(childNode -> childNode instanceof MemberValuePair)
+                    .map(childNode -> (MemberValuePair) childNode)
+                    .filter(mvp -> "name".equals(mvp.getName().asString()))
+                    .filter(mvp -> {
+                        String mvpValue = mvp.getValue().asStringLiteralExpr().asString();
+                        return "#Microsoft.Skills.Text.V3.SentimentSkill".equals(mvpValue)
+                            || "#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(mvpValue)
+                            || "#Microsoft.Skills.Text.PIIDetectionSkill".equals(mvpValue)
+                            || "#Microsoft.Skills.Text.V3.EntityLinkingSkill".equals(mvpValue);
+                    })
+                    .findFirst()
+                    .ifPresent(mvp -> nodesToRemove.add(mvp.getParentNode().get()));
+            }
+
+            nodesToRemove.forEach(Node::remove);
+        });
+    }
+
+    private void customizeEntityRecognitionSkill(ClassCustomization classCustomization) {
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
+        classCustomization.getMethod("setIncludeTypelessEntities").rename("setTypelessEntitiesIncluded");
+        classCustomization.getMethod("isIncludeTypelessEntities").rename("areTypelessEntitiesIncluded");
+        addVarArgsOverload(classCustomization, "categories", "EntityCategory");
+    }
+
     private void customizeImageAnalysisSkill(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "visualFeatures", "VisualFeature");
         addVarArgsOverload(classCustomization, "details", "ImageDetail");
     }
 
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
-    }
-
-    private void customizeCustomNormalizer(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
-        removeMethod(classCustomization, "getOdataType");
-        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
-        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
 
     private void customizeSearchField(ClassCustomization classCustomization) {
@@ -263,14 +276,14 @@ public class SearchServiceCustomizations extends Customization {
         String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
         keyCustomization.removeMethod("setAccessCredentials");
 
-        keyCustomization.addMethod(joinWithNewline(
+        JavadocCustomization javadoc = keyCustomization.addMethod(joinWithNewline(
                 "public String getApplicationId() {",
                 "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();",
                 "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("getApplicationId").getJavadoc());
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("getApplicationId").getJavadoc(), javadoc);
 
-        keyCustomization.addMethod(joinWithNewline(
+        javadoc = keyCustomization.addMethod(joinWithNewline(
                 "public SearchResourceEncryptionKey setApplicationId(String applicationId) {",
                 "    if (this.accessCredentials == null) {",
                 "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
@@ -279,18 +292,18 @@ public class SearchServiceCustomizations extends Customization {
                 "    this.accessCredentials.setApplicationId(applicationId);",
                 "    return this;",
                 "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("setApplicationId").getJavadoc())
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("setApplicationId").getJavadoc(), javadoc)
             .setReturn(setterReturnJavadoc);
 
-        keyCustomization.addMethod(joinWithNewline(
+        javadoc = keyCustomization.addMethod(joinWithNewline(
                 "public String getApplicationSecret() {",
                 "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();",
                 "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("getApplicationSecret").getJavadoc());
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("getApplicationSecret").getJavadoc(), javadoc);
 
-        keyCustomization.addMethod(joinWithNewline(
+        javadoc = keyCustomization.addMethod(joinWithNewline(
                 "public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {",
                 "    if (this.accessCredentials == null) {",
                 "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
@@ -299,8 +312,8 @@ public class SearchServiceCustomizations extends Customization {
                 "    this.accessCredentials.setApplicationSecret(applicationSecret);",
                 "    return this;",
                 "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("setApplicationSecret").getJavadoc())
+            .getJavadoc();
+        copyJavadocs(credentialCustomization.getMethod("setApplicationSecret").getJavadoc(), javadoc)
             .setReturn(setterReturnJavadoc);
     }
 
@@ -314,14 +327,14 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeCustomAnalyzer(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
         addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
 
     private void customizePatternAnalyzer(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         classCustomization.getMethod("isLowerCaseTerms").rename("areLowerCaseTerms");
         addVarArgsOverload(classCustomization, "stopwords", "String");
@@ -357,13 +370,13 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeLuceneStandardAnalyzer(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
     private void customizeStopAnalyzer(ClassCustomization classCustomization) {
-        addClassModifier(classCustomization, Modifier.Keyword.FINAL);
+        changeClassModifier(classCustomization, PUBLIC_FINAL);
         removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
@@ -397,170 +410,19 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
-    private void customizeSearchIndexerSkill(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration searchIndexerSkillClass = compilationUnit.getClassByName("SearchIndexerSkill")
-                .get();
-
-            // Add the modifier 'abstract' to SearchIndexerSkill.
-            searchIndexerSkillClass.addModifier(Modifier.Keyword.ABSTRACT);
-
-            // Get the JsonSubTypes annotation.
-            AnnotationExpr jsonSubTypes = searchIndexerSkillClass.getAnnotationByName("JsonSubTypes").get();
-
-            // JsonSubTypes only has a single annotation value which is an array of Types.
-            ArrayInitializerExpr jsonSubTypesTypes = (ArrayInitializerExpr) jsonSubTypes.getChildNodes().get(1);
-
-            // Both #Microsoft.Skills.Text.V3.SentimentSkill and #Microsoft.Skills.Text.V3.EntityRecognitionSkill
-            // should use the non-V3 subtype as they were merged into a single class.
-            for (Node jsonSubTypesType : jsonSubTypesTypes.getChildNodes()) {
-                Optional<MemberValuePair> potentialNameNode = jsonSubTypesType.getChildNodes().stream()
-                    .filter(childNode -> childNode instanceof MemberValuePair)
-                    .map(childNode -> (MemberValuePair) childNode)
-                    .filter(mvp -> "name".equals(mvp.getName().asString()))
-                    .filter(mvp -> {
-                        String mvpValue = mvp.getValue().asStringLiteralExpr().asString();
-                        return "#Microsoft.Skills.Text.V3.SentimentSkill".equals(mvpValue)
-                            || "#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(mvpValue);
-                    }).findFirst();
-
-                if (potentialNameNode.isPresent()) {
-                    MemberValuePair valueNode = jsonSubTypesType.getChildNodes().stream()
-                        .filter(childNode -> childNode instanceof MemberValuePair)
-                        .map(childNode -> (MemberValuePair) childNode)
-                        .filter(mvp -> "value".equals(mvp.getName().asString()))
-                        .findFirst()
-                        .get();
-
-                    MemberValuePair nameNode = potentialNameNode.get();
-                    String subTypeName = nameNode.getValue().asStringLiteralExpr().asString();
-                    ClassExpr valueClass = valueNode.getValue().asClassExpr();
-                    if ("#Microsoft.Skills.Text.V3.SentimentSkill".equals(subTypeName)) {
-                        valueClass.setType("SentimentSkill");
-                    } else {
-                        valueClass.setType("EntityRecognitionSkill");
-                    }
-                }
-            }
-        });
-    }
-
-    private void customizeEntityRecognitionSkill(ClassCustomization entityRecognitionSkill,
-        ClassCustomization entityRecognitionSkillV3) {
-        // Get the fields and methods that will be copied from the V3 skill into the V1 skill.
-        String modelVersionString = "modelVersion";
-        String getModelVersionString = "getModelVersion";
-        String setModelVersionString = "setModelVersion";
-
-        Map<String, BodyDeclaration<?>> nodesToCopy = new HashMap<>();
-        entityRecognitionSkillV3.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName(entityRecognitionSkillV3.getClassName())
-                .get();
-            nodesToCopy.put(modelVersionString, clazz.getFieldByName(modelVersionString).get().clone());
-            nodesToCopy.put(getModelVersionString, clazz.getMethodsByName(getModelVersionString).get(0).clone());
-            nodesToCopy.put(setModelVersionString, clazz.getMethodsByName(setModelVersionString).get(0).clone());
-        });
-
-        entityRecognitionSkill.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName(entityRecognitionSkill.getClassName()).get()
-                .addModifier(Modifier.Keyword.FINAL);
-            clazz.getMethodsByName("setIncludeTypelessEntities").get(0).setName("setTypelessEntitiesIncluded");
-            clazz.getMethodsByName("isIncludeTypelessEntities").get(0).setName("areTypelessEntitiesIncluded");
-
-            addClientLogger(compilationUnit, clazz);
-            changeOdataTypeToEnum(clazz, "EntityRecognitionSkillVersion");
-
-            Expression v1Expression = new FieldAccessExpr(new NameExpr("EntityRecognitionSkillVersion"), "V1");
-            Expression v3Expression = new FieldAccessExpr(new NameExpr("EntityRecognitionSkillVersion"), "V3");
-
-            addVersionConstructorOverload(clazz, clazz.getConstructors().get(0), "EntityRecognitionSkillVersion",
-                v1Expression);
-
-            clazz.getMembers().add(clazz.getFields().size(), nodesToCopy.get(modelVersionString));
-
-            clazz.addMember(nodesToCopy.get(getModelVersionString));
-            modifyAndAddCopiedSetter(clazz, nodesToCopy.get(setModelVersionString).asMethodDeclaration(),
-                "EntityRecognitionSkill", "modelVersion", "EntityRecognitionSkillVersion", "V1", v1Expression);
-
-            MethodDeclaration setTypelessEntitiesIncluded = clazz.getMethodsByName("setTypelessEntitiesIncluded").get(0);
-
-            Javadoc setTypelessEntitiesIncludedBodyJavadoc = setTypelessEntitiesIncluded.getJavadoc().get();
-            setTypelessEntitiesIncludedBodyJavadoc.addBlockTag(new JavadocBlockTag(JavadocBlockTag.Type.THROWS,
-                "IllegalArgumentException If {@code includeTypelessEntities} is supplied when {@link #getSkillVersion()} is {@link EntityRecognitionSkillVersion#V3}."));
-            setTypelessEntitiesIncluded.setJavadocComment(setTypelessEntitiesIncludedBodyJavadoc);
-
-
-            BlockStmt setTypelessEntitiesIncludedBody = setTypelessEntitiesIncluded.getBody().get();
-            setTypelessEntitiesIncludedBody.getStatements().add(0, createAndIfThrowStatement("IllegalArgumentException",
-                "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'.",
-                new BinaryExpr(new NameExpr("includeTypelessEntities"), new NullLiteralExpr(), BinaryExpr.Operator.NOT_EQUALS),
-                new BinaryExpr(new NameExpr("version"), v3Expression, BinaryExpr.Operator.EQUALS)));
-        });
-
-        addVarArgsOverload(entityRecognitionSkill, "categories", "EntityCategory");
-    }
-
-    private void customizeSentimentSkill(ClassCustomization sentimentSkillCustomization,
-        ClassCustomization sentimentSkillV3Customization) {
-        // Get the fields and methods that will be copied from the V3 skill into the V1 skill.
-        String includeOpinionMiningString = "includeOpinionMining";
-        String modelVersionString = "modelVersion";
-        String isIncludeOpinionMiningString = "isIncludeOpinionMining";
-        String setIncludeOpinionMiningString = "setIncludeOpinionMining";
-        String getModelVersionString = "getModelVersion";
-        String setModelVersionString = "setModelVersion";
-
-        Map<String, BodyDeclaration<?>> nodesToCopy = new HashMap<>();
-        sentimentSkillV3Customization.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName(sentimentSkillV3Customization.getClassName())
-                .get();
-            nodesToCopy.put(includeOpinionMiningString, clazz.getFieldByName(includeOpinionMiningString).get().clone());
-            nodesToCopy.put(modelVersionString, clazz.getFieldByName(modelVersionString).get().clone());
-            nodesToCopy.put(isIncludeOpinionMiningString, clazz.getMethodsByName(isIncludeOpinionMiningString).get(0).clone());
-            nodesToCopy.put(setIncludeOpinionMiningString, clazz.getMethodsByName(setIncludeOpinionMiningString).get(0).clone());
-            nodesToCopy.put(getModelVersionString, clazz.getMethodsByName(getModelVersionString).get(0).clone());
-            nodesToCopy.put(setModelVersionString, clazz.getMethodsByName(setModelVersionString).get(0).clone());
-        });
-
-        sentimentSkillCustomization.customizeAst(compilationUnit -> {
-            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName(sentimentSkillCustomization.getClassName()).get()
-                .addModifier(Modifier.Keyword.FINAL);
-
-            addClientLogger(compilationUnit, clazz);
-            changeOdataTypeToEnum(clazz, "SentimentSkillVersion");
-
-            Expression v1Expression = new FieldAccessExpr(new NameExpr("SentimentSkillVersion"), "V1");
-
-            addVersionConstructorOverload(clazz, clazz.getConstructors().get(0), "SentimentSkillVersion", v1Expression);
-
-            int whereToAddAdditionalFields = clazz.getFields().size();
-            clazz.getMembers().add(whereToAddAdditionalFields++, nodesToCopy.get(includeOpinionMiningString));
-            clazz.getMembers().add(whereToAddAdditionalFields, nodesToCopy.get(modelVersionString));
-
-            clazz.addMember(nodesToCopy.get(isIncludeOpinionMiningString));
-            modifyAndAddCopiedSetter(clazz, nodesToCopy.get(setIncludeOpinionMiningString).asMethodDeclaration(),
-                "SentimentSkill", "includeOpinionMining", "SentimentSkillVersion", "V1", v1Expression);
-
-            clazz.addMember(nodesToCopy.get(getModelVersionString));
-            modifyAndAddCopiedSetter(clazz, nodesToCopy.get(setModelVersionString).asMethodDeclaration(),
-                "SentimentSkill", "modelVersion", "SentimentSkillVersion", "V1", v1Expression);
-        });
-    }
-
-    private static void bulkAddClassModifier(PackageCustomization packageCustomization, Modifier.Keyword modifier,
+    private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
         String... classNames) {
         if (classNames == null) {
             return;
         }
 
         for (String className : classNames) {
-            addClassModifier(packageCustomization.getClass(className), modifier);
+            changeClassModifier(packageCustomization.getClass(className), modifier);
         }
     }
 
-    private static void addClassModifier(ClassCustomization classCustomization, Modifier.Keyword modifier) {
-        classCustomization.customizeAst(compilationUnit -> compilationUnit
-            .getClassByName(classCustomization.getClassName()).get().addModifier(modifier));
+    private static void changeClassModifier(ClassCustomization classCustomization, int modifier) {
+        classCustomization.setModifier(modifier);
     }
 
     /*
@@ -578,7 +440,24 @@ public class SearchServiceCustomizations extends Customization {
         String varargMethod = String.format(VARARG_METHOD_TEMPLATE, classCustomization.getClassName(), methodName,
             parameterType, parameterName, parameterName, parameterName, parameterName);
 
-        classCustomization.addMethod(varargMethod).getJavadoc().replace(copyJavadocs);
+        JavadocCustomization newJavadocs = classCustomization.addMethod(varargMethod).getJavadoc();
+        copyJavadocs(copyJavadocs, newJavadocs);
+    }
+
+    /*
+     * This helper function copies Javadocs from one customization to another.
+     */
+    private static JavadocCustomization copyJavadocs(JavadocCustomization from, JavadocCustomization to) {
+        to.setDescription(from.getDescription())
+            .setReturn(from.getReturn())
+            .setSince(from.getSince())
+            .setDeprecated(from.getDeprecated());
+
+        from.getParams().forEach(to::setParam);
+        from.getThrows().forEach(to::addThrows);
+        from.getSees().forEach(to::addSee);
+
+        return to;
     }
 
     private static String joinWithNewline(String... lines) {
@@ -594,137 +473,5 @@ public class SearchServiceCustomizations extends Customization {
 
     private static void removeMethod(ClassCustomization classCustomization, String methodName) {
         classCustomization.removeMethod(methodName);
-    }
-
-    private static void addClientLogger(CompilationUnit compilationUnit, ClassOrInterfaceDeclaration clazz) {
-        // Add ClientLogger and JsonIgnore imports, if they are duplicates they will be cleaned up later on.
-        compilationUnit.addImport("com.azure.core.util.logging.ClientLogger")
-            .addImport("com.fasterxml.jackson.annotation.JsonIgnore");
-
-        FieldDeclaration clientLoggerDeclaration = new FieldDeclaration()
-            .addVariable(new VariableDeclarator(StaticJavaParser.parseType("ClientLogger"), "LOGGER")
-                .setInitializer("new ClientLogger(" + clazz.getName().asString() + ".class)"))
-            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
-            .addMarkerAnnotation("JsonIgnore");
-
-        // Always make ClientLogger the first field declaration in the class.
-        clazz.getMembers().add(0, clientLoggerDeclaration);
-    }
-
-    private static void changeOdataTypeToEnum(ClassOrInterfaceDeclaration clazz, String versionType) {
-        clazz.getFieldByName("odataType").ifPresent(fieldDeclaration -> fieldDeclaration.getVariable(0)
-            .setName("version")
-            .setType(versionType)
-            .removeInitializer());
-
-        MethodDeclaration getVersion = clazz.getMethodsByName("getOdataType").get(0);
-        getVersion.setType(versionType).setName("getSkillVersion").createBody()
-            .addStatement(new ReturnStmt(new FieldAccessExpr(new ThisExpr(), "version")));
-        getVersion.setJavadocComment(createJavadoc(String.format("Gets the version of the {@link %s}.",
-                clazz.getName().asString()),
-            new JavadocBlockTag(JavadocBlockTag.Type.RETURN, String.format("The version of the {@link %s}.",
-                clazz.getName().asString()))));
-    }
-
-    private static void addVersionConstructorOverload(ClassOrInterfaceDeclaration clazz,
-        ConstructorDeclaration creatorCtor, String versionType, Expression v1Constant) {
-        int nextCtorPosition = clazz.getMembers().indexOf(creatorCtor) + 1;
-        ConstructorDeclaration versionCtor = creatorCtor.clone();
-        versionCtor.getAnnotationByName("JsonCreator").ifPresent(AnnotationExpr::remove);
-        versionCtor.getParameters().forEach(param -> param.getAnnotationByName("JsonProperty")
-            .ifPresent(AnnotationExpr::remove));
-        versionCtor.addParameter(versionType, "version");
-        versionCtor.setJavadocComment(versionCtor.getJavadoc().get().addBlockTag(
-            JavadocBlockTag.createParamBlockTag("version",
-                String.format("the %s value to set.", versionType))));
-        versionCtor.getBody().addStatement(new AssignExpr(new FieldAccessExpr().setName("version"),
-            new NameExpr("version"), AssignExpr.Operator.ASSIGN));
-        clazz.getMembers().add(nextCtorPosition, versionCtor);
-
-        ExplicitConstructorInvocationStmt thisCtorCall = new ExplicitConstructorInvocationStmt()
-            .setThis(true)
-            .setArguments(new NodeList<>(new NameExpr("inputs"), new NameExpr("outputs"), v1Constant));
-        creatorCtor.getBody().setStatements(new NodeList<>(thisCtorCall));
-    }
-
-    private static void modifyAndAddCopiedSetter(ClassOrInterfaceDeclaration clazz, MethodDeclaration method,
-        String returnType, String setterVariable, String versionType, String version, Expression versionExpression) {
-        // Change the method's return type.
-        method.setType(returnType);
-
-        Javadoc javadoc = method.getJavadoc().get();
-        int returnIndex = -1;
-        for (int i = 0; i < javadoc.getBlockTags().size(); i++) {
-            if (javadoc.getBlockTags().get(i).getType() == JavadocBlockTag.Type.RETURN) {
-                returnIndex = i;
-                break;
-            }
-        }
-
-        // Update the Javadocs.
-        javadoc.getBlockTags().set(returnIndex, new JavadocBlockTag(JavadocBlockTag.Type.RETURN,
-            String.format("the %s object itself.", returnType)));
-        javadoc.addBlockTag(new JavadocBlockTag(JavadocBlockTag.Type.THROWS, String.format(
-            "IllegalArgumentException If {@code %s} is supplied when {@link #getSkillVersion()} is {@link %s#%s}.",
-            setterVariable, versionType, version)));
-        method.setJavadocComment(javadoc);
-
-
-        BlockStmt body = method.getBody().get();
-        body.getStatements().add(0, createAndIfThrowStatement("IllegalArgumentException",
-            String.format("%s using %s doesn't support '%s'.", returnType, version, setterVariable),
-            new BinaryExpr(new NameExpr(setterVariable), new NullLiteralExpr(), BinaryExpr.Operator.NOT_EQUALS),
-            new BinaryExpr(new NameExpr("version"), versionExpression, BinaryExpr.Operator.EQUALS)));
-
-        clazz.addMember(method);
-    }
-
-    /**
-     * Creates an if-throw statement.
-     *
-     * <pre>
-     * if (a != null && b == c) {
-     *     throw LOGGER.logExceptionAsError(new Exception(exceptionMessage));
-     * }
-     * </pre>
-     *
-     * Is what this method creates.
-     *
-     * @param exceptionType Type of the exception.
-     * @param exceptionMessage Message of the exception.
-     * @param check1 First statement in the conditional.
-     * @param check2 Second statement in the conditional.
-     * @return A new throw statement.
-     */
-    private static IfStmt createAndIfThrowStatement(String exceptionType, String exceptionMessage,
-        BinaryExpr check1, BinaryExpr check2) {
-        // Create check1 && check2
-        BinaryExpr conditional = new BinaryExpr(check1, check2, BinaryExpr.Operator.AND);
-
-        // Create throw block in the if.
-        BlockStmt throwBlock = new BlockStmt(new NodeList<>(new ThrowStmt(
-            createLogAndThrowCall("LOGGER", "logExceptionAsError",
-                createExceptionWithMessage(exceptionType, exceptionMessage)))));
-
-        return new IfStmt(conditional, throwBlock, null);
-    }
-
-    private static MethodCallExpr createLogAndThrowCall(String loggerName, String logMethod,
-        Expression exceptionExpression) {
-        return new MethodCallExpr(new NameExpr(loggerName), logMethod, new NodeList<>(exceptionExpression));
-    }
-
-    private static ObjectCreationExpr createExceptionWithMessage(String exceptionType, String exceptionMessage) {
-        return new ObjectCreationExpr().setType(exceptionType).setArguments(new NodeList<>(
-            new StringLiteralExpr(exceptionMessage)));
-    }
-
-    private static Javadoc createJavadoc(String description, JavadocBlockTag... tags) {
-        Javadoc javadoc = new Javadoc(JavadocDescription.parseText(description));
-        for (JavadocBlockTag tag : tags) {
-            javadoc.addBlockTag(tag);
-        }
-
-        return javadoc;
     }
 }

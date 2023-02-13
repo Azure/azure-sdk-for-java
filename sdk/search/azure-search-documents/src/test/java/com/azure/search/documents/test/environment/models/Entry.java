@@ -6,17 +6,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-@SuppressWarnings("ALL")
 public class Entry {
 
     @JsonProperty
     Date date;
 
     public Date date() {
-        return (date == null) ? null : (Date) date.clone();
+        return date;
     }
 
     public void date(Date date) {
-        this.date = (date == null) ? null : (Date) date.clone();
+        this.date = date;
     }
 }

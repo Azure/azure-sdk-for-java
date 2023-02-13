@@ -6,12 +6,12 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response from a get service statistics request. If successful, it includes service level counters and limits. */
-@Immutable
+@Fluent
 public final class SearchServiceStatistics {
     /*
      * Service level resource counters.

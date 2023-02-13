@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the type of a datasource. */
+/** Defines values for SearchIndexerDataSourceType. */
 public final class SearchIndexerDataSourceType extends ExpandableStringEnum<SearchIndexerDataSourceType> {
     /** Static value azuresql for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType AZURE_SQL = fromString("azuresql");

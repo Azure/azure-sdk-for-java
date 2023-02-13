@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
-import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -78,8 +77,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         String indexName = createHotelIndex();
         this.indexToDelete = indexName;
 
-        // TODO: Use getSearchClientBuilder once SearchIndexingBufferedSender has Sync Flow integrated.
-        this.clientBuilder = getSearchClientBuilderWithoutAssertingClient(indexName, false);
+        this.clientBuilder = getSearchClientBuilder(indexName);
     }
 
     @Override
@@ -87,7 +85,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         super.afterTest();
 
         if (!CoreUtils.isNullOrEmpty(indexToDelete)) {
-            getSearchIndexClientBuilder(true).buildClient().deleteIndex(indexToDelete);
+            getSearchIndexClientBuilder().buildClient().deleteIndex(indexToDelete);
         }
     }
 
@@ -108,7 +106,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.flush();
 
-        waitForIndexing();
+        sleepIfRunningAgainstService(3000);
 
         assertEquals(10, client.getDocumentCount());
 
@@ -133,7 +131,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        waitForIndexing();
+        sleepIfRunningAgainstService(3000);
 
         assertEquals(10, client.getDocumentCount());
         batchingClient.close();
@@ -156,7 +154,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        waitForIndexing();
+        sleepIfRunningAgainstService((long) (3000 * 1.5));
 
         assertEquals(10, client.getDocumentCount());
         batchingClient.close();
@@ -178,7 +176,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
 
-        waitForIndexing();
+        sleepIfRunningAgainstService(3000);
 
         assertEquals(10, client.getDocumentCount());
     }
@@ -201,7 +199,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        waitForIndexing();
+        sleepIfRunningAgainstService(3000);
 
         assertEquals(0, client.getDocumentCount());
         batchingClient.close();
@@ -244,7 +242,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.close();
 
-        sleepIfRunningAgainstService(10000);
+        sleepIfRunningAgainstService((long) (15000 * 1.5));
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
@@ -290,7 +288,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.close();
 
-        sleepIfRunningAgainstService(10000);
+        sleepIfRunningAgainstService((long) (15000 * 1.5));
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
@@ -304,7 +302,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
@@ -324,7 +322,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void flushTimesOut() {
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
@@ -348,7 +346,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 Mono<HttpResponse> response = Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                     createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
@@ -392,7 +390,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
@@ -430,7 +428,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
@@ -469,7 +467,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -532,7 +530,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void batchTakesAllNonDuplicateKeys() {
         AtomicInteger callCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -569,7 +567,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void batchWithDuplicateKeysBeingRetriedTakesAllNonDuplicateKeys() {
         AtomicInteger callCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -622,7 +620,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 409))))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
@@ -671,7 +669,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -711,7 +709,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> (callCount.getAndIncrement() < 2)
                 ? Mono.just(new MockHttpResponse(request, 413))
                 : createMockBatchSplittingResponse(request, 1, 1))
@@ -745,7 +743,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @MethodSource("operationsThrowAfterClientIsClosedSupplier")
     public void operationsThrowAfterClientIsClosed(
         Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -757,7 +755,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     }
 
-    static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
+    private static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
         List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
         List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
             .map(document -> new IndexAction<Map<String, Object>>()
@@ -788,7 +786,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void closingTwiceDoesNotThrow() {
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -803,7 +801,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -848,7 +846,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -897,7 +895,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger sentCount = new AtomicInteger();
 
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
@@ -935,7 +933,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void delayGrowsWith503Response() {
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
@@ -955,7 +953,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void delayGrowsWith503BatchOperation() {
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 503))))
@@ -977,7 +975,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void delayResetsAfterNo503s() {
         AtomicInteger callCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
@@ -1027,8 +1025,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      * Helper class to ignore write only properties that need to be spoofed.
      */
     private static class IgnoreJacksonWriteOnlyAccess extends JacksonAnnotationIntrospector {
-        private static final long serialVersionUID = 1L;
-
         @Override
         public JsonProperty.Access findPropertyAccess(Annotated m) {
             JsonProperty.Access access = super.findPropertyAccess(m);

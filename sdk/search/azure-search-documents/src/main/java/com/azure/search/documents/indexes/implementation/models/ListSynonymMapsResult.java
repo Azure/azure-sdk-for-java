@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,8 +21,17 @@ public final class ListSynonymMapsResult {
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SynonymMap> synonymMaps;
 
-    /** Creates an instance of ListSynonymMapsResult class. */
-    public ListSynonymMapsResult() {}
+    /**
+     * Creates an instance of ListSynonymMapsResult class.
+     *
+     * @param synonymMaps the synonymMaps value to set.
+     */
+    @JsonCreator
+    public ListSynonymMapsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SynonymMap> synonymMaps) {
+        this.synonymMaps = synonymMaps;
+    }
 
     /**
      * Get the synonymMaps property: The synonym maps in the Search service.

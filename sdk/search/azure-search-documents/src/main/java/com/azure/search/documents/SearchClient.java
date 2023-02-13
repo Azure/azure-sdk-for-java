@@ -8,28 +8,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.converters.IndexActionConverter;
-import com.azure.search.documents.implementation.models.AutocompleteRequest;
-import com.azure.search.documents.implementation.models.SearchDocumentsResult;
-import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.implementation.models.SearchContinuationToken;
-import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
-import com.azure.search.documents.implementation.models.SuggestRequest;
-import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.util.DocumentResponseConversions;
-import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.SearchOptions;
@@ -37,29 +19,12 @@ import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedIterable;
-import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static com.azure.core.util.serializer.TypeReference.createInstance;
-import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
-import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
-import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
-import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
-import static com.azure.search.documents.SearchAsyncClient.getFacets;
-import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
-import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
-import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -69,46 +34,16 @@ import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteReq
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchClient.class);
 
-    /**
-     * Search REST API Version
-     */
-    private final SearchServiceVersion serviceVersion;
-
-    /**
-     * The endpoint for the Azure Cognitive Search service.
-     */
-    private final String endpoint;
-
-    /**
-     * The name of the Azure Cognitive Search index.
-     */
-    private final String indexName;
-
-    /**
-     * The underlying AutoRest client used to interact with the Azure Cognitive Search service
-     */
-    private final SearchIndexClientImpl restClient;
-
-    /**
-     * The pipeline that powers this client.
-     */
-    private final HttpPipeline httpPipeline;
-
-    final JsonSerializer serializer;
+    private final SearchAsyncClient asyncClient;
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
+     *
+     * @param searchAsyncClient Async SearchIndex Client
      */
-    SearchClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-                      HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
-        this.endpoint = endpoint;
-        this.indexName = indexName;
-        this.serviceVersion = serviceVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
-        this.restClient = restClient;
+    SearchClient(SearchAsyncClient searchAsyncClient) {
+        this.asyncClient = searchAsyncClient;
     }
 
     /**
@@ -117,7 +52,7 @@ public final class SearchClient {
      * @return the indexName value.
      */
     public String getIndexName() {
-        return this.indexName;
+        return asyncClient.getIndexName();
     }
 
     /**
@@ -126,7 +61,7 @@ public final class SearchClient {
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
+        return this.asyncClient.getHttpPipeline();
     }
 
     /**
@@ -135,7 +70,7 @@ public final class SearchClient {
      * @return the endpoint value.
      */
     public String getEndpoint() {
-        return this.endpoint;
+        return asyncClient.getEndpoint();
     }
 
     /**
@@ -150,7 +85,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = SEARCH_CLIENT.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = searchClient.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -185,8 +120,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.uploadDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.uploadDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -210,7 +145,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), options, context);
+        return asyncClient.uploadDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -231,7 +166,7 @@ public final class SearchClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;merge&quot;&#41;;
-     * IndexDocumentsResult result = SEARCH_CLIENT.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = searchClient.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -272,8 +207,8 @@ public final class SearchClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.mergeDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.mergeDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -297,7 +232,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), options, context);
+        return asyncClient.mergeDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -320,7 +255,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = SEARCH_CLIENT.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = searchClient.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -363,8 +298,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.mergeOrUploadDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.mergeOrUploadDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -388,8 +323,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), options,
-            context);
+        return asyncClient.mergeOrUploadDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -404,7 +338,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = SEARCH_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = searchClient.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -439,8 +373,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.deleteDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.deleteDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -464,7 +398,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents,
         IndexDocumentsOptions options, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), options, context);
+        return asyncClient.deleteDocumentsWithResponse(documents, options, context).block();
     }
 
     /**
@@ -485,7 +419,7 @@ public final class SearchClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * IndexDocumentsResult result = SEARCH_CLIENT.indexDocuments&#40;indexDocumentsBatch&#41;;
+     * IndexDocumentsResult result = searchClient.indexDocuments&#40;indexDocumentsBatch&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -526,8 +460,8 @@ public final class SearchClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.indexDocumentsWithResponse&#40;indexDocumentsBatch,
-     *     null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.indexDocumentsWithResponse&#40;indexDocumentsBatch,
+     *     null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -551,13 +485,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
         IndexDocumentsOptions options, Context context) {
-        List<com.azure.search.documents.implementation.models.IndexAction> indexActions = batch.getActions()
-            .stream()
-            .map(document -> IndexActionConverter.map(document, serializer))
-            .collect(Collectors.toList());
-
-        boolean throwOnAnyError = options == null || options.throwOnAnyError();
-        return Utility.indexDocumentsWithResponse(restClient, indexActions, throwOnAnyError, context, LOGGER);
+        return asyncClient.indexDocumentsWithResponse(batch, options, context).block();
     }
 
     /**
@@ -572,7 +500,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocuments#String-Class -->
      * <pre>
-     * SearchDocument result = SEARCH_CLIENT.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;;
+     * SearchDocument result = searchClient.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;;
      * for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
      * &#125;
@@ -602,8 +530,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context -->
      * <pre>
-     * Response&lt;SearchDocument&gt; resultResponse = SEARCH_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;,
-     *     SearchDocument.class, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;SearchDocument&gt; resultResponse = searchClient.getDocumentWithResponse&#40;&quot;hotelId&quot;,
+     *     SearchDocument.class, null, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
@@ -623,25 +551,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
-
-        try {
-            Response<Object> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
-            if (serializer == null) {
-                return new SimpleResponse<>(response, Utility.convertValue(response.getValue(), modelClass));
-            }
-            ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-            serializer.serialize(sourceStream, response.getValue());
-            T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                createInstance(modelClass));
-            return new SimpleResponse<>(response, doc);
-        } catch (SearchErrorException ex) {
-            throw LOGGER.logExceptionAsError(DocumentResponseConversions.mapSearchErrorException(ex));
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to deserialize document.", ex));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
+        return asyncClient.getDocumentWithResponse(key, modelClass, selectedFields, context).block();
     }
 
     /**
@@ -653,7 +563,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentCount -->
      * <pre>
-     * long count = SEARCH_CLIENT.getDocumentCount&#40;&#41;;
+     * long count = searchClient.getDocumentCount&#40;&#41;;
      * System.out.printf&#40;&quot;There are %d documents in service.&quot;, count&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.getDocumentCount -->
@@ -674,7 +584,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context -->
      * <pre>
-     * Response&lt;Long&gt; countResponse = SEARCH_CLIENT.getDocumentCountWithResponse&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * Response&lt;Long&gt; countResponse = searchClient.getDocumentCountWithResponse&#40;new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + countResponse.getStatusCode&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;There are %d documents in service.&quot;, countResponse.getValue&#40;&#41;&#41;;
      * </pre>
@@ -685,8 +595,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDocuments()
-            .countWithResponse(null, Utility.enableSyncRestProxy(context)));
+        return asyncClient.getDocumentCountWithResponse(context).block();
     }
 
     /**
@@ -702,7 +611,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.search#String -->
      * <pre>
-     * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;&#41;;
+     * SearchPagedIterable searchPagedIterable = searchClient.search&#40;&quot;searchText&quot;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      *
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
@@ -742,8 +651,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
      * <pre>
-     * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;,
-     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * SearchPagedIterable searchPagedIterable = searchClient.search&#40;&quot;searchText&quot;,
+     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
@@ -768,36 +677,7 @@ public final class SearchClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(String searchText, SearchOptions searchOptions, Context context) {
-        SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all functional calls below.
-        // Do not initial new instance directly in func call.
-        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, SearchPagedResponse> func = continuationToken ->
-            search(request, continuationToken, firstPageResponseWrapper, context);
-        return new SearchPagedIterable(() -> func.apply(null), func);
-    }
-
-    private SearchPagedResponse search(SearchRequest request, String continuationToken,
-                                             SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return firstPageResponseWrapper.getFirstPageResponse();
-        }
-        SearchRequest requestToUse = (continuationToken == null)
-            ? request
-            : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
-
-        return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostWithResponse(requestToUse, null, Utility.enableSyncRestProxy(context));
-            SearchDocumentsResult result = response.getValue();
-            SearchPagedResponse page = new SearchPagedResponse(
-                new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                result.getCoverage(), result.getAnswers());
-            if (continuationToken == null) {
-                firstPageResponseWrapper.setFirstPageResponse(page);
-            }
-            return page;
-        });
+        return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, context));
     }
 
     /**
@@ -809,7 +689,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.suggest#String-String -->
      * <pre>
-     * SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+     * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
      * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
      *     SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *     for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
@@ -840,8 +720,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.suggest#String-String-SuggestOptions-Context -->
      * <pre>
-     * SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
-     *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;key1, value1&#41;&#41;;
      * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
      *     SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *     for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
@@ -863,17 +743,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
-        return new SuggestPagedIterable(() -> suggest(suggestRequest, context));
-    }
-
-    private SuggestPagedResponse suggest(SuggestRequest suggestRequest, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
-            SuggestDocumentsResult result = response.getValue();
-            return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)), result.getCoverage());
-        });
+        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions, context));
     }
 
     /**
@@ -885,7 +755,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.autocomplete#String-String -->
      * <pre>
-     * AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+     * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
      * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
      *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
      * &#125;
@@ -910,9 +780,9 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context -->
      * <pre>
-     * AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new AutocompleteOptions&#40;&#41;.setAutocompleteMode&#40;AutocompleteMode.ONE_TERM_WITH_CONTEXT&#41;,
-     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *     new Context&#40;key1, value1&#41;&#41;;
      * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
      *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
      * &#125;
@@ -928,15 +798,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public AutocompletePagedIterable autocomplete(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions, Context context) {
-        AutocompleteRequest request = createAutoCompleteRequest(searchText, suggesterName, autocompleteOptions);
-
-        return new AutocompletePagedIterable(() -> autocomplete(request, context));
-    }
-
-    private AutocompletePagedResponse autocomplete(AutocompleteRequest request, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<AutocompleteResult> response = restClient.getDocuments().autocompletePostWithResponse(request, null, Utility.enableSyncRestProxy(context));
-            return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
-        });
+        return new AutocompletePagedIterable(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,
+            context));
     }
 }

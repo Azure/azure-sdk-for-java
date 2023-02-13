@@ -18,13 +18,21 @@ public class SearchIndexCustomizations extends Customization {
             + "return this;\n";
 
     // Packages
+    private static final String IMPLEMENTATION = "com.azure.search.documents.implementation";
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.implementation.models";
     private static final String MODELS = "com.azure.search.documents.models";
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         customizeModelsPackage(libraryCustomization.getPackage(MODELS));
+        customizeDocumentsImpl(libraryCustomization.getPackage(IMPLEMENTATION).getClass("DocumentsImpl"));
         customizeImplementationModelsPackage(libraryCustomization.getPackage(IMPLEMENTATION_MODELS));
+    }
+
+    private void customizeDocumentsImpl(ClassCustomization classCustomization) {
+        classCustomization.removeMethod("searchGetWithResponseAsync")
+            .removeMethod("suggestGetWithResponseAsync")
+            .removeMethod("autocompleteGetWithResponseAsync");
     }
 
     private void customizeModelsPackage(PackageCustomization packageCustomization) {

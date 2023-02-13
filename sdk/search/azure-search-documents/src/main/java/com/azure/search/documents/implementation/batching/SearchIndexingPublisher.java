@@ -259,7 +259,7 @@ public final class SearchIndexingPublisher<T> {
             batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
         }
 
-        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponseAsync(restClient, actions, true,
+        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
             context, LOGGER);
 
         if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {

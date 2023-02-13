@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by SentimentSkill. */
+/** Defines values for SentimentSkillLanguage. */
 public final class SentimentSkillLanguage extends ExpandableStringEnum<SentimentSkillLanguage> {
     /** Static value da for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage DA = fromString("da");

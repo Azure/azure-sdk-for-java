@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A string indicating what entity categories to return. */
+/** Defines values for EntityCategory. */
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     /** Static value location for EntityCategory. */
     public static final EntityCategory LOCATION = fromString("location");

@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating which split mode to perform. */
+/** Defines values for TextSplitMode. */
 public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
     /** Static value pages for TextSplitMode. */
     public static final TextSplitMode PAGES = fromString("pages");

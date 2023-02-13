@@ -79,9 +79,6 @@ public final class SuggestOptions {
     @JsonProperty(value = "$top")
     private Integer top;
 
-    /** Creates an instance of SuggestOptions class. */
-    public SuggestOptions() {}
-
     /**
      * Get the filter property: An OData expression that filters the documents considered for suggestions.
      *

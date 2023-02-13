@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Lists the languages supported by the Microsoft language stemming tokenizer. */
+/** Defines values for MicrosoftStemmingTokenizerLanguage. */
 public enum MicrosoftStemmingTokenizerLanguage {
     /** Enum value arabic. */
     ARABIC("arabic"),
@@ -173,7 +173,6 @@ public enum MicrosoftStemmingTokenizerLanguage {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

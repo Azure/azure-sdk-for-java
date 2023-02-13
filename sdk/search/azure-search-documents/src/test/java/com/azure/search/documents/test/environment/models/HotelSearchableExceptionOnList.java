@@ -5,7 +5,6 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.search.documents.indexes.SearchableField;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ public class HotelSearchableExceptionOnList {
      */
     @SearchableField
     public List<Integer> getPasscode() {
-        return (passcode == null) ? null : new ArrayList<>(passcode);
+        return passcode;
     }
 
     /**
@@ -30,7 +29,7 @@ public class HotelSearchableExceptionOnList {
      * @return The {@link HotelSearchableExceptionOnList} object itself.
      */
     public HotelSearchableExceptionOnList setPasscode(List<Integer> passcode) {
-        this.passcode = (passcode == null) ? null : new ArrayList<>(passcode);
+        this.passcode = passcode;
         return this;
     }
 }

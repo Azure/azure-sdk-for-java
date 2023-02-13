@@ -1,16 +1,6 @@
 # Release History
 
-## 11.6.0-beta.5 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 11.6.0-beta.4 (2023-01-13)
+## 11.5.3 (2023-01-12)
 
 ### Other Changes
 
@@ -19,16 +9,6 @@
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
-
-## 11.6.0-beta.3 (2022-11-11)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
-- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
 
 ## 11.5.2 (2022-11-10)
 
@@ -39,21 +19,7 @@
 - Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
 - Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
-- 
-## 11.6.0-beta.2 (2022-10-12)
 
-### Bugs Fixed
-
-- [Bug fix for incorrect JSON property names](https://github.com/Azure/azure-sdk-for-java/pull/31388)
-- 
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
-- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-- 
 ## 11.5.1 (2022-10-12)
 
 ### Other Changes
@@ -63,21 +29,6 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-
-
-## 11.6.0-beta.1 (2022-09-06)
-
-### Features Added
-
-- All features from the `11.5.x` betas that weren't included in `11.5.0`.
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
-- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.2.20` to version `1.2.21`.
 
 ## 11.5.0 (2022-09-06)
 
@@ -211,6 +162,7 @@
 ### Other Changes
 
 #### Dependency Updates
+
 - Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
 - Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.14` to version `1.2.15`.
@@ -247,14 +199,14 @@
 
 ### Features Added
 
-- Added `Unk` as an `OcrSkillLanguage` value. The values are used to set the default language code for the 
+- Added `Unk` as an `OcrSkillLanguage` value. The values are used to set the default language code for the
   [OCR cognitive skill](https://docs.microsoft.com/azure/search/cognitive-search-skill-ocr).
-- Support for [`AzureMachineLearningSkill`](https://docs.microsoft.com/azure/search/cognitive-search-aml-skill). The 
-  AML skill allows you to extend AI enrichment with a custom [Azure Machine Learning](https://docs.microsoft.com/azure/machine-learning/overview-what-is-azure-machine-learning) 
-  (AML) model. Once an AML model is [trained and deployed](https://docs.microsoft.com/azure/machine-learning/concept-azure-machine-learning-architecture#workspace), 
+- Support for [`AzureMachineLearningSkill`](https://docs.microsoft.com/azure/search/cognitive-search-aml-skill). The
+  AML skill allows you to extend AI enrichment with a custom [Azure Machine Learning](https://docs.microsoft.com/azure/machine-learning/overview-what-is-azure-machine-learning)
+  (AML) model. Once an AML model is [trained and deployed](https://docs.microsoft.com/azure/machine-learning/concept-azure-machine-learning-architecture#workspace),
   an AML skill integrates it into AI enrichment.
-- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder` 
-  and `SearchClientBuilder`
+- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder`
+  and `SearchClientBuilder`.
 
 ### Other Changes
 
@@ -288,7 +240,7 @@
 
 ### Features Added
 
-- Added support for [Semantic Search](https://docs.microsoft.com/azure/search/semantic-search-overview). `SearchOptions` 
+- Added support for [Semantic Search](https://docs.microsoft.com/azure/search/semantic-search-overview). `SearchOptions`
   now support specifying `SemanticSettings` to influence the search behavior.
 
 ### Other Changes
@@ -316,12 +268,12 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` and other dependencies for the library.
-- 
+-
 ## 11.5.0-beta.4 (2021-10-12)
 
 ### Features Added
 
-- Added APIs to [reset documents](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-docs-preview) 
+- Added APIs to [reset documents](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-docs-preview)
   and [skills](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-skills-preview).
 
 ### Breaking Changes

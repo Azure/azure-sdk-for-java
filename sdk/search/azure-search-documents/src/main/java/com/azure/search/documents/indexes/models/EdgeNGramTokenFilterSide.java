@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Specifies which side of the input an n-gram should be generated from. */
+/** Defines values for EdgeNGramTokenFilterSide. */
 public enum EdgeNGramTokenFilterSide {
     /** Enum value front. */
     FRONT("front"),
@@ -44,7 +44,6 @@ public enum EdgeNGramTokenFilterSide {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

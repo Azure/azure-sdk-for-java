@@ -6,12 +6,12 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Provides parameter values to a distance scoring function. */
-@Immutable
+@Fluent
 public final class DistanceScoringParameters {
     /*
      * The name of the parameter passed in search queries to specify the reference location.

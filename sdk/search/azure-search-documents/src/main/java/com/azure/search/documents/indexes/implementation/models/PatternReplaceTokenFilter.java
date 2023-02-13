@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         property = "@odata.type",
         visible = true)
 @JsonTypeName("#Microsoft.Azure.Search.PatternReplaceTokenFilter")
-@Immutable
+@Fluent
 public final class PatternReplaceTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.

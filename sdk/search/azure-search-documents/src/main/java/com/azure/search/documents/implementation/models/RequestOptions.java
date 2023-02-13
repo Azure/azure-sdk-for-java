@@ -19,9 +19,6 @@ public final class RequestOptions {
     @JsonProperty(value = "x-ms-client-request-id")
     private UUID xMsClientRequestId;
 
-    /** Creates an instance of RequestOptions class. */
-    public RequestOptions() {}
-
     /**
      * Get the xMsClientRequestId property: The tracking ID sent with the request to help with debugging.
      *

@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The language to use for a stemmer token filter. */
+/** Defines values for StemmerTokenFilterLanguage. */
 public enum StemmerTokenFilterLanguage {
     /** Enum value arabic. */
     ARABIC("arabic"),
@@ -200,7 +200,6 @@ public enum StemmerTokenFilterLanguage {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

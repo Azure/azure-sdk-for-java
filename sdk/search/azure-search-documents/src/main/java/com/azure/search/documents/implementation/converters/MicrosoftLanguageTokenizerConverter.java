@@ -18,11 +18,18 @@ public final class MicrosoftLanguageTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer(obj.getName());
 
-        return new MicrosoftLanguageTokenizer(obj.getName())
-            .setMaxTokenLength(obj.getMaxTokenLength())
-            .setLanguage(obj.getLanguage())
-            .setIsSearchTokenizer(obj.isSearchTokenizer());
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
+
+        if (obj.getLanguage() != null) {
+            microsoftLanguageTokenizer.setLanguage(obj.getLanguage());
+        }
+
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageTokenizer.setIsSearchTokenizer(isSearchTokenizer);
+        return microsoftLanguageTokenizer;
     }
 
     /**
@@ -33,11 +40,19 @@ public final class MicrosoftLanguageTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer(obj.getName());
 
-        return new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer(obj.getName())
-            .setMaxTokenLength(obj.getMaxTokenLength())
-            .setLanguage(obj.getLanguage())
-            .setIsSearchTokenizer(obj.isSearchTokenizer());
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
+
+        if (obj.getLanguage() != null) {
+            microsoftLanguageTokenizer.setLanguage(obj.getLanguage());
+        }
+
+        Boolean isSearchTokenizer = obj.isSearchTokenizer();
+        microsoftLanguageTokenizer.setIsSearchTokenizer(isSearchTokenizer);
+        return microsoftLanguageTokenizer;
     }
 
     private MicrosoftLanguageTokenizerConverter() {

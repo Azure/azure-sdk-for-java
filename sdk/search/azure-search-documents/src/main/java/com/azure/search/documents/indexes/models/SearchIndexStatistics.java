@@ -35,10 +35,10 @@ public final class SearchIndexStatistics {
      */
     @JsonCreator
     public SearchIndexStatistics(
-        @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            long documentCount,
-        @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            long storageSize) {
+            @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long documentCount,
+            @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
     }

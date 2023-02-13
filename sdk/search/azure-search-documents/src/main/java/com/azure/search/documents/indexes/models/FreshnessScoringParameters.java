@@ -6,13 +6,13 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Provides parameter values to a freshness scoring function. */
-@Immutable
+@Fluent
 public final class FreshnessScoringParameters {
     /*
      * The expiration period after which boosting will stop for a particular document.

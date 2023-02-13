@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by SplitSkill. */
+/** Defines values for SplitSkillLanguage. */
 public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLanguage> {
     /** Static value da for SplitSkillLanguage. */
     public static final SplitSkillLanguage DA = fromString("da");

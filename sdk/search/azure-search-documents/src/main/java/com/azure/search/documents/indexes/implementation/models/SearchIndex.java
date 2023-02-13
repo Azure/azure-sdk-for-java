@@ -10,12 +10,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
-import com.azure.search.documents.indexes.models.LexicalNormalizer;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SemanticSettings;
 import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -85,12 +83,6 @@ public final class SearchIndex {
     private List<CharFilter> charFilters;
 
     /*
-     * The normalizers for the index.
-     */
-    @JsonProperty(value = "normalizers")
-    private List<LexicalNormalizer> normalizers;
-
-    /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
      * level of encryption-at-rest for your data when you want full assurance that no one, not even Microsoft, can
      * decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it will always remain encrypted.
@@ -111,19 +103,10 @@ public final class SearchIndex {
     private SimilarityAlgorithm similarity;
 
     /*
-     * Defines parameters for a search index that influence semantic capabilities.
-     */
-    @JsonProperty(value = "semantic")
-    private SemanticSettings semanticSettings;
-
-    /*
      * The ETag of the index.
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
-
-    /** Creates an instance of SearchIndex class. */
-    public SearchIndex() {}
 
     /**
      * Get the name property: The name of the index.
@@ -330,26 +313,6 @@ public final class SearchIndex {
     }
 
     /**
-     * Get the normalizers property: The normalizers for the index.
-     *
-     * @return the normalizers value.
-     */
-    public List<LexicalNormalizer> getNormalizers() {
-        return this.normalizers;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
-        this.normalizers = normalizers;
-        return this;
-    }
-
-    /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
      * one, not even Microsoft, can decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it
@@ -402,26 +365,6 @@ public final class SearchIndex {
      */
     public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
-        return this;
-    }
-
-    /**
-     * Get the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
-     *
-     * @return the semanticSettings value.
-     */
-    public SemanticSettings getSemanticSettings() {
-        return this.semanticSettings;
-    }
-
-    /**
-     * Set the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
-     *
-     * @param semanticSettings the semanticSettings value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setSemanticSettings(SemanticSettings semanticSettings) {
-        this.semanticSettings = semanticSettings;
         return this;
     }
 

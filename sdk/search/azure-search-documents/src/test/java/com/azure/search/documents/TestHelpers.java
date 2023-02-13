@@ -5,10 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
@@ -16,24 +14,21 @@ import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -41,12 +36,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
@@ -71,8 +67,6 @@ public final class TestHelpers {
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() {
         };
-
-    private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
     /**
      * Assert whether two objects are equal.
@@ -113,32 +107,6 @@ public final class TestHelpers {
             ObjectNode actualNode = MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
-    }
-
-    /**
-     * Determines if two lists of documents are equal by comparing their keys.
-     *
-     * @param group1 The first list of documents.
-     * @param group2 The second list documents.
-     * @return True of false if the documents are equal or not equal, respectively.
-     */
-    public static boolean equalDocumentSets(List<NonNullableModel> group1, List<NonNullableModel> group2) {
-        List<String> group1Keys = produceKeyList(group1, TestHelpers::extractKeyFromDocument);
-        List<String> group2Keys = produceKeyList(group2, TestHelpers::extractKeyFromDocument);
-        return group1Keys.containsAll(group2Keys);
-    }
-
-    private static <T> List<String> produceKeyList(List<T> objList, Function<T, String> extractKeyFunc) {
-        List<String> keyList = new ArrayList<>();
-        for (T obj : objList) {
-            keyList.add(extractKeyFunc.apply(obj));
-        }
-        return keyList;
-    }
-
-    private static String extractKeyFromDocument(NonNullableModel document) {
-        ObjectNode node = MAPPER.valueToTree(document);
-        return node.get("Key").asText();
     }
 
     /**
@@ -249,21 +217,20 @@ public final class TestHelpers {
                 "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
     }
 
-    public static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
-        if (ex instanceof HttpResponseException) {
-            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
+    private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
 
-            if (expectedMessage != null) {
-                assertTrue(ex.getMessage().contains(expectedMessage));
-            }
-        } else {
-            fail("Expected exception to be instanceof HttpResponseException", ex);
+        assertEquals(HttpResponseException.class, ex.getClass());
+
+        assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
+
+        if (expectedMessage != null) {
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 
     public static void waitForIndexing() {
         // Wait 2 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(2000);
+        sleepIfRunningAgainstService(3000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
@@ -313,13 +280,6 @@ public final class TestHelpers {
         return documents;
     }
 
-    public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
-        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
-        uploadDocuments(client, documents);
-
-        return documents;
-    }
-
     public static HttpPipeline getHttpPipeline(SearchClient searchClient) {
         return searchClient.getHttpPipeline();
     }
@@ -329,22 +289,19 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        try {
-            Path path = Paths.get(TestHelpers.class.getClassLoader().getResource(filename).toURI());
+        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
+            .getResourceAsStream(filename));
 
-            return deserializeToType(Files.readAllBytes(path), LIST_TYPE_REFERENCE);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
     }
 
-    public static Map<String, Object> convertToMap(byte[] json) {
-        return deserializeToType(json, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
+        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
     }
 
-    private static <T> T deserializeToType(byte[] json, TypeReference<T> type) {
+    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
         try {
-            return getDefaultSerializerAdapter().deserialize(json, type.getJavaType(), SerializerEncoding.JSON);
+            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }
@@ -358,41 +315,36 @@ public final class TestHelpers {
         }
     }
 
-    public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
+    @SuppressWarnings("removal")
+    public static SearchIndexClient setupSharedIndex(String indexName) {
+        InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
+            .getClassLoader()
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON));
+
         try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(indexDefinition);
-            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
-            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
+            SearchIndex index = MAPPER.readValue(stream, SearchIndex.class);
 
-            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                searchIndexName.setAccessible(true);
+                return null;
+            });
 
-            SearchIndexClient searchIndexClient = createSharedSearchIndexClient();
+            searchIndexName.set(index, indexName);
+
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+                .endpoint(ENDPOINT)
+                .credential(new AzureKeyCredential(API_KEY))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+                .buildClient();
+
             searchIndexClient.createOrUpdateIndex(index);
-
-            if (indexData != null) {
-                uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
-            }
+            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
 
             return searchIndexClient;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((httpRequest, context) -> false)
-            .assertSync()
-            .build();
-    }
-
-    public static SearchIndexClient createSharedSearchIndexClient() {
-        return new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
-            .buildClient();
     }
 
     public static String createGeographyPolygon(String... coordinates) {
@@ -413,19 +365,5 @@ public final class TestHelpers {
         }
 
         return builder.append("))'").toString();
-    }
-
-    static byte[] loadResource(String fileName) {
-        return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
-            try {
-                URI fileUri = AutocompleteTests.class.getClassLoader()
-                    .getResource(fileName)
-                    .toURI();
-
-                return Files.readAllBytes(Paths.get(fileUri));
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
     }
 }

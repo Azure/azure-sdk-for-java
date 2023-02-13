@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the environment in which the indexer should execute. */
+/** Defines values for IndexerExecutionEnvironment. */
 public final class IndexerExecutionEnvironment extends ExpandableStringEnum<IndexerExecutionEnvironment> {
     /** Static value standard for IndexerExecutionEnvironment. */
     public static final IndexerExecutionEnvironment STANDARD = fromString("standard");

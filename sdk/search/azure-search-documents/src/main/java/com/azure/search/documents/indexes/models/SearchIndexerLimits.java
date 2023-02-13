@@ -31,9 +31,6 @@ public final class SearchIndexerLimits {
     @JsonProperty(value = "maxDocumentContentCharactersToExtract", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxDocumentContentCharactersToExtract;
 
-    /** Creates an instance of SearchIndexerLimits class. */
-    public SearchIndexerLimits() {}
-
     /**
      * Get the maxRunTime property: The maximum duration that the indexer is permitted to run for one execution.
      *

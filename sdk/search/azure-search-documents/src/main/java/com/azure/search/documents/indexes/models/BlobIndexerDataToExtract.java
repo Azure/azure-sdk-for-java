@@ -10,11 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Specifies the data to extract from Azure blob storage and tells the indexer which data to extract from image content
- * when "imageAction" is set to a value other than "none". This applies to embedded image content in a .PDF or other
- * application, or image files such as .jpg and .png, in Azure blobs.
- */
+/** Defines values for BlobIndexerDataToExtract. */
 public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobIndexerDataToExtract> {
     /** Static value storageMetadata for BlobIndexerDataToExtract. */
     public static final BlobIndexerDataToExtract STORAGE_METADATA = fromString("storageMetadata");

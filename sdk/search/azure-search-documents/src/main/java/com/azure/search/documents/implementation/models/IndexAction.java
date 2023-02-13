@@ -31,9 +31,6 @@ public final class IndexAction {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IndexAction class. */
-    public IndexAction() {}
-
     /**
      * Get the actionType property: The operation to perform on a document in an indexing batch.
      *
