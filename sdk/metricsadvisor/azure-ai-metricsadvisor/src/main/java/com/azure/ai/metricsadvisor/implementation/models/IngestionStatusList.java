@@ -24,6 +24,9 @@ public final class IngestionStatusList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataFeedIngestionStatus> value;
 
+    /** Creates an instance of IngestionStatusList class. */
+    public IngestionStatusList() {}
+
     /**
      * Get the nextLink property: The @nextLink property.
      *

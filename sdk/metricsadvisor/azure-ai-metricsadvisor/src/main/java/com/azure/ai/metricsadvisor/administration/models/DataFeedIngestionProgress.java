@@ -25,6 +25,9 @@ public final class DataFeedIngestionProgress {
     @JsonProperty(value = "latestActiveTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime latestActiveTimestamp;
 
+    /** Creates an instance of DataFeedIngestionProgress class. */
+    public DataFeedIngestionProgress() {}
+
     /**
      * Get the latestSuccessTimestamp property: the timestamp of latest success ingestion job. null indicates not
      * available.

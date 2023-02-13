@@ -25,7 +25,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
@@ -92,7 +92,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public final class MetricsAdvisorAdministrationAsyncClient {
     private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationAsyncClient.class);
-    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAdministrationAsyncClient} that sends requests to the Metrics Advisor
@@ -102,7 +102,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAdministrationAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
+    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }

@@ -23,6 +23,9 @@ public final class SeverityFilterCondition {
     @JsonProperty(value = "max", required = true)
     private AnomalySeverity max;
 
+    /** Creates an instance of SeverityFilterCondition class. */
+    public SeverityFilterCondition() {}
+
     /**
      * Get the min property: min severity.
      *

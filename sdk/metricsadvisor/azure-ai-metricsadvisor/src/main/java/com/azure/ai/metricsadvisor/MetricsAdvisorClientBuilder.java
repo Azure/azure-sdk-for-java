@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -216,8 +216,8 @@ public final class MetricsAdvisorClientBuilder implements
         if (pipeline == null) {
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-        final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl advisorRestAPIOpenAPIV2 =
-            new AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder()
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
+            new MetricsAdvisorImplBuilder()
                 .endpoint(endpoint)
                 .pipeline(pipeline)
                 .buildClient();

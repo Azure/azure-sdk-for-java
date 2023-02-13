@@ -39,6 +39,9 @@ public final class HardThresholdConditionPatch {
     @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
 
+    /** Creates an instance of HardThresholdConditionPatch class. */
+    public HardThresholdConditionPatch() {}
+
     /**
      * Get the lowerBound property: lower bound
      *

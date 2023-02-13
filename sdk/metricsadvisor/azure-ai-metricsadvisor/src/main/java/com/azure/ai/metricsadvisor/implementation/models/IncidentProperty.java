@@ -4,8 +4,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
 import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,12 +38,15 @@ public final class IncidentProperty {
     @JsonProperty(value = "expectedValueOfRootNode", access = JsonProperty.Access.WRITE_ONLY)
     private Double expectedValueOfRootNode;
 
+    /** Creates an instance of IncidentProperty class. */
+    public IncidentProperty() {}
+
     /**
      * Get the maxSeverity property: max severity of latest anomalies in the incident.
      *
      * @return the maxSeverity value.
      */
-    public AnomalySeverity getMaxSeverity() {
+    public AnomalySeverity  getMaxSeverity() {
         return this.maxSeverity;
     }
 
@@ -53,7 +56,7 @@ public final class IncidentProperty {
      * @param maxSeverity the maxSeverity value to set.
      * @return the IncidentProperty object itself.
      */
-    public IncidentProperty setMaxSeverity(AnomalySeverity maxSeverity) {
+    public IncidentProperty setMaxSeverity(AnomalySeverity  maxSeverity) {
         this.maxSeverity = maxSeverity;
         return this;
     }
