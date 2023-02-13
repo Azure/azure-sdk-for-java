@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -12,17 +11,19 @@ import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Test ServiceBusProcessorClient
+ * Test ServiceBusSessionProcessorClient
  */
-@Component("MessageProcessor")
-public class MessageProcessor extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
+@Component("MessageSessionProcessor")
+public class MessageSessionProcessor extends ServiceBusScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionProcessor.class);
 
-    @Value("${MAX_CONCURRENT_CALLS:20}")
+    @Value("${MAX_CONCURRENT_SESSIONS:1}")
+    private int maxConcurrentSessions;
+
+    @Value("${MAX_CONCURRENT_CALLS:1}")
     private int maxConcurrentCalls;
 
     @Value("${PREFETCH_COUNT:0}")
@@ -38,40 +39,36 @@ public class MessageProcessor extends ServiceBusScenario {
         String topicName = null;
         String subscriptionName = null;
         if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
+            queueName = options.getServicebusSessionQueueName();
         } else if (entityType == EntityType.TOPIC) {
             topicName = options.getServicebusTopicName();
-            subscriptionName = options.getServicebusSubscriptionName();
+            subscriptionName = options.getServicebusSessionSubscriptionName();
         }
 
-        final String receiveCounterKey = "Number of received messages - "
-            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
-
         ServiceBusProcessorClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-            .processor()
-            .queueName(queueName)
-            .topicName(topicName)
-            .subscriptionName(subscriptionName)
-            .maxConcurrentCalls(maxConcurrentCalls)
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete()
-            .prefetchCount(prefetchCount)
-            .processMessage(messageContext -> {
-                LOGGER.verbose("Before complete. messageId: {}, lockToken: {}",
-                    messageContext.getMessage().getMessageId(),
-                    messageContext.getMessage().getLockToken());
-                messageContext.complete();
-                rateMeter.add(receiveCounterKey, 1);
-                LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
-                    messageContext.getMessage().getMessageId(),
-                    messageContext.getMessage().getLockToken());
-            })
-            .processError(err -> {
-                throw LOGGER.logExceptionAsError(new RuntimeException(err.getException()));
-            })
-            .buildProcessorClient();
+                .connectionString(connectionString)
+                .sessionProcessor()
+                .queueName(queueName)
+                .topicName(topicName)
+                .subscriptionName(subscriptionName)
+                .maxConcurrentSessions(maxConcurrentSessions)
+                .maxConcurrentCalls(maxConcurrentCalls)
+                .prefetchCount(prefetchCount)
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                .disableAutoComplete()
+                .processMessage(messageContext -> {
+                    LOGGER.verbose("Before complete. messageId: {}, sessionId: {}",
+                            messageContext.getMessage().getMessageId(),
+                            messageContext.getMessage().getSessionId());
+                    messageContext.complete();
+                    LOGGER.verbose("After complete. messageId: {}, sessionId: {}",
+                            messageContext.getMessage().getMessageId(),
+                            messageContext.getMessage().getSessionId());
+                })
+                .processError(err -> {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(err.getException()));
+                })
+                .buildProcessorClient();
 
         client.start();
 
