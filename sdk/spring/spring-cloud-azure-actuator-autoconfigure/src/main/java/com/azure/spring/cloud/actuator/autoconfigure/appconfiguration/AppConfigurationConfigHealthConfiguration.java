@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.azure.spring.cloud.actuator.appconfiguration.AppConfigurationConfigHealthIndicator;
+import com.azure.spring.cloud.config.AppConfigurationAutoConfiguration.AppConfigurationWatchAutoConfiguration;
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
-import com.azure.spring.cloud.config.web.AppConfigurationWatchAutoConfiguration;
 
 /**
  * Health Indicator for Azure App Configuration store connections.
