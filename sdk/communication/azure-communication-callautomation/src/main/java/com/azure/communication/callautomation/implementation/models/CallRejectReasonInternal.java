@@ -30,7 +30,11 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
         return fromString(name, CallRejectReasonInternal.class);
     }
 
-    /** @return known CallRejectReasonInternal values. */
+    /**
+     * Gets known CallRejectReasonInternal values.
+     *
+     * @return known CallRejectReasonInternal values.
+     */
     public static Collection<CallRejectReasonInternal> values() {
         return values(CallRejectReasonInternal.class);
     }

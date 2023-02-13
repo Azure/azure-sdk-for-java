@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/1fcceb1785e063e75b88436d18b56a04c04dc58d/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/4ce9b59a6317ae247e2db710495e19c12e6e2793/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -52,8 +52,8 @@ directive:
     from: CallParticipant
     to: CallParticipantInternal
 - rename-model:
-    from: AddParticipantsRequest
-    to: AddParticipantsRequestInternal
+    from: AddParticipantRequest
+    to: AddParticipantRequestInternal
 - rename-model:
     from: AddParticipantsResponse
     to: AddParticipantsResponseInternal
@@ -67,17 +67,14 @@ directive:
     from: CallingOperationStatus
     to: CallingOperationStatusInternal
 - rename-model:
-    from: CallSource
-    to: CallSourceInternal
-- rename-model:
     from: CommunicationCloudEnvironmentModel
     to: CommunicationCloudEnvironmentInternal
 - rename-model:
     from: GetParticipantsResponse
     to: GetParticipantsResponseInternal
 - rename-model:
-    from: RemoveParticipantsRequest
-    to: RemoveParticipantsRequestInternal
+    from: RemoveParticipantRequest
+    to: RemoveParticipantRequestInternal
 - rename-model:
     from: RemoveParticipantsResponse
     to: RemoveParticipantsResponseInternal
@@ -161,8 +158,8 @@ directive:
     to: UnmuteParticipantsResponseInternal
 
 # Remove models
-- remove-model: AddParticipantsFailed
-- remove-model: AddParticipantsSucceeded
+- remove-model: AddParticipantFailed
+- remove-model: AddParticipantSucceeded
 - remove-model: CallConnected
 - remove-model: CallDisconnected
 - remove-model: CallTransferAccepted
