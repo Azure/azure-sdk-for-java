@@ -63,6 +63,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
 
+    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+        telemetryConfigAccessor = ImplementationBridgeHelpers
+        .CosmosClientTelemetryConfigHelper
+        .getCosmosClientTelemetryConfigAccessor();
+
     // Async Cosmos client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
@@ -84,8 +89,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final String clientCorrelationId;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final EnumSet<TagName> metricTagNames;
-    private final EnumSet<MetricCategory> metricCategories;
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
@@ -116,10 +119,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-            telemetryConfigAccessor = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -139,10 +138,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.apiType = builder.apiType();
         this.clientCorrelationId =  telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
-        this.metricTagNames = telemetryConfigAccessor
-            .getMetricTagNames(effectiveTelemetryConfig);
-        this.metricCategories = telemetryConfigAccessor
-            .getMetricCategories(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -728,12 +723,14 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client) {
-                    return client.metricTagNames;
+                    return  telemetryConfigAccessor
+                        .getMetricTagNames(client.clientTelemetryConfig);
                 }
 
                 @Override
                 public EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client) {
-                    return client.metricCategories;
+                    return  telemetryConfigAccessor
+                        .getMetricCategories(client.clientTelemetryConfig);
                 }
 
                 @Override

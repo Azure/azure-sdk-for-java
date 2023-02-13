@@ -331,10 +331,6 @@ class SparkE2EChangeFeedITest
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
-
-    // not part of default metric  - no custom categories for now - can be added if needed as config override
-    // on a per client base
-    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = false)
   }
 
   "spark change feed query (incremental)" can "filter feed ranges" in {

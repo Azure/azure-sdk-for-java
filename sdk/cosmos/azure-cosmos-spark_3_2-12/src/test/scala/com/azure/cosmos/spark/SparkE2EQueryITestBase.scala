@@ -80,7 +80,6 @@ abstract class SparkE2EQueryITestBase
     //assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
-    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
   private def insertDummyValue() : Unit = {

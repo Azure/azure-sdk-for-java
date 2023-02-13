@@ -59,25 +59,14 @@ public final class CosmosClientTelemetryConfig {
     private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES;
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
-
-    CosmosClientTelemetryConfig(CosmosClientTelemetryConfig toBeCopied, boolean effectiveIsClientTelemetryEnabled) {
-        this.httpNetworkRequestTimeout = toBeCopied.httpNetworkRequestTimeout;
-        this.maxConnectionPoolSize = toBeCopied.maxConnectionPoolSize;
-        this.idleHttpConnectionTimeout = toBeCopied.idleHttpConnectionTimeout;
-        this.proxy = toBeCopied.proxy;
-        this.clientCorrelationId = toBeCopied.clientCorrelationId;
-        this.metricTagNames = toBeCopied.metricTagNames;
-        this.metricCategories = toBeCopied.metricCategories;
-        this.clientMetricRegistry = toBeCopied.clientMetricRegistry;
-        this.isClientMetricsEnabled = toBeCopied.isClientMetricsEnabled;
-        this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
-    }
+    private Boolean effectiveIsClientTelemetryEnabled = null;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
      */
     public CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = null;
+        this.effectiveIsClientTelemetryEnabled = null;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
@@ -97,7 +86,10 @@ public final class CosmosClientTelemetryConfig {
     }
 
     Boolean isSendClientTelemetryToServiceEnabled() {
-        return this.clientTelemetryEnabled;
+        Boolean effectiveSnapshot = this.effectiveIsClientTelemetryEnabled;
+        Boolean currentSnapshot = this.clientTelemetryEnabled;
+
+        return  effectiveSnapshot != null ? effectiveSnapshot : currentSnapshot;
     }
 
     void resetIsSendClientTelemetryToServiceEnabled() {
@@ -206,12 +198,22 @@ public final class CosmosClientTelemetryConfig {
         return this.metricTagNames;
     }
 
+    private CosmosClientTelemetryConfig setEffectiveIsClientTelemetryEnabled(
+        boolean effectiveIsClientTelemetryEnabled) {
+
+        this.effectiveIsClientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
+        return this;
+    }
+
     /**
      * Sets the categories of metrics that should be emitted. By default the following categories will be enabled:
      * OperationSummary, RequestSummary, DirectChannels, DirectRequests, System
      * (the System and OperationSummary metrics are always collected and can't be disabled when enabling Cosmos metrics)
      * For most use-cases that should be sufficient. An overview of the different metric categories can be found here:
      * https://aka.ms/azure-cosmos-metrics
+     * NOTE: metric categories are mutable. You can safely modify the categories on the CosmosClientTelemetryConfig
+     * instance passed into the CosmosClinetBuilder after the CosmosClient was created - and changes to the config
+     * instance will be reflected at runtime by the client.
      *
      * @param categories - a comma-separated list of metric categories that should be emitted
      * @return current CosmosClientTelemetryConfig
@@ -426,7 +428,7 @@ public final class CosmosClientTelemetryConfig {
                     CosmosClientTelemetryConfig config,
                     boolean effectiveIsClientTelemetryEnabled) {
 
-                    return new CosmosClientTelemetryConfig(config, effectiveIsClientTelemetryEnabled);
+                    return config.setEffectiveIsClientTelemetryEnabled(effectiveIsClientTelemetryEnabled);
                 }
 
                 @Override

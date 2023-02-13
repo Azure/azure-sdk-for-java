@@ -64,12 +64,19 @@ public class ClientMetricsTest extends BatchTestBase {
     private String containerId;
     private MeterRegistry meterRegistry;
     private String preferredRegion;
-    private EnumSet<MetricCategory> effectiveMetricCategories;
+    private CosmosClientTelemetryConfig inputClientTelemetryConfig;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
 
         super(clientBuilder);
+    }
+
+    private EnumSet<MetricCategory> getEffectiveMetricCategories() {
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getMetricCategories(this.inputClientTelemetryConfig);
     }
 
     public void beforeTest(String... metricCategories) {
@@ -78,17 +85,20 @@ public class ClientMetricsTest extends BatchTestBase {
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
-        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+        this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(this.meterRegistry))
             .metricCategories(metricCategories);
-        this.effectiveMetricCategories = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getMetricCategories(telemetryConfig);
 
         this.client = getClientBuilder()
-            .clientTelemetryConfig(telemetryConfig)
+            .clientTelemetryConfig(inputClientTelemetryConfig)
             .buildClient();
+
+        assertThat(
+            ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(this.client.asyncClient())
+        ).isSameAs(this.getEffectiveMetricCategories());
 
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(this.client.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
@@ -662,19 +672,19 @@ public class ClientMetricsTest extends BatchTestBase {
     public void effectiveMetricCategoriesForDefault() {
         this.beforeTest("Default");
         try {
-            assertThat(this.effectiveMetricCategories.size()).isEqualTo(5);
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
 
             EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
                 .CosmosAsyncClientHelper
                 .getCosmosAsyncClientAccessor()
                 .getMetricCategories(client.asyncClient());
-            assertThat(clientMetricCategories).isEqualTo(this.effectiveMetricCategories);
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
 
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.RequestSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.OperationSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectChannels)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectRequests)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.System)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
         } finally {
             this.afterTest();
         }
@@ -684,21 +694,21 @@ public class ClientMetricsTest extends BatchTestBase {
     public void effectiveMetricCategoriesForDefaultPlusDetails() {
         this.beforeTest("Default", "RequestDetails", "OperationDETAILS");
         try {
-            assertThat(this.effectiveMetricCategories.size()).isEqualTo(7);
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(7);
 
             EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
                 .CosmosAsyncClientHelper
                 .getCosmosAsyncClientAccessor()
                 .getMetricCategories(client.asyncClient());
-            assertThat(clientMetricCategories).isEqualTo(this.effectiveMetricCategories);
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
 
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.RequestSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.RequestDetails)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.OperationSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.OperationDetails)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectChannels)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectRequests)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.System)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
         } finally {
             this.afterTest();
         }
@@ -721,24 +731,59 @@ public class ClientMetricsTest extends BatchTestBase {
     public void effectiveMetricCategoriesForAll() {
         this.beforeTest("All");
         try {
-            assertThat(this.effectiveMetricCategories.size()).isEqualTo(10);
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
 
             EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
                 .CosmosAsyncClientHelper
                 .getCosmosAsyncClientAccessor()
                 .getMetricCategories(client.asyncClient());
-            assertThat(clientMetricCategories).isEqualTo(this.effectiveMetricCategories);
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
 
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.RequestSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.RequestDetails)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.OperationSummary)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.OperationDetails)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectChannels)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectRequests)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.DirectEndpoints)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.System)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.Legacy)).isEqualTo(true);
-            assertThat(this.effectiveMetricCategories.contains(MetricCategory.AddressResolutions)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectEndpoints)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.Legacy)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.AddressResolutions)).isEqualTo(true);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void effectiveMetricCategoriesForAllLatebound() {
+        this.beforeTest("Default");
+        try {
+
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
+
+            EnumSet<MetricCategory> clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
+
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.OperationSummary)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectChannels)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.DirectRequests)).isEqualTo(true);
+            assertThat(this.getEffectiveMetricCategories().contains(MetricCategory.System)).isEqualTo(true);
+            
+            // Now change the metricCategories on the config passed into the CosmosClientBuilder 
+            // and validate that these changes take effect immediately on the client build via the builder
+            this.inputClientTelemetryConfig.metricCategories("All");
+            
+            assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
+
+            clientMetricCategories = ImplementationBridgeHelpers
+                .CosmosAsyncClientHelper
+                .getCosmosAsyncClientAccessor()
+                .getMetricCategories(client.asyncClient());
+            assertThat(clientMetricCategories).isEqualTo(this.getEffectiveMetricCategories());
         } finally {
             this.afterTest();
         }
@@ -804,7 +849,7 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     private void validateItemCountMetrics(Tag expectedOperationTag) {
-        if (this.effectiveMetricCategories.contains(MetricCategory.OperationDetails)) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
             this.assertMetrics("cosmos.client.op.maxItemCount", true, expectedOperationTag);
             this.assertMetrics("cosmos.client.op.actualItemCount", true, expectedOperationTag);
         }
@@ -827,7 +872,7 @@ public class ClientMetricsTest extends BatchTestBase {
             "cosmos.client.op.RUs", true, expectedOperationTag);
         validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);
 
-        if (this.effectiveMetricCategories.contains(MetricCategory.OperationDetails)) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
             this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
 
             this.assertMetrics(
@@ -848,13 +893,13 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics("cosmos.client.req.rntbd.RUs", true, expectedRequestTag);
             validateReasonableRUs(reportedRntbdRequestCharge, minRu, maxRu);
 
-            if (this.effectiveMetricCategories.contains(MetricCategory.RequestDetails)) {
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)) {
                 this.assertMetrics("cosmos.client.req.rntbd.timeline", true, expectedRequestTag);
             }
         } else {
             this.assertMetrics("cosmos.client.req.gw.latency", true, expectedRequestTag);
 
-            if (this.effectiveMetricCategories.contains(MetricCategory.OperationDetails)) {
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
                 this.assertMetrics(
                     "cosmos.client.req.gw.latency",
                     true,
@@ -866,7 +911,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics("cosmos.client.req.gw.RUs", true, expectedRequestTag);
             validateReasonableRUs(reportedGatewayRequestCharge, minRu, maxRu);
 
-            if (this.effectiveMetricCategories.contains(MetricCategory.RequestDetails)) {
+            if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)) {
                 this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
             }
 

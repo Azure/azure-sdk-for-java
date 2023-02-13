@@ -796,8 +796,6 @@ public class CosmosClientBuilder implements
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
 
-        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
-
         if (this.clientTelemetryEnabledOverride != null) {
             return this.clientTelemetryEnabledOverride;
         }
