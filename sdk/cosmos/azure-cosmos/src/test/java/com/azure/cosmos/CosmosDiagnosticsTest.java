@@ -612,7 +612,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosClient testDirectClient) throws Exception {
 
         String diagnostics = cosmosDiagnostics.toString();
-        System.out.println(diagnostics);
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
@@ -1372,14 +1371,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                         .contains("\"pendingRequestsCount\":" + rntbdChannelStatistics.getPendingRequestsCount());
                     assertThat(rntbdChannelStatisticsString)
                         .contains("\"lastReadTime\":\"" + rntbdChannelStatistics.getLastReadTime() + "\"");
-
-                    if (rntbdChannelStatistics.getLastWriteTime() != null) {
-                        assertThat(rntbdChannelStatisticsString)
-                            .contains("\"lastWriteTime\":\"" + rntbdChannelStatistics.getLastWriteTime() + "\"");
-                    } else {
-                        assertThat(rntbdChannelStatisticsString)
-                            .doesNotContain("\"lastWriteTime\":\"" + rntbdChannelStatistics.getLastWriteTime() + "\"");
-                    }
 
                     if (rntbdChannelStatistics.getTransitTimeoutCount() > 0) {
                         assertThat(rntbdChannelStatisticsString)

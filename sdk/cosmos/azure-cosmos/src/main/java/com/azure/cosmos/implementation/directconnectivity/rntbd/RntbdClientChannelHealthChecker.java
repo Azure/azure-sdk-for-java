@@ -463,9 +463,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             lastWriteUpdater.set(this, Instant.now());
         }
 
-        public void transitTimeout(boolean isReadOnly) {
+        public void transitTimeout(boolean isReadOnly, Instant requestCreatedTime) {
             if (transitTimeoutCountUpdater.incrementAndGet(this) == 1) {
-                transitTimeoutStartingTimeUpdater.set(this, Instant.now());
+                transitTimeoutStartingTimeUpdater.set(this, requestCreatedTime);
             }
             if (!isReadOnly) {
                 transitTimeoutWriteCountUpdater.incrementAndGet(this);

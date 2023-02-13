@@ -216,6 +216,18 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .setIoThreadPriority(config, ioThreadPriority)
   }
 
+  def setHealthCheckTimeoutDetectionEnabled
+  (
+      config: DirectConnectionConfig,
+      timeoutDetectionEnabled: Boolean
+  ): DirectConnectionConfig = {
+
+      ImplementationBridgeHelpers
+          .DirectConnectionConfigHelper
+          .getDirectConnectionConfigAccessor
+          .setHealthCheckTimeoutDetectionEnabled(config, timeoutDetectionEnabled)
+  }
+
   def setUserAgentWithSnapshotInsteadOfBeta(): Unit = {
     HttpConstants.Versions.useSnapshotInsteadOfBeta()
   }

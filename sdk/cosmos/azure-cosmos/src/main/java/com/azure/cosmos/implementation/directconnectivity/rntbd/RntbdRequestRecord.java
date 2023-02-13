@@ -261,7 +261,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
 
         if (this.timestamps != null) {
-            this.timestamps.transitTimeout(this.args.serviceRequest().isReadOnly());
+            this.timestamps.transitTimeout(this.args.serviceRequest().isReadOnly(), this.args.timeCreated());
         }
 
         return this.completeExceptionally(error);

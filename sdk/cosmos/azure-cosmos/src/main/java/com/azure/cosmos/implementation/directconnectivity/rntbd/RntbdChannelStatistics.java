@@ -18,7 +18,6 @@ public class RntbdChannelStatistics implements Serializable {
     private int channelTaskQueueSize;
     private int pendingRequestsCount;
     private Instant lastReadTime;
-    private Instant lastWriteTime;
     private int transitTimeoutCount;
     private Instant transitTimeoutStartingTime;
     private boolean waitForConnectionInit;
@@ -59,15 +58,6 @@ public class RntbdChannelStatistics implements Serializable {
         return this.lastReadTime;
     }
 
-    public RntbdChannelStatistics lastWriteTime(Instant lastWriteTime) {
-        this.lastWriteTime = lastWriteTime;
-        return this;
-    }
-
-    public Instant getLastWriteTime() {
-        return this.lastWriteTime;
-    }
-
     public RntbdChannelStatistics transitTimeoutCount(int transitTimeoutCount) {
         this.transitTimeoutCount = transitTimeoutCount;
         return this;
@@ -105,8 +95,6 @@ public class RntbdChannelStatistics implements Serializable {
             writer.writeNumberField("channelTaskQueueSize", stats.channelTaskQueueSize);
             writer.writeNumberField("pendingRequestsCount", stats.pendingRequestsCount);
             this.writeNonNullInstantField(writer, "lastReadTime", stats.lastReadTime);
-            this.writeNonNullInstantField(writer, "lastWriteTime", stats.lastWriteTime);
-
             if (stats.transitTimeoutCount > 0) {
                 writer.writeNumberField("transitTimeoutCount", stats.transitTimeoutCount);
                 this.writeNonNullInstantField(
