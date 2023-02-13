@@ -137,7 +137,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             clientTelemetry.isClientMetricsEnabled() &&
             (
                 provider.transportClient.getMetricCategories().contains(MetricCategory.DirectEndpoints)
-                || provider.transportClient.getMetricCategories().contains(MetricCategory.DirectChannels)
+                    || provider.transportClient.getMetricCategories().contains(MetricCategory.DirectChannels)
                     || provider.transportClient.getMetricCategories().contains(MetricCategory.DirectRequests)
             )
         ) {
