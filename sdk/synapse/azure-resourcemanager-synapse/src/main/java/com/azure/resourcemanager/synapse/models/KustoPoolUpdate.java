@@ -33,6 +33,10 @@ public final class KustoPoolUpdate extends ProxyResource {
     @JsonProperty(value = "properties")
     private KustoPoolProperties innerProperties;
 
+    /** Creates an instance of KustoPoolUpdate class. */
+    public KustoPoolUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

@@ -32,8 +32,7 @@ class Mappings {
     }
 
     void map(Attributes attributes, AbstractTelemetryBuilder telemetryBuilder) {
-        attributes.forEach(
-            (attributeKey, value) -> map(telemetryBuilder, attributeKey, value));
+        attributes.forEach((attributeKey, value) -> map(telemetryBuilder, attributeKey, value));
     }
 
     private void map(

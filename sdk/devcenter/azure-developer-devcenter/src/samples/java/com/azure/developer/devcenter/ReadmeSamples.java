@@ -15,14 +15,12 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.developer.devcenter.readme.devboxes
         // BEGIN: com.azure.developer.devcenter.readme.createDevCenterClient
-        String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-        String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+        String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
         // Build our clients
         DevCenterClient devCenterClient =
                         new DevCenterClientBuilder()
-                                .devCenter(devCenterName)
-                                .tenantId(tenantId)
+                                .endpoint(endpoint)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createDevCenterClient
@@ -30,8 +28,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.developer.devcenter.readme.createDevBoxClient
         DevBoxesClient devBoxClient =
                         new DevBoxesClientBuilder()
-                                .devCenter(devCenterName)
-                                .tenantId(tenantId)
+                                .endpoint(endpoint)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createDevBoxClient
@@ -74,8 +71,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironmentsClient
         EnvironmentsClient environmentsClient =
                         new EnvironmentsClientBuilder()
-                                .devCenter(devCenterName)
-                                .tenantId(tenantId)
+                                .endpoint(endpoint)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
@@ -101,14 +97,6 @@ public final class ReadmeSamples {
         environmentCreateResponse.waitForCompletion();
         // END: com.azure.developer.devcenter.readme.createEnvironment
 
-
-        // Fetch the deployment artifacts:
-        PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment("myProject", "me", "TestEnvironment", null);
-        for (BinaryData p: artifactListResponse) {
-            System.out.println(p);
-        }
-
-        
         // BEGIN: com.azure.developer.devcenter.readme.deleteEnvironment
         // Delete the environment when we're finished:
         SyncPoller<BinaryData, Void> environmentDeleteResponse =

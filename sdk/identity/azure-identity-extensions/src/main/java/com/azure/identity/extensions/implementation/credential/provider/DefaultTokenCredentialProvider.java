@@ -19,17 +19,21 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProviderOptions options;
 
+    private final TokenCredential tokenCredential;
+
     DefaultTokenCredentialProvider() {
         this.options = new TokenCredentialProviderOptions();
+        this.tokenCredential = get(this.options);
     }
 
     DefaultTokenCredentialProvider(TokenCredentialProviderOptions options) {
         this.options = options;
+        this.tokenCredential = get(this.options);
     }
 
     @Override
     public TokenCredential get() {
-        return get(this.options);
+        return tokenCredential;
     }
 
     @Override

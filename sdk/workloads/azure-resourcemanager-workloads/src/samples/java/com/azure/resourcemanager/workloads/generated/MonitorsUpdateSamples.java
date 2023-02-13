@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.workloads.models.Monitor;
 import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for Monitors Update. */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_PatchTags_Delete.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_PatchTags_Delete.json
      */
     /**
      * Sample code: Delete Tags field of a SAP monitor.
@@ -25,7 +24,7 @@ public final class MonitorsUpdateSamples {
         Monitor resource =
             manager
                 .monitors()
-                .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -35,7 +34,7 @@ public final class MonitorsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_PatchTags.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_PatchTags.json
      */
     /**
      * Sample code: Update Tags field of a SAP monitor.
@@ -46,7 +45,7 @@ public final class MonitorsUpdateSamples {
         Monitor resource =
             manager
                 .monitors()
-                .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -33,8 +33,6 @@ stages:
                 parameters:
                   Paths:
                     - '**/*.xml'
-                    - '!sdk/**/test-recordings'
-                    - '!sdk/**/session-records'
 
           - task: UsePythonVersion@0
             displayName: 'Use Python $(PythonVersion)'
@@ -78,3 +76,12 @@ stages:
               publishJUnitResults: false
               goals: 'clean install'
             continueOnError: true
+
+          - task: PublishTestResults@2
+            condition: always()
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/TEST-*.xml'
+              searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
+              mergeTestResults: true
+              testRunTitle: $(Agent.JobName)

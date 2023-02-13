@@ -146,7 +146,7 @@ directive:
     to: RecognizeOptionsInternal
 - rename-model:
     from: Choice
-    to: RecognizeChoice
+    to: RecognizeChoiceInternal
 - rename-model:
     from: MuteParticipantsRequest
     to: MuteParticipantsRequestInternal
@@ -159,6 +159,12 @@ directive:
 - rename-model:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: CollectTonesResult
+    to: CollectTonesResultInternal
+- rename-model:
+    from: ChoiceResult
+    to: CollectChoiceResultInternal
 
 # Remove models
 - remove-model: AddParticipantsFailed
@@ -320,7 +326,7 @@ directive:
 - from: swagger-document
   where: $.definitions.Tone["x-ms-enum"]
   transform: >
-    $.name = "DtmfTone";
+    $.name = "DtmfToneInternal";
 ```
 
 ### Rename DtmfOptions to DtmfOptionsInternal
@@ -338,5 +344,5 @@ directive:
 - from: swagger-document
   where: $.definitions.Gender["x-ms-enum"]
   transform: >
-    $.name = "GenderType";
+    $.name = "GenderTypeInternal";
 ```

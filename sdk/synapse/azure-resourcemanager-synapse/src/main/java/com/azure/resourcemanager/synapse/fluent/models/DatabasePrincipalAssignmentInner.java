@@ -22,11 +22,14 @@ public final class DatabasePrincipalAssignmentInner extends ProxyResource {
     private DatabasePrincipalProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DatabasePrincipalAssignmentInner class. */
+    public DatabasePrincipalAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: The database principal.
@@ -165,6 +168,15 @@ public final class DatabasePrincipalAssignmentInner extends ProxyResource {
      */
     public ResourceProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
+     *
+     * @return the aadObjectId value.
+     */
+    public String aadObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadObjectId();
     }
 
     /**

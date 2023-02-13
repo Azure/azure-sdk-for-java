@@ -23,7 +23,7 @@ import java.util.Arrays;
 /** Samples for Exports CreateOrUpdate. */
 public final class ExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByManagementGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByManagementGroup.
@@ -69,7 +69,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByBillingAccount.
@@ -115,7 +115,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByDepartment.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByDepartment.
@@ -161,7 +161,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByResourceGroup.
@@ -207,7 +207,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateBySubscription.json
      */
     /**
      * Sample code: ExportCreateOrUpdateBySubscription.
@@ -253,7 +253,7 @@ public final class ExportsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportCreateOrUpdateByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByEnrollmentAccount.

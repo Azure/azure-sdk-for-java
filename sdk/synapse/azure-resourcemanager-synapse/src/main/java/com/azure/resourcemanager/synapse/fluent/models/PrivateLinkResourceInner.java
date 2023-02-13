@@ -18,6 +18,10 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkResourceProperties properties;
 
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
+
     /**
      * Get the properties property: The private link resource properties.
      *
