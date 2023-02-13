@@ -39,6 +39,7 @@ public class TestProxyUtils {
         "(?:User ID=)(?<secret>.*)(?:;)", "(?:<PrimaryKey>)(?<secret>.*)(?:</PrimaryKey>)",
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
+    // Should be removed once playback client is fixed
     private static final List<String> EXCLUDED_HEADERS =
         new ArrayList<>(Arrays.asList("Connection", "Content-Length"));
 
@@ -132,7 +133,7 @@ public class TestProxyUtils {
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":\"%s\"}", customMatcher.getIgnoredHeaders(), customMatcher.getExcludedHeaders(), customMatcher.isCompareBodies(), customMatcher.getIgnoredQueryParameters(), customMatcher.isIgnoreQueryOrdering());
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":%s}", customMatcher.getIgnoredHeaders(), customMatcher.getExcludedHeaders(), customMatcher.isCompareBodies(), customMatcher.getIgnoredQueryParameters(), customMatcher.isIgnoreQueryOrdering());
     }
 
     private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
