@@ -932,7 +932,7 @@
       ]
     },
     {
-      "filename": "sdk/spring/**.xml",
+      "filename": "sdk/spring/**/*.xml",
       "words": [
         "failondeprecatedstatus"
       ]
