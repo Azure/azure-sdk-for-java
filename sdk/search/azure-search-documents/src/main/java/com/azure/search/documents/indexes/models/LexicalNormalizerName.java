@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines the names of all text normalizers supported by Azure Cognitive Search. */
@@ -28,12 +27,19 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
     public static final LexicalNormalizerName UPPERCASE = fromString("uppercase");
 
     /**
+     * Creates a new instance of LexicalNormalizerName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LexicalNormalizerName() {}
+
+    /**
      * Creates or finds a LexicalNormalizerName from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding LexicalNormalizerName.
      */
-    @JsonCreator
     public static LexicalNormalizerName fromString(String name) {
         return fromString(name, LexicalNormalizerName.class);
     }

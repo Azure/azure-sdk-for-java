@@ -22,9 +22,10 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- Coverage levels are being dropped as a good chunk of code is dead code in Autorest layer which is to be removed via Autorest changes. -->
-    <jacoco.min.linecoverage>0.65</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+    <!-- Coverage used to be higher but between additional, unused generated client APIs and unused models' JSON serialization it has been lowered. -->
+    <!-- In the future this will be cleaned up and coverage should be increased again. -->
+    <jacoco.min.linecoverage>0.59</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.47</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
@@ -51,6 +52,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.36.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
