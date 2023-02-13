@@ -140,6 +140,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.40.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>

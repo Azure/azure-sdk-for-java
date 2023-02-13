@@ -115,6 +115,15 @@
       <artifactId>h2</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Azure SDKs-->
+    <!-- Explicitly referencing azure-identity.  It's possible that the dependent versions below conflict with our
+    currently released version and a lower version is resolved. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
