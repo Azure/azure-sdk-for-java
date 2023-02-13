@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -15,15 +14,13 @@ import java.time.Instant;
 @JsonSerialize(using = RntbdChannelStatistics.RntbdChannelStatsJsonSerializer.class)
 public class RntbdChannelStatistics implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final static Instant referenceInstant = Instant.now();
-    private final static long referenceNanoTime = System.nanoTime();
     private String channelId;
     private int channelTaskQueueSize;
     private int pendingRequestsCount;
-    private long lastReadNanoTime;
-    private long lastWriteNanoTime;
+    private Instant lastReadTime;
+    private Instant lastWriteTime;
     private int transitTimeoutCount;
-    private long transitTimeoutStartingNanoTime;
+    private Instant transitTimeoutStartingTime;
     private boolean waitForConnectionInit;
 
     public RntbdChannelStatistics channelId(String channelId) {
@@ -31,9 +28,17 @@ public class RntbdChannelStatistics implements Serializable {
         return this;
     }
 
+    public String getChannelId() {
+        return this.channelId;
+    }
+
     public RntbdChannelStatistics channelTaskQueueSize(int channelTaskQueueSize) {
         this.channelTaskQueueSize = channelTaskQueueSize;
         return this;
+    }
+
+    public int getChannelTaskQueueSize() {
+        return this.channelTaskQueueSize;
     }
 
     public RntbdChannelStatistics pendingRequestsCount(int pendingRequestsCount) {
@@ -41,14 +46,26 @@ public class RntbdChannelStatistics implements Serializable {
         return this;
     }
 
-    public RntbdChannelStatistics lastReadNanoTime(long lastReadNanoTime) {
-        this.lastReadNanoTime = lastReadNanoTime;
+    public int getPendingRequestsCount() {
+        return this.pendingRequestsCount;
+    }
+
+    public RntbdChannelStatistics lastReadTime(Instant lastReadTime) {
+        this.lastReadTime = lastReadTime;
         return this;
     }
 
-    public RntbdChannelStatistics lastWriteNanoTime(long lastWriteNanoTime) {
-        this.lastWriteNanoTime = lastWriteNanoTime;
+    public Instant getLastReadTime() {
+        return this.lastReadTime;
+    }
+
+    public RntbdChannelStatistics lastWriteTime(Instant lastWriteTime) {
+        this.lastWriteTime = lastWriteTime;
         return this;
+    }
+
+    public Instant getLastWriteTime() {
+        return this.lastWriteTime;
     }
 
     public RntbdChannelStatistics transitTimeoutCount(int transitTimeoutCount) {
@@ -56,14 +73,26 @@ public class RntbdChannelStatistics implements Serializable {
         return this;
     }
 
-    public RntbdChannelStatistics transitTimeoutStartingNanoTime(long transitTimeoutStartingNanoTime) {
-        this.transitTimeoutStartingNanoTime = transitTimeoutStartingNanoTime;
+    public int getTransitTimeoutCount() {
+        return this.transitTimeoutCount;
+    }
+
+    public RntbdChannelStatistics transitTimeoutStartingTime(Instant transitTimeoutStartingTime) {
+        this.transitTimeoutStartingTime = transitTimeoutStartingTime;
         return this;
+    }
+
+    public Instant getTransitTimeoutStartingTime() {
+        return this.transitTimeoutStartingTime;
     }
 
     public RntbdChannelStatistics waitForConnectionInit(boolean waitForConnectionInit) {
         this.waitForConnectionInit = waitForConnectionInit;
         return this;
+    }
+
+    public boolean isWaitForConnectionInit() {
+        return this.waitForConnectionInit;
     }
 
     public static class RntbdChannelStatsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdChannelStatistics> {
@@ -75,17 +104,26 @@ public class RntbdChannelStatistics implements Serializable {
             writer.writeStringField("channelId", stats.channelId);
             writer.writeNumberField("channelTaskQueueSize", stats.channelTaskQueueSize);
             writer.writeNumberField("pendingRequestsCount", stats.pendingRequestsCount);
-            writer.writeStringField("lastReadNanoTime", toInstantString(stats.lastReadNanoTime));
-            writer.writeStringField("lastWriteNanoTime", toInstantString(stats.lastWriteNanoTime));
-            writer.writeNumberField("transitTimeoutCount", stats.transitTimeoutCount);
-            writer.writeStringField("transitTimeoutStartingNanoTime", toInstantString(stats.transitTimeoutStartingNanoTime));
+            this.writeNonNullInstantField(writer, "lastReadTime", stats.lastReadTime);
+            this.writeNonNullInstantField(writer, "lastWriteTime", stats.lastWriteTime);
+
+            if (stats.transitTimeoutCount > 0) {
+                writer.writeNumberField("transitTimeoutCount", stats.transitTimeoutCount);
+                this.writeNonNullInstantField(
+                    writer,
+                    "transitTimeoutStartingTime",
+                    stats.transitTimeoutStartingTime);
+            }
             writer.writeBooleanField("waitForConnectionInit", stats.waitForConnectionInit);
             writer.writeEndObject();
         }
 
-        private String toInstantString(long nanoTime) {
-            Instant time = Instant.ofEpochMilli(referenceInstant.plusNanos(nanoTime - referenceNanoTime).toEpochMilli());
-            return DiagnosticsInstantSerializer.fromInstant(time);
+        private void writeNonNullInstantField(JsonGenerator jsonGenerator, String fieldName, Instant value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value.toString());
         }
     }
 }

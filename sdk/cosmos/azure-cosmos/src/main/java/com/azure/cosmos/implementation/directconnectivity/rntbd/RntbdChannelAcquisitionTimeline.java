@@ -91,6 +91,6 @@ public class RntbdChannelAcquisitionTimeline {
     }
 
     public boolean isWaitForChannelInit() {
-        return this.isWaitForChannelInit();
+        return this.waitForChannelInit;
     }
 }

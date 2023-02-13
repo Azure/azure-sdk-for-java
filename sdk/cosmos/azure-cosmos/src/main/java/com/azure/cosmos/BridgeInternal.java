@@ -35,7 +35,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;

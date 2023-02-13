@@ -16,11 +16,14 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RntbdClientChannelHealthCheckerTests {
     private static final long writeHangGracePeriodInNanos = 2L * 1_000_000_000L;
     private static final long readHangGracePeriodInNanos = (45L + 10L) * 1_000_000_000L;
+    private static final long recentReadWindowInNanos = 1_000_000_000L;
 
     @DataProvider
     public static Object[][] isHealthyWithReasonArgs() {
@@ -52,11 +55,14 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
         Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
 
-        long lastChannelWriteAttemptNanoTime = System.nanoTime() - writeHangGracePeriodInNanos - 10;
-        long lastChannelWriteNanoTime = lastChannelWriteAttemptNanoTime - config.sendHangDetectionTimeInNanos() - 10;
+        Instant currentTime = Instant.now();
+        Instant lastChannelWriteAttemptTime = Instant.now().minusNanos(writeHangGracePeriodInNanos).minusNanos(10);
+        Instant lastChannelWriteTime = lastChannelWriteAttemptTime.minusNanos(config.sendHangDetectionTimeInNanos()).minusNanos(10);
+        Instant lastChannelReadTime = currentTime.minusNanos(recentReadWindowInNanos).minusNanos(10);
 
-        Mockito.when(timestampsMock.lastChannelWriteAttemptNanoTime()).thenReturn(lastChannelWriteAttemptNanoTime);
-        Mockito.when(timestampsMock.lastChannelWriteNanoTime()).thenReturn(lastChannelWriteNanoTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
 
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
@@ -64,9 +70,11 @@ public class RntbdClientChannelHealthCheckerTests {
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to non-responding write"));
         } else {
-            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock);
-            assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isFalse();
+            healthChecker.isHealthy(channelMock)
+                .addListener(((Future<Boolean>healthyResult) -> {
+                    assertThat(healthyResult.isSuccess()).isTrue();
+                    assertThat(healthyResult.getNow()).isFalse();
+                }));
         }
     }
 
@@ -91,13 +99,13 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
         Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
 
-        long lastChannelWriteNanoTime = System.nanoTime() - readHangGracePeriodInNanos - 10;
-        long lastChannelWriteAttemptNanoTime = lastChannelWriteNanoTime;
-        long lastChannelReadNanoTime = lastChannelWriteNanoTime - config.receiveHangDetectionTimeInNanos() - 10;
+        Instant lastChannelWriteTime = Instant.now().minusNanos(readHangGracePeriodInNanos).minusNanos(10);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
+        Instant lastChannelReadTime = lastChannelWriteTime.minusNanos(config.receiveHangDetectionTimeInNanos()).minusNanos(10);
 
-        Mockito.when(timestampsMock.lastChannelWriteAttemptNanoTime()).thenReturn(lastChannelWriteAttemptNanoTime);
-        Mockito.when(timestampsMock.lastChannelWriteNanoTime()).thenReturn(lastChannelWriteNanoTime);
-        Mockito.when(timestampsMock.lastChannelReadNanoTime()).thenReturn(lastChannelReadNanoTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
 
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
@@ -105,14 +113,16 @@ public class RntbdClientChannelHealthCheckerTests {
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to non-responding read"));
         } else {
-            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock);
-            assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isFalse();
+            healthChecker.isHealthy(channelMock)
+                .addListener(((Future<Boolean>healthyResult) -> {
+                    assertThat(healthyResult.isSuccess()).isTrue();
+                    assertThat(healthyResult.getNow()).isFalse();
+                }));
         }
     }
 
     @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
-    public void isHealthyForReadHangWithTransitTimeoutTests(boolean withFailureReason) {
+    public void transitTimeoutTimeLimitTests(boolean withFailureReason) {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -132,25 +142,120 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
         Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
 
-        long lastChannelWriteNanoTime = System.nanoTime();
-        long lastChannelWriteAttemptNanoTime = lastChannelWriteNanoTime;
-        long lastChannelReadNanoTime = lastChannelWriteNanoTime - config.receiveHangDetectionTimeInNanos() - 10;
-        int transitTimeoutCount = config.timeoutDetectionHighFrequencyThreshold();
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(config.timeoutDetectionTimeLimitInNanos()).minusNanos(10);
+        Instant lastChannelWriteTime = lastChannelReadTime.plusSeconds(1);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
 
-        Mockito.when(timestampsMock.lastChannelWriteAttemptNanoTime()).thenReturn(lastChannelWriteAttemptNanoTime);
-        Mockito.when(timestampsMock.lastChannelWriteNanoTime()).thenReturn(lastChannelWriteNanoTime);
-        Mockito.when(timestampsMock.lastChannelReadNanoTime()).thenReturn(lastChannelReadNanoTime);
-        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(transitTimeoutCount);
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(1);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding read"));
+            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout detection time limit"));
         } else {
-            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock);
+            healthChecker.isHealthy(channelMock)
+                .addListener(((Future<Boolean>healthyResult) -> {
+                    assertThat(healthyResult.isSuccess()).isTrue();
+                    assertThat(healthyResult.getNow()).isFalse();
+                }));
+        }
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
+    public void transitTimeoutHighFrequencyTests(boolean withFailureReason) {
+        SslContext sslContextMock = Mockito.mock(SslContext.class);
+
+        RntbdEndpoint.Config config = new RntbdEndpoint.Config(
+            new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
+            sslContextMock,
+            LogLevel.INFO);
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        Channel channelMock = Mockito.mock(Channel.class);
+        ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
+        RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
+        SingleThreadEventLoop eventLoopMock = new DefaultEventLoop();
+        RntbdClientChannelHealthChecker.Timestamps timestampsMock = Mockito.mock(RntbdClientChannelHealthChecker.Timestamps.class);
+
+        Mockito.when(channelMock.pipeline()).thenReturn(channelPipelineMock);
+        Mockito.when(channelPipelineMock.get(RntbdRequestManager.class)).thenReturn(rntbdRequestManagerMock);
+        Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
+        Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
+
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(config.timeoutDetectionHighFrequencyTimeLimitInNanos()).minusNanos(10);
+        Instant lastChannelWriteTime = lastChannelReadTime.plusSeconds(1);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
+        int timeoutCount = config.timeoutDetectionHighFrequencyThreshold() + 1;
+
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(timeoutCount);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+
+        if (withFailureReason) {
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isFalse();
+            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout high frequency threshold hit"));
+        } else {
+            healthChecker.isHealthy(channelMock)
+                .addListener(((Future<Boolean>healthyResult) -> {
+                    assertThat(healthyResult.isSuccess()).isTrue();
+                    assertThat(healthyResult.getNow()).isFalse();
+                }));
+        }
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
+    public void transitTimeoutOnWriteTests(boolean withFailureReason) {
+        SslContext sslContextMock = Mockito.mock(SslContext.class);
+
+        RntbdEndpoint.Config config = new RntbdEndpoint.Config(
+            new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
+            sslContextMock,
+            LogLevel.INFO);
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        Channel channelMock = Mockito.mock(Channel.class);
+        ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
+        RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
+        SingleThreadEventLoop eventLoopMock = new DefaultEventLoop();
+        RntbdClientChannelHealthChecker.Timestamps timestampsMock = Mockito.mock(RntbdClientChannelHealthChecker.Timestamps.class);
+
+        Mockito.when(channelMock.pipeline()).thenReturn(channelPipelineMock);
+        Mockito.when(channelPipelineMock.get(RntbdRequestManager.class)).thenReturn(rntbdRequestManagerMock);
+        Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
+        Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
+
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(config.timeoutDetectionOnWriteTimeLimitInNanos()).minusNanos(10);
+        Instant lastChannelWriteTime = lastChannelReadTime.plusSeconds(1);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
+        int writeTimeoutCount = config.timeoutDetectionOnWriteThreshold() + 1;
+
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(writeTimeoutCount);
+        Mockito.when(timestampsMock.tansitTimeoutWriteCount()).thenReturn(writeTimeoutCount);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+
+        if (withFailureReason) {
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout on write threshold hit"));
+        } else {
+            healthChecker.isHealthy(channelMock)
+                .addListener(((Future<Boolean> healthyResult) -> {
+                    assertThat(healthyResult.isSuccess()).isTrue();
+                    assertThat(healthyResult.getNow()).isFalse();
+                }));
         }
     }
 }

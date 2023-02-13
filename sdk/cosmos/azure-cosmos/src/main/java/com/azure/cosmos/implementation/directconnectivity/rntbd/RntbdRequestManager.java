@@ -622,10 +622,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             .channelId(channel.id().toString())
             .pendingRequestsCount(this.pendingRequests.size())
             .channelTaskQueueSize(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()))
-            .lastReadNanoTime(this.timestamps.lastChannelReadNanoTime())
-            .lastWriteNanoTime(this.timestamps.lastChannelWriteNanoTime())
+            .lastReadTime(this.timestamps.lastChannelReadTime())
+            .lastWriteTime(this.timestamps.lastChannelWriteTime())
             .transitTimeoutCount(this.timestamps.tansitTimeoutCount())
-            .transitTimeoutStartingNanoTime(this.timestamps.transitTimeoutStartingNanoTime())
+            .transitTimeoutStartingTime(this.timestamps.transitTimeoutStartingTime())
             .waitForConnectionInit(channelAcquisitionTimeline.isWaitForChannelInit());
     }
 
