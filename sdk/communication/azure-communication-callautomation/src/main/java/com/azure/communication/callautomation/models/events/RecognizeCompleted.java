@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.azure.communication.callautomation.models.CallMediaRecognitionType;
 import com.azure.communication.callautomation.models.CollectTonesResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
-import com.azure.communication.callautomation.models.ChoiceResult;
+import com.azure.communication.callautomation.models.CollectChoiceResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
 
@@ -34,7 +34,7 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
      * Defines the result for RecognizeChoice
      */
     @JsonProperty(value = "choiceResult", access = JsonProperty.Access.WRITE_ONLY)
-    private ChoiceResult choiceResult;
+    private CollectChoiceResult collectChoiceResult;
 
     /**
      * Get the collectToneResult or choiceResult property.
@@ -46,7 +46,7 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
             return Optional.ofNullable(this.collectTonesResult);
 
         } else if (this.recognitionType == CallMediaRecognitionType.CHOICES) {
-            return Optional.ofNullable(this.choiceResult);
+            return Optional.ofNullable(this.collectChoiceResult);
         }
         return Optional.empty();
     }

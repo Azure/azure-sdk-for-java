@@ -7,22 +7,26 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderType;
+import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -148,6 +152,13 @@ public class CallMediaAsync {
                     dtmfOptionsInternal.setMaxTonesToCollect(dtmfRecognizeOptions.getMaxTonesToCollect());
                 }
 
+                if (dtmfRecognizeOptions.getStopTones() != null) {
+                    List<DtmfToneInternal> dtmfTones = dtmfRecognizeOptions.getStopTones().stream()
+                                                .map(this::translateDtmfToneInternal)
+                                                .collect(Collectors.toList());
+                    dtmfOptionsInternal.setStopTones(dtmfTones);
+                }
+
                 RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
                     .setDtmfOptions(dtmfOptionsInternal)
                     .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
@@ -174,11 +185,11 @@ public class CallMediaAsync {
                 CallMediaRecognizeChoiceOptions choiceRecognizeOptions = (CallMediaRecognizeChoiceOptions) recognizeOptions;
 
                 RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-                    .setChoices(choiceRecognizeOptions.getRecognizeChoices())
-                    .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
-                    .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
+                    .setChoices(translateListRecognizeChoiceInternal(choiceRecognizeOptions.getRecognizeChoices()))
+                    .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
+                    .setTargetParticipant(CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
-                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
+                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) choiceRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
                 PlaySourceInternal playSourceInternal = null;
                 if (recognizeOptions.getPlayPrompt() != null) {
@@ -187,8 +198,8 @@ public class CallMediaAsync {
                 }
 
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
-                    .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
-                    .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
+                    .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
+                    .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
                     .setPlayPrompt(playSourceInternal)
                     .setRecognizeOptions(recognizeOptionsInternal)
                     .setOperationContext(recognizeOptions.getOperationContext());
@@ -289,7 +300,7 @@ public class CallMediaAsync {
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
         TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
         if (playSource.getVoiceGender() != null) {
-            textSourceInternal.setVoiceGender(GenderType.fromString(playSource.getVoiceGender().toString()));
+            textSourceInternal.setVoiceGender(GenderTypeInternal.fromString(playSource.getVoiceGender().toString()));
         }
         if (playSource.getSourceLocale() != null) {
             textSourceInternal.setSourceLocale(playSource.getSourceLocale());
@@ -313,5 +324,29 @@ public class CallMediaAsync {
             playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
         }
         return playSourceInternal;
+    }
+
+    private List<RecognizeChoiceInternal> translateListRecognizeChoiceInternal(List<RecognizeChoice> recognizeChoices) {
+        return recognizeChoices.stream()
+            .map(this::translateRecognizeChoiceInternal)
+            .collect(Collectors.toList());
+    }
+
+    private RecognizeChoiceInternal translateRecognizeChoiceInternal(RecognizeChoice recognizeChoice) {
+        RecognizeChoiceInternal internalRecognizeChoice = new RecognizeChoiceInternal();
+        if (recognizeChoice.getLabel() != null) {
+            internalRecognizeChoice.setLabel(recognizeChoice.getLabel());
+        }
+        if (recognizeChoice.getPhrases() != null) {
+            internalRecognizeChoice.setPhrases(recognizeChoice.getPhrases());
+        }
+        if (recognizeChoice.getTone() != null) {
+            internalRecognizeChoice.setTone(translateDtmfToneInternal(recognizeChoice.getTone()));
+        }
+        return internalRecognizeChoice;
+    }
+
+    private DtmfToneInternal translateDtmfToneInternal(DtmfTone dtmfTone) {
+        return DtmfToneInternal.fromString(dtmfTone.toString());
     }
 }

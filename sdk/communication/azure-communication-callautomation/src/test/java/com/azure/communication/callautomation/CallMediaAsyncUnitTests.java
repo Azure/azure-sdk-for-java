@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
@@ -118,6 +118,7 @@ public class CallMediaAsyncUnitTests {
         stopDtmfTones.add(DtmfTone.ZERO);
         stopDtmfTones.add(DtmfTone.ONE);
         stopDtmfTones.add(DtmfTone.TWO);
+        recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
         recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
@@ -143,6 +144,7 @@ public class CallMediaAsyncUnitTests {
         stopDtmfTones.add(DtmfTone.ONE);
         stopDtmfTones.add(DtmfTone.TWO);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
+        recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test dmtf option with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
@@ -163,6 +165,8 @@ public class CallMediaAsyncUnitTests {
 
         RecognizeChoice recognizeChoice1 = new RecognizeChoice();
         RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        recognizeChoice1.setTone(DtmfTone.ZERO);
+        recognizeChoice2.setTone(DtmfTone.SIX);
         List<RecognizeChoice> recognizeChoices = new ArrayList<RecognizeChoice>(
             Arrays.asList(recognizeChoice1, recognizeChoice2)
         );
@@ -187,6 +191,8 @@ public class CallMediaAsyncUnitTests {
 
         RecognizeChoice recognizeChoice1 = new RecognizeChoice();
         RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        recognizeChoice1.setTone(DtmfTone.ZERO);
+        recognizeChoice2.setTone(DtmfTone.THREE);
         List<RecognizeChoice> recognizeChoices = new ArrayList<RecognizeChoice>(
             Arrays.asList(recognizeChoice1, recognizeChoice2)
         );
