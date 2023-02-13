@@ -172,8 +172,8 @@ public final class CosmosClientTelemetryConfig {
 
         Stream<TagName> tagNameStream =
             Arrays.stream(tagNames)
-                  .map(rawTagName -> rawTagName.toLowerCase(Locale.ROOT))
                   .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
+                  .map(rawTagName -> rawTagName.toLowerCase(Locale.ROOT))
                   .map(tagName -> {
                       String trimmedTagName = tagName.trim();
 
