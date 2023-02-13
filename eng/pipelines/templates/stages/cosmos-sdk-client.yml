@@ -35,6 +35,13 @@ stages:
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
+        ReleaseArtifacts:
+        - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+        - ${{ else }}:
+          - ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
         MatrixConfigs:

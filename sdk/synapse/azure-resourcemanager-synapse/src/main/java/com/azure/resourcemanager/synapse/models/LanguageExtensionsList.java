@@ -18,6 +18,10 @@ public final class LanguageExtensionsList {
     @JsonProperty(value = "value")
     private List<LanguageExtensionInner> value;
 
+    /** Creates an instance of LanguageExtensionsList class. */
+    public LanguageExtensionsList() {
+    }
+
     /**
      * Get the value property: The list of language extensions.
      *

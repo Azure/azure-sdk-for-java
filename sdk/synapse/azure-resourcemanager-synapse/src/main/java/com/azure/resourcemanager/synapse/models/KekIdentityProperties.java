@@ -22,6 +22,10 @@ public final class KekIdentityProperties {
     @JsonProperty(value = "useSystemAssignedIdentity")
     private Object useSystemAssignedIdentity;
 
+    /** Creates an instance of KekIdentityProperties class. */
+    public KekIdentityProperties() {
+    }
+
     /**
      * Get the userAssignedIdentity property: User assigned identity resource Id.
      *

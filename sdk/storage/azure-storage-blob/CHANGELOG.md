@@ -1,18 +1,33 @@
 # Release History
 
-## 12.21.0-beta.1 (Unreleased)
+## 12.21.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for 2021-12-02 service version.
-- Added support for Blob Cold Tier `AccessTier.COLD`.
-- Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
-- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.20.2 (2023-02-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-storage-common` from `12.19.2` to version `12.19.3`.
+- Upgraded `azure-storage-internal-avro` from `12.5.2` to version `12.5.3`.
+
+## 12.21.0-beta.1 (2023-02-07)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for Blob Cold Tier `AccessTier.COLD`.
+- Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
+- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
 
 ## 12.20.2 (2023-01-10)
 
@@ -399,7 +414,6 @@ and
 - Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
 - Improved performance of BlockBlobOutputStream.
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
-
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.

@@ -25,14 +25,6 @@ public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRec
         this.serviceManager = serviceManager;
     }
 
-    public void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters) {
-        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
-    }
-
     public Response<Void> updateWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -42,6 +34,14 @@ public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRec
         return this
             .serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
+    }
+
+    public void update(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters) {
+        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }
 
     private SqlPoolRecommendedSensitivityLabelsClient serviceClient() {

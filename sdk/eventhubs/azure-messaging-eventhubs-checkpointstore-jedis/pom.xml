@@ -51,6 +51,12 @@
 
     <!-- Test dependencies -->
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->

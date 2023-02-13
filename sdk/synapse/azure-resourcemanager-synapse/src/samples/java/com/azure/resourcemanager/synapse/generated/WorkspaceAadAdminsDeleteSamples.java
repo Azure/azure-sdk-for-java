@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceAadAdmins Delete. */
 public final class WorkspaceAadAdminsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspaceAadAdminsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceAadAdmins().delete("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceAadAdmins().delete("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
