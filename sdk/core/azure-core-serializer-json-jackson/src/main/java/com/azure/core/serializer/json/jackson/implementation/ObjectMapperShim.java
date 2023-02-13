@@ -384,7 +384,7 @@ public final class ObjectMapperShim {
         if (memberNameConverter == null) {
             // Defer creating the member name converter until it needs to be used.
             // This class isn't used often and performs a lot of reflection, so best it is deferred.
-            // Don't both making this volatile or synchronized as this is very, very cheap to create.
+            // Don't bother making this volatile or synchronized as this is very, very cheap to create.
             memberNameConverter = new MemberNameConverterImpl(mapper);
         }
 
