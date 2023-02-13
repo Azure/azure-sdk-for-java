@@ -919,6 +919,31 @@
       ]
     },
     {
+      "filename": "sdk/spring/**.md",
+      "words": [
+        "Dcheckstyle",
+        "Dcodesnippet",
+        "Djacoco",
+        "Dparallel",
+        "Drevapi",
+        "Dskip",
+        "Dspotbugs",
+        "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.xml",
+      "words": [
+        "failondeprecatedstatus"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.yml",
+      "words": [
+        "failondeprecatedstatus"
+      ]
+    },
+    {
       "filename": "sdk/spring/**",
       "words": [
         "aadb",
@@ -957,31 +982,6 @@
         "xiada",
         "yiliu",
         "usgovcloudapi"
-      ]
-    },
-    {
-      "filename": "sdk/spring/**.md",
-      "words": [
-        "Dcheckstyle",
-        "Dcodesnippet",
-        "Djacoco",
-        "Dparallel",
-        "Drevapi",
-        "Dskip",
-        "Dspotbugs",
-        "Pdev"
-      ]
-    },
-    {
-      "filename": "sdk/spring/**.xml",
-      "words": [
-        "failondeprecatedstatus"
-      ]
-    },
-    {
-      "filename": "sdk/spring/**.yml",
-      "words": [
-        "failondeprecatedstatus"
       ]
     }
   ],
