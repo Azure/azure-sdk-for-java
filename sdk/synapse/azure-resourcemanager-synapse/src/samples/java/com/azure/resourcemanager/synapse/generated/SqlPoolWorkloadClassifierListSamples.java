@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier List. */
 public final class SqlPoolWorkloadClassifierListSamples {
     /*
@@ -20,6 +18,11 @@ public final class SqlPoolWorkloadClassifierListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolWorkloadClassifiers()
-            .list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", Context.NONE);
+            .list(
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-9187",
+                "wlm_workloadgroup",
+                com.azure.core.util.Context.NONE);
     }
 }

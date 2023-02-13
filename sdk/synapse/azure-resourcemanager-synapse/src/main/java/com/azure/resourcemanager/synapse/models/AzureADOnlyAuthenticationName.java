@@ -14,6 +14,15 @@ public final class AzureADOnlyAuthenticationName extends ExpandableStringEnum<Az
     public static final AzureADOnlyAuthenticationName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of AzureADOnlyAuthenticationName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureADOnlyAuthenticationName() {
+    }
+
+    /**
      * Creates or finds a AzureADOnlyAuthenticationName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class AzureADOnlyAuthenticationName extends ExpandableStringEnum<Az
         return fromString(name, AzureADOnlyAuthenticationName.class);
     }
 
-    /** @return known AzureADOnlyAuthenticationName values. */
+    /**
+     * Gets known AzureADOnlyAuthenticationName values.
+     *
+     * @return known AzureADOnlyAuthenticationName values.
+     */
     public static Collection<AzureADOnlyAuthenticationName> values() {
         return values(AzureADOnlyAuthenticationName.class);
     }

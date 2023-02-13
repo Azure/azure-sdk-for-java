@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpFirewallRuleProperties {
     /*
-     * The end IP address of the firewall rule. Must be IPv4 format. Must be
-     * greater than or equal to startIpAddress
+     * The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress
      */
     @JsonProperty(value = "endIpAddress")
     private String endIpAddress;
@@ -29,6 +28,10 @@ public final class IpFirewallRuleProperties {
      */
     @JsonProperty(value = "startIpAddress")
     private String startIpAddress;
+
+    /** Creates an instance of IpFirewallRuleProperties class. */
+    public IpFirewallRuleProperties() {
+    }
 
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than

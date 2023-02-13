@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2023-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from version `8.0.31` to `8.0.32`.
 
 ## 1.1.0 (2023-01-11)
 

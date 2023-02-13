@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BigDataPools Delete. */
 public final class BigDataPoolsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class BigDataPoolsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteABigDataPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.bigDataPools().delete("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", Context.NONE);
+        manager
+            .bigDataPools()
+            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", com.azure.core.util.Context.NONE);
     }
 }

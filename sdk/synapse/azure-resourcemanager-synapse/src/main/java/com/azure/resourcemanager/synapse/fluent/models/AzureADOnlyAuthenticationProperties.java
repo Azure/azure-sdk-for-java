@@ -30,6 +30,10 @@ public final class AzureADOnlyAuthenticationProperties {
     @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
+    /** Creates an instance of AzureADOnlyAuthenticationProperties class. */
+    public AzureADOnlyAuthenticationProperties() {
+    }
+
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
      *

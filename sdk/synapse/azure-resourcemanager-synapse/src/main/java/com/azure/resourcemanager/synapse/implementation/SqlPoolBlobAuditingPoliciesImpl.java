@@ -28,15 +28,6 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
         this.serviceManager = serviceManager;
     }
 
-    public SqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        SqlPoolBlobAuditingPolicyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new SqlPoolBlobAuditingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolBlobAuditingPolicy> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         Response<SqlPoolBlobAuditingPolicyInner> inner =
@@ -47,6 +38,15 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        SqlPoolBlobAuditingPolicyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
+        if (inner != null) {
+            return new SqlPoolBlobAuditingPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
