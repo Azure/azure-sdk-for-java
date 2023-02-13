@@ -1,14 +1,14 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.1.1 (2023-02-13)
 
-### Features Added
+### Dependency Updates
 
-### Breaking Changes
+- Upgrade Azure Identity to 1.8.0.
 
-### Bugs Fixed
+### Others
 
-### Other Changes
+- Improve the performance of DefaultTokenCredentialProvider's `get()` method.
 
 ## 1.2.0-beta.1 (2023-02-06)
 
