@@ -298,7 +298,7 @@ public final class ClientTelemetryMetrics {
             Set<String> contactedRegions) {
 
             Counter operationsCounter = Counter
-                .builder(nameOf(CosmosMetricNames.Operation.Calls))
+                .builder(nameOf(CosmosMetricNames.OperationSummary.Calls))
                 .baseUnit("calls")
                 .description("Operation calls")
                 .tags(operationTags)
@@ -306,7 +306,7 @@ public final class ClientTelemetryMetrics {
             operationsCounter.increment();
 
             DistributionSummary requestChargeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.Operation.RequestCharge))
+                .builder(nameOf(CosmosMetricNames.OperationSummary.RequestCharge))
                 .baseUnit("RU (request unit)")
                 .description("Operation RU charge")
                 .maximumExpectedValue(10_000_000d)
@@ -318,7 +318,7 @@ public final class ClientTelemetryMetrics {
 
             if (this.metricCategories.contains(MetricCategory.OperationDetails)) {
                 DistributionSummary regionsContactedMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.Operation.RegionsContacted))
+                    .builder(nameOf(CosmosMetricNames.OperationDetails.RegionsContacted))
                     .baseUnit("Regions contacted")
                     .description("Operation - regions contacted")
                     .maximumExpectedValue(100d)
@@ -334,7 +334,7 @@ public final class ClientTelemetryMetrics {
             }
 
             Timer latencyMeter = Timer
-                .builder(nameOf(CosmosMetricNames.Operation.Latency))
+                .builder(nameOf(CosmosMetricNames.OperationSummary.Latency))
                 .description("Operation latency")
                 .maximumExpectedValue(Duration.ofSeconds(300))
                 .publishPercentiles(0.95, 0.99)
@@ -381,7 +381,7 @@ public final class ClientTelemetryMetrics {
             );
 
             Counter requestCounter = Counter
-                .builder(nameOf(CosmosMetricNames.Request.Gateway.Requests))
+                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Requests))
                 .baseUnit("requests")
                 .description("Gateway requests")
                 .tags(requestTags)
@@ -392,7 +392,7 @@ public final class ClientTelemetryMetrics {
 
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
-                    .builder(nameOf(CosmosMetricNames.Request.Gateway.Latency))
+                    .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Latency))
                     .description("Gateway Request latency")
                     .maximumExpectedValue(Duration.ofSeconds(300))
                     .publishPercentiles(0.95, 0.99)
@@ -403,7 +403,7 @@ public final class ClientTelemetryMetrics {
             }
 
             recordRequestTimeline(
-                CosmosMetricNames.Request.Gateway.TimelinePrefix,
+                CosmosMetricNames.RequestDetails.Gateway.TimelinePrefix,
                 queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
@@ -412,7 +412,7 @@ public final class ClientTelemetryMetrics {
             int responsePayloadSizeInBytes
         ) {
             DistributionSummary requestPayloadSizeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.Request.RequestPayloadSize))
+                .builder(nameOf(CosmosMetricNames.RequestSummary.RequestPayloadSize))
                 .baseUnit("bytes")
                 .description("Request payload size in bytes")
                 .maximumExpectedValue(16d * 1024)
@@ -423,7 +423,7 @@ public final class ClientTelemetryMetrics {
             requestPayloadSizeMeter.record(requestPayloadSizeInBytes);
 
             DistributionSummary responsePayloadSizeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.Request.ResponsePayloadSize))
+                .builder(nameOf(CosmosMetricNames.RequestSummary.ResponsePayloadSize))
                 .baseUnit("bytes")
                 .description("Response payload size in bytes")
                 .maximumExpectedValue(16d * 1024)
@@ -440,7 +440,7 @@ public final class ClientTelemetryMetrics {
         ) {
             if (maxItemCount > 0 && this.metricCategories.contains(MetricCategory.OperationDetails)) {
                 DistributionSummary maxItemCountMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.Operation.MaxItemCount))
+                    .builder(nameOf(CosmosMetricNames.OperationSummary.MaxItemCount))
                     .baseUnit("item count")
                     .description("Request max. item count")
                     .maximumExpectedValue(1_000_000d)
@@ -451,7 +451,7 @@ public final class ClientTelemetryMetrics {
                 maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 1_000_000d)));
 
                 DistributionSummary actualItemCountMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.Operation.ActualItemCount))
+                    .builder(nameOf(CosmosMetricNames.OperationSummary.ActualItemCount))
                     .baseUnit("item count")
                     .description("Response actual item count")
                     .maximumExpectedValue(1_000_000d)
@@ -654,7 +654,7 @@ public final class ClientTelemetryMetrics {
 
                 if (backendLatency != null) {
                     DistributionSummary backendRequestLatencyMeter = DistributionSummary
-                        .builder(nameOf(CosmosMetricNames.Request.Direct.BackendLatency))
+                        .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.BackendLatency))
                         .baseUnit("ms")
                         .description("Backend service latency")
                         .maximumExpectedValue(6_000d)
@@ -667,7 +667,7 @@ public final class ClientTelemetryMetrics {
 
                 double requestCharge = storeResponseDiagnostics.getRequestCharge();
                 DistributionSummary requestChargeMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.Request.Direct.RequestCharge))
+                    .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.RequestCharge))
                     .baseUnit("RU (request unit)")
                     .description("RNTBD Request RU charge")
                     .maximumExpectedValue(1_000_000d)
@@ -680,7 +680,7 @@ public final class ClientTelemetryMetrics {
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
                     Timer requestLatencyMeter = Timer
-                        .builder(nameOf(CosmosMetricNames.Request.Direct.Latency))
+                        .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.Latency))
                         .description("RNTBD Request latency")
                         .maximumExpectedValue(Duration.ofSeconds(6))
                         .publishPercentiles(0.95, 0.99)
@@ -691,16 +691,18 @@ public final class ClientTelemetryMetrics {
                 }
 
                 Counter requestCounter = Counter
-                    .builder(nameOf(CosmosMetricNames.Request.Direct.Requests))
+                    .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.Requests))
                     .baseUnit("requests")
                     .description("RNTBD requests")
                     .tags(requestTags)
                     .register(compositeRegistry);
                 requestCounter.increment();
 
-                recordRequestTimeline(
-                    CosmosMetricNames.Request.Direct.TimelinePrefix,
-                    storeResponseDiagnostics.getRequestTimeline(), requestTags);
+                if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
+                    recordRequestTimeline(
+                        CosmosMetricNames.RequestDetails.Direct.TimelinePrefix,
+                        storeResponseDiagnostics.getRequestTimeline(), requestTags);
+                }
 
                 recordRequestPayloadSizes(
                     storeResponseDiagnostics.getRequestPayloadLength(),
@@ -740,7 +742,7 @@ public final class ClientTelemetryMetrics {
             );
 
             Counter requestCounter = Counter
-                .builder(nameOf(CosmosMetricNames.Request.Gateway.Requests))
+                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Requests))
                 .baseUnit("requests")
                 .description("Gateway requests")
                 .tags(requestTags)
@@ -749,7 +751,7 @@ public final class ClientTelemetryMetrics {
 
             double requestCharge = gatewayStatistics.getRequestCharge();
             DistributionSummary requestChargeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.Request.Gateway.RequestCharge))
+                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.RequestCharge))
                 .baseUnit("RU (request unit)")
                 .description("Gateway Request RU charge")
                 .maximumExpectedValue(1_000_000d)
@@ -761,7 +763,7 @@ public final class ClientTelemetryMetrics {
 
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
-                    .builder(nameOf(CosmosMetricNames.Request.Gateway.Latency))
+                    .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Latency))
                     .description("Gateway Request latency")
                     .maximumExpectedValue(Duration.ofSeconds(300))
                     .publishPercentiles(0.95, 0.99)
@@ -772,7 +774,7 @@ public final class ClientTelemetryMetrics {
             }
 
             recordRequestTimeline(
-                CosmosMetricNames.Request.Gateway.TimelinePrefix,
+                CosmosMetricNames.RequestDetails.Gateway.TimelinePrefix,
                 gatewayStatistics.getRequestTimeline(), requestTags);
         }
 

@@ -58,7 +58,7 @@ public final class CosmosMetricNames {
         }
     }
 
-    public final static class Operation {
+    public final static class OperationSummary {
         // Number of operation calls (Counter)
         public final static String Calls = "op.calls";
 
@@ -75,12 +75,26 @@ public final class CosmosMetricNames {
 
         // Request charge for the operation (DistributionSummary)
         public final static String RequestCharge = "op.RUs";
+    }
 
+    public final static class OperationDetails {
         // Number of regions contacted for processing the operation (DistributionSummary)
         public final static String RegionsContacted = "op.regionsContacted";
     }
 
-    public final static class Request {
+    public final static class RequestDetails {
+        public final static class Direct {
+            // Set of latencies in different steps of the request pipeline (all Timers)
+            public final static String TimelinePrefix = "req.rntbd.timeline.";
+        }
+
+        public final static class Gateway {
+            // Set of latencies in different steps of the request pipeline (all Timers)
+            public final static String TimelinePrefix = "req.gw.timeline.";
+        }
+    }
+
+    public final static class RequestSummary {
 
         // Size of the request payload (DistributionSummary)
         public final static String RequestPayloadSize = "req.reqPayloadSize";
@@ -100,9 +114,6 @@ public final class CosmosMetricNames {
 
             // Number of requests (Counter)
             public final static String Requests = "req.rntbd.requests";
-
-            // Set of latencies in different steps of the request pipeline (all Timers)
-            public final static String TimelinePrefix = "req.rntbd.timeline.";
         }
 
         public final static class Gateway {
@@ -114,9 +125,6 @@ public final class CosmosMetricNames {
 
             // Number of requests (Counter)
             public final static String Requests = "req.gw.requests";
-
-            // Set of latencies in different steps of the request pipeline (all Timers)
-            public final static String TimelinePrefix = "req.gw.timeline.";
         }
     }
 
