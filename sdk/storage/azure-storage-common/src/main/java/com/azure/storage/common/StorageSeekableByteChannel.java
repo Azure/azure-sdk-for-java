@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -18,6 +21,11 @@ import java.util.Objects;
  * mode and storage resource type (e.g. blob).
  */
 public class StorageSeekableByteChannel implements SeekableByteChannel {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannel.class);
+
+    /**
+     * Interface for injectable behavior to read from a backing Storage resource.
+     */
     public interface ReadBehavior {
         /**
          * Reads from the backing resource.
@@ -34,6 +42,9 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         long getCachedLength();
     }
 
+    /**
+     * Interface for injectable behavior to write to a backing Storage resource.
+     */
     public interface WriteBehavior {
         /**
          * Writes to the backing resource.
@@ -43,29 +54,34 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         void write(ByteBuffer src, long destOffset);
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(StorageSeekableByteChannel.class);
+    private final ReadBehavior readBehavior;
+    private final WriteBehavior writeBehavior;
+    private final StorageChannelMode mode;
 
-    private final ReadBehavior _readBehavior;
-    private final WriteBehavior _writeBehavior;
-    private final StorageChannelMode _mode;
+    private boolean isClosed;
 
-    private boolean _isClosed;
+    private ByteBuffer buffer;
+    private long bufferAbsolutePosition;
 
-    private ByteBuffer _buffer;
-    private long _bufferAbsolutePosition;
+    private long absolutePosition;
 
-    private long _absolutePosition;
-
-    protected StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior readBehavior,
+    /**
+     * Constructs an instance of this class.
+     * @param chunkSize Size of the internal channel buffer to use for data transfer, and for individual REST transfers.
+     * @param mode Mode to open this channel in.
+     * @param readBehavior Behavior for reading from the backing Storage resource.
+     * @param writeBehavior Behavior for writing to the backing Storage resource.
+     */
+    public StorageSeekableByteChannel(int chunkSize, StorageChannelMode mode, ReadBehavior readBehavior,
         WriteBehavior writeBehavior) {
-        _mode = Objects.requireNonNull(mode);
-        _buffer = ByteBuffer.allocate(chunkSize);
-        _readBehavior = readBehavior;
-        _writeBehavior = writeBehavior;
+        this.mode = Objects.requireNonNull(mode);
+        buffer = ByteBuffer.allocate(chunkSize);
+        this.readBehavior = readBehavior;
+        this.writeBehavior = writeBehavior;
 
-        _bufferAbsolutePosition = 0;
-        if (_mode == StorageChannelMode.READ) {
-            _buffer.limit(0);
+        bufferAbsolutePosition = 0;
+        if (this.mode == StorageChannelMode.READ) {
+            buffer.limit(0);
         }
     }
 
@@ -77,29 +93,29 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("ByteBuffer dst must support writes."));
         }
 
-        if (_buffer.remaining() == 0) {
-            refillReadBuffer(_absolutePosition);
+        if (buffer.remaining() == 0) {
+            refillReadBuffer(absolutePosition);
         }
         // if _readBuffer is still empty after refill, there are no bytes remaining
-        if (_buffer.remaining() == 0) {
+        if (buffer.remaining() == 0) {
             return -1;
         }
 
-        int read = Math.min(_buffer.remaining(), dst.remaining());
-        ByteBuffer temp = _buffer.duplicate();
+        int read = Math.min(buffer.remaining(), dst.remaining());
+        ByteBuffer temp = buffer.duplicate();
         temp.limit(temp.position() + read);
         dst.put(temp);
-        _buffer.position(_buffer.position() + read);
-        _absolutePosition += read;
+        buffer.position(buffer.position() + read);
+        absolutePosition += read;
         return read;
     }
 
     private void refillReadBuffer(long newBufferAbsolutePosition) {
-        _buffer.clear();
-        int read = _readBehavior.read(_buffer, newBufferAbsolutePosition);
-        _buffer.rewind();
-        _buffer.limit(Math.max(read, 0));
-        _bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, _readBehavior.getCachedLength());
+        buffer.clear();
+        int read = readBehavior.read(buffer, newBufferAbsolutePosition);
+        buffer.rewind();
+        buffer.limit(Math.max(read, 0));
+        bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, readBehavior.getCachedLength());
     }
 
     @Override
@@ -107,14 +123,14 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         assertOpen();
         assertCanWrite();
 
-        int write = Math.min(src.remaining(), _buffer.remaining());
+        int write = Math.min(src.remaining(), buffer.remaining());
         ByteBuffer temp = src.duplicate();
         temp.limit(temp.position() + write);
-        _buffer.put(temp);
+        buffer.put(temp);
         src.position(src.position() + write);
-        _absolutePosition += write;
+        absolutePosition += write;
 
-        if (_buffer.remaining() == 0) {
+        if (buffer.remaining() == 0) {
             flushWriteBuffer();
         }
 
@@ -122,17 +138,17 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void flushWriteBuffer() {
-        _buffer.limit(_buffer.position());
-        _buffer.rewind();
-        _writeBehavior.write(_buffer, _bufferAbsolutePosition);
-        _bufferAbsolutePosition += _buffer.limit();
-        _buffer.clear();
+        buffer.limit(buffer.position());
+        buffer.rewind();
+        writeBehavior.write(buffer, bufferAbsolutePosition);
+        bufferAbsolutePosition += buffer.limit();
+        buffer.clear();
     }
 
     @Override
     public long position() throws IOException {
         assertOpen();
-        return _absolutePosition;
+        return absolutePosition;
     }
 
     @Override
@@ -141,15 +157,15 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         assertCanSeek();
 
         // seek exited the bounds of the internal buffer, invalidate it
-        if (newPosition < _bufferAbsolutePosition || newPosition > _bufferAbsolutePosition + _buffer.limit()) {
-            _buffer.clear();
-            _buffer.limit(0);
+        if (newPosition < bufferAbsolutePosition || newPosition > bufferAbsolutePosition + buffer.limit()) {
+            buffer.clear();
+            buffer.limit(0);
         // seek is within the internal buffer, just adjust buffer position
         } else {
-            _buffer.position((int)(newPosition - _bufferAbsolutePosition));
+            buffer.position((int) (newPosition - bufferAbsolutePosition));
         }
 
-        _absolutePosition = newPosition;
+        absolutePosition = newPosition;
 
         return this;
     }
@@ -157,7 +173,7 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     @Override
     public long size() throws IOException {
         assertOpen();
-        return _readBehavior.getCachedLength();
+        return readBehavior.getCachedLength();
         // TODO (jaschrep): what about when in write mode?
     }
 
@@ -169,18 +185,18 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public boolean isOpen() {
-        return !_isClosed;
+        return !isClosed;
     }
 
     @Override
     public void close() throws IOException {
-        if (_mode == StorageChannelMode.WRITE) {
+        if (mode == StorageChannelMode.WRITE) {
             flushWriteBuffer();
         }
 
         // close is documented as idempotent
-        _isClosed = true;
-        _buffer = null;
+        isClosed = true;
+        buffer = null;
     }
 
     private void assertCanSeek() {
@@ -189,19 +205,19 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void assertCanRead() {
-        if (_mode != StorageChannelMode.READ) {
+        if (mode != StorageChannelMode.READ) {
             throw LOGGER.logExceptionAsError(new NonReadableChannelException());
         }
     }
 
     private void assertCanWrite() {
-        if (_mode != StorageChannelMode.WRITE) {
+        if (mode != StorageChannelMode.WRITE) {
             throw LOGGER.logExceptionAsError(new NonWritableChannelException());
         }
     }
 
     private void assertOpen() throws ClosedChannelException {
-        if (_isClosed){
+        if (isClosed) {
             throw LOGGER.logThrowableAsError(new ClosedChannelException());
         }
     }
