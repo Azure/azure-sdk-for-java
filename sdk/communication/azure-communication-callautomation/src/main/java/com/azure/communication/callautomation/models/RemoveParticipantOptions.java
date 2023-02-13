@@ -13,11 +13,11 @@ import java.util.List;
  * The options for removing participants.
  */
 @Fluent
-public final class RemoveParticipantsOptions {
+public final class RemoveParticipantOptions {
     /**
      * The list of participants to remove.
      */
-    private final List<CommunicationIdentifier> participants;
+    private final CommunicationIdentifier participant;
 
     /**
      * The operational context
@@ -27,19 +27,19 @@ public final class RemoveParticipantsOptions {
     /**
      * Constructor
      *
-     * @param participants The list of participants to invite.
+     * @param participant The list of participants to invite.
      */
-    public RemoveParticipantsOptions(List<CommunicationIdentifier> participants) {
-        this.participants = participants;
+    public RemoveParticipantOptions(CommunicationIdentifier participant) {
+        this.participant = participant;
     }
 
     /**
      * Get the participants.
      *
-     * @return the list of participants to be added
+     * @return the participant being removed
      */
-    public List<CommunicationIdentifier> getParticipants() {
-        return participants;
+    public CommunicationIdentifier getParticipant() {
+        return participant;
     }
 
     /**
@@ -57,7 +57,7 @@ public final class RemoveParticipantsOptions {
      * @param operationContext the operationContext to set
      * @return the RemoveParticipantsOptions object itself.
      */
-    public RemoveParticipantsOptions setOperationContext(String operationContext) {
+    public RemoveParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

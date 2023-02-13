@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /** The RemoveParticipantsResult model. */
 @Immutable
-public final class RemoveParticipantsResult {
+public final class RemoveParticipantResult {
     /*
      * The operation context provided by client.
      */
@@ -21,8 +21,8 @@ public final class RemoveParticipantsResult {
         RemoveParticipantsResponseConstructorProxy.setAccessor(
             new RemoveParticipantsResponseConstructorProxy.RemoveParticipantsResponseConstructorAccessor() {
                 @Override
-                public RemoveParticipantsResult create(RemoveParticipantsResponseInternal internalHeaders) {
-                    return new RemoveParticipantsResult(internalHeaders);
+                public RemoveParticipantResult create(RemoveParticipantsResponseInternal internalHeaders) {
+                    return new RemoveParticipantResult(internalHeaders);
                 }
             });
     }
@@ -31,7 +31,7 @@ public final class RemoveParticipantsResult {
      * Public constructor.
      *
      */
-    public RemoveParticipantsResult() {
+    public RemoveParticipantResult() {
         this.operationContext = null;
     }
 
@@ -40,7 +40,7 @@ public final class RemoveParticipantsResult {
      *
      * @param  removeParticipantsResponseInternal The response from the service
      */
-    RemoveParticipantsResult(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
+    RemoveParticipantResult(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
         Objects.requireNonNull(removeParticipantsResponseInternal, "removeParticipantsResponseInternal must not be null");
 
         this.operationContext = removeParticipantsResponseInternal.getOperationContext();

@@ -127,8 +127,6 @@ public class CallRecordingAsync {
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
-                        UUID.randomUUID(),
-                        getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                         contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
