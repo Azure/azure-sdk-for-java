@@ -50,6 +50,14 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType ADDRESS = fromString("address");
 
     /**
+     * Creates a new instance of DocumentFieldType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentFieldType() {}
+
+    /**
      * Creates or finds a DocumentFieldType from its string representation.
      *
      * @param name a name to look for.

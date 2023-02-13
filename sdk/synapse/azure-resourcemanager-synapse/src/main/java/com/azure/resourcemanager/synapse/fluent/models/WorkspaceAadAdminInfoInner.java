@@ -17,6 +17,10 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AadAdminProperties innerProperties;
 
+    /** Creates an instance of WorkspaceAadAdminInfoInner class. */
+    public WorkspaceAadAdminInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: Workspace active directory administrator properties.
      *

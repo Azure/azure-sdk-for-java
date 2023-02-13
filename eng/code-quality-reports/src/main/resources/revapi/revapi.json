@@ -37,62 +37,9 @@
           "breaksVersioningRules": "true"
         }
       },
-      "passThroughDifference": [
+      "passThroughDifferences": [
         "java.class.nonPublicPartOfAPI"
       ]
-    }
-  },
-  {
-    "extension": "revapi.filter",
-    "configuration": {
-      "elements": {
-        "exclude": [
-          "class com\\.azure\\.core\\.util\\.Configuration",
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure(\\..+?)?\\.(implementation|samples)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/reactor\\.(core|netty|util)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/io\\.(micrometer|netty)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio|io\\.vertx|com\\.nimbusds|com\\.fasterxml\\.jackson|com\\.google\\.gson)(\\..+)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.microsoft\\.azure(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/javax\\.(jms|servlet)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
-          },
-          "class com\\.azure\\.cosmos\\.(BridgeInternal|CosmosBridgeInternal)",
-          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
-          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
-        ]
-      }
     }
   },
   {
@@ -101,16 +48,9 @@
       "ignore": true,
       "differences": [
         {
-          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
-          "justification": "azure.spring classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -133,87 +73,21 @@
         },
         {
           "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging\\.eventhubs|messaging\\.servicebus|resourcemanager|security\\.keyvault|storage).*",
-          "justification": "SDK classes are allowed to be exposed by dependencies using them."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
-          "justification": "These classes exposed are publisher, subscriber, and Subscription."
-        },
-        {
-          "regex": true,
           "code": "java\\.method\\.addedToInterface",
           "new": "method .* com\\.azure\\.resourcemanager\\..*",
           "justification": "resourcemanager interfaces are allowed to add methods."
         },
         {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations)",
-          "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
+          "regex": true,
+          "code": "java\\.method\\.addedToInterface",
+          "new": "method <T> (reactor\\.core\\.publisher\\.Mono<)?T>? com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(Reactive)?CosmosOperations::patch\\(java\\.lang\\.Object, com\\.azure\\.cosmos\\.models\\.PartitionKey, java\\.lang\\.Class<T>, com\\.azure\\.cosmos\\.models\\.CosmosPatchOperations(, com\\.azure\\.cosmos\\.models\\.CosmosPatchItemRequestOptions)?\\)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
           "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
-          "justification": "perf-test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) io\\.(cloudevents|opentelemetry).*",
-          "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry, Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
-          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
+          "code": "java\\.method\\.addedToInterface",
+          "new": "method <S extends T> (reactor\\.core\\.publisher\\.Mono<)?S>? com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.(Reactive)?CosmosRepository<T, ID extends java\\.io\\.Serializable>::save\\(ID, com\\.azure\\.cosmos\\.models\\.PartitionKey, java\\.lang\\.Class<S>, com\\.azure\\.cosmos\\.models\\.CosmosPatchOperations(, com\\.azure\\.cosmos\\.models\\.CosmosPatchItemRequestOptions)?\\)",
+          "justification": "Spring interfaces are allowed to add methods."
         },
         {
           "regex": true,
@@ -252,145 +126,35 @@
           "justification": "Shouldn't have been a public API."
         },
         {
-          "code": "java.annotation.added",
-          "old": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
-          "new": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
-          "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(value = {\"spring.cloud.azure.eventhubs.kafka.enabled\"}, havingValue = \"true\", matchIfMissing = true)",
-          "justification": "To enable turn on/off the related auto-configurations manually."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration",
-          "justification": "Fixes a bug."
-        },
-        {
           "code": "java.method.added",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "New method added to fix a bug."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
-          "justification": "Remove some meaningless jms properties"
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(getPassword|getRemoteUrl|getUsername)\\(\\)",
           "justification": "Remove some meaningless jms properties"
         },
         {
           "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
-          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
+          "code": "java\\.method\\.removed",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
+          "justification": "Remove some meaningless jms properties"
         },
         {
           "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) org\\.postgresql\\..*",
-          "justification": "Postgresql driver classes are allowed to be exposed by dependencies using them."
-        },
-        {
           "code": "java.method.parameterTypeParameterChanged",
-          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
-          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "old": "parameter <T> reactor\\.core\\.publisher\\.Mono<T> com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(ReactiveCosmosOperations|ReactiveCosmosTemplate)::insert\\(java\\.lang\\.String, ===java\\.lang\\.Object===, com\\.azure\\.cosmos\\.models\\.PartitionKey\\)",
+          "new": "parameter <T> reactor\\.core\\.publisher\\.Mono<T> com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(ReactiveCosmosOperations|ReactiveCosmosTemplate)::insert\\(java\\.lang\\.String, ===T===, com\\.azure\\.cosmos\\.models\\.PartitionKey\\)",
           "parameterIndex": "1",
           "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
-        },
-        {
-          "code": "java.method.parameterTypeParameterChanged",
-          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
-          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
-          "parameterIndex": "1",
-          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
-          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
-          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
         },
         {
           "regex": true,
           "code": "java.method.returnTypeChangedCovariantly",
           "new": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*",
           "justification": "Proper support for fluent setters in subtypes."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Customer's java code will not call this method directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
-          "justification": "Bean configuration will not be used by customer in java code."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
         },
         {
           "regex": true,
@@ -498,13 +262,9 @@
           "justification": "Non-functional property removed by backend."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition> com.azure.resourcemanager.sql.models.SqlDatabase::listMetricDefinitions()",
-          "justification": "Metrics APIs are replaced by the Azure monitor shoebox metrics APIs thus not SQL API anymore."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.core.http.rest.PagedFlux<com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition> com.azure.resourcemanager.sql.models.SqlDatabase::listMetricDefinitionsAsync()",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\.SqlDatabase::(listMetricDefinitions|listMetricDefinitionsAsync|listServiceTierAdvisors|listServiceTierAdvisorsAsync)\\(\\)",
           "justification": "Metrics APIs are replaced by the Azure monitor shoebox metrics APIs thus not SQL API anymore."
         },
         {
@@ -519,16 +279,6 @@
         },
         {
           "code": "java.method.removed",
-          "old": "method java.util.Map<java.lang.String, com.azure.resourcemanager.sql.models.ServiceTierAdvisor> com.azure.resourcemanager.sql.models.SqlDatabase::listServiceTierAdvisors()",
-          "justification": "Non-function operation removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.core.http.rest.PagedFlux<com.azure.resourcemanager.sql.models.ServiceTierAdvisor> com.azure.resourcemanager.sql.models.SqlDatabase::listServiceTierAdvisorsAsync()",
-          "justification": "Non functional methods not supported by backend."
-        },
-        {
-          "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithSecurityAlertPolicyState::withPolicyNew() @ com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank",
           "justification": "Non-function operation since 'NEW' is removed from SecurityAlertPolicyState."
         },
@@ -538,39 +288,16 @@
           "justification": "Non-function operation since 'NEW' is removed from SecurityAlertPolicyState."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.time.OffsetDateTime com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric::nextResetTime()",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method (java\\.time\\.OffsetDateTime|java\\.lang\\.String) com\\.azure\\.resourcemanager\\.sql\\.models\\.SqlDatabaseUsageMetric::(nextResetTime|resourceName)\\(\\)",
           "justification": "Non-functional property removed by backend."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric::resourceName()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity> com.azure.resourcemanager.sql.models.SqlElasticPool::listDatabaseActivities()",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\.SqlElasticPool::(listDatabaseActivities|listDatabaseActivitiesAsync|listDatabaseMetricDefinitions|listDatabaseMetricDefinitionsAsync|listDatabaseMetrics)\\(\\)",
           "justification": "Remove non-functional class ElasticPoolDatabaseActivity since underlying ElasticPoolDatabaseActivityInner was removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.core.http.rest.PagedFlux<com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity> com.azure.resourcemanager.sql.models.SqlElasticPool::listDatabaseActivitiesAsync()",
-          "justification": "Non functional methods not supported by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition> com.azure.resourcemanager.sql.models.SqlElasticPool::listDatabaseMetricDefinitions()",
-          "justification": "Metrics APIs are replaced by the Azure monitor shoebox metrics APIs thus not SQL API anymore."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.core.http.rest.PagedFlux<com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition> com.azure.resourcemanager.sql.models.SqlElasticPool::listDatabaseMetricDefinitionsAsync()",
-          "justification": "Non functional methods not supported by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition> com.azure.resourcemanager.sql.models.SqlElasticPool::listDatabaseMetrics()",
-          "justification": "Metrics APIs are replaced by the Azure monitor shoebox metrics APIs thus not SQL API anymore."
         },
         {
           "code": "java.method.removed",
@@ -578,13 +305,9 @@
           "justification": "Non functional methods not supported by backend."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase::elasticPoolName()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase::serviceLevelObjective()",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method java\\.lang\\.String com\\.azure\\.resourcemanager\\.sql\\.models\\.SqlRestorableDroppedDatabase::(elasticPoolName|serviceLevelObjective)\\(\\)",
           "justification": "Non-functional property removed by backend."
         },
         {
@@ -618,101 +341,40 @@
           "justification": "Return type has been renamed by backend."
         },
         {
-          "code": "java.method.returnTypeTypeParametersChanged",
-          "old:": "method T com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel<T>::innerModel() @ com.azure.resourcemanager.sql.models.TransparentDataEncryption",
-          "justification": "Return type parameter has been renamed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity> com.azure.resourcemanager.sql.models.TransparentDataEncryption::listActivities()",
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method (java\\.util\\.List|com\\.azure\\.core\\.http\\.rest\\.PagedFlux)<com\\.azure\\.resourcemanager\\.sql\\.models\\.TransparentDataEncryptionActivity> com\\.azure\\.resourcemanager\\.sql\\.models\\.TransparentDataEncryption::listActivities(Async)?\\(\\)",
           "justification": "Non-functional TransparentDataEncryptionActivity removed."
         },
         {
-          "code": "java.method.removed",
-          "old": "method com.azure.core.http.rest.PagedFlux<com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity> com.azure.resourcemanager.sql.models.TransparentDataEncryption::listActivitiesAsync()",
-          "justification": "Non functional methods not supported by backend."
-        },
-        {
           "code": "java.method.returnTypeChanged",
-          "old:": "method com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus com.azure.resourcemanager.sql.models.TransparentDataEncryption::status()",
+          "old": "method com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus com.azure.resourcemanager.sql.models.TransparentDataEncryption::status()",
           "new": "method com.azure.resourcemanager.sql.models.TransparentDataEncryptionState com.azure.resourcemanager.sql.models.TransparentDataEncryption::status()",
           "justification": "Return type has been renamed by backend."
         },
         {
           "code": "java.method.parameterTypeChanged",
-          "old:": "parameter com.azure.resourcemanager.sql.models.TransparentDataEncryption com.azure.resourcemanager.sql.models.TransparentDataEncryption::updateStatus(===com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus===)",
+          "old": "parameter com.azure.resourcemanager.sql.models.TransparentDataEncryption com.azure.resourcemanager.sql.models.TransparentDataEncryption::updateStatus(===com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus===)",
           "new": "parameter com.azure.resourcemanager.sql.models.TransparentDataEncryption com.azure.resourcemanager.sql.models.TransparentDataEncryption::updateStatus(===com.azure.resourcemanager.sql.models.TransparentDataEncryptionState===)",
           "justification": "Return type has been renamed by backend."
         },
         {
-          "code": "java.class.noLongerImplementsInterface",
-          "old": "interface com.azure.resourcemanager.sql.models.TransparentDataEncryption",
+          "regex": true,
+          "code": "java\\.class\\.(noLongerImplementsInterface|superTypeTypeParametersChanged)",
+          "old": "interface com\\.azure\\.resourcemanager\\.sql\\.models\\.TransparentDataEncryption",
           "justification": "TransparentDataEncryptionInner has been rename to LogicalDatabaseTransparentDataEncryptionInner by backend."
         },
         {
-          "code": "java.class.superTypeTypeParametersChanged",
-          "old": "interface com.azure.resourcemanager.sql.models.TransparentDataEncryption",
-          "justification": "TransparentDataEncryptionInner has been rename to LogicalDatabaseTransparentDataEncryptionInner by backend."
-        },
-        {
+          "regex": true,
           "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.sql.models.ElasticPoolActivity::location()",
+          "old": "method (int|long|java\\.lang\\.String) com\\.azure\\.resourcemanager\\.sql\\.models\\.ElasticPoolActivity::(location|requestedDatabaseDtuCap|requestedDatabaseDtuGuarantee|requestedDatabaseDtuMax|requestedDatabaseDtuMin|requestedDtu|requestedDtuGuarantee|requestedElasticPoolName|requestedStorageLimitInGB|requestedStorageLimitInMB)\\(\\)",
           "justification": "Non-functional property removed by backend."
         },
         {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDatabaseDtuCap()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDatabaseDtuGuarantee()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDatabaseDtuMax()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDatabaseDtuMin()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDtu()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedDtuGuarantee()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedElasticPoolName()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method long com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedStorageLimitInGB()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method int com.azure.resourcemanager.sql.models.ElasticPoolActivity::requestedStorageLimitInMB()",
-          "justification": "Non-functional property removed by backend."
-        },
-        {
-          "code": "java.class.noLongerImplementsInterface",
-          "old": "interface com.azure.resourcemanager.sql.models.ElasticPoolActivity",
+          "regex": true,
+          "code": "java\\.class\\.(noLongerImplementsInterface|superTypeTypeParametersChanged)",
+          "old": "interface com\\.azure\\.resourcemanager\\.sql\\.models\\.ElasticPoolActivity",
           "justification": "ElasticPoolActivityInner has been renamed to ElasticPoolOperationInner"
-        },
-        {
-          "code": "java.class.superTypeTypeParametersChanged",
-          "old": "interface com.azure.resourcemanager.sql.models.ElasticPoolActivity",
-          "justification": "TransparentDataEncryptionInner has been rename to LogicalDatabaseTransparentDataEncryptionInner by backend."
         },
         {
           "code": "java.method.removed",

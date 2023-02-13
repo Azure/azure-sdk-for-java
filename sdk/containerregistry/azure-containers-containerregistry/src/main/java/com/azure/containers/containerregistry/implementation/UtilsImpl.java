@@ -17,7 +17,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -41,9 +43,12 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -54,8 +59,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -72,8 +75,10 @@ public final class UtilsImpl {
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
     public static final String OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-    public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
 
+    private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
+    private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    public static final int CHUNK_SIZE = 4 * 1024 * 1024;
     private UtilsImpl() { }
 
     /**
@@ -120,8 +125,6 @@ public final class UtilsImpl {
         policies.add(new ContainerRegistryRedirectPolicy());
 
         policies.addAll(perRetryPolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
 
         // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
         // However since ACR uses the rest endpoints of the service in the credential policy,
@@ -131,13 +134,16 @@ public final class UtilsImpl {
             LOGGER.verbose("Credentials are null, enabling anonymous access");
         }
 
+        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
         ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
+        HttpPolicyProviders.addAfterRetryPolicies(credentialPolicies);
         credentialPolicies.add(loggingPolicy);
 
         if (audience == null)  {
             audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
+        Tracer tracer = createTracer(clientOptions);
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
@@ -146,17 +152,21 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(tracer)
                 .build(),
             JacksonAdapter.createDefaultSerializerAdapter());
 
         ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-        policies.add(credentialsPolicy);
 
+        policies.add(credentialsPolicy);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(loggingPolicy);
+
         HttpPipeline httpPipeline =
             new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(tracer)
                 .build();
         return httpPipeline;
     }
@@ -164,6 +174,12 @@ public final class UtilsImpl {
     @SuppressWarnings("unchecked")
     private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
         return (ArrayList<HttpPipelinePolicy>) policies.clone();
+    }
+
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 
     /**
@@ -185,8 +201,29 @@ public final class UtilsImpl {
         }
     }
 
+    public static MessageDigest createSha256() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static void validateDigest(MessageDigest messageDigest, String requestedDigest) {
+        String sha256 = byteArrayToHex(messageDigest.digest());
+        if (requestedDigest.length() != 71
+            || !requestedDigest.startsWith("sha256:")
+            || !requestedDigest.endsWith(sha256)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("actualDigest", () -> "sha256:" + sha256)
+                .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
+        }
+    }
+
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
-    private static String byteArrayToHex(byte[] bytes) {
+    public static String byteArrayToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -374,20 +411,22 @@ public final class UtilsImpl {
         }).collect(Collectors.toList());
     }
 
-    /**
-     * Get the digest from the response header if available.
-     * @param headers The headers to parse.
-     * @return The digest value.
-     */
-    public static <T> String getDigestFromHeader(HttpHeaders headers) {
-        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+    public static void validateResponseHeaderDigest(String requestedDigest, HttpHeaders headers) {
+        String responseHeaderDigest = headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+        if (!requestedDigest.equals(responseHeaderDigest)) {
+            throw LOGGER.atError()
+                .addKeyValue("requestedDigest", requestedDigest)
+                .addKeyValue("responseDigest", responseHeaderDigest)
+                .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
+        }
     }
 
-    public static Context enableSync(Context tracingContext) {
-        return tracingContext.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-    public static Context getTracingContext(Context context) {
-        return context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE);
+    public static Context enableSync(Context context) {
+        if (context == Context.NONE) {
+            return CONTEXT_WITH_SYNC;
+        }
+
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     public static String trimNextLink(String locationHeader) {
@@ -398,5 +437,16 @@ public final class UtilsImpl {
         }
 
         return locationHeader;
+    }
+
+    public static long getBlobSize(HttpHeader contentRangeHeader) {
+        if (contentRangeHeader != null) {
+            int slashInd = contentRangeHeader.getValue().indexOf('/');
+            if (slashInd > 0) {
+                return Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
+            }
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
     }
 }

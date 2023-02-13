@@ -27,17 +27,6 @@ public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationR
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeConnectionInfo get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeConnectionInfoInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeConnectionInfo> getWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         Response<IntegrationRuntimeConnectionInfoInner> inner =
@@ -48,6 +37,17 @@ public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeConnectionInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeConnectionInfo get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeConnectionInfoInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
         } else {
             return null;
         }
