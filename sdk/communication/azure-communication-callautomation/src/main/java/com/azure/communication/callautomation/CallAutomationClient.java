@@ -137,7 +137,7 @@ public final class CallAutomationClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param targetCallInvite {@link CallInivate} represent redirect target
+     * @param targetCallInvite {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
