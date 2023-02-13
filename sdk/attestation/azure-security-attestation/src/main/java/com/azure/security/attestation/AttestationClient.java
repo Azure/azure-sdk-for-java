@@ -464,7 +464,7 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String attestTpm(String request) {
+    public String attestTpm(byte[] request) {
         return asyncClient.attestTpm(request).block();
     }
 
@@ -495,7 +495,7 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> attestTpmWithResponse(String request, Context context) {
+    public Response<String> attestTpmWithResponse(byte[] request, Context context) {
         return asyncClient.attestTpmWithResponse(request, context).block();
     }
 }

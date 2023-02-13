@@ -560,7 +560,7 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> attestTpmWithResponse(String request) {
+    public Mono<Response<String>> attestTpmWithResponse(byte[] request) {
         return withContext(context -> this.attestTpmWithResponse(request, context));
     }
 
@@ -590,15 +590,15 @@ public final class AttestationAsyncClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> attestTpm(String request) {
+    public Mono<String> attestTpm(byte[] request) {
         return attestTpmWithResponse(request)
             .onErrorMap(Utilities::mapException)
             .flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
+    Mono<Response<String>> attestTpmWithResponse(byte[] request, Context context) {
         Objects.requireNonNull(request);
-        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
+        return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request), context)
             .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
     }
 }

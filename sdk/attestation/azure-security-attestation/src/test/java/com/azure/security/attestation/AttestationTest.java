@@ -403,7 +403,7 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        String tpmResponse = client.attestTpm(attestInitialPayload);
+        String tpmResponse = client.attestTpm(attestInitialPayload.getBytes());
 
         JacksonAdapter serializer = new JacksonAdapter();
         Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
@@ -450,7 +450,7 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload.getBytes(), Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
 
         JacksonAdapter serializer = new JacksonAdapter();
@@ -496,7 +496,7 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        StepVerifier.create(client.attestTpm(attestInitialPayload))
+        StepVerifier.create(client.attestTpm(attestInitialPayload.getBytes()))
             .assertNext(tpmResponse -> {
                 JacksonAdapter serializer = new JacksonAdapter();
                 Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
