@@ -13,6 +13,9 @@ import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Categories for Cosmos DB client-side metrics
+ */
 public class CosmosMetricCategory  extends ExpandableStringEnum<CosmosMetricCategory> {
 
     private EnumSet<MetricCategory> metricCategories;
@@ -135,6 +138,13 @@ public class CosmosMetricCategory  extends ExpandableStringEnum<CosmosMetricCate
         fromString("Legacy", CosmosMetricCategory.class)
             .setCategories(EnumSet.of(MetricCategory.Legacy));
 
+    /**
+     * Gets the corresponding metric category state from its string representation.
+     *
+     * @param name The name of the Cosmos metric category to convert.
+     *
+     * @return The corresponding Cosmos metric category.
+     */
     public static CosmosMetricCategory fromString(String name) {
         checkNotNull(name, "Argument 'name' must not be null.");
 
