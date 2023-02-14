@@ -54,7 +54,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -97,7 +96,7 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> importImage(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @BodyParam("application/json") ImportImageParameters parameters,
@@ -110,7 +109,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryNameStatusInner>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RegistryNameCheckRequest registryNameCheckRequest,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -122,7 +121,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -135,7 +134,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -149,7 +148,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -164,7 +163,7 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @BodyParam("application/json") RegistryInner registry,
@@ -180,7 +179,7 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             Context context);
@@ -194,7 +193,7 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @BodyParam("application/json") RegistryUpdateParameters registryUpdateParameters,
@@ -210,7 +209,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryUsageListResultInner>> listUsages(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -225,7 +224,7 @@ public final class RegistriesClientImpl
         Mono<Response<PrivateLinkResourceListResult>> listPrivateLinkResources(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -240,7 +239,7 @@ public final class RegistriesClientImpl
         Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResource(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("groupName") String groupName,
@@ -256,7 +255,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryListCredentialsResultInner>> listCredentials(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -271,7 +270,7 @@ public final class RegistriesClientImpl
         Mono<Response<RegistryListCredentialsResultInner>> regenerateCredential(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @BodyParam("application/json") RegenerateCredentialParameters regenerateCredentialParameters,
@@ -287,7 +286,7 @@ public final class RegistriesClientImpl
         Mono<Response<Flux<ByteBuffer>>> generateCredentials(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @BodyParam("application/json") GenerateCredentialsParameters generateCredentialsParameters,
@@ -302,7 +301,7 @@ public final class RegistriesClientImpl
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> scheduleRun(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -318,7 +317,7 @@ public final class RegistriesClientImpl
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SourceUploadDefinitionInner>> getBuildSourceUploadUrl(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,

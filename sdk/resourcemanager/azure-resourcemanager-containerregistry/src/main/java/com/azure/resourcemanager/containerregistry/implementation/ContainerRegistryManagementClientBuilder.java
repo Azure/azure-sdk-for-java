@@ -13,7 +13,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
-import java.util.UUID;
 
 /** A builder for creating a new instance of the ContainerRegistryManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {ContainerRegistryManagementClientImpl.class})
@@ -21,7 +20,7 @@ public final class ContainerRegistryManagementClientBuilder {
     /*
      * The ID of the target subscription. The value must be an UUID.
      */
-    private UUID subscriptionId;
+    private String subscriptionId;
 
     /**
      * Sets The ID of the target subscription. The value must be an UUID.
@@ -29,7 +28,7 @@ public final class ContainerRegistryManagementClientBuilder {
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
-    public ContainerRegistryManagementClientBuilder subscriptionId(UUID subscriptionId) {
+    public ContainerRegistryManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }

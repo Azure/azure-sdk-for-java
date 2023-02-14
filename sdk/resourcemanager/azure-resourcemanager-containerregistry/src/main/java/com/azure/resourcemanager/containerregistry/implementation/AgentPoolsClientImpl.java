@@ -39,7 +39,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolQueueS
 import com.azure.resourcemanager.containerregistry.models.AgentPoolListResult;
 import com.azure.resourcemanager.containerregistry.models.AgentPoolUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -77,7 +76,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -93,7 +92,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -110,7 +109,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -126,7 +125,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -143,7 +142,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolListResult>> list(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -158,7 +157,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolQueueStatusInner>> getQueueStatus(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,

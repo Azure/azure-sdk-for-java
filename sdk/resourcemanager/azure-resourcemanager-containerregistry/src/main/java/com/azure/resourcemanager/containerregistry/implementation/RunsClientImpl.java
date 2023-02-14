@@ -37,7 +37,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.RunListResult;
 import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -74,7 +73,7 @@ public final class RunsClientImpl implements RunsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunListResult>> list(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -91,7 +90,7 @@ public final class RunsClientImpl implements RunsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -107,7 +106,7 @@ public final class RunsClientImpl implements RunsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -124,7 +123,7 @@ public final class RunsClientImpl implements RunsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunGetLogResultInner>> getLogSasUrl(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -140,7 +139,7 @@ public final class RunsClientImpl implements RunsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cancel(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,

@@ -38,7 +38,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.TaskListResult;
 import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -75,7 +74,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TaskListResult>> list(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -90,7 +89,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TaskInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -106,7 +105,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -123,7 +122,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -139,7 +138,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
@@ -156,7 +155,7 @@ public final class TasksClientImpl implements TasksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TaskInner>> getDetails(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,

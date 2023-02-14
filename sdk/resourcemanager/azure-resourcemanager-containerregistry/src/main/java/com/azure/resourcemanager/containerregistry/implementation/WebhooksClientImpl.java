@@ -43,7 +43,6 @@ import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameter
 import com.azure.resourcemanager.containerregistry.models.WebhookListResult;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -81,7 +80,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<WebhookListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -96,7 +95,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<WebhookInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -112,7 +111,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -129,7 +128,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -144,7 +143,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -161,7 +160,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<EventInfoInner>> ping(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -177,7 +176,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<EventListResult>> listEvents(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,
@@ -193,7 +192,7 @@ public final class WebhooksClientImpl implements WebhooksClient {
         Mono<Response<CallbackConfigInner>> getCallbackConfig(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("webhookName") String webhookName,

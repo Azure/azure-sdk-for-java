@@ -37,7 +37,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInne
 import com.azure.resourcemanager.containerregistry.models.ReplicationListResult;
 import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -76,7 +75,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<ReplicationListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -91,7 +90,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<ReplicationInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -107,7 +106,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -124,7 +123,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -139,7 +138,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,

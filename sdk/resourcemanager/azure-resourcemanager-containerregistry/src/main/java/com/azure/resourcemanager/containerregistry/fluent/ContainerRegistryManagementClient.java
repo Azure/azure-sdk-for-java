@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.fluent;
 
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
-import java.util.UUID;
 
 /** The interface for ContainerRegistryManagementClient class. */
 public interface ContainerRegistryManagementClient {
@@ -15,7 +14,7 @@ public interface ContainerRegistryManagementClient {
      *
      * @return the subscriptionId value.
      */
-    UUID getSubscriptionId();
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.

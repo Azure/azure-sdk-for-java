@@ -37,7 +37,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.ScopeMapInner;
 import com.azure.resourcemanager.containerregistry.models.ScopeMapListResult;
 import com.azure.resourcemanager.containerregistry.models.ScopeMapUpdateParameters;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -76,7 +75,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<ScopeMapListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -91,7 +90,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<ScopeMapInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("scopeMapName") String scopeMapName,
@@ -107,7 +106,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("scopeMapName") String scopeMapName,
@@ -124,7 +123,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("scopeMapName") String scopeMapName,
@@ -140,7 +139,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("scopeMapName") String scopeMapName,

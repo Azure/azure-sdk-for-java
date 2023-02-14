@@ -35,7 +35,6 @@ import com.azure.resourcemanager.containerregistry.fluent.PrivateEndpointConnect
 import com.azure.resourcemanager.containerregistry.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerregistry.models.PrivateEndpointConnectionListResult;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -76,7 +75,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         Mono<Response<PrivateEndpointConnectionListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -91,7 +90,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         Mono<Response<PrivateEndpointConnectionInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -107,7 +106,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -124,7 +123,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,

@@ -22,21 +22,20 @@ import com.azure.resourcemanager.containerregistry.fluent.TokensClient;
 import com.azure.resourcemanager.containerregistry.fluent.WebhooksClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
-import java.util.UUID;
 
 /** Initializes a new instance of the ContainerRegistryManagementClientImpl type. */
 @ServiceClient(builder = ContainerRegistryManagementClientBuilder.class)
 public final class ContainerRegistryManagementClientImpl extends AzureServiceClient
     implements ContainerRegistryManagementClient {
     /** The ID of the target subscription. The value must be an UUID. */
-    private final UUID subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    public UUID getSubscriptionId() {
+    public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
@@ -235,7 +234,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
-        UUID subscriptionId,
+        String subscriptionId,
         String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
