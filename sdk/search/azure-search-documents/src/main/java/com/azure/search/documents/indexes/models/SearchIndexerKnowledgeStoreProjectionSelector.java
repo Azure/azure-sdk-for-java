@@ -43,6 +43,9 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector {
     @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
+    /** Creates an instance of SearchIndexerKnowledgeStoreProjectionSelector class. */
+    public SearchIndexerKnowledgeStoreProjectionSelector() {}
+
     /**
      * Get the referenceKeyName property: Name of reference key to different projection.
      *

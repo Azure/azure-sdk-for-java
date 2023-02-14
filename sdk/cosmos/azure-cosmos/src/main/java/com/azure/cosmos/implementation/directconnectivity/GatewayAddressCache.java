@@ -382,6 +382,7 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, forceRefresh, request.forceCollectionRoutingMapRefresh);
+        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, identifier);
 
         HttpHeaders httpHeaders = new HttpHeaders(headers);
 
@@ -727,6 +728,7 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, true, true);
+        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, identifier);
 
         HttpHeaders defaultHttpHeaders = new HttpHeaders(headers);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
@@ -962,20 +964,23 @@ public class GatewayAddressCache implements IAddressCache {
                             .collect(Collectors.toList());
 
                     return Flux.fromIterable(addressInfos)
-                            .flatMap(addressInfo -> {
-                                this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
+                            .flatMap(
+                                addressInfo -> {
+                                    this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
 
-                                if (this.openConnectionsHandler != null) {
-                                    return this.openConnectionsHandler.openConnections(
-                                            Arrays
-                                                .stream(addressInfo.getRight())
-                                                .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                .collect(Collectors.toList()));
-                                }
+                                    if (this.openConnectionsHandler != null) {
+                                        return this.openConnectionsHandler.openConnections(
+                                                Arrays
+                                                    .stream(addressInfo.getRight())
+                                                    .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                    .collect(Collectors.toList()));
+                                    }
 
-                                logger.info("OpenConnectionHandler is null, can not open connections");
-                                return Flux.empty();
-                            });
+                                    logger.info("OpenConnectionHandler is null, can not open connections");
+                                    return Flux.empty();
+                                },
+                                Configs.getCPUCnt() * 10,
+                                Configs.getCPUCnt() * 3);
                 });
     }
 

@@ -4,11 +4,13 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -47,12 +49,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
-import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
+import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Abstract base class for all Search API tests
@@ -78,7 +84,7 @@ public abstract class SearchTestBase extends TestBase {
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
-        new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30)));
+        new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
@@ -95,22 +101,21 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndex(SearchIndex index) {
-        getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
+        getSearchIndexClientBuilder(true).buildClient().createOrUpdateIndex(index);
 
         return index.getName();
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder() {
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder(boolean isSync) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT);
-        builder.credential(new AzureKeyCredential(API_KEY));
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(true, isSync));
+
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder);
             return builder;
         }
-
-        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
 
         builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
@@ -122,17 +127,18 @@ public abstract class SearchTestBase extends TestBase {
 
     }
 
-    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
+    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(boolean isSync, HttpPipelinePolicy... policies) {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
-            .endpoint(ENDPOINT);
-        builder.credential(new AzureKeyCredential(API_KEY));
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(true, isSync));
+
+        addPolicies(builder, policies);
+
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            addPolicies(builder, policies);
             return builder;
         }
-        addPolicies(builder, policies);
-        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+
         builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
@@ -163,16 +169,26 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchClientBuilder getSearchClientBuilder(String indexName) {
+    protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, true, isSync);
+
+    }
+
+    protected SearchClientBuilder getSearchClientBuilderWithoutAssertingClient(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, false, isSync);
+    }
+
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient, boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
-            .indexName(indexName);
+            .indexName(indexName)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(wrapWithAssertingClient, isSync));
 
-        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
-            return builder.httpClient(interceptorManager.getPlaybackClient());
+            return builder;
         }
-        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+
         builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
@@ -180,6 +196,27 @@ public abstract class SearchTestBase extends TestBase {
         }
 
         return builder;
+    }
+
+    private HttpClient getHttpClient(boolean wrapWithAssertingClient, boolean isSync) {
+        HttpClient httpClient = (interceptorManager.isPlaybackMode())
+            ? interceptorManager.getPlaybackClient()
+            : HttpClient.createDefault();
+
+        if (wrapWithAssertingClient) {
+            if (!isSync) {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertAsync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            } else {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertSync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            }
+        }
+        return httpClient;
     }
 
     protected SearchIndex createTestIndex(String indexName) {
@@ -400,5 +437,23 @@ public abstract class SearchTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected void validateETagUpdate(String original, String updated) {
+        assertNotNull(original);
+        assertNotNull(updated);
+        assertNotEquals(original, updated);
+    }
+
+    protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
+        BiConsumer<T, T> comparisonFunction) {
+        assertEquals(expectedMap.size(), actualMap.size());
+
+        actualMap.forEach((key, actual) -> {
+            T expected = expectedMap.get(key);
+            assertNotNull(expected, "Actual map contained an entry that doesn't exist in the expected map: " + key);
+
+            comparisonFunction.accept(expected, actual);
+        });
     }
 }

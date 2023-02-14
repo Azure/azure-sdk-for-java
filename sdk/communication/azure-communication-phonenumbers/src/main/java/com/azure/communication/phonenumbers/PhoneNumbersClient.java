@@ -36,15 +36,13 @@ import com.azure.core.util.polling.SyncPoller;
  * </p>
  *
  * <!-- src_embed com.azure.communication.phonenumbers.client.instantiation -->
- * 
  * <pre>
  * PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder&#40;&#41;
- *         .endpoint&#40;endpoint&#41;
- *         .credential&#40;keyCredential&#41;
- *         .httpClient&#40;httpClient&#41;
- *         .buildClient&#40;&#41;;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .httpClient&#40;httpClient&#41;
+ *     .buildClient&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.communication.phonenumbers.client.instantiation -->
  *
  * @see PhoneNumbersClientBuilder
@@ -77,13 +75,11 @@ public final class PhoneNumbersClient {
      * </p>
      *
      * <!-- src_embed com.azure.communication.phonenumbers.client.getPurchased -->
-     * 
      * <pre>
      * PurchasedPhoneNumber phoneNumber = phoneNumberClient.getPurchasedPhoneNumber&#40;&quot;+18001234567&quot;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
      * <!-- end com.azure.communication.phonenumbers.client.getPurchased -->
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can
@@ -143,14 +139,12 @@ public final class PhoneNumbersClient {
      * </p>
      *
      * <!-- src_embed com.azure.communication.phonenumbers.client.listPurchased -->
-     * 
      * <pre>
      * PagedIterable&lt;PurchasedPhoneNumber&gt; phoneNumbers = phoneNumberClient.listPurchasedPhoneNumbers&#40;&#41;;
      * PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator&#40;&#41;.next&#40;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
      * <!-- end com.azure.communication.phonenumbers.client.listPurchased -->
      *
      * @return A {@link PagedIterable} of {@link PurchasedPhoneNumber} instances
@@ -318,13 +312,11 @@ public final class PhoneNumbersClient {
      * </p>
      *
      * <!-- src_embed com.azure.communication.phonenumbers.client.beginPurchase -->
-     * 
      * <pre>
-     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse = phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;
-     *         .waitForCompletion&#40;&#41;;
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse =
+     *     phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;.waitForCompletion&#40;&#41;;
      * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginPurchase -->
      *
      * @param searchId ID of the search
@@ -383,13 +375,11 @@ public final class PhoneNumbersClient {
      * </p>
      *
      * <!-- src_embed com.azure.communication.phonenumbers.client.beginRelease -->
-     * 
      * <pre>
-     * PollResponse&lt;PhoneNumberOperation&gt; releaseResponse = phoneNumberClient.beginReleasePhoneNumber&#40;&quot;+18001234567&quot;&#41;
-     *         .waitForCompletion&#40;&#41;;
+     * PollResponse&lt;PhoneNumberOperation&gt; releaseResponse =
+     *     phoneNumberClient.beginReleasePhoneNumber&#40;&quot;+18001234567&quot;&#41;.waitForCompletion&#40;&#41;;
      * System.out.println&#40;&quot;Release phone number is complete: &quot; + releaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     * 
      * <!-- end com.azure.communication.phonenumbers.client.beginRelease -->
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can

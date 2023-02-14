@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-            <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+            <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
         </dependency>
         <dependency>
             <groupId>io.projectreactor</groupId>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>3.0.13</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>3.0.14</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 

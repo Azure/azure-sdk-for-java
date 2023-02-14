@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -55,7 +55,9 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames/>
+     <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
   </properties>
 
   <developers>
@@ -69,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Required to satisfy the -Xlint:classfile compiler option -->
@@ -90,7 +92,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

@@ -52,6 +52,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
+
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -99,7 +100,7 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * new data will get appended to the existing blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -109,8 +110,27 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * Creates and opens an output stream to write data to the append blob. If overwrite is specified {@code true},
+     * the existing blob will be deleted and recreated, should data exist on the blob. If overwrite is specified
+     * {@code false}, new data will get appended to the existing blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(boolean overwrite) {
+        AppendBlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        } else {
+            // creating new blob to overwrite existing blob
+            create(true);
+        }
+        return getBlobOutputStream(requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.

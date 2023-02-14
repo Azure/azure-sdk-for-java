@@ -1,8 +1,8 @@
 parameters:
-- name: ServiceDirectory
+- name: LanguageVersion
   type: string
-  default: ''
-- name: services
+  default: '17'
+- name: ServiceDirectory
   type: string
   default: ''
 - name: PackageVersions
@@ -33,19 +33,19 @@ extends:
     Variables:
     - template: /eng/pipelines/templates/variables/globals.yml
     Language: Java
+    LanguageVersion: ${{ parameters.LanguageVersion }}
     InstallLanguageSteps:
     - task: JavaToolInstaller@0
       inputs:
-        versionSpec: '8'
+        versionSpec: ${{ parameters.LanguageVersion }}
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
-      displayName: Install Java 8
+      displayName: Install Java ${{ parameters.LanguageVersion }}
     - script: |
         java -version
         mvn --version
       displayName: Print Java Versions
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
-    Services: ${{ parameters.Services }}
     PackageVersions: ${{ parameters.PackageVersions }}
     Tests: ${{ parameters.Tests }}
     Arguments: ${{ parameters.Arguments }}

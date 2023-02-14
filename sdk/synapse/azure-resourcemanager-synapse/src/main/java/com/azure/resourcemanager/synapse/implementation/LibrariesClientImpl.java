@@ -50,7 +50,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface LibrariesService {
+    public interface LibrariesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -69,7 +69,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
     }
 
     /**
-     * Get library by name in a workspace.
+     * Get library by name.
+     *
+     * <p>Get library by name in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
@@ -123,7 +125,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
     }
 
     /**
-     * Get library by name in a workspace.
+     * Get library by name.
+     *
+     * <p>Get library by name in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
@@ -175,7 +179,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
     }
 
     /**
-     * Get library by name in a workspace.
+     * Get library by name.
+     *
+     * <p>Get library by name in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
@@ -188,34 +194,13 @@ public final class LibrariesClientImpl implements LibrariesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LibraryResourceInner> getAsync(String resourceGroupName, String libraryName, String workspaceName) {
         return getWithResponseAsync(resourceGroupName, libraryName, workspaceName)
-            .flatMap(
-                (Response<LibraryResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get library by name in a workspace.
+     * Get library by name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param libraryName Library name.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LibraryResourceInner get(String resourceGroupName, String libraryName, String workspaceName) {
-        return getAsync(resourceGroupName, libraryName, workspaceName).block();
-    }
-
-    /**
-     * Get library by name in a workspace.
+     * <p>Get library by name in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
@@ -230,5 +215,23 @@ public final class LibrariesClientImpl implements LibrariesClient {
     public Response<LibraryResourceInner> getWithResponse(
         String resourceGroupName, String libraryName, String workspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, libraryName, workspaceName, context).block();
+    }
+
+    /**
+     * Get library by name.
+     *
+     * <p>Get library by name in a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param libraryName Library name.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return library by name in a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LibraryResourceInner get(String resourceGroupName, String libraryName, String workspaceName) {
+        return getWithResponse(resourceGroupName, libraryName, workspaceName, Context.NONE).getValue();
     }
 }

@@ -68,7 +68,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceAdministratorsService {
+    public interface ManagedInstanceAdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

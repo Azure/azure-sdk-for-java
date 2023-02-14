@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a03180db-8d54-403c-b3f1-81d4f5ebbf20",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "a03180db-8d54-403c-b3f1-81d4f5ebbf20",
+      "StatusCode" : "201",
+      "Date" : "Tue, 17 Jan 2023 20:24:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a03180db-8d54-403c-b3f1-81d4f5ebbf20",
+      "elapsed-time" : "66",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "176",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#aliases/$entity\",\"name\":\"my-alias0510831d494932\",\"indexes\":[\"azsearch-search-shared-hotel-instance-one\"]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "a03180db-8d54-403c-b3f1-81d4f5ebbf20",
+      "Location" : "https://alzimmer-basic.search.windows.net/aliases('my-alias0510831d494932')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d0640dec-83b1-48f0-a7ae-52a65ac9811f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d0640dec-83b1-48f0-a7ae-52a65ac9811f",
+      "StatusCode" : "201",
+      "Date" : "Tue, 17 Jan 2023 20:24:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d0640dec-83b1-48f0-a7ae-52a65ac9811f",
+      "elapsed-time" : "45",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "176",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#aliases/$entity\",\"name\":\"my-alias756307192105e8\",\"indexes\":[\"azsearch-search-shared-hotel-instance-one\"]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "d0640dec-83b1-48f0-a7ae-52a65ac9811f",
+      "Location" : "https://alzimmer-basic.search.windows.net/aliases('my-alias756307192105e8')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "my-alias0510831d494932", "my-alias756307192105e8" ]
+}

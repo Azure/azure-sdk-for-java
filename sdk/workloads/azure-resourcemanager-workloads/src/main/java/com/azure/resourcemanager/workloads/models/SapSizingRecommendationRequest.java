@@ -65,6 +65,10 @@ public final class SapSizingRecommendationRequest {
     @JsonProperty(value = "highAvailabilityType")
     private SapHighAvailabilityType highAvailabilityType;
 
+    /** Creates an instance of SapSizingRecommendationRequest class. */
+    public SapSizingRecommendationRequest() {
+    }
+
     /**
      * Get the appLocation property: The geo-location where the resource is to be created.
      *

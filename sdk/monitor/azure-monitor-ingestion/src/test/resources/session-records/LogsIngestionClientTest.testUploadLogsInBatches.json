@@ -1,36 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e451b142-5dcc-4844-a965-f2a04fd3fdc7",
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "b58c5510-89a7-4dad-b264-c7ea4161ba21",
-      "x-ms-client-request-id" : "e451b142-5dcc-4844-a965-f2a04fd3fdc7",
-      "Date" : "Fri, 09 Sep 2022 21:14:54 GMT"
+      "x-ms-request-id" : "2b2ea788-aeab-4d2b-83b6-0a1d643916c3",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "36bb1e35-7390-421a-8fad-64d7916c28b1"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "20821e9a-4778-4b36-89ab-0aee4436fc6f",
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "0a20d412-cba6-4455-a62d-775b189474e4",
-      "x-ms-client-request-id" : "20821e9a-4778-4b36-89ab-0aee4436fc6f",
-      "Date" : "Fri, 09 Sep 2022 21:14:55 GMT"
+      "x-ms-request-id" : "15dc5dec-6f67-4325-b86a-68b19cfbf721",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "5f4e20c1-ee5f-4de3-adb9-cfc8a4fcda45"
     },
     "Exception" : null
   } ],

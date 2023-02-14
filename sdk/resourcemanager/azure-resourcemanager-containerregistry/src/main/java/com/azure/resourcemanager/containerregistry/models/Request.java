@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request that generated the event. */
 @Fluent
 public final class Request {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Request.class);
-
     /*
      * The ID of the request that initiated the event.
      */
@@ -21,16 +17,15 @@ public final class Request {
     private String id;
 
     /*
-     * The IP or hostname and possibly port of the client connection that
-     * initiated the event. This is the RemoteAddr from the standard http
-     * request.
+     * The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr
+     * from the standard http request.
      */
     @JsonProperty(value = "addr")
     private String addr;
 
     /*
-     * The externally accessible hostname of the registry instance, as
-     * specified by the http host header on incoming requests.
+     * The externally accessible hostname of the registry instance, as specified by the http host header on incoming
+     * requests.
      */
     @JsonProperty(value = "host")
     private String host;
@@ -46,6 +41,10 @@ public final class Request {
      */
     @JsonProperty(value = "useragent")
     private String useragent;
+
+    /** Creates an instance of Request class. */
+    public Request() {
+    }
 
     /**
      * Get the id property: The ID of the request that initiated the event.

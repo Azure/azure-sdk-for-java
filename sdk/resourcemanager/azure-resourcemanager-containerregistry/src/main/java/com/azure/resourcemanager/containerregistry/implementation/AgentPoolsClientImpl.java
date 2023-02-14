@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.AgentPoolsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AgentPoolsClient. */
 public final class AgentPoolsClientImpl implements AgentPoolsClient {
-    private final ClientLogger logger = new ClientLogger(AgentPoolsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AgentPoolsService service;
 
@@ -70,7 +67,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
-    private interface AgentPoolsService {
+    public interface AgentPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
@@ -188,7 +185,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given agent pool.
+     * @return the detailed information for a given agent pool along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolInner>> getWithResponseAsync(
@@ -243,7 +241,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given agent pool.
+     * @return the detailed information for a given agent pool along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> getWithResponseAsync(
@@ -294,19 +293,30 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given agent pool.
+     * @return the detailed information for a given agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> getAsync(String resourceGroupName, String registryName, String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, registryName, agentPoolName)
-            .flatMap(
-                (Response<AgentPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the detailed information for a given agent pool.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information for a given agent pool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AgentPoolInner> getWithResponse(
+        String resourceGroupName, String registryName, String agentPoolName, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, agentPoolName, context).block();
     }
 
     /**
@@ -322,25 +332,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner get(String resourceGroupName, String registryName, String agentPoolName) {
-        return getAsync(resourceGroupName, registryName, agentPoolName).block();
-    }
-
-    /**
-     * Gets the detailed information for a given agent pool.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information for a given agent pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentPoolInner> getWithResponse(
-        String resourceGroupName, String registryName, String agentPoolName, Context context) {
-        return getWithResponseAsync(resourceGroupName, registryName, agentPoolName, context).block();
+        return getWithResponse(resourceGroupName, registryName, agentPoolName, Context.NONE).getValue();
     }
 
     /**
@@ -353,7 +345,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -415,7 +408,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -477,7 +471,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateAsync(
@@ -505,7 +499,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateAsync(
@@ -533,12 +527,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(
         String resourceGroupName, String registryName, String agentPoolName, AgentPoolInner agentPool) {
-        return beginCreateAsync(resourceGroupName, registryName, agentPoolName, agentPool).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, registryName, agentPoolName, agentPool).getSyncPoller();
     }
 
     /**
@@ -552,7 +546,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreate(
@@ -561,7 +555,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         String agentPoolName,
         AgentPoolInner agentPool,
         Context context) {
-        return beginCreateAsync(resourceGroupName, registryName, agentPoolName, agentPool, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, registryName, agentPoolName, agentPool, context)
+            .getSyncPoller();
     }
 
     /**
@@ -574,7 +570,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> createAsync(
@@ -595,7 +591,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> createAsync(
@@ -659,7 +655,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -714,7 +710,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -765,7 +761,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -787,7 +783,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -809,12 +805,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String agentPoolName) {
-        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName).getSyncPoller();
     }
 
     /**
@@ -827,12 +823,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String agentPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, registryName, agentPoolName, context).getSyncPoller();
     }
 
     /**
@@ -844,7 +840,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String agentPoolName) {
@@ -863,7 +859,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -914,7 +910,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -980,7 +977,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1043,7 +1041,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(
@@ -1074,7 +1072,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link PollerFlux} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(
@@ -1102,7 +1100,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
@@ -1110,7 +1108,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         String registryName,
         String agentPoolName,
         AgentPoolUpdateParameters updateParameters) {
-        return beginUpdateAsync(resourceGroupName, registryName, agentPoolName, updateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, registryName, agentPoolName, updateParameters).getSyncPoller();
     }
 
     /**
@@ -1124,7 +1122,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the {@link SyncPoller} for polling of the agentpool that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
@@ -1133,7 +1131,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         String agentPoolName,
         AgentPoolUpdateParameters updateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, registryName, agentPoolName, updateParameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, registryName, agentPoolName, updateParameters, context)
             .getSyncPoller();
     }
 
@@ -1147,7 +1146,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> updateAsync(
@@ -1171,7 +1170,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the agentpool that has the ARM resource and properties.
+     * @return the agentpool that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgentPoolInner> updateAsync(
@@ -1237,7 +1236,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
@@ -1295,7 +1294,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(
@@ -1350,7 +1349,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName) {
@@ -1367,7 +1366,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String registryName, Context context) {
@@ -1384,7 +1383,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName) {
@@ -1400,7 +1399,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> list(String resourceGroupName, String registryName, Context context) {
@@ -1416,7 +1415,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of queued runs for a given agent pool.
+     * @return the count of queued runs for a given agent pool along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolQueueStatusInner>> getQueueStatusWithResponseAsync(
@@ -1471,7 +1471,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of queued runs for a given agent pool.
+     * @return the count of queued runs for a given agent pool along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolQueueStatusInner>> getQueueStatusWithResponseAsync(
@@ -1522,20 +1523,31 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of queued runs for a given agent pool.
+     * @return the count of queued runs for a given agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolQueueStatusInner> getQueueStatusAsync(
         String resourceGroupName, String registryName, String agentPoolName) {
         return getQueueStatusWithResponseAsync(resourceGroupName, registryName, agentPoolName)
-            .flatMap(
-                (Response<AgentPoolQueueStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the count of queued runs for a given agent pool.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param agentPoolName The name of the agent pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the count of queued runs for a given agent pool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AgentPoolQueueStatusInner> getQueueStatusWithResponse(
+        String resourceGroupName, String registryName, String agentPoolName, Context context) {
+        return getQueueStatusWithResponseAsync(resourceGroupName, registryName, agentPoolName, context).block();
     }
 
     /**
@@ -1552,35 +1564,18 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolQueueStatusInner getQueueStatus(
         String resourceGroupName, String registryName, String agentPoolName) {
-        return getQueueStatusAsync(resourceGroupName, registryName, agentPoolName).block();
-    }
-
-    /**
-     * Gets the count of queued runs for a given agent pool.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param agentPoolName The name of the agent pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of queued runs for a given agent pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentPoolQueueStatusInner> getQueueStatusWithResponse(
-        String resourceGroupName, String registryName, String agentPoolName, Context context) {
-        return getQueueStatusWithResponseAsync(resourceGroupName, registryName, agentPoolName, context).block();
+        return getQueueStatusWithResponse(resourceGroupName, registryName, agentPoolName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -1611,12 +1606,13 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of agent pools.
+     * @return the collection of agent pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listNextSinglePageAsync(String nextLink, Context context) {

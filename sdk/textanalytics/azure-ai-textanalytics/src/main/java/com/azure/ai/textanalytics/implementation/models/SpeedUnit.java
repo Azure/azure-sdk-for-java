@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpeedUnit. */
+/** The speed Unit of measurement. */
 public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
     /** Static value Unspecified for SpeedUnit. */
     public static final SpeedUnit UNSPECIFIED = fromString("Unspecified");

@@ -65,7 +65,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientT")
-    private interface TransparentDataEncryptionsService {
+    public interface TransparentDataEncryptionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

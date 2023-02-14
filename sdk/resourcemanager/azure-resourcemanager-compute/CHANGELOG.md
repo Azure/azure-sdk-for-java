@@ -1,6 +1,13 @@
 # Release History
 
-## 2.23.0-beta.1 (Unreleased)
+## 2.24.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed wrong javadocs of `withSsh()` in `VirtualMachine` and `VirtualMachineScaleSet`.
+- Fixed a bug that scaling up scale sets results in outdated models for existing VMs.
+
+## 2.23.0 (2023-01-27)
 
 ### Other Changes
 

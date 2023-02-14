@@ -16,6 +16,10 @@ public final class DataConnectionValidationResult {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
+    /** Creates an instance of DataConnectionValidationResult class. */
+    public DataConnectionValidationResult() {
+    }
+
     /**
      * Get the errorMessage property: A message which indicates a problem in data connection validation.
      *

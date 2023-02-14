@@ -1,6 +1,6 @@
 # Release History
 
-## 4.14.0-beta.1 (Unreleased)
+## 4.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.14.0 (2023-01-19)
+
+### Features Added
+
+- Added new System Events:
+
+    - `Microsoft.ApiManagement.GatewayAPIAdded`
+    - `Microsoft.ApiManagement.GatewayAPIRemoved`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityCreated`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated`
+    - `Microsoft.ApiManagement.GatewayCreated`
+    - `Microsoft.ApiManagement.GatewayDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationCreated`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated`
+    - `Microsoft.ApiManagement.GatewayUpdated`
+    - `Microsoft.DataBox.CopyCompleted`
+    - `Microsoft.DataBox.CopyStarted`
+    - `Microsoft.DataBox.OrderCompleted`
 
 ## 4.13.1 (2023-01-13)
 

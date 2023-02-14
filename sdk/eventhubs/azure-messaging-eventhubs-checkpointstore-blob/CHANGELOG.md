@@ -1,5 +1,24 @@
 # Release History
 
+## 1.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.16.3 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.2`.
+- Update `azure-storage-blob` dependency to `12.20.3`.
+
 ## 1.16.2 (2023-01-18)
 
 ### Breaking Changes
