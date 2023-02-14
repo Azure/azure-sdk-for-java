@@ -350,7 +350,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, and RevApi'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -Dcodesnippet.skip -Dmaven.javadoc.skip -DskipTests -Dgpg.skip -DskipCompile=true -DskipTestCompile=true -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -Dcodesnippet.skip -Dmaven.javadoc.skip -DskipTests -Dgpg.skip -Dmaven.main.skip=true -Dmaven.test.skip=true -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -383,7 +383,7 @@ jobs:
         displayName: 'Run Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -Dmaven.main.skip=true -Dmaven.test.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}

@@ -389,7 +389,7 @@ def generate(
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Dmaven.test.skip -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:

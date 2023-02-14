@@ -36,7 +36,7 @@
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
             "TestGoals": "verify",
-            "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+            "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA11"
         },
@@ -51,7 +51,7 @@
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,
             "TestGoals": "verify",
-            "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+            "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }

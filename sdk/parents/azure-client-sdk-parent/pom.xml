@@ -208,8 +208,8 @@
     <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
     <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
-    <skipCompile>false</skipCompile>
-    <skipTestCompile>false</skipTestCompile>
+    <maven.main.skip>false</maven.main.skip>
+    <maven.test.skip>false</maven.test.skip>
 
     <compiler.proc>none</compiler.proc>
 
@@ -565,8 +565,8 @@
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
-            <skipMain>${skipCompile}</skipMain>
-            <skip>${skipTestCompile}</skip>
+            <skipMain>${maven.main.skip}</skipMain>
+            <skip>${maven.test.skip}</skip>
             <compilerArgs combine.children="append" combine.self="append">
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>

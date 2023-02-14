@@ -31,7 +31,7 @@
       "TestFromSource": true,
       "RunAggregateReports": false,
       "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false"
     },
     {
       "Agent": {
@@ -42,7 +42,7 @@
       "TestFromSource": false,
       "RunAggregateReports": true,
       "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false"
     },
     {
       "Agent": {
