@@ -57,10 +57,15 @@ jobs:
   - job: 'Build'
 
     variables:
-      ArtifactName: 'packages'
-      Codeql.Enabled: true
-      Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
-      Codeql.SkipTaskAutoInjection: false
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - name: 'ArtifactName'
+        value: 'packages'
+      - name: 'Codeql.Enabled'
+        value: 'true'
+      - name: 'Codeql.BuildIdentifier'
+        value: '${{ parameters.ServiceDirectory }}'
+      - name: 'Codeql.SkipTaskAutoInjection'
+        value: 'false'
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
