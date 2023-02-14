@@ -8,6 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.11
+com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.fasterxml.jackson.core:jackson-annotations;2.13.4
 com.fasterxml.jackson.core:jackson-core;2.13.4
 com.fasterxml.jackson.core:jackson-databind;2.13.4.2

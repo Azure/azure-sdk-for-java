@@ -226,6 +226,16 @@
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
     <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
     <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
+
+    <!-- Disables Spotless linting. -->
+    <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
+    <spotless.disabled>true</spotless.disabled>
+
+    <!-- Skips Spotless applying code style formatting. -->
+    <spotless.apply.skip>false</spotless.apply.skip>
+
+    <!-- Skips Spotless running code style formatting verification. -->
+    <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
   <build>
@@ -552,6 +562,16 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <applySkip>${spotless.apply.skip}</applySkip>
+          <checkSkip>${spotless.check.skip}</checkSkip>
+        </configuration>
       </plugin>
     </plugins>
 
@@ -901,6 +921,39 @@
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
+        </plugin>
+
+        <!-- This plugin formats source code. -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+          <configuration>
+            <skip>${spotless.disabled}</skip>
+            <java>
+              <eclipse>
+                <version>4.21.0</version>
+                <file>${project.basedir}/${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+              </eclipse>
+              <removeUnusedImports/>
+            </java>
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-apply</id>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
