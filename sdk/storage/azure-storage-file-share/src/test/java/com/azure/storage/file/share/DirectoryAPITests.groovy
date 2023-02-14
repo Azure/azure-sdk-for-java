@@ -1201,6 +1201,31 @@ class DirectoryAPITests extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName())
+        dirClient.create()
+
+        when:
+        def dirRename = generatePathName()
+        def resp = dirClient.renameWithResponse(new ShareFileRenameOptions(dirRename), null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(ShareStorageException)
+        dirRename == renamedClient.getDirectoryPath()
+
+        when:
+        dirClient.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename error"() {
         setup:
         primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())

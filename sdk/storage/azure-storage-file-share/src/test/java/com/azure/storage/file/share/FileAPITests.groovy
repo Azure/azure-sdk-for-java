@@ -2619,6 +2619,35 @@ class FileAPITests extends APISpec {
         props.getContentType() == "mytype"
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename oAuth"() {
+        setup:
+        def oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().fileRequestIntent(ShareFileRequestIntent.BACKUP))
+        def dirName = generatePathName()
+        def dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName)
+        dirClient.create()
+        def fileClient = dirClient.getFileClient(generatePathName())
+
+        fileClient.create(512)
+
+        when:
+        def fileRename = generatePathName()
+        def resp = fileClient.renameWithResponse(new ShareFileRenameOptions(fileRename), null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(ShareStorageException)
+        fileRename == renamedClient.getFilePath() // compare with new filename
+
+        when:
+        fileClient.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
