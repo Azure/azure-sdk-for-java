@@ -8,7 +8,7 @@
  * implementations of the `TokenCredential` interface offered by azure-core, and any of them can be used to
  * construct service clients capable of authenticating with a `TokenCredential`.
  *
- * <H2>Getting Started:</H2>
+ * <H2> Getting Started</H2>
  * The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in Azure.
  * This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials
  * used to authenticate in a development environment. Note, this credential is intended to simplify getting started with the SDK
@@ -41,35 +41,31 @@
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
  * For other credentials that work well in Azure Hosted platforms, refer to the table below.
- * <table style="border: 1px; width: 100%;">
- *   <caption>Authenticate Azure-hosted applications</caption>
+ * <table style="border: 2px; width: 50%;">
+ *   <caption><strong>Authenticate Azure-hosted applications</strong></caption>
  *   <thead>
  *     <tr>
  *       <th>Credential class</th>
  *       <th>Usage</th>
- *       <th>Example</th>
  *     </tr>
  *   </thead>
  *   <tbody>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable">DefaultAzureCredential</a></code></td>
- *       <td>provides a simplified authentication experience to quickly start developing applications run in Azure</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential">example</a></td>
+ *       <td>{@link com.azure.identity.DefaultAzureCredential}</td>
+ *       <td>Provides a simplified authentication experience to quickly start developing applications run in Azure</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.chainedtokencredential?view=azure-java-stable">ChainedTokenCredential</a></code></td>
- *       <td>allows users to define custom authentication flows composing multiple credentials</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials">example</a></td>
+ *       <td>{@link com.azure.identity.ChainedTokenCredential}</td>
+ *       <td>Allows users to define custom authentication flows composing multiple credentials</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable">EnvironmentCredential</a></code></td>
- *       <td>authenticates a service principal or user via credential information specified in environment variables</td>
+ *       <td>{@link com.azure.identity.EnvironmentCredential}</td>
+ *       <td>Authenticates a service principal or user via credential information specified in environment variables</td>
  *       <td></td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable">ManagedIdentityCredential</a></code></td>
- *       <td>authenticates the managed identity of an Azure resource</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
+ *       <td>{@link com.azure.identity.ManagedIdentityCredential}</td>
+ *       <td>Authenticates the managed identity of an Azure resource</td>
  *     </tr>
  *   </tbody>
  * </table>
@@ -94,30 +90,26 @@
  * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
  *
  * For other credentials that are compatible with service principal authentication, refer to the table below.
- * <table style="border: 1px; width: 100%;">
- *   <caption>Authenticate service principals</caption>
+ * <table style="border: 2px; width: 50%;">
+ *   <caption><strong>Authenticate service principals</strong></caption>
  *   <thead>
  *     <tr>
  *       <th>Credential class</th>
  *       <th>Usage</th>
- *       <th>Example</th>
  *     </tr>
  *   </thead>
  *   <tbody>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientassertioncredential?view=azure-java-stable">ClientAssertionCredential</a></code></td>
- *       <td>authenticates a service principal using a signed client assertion</td>
- *       <td></td>
+ *       <td>{@link com.azure.identity.ClientAssertionCredential}</td>
+ *       <td>Authenticates a service principal using a signed client assertion</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientcertificatecredential?view=azure-java-stable">ClientCertificateCredential</a></code></td>
- *       <td>authenticates a service principal using a certificate</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate">example</a></td>
+ *       <td>{@link com.azure.identity.ClientCertificateCredential}</td>
+ *       <td>Authenticates a service principal using a certificate</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
- *       <td>authenticates a service principal using a secret</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
+ *       <td>{@link com.azure.identity.ClientSecretCredential}</td>
+ *       <td>Authenticates a service principal using a secret</td>
  *     </tr>
  *   </tbody>
  * </table>
@@ -140,40 +132,34 @@
  *
  *
  * For other credentials that are compatible with user credentials based authentication, refer to the table below.
- * <table style="border: 1px; width: 100%;">
- *   <caption>Authenticate users</caption>
+ * <table style="border: 2px; width: 50%;">
+ *   <caption><strong>Authenticate users</strong></caption>
  *   <thead>
  *     <tr>
  *       <th>Credential class</th>
  *       <th>Usage</th>
- *       <th>Example</th>
  *     </tr>
  *   </thead>
  *   <tbody>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.authorizationcodecredential?view=azure-java-stable">AuthorizationCodeCredential</a></code></td>
- *       <td>authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
- *       <td></td>
+ *       <td>{@link com.azure.identity.AuthorizationCodeCredential}</td>
+ *       <td>Authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.devicecodecredential?view=azure-java-stable">DeviceCodeCredential</a></code></td>
- *       <td>interactively authenticates a user on devices with limited UI</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow">example</a></td>
+ *       <td>{@link com.azure.identity.DeviceCodeCredential}</td>
+ *       <td>Interactively authenticates a user on devices with limited UI</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable">InteractiveBrowserCredential</a></code></td>
- *       <td>interactively authenticates a user with the default system browser</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
+ *       <td>{@link com.azure.identity.InteractiveBrowserCredential}</td>
+ *       <td>Interactively authenticates a user with the default system browser</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable">OnBehalfOfCredential</a></code></td>
- *       <td>propagates the delegated user identity and permissions through the request chain</td>
- *       <td></td>
+ *       <td>{@link com.azure.identity.OnBehalfOfCredential}</td>
+ *       <td>Propagates the delegated user identity and permissions through the request chain</td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?view=azure-java-stable">UsernamePasswordCredential</a></code></td>
- *       <td>authenticates a user with a username and password without multi-factored auth</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password">example</a></td>
+ *       <td>{@link com.azure.identity.UsernamePasswordCredential}</td>
+ *       <td>Authenticates a user with a username and password without multi-factored auth</td>
  *     </tr>
  *   </tbody>
  * </table>
@@ -194,35 +180,26 @@
  *
  *
  * For other credentials that are compatible with developer tools authentication, refer to the table below.
- * <table style="border: 1px; width: 100%;">
- *   <caption>Authenticate via development tools</caption>
+ * <table style="border: 2px; width: 50%;">
+ *   <caption><strong>Authenticate via development tools</strong></caption>
  *   <thead>
  *     <tr>
  *       <th>Credential class</th>
  *       <th>Usage</th>
- *       <th>Example</th>
  *     </tr>
  *   </thead>
  *   <tbody>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
+ *       <td>{@link com.azure.identity.AzureCliCredential}</td>
  *       <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
+ *       <td>{@link com.azure.identity.AzurePowerShellCredential}</td>
  *       <td>Authenticate in a development environment with the enabled user or service principal in Azure PowerShell</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-powershell">example</a></td>
  *     </tr>
  *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable">IntelliJCredential</a></code></td>
+ *       <td>{@link com.azure.identity.IntelliJCredential}</td>
  *       <td>Authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
- *     </tr>
- *     <tr>
- *       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable">VisualStudioCodeCredential</a></code></td>
- *       <td>Authenticate in a development environment with the account in Visual Studio Code Azure Account extension. </td>
- *       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
  *     </tr>
  *   </tbody>
  * </table>
