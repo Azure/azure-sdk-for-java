@@ -1,14 +1,109 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2023-02-14)
 
-### Features Added
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ResourceGuardProxyBaseResource$DefinitionStages` was removed
 
-### Other Changes
+* `models.DppResourceGuardProxies` was removed
+
+* `models.UnlockDeleteRequest` was removed
+
+* `models.ResourceGuardOperationDetail` was removed
+
+* `models.ResourceGuardProvisioningState` was removed
+
+* `models.BackupInstancesExtensionRoutings` was removed
+
+* `models.UnlockDeleteResponse` was removed
+
+* `models.ResourceGuardProxyBaseResource$Update` was removed
+
+* `models.ResourceGuardProxyBaseResource$Definition` was removed
+
+* `models.ResourceGuardProxyBase` was removed
+
+* `models.ResourceGuardProxyBaseResourceList` was removed
+
+* `models.ResourceGuardProxyBaseResource$UpdateStages` was removed
+
+* `models.ResourceGuardProxyBaseResource` was removed
+
+#### `models.ResourceGuardResource$Update` was modified
+
+* `withProperties(models.PatchBackupVaultInput)` was removed
+* `withIdentity(models.DppIdentityDetails)` was removed
+
+#### `models.DppTrackedResource` was modified
+
+* `etag()` was removed
+* `systemData()` was removed
+
+#### `DataProtectionManager` was modified
+
+* `dppResourceGuardProxies()` was removed
+* `backupInstancesExtensionRoutings()` was removed
+
+#### `models.BackupVaults` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.ResourceGuardResource$Definition` was modified
+
+* `withIdentity(models.DppIdentityDetails)` was removed
+
+#### `models.ResourceGuard` was modified
+
+* `models.ResourceGuardProvisioningState provisioningState()` -> `models.ProvisioningState provisioningState()`
+
+#### `models.ResourceGuardResource` was modified
+
+* `identity()` was removed
+
+### Features Added
+
+* `models.CrossSubscriptionRestoreSettings` was added
+
+* `models.FeatureSettings` was added
+
+* `models.CrossSubscriptionRestoreState` was added
+
+* `models.DppBaseTrackedResource` was added
+
+* `models.PatchResourceGuardInput` was added
+
+#### `models.DppTrackedResource` was modified
+
+* `withTags(java.util.Map)` was added
+* `withLocation(java.lang.String)` was added
+* `withEtag(java.lang.String)` was added
+
+#### `models.PatchBackupVaultInput` was modified
+
+* `featureSettings()` was added
+* `withFeatureSettings(models.FeatureSettings)` was added
+
+#### `models.TargetDetails` was modified
+
+* `targetResourceArmId()` was added
+* `withTargetResourceArmId(java.lang.String)` was added
+
+#### `models.BackupVaults` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BackupVault` was modified
+
+* `withFeatureSettings(models.FeatureSettings)` was added
+* `featureSettings()` was added
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `expiryTime()` was added
 
 ## 1.0.0-beta.2 (2023-01-18)
 

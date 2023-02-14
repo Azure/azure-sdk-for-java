@@ -7,7 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 /** Samples for ResourceGuards GetBackupSecurityPinRequestsObjects. */
 public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
