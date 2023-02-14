@@ -101,7 +101,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             targets.clear();
             targets.add(anotherReceiver);
             AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(receiver));
-            Response<AddParticipantResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantsWithResponse(addParticipantsOptions).block();
+            Response<AddParticipantResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
             assertNotNull(addParticipantsResultResponse);
 
             // wait for the incomingCallContext on another receiver
@@ -128,7 +128,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertEquals(3, listParticipantsResult.getValues().size());
 
             // remove a participant from the call
-            RemoveParticipantResult removeParticipantsResult = createCallResult.getCallConnectionAsync().removeParticipants(receiver).block();
+            RemoveParticipantResult removeParticipantResult = createCallResult.getCallConnectionAsync().removeParticipant(receiver).block();
 
             waitForOperationCompletion(8000);
 

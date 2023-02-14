@@ -88,7 +88,7 @@ public final class CallAutomationAsyncClient {
 
     //region Pre-call Actions
     /**
-     * Create a  call connection request from a source identity to a list of target identity.
+     * Create a call connection request from a source identity to a list of target identity.
      *
      * @param targets The list of targets.
      * @param callbackUrl The call back url for receiving events.
@@ -103,7 +103,6 @@ public final class CallAutomationAsyncClient {
         return createCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
     }
 
-    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -121,7 +120,7 @@ public final class CallAutomationAsyncClient {
     }
 
     /**
-     * Create a call connection request from a source identity to a target identity.
+     * Create a group call connection request from a source identity to multiple identities.
      *
      * @param createGroupCallOptions Options for creating a new group call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -146,8 +145,7 @@ public final class CallAutomationAsyncClient {
         return withContext(context -> createCallWithResponseInternal(createCallOptions, context));
     }
 
-    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions,
-                                                                    Context context) {
+    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
@@ -170,9 +168,9 @@ public final class CallAutomationAsyncClient {
             return monoError(logger, ex);
         }
     }
-    
+
     /**
-     * Get Source Identity that is used for create and answer call  
+     * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
      */
     public CommunicationUserIdentifier getSourceIdentity() {
@@ -183,9 +181,10 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-        //CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallGroupOptions.getSource());
-
         CreateCallRequestInternal request = new CreateCallRequestInternal()
+            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
+            .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
+            .setSourceIdentity(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
@@ -203,8 +202,7 @@ public final class CallAutomationAsyncClient {
         return request;
     }
 
-    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
-            Context context) {
+    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
@@ -317,8 +315,7 @@ public final class CallAutomationAsyncClient {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
-            context)
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {

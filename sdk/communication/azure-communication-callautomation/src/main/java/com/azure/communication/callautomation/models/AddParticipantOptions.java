@@ -14,7 +14,7 @@ import java.time.Duration;
  */
 @Fluent
 public final class AddParticipantOptions {
-    
+
     /**
      * Information for the target being add
      */
@@ -30,7 +30,7 @@ public final class AddParticipantOptions {
      * The maximum value of this is 180 seconds.
      */
     private Duration invitationTimeout;
-    
+
     /**
      * Constructor
      * @param targetCallInvite target callinvite
@@ -38,7 +38,7 @@ public final class AddParticipantOptions {
     public AddParticipantOptions(CallInvite targetCallInvite) {
         this.targetCallInvite = targetCallInvite;
     }
-    
+
     /**
      * Get Information for participant to add
      * @return target callInvite
@@ -70,7 +70,7 @@ public final class AddParticipantOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the AddParticipantsOptions object itself.
+     * @return the AddParticipantOptions object itself.
      */
     public AddParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
@@ -82,7 +82,7 @@ public final class AddParticipantOptions {
      *
      * @param invitationTimeout Set the timeout to wait for the invited participant to pickup.
      *                                   The maximum value of this is 180 seconds.
-     * @return the AddParticipantsOptions object itself.
+     * @return the AddParticipantOptions object itself.
      */
     public AddParticipantOptions setInvitationTimeout(Duration invitationTimeout) {
         this.invitationTimeout = invitationTimeout;

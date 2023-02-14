@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -38,6 +39,9 @@ public class CreateGroupCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
+    private String sourceDisplayName;
+    private PhoneNumberIdentifier sourceCallIdNumber;
+
     /**
      * Constructor
      *
@@ -47,6 +51,8 @@ public class CreateGroupCallOptions {
     public CreateGroupCallOptions(List<CommunicationIdentifier> targets, String callbackUrl) {
         this.targets = targets;
         this.callbackUrl = callbackUrl;
+        this.sourceDisplayName = null;
+        this.sourceCallIdNumber = null;
     }
 
     /**
@@ -96,6 +102,22 @@ public class CreateGroupCallOptions {
     }
 
     /**
+     * get caller's display name
+     * @return display name for caller
+     */
+    public String getSourceDisplayName() {
+        return sourceDisplayName;
+    }
+
+    /**
+     * get PhoneNumberIdentifier for PSTN caller
+     * @return PhoneNumberIdentifier for PSTN caller
+     */
+    public PhoneNumberIdentifier getSourceCallIdNumber() {
+        return sourceCallIdNumber;
+    }
+
+    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -126,6 +148,26 @@ public class CreateGroupCallOptions {
      */
     public CreateGroupCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
         this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
+    }
+
+    /**
+     * set display name for caller
+     * @param sourceDisplayName display name for caller
+     * @return the CreateGroupCallOptions object itself
+     */
+    public CreateGroupCallOptions setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * set PhoneNumberIdentifier for PSTN caller
+     * @param sourceCallIdNumber PhoneNumberIdentifier for PSTN caller
+     * @return the CreateGroupCallOptions object itself
+     */
+    public CreateGroupCallOptions setSourceCallIdNumber(PhoneNumberIdentifier sourceCallIdNumber) {
+        this.sourceCallIdNumber = sourceCallIdNumber;
         return this;
     }
 }

@@ -148,8 +148,7 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
-                context)
+            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -269,9 +268,9 @@ public class CallConnectionAsync {
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getTarget()))
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getSourceCallIdNumber()))
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
-            
+
             CallInvite callInvite = transferToParticipantCallOptions.getTargetCallInvite();
-            
+
             if (callInvite.getSipHeaders() != null || callInvite.getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
                             .setSipHeaders(callInvite.getSipHeaders())
@@ -291,52 +290,52 @@ public class CallConnectionAsync {
     /**
      * Add a participant to the call.
      *
-     * @param participant The list of participants to invite.
+     * @param participant participant to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(CallInvite participant) {
-        return addParticipantsWithResponse(new AddParticipantOptions(participant)).flatMap(FluxUtil::toMono);
+        return addParticipantWithResponse(new AddParticipantOptions(participant)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param addParticipantsOptions Options bag for addParticipants
+     * @param addParticipantOptions Options bag for addParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantResult>> addParticipantsWithResponse(AddParticipantOptions addParticipantsOptions) {
-        return withContext(context -> addParticipantsWithResponseInternal(addParticipantsOptions, context));
+    public Mono<Response<AddParticipantResult>> addParticipantWithResponse(AddParticipantOptions addParticipantOptions) {
+        return withContext(context -> addParticipantWithResponseInternal(addParticipantOptions, context));
     }
 
-    Mono<Response<AddParticipantResult>> addParticipantsWithResponseInternal(AddParticipantOptions addParticipantsOptions,
+    Mono<Response<AddParticipantResult>> addParticipantWithResponseInternal(AddParticipantOptions addParticipantOptions,
                                                                               Context context) {
         try {
             AddParticipantRequestInternal request = new AddParticipantRequestInternal()
-                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantsOptions.getTargetCallInvite().getTarget()))
-                .setSourceDisplayName(addParticipantsOptions.getTargetCallInvite().getSourceDisplayName())
+                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getTarget()))
+                .setSourceDisplayName(addParticipantOptions.getTargetCallInvite().getSourceDisplayName())
                 .setSourceCallerIdNumber(CommunicationIdentifierConverter
-                        .convert(addParticipantsOptions
+                        .convert(addParticipantOptions
                                 .getTargetCallInvite()
                                 .getSourceCallIdNumber())
                         .getPhoneNumber())
-                .setOperationContext(addParticipantsOptions.getOperationContext());
+                .setOperationContext(addParticipantOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
-            if (addParticipantsOptions.getInvitationTimeout() != null) {
-                request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
+            if (addParticipantOptions.getInvitationTimeout() != null) {
+                request.setInvitationTimeoutInSeconds((int) addParticipantOptions.getInvitationTimeout().getSeconds());
             }
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (addParticipantsOptions.getTargetCallInvite().getSipHeaders() != null || addParticipantsOptions.getTargetCallInvite().getVoipHeaders() != null) {
+            if (addParticipantOptions.getTargetCallInvite().getSipHeaders() != null || addParticipantOptions.getTargetCallInvite().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(addParticipantsOptions.getTargetCallInvite().getSipHeaders());
-                customContext.setVoipHeaders(addParticipantsOptions.getTargetCallInvite().getVoipHeaders());
+                customContext.setSipHeaders(addParticipantOptions.getTargetCallInvite().getSipHeaders());
+                customContext.setVoipHeaders(addParticipantOptions.getTargetCallInvite().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
@@ -350,38 +349,38 @@ public class CallConnectionAsync {
     }
 
     /**
-     * Remove a list of participants from the call.
+     * Remove a participants from the call.
      *
-     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param participantToRemove participant to remove.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantResult> removeParticipants(CommunicationIdentifier participantsToRemove) {
-        return removeParticipantsWithResponse(new RemoveParticipantOptions(participantsToRemove)).flatMap(FluxUtil::toMono);
+    public Mono<RemoveParticipantResult> removeParticipant(CommunicationIdentifier participantToRemove) {
+        return removeParticipantWithResponse(new RemoveParticipantOptions(participantToRemove)).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Remove a list of participants from the call.
+     * Remove a participant from the call.
      *
-     * @param removeParticipantsOptions The options for removing participants.
+     * @param removeParticipantOptions Options bag for removeParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RemoveParticipantResult>> removeParticipantsWithResponse(RemoveParticipantOptions removeParticipantsOptions) {
-        return withContext(context -> removeParticipantsWithResponseInternal(removeParticipantsOptions, context));
+    public Mono<Response<RemoveParticipantResult>> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions) {
+        return withContext(context -> removeParticipantWithResponseInternal(removeParticipantOptions, context));
     }
 
-    Mono<Response<RemoveParticipantResult>> removeParticipantsWithResponseInternal(RemoveParticipantOptions removeParticipantsOptions, Context context) {
+    Mono<Response<RemoveParticipantResult>> removeParticipantWithResponseInternal(RemoveParticipantOptions removeParticipantOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             RemoveParticipantRequestInternal request = new RemoveParticipantRequestInternal()
-                .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantsOptions.getParticipant()))
-                .setOperationContext(removeParticipantsOptions.getOperationContext());
+                .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantOptions.getParticipant()))
+                .setOperationContext(removeParticipantOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request,
             context)

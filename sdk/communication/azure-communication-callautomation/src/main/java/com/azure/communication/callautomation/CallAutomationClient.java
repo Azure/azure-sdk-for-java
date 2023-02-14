@@ -55,7 +55,6 @@ public final class CallAutomationClient {
         return callAutomationAsyncClient.createCall(targets, callbackUrl).block();
     }
 
-  //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -72,7 +71,7 @@ public final class CallAutomationClient {
     }
 
     /**
-     * Create a call connection request from a source identity to a target identity.
+     * Create a group call connection request from a source identity to multiple identities.
      *
      * @param createGroupCallOptions Options bag for creating a new group call.
      * @param context The context to associate with this operation.
@@ -123,8 +122,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResult> answerCallWithResponse(AnswerCallOptions answerCallOptions,
-                                                             Context context) {
+    public Response<AnswerCallResult> answerCallWithResponse(AnswerCallOptions answerCallOptions, Context context) {
         return callAutomationAsyncClient.answerCallWithResponseInternal(answerCallOptions, context).block();
     }
 
