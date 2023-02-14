@@ -31,7 +31,7 @@ public class TranslateTests {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void translateTest() throws Exception {
-        var regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential("de313c676c034102abe09b90d49eabee"), "westus2");
+        var regionalCredential = new AzureRegionalKeyCredential(new AzureKeyCredential(""), "westus2");
         
         var client = new TranslatorClientBuilder()
                 .credential(regionalCredential)
