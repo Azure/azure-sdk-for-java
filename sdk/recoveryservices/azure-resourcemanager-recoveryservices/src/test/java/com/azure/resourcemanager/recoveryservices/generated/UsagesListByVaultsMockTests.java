@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
 import com.azure.resourcemanager.recoveryservices.models.VaultUsage;
@@ -62,7 +61,8 @@ public final class UsagesListByVaultsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VaultUsage> response = manager.usages().listByVaults("ofncckwyfzqwhxxb", "yq", Context.NONE);
+        PagedIterable<VaultUsage> response =
+            manager.usages().listByVaults("ofncckwyfzqwhxxb", "yq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(UsagesUnit.BYTES_PER_SECOND, response.iterator().next().unit());
         Assertions.assertEquals("eqz", response.iterator().next().quotaPeriod());
