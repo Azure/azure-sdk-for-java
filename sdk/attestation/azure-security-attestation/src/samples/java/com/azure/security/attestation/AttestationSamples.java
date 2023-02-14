@@ -294,7 +294,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        String tpmResponse = client.attestTpm(attestInitialPayload);
+        String tpmResponse = client.attestTpm(attestInitialPayload.getBytes());
         // END: com.azure.security.attestation.AttestationClient.attestTpm
     }
 
@@ -331,7 +331,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload.getBytes(), Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
     }
 
@@ -368,7 +368,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Mono<String> tpmResponse = client.attestTpm(attestInitialPayload);
+        Mono<String> tpmResponse = client.attestTpm(attestInitialPayload.getBytes());
         // END: com.azure.security.attestation.AttestationAsyncClient.attestTpm
         tpmResponse.subscribe();
     }
@@ -406,7 +406,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Mono<Response<String>> responseMono = client.attestTpmWithResponse(attestInitialPayload);
+        Mono<Response<String>> responseMono = client.attestTpmWithResponse(attestInitialPayload.getBytes());
         // END: com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse
         responseMono.subscribe();
     }
