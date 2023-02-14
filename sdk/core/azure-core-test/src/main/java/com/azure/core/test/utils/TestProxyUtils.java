@@ -6,6 +6,8 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
@@ -37,8 +39,11 @@ public class TestProxyUtils {
         "(?:User ID=)(?<secret>.*)(?:;)", "(?:<PrimaryKey>)(?<secret>.*)(?:</PrimaryKey>)",
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
-    private static final String URL_REGEX =
-        "(?<=http://|https://)(?:[^@\\\\]+@)?(?:www\\\\.)?([^:\\\\/]+)";
+    // Should be removed once playback client is fixed
+    private static final List<String> EXCLUDED_HEADERS =
+        new ArrayList<>(Arrays.asList("Connection", "Content-Length"));
+
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
@@ -117,6 +122,20 @@ public class TestProxyUtils {
         return sanitizers;
     }
 
+    public static List<TestProxyMatcher> loadMatchers() {
+        List<TestProxyMatcher> matchers = new ArrayList<>();
+        matchers.add(addDefaultCustomDefaultMatcher());
+        return matchers;
+    }
+
+    private static TestProxyMatcher addDefaultCustomDefaultMatcher() {
+        return new CustomMatcher().setExcludedHeaders(String.join(",", EXCLUDED_HEADERS));
+    }
+
+    private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":%s}", customMatcher.getIgnoredHeaders(), customMatcher.getExcludedHeaders(), customMatcher.isCompareBodies(), customMatcher.getIgnoredQueryParameters(), customMatcher.isIgnoreQueryOrdering());
+    }
+
     private static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
     }
@@ -156,10 +175,10 @@ public class TestProxyUtils {
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
                     break;
-                case BODY:
+                case BODY_KEY:
                     requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.BODY.getName();
+                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
                     break;
                 case HEADER:
                     requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
@@ -177,6 +196,37 @@ public class TestProxyUtils {
         }).collect(Collectors.toList());
     }
 
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyMatcher> matchers) {
+        return matchers.stream().map(testProxyMatcher -> {
+            HttpRequest request;
+            String matcherType;
+            switch (testProxyMatcher.getType()) {
+                case HEADERLESS:
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.HEADERLESS.getName();
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                    break;
+                case BODILESS:
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.BODILESS.getName();
+                    break;
+                case CUSTOM:
+                    CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
+                    String requestBody = createCustomMatcherRequestBody(customMatcher);
+                    matcherType = TestProxyMatcher.TestProxyMatcherType.CUSTOM.getName();
+                    request
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);
+                    break;
+                default:
+                    throw new RuntimeException(String.format("Matcher type {%s} not supported", testProxyMatcher.getType()));
+            }
+
+            request.setHeader("x-abstraction-identifier", matcherType);
+            return request;
+        }).collect(Collectors.toList());
+    }
+
     private static TestProxySanitizer addDefaultUrlSanitizer() {
         return new TestProxySanitizer(URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.URL);
     }
@@ -185,7 +235,7 @@ public class TestProxyUtils {
         return JSON_PROPERTIES_TO_REDACT.stream()
             .map(jsonProperty ->
                 new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE,
-                    TestProxySanitizerType.BODY))
+                    TestProxySanitizerType.BODY_KEY))
             .collect(Collectors.toList());
     }
 

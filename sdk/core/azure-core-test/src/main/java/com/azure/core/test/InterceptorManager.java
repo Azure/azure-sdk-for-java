@@ -9,6 +9,7 @@ import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.test.models.TestProxyMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.test.policy.TestProxyRecordPolicy;
@@ -74,6 +75,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private List<TestProxySanitizer> recordSanitizers;
+    private List<TestProxyMatcher> customMatcher;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -300,7 +302,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
-            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers);
+            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers, this.customMatcher);
             proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             return testProxyPlaybackClient;
         } else {
@@ -431,9 +433,17 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add text replacement rule (regex as key, the replacement text as value) into {@code recordSanitizers}
-     * @param recordSanitizers the list of replacement regex and rules.
+     * @param testProxySanitizers the list of replacement regex and rules.
      */
-    public void addRecordSanitizers(List<TestProxySanitizer> recordSanitizers) {
-        this.recordSanitizers = recordSanitizers;
+    public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
+        this.recordSanitizers = testProxySanitizers;
+    }
+
+    /**
+     * Add matcher rules to match recorded data in playback.
+     * @param testProxyMatchers the list of matcher rules when playing back recorded data.
+     */
+    public void addMatchers(List<TestProxyMatcher> testProxyMatchers) {
+        this.customMatcher = testProxyMatchers;
     }
 }

@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "http://REDACTED:3000/fr/path/1",
+      "RequestUri": "http://REDACTED/fr/path/1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.models.TestProxyMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -26,7 +27,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
+import static com.azure.core.test.utils.TestProxyUtils.loadMatchers;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -41,14 +44,20 @@ public class TestProxyPlaybackClient implements HttpClient {
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
+    private static final List<TestProxyMatcher> DEFAULT_MATCHERS = loadMatchers();
+
+    private final List<TestProxyMatcher> matchers = new ArrayList<>();
+
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param customSanitizers the list of custom sanitizers to be added to {@link TestProxyPlaybackClient}
      */
-    public TestProxyPlaybackClient(List<TestProxySanitizer> customSanitizers) {
+    public TestProxyPlaybackClient(List<TestProxySanitizer> customSanitizers, List<TestProxyMatcher> customMatcher) {
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);
+        this.matchers.addAll(DEFAULT_MATCHERS);
+        this.matchers.addAll(customMatcher == null ? Collections.emptyList() : customMatcher);
     }
 
     /**
@@ -63,6 +72,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
             addProxySanitization();
+            addMatcherRequests();
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
@@ -102,6 +112,14 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private void addProxySanitization() {
         getSanitizerRequests(this.sanitizers)
+            .forEach(request -> {
+                request.setHeader("x-recording-id", xRecordingId);
+                client.sendSync(request, Context.NONE);
+            });
+    }
+    private void addMatcherRequests() {
+
+        getMatcherRequests(this.matchers)
             .forEach(request -> {
                 request.setHeader("x-recording-id", xRecordingId);
                 client.sendSync(request, Context.NONE);

@@ -1,13 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "http://REDACTED:3000/fr/models",
+      "RequestUri": "http://REDACTED/fr/models",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
         "Connection": "keep-alive",
         "Content-Type": "application/json",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
         "User-Agent": "Java/11.0.9"
       },
       "RequestBody": null,

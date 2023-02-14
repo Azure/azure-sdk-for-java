@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.TestProxyTestServer;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -33,6 +34,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +52,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public static final String REDACTED = "REDACTED";
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
     }
 
@@ -153,7 +155,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -192,7 +194,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
+        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders("Ocp-Apim-Subscription-Key"))));
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -220,7 +223,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(customSanitizer);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)

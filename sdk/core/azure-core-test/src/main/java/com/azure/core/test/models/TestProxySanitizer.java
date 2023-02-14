@@ -15,8 +15,8 @@ public class TestProxySanitizer {
 
     /**
      * Creates an instance of TestProxySanitizer
-     * @param regexKey the regex key to lookup for redaction
-     * @param redactedValue the replacement for regex matched content
+     * @param regexKey the regex or the json key to lookup for redaction
+     * @param redactedValue the replacement text for the regex matched content
      * @param testProxySanitizerType the type of sanitizer
      */
     public TestProxySanitizer(String regexKey, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
