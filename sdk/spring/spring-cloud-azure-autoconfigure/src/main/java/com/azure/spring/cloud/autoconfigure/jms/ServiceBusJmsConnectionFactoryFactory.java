@@ -25,11 +25,6 @@ public class ServiceBusJmsConnectionFactoryFactory {
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
-                                          List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        this(properties, factoryCustomizers, null);
-    }
-
-    ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
                                           List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
                                           AzureServiceBusPasswordlessProperties serviceBusPasswordlessProperties) {
         Assert.notNull(properties, "Properties must not be null");
@@ -68,17 +63,16 @@ public class ServiceBusJmsConnectionFactoryFactory {
             String remoteUrl = null;
             String username = null;
             String password = null;
-            if (properties.getConnectionString() != null) {
-                ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
-                String host = serviceBusConnectionString.getEndpointUri().getHost();
-
-                remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
-                username = serviceBusConnectionString.getSharedAccessKeyName();
-                password = serviceBusConnectionString.getSharedAccessKey();
-            } else if (serviceBusPasswordlessProperties != null & properties.getNameSpace() != null) {
+            if (serviceBusPasswordlessProperties != null & properties.getNameSpace() != null) {
                 remoteUrl = String.format(AMQP_URI_FORMAT,
                     properties.getNameSpace() + serviceBusPasswordlessProperties.getProfile().getEnvironment().getServiceBusDomainName(),
                     properties.getIdleTimeout().toMillis());
+            } else if (properties.getConnectionString() != null) {
+                ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
+                String host = serviceBusConnectionString.getEndpointUri().getHost();
+                remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
+                username = serviceBusConnectionString.getSharedAccessKeyName();
+                password = serviceBusConnectionString.getSharedAccessKey();
             }
 
             if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {

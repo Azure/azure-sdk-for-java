@@ -56,10 +56,10 @@ public class ServiceBusJmsAutoConfiguration {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
             properties.put("com.microsoft:is-client-provider", true);
-            if (azureServiceBusCredentialSupplier.getIfAvailable() == null) {
-                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
-            } else {
+            if (azureServiceBusCredentialSupplier.getIfAvailable() != null) {
                 properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
+            } else {
+                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
             }
             //set user agent
             factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),

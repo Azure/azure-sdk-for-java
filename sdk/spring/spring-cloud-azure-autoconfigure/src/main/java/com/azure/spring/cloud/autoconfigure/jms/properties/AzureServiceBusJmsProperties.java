@@ -52,6 +52,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String pricingTier;
 
+    /**
+     * Whether to enable supporting authentication with Azure AD.
+     */
+    private boolean passwordlessEnabled = false;
+
     private final Listener listener = new Listener();
 
     private final PrefetchPolicy prefetchPolicy = new PrefetchPolicy();
@@ -179,6 +184,14 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         this.nameSpace = nameSpace;
     }
 
+    private boolean isPasswordlessEnabled() {
+        return passwordlessEnabled;
+    }
+
+    void setPasswordlessEnabled(boolean passwordlessEnabled) {
+        this.passwordlessEnabled = passwordlessEnabled;
+    }
+
     /**
      * Validate spring.jms.servicebus related properties.
      *
@@ -186,13 +199,20 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!StringUtils.hasText(connectionString) && !StringUtils.hasText(nameSpace)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' or 'spring.jms.servicebus.namespace' should be provided");
+        if (isPasswordlessEnabled()) {
+            if (!StringUtils.hasText(nameSpace)) {
+                throw new IllegalArgumentException("Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.");
+            }
+        } else {
+            if (!StringUtils.hasText(connectionString)) {
+                throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided.");
+            }
         }
 
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
+
     }
 
     /**
