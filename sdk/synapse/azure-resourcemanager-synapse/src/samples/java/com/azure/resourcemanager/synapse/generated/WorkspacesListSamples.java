@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces List. */
 public final class WorkspacesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspacesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listWorkspacesInSubscription(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaces().list(Context.NONE);
+        manager.workspaces().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -38,6 +38,8 @@ public final class StartSpanOptions {
 
     /**
      * Sets attribute on span before its started. Such attributes may affect sampling decision.
+     * Adding duplicate attributes, update, or removal is discouraged, since underlying implementations
+     * behavior can vary.
      *
      * @param key attribute key.
      * @param value attribute value. Note that underlying tracer implementations limit supported value types.

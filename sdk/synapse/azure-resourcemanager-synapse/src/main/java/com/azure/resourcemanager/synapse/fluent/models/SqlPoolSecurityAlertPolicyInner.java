@@ -20,6 +20,10 @@ public final class SqlPoolSecurityAlertPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityAlertPolicyProperties innerProperties;
 
+    /** Creates an instance of SqlPoolSecurityAlertPolicyInner class. */
+    public SqlPoolSecurityAlertPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

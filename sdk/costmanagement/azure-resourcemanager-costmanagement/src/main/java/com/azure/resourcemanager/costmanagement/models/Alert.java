@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertInner;
-import java.util.Map;
 
 /** An immutable client-side representation of Alert. */
 public interface Alert {
@@ -31,11 +30,12 @@ public interface Alert {
     String type();
 
     /**
-     * Gets the tags property: Resource tags.
+     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
      *
-     * @return the tags value.
+     * @return the etag value.
      */
-    Map<String, String> tags();
+    String etag();
 
     /**
      * Gets the definition property: defines the type of alert.
@@ -101,7 +101,7 @@ public interface Alert {
     String modificationTime();
 
     /**
-     * Gets the statusModificationUsername property: The statusModificationUserName property.
+     * Gets the statusModificationUsername property: User who last modified the alert.
      *
      * @return the statusModificationUsername value.
      */

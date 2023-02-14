@@ -110,7 +110,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(true, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
@@ -131,7 +131,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(true, isSync));
 
         addPolicies(builder, policies);
 
@@ -170,11 +170,20 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, true, isSync);
+
+    }
+
+    protected SearchClientBuilder getSearchClientBuilderWithoutAssertingClient(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, false, isSync);
+    }
+
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient, boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(wrapWithAssertingClient, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
@@ -189,21 +198,24 @@ public abstract class SearchTestBase extends TestBase {
         return builder;
     }
 
-    private HttpClient getHttpClient(boolean isSync) {
+    private HttpClient getHttpClient(boolean wrapWithAssertingClient, boolean isSync) {
         HttpClient httpClient = (interceptorManager.isPlaybackMode())
             ? interceptorManager.getPlaybackClient()
             : HttpClient.createDefault();
 
-        if (!isSync) {
-            httpClient = new AssertingHttpClientBuilder(httpClient)
-                .assertAsync()
-                // TODO (alzimmer): Remove skipRequest when next azure-core-test is released
-                .skipRequest((ignored1, ignored2) -> false)
-                .build();
+        if (wrapWithAssertingClient) {
+            if (!isSync) {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertAsync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            } else {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertSync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            }
         }
-
-        // TODO (alzimmer): Add support for sync when sync stack is enabled.
-
         return httpClient;
     }
 

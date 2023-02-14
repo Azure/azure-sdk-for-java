@@ -30,6 +30,9 @@ public enum SensitivityLabelSource {
      */
     @JsonCreator
     public static SensitivityLabelSource fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SensitivityLabelSource[] items = SensitivityLabelSource.values();
         for (SensitivityLabelSource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum SensitivityLabelSource {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

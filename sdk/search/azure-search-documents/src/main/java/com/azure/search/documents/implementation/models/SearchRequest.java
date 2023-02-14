@@ -201,6 +201,9 @@ public final class SearchRequest {
     @JsonProperty(value = "semanticFields")
     private String semanticFields;
 
+    /** Creates an instance of SearchRequest class. */
+    public SearchRequest() {}
+
     /**
      * Get the includeTotalResultCount property: A value that specifies whether to fetch the total count of results.
      * Default is false. Setting this value to true may have a performance impact. Note that the count returned is an

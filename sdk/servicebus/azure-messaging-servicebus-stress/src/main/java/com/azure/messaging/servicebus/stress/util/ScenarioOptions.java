@@ -24,11 +24,17 @@ public class ScenarioOptions {
     @Value("${SERVICEBUS_QUEUE_NAME:#{null}}")
     private String servicebusQueueName;
 
+    @Value("${SERVICEBUS_SESSION_QUEUE_NAME:#{null}}")
+    private String servicebusSessionQueueName;
+
     @Value("${SERVICEBUS_TOPIC_NAME:#{null}}")
     private String servicebusTopicName;
 
     @Value("${SERVICEBUS_SUBSCRIPTION_NAME:#{null}}")
     private String servicebusSubscriptionName;
+
+    @Value("${SERVICEBUS_SESSION_SUBSCRIPTION_NAME:#{null}}")
+    private String servicebusSessionSubscriptionName;
 
     @Value("${METRIC_INTERVAL_SEC:60}")
     private String metricIntervalSec;
@@ -49,12 +55,20 @@ public class ScenarioOptions {
         return servicebusQueueName;
     }
 
+    public String getServicebusSessionQueueName() {
+        return servicebusSessionQueueName;
+    }
+
     public String getServicebusTopicName() {
         return servicebusTopicName;
     }
 
     public String getServicebusSubscriptionName() {
         return servicebusSubscriptionName;
+    }
+
+    public String getServicebusSessionSubscriptionName() {
+        return servicebusSessionSubscriptionName;
     }
 
     public String getMetricIntervalSec() {

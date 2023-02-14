@@ -34,8 +34,8 @@ public final class AutocompleteResult {
      */
     @JsonCreator
     public AutocompleteResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<AutocompleteItem> results) {
+        @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            List<AutocompleteItem> results) {
         this.results = results;
     }
 

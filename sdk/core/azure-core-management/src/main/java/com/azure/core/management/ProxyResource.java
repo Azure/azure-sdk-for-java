@@ -20,6 +20,12 @@ public class ProxyResource {
     private String type;
 
     /**
+     * Creates an instance of {@link ProxyResource}.
+     */
+    public ProxyResource() {
+    }
+
+    /**
      * Get the id value.
      *
      * @return the fully qualified resource ID for the resource.

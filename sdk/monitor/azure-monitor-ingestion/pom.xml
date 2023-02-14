@@ -47,6 +47,7 @@
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
         <javaModulesSurefireArgLine>
             --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+            --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=ALL-UNNAMED
         </javaModulesSurefireArgLine>
     </properties>
@@ -62,12 +63,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.36.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-http-netty</artifactId>
-            <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+            <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
         </dependency>
 
         <!-- test -->
@@ -92,7 +93,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
-            <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -104,7 +105,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>

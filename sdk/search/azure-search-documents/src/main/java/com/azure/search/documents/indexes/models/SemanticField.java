@@ -18,6 +18,9 @@ public final class SemanticField {
     @JsonProperty(value = "fieldName")
     private String fieldName;
 
+    /** Creates an instance of SemanticField class. */
+    public SemanticField() {}
+
     /**
      * Get the fieldName property: The fieldName property.
      *

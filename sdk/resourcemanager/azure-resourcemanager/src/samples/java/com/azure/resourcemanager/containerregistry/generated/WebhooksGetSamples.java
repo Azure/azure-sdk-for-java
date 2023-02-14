@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Webhooks Get. */
 public final class WebhooksGetSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookGet.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/WebhookGet.json
      */
     /**
      * Sample code: WebhookGet.
@@ -22,6 +20,6 @@ public final class WebhooksGetSamples {
             .manager()
             .serviceClient()
             .getWebhooks()
-            .getWithResponse("myResourceGroup", "myRegistry", "myWebhook", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
     }
 }

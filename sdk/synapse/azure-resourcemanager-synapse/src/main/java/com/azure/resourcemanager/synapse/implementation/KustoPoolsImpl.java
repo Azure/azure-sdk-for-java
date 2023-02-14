@@ -51,15 +51,6 @@ public final class KustoPoolsImpl implements KustoPools {
         return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
-    public CheckNameResult checkNameAvailability(String location, KustoPoolCheckNameRequest kustoPoolName) {
-        CheckNameResultInner inner = this.serviceClient().checkNameAvailability(location, kustoPoolName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String location, KustoPoolCheckNameRequest kustoPoolName, Context context) {
         Response<CheckNameResultInner> inner =
@@ -75,10 +66,10 @@ public final class KustoPoolsImpl implements KustoPools {
         }
     }
 
-    public KustoPoolListResult listByWorkspace(String resourceGroupName, String workspaceName) {
-        KustoPoolListResultInner inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public CheckNameResult checkNameAvailability(String location, KustoPoolCheckNameRequest kustoPoolName) {
+        CheckNameResultInner inner = this.serviceClient().checkNameAvailability(location, kustoPoolName);
         if (inner != null) {
-            return new KustoPoolListResultImpl(inner, this.manager());
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -99,10 +90,10 @@ public final class KustoPoolsImpl implements KustoPools {
         }
     }
 
-    public KustoPool get(String workspaceName, String kustoPoolName, String resourceGroupName) {
-        KustoPoolInner inner = this.serviceClient().get(workspaceName, kustoPoolName, resourceGroupName);
+    public KustoPoolListResult listByWorkspace(String resourceGroupName, String workspaceName) {
+        KustoPoolListResultInner inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         if (inner != null) {
-            return new KustoPoolImpl(inner, this.manager());
+            return new KustoPoolListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -118,6 +109,15 @@ public final class KustoPoolsImpl implements KustoPools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new KustoPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public KustoPool get(String workspaceName, String kustoPoolName, String resourceGroupName) {
+        KustoPoolInner inner = this.serviceClient().get(workspaceName, kustoPoolName, resourceGroupName);
+        if (inner != null) {
+            return new KustoPoolImpl(inner, this.manager());
         } else {
             return null;
         }

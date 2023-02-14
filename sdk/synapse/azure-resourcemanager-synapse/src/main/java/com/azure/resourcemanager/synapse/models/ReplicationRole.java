@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ReplicationRole. */
+/** The role of the Sql pool in the replication link. */
 public enum ReplicationRole {
     /** Enum value Primary. */
     PRIMARY("Primary"),
@@ -39,6 +39,9 @@ public enum ReplicationRole {
      */
     @JsonCreator
     public static ReplicationRole fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ReplicationRole[] items = ReplicationRole.values();
         for (ReplicationRole item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum ReplicationRole {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

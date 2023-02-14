@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyPhraseExtractionSkillLanguage. */
+/** The language codes supported for input text by KeyPhraseExtractionSkill. */
 public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum<KeyPhraseExtractionSkillLanguage> {
     /** Static value da for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage DA = fromString("da");

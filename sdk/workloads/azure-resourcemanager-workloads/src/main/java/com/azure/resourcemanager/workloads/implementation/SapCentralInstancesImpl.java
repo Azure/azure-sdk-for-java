@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloads.fluent.models.SapCentralServerInstanc
 import com.azure.resourcemanager.workloads.models.OperationStatusResult;
 import com.azure.resourcemanager.workloads.models.SapCentralInstances;
 import com.azure.resourcemanager.workloads.models.SapCentralServerInstance;
+import com.azure.resourcemanager.workloads.models.StopRequest;
 
 public final class SapCentralInstancesImpl implements SapCentralInstances {
     private static final ClientLogger LOGGER = new ClientLogger(SapCentralInstancesImpl.class);
@@ -29,17 +30,6 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
         this.serviceManager = serviceManager;
     }
 
-    public SapCentralServerInstance get(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
-        SapCentralServerInstanceInner inner =
-            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
-        if (inner != null) {
-            return new SapCentralServerInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SapCentralServerInstance> getWithResponse(
         String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context) {
         Response<SapCentralServerInstanceInner> inner =
@@ -52,6 +42,17 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SapCentralServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SapCentralServerInstance get(
+        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
+        SapCentralServerInstanceInner inner =
+            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+        if (inner != null) {
+            return new SapCentralServerInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -90,6 +91,56 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
         PagedIterable<SapCentralServerInstanceInner> inner =
             this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
         return Utils.mapPage(inner, inner1 -> new SapCentralServerInstanceImpl(inner1, this.manager()));
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context) {
+        OperationStatusResultInner inner =
+            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName,
+        String sapVirtualInstanceName,
+        String centralInstanceName,
+        StopRequest body,
+        Context context) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SapCentralServerInstance getById(String id) {

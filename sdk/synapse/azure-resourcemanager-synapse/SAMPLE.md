@@ -32,6 +32,12 @@
 - [Get](#extendedsqlpoolblobauditingpolicies_get)
 - [ListBySqlPool](#extendedsqlpoolblobauditingpolicies_listbysqlpool)
 
+## Get
+
+- [IntegrationRuntimeEnableInteractivequery](#get_integrationruntimeenableinteractivequery)
+- [IntegrationRuntimeStart](#get_integrationruntimestart)
+- [IntegrationRuntimeStop](#get_integrationruntimestop)
+
 ## IntegrationRuntimeAuthKeysOperation
 
 - [List](#integrationruntimeauthkeysoperation_list)
@@ -146,6 +152,10 @@
 - [Get](#kustopoolprincipalassignments_get)
 - [List](#kustopoolprincipalassignments_list)
 
+## KustoPoolPrivateLinkResourcesOperation
+
+- [List](#kustopoolprivatelinkresourcesoperation_list)
+
 ## KustoPools
 
 - [AddLanguageExtensions](#kustopools_addlanguageextensions)
@@ -205,10 +215,10 @@
 - [ListByResourceGroup](#privatelinkhubs_listbyresourcegroup)
 - [Update](#privatelinkhubs_update)
 
-## PrivateLinkResources
+## PrivateLinkResourcesOperation
 
-- [Get](#privatelinkresources_get)
-- [List](#privatelinkresources_list)
+- [Get](#privatelinkresourcesoperation_get)
+- [List](#privatelinkresourcesoperation_list)
 
 ## RestorableDroppedSqlPools
 
@@ -472,7 +482,6 @@ public final class AzureADOnlyAuthenticationsCreateSamples {
 ### AzureADOnlyAuthentications_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
 
 /** Samples for AzureADOnlyAuthentications Get. */
@@ -489,7 +498,11 @@ public final class AzureADOnlyAuthenticationsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .azureADOnlyAuthentications()
-            .getWithResponse("workspace-6852", "workspace-2080", AzureADOnlyAuthenticationName.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "workspace-6852",
+                "workspace-2080",
+                AzureADOnlyAuthenticationName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -497,8 +510,6 @@ public final class AzureADOnlyAuthenticationsGetSamples {
 ### AzureADOnlyAuthentications_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AzureADOnlyAuthentications List. */
 public final class AzureADOnlyAuthenticationsListSamples {
     /*
@@ -511,7 +522,7 @@ public final class AzureADOnlyAuthenticationsListSamples {
      */
     public static void getAListOfAzureActiveDirectoryOnlyAuthenticationProperty(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.azureADOnlyAuthentications().list("workspace-6852", "workspace-2080", Context.NONE);
+        manager.azureADOnlyAuthentications().list("workspace-6852", "workspace-2080", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -546,10 +557,11 @@ public final class BigDataPoolsCreateOrUpdateSamples {
             .withTags(mapOf("key", "value"))
             .withAutoScale(new AutoScaleProperties().withMinNodeCount(3).withEnabled(true).withMaxNodeCount(50))
             .withAutoPause(new AutoPauseProperties().withDelayInMinutes(15).withEnabled(true))
+            .withIsAutotuneEnabled(false)
             .withSparkEventsFolder("/events")
             .withNodeCount(4)
             .withLibraryRequirements(new LibraryRequirements().withContent("").withFilename("requirements.txt"))
-            .withSparkVersion("2.4")
+            .withSparkVersion("3.3")
             .withDefaultSparkLogFolder("/logs")
             .withNodeSize(NodeSize.MEDIUM)
             .withNodeSizeFamily(NodeSizeFamily.MEMORY_OPTIMIZED)
@@ -572,8 +584,6 @@ public final class BigDataPoolsCreateOrUpdateSamples {
 ### BigDataPools_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BigDataPools Delete. */
 public final class BigDataPoolsDeleteSamples {
     /*
@@ -585,7 +595,9 @@ public final class BigDataPoolsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteABigDataPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.bigDataPools().delete("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", Context.NONE);
+        manager
+            .bigDataPools()
+            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -593,8 +605,6 @@ public final class BigDataPoolsDeleteSamples {
 ### BigDataPools_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BigDataPools Get. */
 public final class BigDataPoolsGetSamples {
     /*
@@ -606,7 +616,10 @@ public final class BigDataPoolsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getABigDataPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.bigDataPools().getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", Context.NONE);
+        manager
+            .bigDataPools()
+            .getWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -614,8 +627,6 @@ public final class BigDataPoolsGetSamples {
 ### BigDataPools_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BigDataPools ListByWorkspace. */
 public final class BigDataPoolsListByWorkspaceSamples {
     /*
@@ -627,7 +638,9 @@ public final class BigDataPoolsListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listBigDataPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.bigDataPools().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager
+            .bigDataPools()
+            .listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -635,7 +648,6 @@ public final class BigDataPoolsListByWorkspaceSamples {
 ### BigDataPools_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
 import java.util.HashMap;
 import java.util.Map;
@@ -654,7 +666,8 @@ public final class BigDataPoolsUpdateSamples {
         BigDataPoolResourceInfo resource =
             manager
                 .bigDataPools()
-                .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", Context.NONE)
+                .getWithResponse(
+                    "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("key", "value")).apply();
     }
@@ -719,8 +732,6 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
 ### DataMaskingPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataMaskingPolicies Get. */
 public final class DataMaskingPoliciesGetSamples {
     /*
@@ -734,7 +745,8 @@ public final class DataMaskingPoliciesGetSamples {
     public static void getDataMaskingPolicy(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .dataMaskingPolicies()
-            .getWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -841,8 +853,6 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
 ### DataMaskingRules_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataMaskingRules Get. */
 public final class DataMaskingRulesGetSamples {
     /*
@@ -856,7 +866,8 @@ public final class DataMaskingRulesGetSamples {
     public static void getDataMaskingRule(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .dataMaskingRules()
-            .getWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -864,8 +875,6 @@ public final class DataMaskingRulesGetSamples {
 ### DataMaskingRules_ListBySqlPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataMaskingRules ListBySqlPool. */
 public final class DataMaskingRulesListBySqlPoolSamples {
     /*
@@ -879,7 +888,7 @@ public final class DataMaskingRulesListBySqlPoolSamples {
     public static void listDataMaskingRules(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .dataMaskingRules()
-            .listBySqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", Context.NONE);
+            .listBySqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -970,8 +979,6 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
 ### ExtendedSqlPoolBlobAuditingPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ExtendedSqlPoolBlobAuditingPolicies Get. */
 public final class ExtendedSqlPoolBlobAuditingPoliciesGetSamples {
     /*
@@ -986,7 +993,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .extendedSqlPoolBlobAuditingPolicies()
-            .getWithResponse("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .getWithResponse(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -994,8 +1002,6 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesGetSamples {
 ### ExtendedSqlPoolBlobAuditingPolicies_ListBySqlPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ExtendedSqlPoolBlobAuditingPolicies ListBySqlPool. */
 public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     /*
@@ -1010,7 +1016,86 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .extendedSqlPoolBlobAuditingPolicies()
-            .listBySqlPool("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .listBySqlPool(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Get_IntegrationRuntimeEnableInteractivequery
+
+```java
+/** Samples for Get IntegrationRuntimeEnableInteractivequery. */
+public final class GetIntegrationRuntimeEnableInteractivequerySamples {
+    /*
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/EnableInteractivequery_IntegrationRuntimes.json
+     */
+    /**
+     * Sample code: Get integration runtime operation status.
+     *
+     * @param manager Entry point to SynapseManager.
+     */
+    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager
+            .gets()
+            .integrationRuntimeEnableInteractivequeryWithResponse(
+                "drage-felles-prod-rg",
+                "felles-prod-synapse-workspace",
+                "SSIS-intergrationRuntime-Drage",
+                "5752dcdf918e4aecb941245ddf6ebb83",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Get_IntegrationRuntimeStart
+
+```java
+/** Samples for Get IntegrationRuntimeStart. */
+public final class GetIntegrationRuntimeStartSamples {
+    /*
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Start_OperationStatus.json
+     */
+    /**
+     * Sample code: Get integration runtime operation status.
+     *
+     * @param manager Entry point to SynapseManager.
+     */
+    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager
+            .gets()
+            .integrationRuntimeStartWithResponse(
+                "drage-felles-prod-rg",
+                "felles-prod-synapse-workspace",
+                "SSIS-intergrationRuntime-Drage",
+                "5752dcdf918e4aecb941245ddf6ebb83",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Get_IntegrationRuntimeStop
+
+```java
+/** Samples for Get IntegrationRuntimeStop. */
+public final class GetIntegrationRuntimeStopSamples {
+    /*
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Stop_OperationStatus.json
+     */
+    /**
+     * Sample code: Get integration runtime operation status.
+     *
+     * @param manager Entry point to SynapseManager.
+     */
+    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager
+            .gets()
+            .integrationRuntimeStopWithResponse(
+                "drage-felles-prod-rg",
+                "felles-prod-synapse-workspace",
+                "SSIS-intergrationRuntime-Drage",
+                "5752dcdf918e4aecb941245ddf6ebb83",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1018,8 +1103,6 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
 ### IntegrationRuntimeAuthKeysOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeAuthKeysOperation List. */
 public final class IntegrationRuntimeAuthKeysOperationListSamples {
     /*
@@ -1033,7 +1116,11 @@ public final class IntegrationRuntimeAuthKeysOperationListSamples {
     public static void listAuthKeys(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeAuthKeysOperations()
-            .listWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .listWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1041,7 +1128,6 @@ public final class IntegrationRuntimeAuthKeysOperationListSamples {
 ### IntegrationRuntimeAuthKeysOperation_Regenerate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeAuthKeyName;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyParameters;
 
@@ -1063,7 +1149,7 @@ public final class IntegrationRuntimeAuthKeysOperationRegenerateSamples {
                 "exampleWorkspace",
                 "exampleIntegrationRuntime",
                 new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1071,8 +1157,6 @@ public final class IntegrationRuntimeAuthKeysOperationRegenerateSamples {
 ### IntegrationRuntimeConnectionInfos_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeConnectionInfos Get. */
 public final class IntegrationRuntimeConnectionInfosGetSamples {
     /*
@@ -1086,7 +1170,11 @@ public final class IntegrationRuntimeConnectionInfosGetSamples {
     public static void getConnectionInfo(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeConnectionInfos()
-            .getWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1094,8 +1182,6 @@ public final class IntegrationRuntimeConnectionInfosGetSamples {
 ### IntegrationRuntimeCredentials_Sync
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeCredentials Sync. */
 public final class IntegrationRuntimeCredentialsSyncSamples {
     /*
@@ -1109,7 +1195,11 @@ public final class IntegrationRuntimeCredentialsSyncSamples {
     public static void syncCredentials(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeCredentials()
-            .syncWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .syncWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1117,8 +1207,6 @@ public final class IntegrationRuntimeCredentialsSyncSamples {
 ### IntegrationRuntimeMonitoringData_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeMonitoringData List. */
 public final class IntegrationRuntimeMonitoringDataListSamples {
     /*
@@ -1132,7 +1220,11 @@ public final class IntegrationRuntimeMonitoringDataListSamples {
     public static void getMonitoringData(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeMonitoringDatas()
-            .listWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .listWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1140,8 +1232,6 @@ public final class IntegrationRuntimeMonitoringDataListSamples {
 ### IntegrationRuntimeNodeIpAddressOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeNodeIpAddressOperation Get. */
 public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
     /*
@@ -1156,7 +1246,11 @@ public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
         manager
             .integrationRuntimeNodeIpAddressOperations()
             .getWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", "Node_1", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1164,8 +1258,6 @@ public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
 ### IntegrationRuntimeNodes_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeNodes Delete. */
 public final class IntegrationRuntimeNodesDeleteSamples {
     /*
@@ -1180,7 +1272,11 @@ public final class IntegrationRuntimeNodesDeleteSamples {
         manager
             .integrationRuntimeNodes()
             .deleteWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", "Node_1", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1188,8 +1284,6 @@ public final class IntegrationRuntimeNodesDeleteSamples {
 ### IntegrationRuntimeNodes_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeNodes Get. */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
@@ -1204,7 +1298,11 @@ public final class IntegrationRuntimeNodesGetSamples {
         manager
             .integrationRuntimeNodes()
             .getWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", "Node_1", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1212,7 +1310,6 @@ public final class IntegrationRuntimeNodesGetSamples {
 ### IntegrationRuntimeNodes_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
 
 /** Samples for IntegrationRuntimeNodes Update. */
@@ -1234,7 +1331,7 @@ public final class IntegrationRuntimeNodesUpdateSamples {
                 "exampleIntegrationRuntime",
                 "Node_1",
                 new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1242,7 +1339,6 @@ public final class IntegrationRuntimeNodesUpdateSamples {
 ### IntegrationRuntimeObjectMetadata_List
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
 
 /** Samples for IntegrationRuntimeObjectMetadata List. */
@@ -1263,7 +1359,7 @@ public final class IntegrationRuntimeObjectMetadataListSamples {
                 "exampleWorkspace",
                 "testactivityv2",
                 new GetSsisObjectMetadataRequest().withMetadataPath("ssisFolders"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1271,8 +1367,6 @@ public final class IntegrationRuntimeObjectMetadataListSamples {
 ### IntegrationRuntimeObjectMetadata_Refresh
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeObjectMetadata Refresh. */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
@@ -1286,7 +1380,7 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     public static void refreshObjectMetadata(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeObjectMetadatas()
-            .refresh("exampleResourceGroup", "exampleWorkspace", "testactivityv2", Context.NONE);
+            .refresh("exampleResourceGroup", "exampleWorkspace", "testactivityv2", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1294,8 +1388,6 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
 ### IntegrationRuntimeStatusOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeStatusOperation Get. */
 public final class IntegrationRuntimeStatusOperationGetSamples {
     /*
@@ -1309,7 +1401,11 @@ public final class IntegrationRuntimeStatusOperationGetSamples {
     public static void getStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeStatusOperations()
-            .getWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1343,8 +1439,6 @@ public final class IntegrationRuntimesCreateSamples {
 ### IntegrationRuntimes_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Delete. */
 public final class IntegrationRuntimesDeleteSamples {
     /*
@@ -1358,7 +1452,11 @@ public final class IntegrationRuntimesDeleteSamples {
     public static void deleteIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimes()
-            .delete("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .delete(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1366,8 +1464,6 @@ public final class IntegrationRuntimesDeleteSamples {
 ### IntegrationRuntimes_DisableInteractiveQuery
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes DisableInteractiveQuery. */
 public final class IntegrationRuntimesDisableInteractiveQuerySamples {
     /*
@@ -1382,7 +1478,10 @@ public final class IntegrationRuntimesDisableInteractiveQuerySamples {
         manager
             .integrationRuntimes()
             .disableInteractiveQuery(
-                "exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1390,8 +1489,6 @@ public final class IntegrationRuntimesDisableInteractiveQuerySamples {
 ### IntegrationRuntimes_EnableInteractiveQuery
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes EnableInteractiveQuery. */
 public final class IntegrationRuntimesEnableInteractiveQuerySamples {
     /*
@@ -1406,7 +1503,10 @@ public final class IntegrationRuntimesEnableInteractiveQuerySamples {
         manager
             .integrationRuntimes()
             .enableInteractiveQuery(
-                "exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1414,8 +1514,6 @@ public final class IntegrationRuntimesEnableInteractiveQuerySamples {
 ### IntegrationRuntimes_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Get. */
 public final class IntegrationRuntimesGetSamples {
     /*
@@ -1430,7 +1528,11 @@ public final class IntegrationRuntimesGetSamples {
         manager
             .integrationRuntimes()
             .getWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", null, Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1438,8 +1540,6 @@ public final class IntegrationRuntimesGetSamples {
 ### IntegrationRuntimes_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes ListByWorkspace. */
 public final class IntegrationRuntimesListByWorkspaceSamples {
     /*
@@ -1451,7 +1551,9 @@ public final class IntegrationRuntimesListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listIntegrationRuntimes(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.integrationRuntimes().listByWorkspace("exampleResourceGroup", "exampleWorkspace", Context.NONE);
+        manager
+            .integrationRuntimes()
+            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1459,8 +1561,6 @@ public final class IntegrationRuntimesListByWorkspaceSamples {
 ### IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints. */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -1475,7 +1575,10 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
         manager
             .integrationRuntimes()
             .listOutboundNetworkDependenciesEndpointsWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1483,8 +1586,6 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
 ### IntegrationRuntimes_Start
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Start. */
 public final class IntegrationRuntimesStartSamples {
     /*
@@ -1498,7 +1599,11 @@ public final class IntegrationRuntimesStartSamples {
     public static void startIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimes()
-            .start("exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+            .start(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1506,8 +1611,6 @@ public final class IntegrationRuntimesStartSamples {
 ### IntegrationRuntimes_Stop
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Stop. */
 public final class IntegrationRuntimesStopSamples {
     /*
@@ -1521,7 +1624,11 @@ public final class IntegrationRuntimesStopSamples {
     public static void stopIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimes()
-            .stop("exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+            .stop(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1529,7 +1636,6 @@ public final class IntegrationRuntimesStopSamples {
 ### IntegrationRuntimes_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeAutoUpdate;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 
@@ -1548,7 +1654,11 @@ public final class IntegrationRuntimesUpdateSamples {
             manager
                 .integrationRuntimes()
                 .getWithResponse(
-                    "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", null, Context.NONE)
+                    "exampleResourceGroup",
+                    "exampleWorkspace",
+                    "exampleIntegrationRuntime",
+                    null,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withAutoUpdate(IntegrationRuntimeAutoUpdate.OFF).withUpdateDelayOffset("\"PT3H\"").apply();
     }
@@ -1558,8 +1668,6 @@ public final class IntegrationRuntimesUpdateSamples {
 ### IntegrationRuntimes_Upgrade
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Upgrade. */
 public final class IntegrationRuntimesUpgradeSamples {
     /*
@@ -1573,7 +1681,11 @@ public final class IntegrationRuntimesUpgradeSamples {
     public static void upgradeIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimes()
-            .upgradeWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .upgradeWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1606,8 +1718,6 @@ public final class IpFirewallRulesCreateOrUpdateSamples {
 ### IpFirewallRules_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IpFirewallRules Delete. */
 public final class IpFirewallRulesDeleteSamples {
     /*
@@ -1621,7 +1731,8 @@ public final class IpFirewallRulesDeleteSamples {
     public static void deleteAnIPFirewallRuleFromAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .ipFirewallRules()
-            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", Context.NONE);
+            .delete(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1629,22 +1740,21 @@ public final class IpFirewallRulesDeleteSamples {
 ### IpFirewallRules_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IpFirewallRules Get. */
 public final class IpFirewallRulesGetSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetIpFirewallRule.json
      */
     /**
-     * Sample code: Create an IP firewall rule.
+     * Sample code: Get IP firewall rule.
      *
      * @param manager Entry point to SynapseManager.
      */
-    public static void createAnIPFirewallRule(com.azure.resourcemanager.synapse.SynapseManager manager) {
+    public static void getIPFirewallRule(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .ipFirewallRules()
-            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", Context.NONE);
+            .getWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1652,8 +1762,6 @@ public final class IpFirewallRulesGetSamples {
 ### IpFirewallRules_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IpFirewallRules ListByWorkspace. */
 public final class IpFirewallRulesListByWorkspaceSamples {
     /*
@@ -1665,7 +1773,9 @@ public final class IpFirewallRulesListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listIPFirewallRulesInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.ipFirewallRules().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager
+            .ipFirewallRules()
+            .listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1673,7 +1783,6 @@ public final class IpFirewallRulesListByWorkspaceSamples {
 ### IpFirewallRules_ReplaceAll
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleProperties;
 import com.azure.resourcemanager.synapse.models.ReplaceAllIpFirewallRulesRequest;
 import java.util.HashMap;
@@ -1706,7 +1815,7 @@ public final class IpFirewallRulesReplaceAllSamples {
                             new IpFirewallRuleProperties()
                                 .withEndIpAddress("10.0.0.254")
                                 .withStartIpAddress("10.0.0.0"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
@@ -1750,8 +1859,6 @@ public final class KeysCreateOrUpdateSamples {
 ### Keys_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Keys Delete. */
 public final class KeysDeleteSamples {
     /*
@@ -1763,7 +1870,10 @@ public final class KeysDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteAWorkspaceKey(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.keys().deleteWithResponse("ExampleResourceGroup", "ExampleWorkspace", "somekey", Context.NONE);
+        manager
+            .keys()
+            .deleteWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "somekey", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1771,8 +1881,6 @@ public final class KeysDeleteSamples {
 ### Keys_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Keys Get. */
 public final class KeysGetSamples {
     /*
@@ -1784,7 +1892,9 @@ public final class KeysGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getAWorkspaceKey(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.keys().getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "somekey", Context.NONE);
+        manager
+            .keys()
+            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "somekey", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1792,8 +1902,6 @@ public final class KeysGetSamples {
 ### Keys_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Keys ListByWorkspace. */
 public final class KeysListByWorkspaceSamples {
     /*
@@ -1805,7 +1913,7 @@ public final class KeysListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listKeysInWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.keys().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager.keys().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1813,8 +1921,6 @@ public final class KeysListByWorkspaceSamples {
 ### KustoOperations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoOperations List. */
 public final class KustoOperationsListSamples {
     /*
@@ -1826,7 +1932,7 @@ public final class KustoOperationsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoOperationsList(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoOperations().list(Context.NONE);
+        manager.kustoOperations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1875,8 +1981,6 @@ public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateSamples 
 ### KustoPoolAttachedDatabaseConfigurations_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolAttachedDatabaseConfigurations Delete. */
 public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
     /*
@@ -1892,7 +1996,11 @@ public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
         manager
             .kustoPoolAttachedDatabaseConfigurations()
             .delete(
-                "kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest", Context.NONE);
+                "kustorptest",
+                "kustoclusterrptest4",
+                "attachedDatabaseConfigurations1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1900,8 +2008,6 @@ public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
 ### KustoPoolAttachedDatabaseConfigurations_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolAttachedDatabaseConfigurations Get. */
 public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
     /*
@@ -1917,7 +2023,11 @@ public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
         manager
             .kustoPoolAttachedDatabaseConfigurations()
             .getWithResponse(
-                "kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest", Context.NONE);
+                "kustorptest",
+                "kustoclusterrptest4",
+                "attachedDatabaseConfigurations1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1925,8 +2035,6 @@ public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
 ### KustoPoolAttachedDatabaseConfigurations_ListByKustoPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolAttachedDatabaseConfigurations ListByKustoPool. */
 public final class KustoPoolAttachedDatabaseConfigurationsListByKustoPoolSamples {
     /*
@@ -1941,7 +2049,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsListByKustoPoolSamples
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolAttachedDatabaseConfigurations()
-            .listByKustoPool("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .listByKustoPool("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1949,7 +2057,6 @@ public final class KustoPoolAttachedDatabaseConfigurationsListByKustoPoolSamples
 ### KustoPoolChildResource_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.Type;
 
@@ -1974,7 +2081,7 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
                 new DatabaseCheckNameRequest()
                     .withName("adc1")
                     .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_ATTACHED_DATABASE_CONFIGURATIONS),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1996,7 +2103,7 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
                 new DatabaseCheckNameRequest()
                     .withName("database1")
                     .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2004,7 +2111,6 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
 ### KustoPoolDataConnections_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
 
 /** Samples for KustoPoolDataConnections CheckNameAvailability. */
@@ -2027,7 +2133,7 @@ public final class KustoPoolDataConnectionsCheckNameAvailabilitySamples {
                 "kustoclusterrptest4",
                 "Kustodatabase8",
                 new DataConnectionCheckNameRequest().withName("DataConnections8"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2035,7 +2141,6 @@ public final class KustoPoolDataConnectionsCheckNameAvailabilitySamples {
 ### KustoPoolDataConnections_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 
 /** Samples for KustoPoolDataConnections CreateOrUpdate. */
@@ -2063,7 +2168,7 @@ public final class KustoPoolDataConnectionsCreateOrUpdateSamples {
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2071,7 +2176,6 @@ public final class KustoPoolDataConnectionsCreateOrUpdateSamples {
 ### KustoPoolDataConnections_DataConnectionValidation
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationInner;
 import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 
@@ -2096,7 +2200,7 @@ public final class KustoPoolDataConnectionsDataConnectionValidationSamples {
                 new DataConnectionValidationInner()
                     .withDataConnectionName("DataConnections8")
                     .withProperties(new EventHubDataConnection()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2104,8 +2208,6 @@ public final class KustoPoolDataConnectionsDataConnectionValidationSamples {
 ### KustoPoolDataConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDataConnections Delete. */
 public final class KustoPoolDataConnectionsDeleteSamples {
     /*
@@ -2125,7 +2227,7 @@ public final class KustoPoolDataConnectionsDeleteSamples {
                 "kustoclusterrptest4",
                 "KustoDatabase8",
                 "kustoeventhubconnection1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2133,8 +2235,6 @@ public final class KustoPoolDataConnectionsDeleteSamples {
 ### KustoPoolDataConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDataConnections Get. */
 public final class KustoPoolDataConnectionsGetSamples {
     /*
@@ -2154,7 +2254,7 @@ public final class KustoPoolDataConnectionsGetSamples {
                 "kustoclusterrptest4",
                 "KustoDatabase8",
                 "DataConnections8",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2162,8 +2262,6 @@ public final class KustoPoolDataConnectionsGetSamples {
 ### KustoPoolDataConnections_ListByDatabase
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDataConnections ListByDatabase. */
 public final class KustoPoolDataConnectionsListByDatabaseSamples {
     /*
@@ -2179,7 +2277,11 @@ public final class KustoPoolDataConnectionsListByDatabaseSamples {
         manager
             .kustoPoolDataConnections()
             .listByDatabase(
-                "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", Context.NONE);
+                "kustorptest",
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "KustoDatabase8",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2187,7 +2289,6 @@ public final class KustoPoolDataConnectionsListByDatabaseSamples {
 ### KustoPoolDataConnections_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 
 /** Samples for KustoPoolDataConnections Update. */
@@ -2214,7 +2315,7 @@ public final class KustoPoolDataConnectionsUpdateSamples {
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2222,7 +2323,6 @@ public final class KustoPoolDataConnectionsUpdateSamples {
 ### KustoPoolDatabasePrincipalAssignments_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DatabasePrincipalAssignmentCheckNameRequest;
 
 /** Samples for KustoPoolDatabasePrincipalAssignments CheckNameAvailability. */
@@ -2245,7 +2345,7 @@ public final class KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilitySam
                 "Kustodatabase8",
                 "kustorptest",
                 new DatabasePrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2284,8 +2384,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsCreateOrUpdateSamples {
 ### KustoPoolDatabasePrincipalAssignments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabasePrincipalAssignments Delete. */
 public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
     /*
@@ -2306,7 +2404,7 @@ public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
                 "Kustodatabase8",
                 "kustoprincipal1",
                 "kustorptest",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2314,8 +2412,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
 ### KustoPoolDatabasePrincipalAssignments_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabasePrincipalAssignments Get. */
 public final class KustoPoolDatabasePrincipalAssignmentsGetSamples {
     /*
@@ -2336,7 +2432,7 @@ public final class KustoPoolDatabasePrincipalAssignmentsGetSamples {
                 "Kustodatabase8",
                 "kustoprincipal1",
                 "kustorptest",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2344,8 +2440,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsGetSamples {
 ### KustoPoolDatabasePrincipalAssignments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabasePrincipalAssignments List. */
 public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
     /*
@@ -2360,7 +2454,12 @@ public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolDatabasePrincipalAssignments()
-            .list("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", Context.NONE);
+            .list(
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "Kustodatabase8",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2368,7 +2467,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
 ### KustoPoolDatabases_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ReadWriteDatabase;
 import java.time.Duration;
 
@@ -2391,7 +2489,7 @@ public final class KustoPoolDatabasesCreateOrUpdateSamples {
                 "kustoclusterrptest4",
                 "KustoDatabase8",
                 new ReadWriteDatabase().withLocation("westus").withSoftDeletePeriod(Duration.parse("P1D")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2399,8 +2497,6 @@ public final class KustoPoolDatabasesCreateOrUpdateSamples {
 ### KustoPoolDatabases_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabases Delete. */
 public final class KustoPoolDatabasesDeleteSamples {
     /*
@@ -2414,7 +2510,12 @@ public final class KustoPoolDatabasesDeleteSamples {
     public static void kustoPoolDatabasesDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolDatabases()
-            .delete("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", Context.NONE);
+            .delete(
+                "kustorptest",
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "KustoDatabase8",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2422,8 +2523,6 @@ public final class KustoPoolDatabasesDeleteSamples {
 ### KustoPoolDatabases_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabases Get. */
 public final class KustoPoolDatabasesGetSamples {
     /*
@@ -2438,7 +2537,11 @@ public final class KustoPoolDatabasesGetSamples {
         manager
             .kustoPoolDatabases()
             .getWithResponse(
-                "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", Context.NONE);
+                "kustorptest",
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "KustoDatabase8",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2446,8 +2549,6 @@ public final class KustoPoolDatabasesGetSamples {
 ### KustoPoolDatabases_ListByKustoPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabases ListByKustoPool. */
 public final class KustoPoolDatabasesListByKustoPoolSamples {
     /*
@@ -2461,7 +2562,8 @@ public final class KustoPoolDatabasesListByKustoPoolSamples {
     public static void kustoDatabasesListByKustoPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolDatabases()
-            .listByKustoPool("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", Context.NONE);
+            .listByKustoPool(
+                "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2469,7 +2571,6 @@ public final class KustoPoolDatabasesListByKustoPoolSamples {
 ### KustoPoolDatabases_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ReadWriteDatabase;
 import java.time.Duration;
 
@@ -2492,7 +2593,7 @@ public final class KustoPoolDatabasesUpdateSamples {
                 "kustoclusterrptest4",
                 "KustoDatabase8",
                 new ReadWriteDatabase().withSoftDeletePeriod(Duration.parse("P1D")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2500,7 +2601,6 @@ public final class KustoPoolDatabasesUpdateSamples {
 ### KustoPoolPrincipalAssignments_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignmentCheckNameRequest;
 
 /** Samples for KustoPoolPrincipalAssignments CheckNameAvailability. */
@@ -2522,7 +2622,7 @@ public final class KustoPoolPrincipalAssignmentsCheckNameAvailabilitySamples {
                 "kustoclusterrptest4",
                 "kustorptest",
                 new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2561,8 +2661,6 @@ public final class KustoPoolPrincipalAssignmentsCreateOrUpdateSamples {
 ### KustoPoolPrincipalAssignments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolPrincipalAssignments Delete. */
 public final class KustoPoolPrincipalAssignmentsDeleteSamples {
     /*
@@ -2576,7 +2674,12 @@ public final class KustoPoolPrincipalAssignmentsDeleteSamples {
     public static void kustoPoolPrincipalAssignmentsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolPrincipalAssignments()
-            .delete("synapseWorkspaceName", "kustoclusterrptest4", "kustoprincipal1", "kustorptest", Context.NONE);
+            .delete(
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "kustoprincipal1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2584,8 +2687,6 @@ public final class KustoPoolPrincipalAssignmentsDeleteSamples {
 ### KustoPoolPrincipalAssignments_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolPrincipalAssignments Get. */
 public final class KustoPoolPrincipalAssignmentsGetSamples {
     /*
@@ -2600,7 +2701,11 @@ public final class KustoPoolPrincipalAssignmentsGetSamples {
         manager
             .kustoPoolPrincipalAssignments()
             .getWithResponse(
-                "synapseWorkspaceName", "kustoclusterrptest4", "kustoprincipal1", "kustorptest", Context.NONE);
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "kustoprincipal1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2608,8 +2713,6 @@ public final class KustoPoolPrincipalAssignmentsGetSamples {
 ### KustoPoolPrincipalAssignments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolPrincipalAssignments List. */
 public final class KustoPoolPrincipalAssignmentsListSamples {
     /*
@@ -2623,7 +2726,28 @@ public final class KustoPoolPrincipalAssignmentsListSamples {
     public static void kustoPoolPrincipalAssignmentsList(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolPrincipalAssignments()
-            .list("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .list("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### KustoPoolPrivateLinkResourcesOperation_List
+
+```java
+/** Samples for KustoPoolPrivateLinkResourcesOperation List. */
+public final class KustoPoolPrivateLinkResourcesOperationListSamples {
+    /*
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrivateLinkResourcesList.json
+     */
+    /**
+     * Sample code: KustoPoolPrivateLinkResourcesList.
+     *
+     * @param manager Entry point to SynapseManager.
+     */
+    public static void kustoPoolPrivateLinkResourcesList(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager
+            .kustoPoolPrivateLinkResourcesOperations()
+            .list("DP-900", "synapse-ws-ebi-data", "dataexplorerpool900", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2631,7 +2755,6 @@ public final class KustoPoolPrincipalAssignmentsListSamples {
 ### KustoPools_AddLanguageExtensions
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
@@ -2660,7 +2783,7 @@ public final class KustoPoolsAddLanguageExtensionsSamples {
                             .asList(
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2668,7 +2791,6 @@ public final class KustoPoolsAddLanguageExtensionsSamples {
 ### KustoPools_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.KustoPoolCheckNameRequest;
 
 /** Samples for KustoPools CheckNameAvailability. */
@@ -2685,7 +2807,9 @@ public final class KustoPoolsCheckNameAvailabilitySamples {
         manager
             .kustoPools()
             .checkNameAvailabilityWithResponse(
-                "westus", new KustoPoolCheckNameRequest().withName("kustoclusterrptest4"), Context.NONE);
+                "westus",
+                new KustoPoolCheckNameRequest().withName("kustoclusterrptest4"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2725,8 +2849,6 @@ public final class KustoPoolsCreateOrUpdateSamples {
 ### KustoPools_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Delete. */
 public final class KustoPoolsDeleteSamples {
     /*
@@ -2738,7 +2860,9 @@ public final class KustoPoolsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().delete("kustorptest", "kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager
+            .kustoPools()
+            .delete("kustorptest", "kustorptest", "kustoclusterrptest4", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2746,7 +2870,6 @@ public final class KustoPoolsDeleteSamples {
 ### KustoPools_DetachFollowerDatabases
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
 
 /** Samples for KustoPools DetachFollowerDatabases. */
@@ -2770,7 +2893,7 @@ public final class KustoPoolsDetachFollowerDatabasesSamples {
                     .withKustoPoolResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Synapse/workspaces/kustorptest/kustoPools/leader4")
                     .withAttachedDatabaseConfigurationName("myAttachedDatabaseConfiguration"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2778,8 +2901,6 @@ public final class KustoPoolsDetachFollowerDatabasesSamples {
 ### KustoPools_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Get. */
 public final class KustoPoolsGetSamples {
     /*
@@ -2793,7 +2914,8 @@ public final class KustoPoolsGetSamples {
     public static void kustoPoolsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPools()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .getWithResponse(
+                "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2801,8 +2923,6 @@ public final class KustoPoolsGetSamples {
 ### KustoPools_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools List. */
 public final class KustoPoolsListSamples {
     /*
@@ -2814,7 +2934,7 @@ public final class KustoPoolsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().list(Context.NONE);
+        manager.kustoPools().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2822,8 +2942,6 @@ public final class KustoPoolsListSamples {
 ### KustoPools_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListByWorkspace. */
 public final class KustoPoolsListByWorkspaceSamples {
     /*
@@ -2835,7 +2953,9 @@ public final class KustoPoolsListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listKustoPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().listByWorkspaceWithResponse("kustorptest", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .listByWorkspaceWithResponse("kustorptest", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2843,8 +2963,6 @@ public final class KustoPoolsListByWorkspaceSamples {
 ### KustoPools_ListFollowerDatabases
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListFollowerDatabases. */
 public final class KustoPoolsListFollowerDatabasesSamples {
     /*
@@ -2856,7 +2974,10 @@ public final class KustoPoolsListFollowerDatabasesSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().listFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .listFollowerDatabases(
+                "kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2864,8 +2985,6 @@ public final class KustoPoolsListFollowerDatabasesSamples {
 ### KustoPools_ListLanguageExtensions
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListLanguageExtensions. */
 public final class KustoPoolsListLanguageExtensionsSamples {
     /*
@@ -2877,7 +2996,10 @@ public final class KustoPoolsListLanguageExtensionsSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .listLanguageExtensions(
+                "kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2885,8 +3007,6 @@ public final class KustoPoolsListLanguageExtensionsSamples {
 ### KustoPools_ListSkusByResource
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListSkusByResource. */
 public final class KustoPoolsListSkusByResourceSamples {
     /*
@@ -2900,7 +3020,8 @@ public final class KustoPoolsListSkusByResourceSamples {
     public static void kustoPoolsListResourceSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPools()
-            .listSkusByResource("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .listSkusByResource(
+                "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2908,7 +3029,6 @@ public final class KustoPoolsListSkusByResourceSamples {
 ### KustoPools_RemoveLanguageExtensions
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
@@ -2937,7 +3057,7 @@ public final class KustoPoolsRemoveLanguageExtensionsSamples {
                             .asList(
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2945,8 +3065,6 @@ public final class KustoPoolsRemoveLanguageExtensionsSamples {
 ### KustoPools_Start
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Start. */
 public final class KustoPoolsStartSamples {
     /*
@@ -2958,7 +3076,9 @@ public final class KustoPoolsStartSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().start("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .start("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2966,8 +3086,6 @@ public final class KustoPoolsStartSamples {
 ### KustoPools_Stop
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Stop. */
 public final class KustoPoolsStopSamples {
     /*
@@ -2979,7 +3097,9 @@ public final class KustoPoolsStopSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().stop("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .stop("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2987,7 +3107,6 @@ public final class KustoPoolsStopSamples {
 ### KustoPools_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.AzureSku;
 import com.azure.resourcemanager.synapse.models.KustoPool;
 import com.azure.resourcemanager.synapse.models.SkuName;
@@ -3007,14 +3126,14 @@ public final class KustoPoolsUpdateSamples {
         KustoPool resource =
             manager
                 .kustoPools()
-                .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE)
+                .getWithResponse(
+                    "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(2).withSize(SkuSize.MEDIUM))
             .withEnableStreamingIngest(true)
             .withEnablePurge(true)
-            .withWorkspaceUid("11111111-2222-3333-444444444444")
             .apply();
     }
 }
@@ -3023,8 +3142,6 @@ public final class KustoPoolsUpdateSamples {
 ### LibrariesOperation_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for LibrariesOperation ListByWorkspace. */
 public final class LibrariesOperationListByWorkspaceSamples {
     /*
@@ -3036,7 +3153,9 @@ public final class LibrariesOperationListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listLibrariesInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.librariesOperations().listByWorkspace("exampleResourceGroup", "exampleWorkspace", Context.NONE);
+        manager
+            .librariesOperations()
+            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3044,8 +3163,6 @@ public final class LibrariesOperationListByWorkspaceSamples {
 ### Library_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Library Get. */
 public final class LibraryGetSamples {
     /*
@@ -3059,7 +3176,8 @@ public final class LibraryGetSamples {
     public static void getLibraryByName(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .libraries()
-            .getWithResponse("exampleResourceGroup", "exampleLibraryName.jar", "exampleWorkspace", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup", "exampleLibraryName.jar", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3067,7 +3185,6 @@ public final class LibraryGetSamples {
 ### Operations_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
 
 /** Samples for Operations CheckNameAvailability. */
@@ -3086,7 +3203,7 @@ public final class OperationsCheckNameAvailabilitySamples {
             .operations()
             .checkNameAvailabilityWithResponse(
                 new CheckNameAvailabilityRequest().withName("workspace1").withType("Microsoft.Synapse/workspaces"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -3104,7 +3221,7 @@ public final class OperationsCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityRequest()
                     .withName("workspace1")
                     .withType("Microsoft.ProjectArcadia/workspaces"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3112,8 +3229,6 @@ public final class OperationsCheckNameAvailabilitySamples {
 ### Operations_GetAzureAsyncHeaderResult
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations GetAzureAsyncHeaderResult. */
 public final class OperationsGetAzureAsyncHeaderResultSamples {
     /*
@@ -3128,7 +3243,10 @@ public final class OperationsGetAzureAsyncHeaderResultSamples {
         manager
             .operations()
             .getAzureAsyncHeaderResultWithResponse(
-                "resourceGroup1", "workspace1", "01234567-89ab-4def-0123-456789abcdef", Context.NONE);
+                "resourceGroup1",
+                "workspace1",
+                "01234567-89ab-4def-0123-456789abcdef",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3136,8 +3254,6 @@ public final class OperationsGetAzureAsyncHeaderResultSamples {
 ### Operations_GetLocationHeaderResult
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations GetLocationHeaderResult. */
 public final class OperationsGetLocationHeaderResultSamples {
     /*
@@ -3152,7 +3268,10 @@ public final class OperationsGetLocationHeaderResultSamples {
         manager
             .operations()
             .getLocationHeaderResultWithResponse(
-                "resourceGroup1", "workspace1", "01234567-89ab-4def-0123-456789abcdef", Context.NONE);
+                "resourceGroup1",
+                "workspace1",
+                "01234567-89ab-4def-0123-456789abcdef",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3160,8 +3279,6 @@ public final class OperationsGetLocationHeaderResultSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -3173,7 +3290,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getAvailableOperations(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.operations().listWithResponse(Context.NONE);
+        manager.operations().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3210,8 +3327,6 @@ public final class PrivateEndpointConnectionsCreateSamples {
 ### PrivateEndpointConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
@@ -3225,7 +3340,11 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     public static void deletePrivateEndpointConnection(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .privateEndpointConnections()
-            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExamplePrivateEndpointConnection", Context.NONE);
+            .delete(
+                "ExampleResourceGroup",
+                "ExampleWorkspace",
+                "ExamplePrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3233,8 +3352,6 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 ### PrivateEndpointConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
@@ -3249,7 +3366,10 @@ public final class PrivateEndpointConnectionsGetSamples {
         manager
             .privateEndpointConnections()
             .getWithResponse(
-                "ExampleResourceGroup", "ExampleWorkspace", "ExamplePrivateEndpointConnection", Context.NONE);
+                "ExampleResourceGroup",
+                "ExampleWorkspace",
+                "ExamplePrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3257,8 +3377,6 @@ public final class PrivateEndpointConnectionsGetSamples {
 ### PrivateEndpointConnections_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
@@ -3271,7 +3389,9 @@ public final class PrivateEndpointConnectionsListSamples {
      */
     public static void listPrivateEndpointConnectionsInWorkspace(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateEndpointConnections().list("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager
+            .privateEndpointConnections()
+            .list("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3279,8 +3399,6 @@ public final class PrivateEndpointConnectionsListSamples {
 ### PrivateEndpointConnectionsPrivateLinkHub_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnectionsPrivateLinkHub Get. */
 public final class PrivateEndpointConnectionsPrivateLinkHubGetSamples {
     /*
@@ -3294,7 +3412,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubGetSamples {
     public static void getAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .privateEndpointConnectionsPrivateLinkHubs()
-            .getWithResponse("gh-res-grp", "pe0", "pe0-f3ed30f5-338c-4855-a542-24a403694ad2", Context.NONE);
+            .getWithResponse(
+                "gh-res-grp", "pe0", "pe0-f3ed30f5-338c-4855-a542-24a403694ad2", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3302,8 +3421,6 @@ public final class PrivateEndpointConnectionsPrivateLinkHubGetSamples {
 ### PrivateEndpointConnectionsPrivateLinkHub_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnectionsPrivateLinkHub List. */
 public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
     /*
@@ -3315,7 +3432,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateEndpointConnectionsPrivateLinkHubs().list("gh-res-grp", "pe0", Context.NONE);
+        manager.privateEndpointConnectionsPrivateLinkHubs().list("gh-res-grp", "pe0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3323,8 +3440,6 @@ public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
 ### PrivateLinkHubPrivateLinkResources_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubPrivateLinkResources Get. */
 public final class PrivateLinkHubPrivateLinkResourcesGetSamples {
     /*
@@ -3339,7 +3454,7 @@ public final class PrivateLinkHubPrivateLinkResourcesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .privateLinkHubPrivateLinkResources()
-            .getWithResponse("ExampleResourceGroup", "ExamplePrivateLinkHub", "sql", Context.NONE);
+            .getWithResponse("ExampleResourceGroup", "ExamplePrivateLinkHub", "sql", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3347,8 +3462,6 @@ public final class PrivateLinkHubPrivateLinkResourcesGetSamples {
 ### PrivateLinkHubPrivateLinkResources_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubPrivateLinkResources List. */
 public final class PrivateLinkHubPrivateLinkResourcesListSamples {
     /*
@@ -3363,7 +3476,7 @@ public final class PrivateLinkHubPrivateLinkResourcesListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .privateLinkHubPrivateLinkResources()
-            .list("ExampleResourceGroup", "ExamplePrivateLinkHub", Context.NONE);
+            .list("ExampleResourceGroup", "ExamplePrivateLinkHub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3410,8 +3523,6 @@ public final class PrivateLinkHubsCreateOrUpdateSamples {
 ### PrivateLinkHubs_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubs Delete. */
 public final class PrivateLinkHubsDeleteSamples {
     /*
@@ -3423,7 +3534,7 @@ public final class PrivateLinkHubsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkHubs().delete("resourceGroup1", "privateLinkHub1", Context.NONE);
+        manager.privateLinkHubs().delete("resourceGroup1", "privateLinkHub1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3431,8 +3542,6 @@ public final class PrivateLinkHubsDeleteSamples {
 ### PrivateLinkHubs_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubs GetByResourceGroup. */
 public final class PrivateLinkHubsGetByResourceGroupSamples {
     /*
@@ -3444,7 +3553,9 @@ public final class PrivateLinkHubsGetByResourceGroupSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkHubs().getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", Context.NONE);
+        manager
+            .privateLinkHubs()
+            .getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3452,8 +3563,6 @@ public final class PrivateLinkHubsGetByResourceGroupSamples {
 ### PrivateLinkHubs_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubs List. */
 public final class PrivateLinkHubsListSamples {
     /*
@@ -3465,7 +3574,7 @@ public final class PrivateLinkHubsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listPrivateLinkHubsInSubscription(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkHubs().list(Context.NONE);
+        manager.privateLinkHubs().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3473,8 +3582,6 @@ public final class PrivateLinkHubsListSamples {
 ### PrivateLinkHubs_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubs ListByResourceGroup. */
 public final class PrivateLinkHubsListByResourceGroupSamples {
     /*
@@ -3486,7 +3593,7 @@ public final class PrivateLinkHubsListByResourceGroupSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listPrivateLinkHubsInResourceGroup(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkHubs().listByResourceGroup("resourceGroup1", Context.NONE);
+        manager.privateLinkHubs().listByResourceGroup("resourceGroup1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3494,7 +3601,6 @@ public final class PrivateLinkHubsListByResourceGroupSamples {
 ### PrivateLinkHubs_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHub;
 import java.util.HashMap;
 import java.util.Map;
@@ -3513,7 +3619,7 @@ public final class PrivateLinkHubsUpdateSamples {
         PrivateLinkHub resource =
             manager
                 .privateLinkHubs()
-                .getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("key", "value")).apply();
     }
@@ -3531,13 +3637,11 @@ public final class PrivateLinkHubsUpdateSamples {
 }
 ```
 
-### PrivateLinkResources_Get
+### PrivateLinkResourcesOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateLinkResources Get. */
-public final class PrivateLinkResourcesGetSamples {
+/** Samples for PrivateLinkResourcesOperation Get. */
+public final class PrivateLinkResourcesOperationGetSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetPrivateLinkResource.json
      */
@@ -3547,18 +3651,18 @@ public final class PrivateLinkResourcesGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getPrivateLinkResourcesForWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkResources().getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "sql", Context.NONE);
+        manager
+            .privateLinkResourcesOperations()
+            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "sql", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### PrivateLinkResources_List
+### PrivateLinkResourcesOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateLinkResources List. */
-public final class PrivateLinkResourcesListSamples {
+/** Samples for PrivateLinkResourcesOperation List. */
+public final class PrivateLinkResourcesOperationListSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListPrivateLinkResources.json
      */
@@ -3568,7 +3672,9 @@ public final class PrivateLinkResourcesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getPrivateLinkResourcesForWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkResources().list("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager
+            .privateLinkResourcesOperations()
+            .list("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3576,8 +3682,6 @@ public final class PrivateLinkResourcesListSamples {
 ### RestorableDroppedSqlPools_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RestorableDroppedSqlPools Get. */
 public final class RestorableDroppedSqlPoolsGetSamples {
     /*
@@ -3595,7 +3699,7 @@ public final class RestorableDroppedSqlPoolsGetSamples {
                 "restorabledroppeddatabasetest-1257",
                 "restorabledroppeddatabasetest-2389",
                 "restorabledroppeddatabasetest-7654,131403269876900000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3603,8 +3707,6 @@ public final class RestorableDroppedSqlPoolsGetSamples {
 ### RestorableDroppedSqlPools_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RestorableDroppedSqlPools ListByWorkspace. */
 public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
     /*
@@ -3618,7 +3720,10 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
     public static void getListOfRestorableDroppedSqlPools(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .restorableDroppedSqlPools()
-            .listByWorkspace("restorabledroppeddatabasetest-1349", "restorabledroppeddatabasetest-1840", Context.NONE);
+            .listByWorkspace(
+                "restorabledroppeddatabasetest-1349",
+                "restorabledroppeddatabasetest-1840",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3626,8 +3731,6 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
 ### SparkConfiguration_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SparkConfiguration Get. */
 public final class SparkConfigurationGetSamples {
     /*
@@ -3641,7 +3744,11 @@ public final class SparkConfigurationGetSamples {
     public static void getSparkConfigurationByName(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sparkConfigurations()
-            .getWithResponse("exampleResourceGroup", "exampleSparkConfigurationName", "exampleWorkspace", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup",
+                "exampleSparkConfigurationName",
+                "exampleWorkspace",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3649,8 +3756,6 @@ public final class SparkConfigurationGetSamples {
 ### SparkConfigurationsOperation_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SparkConfigurationsOperation ListByWorkspace. */
 public final class SparkConfigurationsOperationListByWorkspaceSamples {
     /*
@@ -3664,7 +3769,7 @@ public final class SparkConfigurationsOperationListByWorkspaceSamples {
     public static void listSparkConfigurationsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sparkConfigurationsOperations()
-            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", Context.NONE);
+            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3735,8 +3840,6 @@ public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
 ### SqlPoolBlobAuditingPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolBlobAuditingPolicies Get. */
 public final class SqlPoolBlobAuditingPoliciesGetSamples {
     /*
@@ -3751,7 +3854,8 @@ public final class SqlPoolBlobAuditingPoliciesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolBlobAuditingPolicies()
-            .getWithResponse("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .getWithResponse(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3759,8 +3863,6 @@ public final class SqlPoolBlobAuditingPoliciesGetSamples {
 ### SqlPoolBlobAuditingPolicies_ListBySqlPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolBlobAuditingPolicies ListBySqlPool. */
 public final class SqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     /*
@@ -3774,7 +3876,8 @@ public final class SqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     public static void listAuditSettingsOfADatabase(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolBlobAuditingPolicies()
-            .listBySqlPool("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .listBySqlPool(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3782,8 +3885,6 @@ public final class SqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
 ### SqlPoolColumns_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolColumns Get. */
 public final class SqlPoolColumnsGetSamples {
     /*
@@ -3797,7 +3898,8 @@ public final class SqlPoolColumnsGetSamples {
     public static void getDatabaseColumn(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolColumns()
-            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", "table1", "column1", Context.NONE);
+            .getWithResponse(
+                "myRG", "serverName", "myDatabase", "dbo", "table1", "column1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3805,7 +3907,6 @@ public final class SqlPoolColumnsGetSamples {
 ### SqlPoolConnectionPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
 
 /** Samples for SqlPoolConnectionPolicies Get. */
@@ -3823,7 +3924,11 @@ public final class SqlPoolConnectionPoliciesGetSamples {
         manager
             .sqlPoolConnectionPolicies()
             .getWithResponse(
-                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", ConnectionPolicyName.DEFAULT, Context.NONE);
+                "blobauditingtest-6852",
+                "blobauditingtest-2080",
+                "testdb",
+                ConnectionPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3831,7 +3936,6 @@ public final class SqlPoolConnectionPoliciesGetSamples {
 ### SqlPoolDataWarehouseUserActivities_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
 
 /** Samples for SqlPoolDataWarehouseUserActivities Get. */
@@ -3848,7 +3952,11 @@ public final class SqlPoolDataWarehouseUserActivitiesGetSamples {
         manager
             .sqlPoolDataWarehouseUserActivities()
             .getWithResponse(
-                "Default-SQL-SouthEastAsia", "testsvr", "testdb", DataWarehouseUserActivityName.CURRENT, Context.NONE);
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                DataWarehouseUserActivityName.CURRENT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3883,7 +3991,6 @@ public final class SqlPoolGeoBackupPoliciesCreateOrUpdateSamples {
 ### SqlPoolGeoBackupPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 
 /** Samples for SqlPoolGeoBackupPolicies Get. */
@@ -3900,7 +4007,11 @@ public final class SqlPoolGeoBackupPoliciesGetSamples {
         manager
             .sqlPoolGeoBackupPolicies()
             .getWithResponse(
-                "sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", GeoBackupPolicyName.DEFAULT, Context.NONE);
+                "sqlcrudtest-4799",
+                "sqlcrudtest-5961",
+                "testdw",
+                GeoBackupPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3908,8 +4019,6 @@ public final class SqlPoolGeoBackupPoliciesGetSamples {
 ### SqlPoolGeoBackupPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolGeoBackupPolicies List. */
 public final class SqlPoolGeoBackupPoliciesListSamples {
     /*
@@ -3921,7 +4030,9 @@ public final class SqlPoolGeoBackupPoliciesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getSqlPoolGeoBackupPolicy(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolGeoBackupPolicies().list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", Context.NONE);
+        manager
+            .sqlPoolGeoBackupPolicies()
+            .list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3929,8 +4040,6 @@ public final class SqlPoolGeoBackupPoliciesListSamples {
 ### SqlPoolMaintenanceWindowOptions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolMaintenanceWindowOptions Get. */
 public final class SqlPoolMaintenanceWindowOptionsGetSamples {
     /*
@@ -3945,7 +4054,7 @@ public final class SqlPoolMaintenanceWindowOptionsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolMaintenanceWindowOptions()
-            .getWithResponse("samplerg", "testworkspace", "testsp", "current", Context.NONE);
+            .getWithResponse("samplerg", "testworkspace", "testsp", "current", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3953,7 +4062,6 @@ public final class SqlPoolMaintenanceWindowOptionsGetSamples {
 ### SqlPoolMaintenanceWindows_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import com.azure.resourcemanager.synapse.models.DayOfWeek;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
@@ -3986,7 +4094,7 @@ public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
                                     .withDayOfWeek(DayOfWeek.SATURDAY)
                                     .withStartTime("00:00:00")
                                     .withDuration("PT60M"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3994,8 +4102,6 @@ public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
 ### SqlPoolMaintenanceWindows_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolMaintenanceWindows Get. */
 public final class SqlPoolMaintenanceWindowsGetSamples {
     /*
@@ -4010,7 +4116,7 @@ public final class SqlPoolMaintenanceWindowsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolMaintenanceWindows()
-            .getWithResponse("samplerg", "testworkspace", "testsp", "current", Context.NONE);
+            .getWithResponse("samplerg", "testworkspace", "testsp", "current", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4018,7 +4124,6 @@ public final class SqlPoolMaintenanceWindowsGetSamples {
 ### SqlPoolMetadataSyncConfigs_Create
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 
 /** Samples for SqlPoolMetadataSyncConfigs Create. */
@@ -4040,7 +4145,7 @@ public final class SqlPoolMetadataSyncConfigsCreateSamples {
                 "ExampleWorkspace",
                 "ExampleSqlPool",
                 new MetadataSyncConfigInner().withEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4048,8 +4153,6 @@ public final class SqlPoolMetadataSyncConfigsCreateSamples {
 ### SqlPoolMetadataSyncConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolMetadataSyncConfigs Get. */
 public final class SqlPoolMetadataSyncConfigsGetSamples {
     /*
@@ -4064,7 +4167,8 @@ public final class SqlPoolMetadataSyncConfigsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolMetadataSyncConfigs()
-            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", Context.NONE);
+            .getWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4072,8 +4176,6 @@ public final class SqlPoolMetadataSyncConfigsGetSamples {
 ### SqlPoolOperationResults_GetLocationHeaderResult
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolOperationResults GetLocationHeaderResult. */
 public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
     /*
@@ -4088,12 +4190,12 @@ public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolOperationResults()
-            .getLocationHeaderResultWithResponse(
+            .getLocationHeaderResult(
                 "ExampleResourceGroup",
                 "ExampleWorkspace",
                 "ExampleSqlPool",
                 "fedcba98-7654-4210-fedc-ba9876543210",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4101,8 +4203,6 @@ public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
 ### SqlPoolOperations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolOperations List. */
 public final class SqlPoolOperationsListSamples {
     /*
@@ -4115,7 +4215,9 @@ public final class SqlPoolOperationsListSamples {
      */
     public static void listTheSqlAnalyticsPoolManagementOperations(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolOperations().list("sqlcrudtest-7398", "sqlcrudtest-4645", "testdb", Context.NONE);
+        manager
+            .sqlPoolOperations()
+            .list("sqlcrudtest-7398", "sqlcrudtest-4645", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4123,7 +4225,6 @@ public final class SqlPoolOperationsListSamples {
 ### SqlPoolRecommendedSensitivityLabels_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdate;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateKind;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateList;
@@ -4166,7 +4267,7 @@ public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
                                     .withSchema("dbo")
                                     .withTable("table1")
                                     .withColumn("column3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4174,8 +4275,6 @@ public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
 ### SqlPoolReplicationLinks_GetByName
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolReplicationLinks GetByName. */
 public final class SqlPoolReplicationLinksGetByNameSamples {
     /*
@@ -4191,7 +4290,11 @@ public final class SqlPoolReplicationLinksGetByNameSamples {
         manager
             .sqlPoolReplicationLinks()
             .getByNameWithResponse(
-                "sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", "5b301b68-03f6-4b26-b0f4-73ebb8634238", Context.NONE);
+                "sqlcrudtest-4799",
+                "sqlcrudtest-6440",
+                "testdb",
+                "5b301b68-03f6-4b26-b0f4-73ebb8634238",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4199,8 +4302,6 @@ public final class SqlPoolReplicationLinksGetByNameSamples {
 ### SqlPoolReplicationLinks_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolReplicationLinks List. */
 public final class SqlPoolReplicationLinksListSamples {
     /*
@@ -4213,7 +4314,9 @@ public final class SqlPoolReplicationLinksListSamples {
      */
     public static void listsASqlAnalyticPoolSReplicationLinks(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolReplicationLinks().list("sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", Context.NONE);
+        manager
+            .sqlPoolReplicationLinks()
+            .list("sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4221,7 +4324,6 @@ public final class SqlPoolReplicationLinksListSamples {
 ### SqlPoolRestorePoints_Create
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
 
 /** Samples for SqlPoolRestorePoints Create. */
@@ -4242,7 +4344,7 @@ public final class SqlPoolRestorePointsCreateSamples {
                 "testserver",
                 "testDatabase",
                 new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("mylabel"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4250,8 +4352,6 @@ public final class SqlPoolRestorePointsCreateSamples {
 ### SqlPoolRestorePoints_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolRestorePoints Delete. */
 public final class SqlPoolRestorePointsDeleteSamples {
     /*
@@ -4265,7 +4365,12 @@ public final class SqlPoolRestorePointsDeleteSamples {
     public static void deletesARestorePoint(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolRestorePoints()
-            .deleteWithResponse("Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", Context.NONE);
+            .deleteWithResponse(
+                "Default-SQL-SouthEastAsia",
+                "testws",
+                "testpool",
+                "131546477590000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4273,8 +4378,6 @@ public final class SqlPoolRestorePointsDeleteSamples {
 ### SqlPoolRestorePoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolRestorePoints Get. */
 public final class SqlPoolRestorePointsGetSamples {
     /*
@@ -4288,7 +4391,12 @@ public final class SqlPoolRestorePointsGetSamples {
     public static void getsASqlPoolRestorePoint(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolRestorePoints()
-            .getWithResponse("Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", Context.NONE);
+            .getWithResponse(
+                "Default-SQL-SouthEastAsia",
+                "testws",
+                "testpool",
+                "131546477590000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4296,8 +4404,6 @@ public final class SqlPoolRestorePointsGetSamples {
 ### SqlPoolRestorePoints_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolRestorePoints List. */
 public final class SqlPoolRestorePointsListSamples {
     /*
@@ -4310,7 +4416,9 @@ public final class SqlPoolRestorePointsListSamples {
      */
     public static void getAListOfRestorePointsOfASQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolRestorePoints().list("Default-SQL-SouthEastAsia", "testserver", "testDatabase", Context.NONE);
+        manager
+            .sqlPoolRestorePoints()
+            .list("Default-SQL-SouthEastAsia", "testserver", "testDatabase", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4318,8 +4426,6 @@ public final class SqlPoolRestorePointsListSamples {
 ### SqlPoolSchemas_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSchemas Get. */
 public final class SqlPoolSchemasGetSamples {
     /*
@@ -4331,7 +4437,9 @@ public final class SqlPoolSchemasGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getDatabaseSchema(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSchemas().getWithResponse("myRG", "serverName", "myDatabase", "dbo", Context.NONE);
+        manager
+            .sqlPoolSchemas()
+            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4339,8 +4447,6 @@ public final class SqlPoolSchemasGetSamples {
 ### SqlPoolSchemas_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSchemas List. */
 public final class SqlPoolSchemasListSamples {
     /*
@@ -4352,7 +4458,7 @@ public final class SqlPoolSchemasListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listTheSchemaInASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSchemas().list("myRG", "serverName", "myDatabase", null, Context.NONE);
+        manager.sqlPoolSchemas().list("myRG", "serverName", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4360,11 +4466,9 @@ public final class SqlPoolSchemasListSamples {
 ### SqlPoolSecurityAlertPolicies_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.synapse.models.SqlPoolSecurityAlertPolicy;
-import java.util.Arrays;
 
 /** Samples for SqlPoolSecurityAlertPolicies CreateOrUpdate. */
 public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
@@ -4382,13 +4486,15 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
             manager
                 .sqlPoolSecurityAlertPolicies()
                 .getWithResponse(
-                    "securityalert-4799", "securityalert-6440", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE)
+                    "securityalert-4799",
+                    "securityalert-6440",
+                    "testdb",
+                    SecurityAlertPolicyName.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withState(SecurityAlertPolicyState.ENABLED)
-            .withDisabledAlerts(Arrays.asList("Sql_Injection", "Usage_Anomaly"))
-            .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
             .withEmailAccountAdmins(true)
             .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
@@ -4411,7 +4517,11 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
             manager
                 .sqlPoolSecurityAlertPolicies()
                 .getWithResponse(
-                    "securityalert-4799", "securityalert-6440", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE)
+                    "securityalert-4799",
+                    "securityalert-6440",
+                    "testdb",
+                    SecurityAlertPolicyName.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withState(SecurityAlertPolicyState.ENABLED).apply();
     }
@@ -4421,7 +4531,6 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
 ### SqlPoolSecurityAlertPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 
 /** Samples for SqlPoolSecurityAlertPolicies Get. */
@@ -4438,7 +4547,11 @@ public final class SqlPoolSecurityAlertPoliciesGetSamples {
         manager
             .sqlPoolSecurityAlertPolicies()
             .getWithResponse(
-                "securityalert-6852", "securityalert-2080", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE);
+                "securityalert-6852",
+                "securityalert-2080",
+                "testdb",
+                SecurityAlertPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4446,8 +4559,6 @@ public final class SqlPoolSecurityAlertPoliciesGetSamples {
 ### SqlPoolSecurityAlertPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSecurityAlertPolicies List. */
 public final class SqlPoolSecurityAlertPoliciesListSamples {
     /*
@@ -4459,7 +4570,9 @@ public final class SqlPoolSecurityAlertPoliciesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getASecurityAlertOfASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSecurityAlertPolicies().list("securityalert-6852", "securityalert-2080", "testdb", Context.NONE);
+        manager
+            .sqlPoolSecurityAlertPolicies()
+            .list("securityalert-6852", "securityalert-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4467,8 +4580,6 @@ public final class SqlPoolSecurityAlertPoliciesListSamples {
 ### SqlPoolSensitivityLabels_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels Delete. */
 public final class SqlPoolSensitivityLabelsDeleteSamples {
     /*
@@ -4483,7 +4594,8 @@ public final class SqlPoolSensitivityLabelsDeleteSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolSensitivityLabels()
-            .deleteWithResponse("myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+            .deleteWithResponse(
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4491,8 +4603,6 @@ public final class SqlPoolSensitivityLabelsDeleteSamples {
 ### SqlPoolSensitivityLabels_DisableRecommendation
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels DisableRecommendation. */
 public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
     /*
@@ -4508,7 +4618,7 @@ public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
         manager
             .sqlPoolSensitivityLabels()
             .disableRecommendationWithResponse(
-                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4516,8 +4626,6 @@ public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
 ### SqlPoolSensitivityLabels_EnableRecommendation
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels EnableRecommendation. */
 public final class SqlPoolSensitivityLabelsEnableRecommendationSamples {
     /*
@@ -4533,7 +4641,7 @@ public final class SqlPoolSensitivityLabelsEnableRecommendationSamples {
         manager
             .sqlPoolSensitivityLabels()
             .enableRecommendationWithResponse(
-                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4541,7 +4649,6 @@ public final class SqlPoolSensitivityLabelsEnableRecommendationSamples {
 ### SqlPoolSensitivityLabels_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelSource;
 
 /** Samples for SqlPoolSensitivityLabels Get. */
@@ -4565,7 +4672,7 @@ public final class SqlPoolSensitivityLabelsGetSamples {
                 "myTable",
                 "myColumn",
                 SensitivityLabelSource.CURRENT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4573,8 +4680,6 @@ public final class SqlPoolSensitivityLabelsGetSamples {
 ### SqlPoolSensitivityLabels_ListCurrent
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels ListCurrent. */
 public final class SqlPoolSensitivityLabelsListCurrentSamples {
     /*
@@ -4587,7 +4692,9 @@ public final class SqlPoolSensitivityLabelsListCurrentSamples {
      */
     public static void getsTheCurrentSensitivityLabelsOfAGivenSQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSensitivityLabels().listCurrent("myRG", "myServer", "myDatabase", null, Context.NONE);
+        manager
+            .sqlPoolSensitivityLabels()
+            .listCurrent("myRG", "myServer", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4595,8 +4702,6 @@ public final class SqlPoolSensitivityLabelsListCurrentSamples {
 ### SqlPoolSensitivityLabels_ListRecommended
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels ListRecommended. */
 public final class SqlPoolSensitivityLabelsListRecommendedSamples {
     /*
@@ -4611,7 +4716,7 @@ public final class SqlPoolSensitivityLabelsListRecommendedSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolSensitivityLabels()
-            .listRecommended("myRG", "myServer", "myDatabase", null, null, null, Context.NONE);
+            .listRecommended("myRG", "myServer", "myDatabase", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4619,7 +4724,6 @@ public final class SqlPoolSensitivityLabelsListRecommendedSamples {
 ### SqlPoolSensitivityLabels_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelUpdateInner;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelRank;
@@ -4678,7 +4782,7 @@ public final class SqlPoolSensitivityLabelsUpdateSamples {
                                     .withSchema("dbo")
                                     .withTable("Table1")
                                     .withColumn("Column3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4686,8 +4790,6 @@ public final class SqlPoolSensitivityLabelsUpdateSamples {
 ### SqlPoolTableColumns_ListByTableName
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTableColumns ListByTableName. */
 public final class SqlPoolTableColumnsListByTableNameSamples {
     /*
@@ -4702,7 +4804,8 @@ public final class SqlPoolTableColumnsListByTableNameSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolTableColumns()
-            .listByTableName("myRG", "serverName", "myDatabase", "dbo", "table1", null, Context.NONE);
+            .listByTableName(
+                "myRG", "serverName", "myDatabase", "dbo", "table1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4710,8 +4813,6 @@ public final class SqlPoolTableColumnsListByTableNameSamples {
 ### SqlPoolTables_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTables Get. */
 public final class SqlPoolTablesGetSamples {
     /*
@@ -4723,7 +4824,9 @@ public final class SqlPoolTablesGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getDatabaseTable(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolTables().getWithResponse("myRG", "serverName", "myDatabase", "dbo", "table1", Context.NONE);
+        manager
+            .sqlPoolTables()
+            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", "table1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4731,8 +4834,6 @@ public final class SqlPoolTablesGetSamples {
 ### SqlPoolTables_ListBySchema
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTables ListBySchema. */
 public final class SqlPoolTablesListBySchemaSamples {
     /*
@@ -4745,7 +4846,9 @@ public final class SqlPoolTablesListBySchemaSamples {
      */
     public static void listTheTablesOfAGivenSchemaInASQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolTables().listBySchema("myRG", "serverName", "myDatabase", "dbo", null, Context.NONE);
+        manager
+            .sqlPoolTables()
+            .listBySchema("myRG", "serverName", "myDatabase", "dbo", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4781,7 +4884,6 @@ public final class SqlPoolTransparentDataEncryptionsCreateOrUpdateSamples {
 ### SqlPoolTransparentDataEncryptions_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
 
 /** Samples for SqlPoolTransparentDataEncryptions Get. */
@@ -4803,7 +4905,7 @@ public final class SqlPoolTransparentDataEncryptionsGetSamples {
                 "sqlcrudtest-2080",
                 "sqlcrudtest-9187",
                 TransparentDataEncryptionName.CURRENT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4811,8 +4913,6 @@ public final class SqlPoolTransparentDataEncryptionsGetSamples {
 ### SqlPoolTransparentDataEncryptions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTransparentDataEncryptions List. */
 public final class SqlPoolTransparentDataEncryptionsListSamples {
     /*
@@ -4827,7 +4927,7 @@ public final class SqlPoolTransparentDataEncryptionsListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolTransparentDataEncryptions()
-            .list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", Context.NONE);
+            .list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4835,8 +4935,6 @@ public final class SqlPoolTransparentDataEncryptionsListSamples {
 ### SqlPoolUsages_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolUsages List. */
 public final class SqlPoolUsagesListSamples {
     /*
@@ -4848,7 +4946,7 @@ public final class SqlPoolUsagesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listTheUsagesOfASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolUsages().list("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", Context.NONE);
+        manager.sqlPoolUsages().list("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4899,7 +4997,6 @@ public final class SqlPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateSamp
 ### SqlPoolVulnerabilityAssessmentRuleBaselines_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentPolicyBaselineName;
 
@@ -4924,7 +5021,7 @@ public final class SqlPoolVulnerabilityAssessmentRuleBaselinesDeleteSamples {
                 VulnerabilityAssessmentName.DEFAULT,
                 "VA1001",
                 VulnerabilityAssessmentPolicyBaselineName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4932,7 +5029,6 @@ public final class SqlPoolVulnerabilityAssessmentRuleBaselinesDeleteSamples {
 ### SqlPoolVulnerabilityAssessmentRuleBaselines_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentPolicyBaselineName;
 
@@ -4957,7 +5053,7 @@ public final class SqlPoolVulnerabilityAssessmentRuleBaselinesGetSamples {
                 VulnerabilityAssessmentName.DEFAULT,
                 "VA1001",
                 VulnerabilityAssessmentPolicyBaselineName.MASTER,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4965,7 +5061,6 @@ public final class SqlPoolVulnerabilityAssessmentRuleBaselinesGetSamples {
 ### SqlPoolVulnerabilityAssessmentScans_Export
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessmentScans Export. */
@@ -4988,7 +5083,7 @@ public final class SqlPoolVulnerabilityAssessmentScansExportSamples {
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
                 "scan001",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4996,7 +5091,6 @@ public final class SqlPoolVulnerabilityAssessmentScansExportSamples {
 ### SqlPoolVulnerabilityAssessmentScans_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessmentScans Get. */
@@ -5019,7 +5113,7 @@ public final class SqlPoolVulnerabilityAssessmentScansGetSamples {
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
                 "scan001",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5027,7 +5121,6 @@ public final class SqlPoolVulnerabilityAssessmentScansGetSamples {
 ### SqlPoolVulnerabilityAssessmentScans_InitiateScan
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessmentScans InitiateScan. */
@@ -5050,7 +5143,7 @@ public final class SqlPoolVulnerabilityAssessmentScansInitiateScanSamples {
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
                 "scan01",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5058,7 +5151,6 @@ public final class SqlPoolVulnerabilityAssessmentScansInitiateScanSamples {
 ### SqlPoolVulnerabilityAssessmentScans_List
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessmentScans List. */
@@ -5080,7 +5172,7 @@ public final class SqlPoolVulnerabilityAssessmentScansListSamples {
                 "vulnerabilityassessmenttest-6411",
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5166,7 +5258,6 @@ public final class SqlPoolVulnerabilityAssessmentsCreateOrUpdateSamples {
 ### SqlPoolVulnerabilityAssessments_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessments Delete. */
@@ -5188,7 +5279,7 @@ public final class SqlPoolVulnerabilityAssessmentsDeleteSamples {
                 "vulnerabilityaseessmenttest-6440",
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5196,7 +5287,6 @@ public final class SqlPoolVulnerabilityAssessmentsDeleteSamples {
 ### SqlPoolVulnerabilityAssessments_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for SqlPoolVulnerabilityAssessments Get. */
@@ -5217,7 +5307,7 @@ public final class SqlPoolVulnerabilityAssessmentsGetSamples {
                 "vulnerabilityaseessmenttest-6440",
                 "testdb",
                 VulnerabilityAssessmentName.DEFAULT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5225,8 +5315,6 @@ public final class SqlPoolVulnerabilityAssessmentsGetSamples {
 ### SqlPoolVulnerabilityAssessments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolVulnerabilityAssessments List. */
 public final class SqlPoolVulnerabilityAssessmentsListSamples {
     /*
@@ -5241,7 +5329,11 @@ public final class SqlPoolVulnerabilityAssessmentsListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolVulnerabilityAssessments()
-            .list("vulnerabilityaseessmenttest-4799", "vulnerabilityaseessmenttest-6440", "testdb", Context.NONE);
+            .list(
+                "vulnerabilityaseessmenttest-4799",
+                "vulnerabilityaseessmenttest-6440",
+                "testdb",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5297,8 +5389,6 @@ public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
 ### SqlPoolWorkloadClassifier_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier Delete. */
 public final class SqlPoolWorkloadClassifierDeleteSamples {
     /*
@@ -5319,7 +5409,7 @@ public final class SqlPoolWorkloadClassifierDeleteSamples {
                 "sqlcrudtest-9187",
                 "wlm_workloadgroup",
                 "wlm_workloadclassifier",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5327,8 +5417,6 @@ public final class SqlPoolWorkloadClassifierDeleteSamples {
 ### SqlPoolWorkloadClassifier_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier Get. */
 public final class SqlPoolWorkloadClassifierGetSamples {
     /*
@@ -5349,7 +5437,7 @@ public final class SqlPoolWorkloadClassifierGetSamples {
                 "sqlcrudtest-9187",
                 "wlm_workloadgroup",
                 "wlm_classifier",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5357,8 +5445,6 @@ public final class SqlPoolWorkloadClassifierGetSamples {
 ### SqlPoolWorkloadClassifier_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier List. */
 public final class SqlPoolWorkloadClassifierListSamples {
     /*
@@ -5373,7 +5459,12 @@ public final class SqlPoolWorkloadClassifierListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolWorkloadClassifiers()
-            .list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", Context.NONE);
+            .list(
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-9187",
+                "wlm_workloadgroup",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5420,7 +5511,7 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
             .withMinResourcePercent(0)
             .withMaxResourcePercent(100)
             .withMinResourcePercentPerRequest(3.0)
-            .withMaxResourcePercentPerRequest(3.0)
+            .withMaxResourcePercentPerRequest(3.0D)
             .withImportance("normal")
             .withQueryExecutionTimeout(0)
             .create();
@@ -5431,8 +5522,6 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
 ### SqlPoolWorkloadGroup_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadGroup Delete. */
 public final class SqlPoolWorkloadGroupDeleteSamples {
     /*
@@ -5447,7 +5536,12 @@ public final class SqlPoolWorkloadGroupDeleteSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolWorkloadGroups()
-            .delete("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", Context.NONE);
+            .delete(
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-9187",
+                "wlm_workloadgroup",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5455,8 +5549,6 @@ public final class SqlPoolWorkloadGroupDeleteSamples {
 ### SqlPoolWorkloadGroup_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadGroup Get. */
 public final class SqlPoolWorkloadGroupGetSamples {
     /*
@@ -5470,7 +5562,12 @@ public final class SqlPoolWorkloadGroupGetSamples {
     public static void getAAWorkloadGroupOfASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolWorkloadGroups()
-            .getWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "smallrc", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-9187",
+                "smallrc",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5478,8 +5575,6 @@ public final class SqlPoolWorkloadGroupGetSamples {
 ### SqlPoolWorkloadGroup_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadGroup List. */
 public final class SqlPoolWorkloadGroupListSamples {
     /*
@@ -5492,7 +5587,9 @@ public final class SqlPoolWorkloadGroupListSamples {
      */
     public static void getTheListOfWorkloadGroupsOfASQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolWorkloadGroups().list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", Context.NONE);
+        manager
+            .sqlPoolWorkloadGroups()
+            .list("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5549,8 +5646,6 @@ public final class SqlPoolsCreateSamples {
 ### SqlPools_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Delete. */
 public final class SqlPoolsDeleteSamples {
     /*
@@ -5562,7 +5657,9 @@ public final class SqlPoolsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().delete("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", Context.NONE);
+        manager
+            .sqlPools()
+            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5570,8 +5667,6 @@ public final class SqlPoolsDeleteSamples {
 ### SqlPools_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Get. */
 public final class SqlPoolsGetSamples {
     /*
@@ -5583,7 +5678,10 @@ public final class SqlPoolsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().getWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", Context.NONE);
+        manager
+            .sqlPools()
+            .getWithResponse(
+                "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5591,8 +5689,6 @@ public final class SqlPoolsGetSamples {
 ### SqlPools_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools ListByWorkspace. */
 public final class SqlPoolsListByWorkspaceSamples {
     /*
@@ -5605,7 +5701,7 @@ public final class SqlPoolsListByWorkspaceSamples {
      */
     public static void listSQLAnalyticsPoolsInAWorkspaceWithFilter(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", Context.NONE);
+        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -5617,7 +5713,7 @@ public final class SqlPoolsListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listSQLAnalyticsPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", Context.NONE);
+        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5625,8 +5721,6 @@ public final class SqlPoolsListByWorkspaceSamples {
 ### SqlPools_Pause
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Pause. */
 public final class SqlPoolsPauseSamples {
     /*
@@ -5638,7 +5732,7 @@ public final class SqlPoolsPauseSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void pauseASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().pause("Default-SQL-SouthEastAsia", "testsvr", "testdwdb", Context.NONE);
+        manager.sqlPools().pause("Default-SQL-SouthEastAsia", "testsvr", "testdwdb", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5646,7 +5740,6 @@ public final class SqlPoolsPauseSamples {
 ### SqlPools_Rename
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 
 /** Samples for SqlPools Rename. */
@@ -5669,7 +5762,7 @@ public final class SqlPoolsRenameSamples {
                 new ResourceMoveDefinition()
                     .withId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Synapse/workspaces/testsvr/sqlPools/newtestdb"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5677,8 +5770,6 @@ public final class SqlPoolsRenameSamples {
 ### SqlPools_Resume
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Resume. */
 public final class SqlPoolsResumeSamples {
     /*
@@ -5690,7 +5781,9 @@ public final class SqlPoolsResumeSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void resumeASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().resume("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", Context.NONE);
+        manager
+            .sqlPools()
+            .resume("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5698,10 +5791,8 @@ public final class SqlPoolsResumeSamples {
 ### SqlPools_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5719,16 +5810,10 @@ public final class SqlPoolsUpdateSamples {
         SqlPool resource =
             manager
                 .sqlPools()
-                .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", Context.NONE)
+                .getWithResponse(
+                    "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource
-            .update()
-            .withTags(mapOf())
-            .withSku(new Sku().withTier("").withName(""))
-            .withMaxSizeBytes(0L)
-            .withCollation("")
-            .withRestorePointInTime(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
-            .apply();
+        resource.update().withTags(mapOf()).withSku(new Sku().withTier("").withName("")).withMaxSizeBytes(0L).apply();
     }
 
     @SuppressWarnings("unchecked")
@@ -5747,7 +5832,6 @@ public final class SqlPoolsUpdateSamples {
 ### WorkspaceAadAdmins_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 
 /** Samples for WorkspaceAadAdmins CreateOrUpdate. */
@@ -5772,7 +5856,7 @@ public final class WorkspaceAadAdminsCreateOrUpdateSamples {
                     .withLogin("bob@contoso.com")
                     .withAdministratorType("ActiveDirectory")
                     .withSid("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5780,8 +5864,6 @@ public final class WorkspaceAadAdminsCreateOrUpdateSamples {
 ### WorkspaceAadAdmins_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceAadAdmins Delete. */
 public final class WorkspaceAadAdminsDeleteSamples {
     /*
@@ -5793,7 +5875,7 @@ public final class WorkspaceAadAdminsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceAadAdmins().delete("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceAadAdmins().delete("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5801,8 +5883,6 @@ public final class WorkspaceAadAdminsDeleteSamples {
 ### WorkspaceAadAdmins_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceAadAdmins Get. */
 public final class WorkspaceAadAdminsGetSamples {
     /*
@@ -5814,7 +5894,7 @@ public final class WorkspaceAadAdminsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5822,10 +5902,9 @@ public final class WorkspaceAadAdminsGetSamples {
 ### WorkspaceManagedIdentitySqlControlSettings_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
+import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
-import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 
 /** Samples for WorkspaceManagedIdentitySqlControlSettings CreateOrUpdate. */
 public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSamples {
@@ -5847,10 +5926,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSampl
                 new ManagedIdentitySqlControlSettingsModelInner()
                     .withGrantSqlControlToManagedIdentity(
                         new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                            .withDesiredState(
-                                ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState
-                                    .ENABLED)),
-                Context.NONE);
+                            .withDesiredState(DesiredState.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5858,8 +5935,6 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSampl
 ### WorkspaceManagedIdentitySqlControlSettings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedIdentitySqlControlSettings Get. */
 public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     /*
@@ -5873,7 +5948,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     public static void getManagedIdentitySqlControlSettings(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedIdentitySqlControlSettings()
-            .getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+            .getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5946,7 +6021,6 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesCreateOrUpdateSa
 ### WorkspaceManagedSqlServerBlobAuditingPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
 
 /** Samples for WorkspaceManagedSqlServerBlobAuditingPolicies Get. */
@@ -5963,7 +6037,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerBlobAuditingPolicies()
-            .getWithResponse("wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5971,8 +6046,6 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesGetSamples {
 ### WorkspaceManagedSqlServerBlobAuditingPolicies_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerBlobAuditingPolicies ListByWorkspace. */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesListByWorkspaceSamples {
     /*
@@ -5987,7 +6060,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesListByWorkspaceS
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerBlobAuditingPolicies()
-            .listByWorkspace("wsg-7398", "testWorkspace", Context.NONE);
+            .listByWorkspace("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5995,8 +6068,6 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesListByWorkspaceS
 ### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings Get. */
 public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsGetSamples {
     /*
@@ -6011,7 +6082,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsGetSam
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .getWithResponse("workspace-6852", "workspace-2080", "default", Context.NONE);
+            .getWithResponse("workspace-6852", "workspace-2080", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6019,8 +6090,6 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsGetSam
 ### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings List. */
 public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSamples {
     /*
@@ -6035,7 +6104,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSa
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .list("workspace-6852", "workspace-2080", Context.NONE);
+            .list("workspace-6852", "workspace-2080", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6043,7 +6112,6 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSa
 ### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DedicatedSQLminimalTlsSettingsInner;
 import com.azure.resourcemanager.synapse.models.DedicatedSqlMinimalTlsSettingsName;
 
@@ -6066,7 +6134,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsUpdate
                 "workspace-2080",
                 DedicatedSqlMinimalTlsSettingsName.DEFAULT,
                 new DedicatedSQLminimalTlsSettingsInner().withMinimalTlsVersion("1.1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6074,7 +6142,6 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsUpdate
 ### WorkspaceManagedSqlServerEncryptionProtector_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EncryptionProtector;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 import com.azure.resourcemanager.synapse.models.ServerKeyType;
@@ -6094,7 +6161,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateSam
         EncryptionProtector resource =
             manager
                 .workspaceManagedSqlServerEncryptionProtectors()
-                .getWithResponse("wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, Context.NONE)
+                .getWithResponse(
+                    "wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -6116,7 +6184,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateSam
         EncryptionProtector resource =
             manager
                 .workspaceManagedSqlServerEncryptionProtectors()
-                .getWithResponse("wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, Context.NONE)
+                .getWithResponse(
+                    "wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withServerKeyName("ServiceManaged").withServerKeyType(ServerKeyType.SERVICE_MANAGED).apply();
     }
@@ -6126,7 +6195,6 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateSam
 ### WorkspaceManagedSqlServerEncryptionProtector_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 
 /** Samples for WorkspaceManagedSqlServerEncryptionProtector Get. */
@@ -6143,7 +6211,8 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerEncryptionProtectors()
-            .getWithResponse("wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6151,8 +6220,6 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorGetSamples {
 ### WorkspaceManagedSqlServerEncryptionProtector_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerEncryptionProtector List. */
 public final class WorkspaceManagedSqlServerEncryptionProtectorListSamples {
     /*
@@ -6165,7 +6232,9 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorListSamples {
      */
     public static void getWorkspaceManagedSqlServerSEncryptionProtectors(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerEncryptionProtectors().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerEncryptionProtectors()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6173,7 +6242,6 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorListSamples {
 ### WorkspaceManagedSqlServerEncryptionProtector_Revalidate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 
 /** Samples for WorkspaceManagedSqlServerEncryptionProtector Revalidate. */
@@ -6189,7 +6257,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorRevalidateSamples
     public static void revalidatesTheEncryptionProtector(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerEncryptionProtectors()
-            .revalidate("wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, Context.NONE);
+            .revalidate("wsg-7398", "testWorkspace", EncryptionProtectorName.CURRENT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6264,7 +6332,6 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesCreateOr
 ### WorkspaceManagedSqlServerExtendedBlobAuditingPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
 
 /** Samples for WorkspaceManagedSqlServerExtendedBlobAuditingPolicies Get. */
@@ -6281,7 +6348,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesGetSampl
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerExtendedBlobAuditingPolicies()
-            .getWithResponse("wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6289,8 +6357,6 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesGetSampl
 ### WorkspaceManagedSqlServerExtendedBlobAuditingPolicies_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerExtendedBlobAuditingPolicies ListByWorkspace. */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWorkspaceSamples {
     /*
@@ -6305,7 +6371,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWo
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerExtendedBlobAuditingPolicies()
-            .listByWorkspace("wsg-7398", "testWorkspace", Context.NONE);
+            .listByWorkspace("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6313,8 +6379,6 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWo
 ### WorkspaceManagedSqlServerRecoverableSqlPools_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerRecoverableSqlPools Get. */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
     /*
@@ -6328,7 +6392,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
     public static void getRecoverableSqlPoolsForTheServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerRecoverableSqlPools()
-            .getWithResponse("wsg-7398", "testWorkspace", "recoverableSqlpools-1235", Context.NONE);
+            .getWithResponse("wsg-7398", "testWorkspace", "recoverableSqlpools-1235", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6336,8 +6400,6 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
 ### WorkspaceManagedSqlServerRecoverableSqlPools_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerRecoverableSqlPools List. */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
     /*
@@ -6349,7 +6411,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listRecoverableSqlPoolsForTheServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerRecoverableSqlPools().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerRecoverableSqlPools()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6357,11 +6421,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
 ### WorkspaceManagedSqlServerSecurityAlertPolicy_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGenerated;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.synapse.models.ServerSecurityAlertPolicy;
-import java.util.Arrays;
 
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy CreateOrUpdate. */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSamples {
@@ -6379,18 +6441,16 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
             manager
                 .workspaceManagedSqlServerSecurityAlertPolicies()
                 .getWithResponse(
-                    "wsg-7398", "testWorkspace", SecurityAlertPolicyNameAutoGenerated.DEFAULT, Context.NONE)
+                    "wsg-7398",
+                    "testWorkspace",
+                    SecurityAlertPolicyNameAutoGenerated.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withState(SecurityAlertPolicyState.ENABLED)
-            .withDisabledAlerts(Arrays.asList("Access_Anomaly", "Usage_Anomaly"))
-            .withEmailAddresses(Arrays.asList("testSecurityAlert@microsoft.com"))
-            .withEmailAccountAdmins(true)
-            .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
                 "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
-            .withRetentionDays(5)
             .apply();
     }
 
@@ -6408,13 +6468,14 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
             manager
                 .workspaceManagedSqlServerSecurityAlertPolicies()
                 .getWithResponse(
-                    "wsg-7398", "testWorkspace", SecurityAlertPolicyNameAutoGenerated.DEFAULT, Context.NONE)
+                    "wsg-7398",
+                    "testWorkspace",
+                    SecurityAlertPolicyNameAutoGenerated.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withState(SecurityAlertPolicyState.DISABLED)
-            .withEmailAccountAdmins(true)
-            .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
                 "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
             .apply();
@@ -6425,7 +6486,6 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
 ### WorkspaceManagedSqlServerSecurityAlertPolicy_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGenerated;
 
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy Get. */
@@ -6442,7 +6502,11 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerSecurityAlertPolicies()
-            .getWithResponse("wsg-7398", "testWorkspace", SecurityAlertPolicyNameAutoGenerated.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398",
+                "testWorkspace",
+                SecurityAlertPolicyNameAutoGenerated.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6450,8 +6514,6 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyGetSamples {
 ### WorkspaceManagedSqlServerSecurityAlertPolicy_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy List. */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
     /*
@@ -6464,7 +6526,9 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
      */
     public static void getWorkspaceManagedSqlServerSSecurityAlertPolicy(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerSecurityAlertPolicies().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerSecurityAlertPolicies()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6472,8 +6536,6 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
 ### WorkspaceManagedSqlServerUsages_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerUsages List. */
 public final class WorkspaceManagedSqlServerUsagesListSamples {
     /*
@@ -6486,7 +6548,7 @@ public final class WorkspaceManagedSqlServerUsagesListSamples {
      */
     public static void listUsagesMetricForTheWorkspaceManagedSqlServer(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerUsages().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager.workspaceManagedSqlServerUsages().list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6495,7 +6557,7 @@ public final class WorkspaceManagedSqlServerUsagesListSamples {
 
 ```java
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
-import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentRecurringScansProperties;
+import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated;
 import java.util.Arrays;
 
 /** Samples for WorkspaceManagedSqlServerVulnerabilityAssessments CreateOrUpdate. */
@@ -6560,7 +6622,7 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsCreateOrUpda
             .withStorageContainerSasKey("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
             .withStorageAccountAccessKey("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
             .withRecurringScans(
-                new VulnerabilityAssessmentRecurringScansProperties()
+                new VulnerabilityAssessmentRecurringScansPropertiesAutoGenerated()
                     .withIsEnabled(true)
                     .withEmailSubscriptionAdmins(true)
                     .withEmails(Arrays.asList("email1@mail.com", "email2@mail.com")))
@@ -6572,7 +6634,6 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsCreateOrUpda
 ### WorkspaceManagedSqlServerVulnerabilityAssessments_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for WorkspaceManagedSqlServerVulnerabilityAssessments Delete. */
@@ -6589,7 +6650,8 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsDeleteSample
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerVulnerabilityAssessments()
-            .deleteWithResponse("wsg-7398", "testWorkspace", VulnerabilityAssessmentName.DEFAULT, Context.NONE);
+            .deleteWithResponse(
+                "wsg-7398", "testWorkspace", VulnerabilityAssessmentName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6597,7 +6659,6 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsDeleteSample
 ### WorkspaceManagedSqlServerVulnerabilityAssessments_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
 
 /** Samples for WorkspaceManagedSqlServerVulnerabilityAssessments Get. */
@@ -6614,7 +6675,8 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerVulnerabilityAssessments()
-            .getWithResponse("wsg-7398", "testWorkspace", VulnerabilityAssessmentName.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398", "testWorkspace", VulnerabilityAssessmentName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6622,8 +6684,6 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsGetSamples {
 ### WorkspaceManagedSqlServerVulnerabilityAssessments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerVulnerabilityAssessments List. */
 public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsListSamples {
     /*
@@ -6636,7 +6696,9 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsListSamples 
      */
     public static void getWorkspaceManagedSqlServerSVulnerabilityAssessmentPolicies(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerVulnerabilityAssessments().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerVulnerabilityAssessments()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6644,7 +6706,6 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsListSamples 
 ### WorkspaceSqlAadAdmins_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 
 /** Samples for WorkspaceSqlAadAdmins CreateOrUpdate. */
@@ -6669,7 +6730,7 @@ public final class WorkspaceSqlAadAdminsCreateOrUpdateSamples {
                     .withLogin("bob@contoso.com")
                     .withAdministratorType("ActiveDirectory")
                     .withSid("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6677,8 +6738,6 @@ public final class WorkspaceSqlAadAdminsCreateOrUpdateSamples {
 ### WorkspaceSqlAadAdmins_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceSqlAadAdmins Delete. */
 public final class WorkspaceSqlAadAdminsDeleteSamples {
     /*
@@ -6690,7 +6749,7 @@ public final class WorkspaceSqlAadAdminsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceSqlAadAdmins().delete("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceSqlAadAdmins().delete("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6698,8 +6757,6 @@ public final class WorkspaceSqlAadAdminsDeleteSamples {
 ### WorkspaceSqlAadAdmins_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceSqlAadAdmins Get. */
 public final class WorkspaceSqlAadAdminsGetSamples {
     /*
@@ -6711,7 +6768,9 @@ public final class WorkspaceSqlAadAdminsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceSqlAadAdmins().getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+        manager
+            .workspaceSqlAadAdmins()
+            .getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6773,9 +6832,7 @@ public final class WorkspacesCreateOrUpdateSamples {
                     .withCmk(
                         new CustomerManagedKeyDetails()
                             .withKey(
-                                new WorkspaceKeyDetails()
-                                    .withName("default")
-                                    .withKeyVaultUrl("https://vault.azure.net/keys/key1"))
+                                new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))
                             .withKekIdentity(
                                 new KekIdentityProperties()
                                     .withUserAssignedIdentity(
@@ -6822,8 +6879,6 @@ public final class WorkspacesCreateOrUpdateSamples {
 ### Workspaces_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces Delete. */
 public final class WorkspacesDeleteSamples {
     /*
@@ -6835,7 +6890,7 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaces().delete("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaces().delete("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6843,8 +6898,6 @@ public final class WorkspacesDeleteSamples {
 ### Workspaces_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces GetByResourceGroup. */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
@@ -6856,7 +6909,9 @@ public final class WorkspacesGetByResourceGroupSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaces().getByResourceGroupWithResponse("resourceGroup1", "workspace1", Context.NONE);
+        manager
+            .workspaces()
+            .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6864,8 +6919,6 @@ public final class WorkspacesGetByResourceGroupSamples {
 ### Workspaces_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces List. */
 public final class WorkspacesListSamples {
     /*
@@ -6877,7 +6930,7 @@ public final class WorkspacesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listWorkspacesInSubscription(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaces().list(Context.NONE);
+        manager.workspaces().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6885,8 +6938,6 @@ public final class WorkspacesListSamples {
 ### Workspaces_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListByResourceGroup. */
 public final class WorkspacesListByResourceGroupSamples {
     /*
@@ -6898,7 +6949,7 @@ public final class WorkspacesListByResourceGroupSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listWorkspacesInResourceGroup(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaces().listByResourceGroup("resourceGroup1", Context.NONE);
+        manager.workspaces().listByResourceGroup("resourceGroup1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6906,7 +6957,6 @@ public final class WorkspacesListByResourceGroupSamples {
 ### Workspaces_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.CustomerManagedKeyDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -6935,7 +6985,7 @@ public final class WorkspacesUpdateSamples {
         Workspace resource =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -6965,9 +7015,7 @@ public final class WorkspacesUpdateSamples {
                     .withCmk(
                         new CustomerManagedKeyDetails()
                             .withKey(
-                                new WorkspaceKeyDetails()
-                                    .withName("default")
-                                    .withKeyVaultUrl("https://vault.azure.net/keys/key1"))))
+                                new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))))
             .withPublicNetworkAccess(WorkspacePublicNetworkAccess.ENABLED)
             .apply();
     }
