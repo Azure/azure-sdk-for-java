@@ -107,7 +107,7 @@ com.azure:azure-developer-devcenter;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.8.0;1.9.0-beta.2
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-iot-deviceupdate;1.0.3;1.1.0-beta.1
+com.azure:azure-iot-deviceupdate;1.0.3;1.0.4
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
