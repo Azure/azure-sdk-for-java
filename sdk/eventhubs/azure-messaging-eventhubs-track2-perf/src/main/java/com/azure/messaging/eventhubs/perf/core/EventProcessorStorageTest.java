@@ -29,6 +29,8 @@ public class EventProcessorStorageTest extends EventPerfTest<EventProcessorJedis
     private final EventProcessorClient eventProcessorClient;
     protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID();
     protected String connectionString;
+    protected String eventhubsConnectionString;
+    protected String eventHubName;
     protected BlobContainerAsyncClient containerAsyncClient;
 
     /**
@@ -52,6 +54,16 @@ public class EventProcessorStorageTest extends EventPerfTest<EventProcessorJedis
             throw new RuntimeException("Storage Connection String cannot be null.");
         }
 
+        eventhubsConnectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
+        eventHubName = "";
+
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
+            throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
+        }
+
+        if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
+        }
         containerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .containerName(CONTAINER_NAME)
