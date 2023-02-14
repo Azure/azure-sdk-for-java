@@ -13,8 +13,7 @@ import java.util.List;
  * The DefaultAzureCredential is appropriate for most scenarios where the application ultimately runs in the Azure Cloud.
  * DefaultAzureCredential combines credentials that are commonly used to authenticate when deployed,
  * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
- * attempt to authenticate via the following mechanisms in order. For conceptual knowledge and configuration details,
- * refer to https://aka.ms/azsdk/java/identity/defaultazurecredentialsauthentication/docs
+ * attempt to authenticate via the following mechanisms in order.
  *
  * <ol>
  * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via environment variables and use it to authenticate.</li>
@@ -25,7 +24,9 @@ import java.util.List;
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
  *
- * <p>Configure DefaultAzureCredential</p>
+ * For more information refer to <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> Conceptual knowledge and configuration details </a>.
+ *
+ * <H2>Configure DefaultAzureCredential</H2>
  * DefaultAzureCredential supports a set of configurations through setters on the DefaultAzureCredentialBuilder or environment variables.
  * <ol>
  *     <li>Setting the environment variables AZURE_CLIENT_ID, AZURE_CLIENT_SECRET/AZURE_CLIENT_CERTIFICATE_PATH, and AZURE_TENANT_ID configures the DefaultAzureCredential to authenticate as the service principal specified by the values.</li>

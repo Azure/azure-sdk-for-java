@@ -17,8 +17,69 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
+
 /**
- * An AAD credential that acquires a token with a client secret for an AAD application.
+ * The DefaultAzureCredential is appropriate for most scenarios where the application ultimately runs in the Azure Cloud.
+ * DefaultAzureCredential combines credentials that are commonly used to authenticate when deployed,
+ * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
+ * attempt to authenticate via the following mechanisms in order.
+ *
+ * <ol>
+ * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via environment variables and use it to authenticate.</li>
+ * <li>{@link ManagedIdentityCredential} - If the application deploys to an Azure host with Managed Identity enabled, the DefaultAzureCredential will authenticate with that account.</li>
+ * <li>{@link IntelliJCredential} - If you've authenticated via Azure Toolkit for IntelliJ, the DefaultAzureCredential will authenticate with that account.</li>
+ * <li>{@link AzureCliCredential} - If you've authenticated an account via the Azure CLI az login command, the DefaultAzureCredential will authenticate with that account.</li>
+ * <li>{@link AzurePowerShellCredential} - If you've authenticated an account via the Azure Power Shell Az Login command, the DefaultAzureCredential will authenticate with that account.</li>
+ * <li>Fails if none of the credentials above could be created.</li>
+ * </ol>
+ *
+ * For more information refer to <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> Conceptual knowledge and configuration details </a>.
+ *
+ * <H2>Configure DefaultAzureCredential</H2>
+ * DefaultAzureCredential supports a set of configurations through setters on the DefaultAzureCredentialBuilder or environment variables.
+ * <ol>
+ *     <li>Setting the environment variables AZURE_CLIENT_ID, AZURE_CLIENT_SECRET/AZURE_CLIENT_CERTIFICATE_PATH, and AZURE_TENANT_ID configures the DefaultAzureCredential to authenticate as the service principal specified by the values.</li>
+ *     <li>Setting {@link DefaultAzureCredentialBuilder#managedIdentityClientId(String)} on the builder or the environment variable AZURE_CLIENT_ID configures the DefaultAzureCredential to authenticate as a user-defined managed identity, while leaving them empty configures it to authenticate as a system-assigned managed identity.</li>
+ *     <li>Setting .tenantId(String) on the builder or the environment variable AZURE_TENANT_ID configures the DefaultAzureCredential to authenticate to a specific tenant for Visual Studio Code, and IntelliJ IDEA.</li>
+ * </ol>
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
+ * <pre>
+ * DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
+ * <pre>
+ * DefaultAzureCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
+ *
+ *
+ * @see com.azure.identity.ManagedIdentityCredential
+ * @see com.azure.identity.EnvironmentCredential
+ * @see com.azure.identity.ClientSecretCredential
+ * @see com.azure.identity.ClientCertificateCredential
+ * @see com.azure.identity.UsernamePasswordCredential
+ * @see com.azure.identity.AzureCliCredential
+ * @see com.azure.identity.IntelliJCredential
+ */
+
+
+/**
+ *
+ * The ClientSecretCredential acquires an access token with a client secret for a service principal/registered AAD application.
+ * The tenantId, clientId and clientSecret of the service principal are required for this credential to acquire an access token.
+ * It can be used both in Azure hosted and local development environments for authentication.
+ * For more information refer to <a href="https://aka.ms/azsdk/java/identity/clientsecretcredential/docs"> Conceptual knowledge and configuration details </a>.
+ *
+ * <p>As a pre-requisite, a service principal is required to use this authentication mechanism. If you don't have a service principal,
+ * refer to <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/create/docs">Create a service principal with Azure CLI.</a></p>
  *
  * <p><strong>Sample: Construct a simple ClientSecretCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->

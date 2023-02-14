@@ -5,16 +5,7 @@ package com.azure.identity.credential;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
-import com.azure.identity.ChainedTokenCredential;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.ClientCertificateCredential;
-import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.InteractiveBrowserCredential;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredential;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.identity.*;
 
 import java.net.InetSocketAddress;
 
@@ -93,7 +84,7 @@ public final class JavaDocCodeSnippets {
             .build();
         // END: com.azure.identity.credential.chainedtokencredential.construct
     }
-    
+
     /**
      * Method to insert code snippets for {@link DefaultAzureCredential}
      */
@@ -109,7 +100,7 @@ public final class JavaDocCodeSnippets {
             .build();
         // END: com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity
     }
-    
+
     /**
      * Method to insert code snippets for {@link InteractiveBrowserCredential}
      */
@@ -132,8 +123,8 @@ public final class JavaDocCodeSnippets {
             .build();
         // END: com.azure.identity.credential.managedidentitycredential.construct
     }
-    
-    
+
+
     /**
      * Method to insert code snippets for {@link AzureCliCredential}
      */
@@ -152,6 +143,6 @@ public final class JavaDocCodeSnippets {
         IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.intellijcredential.construct
-    }    
+    }
 
 }
