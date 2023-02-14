@@ -1,0 +1,55 @@
+package com.azure.storage.file.share;
+
+import com.azure.core.util.BinaryData;
+import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.file.share.models.FileLastWrittenMode;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareRequestConditions;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.Objects;
+
+class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekableByteChannel.WriteBehavior {
+    private final ShareFileClient client;
+    private final ShareRequestConditions conditions;
+    private final FileLastWrittenMode lastWrittenMode;
+
+    public StorageSeekableByteChannelShareFileWriteBehavior(ShareFileClient client, ShareRequestConditions conditions,
+        FileLastWrittenMode lastWrittenMode) {
+        this.client = Objects.requireNonNull(client, "'client' cannot be null.");
+        this.conditions = conditions;
+        this.lastWrittenMode = lastWrittenMode;
+    }
+
+    public ShareFileClient getClient() {
+        return this.client;
+    }
+
+    public ShareRequestConditions getRequestConditions() {
+        return this.conditions;
+    }
+
+    public FileLastWrittenMode getLastWrittenMode() {
+        return this.lastWrittenMode;
+    }
+
+    @Override
+    public void write(ByteBuffer src, long destOffset){
+        // TODO (jaschrep): this is an array copy, remove it
+        try (InputStream uploadStream = BinaryData.fromByteBuffer(src).toStream()) {
+            client.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(uploadStream, src.remaining())
+                    .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
+                null, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void commit(long totalLength) {
+        // no-op
+    }
+}

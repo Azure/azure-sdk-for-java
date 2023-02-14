@@ -52,6 +52,12 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
          * @param destOffset Offset of backing resource to write the bytes at.
          */
         void write(ByteBuffer src, long destOffset);
+
+        /**
+         * Calls any necessary commit/flush calls on the backing resource.
+         * @param totalLength Total length of the bytes being committed (necessary for some resource types).
+         */
+        void commit(long totalLength);
     }
 
     private final ReadBehavior readBehavior;
@@ -83,6 +89,22 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         if (this.mode == StorageChannelMode.READ) {
             buffer.limit(0);
         }
+    }
+
+    /**
+     * Gets the read-behavior used by this channel.
+     * @return {@link ReadBehavior} of this channel.
+     */
+    public ReadBehavior getReadBehavior() {
+        return readBehavior;
+    }
+
+    /**
+     * Gets the write-behavior used by this channel.
+     * @return {@link WriteBehavior} of this channel.
+     */
+    public WriteBehavior getWriteBehavior() {
+        return writeBehavior;
     }
 
     @Override
@@ -192,6 +214,7 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     public void close() throws IOException {
         if (mode == StorageChannelMode.WRITE) {
             flushWriteBuffer();
+            writeBehavior.commit(absolutePosition);
         }
 
         // close is documented as idempotent
