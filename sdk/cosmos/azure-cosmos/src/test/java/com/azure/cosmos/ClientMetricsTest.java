@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMetricCategory;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -79,7 +80,7 @@ public class ClientMetricsTest extends BatchTestBase {
             .getMetricCategories(this.inputClientTelemetryConfig);
     }
 
-    public void beforeTest(String... metricCategories) {
+    public void beforeTest(CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
@@ -87,7 +88,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(this.meterRegistry))
-            .metricCategories(metricCategories);
+            .setMetricCategories(metricCategories);
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
@@ -138,7 +139,7 @@ public class ClientMetricsTest extends BatchTestBase {
         // Expected behavior is that higher values than the expected max value can still be recorded
         // it would only result in getting less accurate "estimates" for percentile histograms
 
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
 
         try {
             Tag dummyOperationTag = Tag.of(TagName.Operation.toString(), "TestDummy");
@@ -175,7 +176,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -208,7 +209,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItemWithAllMetrics() throws Exception {
-        this.beforeTest("All");
+        this.beforeTest(CosmosMetricCategory.ALL);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -241,7 +242,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -277,7 +278,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -315,7 +316,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItem() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -347,7 +348,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -390,7 +391,10 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItemsWithDetailMetrics() throws Exception {
-        this.beforeTest("Default", "RequestDetails", "OperationDetails");
+        this.beforeTest(
+            CosmosMetricCategory.DEFAULT,
+            CosmosMetricCategory.OPERATION_DETAILS,
+            CosmosMetricCategory.REQUEST_DETAILS);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -436,7 +440,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -485,7 +489,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
     public void itemPatchSuccess() {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             PatchTest.ToDoActivity testItem = PatchTest.ToDoActivity.createRandomItem(this.container);
             PatchTest.ToDoActivity testItem1 = PatchTest.ToDoActivity.createRandomItem(this.container);
@@ -554,7 +558,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem_withBulk() {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             int totalRequest = 5;
 
@@ -608,7 +612,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
             TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
@@ -670,7 +674,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForDefault() {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
 
@@ -692,7 +696,10 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForDefaultPlusDetails() {
-        this.beforeTest("Default", "RequestDetails", "OperationDETAILS");
+        this.beforeTest(
+            CosmosMetricCategory.DEFAULT,
+            CosmosMetricCategory.fromString("RequestDetails"),
+            CosmosMetricCategory.fromString("OperationDETAILS"));
         try {
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(7);
 
@@ -716,12 +723,15 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesInvalidCategory() {
+        String badCategoryName = "InvalidCategory";
         try {
-            this.beforeTest("Default", "InvalidCategory");
+            this.beforeTest(
+                CosmosMetricCategory.DEFAULT,
+                CosmosMetricCategory.fromString(badCategoryName));
 
             fail("Should have thrown exception");
         } catch (IllegalArgumentException argError) {
-            assertThat(argError.getMessage()).contains("invalidcategory");
+            assertThat(argError.getMessage()).contains(badCategoryName);
         } finally {
             this.afterTest();
         }
@@ -729,7 +739,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForAll() {
-        this.beforeTest("All");
+        this.beforeTest(CosmosMetricCategory.ALL);
         try {
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
 
@@ -756,7 +766,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForAllLatebound() {
-        this.beforeTest("Default");
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
 
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
@@ -775,7 +785,7 @@ public class ClientMetricsTest extends BatchTestBase {
             
             // Now change the metricCategories on the config passed into the CosmosClientBuilder 
             // and validate that these changes take effect immediately on the client build via the builder
-            this.inputClientTelemetryConfig.metricCategories("All");
+            this.inputClientTelemetryConfig.setMetricCategories(CosmosMetricCategory.ALL);
             
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(10);
 

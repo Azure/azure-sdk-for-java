@@ -56,7 +56,7 @@ public final class CosmosClientTelemetryConfig {
     private final ProxyOptions proxy;
     private String clientCorrelationId = null;
     private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
-    private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+    private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
     private Boolean effectiveIsClientTelemetryEnabled = null;
@@ -207,75 +207,93 @@ public final class CosmosClientTelemetryConfig {
 
     /**
      * Sets the categories of metrics that should be emitted. By default the following categories will be enabled:
-     * OperationSummary, RequestSummary, DirectChannels, DirectRequests, System
+     * OperationSummary (required), RequestSummary, DirectChannels, DirectRequests, System (required)
      * (the System and OperationSummary metrics are always collected and can't be disabled when enabling Cosmos metrics)
      * For most use-cases that should be sufficient. An overview of the different metric categories can be found here:
      * https://aka.ms/azure-cosmos-metrics
      * NOTE: metric categories are mutable. You can safely modify the categories on the CosmosClientTelemetryConfig
-     * instance passed into the CosmosClinetBuilder after the CosmosClient was created - and changes to the config
+     * instance passed into the CosmosClientBuilder after the CosmosClient was created - and changes to the config
      * instance will be reflected at runtime by the client.
      *
      * @param categories - a comma-separated list of metric categories that should be emitted
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig metricCategories(String... categories) {
+    public CosmosClientTelemetryConfig setMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
-            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
+        } else {
+            EnumSet<MetricCategory> newMetricCategories = MetricCategory.MINIMAL_CATEGORIES.clone();
+            for (CosmosMetricCategory c: categories) {
+                for (MetricCategory metricCategory: c.getCategories()) {
+                    newMetricCategories.add(metricCategory);
+                }
+            }
+
+            this.metricCategories = newMetricCategories;
         }
 
-        Map<String, MetricCategory> categoryMap = new HashMap<>();
-        for (MetricCategory level : MetricCategory.values()) {
-            categoryMap.put(level.toLowerCase(), level);
+        return this;
+    }
+
+    /**
+     * Adds categories of metrics that should be emitted. By default the following categories will be enabled:
+     * OperationSummary (required), RequestSummary, DirectChannels, DirectRequests, System (required)
+     * (the System and OperationSummary metrics are always collected and can't be disabled when enabling Cosmos metrics)
+     * An overview of the different metric categories can be found here:
+     * https://aka.ms/azure-cosmos-metrics
+     * NOTE: metric categories are mutable. You can safely modify the categories on the CosmosClientTelemetryConfig
+     * instance passed into the CosmosClientBuilder after the CosmosClient was created - and changes to the config
+     * instance will be reflected at runtime by the client.
+     *
+     * @param categories - a comma-separated list of metric categories that should be emitted
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig addMetricCategories(CosmosMetricCategory... categories) {
+        if (categories == null || categories.length == 0) {
+            return this;
         }
 
-        HashSet<String> categoryStrings = new HashSet<String>();
-        Arrays.stream(categories)
-              .filter(category -> !Strings.isNullOrWhiteSpace(category))
-              .forEach(rawCategory -> {
-                  String lowerCaseCategory = rawCategory.trim().toLowerCase(Locale.ROOT);
-                  if ("all".equalsIgnoreCase(lowerCaseCategory)) {
-                      MetricCategory
-                          .ALL_CATEGORIES
-                          .stream()
-                          .forEach(c -> categoryStrings.add(c.toLowerCase()));
-                  } else if ("default".equalsIgnoreCase(lowerCaseCategory)) {
-                      MetricCategory
-                          .DEFAULT_CATEGORIES
-                          .stream()
-                          .forEach(c -> categoryStrings.add(c.toLowerCase()));
-                  } else {
-                      categoryStrings.add(lowerCaseCategory);
-                  }
-              });
+        EnumSet<MetricCategory> newMetricCategories = this.metricCategories.clone();
+        for (CosmosMetricCategory c: categories) {
+            for (MetricCategory metricCategory: c.getCategories()) {
+                newMetricCategories.add(metricCategory);
+            }
+        }
 
-        Stream<MetricCategory> categoryStream =
-            Arrays.stream(categoryStrings.toArray())
-                  .map(category -> {
-                      if (!categoryMap.containsKey(category)) {
+        this.metricCategories = newMetricCategories;
+        return this;
+    }
 
-                          String[] transformed = Arrays.stream(MetricCategory.values())
-                                                       .map(level -> level.toLowerCase())
-                                                       .toArray(i -> new String[i]);
+    /**
+     * Removes categories of metrics that should be emitted. By default the following categories will be enabled:
+     * OperationSummary (required), RequestSummary, DirectChannels, DirectRequests, System (required)
+     * (the System and OperationSummary metrics are always collected and can't be disabled when enabling Cosmos metrics)
+     * An overview of the different metric categories can be found here:
+     * https://aka.ms/azure-cosmos-metrics
+     * NOTE: metric categories are mutable. You can safely modify the categories on the CosmosClientTelemetryConfig
+     * instance passed into the CosmosClientBuilder after the CosmosClient was created - and changes to the config
+     * instance will be reflected at runtime by the client.
+     *
+     * @param categories - a comma-separated list of metric categories that should be emitted
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig removeMetricCategories(CosmosMetricCategory... categories) {
+        if (categories == null || categories.length == 0) {
+            return this;
+        }
 
-                          String validCategories = String.join(
-                              ", ",
-                              transformed);
+        EnumSet<MetricCategory> newMetricCategories = this.metricCategories.clone();
+        for (CosmosMetricCategory c: categories) {
+            for (MetricCategory metricCategory: c.getCategories()) {
+                newMetricCategories.remove(metricCategory);
+            }
+        }
 
-                          throw new IllegalArgumentException(
-                              String.format(
-                                  "Metric category '%s' is invalid. Valid Metric categories are:"
-                                      + " %s",
-                                  category,
-                                  validCategories));
-                      }
+        for (MetricCategory metricCategory: CosmosMetricCategory.MINIMUM.getCategories()) {
+            newMetricCategories.add(metricCategory);
+        }
 
-                      return categoryMap.get(category);
-                  });
-
-        EnumSet<MetricCategory> newCategories = EnumSet.of(MetricCategory.System, MetricCategory.OperationSummary);
-        categoryStream.forEach(category -> newCategories.add(category));
-
-        this.metricCategories= newCategories;
+        this.metricCategories = newMetricCategories;
 
         return this;
     }

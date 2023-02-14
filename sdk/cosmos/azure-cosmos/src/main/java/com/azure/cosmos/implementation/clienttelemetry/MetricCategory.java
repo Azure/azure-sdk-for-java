@@ -57,6 +57,12 @@ public enum MetricCategory {
         MetricCategory.OperationSummary,
         MetricCategory.RequestSummary,
         MetricCategory.DirectRequests,
-        MetricCategory.DirectChannels
+        MetricCategory.DirectChannels,
+        MetricCategory.System
+    );
+
+    public static final EnumSet<MetricCategory> MINIMAL_CATEGORIES = EnumSet.of(
+        MetricCategory.OperationSummary,
+        MetricCategory.System
     );
 }
