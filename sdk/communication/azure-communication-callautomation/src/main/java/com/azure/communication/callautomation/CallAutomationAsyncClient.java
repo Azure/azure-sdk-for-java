@@ -102,7 +102,7 @@ public final class CallAutomationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCallResult> createCall(List<CommunicationIdentifier> targets,
                                              String callbackUrl) {
-        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(source, targets, callbackUrl);
+        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targets, callbackUrl);
         return createCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -204,7 +204,8 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request, context)
+            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -310,7 +311,8 @@ public final class CallAutomationAsyncClient {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
+            context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -363,7 +365,8 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallImvite().getTarget()));
 
-            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request, context)
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -407,7 +410,8 @@ public final class CallAutomationAsyncClient {
                 request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request, context)
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

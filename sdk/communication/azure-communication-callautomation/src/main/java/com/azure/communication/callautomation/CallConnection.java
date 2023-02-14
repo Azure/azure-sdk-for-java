@@ -4,8 +4,8 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.AddParticipantsOptions;
-import com.azure.communication.callautomation.models.AddParticipantsResult;
+import com.azure.communication.callautomation.models.AddParticipantOptions;
+import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
@@ -13,8 +13,8 @@ import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
-import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
-import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RemoveParticipantOptions;
+import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
@@ -178,8 +178,8 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantsResult addParticipants(List<CommunicationIdentifier> participants) {
-        return callConnectionAsync.addParticipants(participants).block();
+    public AddParticipantResult addParticipants(CallInvite participants) {
+        return callConnectionAsync.addParticipant(participants).block();
     }
 
     /**
@@ -192,7 +192,7 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantsResult> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions,
+    public Response<AddParticipantResult> addParticipantsWithResponse(AddParticipantOptions addParticipantsOptions,
                                                                        Context context) {
         return callConnectionAsync.addParticipantsWithResponseInternal(addParticipantsOptions, context).block();
     }
@@ -206,7 +206,7 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
+    public RemoveParticipantResult removeParticipants(CommunicationIdentifier participantsToRemove) {
         return callConnectionAsync.removeParticipants(participantsToRemove).block();
     }
 
@@ -220,7 +220,7 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(RemoveParticipantsOptions removeParticipantsOptions, Context context) {
+    public Response<RemoveParticipantResult> removeParticipantsWithResponse(RemoveParticipantOptions removeParticipantsOptions, Context context) {
         return callConnectionAsync.removeParticipantsWithResponseInternal(removeParticipantsOptions, context).block();
     }
 
