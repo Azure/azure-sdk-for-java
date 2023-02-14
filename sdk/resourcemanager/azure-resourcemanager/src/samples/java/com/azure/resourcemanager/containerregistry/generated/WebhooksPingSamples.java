@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Webhooks Ping. */
 public final class WebhooksPingSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookPing.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/WebhookPing.json
      */
     /**
      * Sample code: WebhookPing.
@@ -22,6 +20,6 @@ public final class WebhooksPingSamples {
             .manager()
             .serviceClient()
             .getWebhooks()
-            .pingWithResponse("myResourceGroup", "myRegistry", "myWebhook", Context.NONE);
+            .pingWithResponse("myResourceGroup", "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
     }
 }

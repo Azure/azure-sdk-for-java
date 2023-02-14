@@ -23,6 +23,15 @@ public final class VaultUpgradeState extends ExpandableStringEnum<VaultUpgradeSt
     public static final VaultUpgradeState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of VaultUpgradeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VaultUpgradeState() {
+    }
+
+    /**
      * Creates or finds a VaultUpgradeState from its string representation.
      *
      * @param name a name to look for.

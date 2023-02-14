@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionStatus. */
+/** The private link service connection status. */
 public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatus> {
     /** Static value Approved for ConnectionStatus. */
     public static final ConnectionStatus APPROVED = fromString("Approved");
@@ -23,6 +23,15 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
     public static final ConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of ConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a ConnectionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
         return fromString(name, ConnectionStatus.class);
     }
 
-    /** @return known ConnectionStatus values. */
+    /**
+     * Gets known ConnectionStatus values.
+     *
+     * @return known ConnectionStatus values.
+     */
     public static Collection<ConnectionStatus> values() {
         return values(ConnectionStatus.class);
     }
