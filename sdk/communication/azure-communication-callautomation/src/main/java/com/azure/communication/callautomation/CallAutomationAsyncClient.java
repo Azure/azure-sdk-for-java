@@ -161,8 +161,6 @@ public final class CallAutomationAsyncClient {
             CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -212,8 +210,6 @@ public final class CallAutomationAsyncClient {
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -320,8 +316,6 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
-            UUID.randomUUID(),
-            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
             context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -376,8 +370,6 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallImvite().getTarget()));
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -423,8 +415,6 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
