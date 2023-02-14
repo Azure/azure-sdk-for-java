@@ -451,6 +451,18 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final boolean timeoutDetectionEnabled;
 
+
+        /**
+         * Used during Rntbd health check flow.
+         * Transit timeout can be a normal symptom under high CPU load.
+         * When request timeout due to high CPU, close the existing the connection and re-establish a new one will not help the issue but rather make it worse.
+         * This property indicate when the CPU load is beyond the threshold, the timeout detection flow will be disabled.
+         *
+         * By default, it is 90.0.
+         */
+        @JsonProperty()
+        private final double timeoutDetectionDisableCPUThreshold;
+
         /**
          * Used during Rntbd health check flow.
          * When transitTimeoutHealthCheckEnabled is enabled,
@@ -527,6 +539,7 @@ public class RntbdTransportClient extends TransportClient {
             this.preferTcpNative = builder.preferTcpNative;
             this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
             this.timeoutDetectionEnabled = builder.timeoutDetectionEnabled;
+            this.timeoutDetectionDisableCPUThreshold = builder.timeoutDetectionDisableCPUThreshold;
             this.timeoutDetectionTimeLimit = builder.timeoutDetectionTimeLimit;
             this.timeoutDetectionHighFrequencyThreshold = builder.timeoutDetectionHighFrequencyThreshold;
             this.timeoutDetectionHighFrequencyTimeLimit = builder.timeoutDetectionHighFrequencyTimeLimit;
@@ -566,6 +579,7 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIdle = 1; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
             this.timeoutDetectionEnabled = connectionPolicy.isTcpHealthCheckTimeoutDetectionEnabled();
+            this.timeoutDetectionDisableCPUThreshold = 90.0;
             this.timeoutDetectionTimeLimit = Duration.ofSeconds(60L);
             this.timeoutDetectionHighFrequencyThreshold = 3;
             this.timeoutDetectionHighFrequencyTimeLimit = Duration.ofSeconds(10L);
@@ -680,6 +694,10 @@ public class RntbdTransportClient extends TransportClient {
             return this.timeoutDetectionEnabled;
         }
 
+        public double timeoutDetectionDisableCPUThreshold() {
+            return this.timeoutDetectionDisableCPUThreshold;
+        }
+
         public Duration timeoutDetectionTimeLimit() {
             return this.timeoutDetectionTimeLimit;
         }
@@ -762,7 +780,13 @@ public class RntbdTransportClient extends TransportClient {
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
          *   "threadCount": 16,
-         *   "transientTimeoutDetectionThreshold": 3
+         *   "timeoutDetectionEnabled": true,
+         *   "timeoutDetectionDisableCPUThreshold": 90.0,
+         *   "timeoutDetectionTimeLimit": "PT60S",
+         *   "timeoutDetectionHighFrequencyThreshold": 3,
+         *   "timeoutDetectionHighFrequencyTimeLimit": "PT10S",
+         *   "timeoutDetectionOnWriteThreshold": 1,
+         *   "timeoutDetectionOnWriteTimeLimit": "PT6s"
          * }}</pre>
          * </li>
          * </ol>
@@ -861,6 +885,7 @@ public class RntbdTransportClient extends TransportClient {
             private boolean preferTcpNative;
             private Duration sslHandshakeTimeoutMinDuration;
             private boolean timeoutDetectionEnabled;
+            private double timeoutDetectionDisableCPUThreshold;
             private Duration timeoutDetectionTimeLimit;
             private int timeoutDetectionHighFrequencyThreshold;
             private Duration timeoutDetectionHighFrequencyTimeLimit;
@@ -902,6 +927,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
                 this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
                 this.timeoutDetectionEnabled = DEFAULT_OPTIONS.timeoutDetectionEnabled;
+                this.timeoutDetectionDisableCPUThreshold = DEFAULT_OPTIONS.timeoutDetectionDisableCPUThreshold;
                 this.timeoutDetectionTimeLimit = DEFAULT_OPTIONS.timeoutDetectionTimeLimit;
                 this.timeoutDetectionHighFrequencyThreshold = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyThreshold;
                 this.timeoutDetectionHighFrequencyTimeLimit = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyTimeLimit;

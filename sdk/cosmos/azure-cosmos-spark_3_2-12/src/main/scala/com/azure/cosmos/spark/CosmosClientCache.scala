@@ -260,10 +260,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               SparkBridgeImplementationInternal
                   .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
 
-          directConfig =
-              SparkBridgeImplementationInternal
-                  .setHealthCheckTimeoutDetectionEnabled(directConfig, false)
-
           builder = builder.directMode(directConfig)
       }
 

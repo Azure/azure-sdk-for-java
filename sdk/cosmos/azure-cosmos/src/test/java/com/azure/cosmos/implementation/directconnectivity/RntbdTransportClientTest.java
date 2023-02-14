@@ -111,8 +111,7 @@ public final class RntbdTransportClientTest {
     private static final Duration timeoutDetectionHighFrequencyTimeLimit = Duration.ofSeconds(10L);
     private static final int timeoutDetectionOnWriteThreshold = 1;
     private static final Duration timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
-
-    private static final int transitTimeoutDetectionThreshold = 3;
+    private static final double timeoutDetectionDisableCPUThreshold = 90.0;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -755,7 +754,7 @@ public final class RntbdTransportClientTest {
         assertEquals(options.timeoutDetectionHighFrequencyTimeLimit(), timeoutDetectionHighFrequencyTimeLimit);
         assertEquals(options.timeoutDetectionOnWriteThreshold(), timeoutDetectionOnWriteThreshold);
         assertEquals(options.timeoutDetectionOnWriteTimeLimit(), timeoutDetectionOnWriteTimeLimit);
-
+        assertEquals(options.timeoutDetectionDisableCPUThreshold(), timeoutDetectionDisableCPUThreshold);
     }
 
     // TODO: add validations for other properties
@@ -769,7 +768,7 @@ public final class RntbdTransportClientTest {
                 "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"," +
                     "\"timeoutDetectionTimeLimit\":\"PT61S\", \"timeoutDetectionHighFrequencyThreshold\":\"4\", " +
                     "\"timeoutDetectionHighFrequencyTimeLimit\":\"PT11S\", \"timeoutDetectionOnWriteThreshold\":\"2\"," +
-                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\"}");
+                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"}");
 
             ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -785,6 +784,7 @@ public final class RntbdTransportClientTest {
             assertEquals(options.timeoutDetectionHighFrequencyTimeLimit(), Duration.ofSeconds(11));
             assertEquals(options.timeoutDetectionOnWriteThreshold(), 2);
             assertEquals(options.timeoutDetectionOnWriteTimeLimit(), Duration.ofSeconds(7));
+            assertEquals(options.timeoutDetectionDisableCPUThreshold(), 80.0);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");

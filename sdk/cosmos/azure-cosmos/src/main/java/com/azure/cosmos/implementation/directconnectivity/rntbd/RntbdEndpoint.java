@@ -253,6 +253,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public double timeoutDetectionDisableCPUThreshold() {
+            return this.options.timeoutDetectionDisableCPUThreshold();
+        }
+
+        @JsonProperty
         public long timeoutDetectionTimeLimitInNanos() {
             return this.options.timeoutDetectionTimeLimit().toNanos();
         }

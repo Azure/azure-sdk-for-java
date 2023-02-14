@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.channel.Channel;
@@ -61,6 +62,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     @JsonProperty
     private final boolean timeoutDetectionEnabled;
     @JsonProperty
+    private final double timeoutDetectionDisableCPUThreshold;
+    @JsonProperty
     private final long timeoutTimeLimitInNanos;
     @JsonProperty
     private final int timeoutHighFrequencyThreshold;
@@ -70,7 +73,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final int timeoutOnWriteThreshold;
     @JsonProperty
     private final long timeoutOnWriteTimeLimitInNanos;
-
 
     // endregion
 
@@ -93,6 +95,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
         this.networkRequestTimeoutInNanos = config.tcpNetworkRequestTimeoutInNanos();
         this.timeoutDetectionEnabled = config.timeoutDetectionEnabled();
+        this.timeoutDetectionDisableCPUThreshold = config.timeoutDetectionDisableCPUThreshold();
         this.timeoutTimeLimitInNanos = config.timeoutDetectionTimeLimitInNanos();
         this.timeoutHighFrequencyThreshold = config.timeoutDetectionHighFrequencyThreshold();
         this.timeoutHighFrequencyTimeLimitInNanos = config.timeoutDetectionHighFrequencyTimeLimitInNanos();
@@ -307,6 +310,14 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         String transitTimeoutValidationMessage = StringUtils.EMPTY;
 
         if (this.timeoutDetectionEnabled && timestamps.transitTimeoutCount() > 0) {
+
+            // Transit timeout can be a normal symptom under high CPU load.
+            // When request timeout due to high CPU,
+            // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
+            if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                return transitTimeoutValidationMessage;
+            }
+
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
 
             // The channel will be closed if all requests are failed due to transit timeout within the time limit.
@@ -360,8 +371,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                 logger.warn(transitTimeoutValidationMessage);
                 return transitTimeoutValidationMessage;
             }
-
-            //  case 4: TO Be implemented - Can we defer the health status based on the RntbdServiceEndpointStats?
         }
 
         return transitTimeoutValidationMessage;

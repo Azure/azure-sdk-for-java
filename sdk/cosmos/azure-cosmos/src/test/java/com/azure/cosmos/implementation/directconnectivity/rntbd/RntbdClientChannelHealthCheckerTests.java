@@ -4,14 +4,19 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.cpu.CpuLoadHistory;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.ChannelPromise;
+import io.netty.channel.DefaultChannelPromise;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.SingleThreadEventLoop;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.Future;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -35,7 +40,7 @@ public class RntbdClientChannelHealthCheckerTests {
     }
 
     @Test(groups = { "unit" },  dataProvider = "isHealthyWithReasonArgs")
-    public void isHealthyForWriteHangTests(boolean withFailureReason) {
+    public void isHealthyForWriteHangTests(boolean withFailureReason) throws InterruptedException {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -65,21 +70,19 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
 
         if (withFailureReason) {
-            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to non-responding write"));
         } else {
-            healthChecker.isHealthy(channelMock)
-                .addListener(((Future<Boolean>healthyResult) -> {
-                    assertThat(healthyResult.isSuccess()).isTrue();
-                    assertThat(healthyResult.getNow()).isFalse();
-                }));
+            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isFalse();
         }
     }
 
     @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
-    public void isHealthyForReadHangTests(boolean withFailureReason) {
+    public void isHealthyForReadHangTests(boolean withFailureReason) throws InterruptedException {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -108,21 +111,19 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
 
         if (withFailureReason) {
-            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to non-responding read"));
         } else {
-            healthChecker.isHealthy(channelMock)
-                .addListener(((Future<Boolean>healthyResult) -> {
-                    assertThat(healthyResult.isSuccess()).isTrue();
-                    assertThat(healthyResult.getNow()).isFalse();
-                }));
+            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isFalse();
         }
     }
 
     @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
-    public void transitTimeoutTimeLimitTests(boolean withFailureReason) {
+    public void transitTimeoutTimeLimitTests(boolean withFailureReason) throws InterruptedException {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -153,21 +154,19 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
         if (withFailureReason) {
-            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to transit timeout detection time limit"));
         } else {
-            healthChecker.isHealthy(channelMock)
-                .addListener(((Future<Boolean>healthyResult) -> {
-                    assertThat(healthyResult.isSuccess()).isTrue();
-                    assertThat(healthyResult.getNow()).isFalse();
-                }));
+            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isFalse();
         }
     }
 
     @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
-    public void transitTimeoutHighFrequencyTests(boolean withFailureReason) {
+    public void transitTimeoutHighFrequencyTests(boolean withFailureReason) throws InterruptedException {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -199,21 +198,19 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
         if (withFailureReason) {
-            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to transit timeout high frequency threshold hit"));
         } else {
-            healthChecker.isHealthy(channelMock)
-                .addListener(((Future<Boolean>healthyResult) -> {
-                    assertThat(healthyResult.isSuccess()).isTrue();
-                    assertThat(healthyResult.getNow()).isFalse();
-                }));
+            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isFalse();
         }
     }
 
     @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
-    public void transitTimeoutOnWriteTests(boolean withFailureReason) {
+    public void transitTimeoutOnWriteTests(boolean withFailureReason) throws InterruptedException {
         SslContext sslContextMock = Mockito.mock(SslContext.class);
 
         RntbdEndpoint.Config config = new RntbdEndpoint.Config(
@@ -246,16 +243,68 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
         if (withFailureReason) {
-            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock);
+            Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to transit timeout on write threshold hit"));
         } else {
-            healthChecker.isHealthy(channelMock)
-                .addListener(((Future<Boolean> healthyResult) -> {
-                    assertThat(healthyResult.isSuccess()).isTrue();
-                    assertThat(healthyResult.getNow()).isFalse();
-                }));
+            Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+            assertThat(healthyResult.isSuccess()).isTrue();
+            assertThat(healthyResult.getNow()).isFalse();
+        }
+    }
+
+
+    @Test(groups = { "unit" }, dataProvider = "isHealthyWithReasonArgs")
+    public void transitTimeoutOnWrite_HighCPULoadTests(boolean withFailureReason) throws InterruptedException {
+        SslContext sslContextMock = Mockito.mock(SslContext.class);
+
+        RntbdEndpoint.Config config = new RntbdEndpoint.Config(
+            new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
+            sslContextMock,
+            LogLevel.INFO);
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        Channel channelMock = Mockito.mock(Channel.class);
+        ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
+        RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
+        SingleThreadEventLoop eventLoopMock = new DefaultEventLoop();
+        RntbdClientChannelHealthChecker.Timestamps timestampsMock = Mockito.mock(RntbdClientChannelHealthChecker.Timestamps.class);
+
+        Mockito.when(channelMock.pipeline()).thenReturn(channelPipelineMock);
+        Mockito.when(channelPipelineMock.get(RntbdRequestManager.class)).thenReturn(rntbdRequestManagerMock);
+        Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
+        Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
+        ChannelPromise defaultChannelPromise = new DefaultChannelPromise(channelMock);
+        defaultChannelPromise.setSuccess();
+        Mockito.when(channelMock.writeAndFlush(RntbdHealthCheckRequest.MESSAGE)).thenReturn(defaultChannelPromise);
+
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(config.timeoutDetectionOnWriteTimeLimitInNanos()).minusNanos(10);
+        Instant lastChannelWriteTime = lastChannelReadTime.plusSeconds(1);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
+        int writeTimeoutCount = config.timeoutDetectionOnWriteThreshold() + 1;
+
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(writeTimeoutCount);
+        Mockito.when(timestampsMock.tansitTimeoutWriteCount()).thenReturn(writeTimeoutCount);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+
+        try(MockedStatic<CpuMemoryMonitor> cpuMemoryMonitorMock = Mockito.mockStatic(CpuMemoryMonitor.class)) {
+            CpuLoadHistory cpuLoadHistoryMock = Mockito.mock(CpuLoadHistory.class);
+            cpuMemoryMonitorMock.when(CpuMemoryMonitor::getCpuLoad).thenReturn(cpuLoadHistoryMock);
+            Mockito.when(cpuLoadHistoryMock.isCpuOverThreshold(config.timeoutDetectionDisableCPUThreshold())).thenReturn(true);
+
+            if (withFailureReason) {
+                Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            } else {
+                Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isTrue();
+            }
         }
     }
 }
