@@ -29,9 +29,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     private boolean enabled = true;
 
     /**
-     * Endpoint to a Service Bus namespace.
+     * The Service Bus namespace.
      */
-    private String endpoint;
+    private String nameSpace;
 
     /**
      * Connection string to connect to a Service Bus namespace.
@@ -164,19 +164,19 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
-     * Get the endpoint to connect to a Service Bus namespace.
-     * @return the endpoint to connect to a Service Bus namespace.
+     * Get the Service Bus namespace.
+     * @return the Service Bus namespace.
      */
-    public String getEndpoint() {
-        return endpoint;
+    public String getNameSpace() {
+        return nameSpace;
     }
 
     /**
-     * Set the endpoint to connect to a Service Bus namespace.
-     * @param endpoint the endpoint to connect to a Service Bus namespace.
+     * Set the Service Bus namespace.
+     * @param nameSpace the Service Bus namespace.
      */
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
     }
 
     /**
@@ -186,8 +186,8 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!StringUtils.hasText(connectionString) && !StringUtils.hasText(endpoint)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' or 'spring.jms.servicebus.endpoint' should be provided");
+        if (!StringUtils.hasText(connectionString) && !StringUtils.hasText(nameSpace)) {
+            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' or 'spring.jms.servicebus.namespace' should be provided");
         }
 
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
