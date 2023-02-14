@@ -19,7 +19,7 @@ COSMOSCONTAINERNAME=$10
 [[ -z "$RESOURCEGROUPNAME" ]] && exit 1
 [[ -z "$CLIENTID" ]] && exit 1
 [[ -z "$CLIENTSECRET" ]] && exit 1
-[[ -z "$CONTAINERID" ]] && exit 1
+[[ -z "$COSMOSCONTAINERNAME" ]] && exit 1
 
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
