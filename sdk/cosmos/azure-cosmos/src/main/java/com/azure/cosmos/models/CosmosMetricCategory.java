@@ -25,6 +25,7 @@ public class CosmosMetricCategory  extends ExpandableStringEnum<CosmosMetricCate
      *
      * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     CosmosMetricCategory() {
     }
 
