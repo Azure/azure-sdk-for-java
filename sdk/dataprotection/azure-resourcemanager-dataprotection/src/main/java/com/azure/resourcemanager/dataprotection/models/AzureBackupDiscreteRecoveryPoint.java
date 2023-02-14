@@ -75,6 +75,12 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
     @JsonProperty(value = "retentionTagVersion")
     private String retentionTagVersion;
 
+    /*
+     * The expiryTime property.
+     */
+    @JsonProperty(value = "expiryTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime expiryTime;
+
     /** Creates an instance of AzureBackupDiscreteRecoveryPoint class. */
     public AzureBackupDiscreteRecoveryPoint() {
     }
@@ -258,6 +264,15 @@ public final class AzureBackupDiscreteRecoveryPoint extends AzureBackupRecoveryP
     public AzureBackupDiscreteRecoveryPoint withRetentionTagVersion(String retentionTagVersion) {
         this.retentionTagVersion = retentionTagVersion;
         return this;
+    }
+
+    /**
+     * Get the expiryTime property: The expiryTime property.
+     *
+     * @return the expiryTime value.
+     */
+    public OffsetDateTime expiryTime() {
+        return this.expiryTime;
     }
 
     /**

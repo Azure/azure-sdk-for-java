@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.1.1 (2023-02-13)
+
+### Dependency Updates
+
+- Upgrade Azure Identity to 1.8.0.
+
+### Others
+
+- Improve the performance of DefaultTokenCredentialProvider's `get()` method.
+
 ## 1.2.0-beta.1 (2023-02-06)
 
 ### Other Changes

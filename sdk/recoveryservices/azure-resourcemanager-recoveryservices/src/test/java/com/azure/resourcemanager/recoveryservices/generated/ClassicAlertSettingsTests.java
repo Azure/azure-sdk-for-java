@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.AlertsState;
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClassicAlertSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClassicAlertSettings model =
             BinaryData
                 .fromString("{\"alertsForCriticalOperations\":\"Disabled\"}")
@@ -20,8 +19,8 @@ public final class ClassicAlertSettingsTests {
         Assertions.assertEquals(AlertsState.DISABLED, model.alertsForCriticalOperations());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClassicAlertSettings model = new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED);
         model = BinaryData.fromObject(model).toObject(ClassicAlertSettings.class);
         Assertions.assertEquals(AlertsState.DISABLED, model.alertsForCriticalOperations());
