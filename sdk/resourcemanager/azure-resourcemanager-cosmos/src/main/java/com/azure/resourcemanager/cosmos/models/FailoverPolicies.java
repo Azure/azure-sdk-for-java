@@ -18,6 +18,10 @@ public final class FailoverPolicies {
     @JsonProperty(value = "failoverPolicies", required = true)
     private List<FailoverPolicy> failoverPolicies;
 
+    /** Creates an instance of FailoverPolicies class. */
+    public FailoverPolicies() {
+    }
+
     /**
      * Get the failoverPolicies property: List of failover policies.
      *

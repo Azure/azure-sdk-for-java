@@ -62,6 +62,10 @@ public class ServiceResourceProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ServiceResourceProperties class. */
+    public ServiceResourceProperties() {
+    }
+
     /**
      * Get the creationTime property: Time of the last state change (ISO-8601 format).
      *
