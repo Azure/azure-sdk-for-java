@@ -14,12 +14,12 @@ import com.azure.communication.callautomation.implementation.models.AddParticipa
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
-import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -65,10 +65,7 @@ public class CallAutomationUnitTestBase {
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setMediaSubscriptionId(mediaSubscriptionId)
-            .setSource(new CallSourceInternal()
-                .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
-                .setDisplayName(callerDisplayName)
-            )
+            .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
 
@@ -114,6 +111,17 @@ public class CallAutomationUnitTestBase {
         return new CallAutomationClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
+            .buildClient();
+    }
+    
+    public static CallAutomationClient getCallAutomationClientWithSourceIdentity(CommunicationUserIdentifier sourceIdentifier,
+            ArrayList<SimpleEntry<String, Integer>> responses) {
+        HttpClient mockHttpClient = new MockHttpClient(responses);
+
+        return new CallAutomationClientBuilder()
+            .httpClient(mockHttpClient)
+            .connectionString(MOCK_CONNECTION_STRING)
+            .sourceIdentity(sourceIdentifier)
             .buildClient();
     }
 

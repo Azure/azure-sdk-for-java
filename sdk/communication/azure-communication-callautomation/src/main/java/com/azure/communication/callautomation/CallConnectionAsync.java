@@ -269,6 +269,14 @@ public class CallConnectionAsync {
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getTarget()))
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getSourceCallIdNumber()))
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
+            
+            CallInvite callInvite = transferToParticipantCallOptions.getTargetCallInvite();
+            
+            if (callInvite.getSipHeaders() != null || callInvite.getVoipHeaders() != null) {
+                request.setCustomContext(new CustomContext()
+                            .setSipHeaders(callInvite.getSipHeaders())
+                            .setVoipHeaders(callInvite.getVoipHeaders()));
+            }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
             context)
@@ -313,10 +321,10 @@ public class CallConnectionAsync {
                 .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantsOptions.getTargetCallInvite().getTarget()))
                 .setSourceDisplayName(addParticipantsOptions.getTargetCallInvite().getSourceDisplayName())
                 .setSourceCallerIdNumber(CommunicationIdentifierConverter
-                		.convert(addParticipantsOptions
-                				.getTargetCallInvite()
-                				.getSourceCallIdNumber())
-                		.getPhoneNumber())
+                        .convert(addParticipantsOptions
+                                .getTargetCallInvite()
+                                .getSourceCallIdNumber())
+                        .getPhoneNumber())
                 .setOperationContext(addParticipantsOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
