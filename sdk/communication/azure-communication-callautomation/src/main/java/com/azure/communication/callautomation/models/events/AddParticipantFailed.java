@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** The AddParticipantsFailed model. */
+/** The AddParticipantFailed model. */
 @Immutable
-public final class AddParticipantsFailed extends CallAutomationEventBase {
+public final class AddParticipantFailed extends CallAutomationEventBase {
     /*
      * Participants failed to be added
      */
@@ -34,7 +34,7 @@ public final class AddParticipantsFailed extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     @JsonCreator
-    private AddParticipantsFailed(@JsonProperty("participants") List<Map<String, Object>> participants) {
+    private AddParticipantFailed(@JsonProperty("participants") List<Map<String, Object>> participants) {
         this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

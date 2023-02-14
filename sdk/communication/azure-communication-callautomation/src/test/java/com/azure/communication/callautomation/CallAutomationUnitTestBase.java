@@ -113,7 +113,7 @@ public class CallAutomationUnitTestBase {
             .connectionString(MOCK_CONNECTION_STRING)
             .buildClient();
     }
-    
+
     public static CallAutomationClient getCallAutomationClientWithSourceIdentity(CommunicationUserIdentifier sourceIdentifier,
             ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);

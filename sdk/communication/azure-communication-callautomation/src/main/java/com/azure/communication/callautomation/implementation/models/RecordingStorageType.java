@@ -13,8 +13,8 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
     /** Static value acs for RecordingStorageType. */
     public static final RecordingStorageType ACS = fromString("acs");
 
-    /** Static value blobStorage for RecordingStorageType. */
-    public static final RecordingStorageType BLOB_STORAGE = fromString("blobStorage");
+    /** Static value azureBlob for RecordingStorageType. */
+    public static final RecordingStorageType AZURE_BLOB = fromString("azureBlob");
 
     /**
      * Creates or finds a RecordingStorageType from its string representation.
@@ -27,11 +27,7 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
         return fromString(name, RecordingStorageType.class);
     }
 
-    /**
-     * Gets known RecordingStorageType values.
-     *
-     * @return known RecordingStorageType values.
-     */
+    /** @return known RecordingStorageType values. */
     public static Collection<RecordingStorageType> values() {
         return values(RecordingStorageType.class);
     }

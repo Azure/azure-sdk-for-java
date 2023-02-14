@@ -183,7 +183,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
-        
+
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         TransferCallResult transferCallResult = callConnectionAsync.transferToParticipantCall(callInvite).block();
         assertNotNull(transferCallResult);
@@ -239,7 +239,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(
             new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<AddParticipantResult> addParticipantsResultResponse = callConnectionAsync.addParticipantsWithResponse(addParticipantsOptions).block();
+        Response<AddParticipantResult> addParticipantsResultResponse = callConnectionAsync.addParticipantWithResponse(addParticipantsOptions).block();
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
@@ -255,7 +255,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        RemoveParticipantResult removeParticipantsResult = callConnectionAsync.removeParticipants(
+        RemoveParticipantResult removeParticipantsResult = callConnectionAsync.removeParticipant(
             new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
 
         assertNotNull(removeParticipantsResult);
@@ -274,7 +274,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         RemoveParticipantOptions removeParticipantsOptions = new RemoveParticipantOptions(
             new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantsWithResponse(
+        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantWithResponse(
             removeParticipantsOptions).block();
 
 

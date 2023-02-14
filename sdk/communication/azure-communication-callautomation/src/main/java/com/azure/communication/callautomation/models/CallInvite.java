@@ -21,9 +21,9 @@ public class CallInvite {
     private String sourceDisplayName;
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
-    
+
     /**
-     *  Create a CallInvite object with PhoneNumberIdentifierr 
+     *  Create a CallInvite object with PhoneNumberIdentifierr
      * @param targetPhoneNumberIdentity Target's PhoneNumberIdentifier
      * @param callerIdNumber Caller's phone number identifier
      */
@@ -33,9 +33,9 @@ public class CallInvite {
         sipHeaders = null;
         voipHeaders = null;
     }
-    
+
     /**
-     *  Create a CallInvite object with PhoneNumberIdentifierr 
+     *  Create a CallInvite object with PhoneNumberIdentifierr
      * @param targetPhoneNumberIdentity Target's PhoneNumberIdentifier
      * @param callerIdNumber Caller's phone number identifier
      * @param sipHeaders custom context for pstn
@@ -46,7 +46,7 @@ public class CallInvite {
         this.sipHeaders = sipHeaders;
         this.voipHeaders = null;
     }
-    
+
     /**
      * Create a CallInvite object with CommunicationUserIdentifier
      * @param targetIdentity Target's CommunicationUserIdentifier
@@ -57,11 +57,11 @@ public class CallInvite {
         this.sipHeaders = null;
         this.voipHeaders = null;
     }
-    
+
     /**
      * Create a CallInvite object with CommunicationUserIdentifier
      * @param targetIdentity Target's CommunicationUserIdentifier
-     * @param voipHeaders custom context for voip 
+     * @param voipHeaders custom context for voip
      */
     public CallInvite(CommunicationUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
         this.target = targetIdentity;
@@ -69,7 +69,7 @@ public class CallInvite {
         this.sipHeaders = null;
         this.voipHeaders = voipHeaders;
     }
-    
+
     /**
      * Create a CallInvite object with MicrosoftTeamsUserIdentifier
      * @param targetIdentity Target's MicrosoftTeamsUserIdentifier
@@ -80,11 +80,11 @@ public class CallInvite {
         this.sipHeaders = null;
         this.voipHeaders = null;
     }
-    
+
     /**
      * Create a CallInvite object with MicrosoftTeamsUserIdentifier
      * @param targetIdentity Target's MicrosoftTeamsUserIdentifier
-     * @param voipHeaders custom context for voip 
+     * @param voipHeaders custom context for voip
      */
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
         this.target = targetIdentity;
@@ -100,15 +100,15 @@ public class CallInvite {
     public CommunicationIdentifier getTarget() {
         return target;
     }
-    
+
     /**
      * get caller's display name
-     * @return display name for caller 
+     * @return display name for caller
      */
     public String getSourceDisplayName() {
         return sourceDisplayName;
     }
-    
+
     /**
      * set display name for caller
      * @param sourceDisplayName display name for caller
@@ -118,30 +118,28 @@ public class CallInvite {
         this.sourceDisplayName = sourceDisplayName;
         return this;
     }
-    
-    /** 
+
+    /**
      *  get list of custom context to pstn target
      * @return list of custom context to pstn target
      */
     public Map<String, String> getSipHeaders() {
         return sipHeaders;
     }
-    
-    /** 
+
+    /**
      *  get list of custom context to voip target
      * @return list of custom context to voip target
      */
     public Map<String, String> getVoipHeaders() {
         return voipHeaders;
     }
-    
+
     /**
-     * get PhoneNumberIdentifier for caller
-     * @return PhoneNumberIdentifierr for caller 
+     * get PhoneNumberIdentifier for PSTN caller
+     * @return PhoneNumberIdentifier for PSTN caller
      */
     public PhoneNumberIdentifier getSourceCallIdNumber() {
         return sourceCallIdNumber;
     }
-    
-    
 }

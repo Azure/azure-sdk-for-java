@@ -196,7 +196,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
-        
+
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(
             new TransferToParticipantCallOptions(callInvite)
@@ -215,7 +215,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnection(CALL_CONNECTION_ID);
 
-        AddParticipantResult addParticipantsResult = callConnection.addParticipants(
+        AddParticipantResult addParticipantsResult = callConnection.addParticipant(
             new CallInvite(
                 new CommunicationUserIdentifier(CALL_TARGET_ID)));
         assertNotNull(addParticipantsResult);
@@ -233,9 +233,9 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                 new SimpleEntry<>(generateAddParticipantsResponse(), 202)
             )
         )).getCallConnection(CALL_CONNECTION_ID);
-        
+
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), new HashMap<String, String>());
-        Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
+        Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantWithResponse(
             new AddParticipantOptions(callInvite)
                 .setOperationContext(CALL_OPERATION_CONTEXT),
                 Context.NONE);
@@ -254,7 +254,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        RemoveParticipantResult removeParticipantsResult = callConnection.removeParticipants(
+        RemoveParticipantResult removeParticipantsResult = callConnection.removeParticipant(
             new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(removeParticipantsResult);

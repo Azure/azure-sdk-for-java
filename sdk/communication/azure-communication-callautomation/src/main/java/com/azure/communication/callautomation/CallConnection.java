@@ -170,56 +170,56 @@ public class CallConnection {
     /**
      * Add a participant to the call.
      *
-     * @param participants The list of participants to invite.
+     * @param participants participant to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantResult addParticipants(CallInvite participants) {
-        return callConnectionAsync.addParticipant(participants).block();
+    public AddParticipantResult addParticipant(CallInvite participant) {
+        return callConnectionAsync.addParticipant(participant).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param addParticipantsOptions Options bag for addParticipants
+     * @param AddParticipantOptions Options bag for addParticipant
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantResult> addParticipantsWithResponse(AddParticipantOptions addParticipantsOptions,
+    public Response<AddParticipantResult> addParticipantWithResponse(AddParticipantOptions addParticipantOptions,
                                                                        Context context) {
-        return callConnectionAsync.addParticipantsWithResponseInternal(addParticipantsOptions, context).block();
+        return callConnectionAsync.addParticipantWithResponseInternal(addParticipantOptions, context).block();
     }
 
     /**
-     * Remove a list of participants from the call.
+     * Remove a participants from the call.
      *
-     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param participantsToRemove participant to be removed.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantResult removeParticipants(CommunicationIdentifier participantsToRemove) {
-        return callConnectionAsync.removeParticipants(participantsToRemove).block();
+    public RemoveParticipantResult removeParticipant(CommunicationIdentifier participantToRemove) {
+        return callConnectionAsync.removeParticipant(participantToRemove).block();
     }
 
     /**
-     * Remove a list of participant from the call.
+     * Remove a participant from the call.
      *
-     * @param removeParticipantsOptions The options for removing participants.
+     * @param removeParticipantOptions The options for removing participant.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantResult> removeParticipantsWithResponse(RemoveParticipantOptions removeParticipantsOptions, Context context) {
-        return callConnectionAsync.removeParticipantsWithResponseInternal(removeParticipantsOptions, context).block();
+    public Response<RemoveParticipantResult> removeParticipantsWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
+        return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
     }
 
     /**
