@@ -55,22 +55,14 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.1.0-beta.14</version>
+  <version>1.0.16</version>
 </dependency>
 ```
 
 ## Key concepts
 
-This SDK provides functionality to easily manage `direct offer` and `direct routing` numbers.
-
-The `direct offer` numbers come in two types: Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
-They are managed using the `PhoneNumbersClient`
-
-The `direct routing` feature enables connecting your existing telephony infrastructure to ACS.
-The configuration is managed using the `SipRoutingClient`, which provides methods for setting up SIP trunks and voice routing rules, in order to properly handle calls for your telephony subnet.
-
-### Initializing Client
-Clients can be initialized using the Azure Active Directory Authentication.
+### Initializing Phone Number Client
+The PhoneNumberClientBuilder is enabled to use Azure Active Directory Authentication
 
 ```java readme-sample-createPhoneNumberClientWithAAD
 // You can find your endpoint and access key from your resource in the Azure Portal
@@ -80,20 +72,6 @@ String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .httpClient(httpClient)
-    .buildClient();
-```
-
-```java readme-sample-createSipRoutingClientWithAAD
-// You can find your endpoint and access key from your resource in the Azure Portal
-String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-SipRoutingClient sipRoutingClient = new SipRoutingClientBuilder()
     .endpoint(endpoint)
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(httpClient)
@@ -116,47 +94,21 @@ PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
     .httpClient(httpClient)
     .buildClient();
 ```
+Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key.
 
-```java readme-sample-createSipRoutingClient
-// You can find your endpoint and access token from your resource in the Azure Portal
-String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
-
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-SipRoutingClient sipRoutingClient = new SipRoutingClientBuilder()
-    .endpoint(endpoint)
-    .credential(keyCredential)
-    .httpClient(httpClient)
-    .buildClient();
-```
-Alternatively, you can provide the entire connection string using the connectionString() function of the client instead of providing the endpoint and access key.
-
-### Phone numbers client
-
-#### Phone Number Types overview
+### Phone Number Types overview
 
 Phone numbers come in two types; Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
 
-#### Searching and Purchasing and Releasing numbers
+### Searching and Purchasing and Releasing numbers
 
 Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are purchased for the Azure resources.
 
 Phone numbers can also be released using the release API.
 
-### SIP routing client
-
-Direct routing feature allows connecting customer-provided telephony infrastructure to Azure Communication Resources. In order to setup routing configuration properly, customer needs to supply the SIP trunk configuration and SIP routing rules for calls. SIP routing client provides the necessary interface for setting this configuration.
-
-When the call arrives, system tries to match the destination number with regex number patterns of defined routes. The first route to match the number will be selected. The order of regex matching is the same as the order of routes in configuration, therefore the order of routes matters.
-Once a route is matched, the call is routed to the first trunk in the route's trunks list. If the trunk is not available, next trunk in the list is selected.
-
 ## Examples
 
-### PhoneNumbersClient
-
-#### Get Purchased Phone Number
+### Get Purchased Phone Number
 Gets the specified purchased phone number.
 
 ```java readme-sample-getPurchasedPhoneNumber
@@ -165,7 +117,7 @@ System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
 
-#### Get All Purchased Phone Numbers
+### Get All Purchased Phone Numbers
 Lists all the purchased phone numbers.
 
 ```java readme-sample-listPhoneNumbers
@@ -175,11 +127,11 @@ System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
 
-### Long Running Operations
+## Long Running Operations
 
 The Phone Number Client supports a variety of long-running operations that allow indefinite polling time to the functions listed down below.
 
-#### Search for Available Phone Numbers
+### Search for Available Phone Numbers
 Search for available phone numbers by providing the area code, assignment type, phone number capabilities, phone number type, and quantity. The result of the search can then be used to purchase the numbers. Note that for the toll-free phone number type, providing the area code is optional.
 
 ```java readme-sample-searchAvailablePhoneNumbers
@@ -203,7 +155,7 @@ if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
 }
 ```
 
-#### Purchase Phone Numbers
+### Purchase Phone Numbers
 The result of searching for phone numbers is a `PhoneNumberSearchResult`. This can be used to get the numbers' details and purchase numbers by passing in the `searchId` to the purchase number API.
 
 ```java readme-sample-purchasePhoneNumbers
@@ -212,7 +164,7 @@ PollResponse<PhoneNumberOperation> purchaseResponse =
 System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
 ```
 
-#### Release Phone Number
+### Release Phone Number
 Releases a purchased phone number.
 
 ```java readme-sample-releasePhoneNumber
@@ -221,7 +173,7 @@ PollResponse<PhoneNumberOperation> releaseResponse =
 System.out.println("Release phone number is complete: " + releaseResponse.getStatus());
 ```
 
-#### Updating Phone Number Capabilities
+### Updating Phone Number Capabilities
 Updates Phone Number Capabilities for Calling and SMS to one of:
 - `PhoneNumberCapabilityValue.NONE`
 - `PhoneNumberCapabilityValue.INBOUND`
@@ -242,65 +194,6 @@ if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
     System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
     System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
 }
-```
-
-### SipRoutingClient
-
-#### Retrieve SIP trunks and routes
-
-Get the list of currently configured trunks or routes.
-
-```java readme-sample-listTrunksAndRoutes
-List<SipTrunk> trunks = sipRoutingClient.listTrunks();
-List<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
-for (SipTrunk trunk : trunks) {
-    System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
-}
-for (SipTrunkRoute route : routes) {
-    System.out.println("Route name: " + route.getName());
-    System.out.println("Route description: " + route.getDescription());
-    System.out.println("Route number pattern: " + route.getNumberPattern());
-    System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
-}
-```
-
-#### Replace SIP trunks and routes
-
-Replace the list of currently configured trunks or routes with new values.
-
-```java readme-sample-setTrunksAndRoutes
-sipRoutingClient.setTrunks(asList(
-    new SipTrunk("<first trunk fqdn>", 12345),
-    new SipTrunk("<second trunk fqdn>", 23456)
-));
-sipRoutingClient.setRoutes(asList(
-    new SipTrunkRoute("route name1", ".*9").setTrunks(asList("<first trunk fqdn>", "<second trunk fqdn>")),
-    new SipTrunkRoute("route name2", ".*").setTrunks(asList("<second trunk fqdn>"))
-));
-```
-
-#### Retrieve single trunk
-
-```java readme-sample-getTrunk
-String fqdn = "<trunk fqdn>";
-SipTrunk trunk = sipRoutingClient.getTrunk(fqdn);
-if (trunk != null) {
-    System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
-} else {
-    System.out.println("Trunk not found. " + fqdn);
-}
-```
-
-#### Set single trunk
-
-```java readme-sample-setTrunk
-sipRoutingClient.setTrunk(new SipTrunk("<trunk fqdn>", 12345));
-```
-
-#### Delete single trunk
-
-```java readme-sample-deleteTrunk
-sipRoutingClient.deleteTrunk("<trunk fqdn>");
 ```
 
 ## Contributing
