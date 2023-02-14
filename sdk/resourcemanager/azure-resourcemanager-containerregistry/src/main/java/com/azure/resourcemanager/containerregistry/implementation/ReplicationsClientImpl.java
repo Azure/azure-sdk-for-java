@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.ReplicationsClient;
@@ -38,13 +37,12 @@ import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInne
 import com.azure.resourcemanager.containerregistry.models.ReplicationListResult;
 import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReplicationsClient. */
 public final class ReplicationsClientImpl implements ReplicationsClient {
-    private final ClientLogger logger = new ClientLogger(ReplicationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReplicationsService service;
 
@@ -68,7 +66,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
-    private interface ReplicationsService {
+    public interface ReplicationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
@@ -78,7 +76,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<ReplicationListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
@@ -93,7 +91,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<ReplicationInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -109,7 +107,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -126,7 +124,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -141,7 +139,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @PathParam("replicationName") String replicationName,
@@ -163,12 +161,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
@@ -191,7 +190,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -220,13 +219,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationInner>> listSinglePageAsync(
@@ -250,7 +250,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -276,12 +276,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName) {
@@ -292,13 +293,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName, Context context) {
@@ -310,12 +312,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName) {
@@ -325,13 +328,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName, Context context) {
@@ -341,13 +345,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Gets the properties of the specified replication.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replication.
+     * @return the properties of the specified replication along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReplicationInner>> getWithResponseAsync(
@@ -375,7 +380,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -396,14 +401,15 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Gets the properties of the specified replication.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replication.
+     * @return the properties of the specified replication along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicationInner>> getWithResponseAsync(
@@ -431,7 +437,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,31 +455,42 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Gets the properties of the specified replication.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replication.
+     * @return the properties of the specified replication on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> getAsync(String resourceGroupName, String registryName, String replicationName) {
         return getWithResponseAsync(resourceGroupName, registryName, replicationName)
-            .flatMap(
-                (Response<ReplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified replication.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReplicationInner> getWithResponse(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, replicationName, context).block();
+    }
+
+    /**
+     * Gets the properties of the specified replication.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,38 +500,21 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicationInner get(String resourceGroupName, String registryName, String replicationName) {
-        return getAsync(resourceGroupName, registryName, replicationName).block();
-    }
-
-    /**
-     * Gets the properties of the specified replication.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param replicationName The name of the replication.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replication.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicationInner> getWithResponse(
-        String resourceGroupName, String registryName, String replicationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, registryName, replicationName, context).block();
+        return getWithResponse(resourceGroupName, registryName, replicationName, Context.NONE).getValue();
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -547,7 +547,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         } else {
             replication.validate();
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -569,7 +569,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -577,7 +577,8 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -614,7 +615,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         } else {
             replication.validate();
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -633,14 +634,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreateAsync(
@@ -660,7 +661,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -668,7 +669,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreateAsync(
@@ -689,25 +690,25 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        return beginCreateAsync(resourceGroupName, registryName, replicationName, replication).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, registryName, replicationName, replication).getSyncPoller();
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -715,7 +716,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
@@ -724,20 +725,23 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         String replicationName,
         ReplicationInner replication,
         Context context) {
-        return beginCreateAsync(resourceGroupName, registryName, replicationName, replication, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, registryName, replicationName, replication, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> createAsync(
@@ -750,7 +754,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -758,7 +762,8 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReplicationInner> createAsync(
@@ -775,7 +780,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -793,7 +798,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Creates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication The parameters for creating a replication.
@@ -816,13 +821,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -850,7 +855,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -869,14 +874,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -904,7 +909,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -920,13 +925,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -942,14 +947,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -965,48 +970,48 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String replicationName) {
-        return beginDeleteAsync(resourceGroupName, registryName, replicationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, registryName, replicationName).getSyncPoller();
     }
 
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String replicationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, replicationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, registryName, replicationName, context).getSyncPoller();
     }
 
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String replicationName) {
@@ -1018,14 +1023,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1038,7 +1043,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,7 +1058,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Deletes a replication from a container registry.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param context The context to associate with this operation.
@@ -1069,14 +1074,15 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1115,7 +1121,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         } else {
             replicationUpdateParameters.validate();
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1137,7 +1143,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1145,7 +1151,8 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1185,7 +1192,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         } else {
             replicationUpdateParameters.validate();
         }
-        final String apiVersion = "2021-09-01";
+        final String apiVersion = "2022-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1204,14 +1211,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdateAsync(
@@ -1234,7 +1241,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1242,7 +1249,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdateAsync(
@@ -1264,14 +1271,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
@@ -1279,14 +1286,15 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         String registryName,
         String replicationName,
         ReplicationUpdateParameters replicationUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, registryName, replicationName, replicationUpdateParameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, registryName, replicationName, replicationUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1294,7 +1302,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
@@ -1303,21 +1311,23 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
         String replicationName,
         ReplicationUpdateParameters replicationUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, registryName, replicationName, replicationUpdateParameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, registryName, replicationName, replicationUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> updateAsync(
@@ -1333,7 +1343,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1341,7 +1351,8 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry.
+     * @return an object that represents a replication for a container registry on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReplicationInner> updateAsync(
@@ -1358,7 +1369,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1379,7 +1390,7 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Updates a replication for a container registry with the specified parameters.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replicationUpdateParameters The parameters for updating a replication.
@@ -1403,11 +1414,13 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1438,12 +1451,14 @@ public final class ReplicationsClientImpl implements ReplicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
+     * @return the result of a request to list replications for a container registry along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationInner>> listNextSinglePageAsync(String nextLink, Context context) {

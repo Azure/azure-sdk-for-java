@@ -6,15 +6,16 @@ package com.azure.resourcemanager.containerregistry.fluent;
 
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
+import java.util.UUID;
 
 /** The interface for ContainerRegistryManagementClient class. */
 public interface ContainerRegistryManagementClient {
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    String getSubscriptionId();
+    UUID getSubscriptionId();
 
     /**
      * Gets server parameter.
@@ -64,6 +65,20 @@ public interface ContainerRegistryManagementClient {
      * @return the ReplicationsClient object.
      */
     ReplicationsClient getReplications();
+
+    /**
+     * Gets the ScopeMapsClient object to access its operations.
+     *
+     * @return the ScopeMapsClient object.
+     */
+    ScopeMapsClient getScopeMaps();
+
+    /**
+     * Gets the TokensClient object to access its operations.
+     *
+     * @return the TokensClient object.
+     */
+    TokensClient getTokens();
 
     /**
      * Gets the WebhooksClient object to access its operations.

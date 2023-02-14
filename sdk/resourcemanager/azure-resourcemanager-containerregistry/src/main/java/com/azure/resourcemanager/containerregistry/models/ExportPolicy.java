@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The export policy for a container registry. */
 @Fluent
 public final class ExportPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportPolicy.class);
-
     /*
      * The value that indicates whether the policy is enabled or not.
      */
     @JsonProperty(value = "status")
     private ExportPolicyStatus status;
+
+    /** Creates an instance of ExportPolicy class. */
+    public ExportPolicy() {
+    }
 
     /**
      * Get the status property: The value that indicates whether the policy is enabled or not.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a timer trigger. */
 @Fluent
 public final class TimerTrigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimerTrigger.class);
-
     /*
      * The CRON expression for the task schedule
      */
@@ -31,6 +28,10 @@ public final class TimerTrigger {
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of TimerTrigger class. */
+    public TimerTrigger() {
+    }
 
     /**
      * Get the schedule property: The CRON expression for the task schedule.
@@ -99,14 +100,16 @@ public final class TimerTrigger {
      */
     public void validate() {
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property schedule in model TimerTrigger"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TimerTrigger"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TimerTrigger.class);
 }
