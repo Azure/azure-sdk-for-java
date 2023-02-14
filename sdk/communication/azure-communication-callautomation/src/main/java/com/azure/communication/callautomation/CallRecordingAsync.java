@@ -127,8 +127,6 @@ public class CallRecordingAsync {
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
-                        UUID.randomUUID(),
-                        getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                         contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -571,15 +569,4 @@ public class CallRecordingAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
-
-    //region helper functions
-    /***
-     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
-     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
-     */
-    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
-        return time.atZone(ZoneId.of("UTC")).format(formatter);
-    }
-    //endregion
 }

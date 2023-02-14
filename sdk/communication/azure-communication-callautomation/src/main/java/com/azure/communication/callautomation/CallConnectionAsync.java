@@ -16,11 +16,11 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Unmut
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.AddParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
@@ -155,10 +155,7 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
-                UUID.randomUUID(),
-                getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
-                context)
+            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -280,8 +277,6 @@ public class CallConnectionAsync {
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-            UUID.randomUUID(),
-            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
             context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
@@ -345,8 +340,6 @@ public class CallConnectionAsync {
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-            UUID.randomUUID(),
-            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
             context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
@@ -392,8 +385,6 @@ public class CallConnectionAsync {
                 .setOperationContext(removeParticipantsOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request,
-            UUID.randomUUID(),
-            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
             context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
@@ -437,8 +428,6 @@ public class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
@@ -482,8 +471,6 @@ public class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
@@ -501,17 +488,6 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
-    }
-    //endregion
-
-    //region helper functions
-    /***
-     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
-     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
-     */
-    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
-        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
     //endregion
 }

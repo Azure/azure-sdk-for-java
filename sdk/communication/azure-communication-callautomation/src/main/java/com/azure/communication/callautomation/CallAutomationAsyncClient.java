@@ -9,9 +9,8 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
-import com.azure.communication.callautomation.implementation.converters.CallSourceConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
+import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
@@ -19,7 +18,6 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
@@ -102,8 +100,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CallSource source,
-                                             List<CommunicationIdentifier> targets,
+    public Mono<CreateCallResult> createCall(List<CommunicationIdentifier> targets,
                                              String callbackUrl) {
         CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(source, targets, callbackUrl);
         return createCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
@@ -113,7 +110,6 @@ public final class CallAutomationAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The caller of the call.
      * @param callInvite Call invitee's information
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -121,10 +117,9 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CallSource source,
-                                             CallInvite callInvite,
+    public Mono<CreateCallResult> createCall(CallInvite callInvite,
                                              String callbackUrl) {
-        CreateCallOptions createCallOptions = new CreateCallOptions(source, callInvite, callbackUrl);
+        CreateCallOptions createCallOptions = new CreateCallOptions(callInvite, callbackUrl);
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -161,8 +156,6 @@ public final class CallAutomationAsyncClient {
             CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -185,9 +178,9 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-        CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallGroupOptions.getSource());
+        //CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallGroupOptions.getSource());
+
         CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSource(callSourceDto)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
@@ -211,10 +204,7 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
-                    context)
+            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -236,9 +226,10 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>();
         targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTarget()));
 
-        CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallOptions.getSource());
         CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSource(callSourceDto)
+            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallIdNumber()))
+            .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
+            .setSourceIdentity()
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
@@ -319,10 +310,7 @@ public final class CallAutomationAsyncClient {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
-            UUID.randomUUID(),
-            getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
-            context)
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -375,10 +363,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallImvite().getTarget()));
 
-            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
-                    context)
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -422,10 +407,7 @@ public final class CallAutomationAsyncClient {
                 request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
-                    UUID.randomUUID(),
-                    getRepeatabilityFirstSentInHttpDateFormat(Instant.now()),
-                    context)
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -453,17 +435,6 @@ public final class CallAutomationAsyncClient {
      */
     public CallRecordingAsync getCallRecordingAsync() {
         return new CallRecordingAsync(callRecordingsInternal, contentDownloader, httpPipelineInternal, resourceEndpoint);
-    }
-    //endregion
-
-    //region helper functions
-    /***
-     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
-     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
-     */
-    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
-        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
     //endregion
 }
