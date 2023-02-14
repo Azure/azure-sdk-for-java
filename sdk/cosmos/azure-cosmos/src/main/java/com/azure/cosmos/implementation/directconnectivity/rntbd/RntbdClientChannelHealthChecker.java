@@ -306,7 +306,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private String transitTimeoutValidation(Timestamps timestamps, Instant currentTime, RntbdRequestManager requestManager, Channel channel) {
         String transitTimeoutValidationMessage = StringUtils.EMPTY;
 
-        if (this.timeoutDetectionEnabled && timestamps.tansitTimeoutCount() > 0) {
+        if (this.timeoutDetectionEnabled && timestamps.transitTimeoutCount() > 0) {
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
 
             // The channel will be closed if all requests are failed due to transit timeout within the time limit.
@@ -327,7 +327,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
             // Consecutive connection timeout happens
             // Max(TransitTimeoutDetectionThreshold * networkRequestTimeout, transitTimeoutHighFrequencyGracePeriodInNanos)
-            if (timestamps.tansitTimeoutCount() >= this.timeoutHighFrequencyThreshold
+            if (timestamps.transitTimeoutCount() >= this.timeoutHighFrequencyThreshold
                 && readDelay >= this.timeoutHighFrequencyTimeLimitInNanos) {
                 transitTimeoutValidationMessage = MessageFormat.format(
                     "{0} health check failed due to transit timeout high frequency threshold hit: [rntbdContext: {1},"
@@ -499,7 +499,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         }
 
         @JsonProperty
-        public int tansitTimeoutCount() {
+        public int transitTimeoutCount() {
             return transitTimeoutCountUpdater.get(this);
         }
 

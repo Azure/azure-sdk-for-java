@@ -148,7 +148,7 @@ public class RntbdClientChannelHealthCheckerTests {
         Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
 
         Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
-        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(1);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(1);
         Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
@@ -194,7 +194,7 @@ public class RntbdClientChannelHealthCheckerTests {
         int timeoutCount = config.timeoutDetectionHighFrequencyThreshold() + 1;
 
         Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
-        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(timeoutCount);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(timeoutCount);
         Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
 
@@ -240,7 +240,7 @@ public class RntbdClientChannelHealthCheckerTests {
         int writeTimeoutCount = config.timeoutDetectionOnWriteThreshold() + 1;
 
         Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
-        Mockito.when(timestampsMock.tansitTimeoutCount()).thenReturn(writeTimeoutCount);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(writeTimeoutCount);
         Mockito.when(timestampsMock.tansitTimeoutWriteCount()).thenReturn(writeTimeoutCount);
         Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
