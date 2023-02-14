@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import java.util.List;
 })
 @Fluent
 public class TaskStepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskStepProperties.class);
-
     /*
      * List of base image dependencies for a step.
      */
@@ -42,11 +38,14 @@ public class TaskStepProperties {
     private String contextPath;
 
     /*
-     * The token (git PAT or SAS token of storage account blob) associated with
-     * the context for a step.
+     * The token (git PAT or SAS token of storage account blob) associated with the context for a step.
      */
     @JsonProperty(value = "contextAccessToken")
     private String contextAccessToken;
+
+    /** Creates an instance of TaskStepProperties class. */
+    public TaskStepProperties() {
+    }
 
     /**
      * Get the baseImageDependencies property: List of base image dependencies for a step.

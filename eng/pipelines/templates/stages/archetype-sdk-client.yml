@@ -66,6 +66,9 @@ parameters:
   type: string
   default: not-specified
 
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
 stages:
   - stage: Build
     jobs:

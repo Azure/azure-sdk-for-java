@@ -25,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataProtectionsClient. */
@@ -62,7 +63,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
         Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupport(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("location") String location,
             @BodyParam("application/json") FeatureValidationRequestBase parameters,
             @HeaderParam("Accept") String accept,

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TaskRuns Get. */
 public final class TaskRunsGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class TaskRunsGetSamples {
             .manager()
             .serviceClient()
             .getTaskRuns()
-            .getWithResponse("myResourceGroup", "myRegistry", "myRun", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myRun", com.azure.core.util.Context.NONE);
     }
 }
