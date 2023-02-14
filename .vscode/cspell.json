@@ -198,7 +198,6 @@
     "sdk/tables/azure-data-tables/**",
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
-    "sdk/eventhubs/azure-messaging-eventhubs-stress/**",
     "sdk/maps/azure-maps-elevation/**",
     "sdk/maps/azure-maps-geolocation/**",
     "sdk/maps/azure-maps-timezone/**",

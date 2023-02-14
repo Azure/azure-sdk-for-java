@@ -32,6 +32,14 @@ public final class TargetDetails {
     @JsonProperty(value = "url", required = true)
     private String url;
 
+    /*
+     * Full ARM Id denoting the restore destination. It is the ARM Id pointing to container / file share
+     * This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states
+     */
+    @JsonProperty(value = "targetResourceArmId")
+    private String targetResourceArmId;
+
     /** Creates an instance of TargetDetails class. */
     public TargetDetails() {
     }
@@ -97,6 +105,30 @@ public final class TargetDetails {
      */
     public TargetDetails withUrl(String url) {
         this.url = url;
+        return this;
+    }
+
+    /**
+     * Get the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
+     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
+     *
+     * @return the targetResourceArmId value.
+     */
+    public String targetResourceArmId() {
+        return this.targetResourceArmId;
+    }
+
+    /**
+     * Set the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
+     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
+     *
+     * @param targetResourceArmId the targetResourceArmId value to set.
+     * @return the TargetDetails object itself.
+     */
+    public TargetDetails withTargetResourceArmId(String targetResourceArmId) {
+        this.targetResourceArmId = targetResourceArmId;
         return this;
     }
 

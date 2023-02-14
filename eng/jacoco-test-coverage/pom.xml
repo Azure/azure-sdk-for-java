@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>4.0.4</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -88,9 +88,9 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.1.10</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
-      <dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
       <version>1.1.0-beta.14</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
@@ -198,12 +198,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-      <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+      <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -253,12 +253,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.15.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -278,7 +278,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -689,7 +689,7 @@
             <bannedDependencies>
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.7]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.8]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -52,6 +52,10 @@ public final class SqlPoolConnectionPolicyProperties {
     @JsonProperty(value = "state")
     private String state;
 
+    /** Creates an instance of SqlPoolConnectionPolicyProperties class. */
+    public SqlPoolConnectionPolicyProperties() {
+    }
+
     /**
      * Get the securityEnabledAccess property: The state of security access.
      *

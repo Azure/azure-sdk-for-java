@@ -76,6 +76,10 @@ public final class ServerBlobAuditingPolicyImpl
         return this.innerModel().isDevopsAuditEnabled();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerBlobAuditingPolicyInner innerModel() {
         return this.innerObject;
     }

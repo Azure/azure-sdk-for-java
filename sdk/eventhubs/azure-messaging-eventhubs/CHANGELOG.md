@@ -1,10 +1,6 @@
 # Release History
 
-## 5.16.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 5.15.2 (2023-02-13)
 
 ### Bugs Fixed
 
@@ -13,6 +9,11 @@
 - Fixed usage of static AmqpAnnotatedMessage when creating empty EventData. ([#33327](https://github.com/Azure/azure-sdk-for-java/issues/33327))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.36.0`.
+- Upgraded `azure-core-amqp` to `2.8.2`.
 
 ## 5.15.1 (2023-01-18)
 

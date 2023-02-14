@@ -24,6 +24,10 @@ public final class SkuLocationInfoItem {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of SkuLocationInfoItem class. */
+    public SkuLocationInfoItem() {
+    }
+
     /**
      * Get the location property: The available location of the SKU.
      *
