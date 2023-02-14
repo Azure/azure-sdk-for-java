@@ -13,7 +13,6 @@ import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -22,9 +21,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
-import java.util.Optional;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
