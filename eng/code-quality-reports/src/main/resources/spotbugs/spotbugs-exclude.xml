@@ -2357,6 +2357,14 @@
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
+  <!-- This is an internal type used to hold the request body which will not be mutated outside this class -->
+  <Match>
+    <Or>
+      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
     <Or>

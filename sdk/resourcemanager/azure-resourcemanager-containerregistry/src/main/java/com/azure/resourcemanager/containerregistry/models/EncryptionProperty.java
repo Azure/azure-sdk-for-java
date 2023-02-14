@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionProperty model. */
 @Fluent
 public final class EncryptionProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperty.class);
-
     /*
-     * Indicates whether or not the encryption is enabled for container
-     * registry.
+     * Indicates whether or not the encryption is enabled for container registry.
      */
     @JsonProperty(value = "status")
     private EncryptionStatus status;
@@ -26,6 +21,10 @@ public final class EncryptionProperty {
      */
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
+
+    /** Creates an instance of EncryptionProperty class. */
+    public EncryptionProperty() {
+    }
 
     /**
      * Get the status property: Indicates whether or not the encryption is enabled for container registry.

@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for ContainerRegistryManagementClient class. */
 public interface ContainerRegistryManagementClient {
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -64,6 +64,20 @@ public interface ContainerRegistryManagementClient {
      * @return the ReplicationsClient object.
      */
     ReplicationsClient getReplications();
+
+    /**
+     * Gets the ScopeMapsClient object to access its operations.
+     *
+     * @return the ScopeMapsClient object.
+     */
+    ScopeMapsClient getScopeMaps();
+
+    /**
+     * Gets the TokensClient object to access its operations.
+     *
+     * @return the TokensClient object.
+     */
+    TokensClient getTokens();
 
     /**
      * Gets the WebhooksClient object to access its operations.
