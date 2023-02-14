@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IotHubDataFormat. */
+/** The data format of the message. Optionally the data format can be added to each message. */
 public final class IotHubDataFormat extends ExpandableStringEnum<IotHubDataFormat> {
     /** Static value MULTIJSON for IotHubDataFormat. */
     public static final IotHubDataFormat MULTIJSON = fromString("MULTIJSON");
@@ -59,6 +59,15 @@ public final class IotHubDataFormat extends ExpandableStringEnum<IotHubDataForma
     public static final IotHubDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of IotHubDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotHubDataFormat() {
+    }
+
+    /**
      * Creates or finds a IotHubDataFormat from its string representation.
      *
      * @param name a name to look for.
@@ -69,7 +78,11 @@ public final class IotHubDataFormat extends ExpandableStringEnum<IotHubDataForma
         return fromString(name, IotHubDataFormat.class);
     }
 
-    /** @return known IotHubDataFormat values. */
+    /**
+     * Gets known IotHubDataFormat values.
+     *
+     * @return known IotHubDataFormat values.
+     */
     public static Collection<IotHubDataFormat> values() {
         return values(IotHubDataFormat.class);
     }

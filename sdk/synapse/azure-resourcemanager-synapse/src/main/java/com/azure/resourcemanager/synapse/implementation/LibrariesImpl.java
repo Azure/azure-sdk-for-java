@@ -25,15 +25,6 @@ public final class LibrariesImpl implements Libraries {
         this.serviceManager = serviceManager;
     }
 
-    public LibraryResource get(String resourceGroupName, String libraryName, String workspaceName) {
-        LibraryResourceInner inner = this.serviceClient().get(resourceGroupName, libraryName, workspaceName);
-        if (inner != null) {
-            return new LibraryResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LibraryResource> getWithResponse(
         String resourceGroupName, String libraryName, String workspaceName, Context context) {
         Response<LibraryResourceInner> inner =
@@ -44,6 +35,15 @@ public final class LibrariesImpl implements Libraries {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LibraryResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LibraryResource get(String resourceGroupName, String libraryName, String workspaceName) {
+        LibraryResourceInner inner = this.serviceClient().get(resourceGroupName, libraryName, workspaceName);
+        if (inner != null) {
+            return new LibraryResourceImpl(inner, this.manager());
         } else {
             return null;
         }

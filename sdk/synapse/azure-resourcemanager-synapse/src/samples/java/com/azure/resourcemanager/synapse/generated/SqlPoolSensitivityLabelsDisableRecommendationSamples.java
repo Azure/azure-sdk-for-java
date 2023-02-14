@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels DisableRecommendation. */
 public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
     /*
@@ -21,6 +19,6 @@ public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
         manager
             .sqlPoolSensitivityLabels()
             .disableRecommendationWithResponse(
-                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+                "myRG", "myServer", "myDatabase", "dbo", "myTable", "myColumn", com.azure.core.util.Context.NONE);
     }
 }

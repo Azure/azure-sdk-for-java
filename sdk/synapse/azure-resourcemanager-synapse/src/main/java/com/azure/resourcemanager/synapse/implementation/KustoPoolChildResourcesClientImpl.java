@@ -53,7 +53,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface KustoPoolChildResourcesService {
+    public interface KustoPoolChildResourcesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -214,32 +214,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
         String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(workspaceName, kustoPoolName, resourceGroupName, resourceName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Kusto Pool child resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
-        return checkNameAvailabilityAsync(workspaceName, kustoPoolName, resourceGroupName, resourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -265,5 +240,25 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
         return checkNameAvailabilityWithResponseAsync(
                 workspaceName, kustoPoolName, resourceGroupName, resourceName, context)
             .block();
+    }
+
+    /**
+     * Checks that the Kusto Pool child resource name is valid and is not already in use.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Kusto Pool child resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+        return checkNameAvailabilityWithResponse(
+                workspaceName, kustoPoolName, resourceGroupName, resourceName, Context.NONE)
+            .getValue();
     }
 }
