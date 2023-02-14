@@ -20,6 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
@@ -97,7 +98,7 @@ public final class ContainerRegistryManager
             new ContainerRegistryManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
+                .subscriptionId(UUID.fromString(profile.getSubscriptionId()))
                 .buildClient());
     }
 
