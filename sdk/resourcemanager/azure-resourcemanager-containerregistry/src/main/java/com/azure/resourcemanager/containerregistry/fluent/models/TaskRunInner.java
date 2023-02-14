@@ -7,11 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class TaskRunInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunInner.class);
-
     /*
      * Identity for the resource.
      */
@@ -29,8 +25,7 @@ public final class TaskRunInner extends ProxyResource {
     private IdentityProperties identity;
 
     /*
-     * The properties associated with the task run, i.e., request and result of
-     * the run
+     * The properties associated with the task run, i.e., request and result of the run
      */
     @JsonProperty(value = "properties")
     private TaskRunPropertiesInner innerProperties;
@@ -46,6 +41,10 @@ public final class TaskRunInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of TaskRunInner class. */
+    public TaskRunInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.
