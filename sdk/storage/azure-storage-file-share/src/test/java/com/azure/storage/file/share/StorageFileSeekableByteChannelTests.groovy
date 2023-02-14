@@ -9,6 +9,7 @@ import com.azure.storage.file.share.models.FileLastWrittenMode
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders
 import com.azure.storage.file.share.models.ShareFileDownloadResponse
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelOptions
@@ -51,8 +52,9 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         then: "Expected ShareFileClient upload parameters given"
         1 * client.uploadRangeWithResponse(
-            { it.getOffset() == offset && it.getRequestConditions() == conditions && it.getLastWrittenMode() == lastWrittenMode
-              && (it.getDataStream() as ByteBufferBackedInputStream).getBytes() == getData().getDefaultBytes()},
+            { ShareFileUploadRangeOptions options -> options.getOffset() == offset &&
+                options.getRequestConditions() == conditions && options.getLastWrittenMode() == lastWrittenMode &&
+                options.getDataStream().getBytes() == getData().getDefaultBytes() },
             null, null)
 
         where:
@@ -68,8 +70,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         given:
         ShareFileClient client = Mock()
         def behavior = new StorageSeekableBytechannelShareFileReadBehavior(client, conditions)
-        def buffer = ByteBuffer.allocate(Constants.KB);
-        def expectedResponseContentRange = "bytes $offset-${offset + buffer.limit() - 1}/4096"
+        def buffer = ByteBuffer.allocate(Constants.KB)
 
         when: "ReadBehavior.read() called"
         behavior.read(buffer, offset)
@@ -80,7 +81,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
             { ShareFileDownloadOptions options -> options.getRange().getStart() == offset &&
                 options.getRange().getEnd() == offset + buffer.remaining() - 1 &&
                 options.getRequestConditions() == conditions },
-            null, null) >> { createMockDownloadResponse(expectedResponseContentRange) }
+            null, null) >> { createMockDownloadResponse("bytes $offset-${offset + buffer.limit() - 1}/4096") }
 
         where:
         offset | conditions
