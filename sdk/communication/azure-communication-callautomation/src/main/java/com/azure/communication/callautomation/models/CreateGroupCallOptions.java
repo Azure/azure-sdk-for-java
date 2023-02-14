@@ -14,11 +14,6 @@ import java.util.List;
 @Fluent
 public class CreateGroupCallOptions {
     /**
-     * The source property.
-     */
-    private final CallSource source;
-
-    /**
      * The targets of the call.
      */
     private final List<CommunicationIdentifier> targets;
@@ -46,23 +41,12 @@ public class CreateGroupCallOptions {
     /**
      * Constructor
      *
-     * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateGroupCallOptions(CallSource source, List<CommunicationIdentifier> targets, String callbackUrl) {
-        this.source = source;
+    public CreateGroupCallOptions(List<CommunicationIdentifier> targets, String callbackUrl) {
         this.targets = targets;
         this.callbackUrl = callbackUrl;
-    }
-
-    /**
-     * Get the source.
-     *
-     * @return the source value.
-     */
-    public CallSource getSource() {
-        return source;
     }
 
     /**

@@ -10,11 +10,6 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class CreateCallOptions {
-
-    /**
-     * The source property.
-     */
-    private final CallSource source;
     /**
      * Call invitee information.
      */
@@ -42,25 +37,13 @@ public class CreateCallOptions {
 
     /**
      * Constructor
-     * @param source The source property.
      * @param callInvite Call invitee information.
      * @param callbackUri The call back URI.
      */
-    public CreateCallOptions(CallSource source, CallInvite callInvite, String callbackUri) {
-        this.source = source;
+    public CreateCallOptions(CallInvite callInvite, String callbackUri) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUri;
     }
-
-    /**
-     * Get the source.
-     *
-     * @return the source value.
-     */
-    public CallSource getSource() {
-        return source;
-    }
-
 
     /**
      * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource

@@ -17,7 +17,6 @@ import com.azure.communication.callautomation.implementation.converters.CallPart
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
@@ -52,13 +51,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.time.ZoneId;
-import java.util.UUID;
-import java.time.Instant;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -486,17 +479,6 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
-    }
-    //endregion
-
-    //region helper functions
-    /***
-     * Get the repeatabilityFirstSent in IMF-fixdate form of HTTP-date format.
-     * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
-     */
-    static String getRepeatabilityFirstSentInHttpDateFormat(Instant time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
-        return time.atZone(ZoneId.of("UTC")).format(formatter);
     }
     //endregion
 }

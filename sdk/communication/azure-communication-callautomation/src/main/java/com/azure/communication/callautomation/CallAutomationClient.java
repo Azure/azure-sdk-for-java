@@ -7,7 +7,6 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
@@ -52,12 +51,11 @@ public final class CallAutomationClient {
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallSource source,
-                                       List<CommunicationIdentifier> targets,
+    public CreateCallResult createCall(List<CommunicationIdentifier> targets,
                                        String callbackUrl) {
-        return callAutomationAsyncClient.createCall(source, targets, callbackUrl).block();
+        return callAutomationAsyncClient.createCall(targets, callbackUrl).block();
     }
-    
+
   //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
@@ -70,10 +68,9 @@ public final class CallAutomationClient {
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallSource source,
-                                       CallInvite callInvite,
+    public CreateCallResult createCall(CallInvite callInvite,
                                        String callbackUrl) {
-        return callAutomationAsyncClient.createCall(source, callInvite, callbackUrl).block();
+        return callAutomationAsyncClient.createCall(callInvite, callbackUrl).block();
     }
 
     /**
@@ -89,7 +86,7 @@ public final class CallAutomationClient {
     public Response<CreateCallResult> createCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
         return callAutomationAsyncClient.createCallWithResponseInternal(createGroupCallOptions, context).block();
     }
-    
+
     /**
      * Create a call connection request from a source identity to a target identity.
      *
