@@ -2,14 +2,12 @@
 
 ## 2.24.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-15`.
+- 
 ## 2.23.0 (2023-01-27)
 
 ### Other Changes
