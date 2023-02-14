@@ -10,6 +10,7 @@
 
 #### Bugs Fixed
 - Change feed pull API is suing an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+- Enable TCP-NODELAY to reduce delays when sending data to partition servers - See [PR 33514](https://github.com/Azure/azure-sdk-for-java/pull/33514)
 
 #### Other Changes
 

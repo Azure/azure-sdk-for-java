@@ -166,6 +166,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
+            .option(ChannelOption.TCP_NODELAY, true)
             .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
         if (rntbdLoop instanceof RntbdLoopEpoll) {
