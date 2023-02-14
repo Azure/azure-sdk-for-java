@@ -59,7 +59,7 @@
     "dir": "azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2021-09"
+    "args": "--tag=package-2022-12"
   },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
