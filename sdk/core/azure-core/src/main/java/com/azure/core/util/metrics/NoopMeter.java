@@ -16,8 +16,7 @@ final class NoopMeter implements Meter {
     public static final Meter INSTANCE = new NoopMeter();
     private static final DoubleHistogram NOOP_LONG_HISTOGRAM = new DoubleHistogram() {
         @Override
-        public void record(double value, TelemetryAttributes attributes, Context context) {
-        }
+        public void record(double value, TelemetryAttributes attributes, Context context) {}
 
         @Override
         public boolean isEnabled() {
@@ -27,8 +26,7 @@ final class NoopMeter implements Meter {
 
     private static final LongCounter NOOP_LONG_COUNTER = new LongCounter() {
         @Override
-        public void add(long value, TelemetryAttributes attributes, Context context) {
-        }
+        public void add(long value, TelemetryAttributes attributes, Context context) {}
 
         @Override
         public boolean isEnabled() {
@@ -36,11 +34,9 @@ final class NoopMeter implements Meter {
         }
     };
 
-    private static final TelemetryAttributes NOOP_ATTRIBUTES = new TelemetryAttributes() {
-    };
+    private static final TelemetryAttributes NOOP_ATTRIBUTES = new TelemetryAttributes() {};
 
-    private NoopMeter() {
-    }
+    private NoopMeter() {}
 
     /**
      * {@inheritDoc}
@@ -95,6 +91,5 @@ final class NoopMeter implements Meter {
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

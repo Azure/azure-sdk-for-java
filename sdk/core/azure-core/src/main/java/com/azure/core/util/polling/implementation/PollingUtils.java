@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
  */
 public final class PollingUtils {
     private static final String FORWARD_SLASH = "/";
+
     /**
      * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
      *
@@ -60,7 +61,8 @@ public final class PollingUtils {
      * @return a Publisher emitting the deserialized object
      */
     @SuppressWarnings("unchecked")
-    public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
+    public static <T> Mono<T> deserializeResponse(BinaryData binaryData,
+                                                  ObjectSerializer serializer,
                                                   TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
             return Mono.just((T) binaryData);
@@ -80,8 +82,9 @@ public final class PollingUtils {
      * @return the deserialized object
      */
     @SuppressWarnings("unchecked")
-    public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer,
-        TypeReference<T> typeReference) {
+    public static <T> T deserializeResponseSync(BinaryData binaryData,
+                                                ObjectSerializer serializer,
+                                                TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
             return (T) binaryData;
         } else {
@@ -104,7 +107,8 @@ public final class PollingUtils {
      * @return a Publisher emitting the converted object
      */
     @SuppressWarnings("unchecked")
-    public static <T> Mono<T> convertResponse(Object response, ObjectSerializer serializer,
+    public static <T> Mono<T> convertResponse(Object response,
+                                              ObjectSerializer serializer,
                                               TypeReference<T> typeReference) {
         if (response == null) {
             return Mono.empty();
@@ -131,8 +135,9 @@ public final class PollingUtils {
      * @return the converted object
      */
     @SuppressWarnings("unchecked")
-    public static <T> T convertResponseSync(Object response, ObjectSerializer serializer,
-        TypeReference<T> typeReference) {
+    public static <T> T convertResponseSync(Object response,
+                                            ObjectSerializer serializer,
+                                            TypeReference<T> typeReference) {
         if (response == null) {
             return null;
         } else if (TypeUtil.isTypeOrSubTypeOf(response.getClass(), typeReference.getJavaType())) {
@@ -155,8 +160,9 @@ public final class PollingUtils {
             URI uri = new URI(path);
             if (!uri.isAbsolute()) {
                 if (CoreUtils.isNullOrEmpty(endpoint)) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Relative path requires endpoint to be non-null and non-empty to create an absolute path."));
+                    throw logger
+                        .logExceptionAsError(new IllegalArgumentException(
+                            "Relative path requires endpoint to be non-null and non-empty to create an absolute path."));
                 }
 
                 if (endpoint.endsWith(FORWARD_SLASH) && path.startsWith(FORWARD_SLASH)) {
@@ -173,6 +179,5 @@ public final class PollingUtils {
         return path;
     }
 
-    private PollingUtils() {
-    }
+    private PollingUtils() {}
 }

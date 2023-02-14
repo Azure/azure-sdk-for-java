@@ -69,18 +69,18 @@ public class ByteBufferCollectorTests {
             manyHelloWorldsByteBuffers.add(worldBuffer.duplicate());
         }
 
-        return Stream.of(
-            // All buffers are null.
-            Arguments.of(Arrays.asList(null, null), new byte[0]),
+        return Stream
+            .of(
+                // All buffers are null.
+                Arguments.of(Arrays.asList(null, null), new byte[0]),
 
-            // All buffers are empty.
-            Arguments.of(Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)), new byte[0]),
+                // All buffers are empty.
+                Arguments.of(Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)), new byte[0]),
 
-            // Hello world buffers.
-            Arguments.of(Arrays.asList(helloBuffer.duplicate(), worldBuffer.duplicate()), helloWorldBytes),
+                // Hello world buffers.
+                Arguments.of(Arrays.asList(helloBuffer.duplicate(), worldBuffer.duplicate()), helloWorldBytes),
 
-            // Many hello world buffers.
-            Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes)
-        );
+                // Many hello world buffers.
+                Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes));
     }
 }

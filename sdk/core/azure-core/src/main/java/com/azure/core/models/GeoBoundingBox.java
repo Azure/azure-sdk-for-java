@@ -46,16 +46,25 @@ public final class GeoBoundingBox {
      * @param minAltitude Minimum altitude boundary.
      * @param maxAltitude Maximum altitude boundary.
      */
-    public GeoBoundingBox(double west, double south, double east, double north, double minAltitude,
-        double maxAltitude) {
+    public GeoBoundingBox(double west,
+                          double south,
+                          double east,
+                          double north,
+                          double minAltitude,
+                          double maxAltitude) {
         this(west, south, east, north, minAltitude, maxAltitude, null);
     }
 
     /*
      * This constructor allows the one above to require both min altitude and max altitude to be non-null.
      */
-    private GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
-        Double maxAltitude, String ignored) {
+    private GeoBoundingBox(double west,
+                           double south,
+                           double east,
+                           double north,
+                           Double minAltitude,
+                           Double maxAltitude,
+                           String ignored) {
         this.west = west;
         this.south = south;
         this.east = east;

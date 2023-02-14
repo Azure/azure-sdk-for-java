@@ -31,8 +31,8 @@ public class HostPolicy implements HttpPipelinePolicy {
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
             } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
-                    e));
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
             }
         }
     };

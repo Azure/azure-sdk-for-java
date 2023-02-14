@@ -22,9 +22,7 @@ public class RequestOptionsTests {
     public void addQueryParam() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options = new RequestOptions()
-            .addQueryParam("foo", "bar")
-            .addQueryParam("$skipToken", "1");
+        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
         options.getRequestCallback().accept(request);
 
         assertTrue(request.getUrl().toString().contains("?foo=bar&%24skipToken=1"));
@@ -51,12 +49,12 @@ public class RequestOptionsTests {
         String expected = "{\"id\":\"123\"}";
 
         BinaryData requestBody = BinaryData.fromString(expected);
-        RequestOptions options = new RequestOptions()
-            .setBody(requestBody);
+        RequestOptions options = new RequestOptions().setBody(requestBody);
         options.getRequestCallback().accept(request);
 
         assertSame(requestBody, request.getBodyAsBinaryData());
-        StepVerifier.create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
+        StepVerifier
+            .create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
             .expectNext(expected)
             .verifyComplete();
     }

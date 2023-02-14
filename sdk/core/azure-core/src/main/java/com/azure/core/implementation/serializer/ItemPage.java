@@ -24,10 +24,10 @@ import java.util.List;
  * @param <T> The type of the object stored within the {@link ItemPage} instance
  */
 class ItemPage<T> implements Page<T> {
-    @JsonAlias({"items", "value"})
+    @JsonAlias({ "items", "value" })
     private List<T> items;
 
-    @JsonAlias({"nextLink", "nextPageLink"})
+    @JsonAlias({ "nextLink", "nextPageLink" })
     private String continuationToken;
 
     @Override

@@ -18,8 +18,8 @@ public class RetryOptions {
      * @param exponentialBackoffOptions The {@link ExponentialBackoffOptions}.
      */
     public RetryOptions(ExponentialBackoffOptions exponentialBackoffOptions) {
-        this.exponentialBackoffOptions = Objects.requireNonNull(
-            exponentialBackoffOptions, "'exponentialBackoffOptions' cannot be null.");
+        this.exponentialBackoffOptions = Objects
+            .requireNonNull(exponentialBackoffOptions, "'exponentialBackoffOptions' cannot be null.");
         fixedDelayOptions = null;
     }
 
@@ -29,8 +29,7 @@ public class RetryOptions {
      * @param fixedDelayOptions The {@link FixedDelayOptions}.
      */
     public RetryOptions(FixedDelayOptions fixedDelayOptions) {
-        this.fixedDelayOptions = Objects.requireNonNull(
-            fixedDelayOptions, "'fixedDelayOptions' cannot be null.");
+        this.fixedDelayOptions = Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.");
         exponentialBackoffOptions = null;
     }
 

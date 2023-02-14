@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-
 /**
  * Represents configuration property.
  *
@@ -41,9 +40,15 @@ public final class ConfigurationProperty<T> {
      * @param aliases list of alternative names of the property. Can be null.
      * @param valueSanitizer sanitizes property value for logging purposes.
      */
-    ConfigurationProperty(String name, T defaultValue, boolean isRequired, Function<String, T> converter,
-        boolean isShared, String environmentVariable, String systemProperty, String[] aliases,
-        Function<String, String> valueSanitizer) {
+    ConfigurationProperty(String name,
+                          T defaultValue,
+                          boolean isRequired,
+                          Function<String, T> converter,
+                          boolean isShared,
+                          String environmentVariable,
+                          String systemProperty,
+                          String[] aliases,
+                          Function<String, String> valueSanitizer) {
         this.name = Objects.requireNonNull(name, "'name' cannot be null");
         this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");
         this.environmentVariable = environmentVariable;

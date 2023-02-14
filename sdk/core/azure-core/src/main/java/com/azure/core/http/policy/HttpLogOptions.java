@@ -34,38 +34,14 @@ public class HttpLogOptions {
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-    private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
-        "x-ms-request-id",
-        "x-ms-client-request-id",
-        "x-ms-return-client-request-id",
-        "traceparent",
-        "MS-CV",
+    private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays
+        .asList("x-ms-request-id", "x-ms-client-request-id", "x-ms-return-client-request-id", "traceparent", "MS-CV",
 
-        "Accept",
-        "Cache-Control",
-        "Connection",
-        "Content-Length",
-        "Content-Type",
-        "Date",
-        "ETag",
-        "Expires",
-        "If-Match",
-        "If-Modified-Since",
-        "If-None-Match",
-        "If-Unmodified-Since",
-        "Last-Modified",
-        "Pragma",
-        "Request-Id",
-        "Retry-After",
-        "Server",
-        "Transfer-Encoding",
-        "User-Agent",
-        "WWW-Authenticate"
-    );
+            "Accept", "Cache-Control", "Connection", "Content-Length", "Content-Type", "Date", "ETag", "Expires",
+            "If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "Last-Modified", "Pragma",
+            "Request-Id", "Retry-After", "Server", "Transfer-Encoding", "User-Agent", "WWW-Authenticate");
 
-    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
-        "api-version"
-    );
+    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.

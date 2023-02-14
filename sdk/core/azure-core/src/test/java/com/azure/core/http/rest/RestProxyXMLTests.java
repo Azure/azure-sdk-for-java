@@ -49,6 +49,7 @@ public class RestProxyXMLTests {
             HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
             return res;
         }
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             try {
@@ -78,14 +79,10 @@ public class RestProxyXMLTests {
     @Test
     public void canReadXMLResponse() throws Exception {
         //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockXMLHTTPClient())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new MockXMLHTTPClient()).build();
 
         //
-        MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-            pipeline,
-            new JacksonAdapter());
+        MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline, new JacksonAdapter());
         List<SignedIdentifierInner> identifiers = myXMLService.getContainerACLs().signedIdentifiers();
         assertNotNull(identifiers);
         assertNotEquals(0, identifiers.size());
@@ -97,11 +94,10 @@ public class RestProxyXMLTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getUrl().toString().endsWith("SetContainerACLs")) {
-                return FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                    .map(bytes -> {
-                        receivedBytes = bytes;
-                        return new MockHttpResponse(request, 200);
-                    });
+                return FluxUtil.collectBytesInByteBufferStream(request.getBody()).map(bytes -> {
+                    receivedBytes = bytes;
+                    return new MockHttpResponse(request, 200);
+                });
             } else {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
             }
@@ -129,20 +125,15 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
         //
-        MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-            pipeline,
-            serializer);
+        MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline, serializer);
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(expectedAcls);
         myXMLService.setContainerACLs(wrapper);
 
-        SignedIdentifiersWrapper actualAclsWrapped = serializer.deserialize(
-            new String(httpClient.receivedBytes, StandardCharsets.UTF_8),
-            SignedIdentifiersWrapper.class,
-            SerializerEncoding.XML);
+        SignedIdentifiersWrapper actualAclsWrapped = serializer
+            .deserialize(new String(httpClient.receivedBytes, StandardCharsets.UTF_8), SignedIdentifiersWrapper.class,
+                SerializerEncoding.XML);
 
         List<SignedIdentifierInner> actualAcls = actualAclsWrapped.signedIdentifiers();
 
@@ -166,15 +157,11 @@ public class RestProxyXMLTests {
     public void canDeserializeXMLWithAttributes() throws Exception {
         JacksonAdapter serializer = new JacksonAdapter();
         //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockXMLHTTPClient())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new MockXMLHTTPClient()).build();
 
         //
-        MyXMLServiceWithAttributes myXMLService = RestProxy.create(
-            MyXMLServiceWithAttributes.class,
-            pipeline,
-            serializer);
+        MyXMLServiceWithAttributes myXMLService = RestProxy
+            .create(MyXMLServiceWithAttributes.class, pipeline, serializer);
 
         Slideshow slideshow = myXMLService.getSlideshow();
         assertEquals("Sample Slide Show", slideshow.title());

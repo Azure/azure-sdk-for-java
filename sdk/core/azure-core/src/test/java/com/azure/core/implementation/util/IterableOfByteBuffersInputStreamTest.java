@@ -36,9 +36,8 @@ public class IterableOfByteBuffersInputStreamTest {
         byte[] data1 = new byte[1024];
         byte[] data2 = new byte[512];
 
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(
-            Arrays.asList(ByteBuffer.wrap(data1), ByteBuffer.wrap(data2))
-        );
+        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(Arrays
+            .asList(ByteBuffer.wrap(data1), ByteBuffer.wrap(data2)));
 
         assertEquals(data1.length, stream.available());
 
@@ -63,9 +62,7 @@ public class IterableOfByteBuffersInputStreamTest {
 
         ByteBuffer buffer1 = ByteBuffer.wrap(data1);
         ByteBuffer buffer2 = ByteBuffer.wrap(data2);
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(
-            Arrays.asList(buffer1, buffer2)
-        );
+        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(Arrays.asList(buffer1, buffer2));
 
         readStream(stream);
 
@@ -102,67 +99,43 @@ public class IterableOfByteBuffersInputStreamTest {
         RANDOM.nextBytes(smallData);
         RANDOM.nextBytes(mediumData);
         RANDOM.nextBytes(largeData);
-        return Stream.concat(
-            Stream.of(
-                Arguments.of(
-                    Collections.emptyList(),
-                    new byte[0]
-                ),
-                Arguments.of(
-                    Collections.singletonList(ByteBuffer.allocate(0)),
-                    new byte[0]
-                ),
-                Arguments.of(
-                    Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)),
-                    new byte[0]
-                )
-            ),
-            Stream.of(tinyData, smallData, mediumData, largeData)
-                .flatMap(bytes -> {
+        return Stream
+            .concat(Stream
+                .of(Arguments.of(Collections.emptyList(), new byte[0]), Arguments
+                    .of(Collections.singletonList(ByteBuffer.allocate(0)), new byte[0]), Arguments
+                        .of(Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)), new byte[0])), Stream
+                            .of(tinyData, smallData, mediumData, largeData)
+                            .flatMap(bytes -> {
 
-                    ByteBuffer overSizedBuffer1 = ByteBuffer.allocate(bytes.length + 11);
-                    overSizedBuffer1.put(bytes);
-                    overSizedBuffer1.flip();
+                                ByteBuffer overSizedBuffer1 = ByteBuffer.allocate(bytes.length + 11);
+                                overSizedBuffer1.put(bytes);
+                                overSizedBuffer1.flip();
 
-                    ByteBuffer overSizedBuffer2 = ByteBuffer.allocate(bytes.length + 11);
-                    overSizedBuffer2.position(11);
-                    overSizedBuffer2.put(bytes);
-                    overSizedBuffer2.position(11);
+                                ByteBuffer overSizedBuffer2 = ByteBuffer.allocate(bytes.length + 11);
+                                overSizedBuffer2.position(11);
+                                overSizedBuffer2.put(bytes);
+                                overSizedBuffer2.position(11);
 
-                    // create mixture of buffers.
-                    List<ByteBuffer> mixedBuffers = new LinkedList<>();
-                    int buffSize = 0;
-                    int remaining = bytes.length;
-                    int offset = 0;
-                    while (remaining > 0) {
-                        buffSize = Math.min(buffSize, remaining);
-                        ByteBuffer buf = ByteBuffer.wrap(bytes, offset, buffSize);
-                        mixedBuffers.add(buf);
-                        offset += buffSize;
-                        remaining -= buffSize;
-                        buffSize++;
-                    }
+                                // create mixture of buffers.
+                                List<ByteBuffer> mixedBuffers = new LinkedList<>();
+                                int buffSize = 0;
+                                int remaining = bytes.length;
+                                int offset = 0;
+                                while (remaining > 0) {
+                                    buffSize = Math.min(buffSize, remaining);
+                                    ByteBuffer buf = ByteBuffer.wrap(bytes, offset, buffSize);
+                                    mixedBuffers.add(buf);
+                                    offset += buffSize;
+                                    remaining -= buffSize;
+                                    buffSize++;
+                                }
 
-                    return Stream.of(
-                        Arguments.of(
-                            Collections.singletonList(ByteBuffer.wrap(bytes)),
-                            bytes
-                        ),
-                        Arguments.of(
-                            Collections.singletonList(overSizedBuffer1),
-                            bytes
-                        ),
-                        Arguments.of(
-                            Collections.singletonList(overSizedBuffer2),
-                            bytes
-                        ),
-                        Arguments.of(
-                            mixedBuffers,
-                            bytes
-                        )
-                    );
-                })
-        );
+                                return Stream
+                                    .of(Arguments.of(Collections.singletonList(ByteBuffer.wrap(bytes)), bytes),
+                                        Arguments.of(Collections.singletonList(overSizedBuffer1), bytes), Arguments
+                                            .of(Collections.singletonList(overSizedBuffer2), bytes), Arguments
+                                                .of(mixedBuffers, bytes));
+                            }));
     }
 
     private byte[] readStream(InputStream stream) throws Exception {

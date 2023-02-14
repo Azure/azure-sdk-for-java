@@ -7,7 +7,8 @@ package com.azure.core.util;
  * Metrics configuration options for clients.
  */
 public class MetricsOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder
+        .ofBoolean("metrics.disabled")
         .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
         .shared(true)
         .defaultValue(false)
@@ -21,6 +22,7 @@ public class MetricsOptions {
     public MetricsOptions() {
         isEnabled = !Configuration.getGlobalConfiguration().get(IS_DISABLED_PROPERTY);
     }
+
     /**
      * Attempts to load metrics options from the configuration.
      * <p>

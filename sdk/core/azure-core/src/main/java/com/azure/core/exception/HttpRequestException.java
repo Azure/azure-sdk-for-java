@@ -70,8 +70,11 @@ public class HttpRequestException extends AzureException {
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public HttpRequestException(final String message, final HttpRequest request, final Throwable cause,
-        final boolean enableSuppression, final boolean writableStackTrace) {
+    public HttpRequestException(final String message,
+                                final HttpRequest request,
+                                final Throwable cause,
+                                final boolean enableSuppression,
+                                final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.request = request;
     }

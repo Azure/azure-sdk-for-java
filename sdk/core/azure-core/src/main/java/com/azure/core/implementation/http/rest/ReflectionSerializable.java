@@ -81,10 +81,11 @@ public final class ReflectionSerializable {
             jsonSerializableSupported = true;
         } catch (Throwable e) {
             if (e instanceof LinkageError || e instanceof Exception) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "JsonSerializable serialization and deserialization isn't "
-                    + "supported. If it is required add a dependency of 'com.azure:azure-json', or another "
-                    + "dependencies which include 'com.azure:azure-json' as a transitive dependency. If your "
-                    + "application runs as expected this informational message can be ignored.");
+                LOGGER
+                    .log(LogLevel.VERBOSE, () -> "JsonSerializable serialization and deserialization isn't "
+                        + "supported. If it is required add a dependency of 'com.azure:azure-json', or another "
+                        + "dependencies which include 'com.azure:azure-json' as a transitive dependency. If your "
+                        + "application runs as expected this informational message can be ignored.");
             } else {
                 throw (Error) e;
             }
@@ -134,10 +135,11 @@ public final class ReflectionSerializable {
             xmlSerializableSupported = true;
         } catch (Throwable e) {
             if (e instanceof LinkageError || e instanceof Exception) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
-                    + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
-                    + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
-                    + "this informational message can be ignored.");
+                LOGGER
+                    .log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
+                        + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
+                        + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
+                        + "this informational message can be ignored.");
             } else {
                 throw (Error) e;
             }
@@ -173,7 +175,7 @@ public final class ReflectionSerializable {
      */
     static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
+             Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
             JSON_WRITER_WRITE_JSON_SERIALIZABLE.call(jsonWriter, jsonSerializable);
             JSON_WRITER_FLUSH.call(jsonWriter);
 
@@ -239,7 +241,7 @@ public final class ReflectionSerializable {
      */
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            AutoCloseable xmlWriter = XML_WRITER_CREATOR.call(outputStream)) {
+             AutoCloseable xmlWriter = XML_WRITER_CREATOR.call(outputStream)) {
             XML_WRITER_WRITE_XML_START_DOCUMENT.call(xmlWriter);
             XML_WRITER_WRITE_XML_SERIALIZABLE.call(xmlWriter, bodyContent);
             XML_WRITER_FLUSH.call(xmlWriter);
@@ -280,7 +282,7 @@ public final class ReflectionSerializable {
 
         try (AutoCloseable xmlReader = XML_READER_CREATOR.call((Object) xml)) {
             return readXml.invoke(xmlReader);
-        }  catch (Throwable e) {
+        } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw (IOException) e;
             } else if (e instanceof Exception) {
@@ -357,6 +359,5 @@ public final class ReflectionSerializable {
         };
     }
 
-    private ReflectionSerializable() {
-    }
+    private ReflectionSerializable() {}
 }

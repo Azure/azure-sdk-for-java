@@ -19,21 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class HttpAuthorizationTests {
     @ParameterizedTest
     @MethodSource("invalidConstructorParametersSupplier")
-    public void invalidConstructorParameters(String scheme, String parameter,
-        Class<? extends Throwable> expectedException) {
+    public void invalidConstructorParameters(String scheme,
+                                             String parameter,
+                                             Class<? extends Throwable> expectedException) {
         assertThrows(expectedException, () -> new HttpAuthorization(scheme, parameter));
     }
 
     private static Stream<Arguments> invalidConstructorParametersSupplier() {
-        return Stream.of(
-            // Constructor arguments cannot be null.
-            Arguments.of(null, "parameter", NullPointerException.class),
-            Arguments.of("scheme", null, NullPointerException.class),
+        return Stream
+            .of(
+                // Constructor arguments cannot be null.
+                Arguments.of(null, "parameter", NullPointerException.class), Arguments
+                    .of("scheme", null, NullPointerException.class),
 
-            // Constructor arguments cannot be empty strings.
-            Arguments.of("", "parameter", IllegalArgumentException.class),
-            Arguments.of("scheme", "", IllegalArgumentException.class)
-        );
+                // Constructor arguments cannot be empty strings.
+                Arguments.of("", "parameter", IllegalArgumentException.class), Arguments
+                    .of("scheme", "", IllegalArgumentException.class));
     }
 
     @Test

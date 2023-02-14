@@ -19,8 +19,7 @@ public class ExponentialBackoffTest {
     @Test
     public void testZeroBaseDelay() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new ExponentialBackoff(3, Duration.ofSeconds(0),
-                Duration.ofMillis(1000));
+            new ExponentialBackoff(3, Duration.ofSeconds(0), Duration.ofMillis(1000));
         });
     }
 
@@ -36,26 +35,25 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testBaseGreaterThanMaxDelay() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(1),
-            Duration.ofMillis(500)));
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(1), Duration
+            .ofMillis(500)));
     }
 
     @Test
     public void testNegativeMaxRetries() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(-1, Duration.ofSeconds(1),
-            Duration.ofMillis(5000)));
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(-1, Duration.ofSeconds(1), Duration
+            .ofMillis(5000)));
     }
 
     @Test
     public void testNegativeBaseDelay() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(5, Duration.ofSeconds(-1),
-                Duration.ofMillis(5000)));
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(5, Duration.ofSeconds(-1), Duration
+            .ofMillis(5000)));
     }
 
     @Test
     public void testBaseEqualToMaxDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1),
-            Duration.ofMillis(1000));
+        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1), Duration.ofMillis(1000));
         assertEquals(expBackoff.getMaxRetries(), 3);
         assertTrue(expBackoff.calculateRetryDelay(0).toMillis() <= 1000);
         assertTrue(expBackoff.calculateRetryDelay(1).toMillis() == 1000);
@@ -76,8 +74,7 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testExponentialBackoff() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(10, Duration.ofSeconds(1),
-            Duration.ofSeconds(10));
+        ExponentialBackoff expBackoff = new ExponentialBackoff(10, Duration.ofSeconds(1), Duration.ofSeconds(10));
 
         // exponential backoff
         for (int i = 0; i < 4; i++) {

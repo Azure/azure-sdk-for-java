@@ -49,8 +49,8 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null."));
+        this.requestIdHeaderName = HttpHeaderName
+            .fromString(Objects.requireNonNull(requestIdHeaderName, "requestIdHeaderName can not be null."));
     }
 
     /**
@@ -64,9 +64,9 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return inner.process(context, next);
     }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
 }
-

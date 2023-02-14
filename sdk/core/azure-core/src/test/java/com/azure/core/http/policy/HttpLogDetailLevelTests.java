@@ -30,68 +30,71 @@ public class HttpLogDetailLevelTests {
     private static Stream<Arguments> fromConfigurationSupplier() {
         // Inserting a null value into Configuration throws, so mock it.
 
-        return Stream.of(
-            // null turns into NONE
-            Arguments.of(Configuration.NONE, HttpLogDetailLevel.NONE),
+        return Stream
+            .of(
+                // null turns into NONE
+                Arguments.of(Configuration.NONE, HttpLogDetailLevel.NONE),
 
-            // Empty string turns into NONE
-            Arguments.of(makeConfiguration(""), HttpLogDetailLevel.NONE),
+                // Empty string turns into NONE
+                Arguments.of(makeConfiguration(""), HttpLogDetailLevel.NONE),
 
-            // Unknown values turn into NONE
-            Arguments.of(makeConfiguration("unknown"), HttpLogDetailLevel.NONE),
+                // Unknown values turn into NONE
+                Arguments.of(makeConfiguration("unknown"), HttpLogDetailLevel.NONE),
 
-            // basic turns into BASIC
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BASIC_VALUE), HttpLogDetailLevel.BASIC),
+                // basic turns into BASIC
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.BASIC_VALUE), HttpLogDetailLevel.BASIC),
 
-            // BASIC turns into BASIC
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BASIC.name()), HttpLogDetailLevel.BASIC),
+                // BASIC turns into BASIC
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.BASIC.name()), HttpLogDetailLevel.BASIC),
 
-            // bAsIc turns into BASIC
-            Arguments.of(makeConfiguration("bAsIc"), HttpLogDetailLevel.BASIC),
+                // bAsIc turns into BASIC
+                Arguments.of(makeConfiguration("bAsIc"), HttpLogDetailLevel.BASIC),
 
-            // headers turns into HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.HEADERS_VALUE), HttpLogDetailLevel.HEADERS),
+                // headers turns into HEADERS
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.HEADERS_VALUE), HttpLogDetailLevel.HEADERS),
 
-            // HEADERS turns into HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.HEADERS.name()), HttpLogDetailLevel.HEADERS),
+                // HEADERS turns into HEADERS
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.HEADERS.name()), HttpLogDetailLevel.HEADERS),
 
-            // hEaDeRs turns into HEADERS
-            Arguments.of(makeConfiguration("hEaDeRs"), HttpLogDetailLevel.HEADERS),
+                // hEaDeRs turns into HEADERS
+                Arguments.of(makeConfiguration("hEaDeRs"), HttpLogDetailLevel.HEADERS),
 
-            // body turns into BODY
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_VALUE), HttpLogDetailLevel.BODY),
+                // body turns into BODY
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_VALUE), HttpLogDetailLevel.BODY),
 
-            // BODY turns into BODY
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY.name()), HttpLogDetailLevel.BODY),
+                // BODY turns into BODY
+                Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY.name()), HttpLogDetailLevel.BODY),
 
-            // bOdY turns into BODY
-            Arguments.of(makeConfiguration("bOdY"), HttpLogDetailLevel.BODY),
+                // bOdY turns into BODY
+                Arguments.of(makeConfiguration("bOdY"), HttpLogDetailLevel.BODY),
 
-            // body_and_headers turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS_VALUE),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+                // body_and_headers turns into BODY_AND_HEADERS
+                Arguments
+                    .of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS_VALUE),
+                        HttpLogDetailLevel.BODY_AND_HEADERS),
 
-            // BODY_AND_HEADERS turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS.name()),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+                // BODY_AND_HEADERS turns into BODY_AND_HEADERS
+                Arguments
+                    .of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS.name()),
+                        HttpLogDetailLevel.BODY_AND_HEADERS),
 
-            // bOdY_aNd_HeAdErS turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration("bOdY_aNd_HeAdErS"), HttpLogDetailLevel.BODY_AND_HEADERS),
+                // bOdY_aNd_HeAdErS turns into BODY_AND_HEADERS
+                Arguments.of(makeConfiguration("bOdY_aNd_HeAdErS"), HttpLogDetailLevel.BODY_AND_HEADERS),
 
-            // bodyandheaders turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODYANDHEADERS_VALUE),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+                // bodyandheaders turns into BODY_AND_HEADERS
+                Arguments
+                    .of(makeConfiguration(HttpLogDetailLevel.BODYANDHEADERS_VALUE),
+                        HttpLogDetailLevel.BODY_AND_HEADERS),
 
-            // BODYANDHEADERS turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration("BODYANDHEADERS"), HttpLogDetailLevel.BODY_AND_HEADERS),
+                // BODYANDHEADERS turns into BODY_AND_HEADERS
+                Arguments.of(makeConfiguration("BODYANDHEADERS"), HttpLogDetailLevel.BODY_AND_HEADERS),
 
-            // bOdYaNdHeAdErS turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration("bOdYaNdHeAdErS"), HttpLogDetailLevel.BODY_AND_HEADERS)
-        );
+                // bOdYaNdHeAdErS turns into BODY_AND_HEADERS
+                Arguments.of(makeConfiguration("bOdYaNdHeAdErS"), HttpLogDetailLevel.BODY_AND_HEADERS));
     }
 
     private static Configuration makeConfiguration(String detailLevelValue) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue))
-            .build();
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue)).build();
     }
 }

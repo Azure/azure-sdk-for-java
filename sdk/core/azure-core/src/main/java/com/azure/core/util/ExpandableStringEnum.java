@@ -24,8 +24,8 @@ import static java.lang.invoke.MethodType.methodType;
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     private static final Map<Class<?>, MethodHandle> CONSTRUCTORS = new ConcurrentHashMap<>();
-    private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
-        = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES =
+        new ConcurrentHashMap<>();
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpandableStringEnum.class);
     private String name;
@@ -40,8 +40,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @deprecated Use the {@link #fromString(String, Class)} factory method.
      */
     @Deprecated
-    public ExpandableStringEnum() {
-    }
+    public ExpandableStringEnum() {}
 
     /**
      * Creates an instance of the specific expandable string enum from a String.
@@ -53,7 +52,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      *
      * @throws RuntimeException wrapping implementation class constructor exception (if any is thrown).
      */
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
@@ -88,7 +87,10 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
             return lookup.findConstructor(clazz, methodType(void.class));
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            LOGGER.verbose("Can't find or access default constructor for {}, make sure corresponding package is open to azure-core", clazz.getName(), e);
+            LOGGER
+                .verbose(
+                    "Can't find or access default constructor for {}, make sure corresponding package is open to azure-core",
+                    clazz.getName(), e);
         } catch (Exception e) {
             LOGGER.verbose("Failed to get lookup for {}", clazz.getName(), e);
         }

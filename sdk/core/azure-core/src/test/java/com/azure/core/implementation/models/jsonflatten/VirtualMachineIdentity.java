@@ -35,8 +35,7 @@ public final class VirtualMachineIdentity {
         return userAssignedIdentities;
     }
 
-    public VirtualMachineIdentity setUserAssignedIdentities(
-        Map<String, Object> userAssignedIdentities) {
+    public VirtualMachineIdentity setUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

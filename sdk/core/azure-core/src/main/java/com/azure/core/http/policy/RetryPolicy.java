@@ -126,48 +126,50 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return attemptSync(context, next, context.getHttpRequest(), 0, null);
     }
 
-
-    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest, final int tryCount, final List<Throwable> suppressed) {
+    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context,
+                                            final HttpPipelineNextPolicy next,
+                                            final HttpRequest originalHttpRequest,
+                                            final int tryCount,
+                                            final List<Throwable> suppressed) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
-        return next.clone().process()
-            .flatMap(httpResponse -> {
-                if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
-                    final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
-                        retryAfterHeader, retryAfterTimeUnit);
-                    logRetry(tryCount, delayDuration);
+        return next.clone().process().flatMap(httpResponse -> {
+            if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
+                final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                    retryAfterHeader, retryAfterTimeUnit);
+                logRetry(tryCount, delayDuration);
 
-                    httpResponse.close();
+                httpResponse.close();
 
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed)
-                        .delaySubscription(delayDuration);
-                } else {
-                    if (tryCount >= retryStrategy.getMaxRetries()) {
-                        logRetryExhausted(tryCount);
-                    }
-                    return Mono.just(httpResponse);
+                return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed)
+                    .delaySubscription(delayDuration);
+            } else {
+                if (tryCount >= retryStrategy.getMaxRetries()) {
+                    logRetryExhausted(tryCount);
                 }
-            })
-            .onErrorResume(Exception.class, err -> {
-                if (shouldRetryException(retryStrategy, err, tryCount)) {
-                    logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
-                    List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
-                    suppressedLocal.add(err);
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
-                        .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
-                } else {
-                    logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
-                    if (suppressed != null) {
-                        suppressed.forEach(err::addSuppressed);
-                    }
-                    return Mono.error(err);
+                return Mono.just(httpResponse);
+            }
+        }).onErrorResume(Exception.class, err -> {
+            if (shouldRetryException(retryStrategy, err, tryCount)) {
+                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
+                List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                suppressedLocal.add(err);
+                return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
+                    .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
+            } else {
+                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
+                if (suppressed != null) {
+                    suppressed.forEach(err::addSuppressed);
                 }
-            });
+                return Mono.error(err);
+            }
+        });
     }
 
-    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextSyncPolicy next,
-                                     final HttpRequest originalHttpRequest, final int tryCount,
+    private HttpResponse attemptSync(final HttpPipelineCallContext context,
+                                     final HttpPipelineNextSyncPolicy next,
+                                     final HttpRequest originalHttpRequest,
+                                     final int tryCount,
                                      final List<Throwable> suppressed) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
@@ -216,6 +218,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return httpResponse;
         }
     }
+
     private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }
@@ -243,30 +246,32 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetry(int tryCount, Duration delayDuration) {
-        LOGGER.atVerbose()
+        LOGGER
+            .atVerbose()
             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
             .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
             .log("Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo()
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
-        Throwable throwable) {
-        loggingEventBuilder
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log(format, throwable);
+    private static void logRetryWithError(LoggingEventBuilder loggingEventBuilder,
+                                          int tryCount,
+                                          String format,
+                                          Throwable throwable) {
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
     }
 
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-        String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+    static Duration determineDelayDuration(HttpResponse response,
+                                           int tryCount,
+                                           RetryStrategy retryStrategy,
+                                           String retryAfterHeader,
+                                           ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (isNullOrEmpty(retryAfterHeader)) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
@@ -286,8 +291,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
-        Supplier<OffsetDateTime> nowSupplier) {
+    static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders,
+                                           int tryCount,
+                                           RetryStrategy retryStrategy,
+                                           Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;

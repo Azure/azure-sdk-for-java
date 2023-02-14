@@ -96,8 +96,8 @@ public final class TypeUtil {
                      * with actual type arguments from the parameterized type
                      */
                     final Type[] superTypeArguments = getTypeArguments(genericSuperClass);
-                    final Type[] typeParameters =
-                        ((GenericDeclaration) parameterizedType.getRawType()).getTypeParameters();
+                    final Type[] typeParameters = ((GenericDeclaration) parameterizedType.getRawType())
+                        .getTypeParameters();
                     int k = 0;
 
                     for (int i = 0; i != superTypeArguments.length; i++) {
@@ -133,7 +133,8 @@ public final class TypeUtil {
             return typeImplementsInterface(((ParameterizedType) type).getRawType(), interfaceClass);
         } else {
             Class<?> clazz = (Class<?>) type;
-            return Arrays.stream(clazz.getInterfaces())
+            return Arrays
+                .stream(clazz.getInterfaces())
                 .anyMatch(implementedInterface -> implementedInterface == interfaceClass);
         }
     }
@@ -208,6 +209,5 @@ public final class TypeUtil {
     }
 
     // Private Ctr
-    private TypeUtil() {
-    }
+    private TypeUtil() {}
 }

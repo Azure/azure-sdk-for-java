@@ -18,28 +18,25 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class SwaggerInterfaceParserTests {
 
-    interface TestInterface1 {
-    }
+    interface TestInterface1 {}
 
     @Host("https://management.azure.com")
-    interface TestInterface2 {
-    }
+    interface TestInterface2 {}
 
     @Host("https://management.azure.com")
     @ServiceInterface(name = "myService")
-    interface TestInterface3 {
-    }
+    interface TestInterface3 {}
 
     @Test
     public void hostWithNoHostAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class,
-            () -> SwaggerInterfaceParser.getInstance(TestInterface1.class));
+        assertThrows(MissingRequiredAnnotationException.class, () -> SwaggerInterfaceParser
+            .getInstance(TestInterface1.class));
     }
 
     @Test
     public void hostWithNoServiceNameAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class,
-            () -> SwaggerInterfaceParser.getInstance(TestInterface2.class));
+        assertThrows(MissingRequiredAnnotationException.class, () -> SwaggerInterfaceParser
+            .getInstance(TestInterface2.class));
     }
 
     @Test
@@ -53,7 +50,7 @@ public class SwaggerInterfaceParserTests {
     @ServiceInterface(name = "myService")
     interface TestInterface4 {
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void testMethod4();
     }
 

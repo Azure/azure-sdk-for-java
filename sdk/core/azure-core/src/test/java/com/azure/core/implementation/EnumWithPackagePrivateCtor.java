@@ -7,8 +7,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 public class EnumWithPackagePrivateCtor extends ExpandableStringEnum<EnumWithPackagePrivateCtor> {
     @Deprecated
-    EnumWithPackagePrivateCtor() {
-    }
+    EnumWithPackagePrivateCtor() {}
 
     public static EnumWithPackagePrivateCtor fromString(String name) {
         return fromString(name, EnumWithPackagePrivateCtor.class);

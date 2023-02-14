@@ -25,11 +25,9 @@ public class HttpRangeTests {
     }
 
     private static Stream<Arguments> equalsTestSupplier() {
-        return Stream.of(
-            Arguments.of(0, null, new HttpRange(0)),
-            Arguments.of(0, null, new HttpRange(0, null)),
-            Arguments.of(0, 10L, new HttpRange(0, 10L))
-        );
+        return Stream
+            .of(Arguments.of(0, null, new HttpRange(0)), Arguments.of(0, null, new HttpRange(0, null)), Arguments
+                .of(0, 10L, new HttpRange(0, 10L)));
     }
 
     @ParameterizedTest
@@ -39,12 +37,9 @@ public class HttpRangeTests {
     }
 
     private static Stream<Arguments> toStringTestSupplier() {
-        return Stream.of(
-            Arguments.of(new HttpRange(0), "bytes=0-"),
-            Arguments.of(new HttpRange(0, null), "bytes=0-"),
-            Arguments.of(new HttpRange(0, 10L), "bytes=0-9"),
-            Arguments.of(new HttpRange(10, 10L), "bytes=10-19")
-        );
+        return Stream
+            .of(Arguments.of(new HttpRange(0), "bytes=0-"), Arguments.of(new HttpRange(0, null), "bytes=0-"), Arguments
+                .of(new HttpRange(0, 10L), "bytes=0-9"), Arguments.of(new HttpRange(10, 10L), "bytes=10-19"));
     }
 
     @ParameterizedTest
@@ -54,9 +49,6 @@ public class HttpRangeTests {
     }
 
     private static Stream<Arguments> invalidRangeSupplier() {
-        return Stream.of(
-            Arguments.of(-1, null),
-            Arguments.of(0, -1L)
-        );
+        return Stream.of(Arguments.of(-1, null), Arguments.of(0, -1L));
     }
 }

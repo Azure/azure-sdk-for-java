@@ -24,8 +24,8 @@ public final class SerializableContent extends BinaryDataContent {
     private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link SerializableContent}.

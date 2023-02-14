@@ -14,9 +14,11 @@ public final class OnlyOneContinuablePage implements ContinuablePage<Integer, In
     private final Integer nextContinuationToken;
 
     public OnlyOneContinuablePage(Integer continuationToken, Integer nextContinuationToken, Integer pageSize) {
-        elements = IterableStream.of(IntStream.range(continuationToken * 10, (continuationToken * 10) + pageSize)
-            .boxed()
-            .collect(Collectors.toList()));
+        elements = IterableStream
+            .of(IntStream
+                .range(continuationToken * 10, (continuationToken * 10) + pageSize)
+                .boxed()
+                .collect(Collectors.toList()));
 
         this.nextContinuationToken = nextContinuationToken;
     }

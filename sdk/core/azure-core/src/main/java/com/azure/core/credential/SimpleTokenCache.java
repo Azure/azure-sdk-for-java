@@ -30,9 +30,11 @@ public class SimpleTokenCache {
     private static final String NO_CACHE_FAILED = "Failed to acquire a new access token.";
 
     private static final String NEGATIVE_TTE = " seconds after expiry. Retry may be attempted after "
-        + REFRESH_DELAY_STRING + " seconds.";
+        + REFRESH_DELAY_STRING
+        + " seconds.";
     private static final String POSITIVE_TTE = " seconds before expiry. Retry may be attempted after "
-        + REFRESH_DELAY_STRING + " seconds. The token currently cached will be used.";
+        + REFRESH_DELAY_STRING
+        + " seconds. The token currently cached will be used.";
 
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
@@ -48,7 +50,8 @@ public class SimpleTokenCache {
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+        this.shouldRefresh = accessToken -> OffsetDateTime
+            .now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
@@ -75,7 +78,8 @@ public class SimpleTokenCache {
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
+                            tokenRefresh = Mono
+                                .defer(tokenSupplier)
                                 .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
@@ -92,30 +96,28 @@ public class SimpleTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(cache);
                     }
-                    return tokenRefresh
-                        .materialize()
-                        .flatMap(signal -> {
-                            AccessToken accessToken = signal.get();
-                            Throwable error = signal.getThrowable();
-                            if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                LOGGER.log(LogLevel.INFORMATIONAL,
-                                    () -> refreshLog(cache, now, "Acquired a new access token", true));
-                                cache = accessToken;
-                                sinksOne.tryEmitValue(accessToken);
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return Mono.just(accessToken);
-                            } else if (signal.isOnError() && error != null) { // ERROR
-                                LOGGER.log(LogLevel.ERROR,
-                                    () -> refreshLog(cache, now, "Failed to acquire a new access token", false));
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return fallback.switchIfEmpty(Mono.error(() -> error));
-                            } else { // NO REFRESH
-                                sinksOne.tryEmitEmpty();
-                                return fallback;
-                            }
-                        })
-                        .doOnError(sinksOne::tryEmitError)
-                        .doFinally(ignored -> wip.set(null));
+                    return tokenRefresh.materialize().flatMap(signal -> {
+                        AccessToken accessToken = signal.get();
+                        Throwable error = signal.getThrowable();
+                        if (signal.isOnNext() && accessToken != null) { // SUCCESS
+                            LOGGER
+                                .log(LogLevel.INFORMATIONAL, () -> refreshLog(cache, now, "Acquired a new access token",
+                                    true));
+                            cache = accessToken;
+                            sinksOne.tryEmitValue(accessToken);
+                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            return Mono.just(accessToken);
+                        } else if (signal.isOnError() && error != null) { // ERROR
+                            LOGGER
+                                .log(LogLevel.ERROR, () -> refreshLog(cache, now,
+                                    "Failed to acquire a new access token", false));
+                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            return fallback.switchIfEmpty(Mono.error(() -> error));
+                        } else { // NO REFRESH
+                            sinksOne.tryEmitEmpty();
+                            return fallback;
+                        }
+                    }).doOnError(sinksOne::tryEmitError).doFinally(ignored -> wip.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);

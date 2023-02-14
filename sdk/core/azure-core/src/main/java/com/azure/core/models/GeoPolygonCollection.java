@@ -36,8 +36,9 @@ public final class GeoPolygonCollection extends GeoObject {
      * @param customProperties Additional properties of the multi-polygon.
      * @throws NullPointerException If {@code polygons} is {@code null}.
      */
-    public GeoPolygonCollection(List<GeoPolygon> polygons, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoPolygonCollection(List<GeoPolygon> polygons,
+                                GeoBoundingBox boundingBox,
+                                Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(polygons, "'polygons' cannot be null.");

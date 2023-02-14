@@ -39,8 +39,8 @@ public final class IOUtils {
      * @throws NullPointerException When {@code fileChannel} is null.
      * @throws IllegalArgumentException When {@code position} is negative.
      */
-    public static AsynchronousByteChannel toAsynchronousByteChannel(
-        AsynchronousFileChannel fileChannel, long position) {
+    public static AsynchronousByteChannel toAsynchronousByteChannel(AsynchronousFileChannel fileChannel,
+                                                                    long position) {
         Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
         if (position < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be less than 0."));
@@ -92,9 +92,10 @@ public final class IOUtils {
         }));
     }
 
-    private static void transferAsynchronously(
-        ReadableByteChannel source, AsynchronousByteChannel destination,
-        ByteBuffer buffer, MonoSink<Void> sink) throws IOException {
+    private static void transferAsynchronously(ReadableByteChannel source,
+                                               AsynchronousByteChannel destination,
+                                               ByteBuffer buffer,
+                                               MonoSink<Void> sink) throws IOException {
         buffer.clear();
         int read = source.read(buffer);
         if (read >= 0) {
@@ -138,24 +139,24 @@ public final class IOUtils {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Mono} which completion indicates successful transfer.
      */
-    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(
-        AsynchronousByteChannel targetChannel,
-        StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        ProgressReporter progressReporter, int maxRetries) {
+    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(AsynchronousByteChannel targetChannel,
+                                                                             StreamResponse sourceResponse,
+                                                                             BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+                                                                             ProgressReporter progressReporter,
+                                                                             int maxRetries) {
 
-        return transferStreamResponseToAsynchronousByteChannelHelper(
-            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter),
-            sourceResponse, onErrorResume, maxRetries, 0);
+        return transferStreamResponseToAsynchronousByteChannelHelper(new ByteCountingAsynchronousByteChannel(
+            targetChannel, null, progressReporter), sourceResponse, onErrorResume, maxRetries, 0);
     }
 
-    private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
-        ByteCountingAsynchronousByteChannel targetChannel,
-        StreamResponse response,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries, int retryCount) {
+    private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(ByteCountingAsynchronousByteChannel targetChannel,
+                                                                                    StreamResponse response,
+                                                                                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+                                                                                    int maxRetries,
+                                                                                    int retryCount) {
 
-        return response.writeValueToAsync(targetChannel)
+        return response
+            .writeValueToAsync(targetChannel)
             .doFinally(ignored -> response.close())
             .onErrorResume(Exception.class, exception -> {
                 response.close();
@@ -163,21 +164,24 @@ public final class IOUtils {
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
-                    LOGGER.atError()
+                    LOGGER
+                        .atError()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
                         .log(() -> "Retry attempts have been exhausted.", exception);
                     return Mono.error(exception);
                 }
 
-                LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                LOGGER
+                    .atInfo()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
                     .log(() -> String.format("Using retry attempt %d of %d.", updatedRetryCount, maxRetries),
                         exception);
-                return onErrorResume.apply(exception, targetChannel.getBytesWritten())
-                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
-                        targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount));
+                return onErrorResume
+                    .apply(exception, targetChannel.getBytesWritten())
+                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
+                        newResponse, onErrorResume, maxRetries, updatedRetryCount));
             });
     }
 
-    private IOUtils() {
-    }
+    private IOUtils() {}
 }

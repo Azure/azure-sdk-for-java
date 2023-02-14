@@ -26,19 +26,19 @@ public class HttpHeadersTests {
     }
 
     private static Stream<Arguments> testAddSupplier() {
-        return Stream.of(
-            // Empty HttpHeaders will add the value.
-            Arguments.of(new HttpHeaders(), "a", "b", new String[] { "b" }),
+        return Stream
+            .of(
+                // Empty HttpHeaders will add the value.
+                Arguments.of(new HttpHeaders(), "a", "b", new String[] { "b" }),
 
-            // Non-empty HttpHeaders will add to the previous value.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", new String[] { "b", "c" }),
+                // Non-empty HttpHeaders will add to the previous value.
+                Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", new String[] { "b", "c" }),
 
-            // Non-empty HttpHeaders will do nothing when previously set and the value is null.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", null, new String[] { "b" }),
+                // Non-empty HttpHeaders will do nothing when previously set and the value is null.
+                Arguments.of(new HttpHeaders().set("a", "b"), "a", null, new String[] { "b" }),
 
-            // HttpHeaders is case-insensitive.
-            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] { "b", "c" })
-        );
+                // HttpHeaders is case-insensitive.
+                Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] { "b", "c" }));
     }
 
     @ParameterizedTest
@@ -50,19 +50,19 @@ public class HttpHeadersTests {
     }
 
     private static Stream<Arguments> testSetSupplier() {
-        return Stream.of(
-            // Empty HttpHeaders will set the value.
-            Arguments.of(new HttpHeaders(), "a", "b", "b"),
+        return Stream
+            .of(
+                // Empty HttpHeaders will set the value.
+                Arguments.of(new HttpHeaders(), "a", "b", "b"),
 
-            // Non-empty HttpHeaders will override the previously set value.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", "c"),
+                // Non-empty HttpHeaders will override the previously set value.
+                Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", "c"),
 
-            // Non-empty HttpHeaders will remove the previously set value when null.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", null, null),
+                // Non-empty HttpHeaders will remove the previously set value when null.
+                Arguments.of(new HttpHeaders().set("a", "b"), "a", null, null),
 
-            // HttpHeaders is case-insensitive.
-            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", "c")
-        );
+                // HttpHeaders is case-insensitive.
+                Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", "c"));
     }
 
     @ParameterizedTest
@@ -78,16 +78,16 @@ public class HttpHeadersTests {
     }
 
     private static Stream<Arguments> testToMapSupplier() {
-        return Stream.of(
-            // Empty HttpHeaders will return an empty map.
-            Arguments.of(new HttpHeaders(), Collections.emptyMap()),
+        return Stream
+            .of(
+                // Empty HttpHeaders will return an empty map.
+                Arguments.of(new HttpHeaders(), Collections.emptyMap()),
 
-            // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
-            Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", "b")),
+                // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
+                Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", "b")),
 
-            // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c"))
-        );
+                // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
+                Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c")));
     }
 
     @ParameterizedTest
@@ -103,17 +103,18 @@ public class HttpHeadersTests {
     }
 
     private static Stream<Arguments> testToMultiMapSupplier() {
-        return Stream.of(
-            // Empty HttpHeaders will return an empty map.
-            Arguments.of(new HttpHeaders(), Collections.emptyMap()),
+        return Stream
+            .of(
+                // Empty HttpHeaders will return an empty map.
+                Arguments.of(new HttpHeaders(), Collections.emptyMap()),
 
-            // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
-            Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] { "b" })),
+                // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
+                Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] { "b" })),
 
-            // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"),
-                Collections.singletonMap("a", new String[] { "b", "c" }))
-        );
+                // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
+                Arguments
+                    .of(new HttpHeaders().set("a", "b").add("a", "c"), Collections
+                        .singletonMap("a", new String[] { "b", "c" })));
     }
 
     @Test

@@ -25,8 +25,7 @@ public class MockFileChannel extends FileChannel {
     }
 
     @Override
-    public void implCloseChannel() throws IOException {
-    }
+    public void implCloseChannel() throws IOException {}
 
     @Override
     public int read(ByteBuffer dst) throws IOException {

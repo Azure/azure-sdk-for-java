@@ -37,8 +37,8 @@ public class FileContent extends BinaryDataContent {
     private final long length;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<FileContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(FileContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<FileContent, byte[]> BYTES_UPDATER = AtomicReferenceFieldUpdater
+        .newUpdater(FileContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link FileContent}.
@@ -54,8 +54,9 @@ public class FileContent extends BinaryDataContent {
      * @throws UncheckedIOException if file doesn't exist.
      */
     public FileContent(Path file, int chunkSize, Long position, Long length) {
-        this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position),
-            validateLength(length, file.toFile().length(), validatePosition(position)));
+        this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position), validateLength(length, file
+            .toFile()
+            .length(), validatePosition(position)));
     }
 
     FileContent(Path file, int chunkSize, long position, long length) {
@@ -69,8 +70,9 @@ public class FileContent extends BinaryDataContent {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(
-                new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER
+                .logExceptionAsError(new UncheckedIOException(new FileNotFoundException("File does not exist "
+                    + file)));
         }
 
         return file;
@@ -78,8 +80,8 @@ public class FileContent extends BinaryDataContent {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
         }
 
         return chunkSize;
@@ -131,8 +133,7 @@ public class FileContent extends BinaryDataContent {
     @Override
     public InputStream toStream() {
         try {
-            return new SliceInputStream(
-                new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize),
+            return new SliceInputStream(new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize),
                 position, length);
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
@@ -158,15 +159,15 @@ public class FileContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.using(this::openAsynchronousFileChannel,
-            channel -> FluxUtil.readFile(channel, chunkSize, position, length),
-            channel -> {
-                try {
-                    channel.close();
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
-                }
-            });
+        return Flux
+            .using(this::openAsynchronousFileChannel, channel -> FluxUtil
+                .readFile(channel, chunkSize, position, length), channel -> {
+                    try {
+                        channel.close();
+                    } catch (IOException ex) {
+                        throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
+                    }
+                });
     }
 
     AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
@@ -222,8 +223,9 @@ public class FileContent extends BinaryDataContent {
                     pendingBytes -= read;
                     offset += read;
                 } else {
-                    throw LOGGER.logExceptionAsError(
-                        new IllegalStateException("Premature EOF. File was modified concurrently."));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalStateException(
+                            "Premature EOF. File was modified concurrently."));
                 }
             } while (pendingBytes > 0);
             return bytes;
@@ -232,4 +234,3 @@ public class FileContent extends BinaryDataContent {
         }
     }
 }
-

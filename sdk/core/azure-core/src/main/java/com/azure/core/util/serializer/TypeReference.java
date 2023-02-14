@@ -91,7 +91,7 @@ public abstract class TypeReference<T> {
          * When computing the TypeReference if the key is absent ignore the parameter from the compute function. The
          * compute function wildcards to T type which causes the type system to breakdown.
          */
-        return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) { });
+        return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) {});
     }
 
     /**

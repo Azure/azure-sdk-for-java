@@ -55,7 +55,6 @@ public class HttpPipelinePolicyTests {
             .policies(policy1, policy2)
             .build();
 
-
         pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
         assertEquals(0, policy1.asyncCalls.get());
         assertEquals(1, policy1.syncCalls.get());
@@ -88,9 +87,11 @@ public class HttpPipelinePolicyTests {
     @Test
     public void doesntThrowThatThreadIsNonBlocking() throws MalformedURLException {
         SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
-        HttpPipelinePolicy badPolicy1 = (context, next) -> Mono.delay(Duration.ofMillis(10))
+        HttpPipelinePolicy badPolicy1 = (context, next) -> Mono
+            .delay(Duration.ofMillis(10))
             .flatMap(l -> next.process());
-        HttpPipelinePolicy badPolicy2 = (context, next) -> Mono.delay(Duration.ofMillis(10))
+        HttpPipelinePolicy badPolicy2 = (context, next) -> Mono
+            .delay(Duration.ofMillis(10))
             .flatMap(l -> next.process());
         HttpClient badClient = request -> Mono.delay(Duration.ofMillis(10)).flatMap(i -> Mono.empty());
         URL url = new URL("http://localhost/");
@@ -102,7 +103,6 @@ public class HttpPipelinePolicyTests {
 
         pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
     }
-
 
     private static class SyncAsyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger asyncCalls = new AtomicInteger();

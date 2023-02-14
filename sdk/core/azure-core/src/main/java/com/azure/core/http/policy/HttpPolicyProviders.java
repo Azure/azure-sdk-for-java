@@ -24,9 +24,11 @@ public final class HttpPolicyProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load BeforeRetryPolicyProvider and AfterRetryPolicyProvider classes.
-        ServiceLoader.load(BeforeRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
+        ServiceLoader
+            .load(BeforeRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
             .forEach(BEFORE_PROVIDER::add);
-        ServiceLoader.load(AfterRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
+        ServiceLoader
+            .load(AfterRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
             .forEach(AFTER_PROVIDER::add);
     }
 

@@ -19,9 +19,8 @@ import java.util.concurrent.Callable;
  * Using azure-core copy of the com.azure.core.test.annotation.SyncAsyncTest class
  * since azure-core cannot take dependency on azure-core-test package.
  */
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @TestTemplate
 @ExtendWith(SyncAsyncExtension.class)
-public @interface SyncAsyncTest {
-}
+public @interface SyncAsyncTest {}

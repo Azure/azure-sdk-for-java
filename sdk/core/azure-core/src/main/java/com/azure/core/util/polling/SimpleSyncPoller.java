@@ -53,15 +53,16 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                      Function<PollingContext<T>, U> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
+        this.fetchResultOperation = Objects
+            .requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
         this.pollingContext.setLatestResponse(this.activationResponse);
@@ -72,8 +73,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public synchronized PollResponse<T> poll() {
-        PollResponse<T> response = this.pollOperation
-            .apply(this.pollingContext);
+        PollResponse<T> response = this.pollOperation.apply(this.pollingContext);
         this.pollingContext.setLatestResponse(response);
         if (response.getStatus().isComplete()) {
             this.terminalPollContext = this.pollingContext.copy();
@@ -90,8 +90,9 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitForCompletion(Duration timeout) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for timeout is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for timeout is not allowed."));
         }
         return waitForCompletionHelper(timeout);
     }
@@ -106,13 +107,13 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for timeout is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for timeout is not allowed."));
         }
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         return waitUntilHelper(timeout, statusToWaitFor);
     }
-
 
     private PollResponse<T> waitUntilHelper(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
@@ -121,10 +122,14 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval);
+            PollResponse<T> pollResponse = PollingUtil
+                .pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval);
             if (!pollResponse.getStatus().equals(statusToWaitFor)) {
-                throw LOGGER.logExceptionAsError(new NoSuchElementException("Polling completed without"
-                    + " receiving the given status '" + statusToWaitFor + "'."));
+                throw LOGGER
+                    .logExceptionAsError(new NoSuchElementException("Polling completed without"
+                        + " receiving the given status '"
+                        + statusToWaitFor
+                        + "'."));
             }
             if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
@@ -149,8 +154,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     public U getFinalResult() {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
-            return this.fetchResultOperation
-                .apply(currentTerminalPollContext);
+            return this.fetchResultOperation.apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
             PollingUtil.pollingLoop(context, null, null, pollOperation, pollInterval);
@@ -170,8 +174,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             } catch (PollContextRequiredException crp) {
                 PollingContext<T> context2 = this.pollingContext.copy();
                 PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);
-                this.cancelOperation
-                    .apply(context2, this.activationResponse);
+                this.cancelOperation.apply(context2, this.activationResponse);
             }
         }
     }
@@ -180,8 +183,9 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         return this;

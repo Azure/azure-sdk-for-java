@@ -30,8 +30,9 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException(
+                        "Key credentials require HTTPS to prevent leaking the key."));
             }
 
             context.getHttpRequest().setHeader(name, credential.getKey());

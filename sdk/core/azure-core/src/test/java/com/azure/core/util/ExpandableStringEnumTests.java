@@ -102,20 +102,17 @@ public class ExpandableStringEnumTests {
         TestStringEnum testStringEnum = TestStringEnum.fromString("test");
         TestStringEnum2 testStringEnum2 = TestStringEnum2.fromString("test");
 
-        return Stream.of(
-            Arguments.of(testStringEnum, null, false),
-            Arguments.of(testStringEnum, testStringEnum2, false),
-            Arguments.of(testStringEnum, testStringEnum, true),
-            Arguments.of(testStringEnum2, testStringEnum2, true),
-            Arguments.of(testStringEnum, TestStringEnum.fromString("test"), true),
-            Arguments.of(testStringEnum, TestStringEnum.fromString("test2"), false)
-        );
+        return Stream
+            .of(Arguments.of(testStringEnum, null, false), Arguments.of(testStringEnum, testStringEnum2, false),
+                Arguments.of(testStringEnum, testStringEnum, true), Arguments
+                    .of(testStringEnum2, testStringEnum2, true), Arguments
+                        .of(testStringEnum, TestStringEnum.fromString("test"), true), Arguments
+                            .of(testStringEnum, TestStringEnum.fromString("test2"), false));
     }
 
     public static final class TestStringEnum extends ExpandableStringEnum<TestStringEnum> {
         @Deprecated
-        public TestStringEnum() {
-        }
+        public TestStringEnum() {}
 
         static TestStringEnum fromString(String name) {
             return fromString(name, TestStringEnum.class);
@@ -124,8 +121,7 @@ public class ExpandableStringEnumTests {
 
     public static final class TestStringEnum2 extends ExpandableStringEnum<TestStringEnum2> {
         @Deprecated
-        public TestStringEnum2() {
-        }
+        public TestStringEnum2() {}
 
         static TestStringEnum2 fromString(String name) {
             return fromString(name, TestStringEnum2.class);
@@ -134,8 +130,7 @@ public class ExpandableStringEnumTests {
 
     public static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
         @Deprecated
-        PrivateStringEnum() {
-        }
+        PrivateStringEnum() {}
 
         static PrivateStringEnum fromString(String name) {
             return fromString(name, PrivateStringEnum.class);
@@ -144,8 +139,7 @@ public class ExpandableStringEnumTests {
 
     public static final class ValuesTestStringEnum extends ExpandableStringEnum<ValuesTestStringEnum> {
         @Deprecated
-        public ValuesTestStringEnum() {
-        }
+        public ValuesTestStringEnum() {}
 
         static ValuesTestStringEnum fromString(String name) {
             return fromString(name, ValuesTestStringEnum.class);

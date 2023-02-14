@@ -27,8 +27,8 @@ public class LengthValidatingInputStreamTests {
 
     @Test
     public void negativeExpectedReadSizeThrows() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new LengthValidatingInputStream(new ByteArrayInputStream(new byte[0]), -1));
+        assertThrows(IllegalArgumentException.class, () -> new LengthValidatingInputStream(new ByteArrayInputStream(
+            new byte[0]), -1));
     }
 
     @Test

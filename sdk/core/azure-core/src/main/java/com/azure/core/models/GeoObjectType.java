@@ -21,8 +21,7 @@ public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
      * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GeoObjectType() {
-    }
+    public GeoObjectType() {}
 
     /**
      * GeoJSON point.

@@ -32,23 +32,21 @@ public class AddHeadersFromContextPolicyTest {
         headers.set("my-header1", "my-header1-value");
         headers.set("my-header2", "my-header2-value");
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertEquals(request.getHeaders().getValue("x-ms-client-request-id"), customRequestId);
-                    Assertions.assertEquals(request.getHeaders().getValue("my-header1"), "my-header1-value");
-                    Assertions.assertEquals(request.getHeaders().getValue("my-header2"), "my-header2-value");
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(new RequestIdPolicy())
-            .policies(new AddHeadersFromContextPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                Assertions.assertEquals(request.getHeaders().getValue("x-ms-client-request-id"), customRequestId);
+                Assertions.assertEquals(request.getHeaders().getValue("my-header1"), "my-header1-value");
+                Assertions.assertEquals(request.getHeaders().getValue("my-header2"), "my-header2-value");
+                return Mono.just(mockResponse);
+            }
+        }).policies(new RequestIdPolicy()).policies(new AddHeadersFromContextPolicy()).build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers))
-        );
+        SyncAsyncExtension
+            .execute(() -> pipeline
+                .sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(
+                    AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)), () -> pipeline
+                        .send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(
+                            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)));
     }
 }

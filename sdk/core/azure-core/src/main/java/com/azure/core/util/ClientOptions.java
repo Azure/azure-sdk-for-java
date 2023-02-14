@@ -31,8 +31,7 @@ public class ClientOptions {
     /**
      * Creates a new instance of {@link ClientOptions}.
      */
-    public ClientOptions() {
-    }
+    public ClientOptions() {}
 
     /**
      * Gets the application ID.

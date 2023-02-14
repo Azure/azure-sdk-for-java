@@ -24,16 +24,18 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
         AsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
+            public <A> void write(ByteBuffer src,
+                                  long position,
+                                  A attachment,
+                                  CompletionHandler<Integer, ? super A> handler) {
                 int remaining = src.remaining();
                 src.position(src.position() + remaining);
                 handler.completed(remaining, attachment);
             }
         };
 
-        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
-            IOUtils.toAsynchronousByteChannel(channel, 0), null);
+        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(IOUtils
+            .toAsynchronousByteChannel(channel, 0), null);
 
         CallTrackingSubscription subscription1 = new CallTrackingSubscription();
         CallTrackingSubscription subscription2 = new CallTrackingSubscription();

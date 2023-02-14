@@ -44,16 +44,16 @@ public class HttpResponseHeaderDecoderTests {
 
         HttpResponse response = new MockHttpResponse(null, 200);
 
-        assertThrows(HttpResponseException.class,
-            () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class));
+        assertThrows(HttpResponseException.class, () -> HttpResponseHeaderDecoder
+            .decode(response, serializer, MockHeaders.class));
     }
 
     @Test
     public void headersAreDeserializedToType() {
         HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().set("mock-a", "a"));
 
-        Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(),
-            MockHeaders.class));
+        Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder
+            .decode(response, new JacksonAdapter(), MockHeaders.class));
         assertTrue(actual instanceof MockHeaders);
         MockHeaders mockHeaders = (MockHeaders) actual;
         assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());

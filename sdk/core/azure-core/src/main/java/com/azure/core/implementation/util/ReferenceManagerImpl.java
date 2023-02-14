@@ -35,7 +35,8 @@ public final class ReferenceManagerImpl implements ReferenceManager {
         try {
             MethodHandles.Lookup lookup = MethodHandles.lookup();
             Class<?> cleanerClass = Class.forName("java.lang.ref.Cleaner");
-            cleaner = cleanerClass.getDeclaredMethod("create", ThreadFactory.class)
+            cleaner = cleanerClass
+                .getDeclaredMethod("create", ThreadFactory.class)
                 .invoke(null, (ThreadFactory) r -> new Thread(r, BASE_THREAD_NAME));
             cleanerRegister = lookup.unreflect(cleanerClass.getMethod("register", Object.class, Runnable.class));
         } catch (ReflectiveOperationException ex) {
@@ -121,8 +122,9 @@ public final class ReferenceManagerImpl implements ReferenceManager {
                 reference = (CleanableReference<?>) queue.remove(30000);
             } catch (InterruptedException ex) {
                 // Thread has been interrupted while waiting for the queue to emit an element.
-                LOGGER.log(LogLevel.VERBOSE,
-                    () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.", ex);
+                LOGGER
+                    .log(LogLevel.VERBOSE,
+                        () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.", ex);
             }
 
             try {

@@ -34,7 +34,9 @@ public class TokenCacheTests {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+        Flux
+            .range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
             .parallel(10)
             // Runs cache.getToken() on 10 different threads
             .runOn(Schedulers.boundedElastic())
@@ -61,7 +63,8 @@ public class TokenCacheTests {
         VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Flux.interval(Duration.ofMillis(100), virtualTimeScheduler)
+        Flux
+            .interval(Duration.ofMillis(100), virtualTimeScheduler)
             .take(100)
             .flatMap(i -> cache.getToken())
             .doOnComplete(latch::countDown)
@@ -80,7 +83,8 @@ public class TokenCacheTests {
 
     // First token takes latency seconds, and adds 1 sec every subsequent call
     private Mono<AccessToken> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
-        return Mono.delay(Duration.ofSeconds(latency.getAndIncrement()))
+        return Mono
+            .delay(Duration.ofSeconds(latency.getAndIncrement()))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));
     }
 

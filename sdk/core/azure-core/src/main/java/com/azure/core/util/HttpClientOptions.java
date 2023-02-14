@@ -60,8 +60,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Creates a new instance of {@link HttpClientOptions}.
      */
-    public HttpClientOptions() {
-    }
+    public HttpClientOptions() {}
 
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
@@ -311,8 +310,9 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "'maximumConnectionPoolSize' cannot be less than 1."));
         }
 
         this.maximumConnectionPoolSize = maximumConnectionPoolSize;

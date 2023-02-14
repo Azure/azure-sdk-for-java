@@ -67,60 +67,55 @@ public class RequestIdPolicyTests {
 
     @SyncAsyncTest
     public void newRequestIdForEachCall() throws Exception {
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                String firstRequestId = null;
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assertions.assertNotNull(newRequestId);
-                        Assertions.assertNotEquals(newRequestId, firstRequestId);
-                    }
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            String firstRequestId = null;
 
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                    if (firstRequestId == null) {
-                        Assertions.fail();
-                    }
-                    return Mono.just(mockResponse);
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                if (firstRequestId != null) {
+                    String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    Assertions.assertNotNull(newRequestId);
+                    Assertions.assertNotEquals(newRequestId, firstRequestId);
                 }
-            })
-            .policies(new RequestIdPolicy())
-            .build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
-            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
-        );
+                firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                if (firstRequestId == null) {
+                    Assertions.fail();
+                }
+                return Mono.just(mockResponse);
+            }
+        }).policies(new RequestIdPolicy()).build();
+
+        SyncAsyncExtension
+            .execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE), () -> pipeline
+                .send(createHttpRequest("https://www.bing.com")));
     }
 
     @SyncAsyncTest
     public void sameRequestIdForRetry() throws Exception {
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                String firstRequestId = null;
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            String firstRequestId = null;
 
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assertions.assertNotNull(newRequestId);
-                        Assertions.assertEquals(newRequestId, firstRequestId);
-                    }
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                    if (firstRequestId == null) {
-                        Assertions.fail();
-                    }
-                    return Mono.just(mockResponse);
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                if (firstRequestId != null) {
+                    String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    Assertions.assertNotNull(newRequestId);
+                    Assertions.assertEquals(newRequestId, firstRequestId);
                 }
-            })
+                firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                if (firstRequestId == null) {
+                    Assertions.fail();
+                }
+                return Mono.just(mockResponse);
+            }
+        })
             .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
-            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
-        );
+        SyncAsyncExtension
+            .execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE), () -> pipeline
+                .send(createHttpRequest("https://www.bing.com")));
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

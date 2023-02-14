@@ -31,8 +31,11 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void lock(long position, long size, boolean shared, A attachment,
-        CompletionHandler<FileLock, ? super A> handler) {
+    public <A> void lock(long position,
+                         long size,
+                         boolean shared,
+                         A attachment,
+                         CompletionHandler<FileLock, ? super A> handler) {
 
     }
 
@@ -47,8 +50,7 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void read(ByteBuffer dst, long position, A attachment,
-        CompletionHandler<Integer, ? super A> handler) {
+    public <A> void read(ByteBuffer dst, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
 
     }
 
@@ -58,8 +60,7 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void write(ByteBuffer src, long position, A attachment,
-        CompletionHandler<Integer, ? super A> handler) {
+    public <A> void write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
 
     }
 

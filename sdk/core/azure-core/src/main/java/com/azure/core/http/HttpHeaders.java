@@ -54,8 +54,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
         // TODO (alzimmer): This, and the API above, should be copying using the value list as this will String
         //  join multiple values. Or, better yet provide better copy methods on HttpHeader and Header.
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValue())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValue())));
     }
 
     /**
@@ -390,7 +390,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     @Override
     public String toString() {
-        return this.stream()
+        return this
+            .stream()
             .map(header -> header.getName() + "=" + header.getValue())
             .collect(Collectors.joining(", "));
     }

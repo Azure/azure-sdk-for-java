@@ -64,6 +64,5 @@ public final class Base64Util {
     }
 
     // Private Ctr
-    private Base64Util() {
-    }
+    private Base64Util() {}
 }

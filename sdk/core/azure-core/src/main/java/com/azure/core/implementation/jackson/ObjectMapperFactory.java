@@ -22,7 +22,7 @@ final class ObjectMapperFactory {
     // ObjectMapperFactory is a commonly used factory, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
 
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
@@ -63,7 +63,8 @@ final class ObjectMapperFactory {
 
     @SuppressWarnings("deprecation")
     static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
-        mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
+        mapper
+            .enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

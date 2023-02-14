@@ -48,8 +48,9 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations
      */
-    protected AdditionalPropertiesDeserializer(Class<?> vc, JsonDeserializer<?> defaultDeserializer,
-        ObjectMapper mapper) {
+    protected AdditionalPropertiesDeserializer(Class<?> vc,
+                                               JsonDeserializer<?> defaultDeserializer,
+                                               ObjectMapper mapper) {
         super(vc);
         this.defaultDeserializer = defaultDeserializer;
         this.mapper = mapper;
@@ -65,8 +66,9 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
+                                                          BeanDescription beanDesc,
+                                                          JsonDeserializer<?> deserializer) {
                 for (Class<?> c : TypeUtil.getAllClasses(beanDesc.getBeanClass())) {
                     Field[] fields = c.getDeclaredFields();
                     for (Field field : fields) {

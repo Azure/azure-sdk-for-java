@@ -35,7 +35,9 @@ public final class GeoLineString extends GeoObject {
      * @param customProperties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineString(List<GeoPosition> positions,
+                         GeoBoundingBox boundingBox,
+                         Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(positions, "'positions' cannot be null.");

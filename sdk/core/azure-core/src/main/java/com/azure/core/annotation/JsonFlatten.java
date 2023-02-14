@@ -15,6 +15,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * class, all JSON fields will be checked for '.' and be flattened appropriately.
  */
 @Retention(RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD})
-public @interface JsonFlatten {
-}
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD })
+public @interface JsonFlatten {}

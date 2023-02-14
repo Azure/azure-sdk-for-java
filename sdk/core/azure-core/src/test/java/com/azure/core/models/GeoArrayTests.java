@@ -36,9 +36,8 @@ public class GeoArrayTests {
 
     @Test
     public void pointCollectionCoordinates() {
-        GeoPointCollection pointCollection = new GeoPointCollection(Arrays.asList(
-            new GeoPoint(1, 2), new GeoPoint(3, 4)
-        ));
+        GeoPointCollection pointCollection = new GeoPointCollection(Arrays
+            .asList(new GeoPoint(1, 2), new GeoPoint(3, 4)));
 
         assertEquals(2, pointCollection.getCoordinates().size());
 
@@ -51,9 +50,8 @@ public class GeoArrayTests {
 
     @Test
     public void lineCoordinates() {
-        GeoLineString line = new GeoLineString(Arrays.asList(
-            new GeoPosition(1, 2), new GeoPosition(3, 4), new GeoPosition(5, 6)
-        ));
+        GeoLineString line = new GeoLineString(Arrays
+            .asList(new GeoPosition(1, 2), new GeoPosition(3, 4), new GeoPosition(5, 6)));
 
         assertEquals(3, line.getCoordinates().size());
 
@@ -69,10 +67,9 @@ public class GeoArrayTests {
 
     @Test
     public void lineCollectionCoordinates() {
-        GeoLineStringCollection lineCollection = new GeoLineStringCollection(Arrays.asList(
-            new GeoLineString(Arrays.asList(new GeoPosition(1, 2), new GeoPosition(3, 4))),
-            new GeoLineString(Arrays.asList(new GeoPosition(5, 6), new GeoPosition(7, 8)))
-        ));
+        GeoLineStringCollection lineCollection = new GeoLineStringCollection(Arrays
+            .asList(new GeoLineString(Arrays.asList(new GeoPosition(1, 2), new GeoPosition(3, 4))), new GeoLineString(
+                Arrays.asList(new GeoPosition(5, 6), new GeoPosition(7, 8)))));
 
         assertEquals(2, lineCollection.getCoordinates().size());
 
@@ -91,14 +88,12 @@ public class GeoArrayTests {
 
     @Test
     public void polygonCoordinates() {
-        GeoPolygon polygon = new GeoPolygon(Arrays.asList(
-            new GeoLinearRing(Arrays.asList(
-                new GeoPosition(1, 1), new GeoPosition(1, 2), new GeoPosition(2, 2), new GeoPosition(1, 1)
-            )),
-            new GeoLinearRing(Arrays.asList(
-                new GeoPosition(5, 5), new GeoPosition(5, 6), new GeoPosition(6, 6), new GeoPosition(5, 5)
-            ))
-        ));
+        GeoPolygon polygon = new GeoPolygon(Arrays
+            .asList(new GeoLinearRing(Arrays
+                .asList(new GeoPosition(1, 1), new GeoPosition(1, 2), new GeoPosition(2, 2), new GeoPosition(1, 1))),
+                new GeoLinearRing(Arrays
+                    .asList(new GeoPosition(5, 5), new GeoPosition(5, 6), new GeoPosition(6, 6), new GeoPosition(5,
+                        5)))));
 
         assertEquals(2, polygon.getCoordinates().size());
 
@@ -129,24 +124,18 @@ public class GeoArrayTests {
 
     @Test
     public void polygonCollectionCoordinates() {
-        GeoPolygonCollection polygonCollection = new GeoPolygonCollection(Arrays.asList(
-            new GeoPolygon(Arrays.asList(
-                new GeoLinearRing(Arrays.asList(
-                    new GeoPosition(1, 1), new GeoPosition(1, 2), new GeoPosition(2, 2), new GeoPosition(1, 1)
-                )),
-                new GeoLinearRing(Arrays.asList(
-                    new GeoPosition(5, 5), new GeoPosition(5, 6), new GeoPosition(6, 6), new GeoPosition(5, 5)
-                ))
-            )),
-            new GeoPolygon(Arrays.asList(
-                new GeoLinearRing(Arrays.asList(
-                    new GeoPosition(9, 9), new GeoPosition(9, 10), new GeoPosition(10, 10), new GeoPosition(9, 9)
-                )),
-                new GeoLinearRing(Arrays.asList(
-                    new GeoPosition(13, 13), new GeoPosition(13, 14), new GeoPosition(14, 14), new GeoPosition(13, 13)
-                ))
-            ))
-        ));
+        GeoPolygonCollection polygonCollection = new GeoPolygonCollection(Arrays
+            .asList(new GeoPolygon(Arrays
+                .asList(new GeoLinearRing(Arrays
+                    .asList(new GeoPosition(1, 1), new GeoPosition(1, 2), new GeoPosition(2, 2), new GeoPosition(1,
+                        1))), new GeoLinearRing(Arrays
+                            .asList(new GeoPosition(5, 5), new GeoPosition(5, 6), new GeoPosition(6, 6),
+                                new GeoPosition(5, 5))))), new GeoPolygon(Arrays
+                                    .asList(new GeoLinearRing(Arrays
+                                        .asList(new GeoPosition(9, 9), new GeoPosition(9, 10), new GeoPosition(10, 10),
+                                            new GeoPosition(9, 9))), new GeoLinearRing(Arrays
+                                                .asList(new GeoPosition(13, 13), new GeoPosition(13, 14),
+                                                    new GeoPosition(14, 14), new GeoPosition(13, 13)))))));
 
         assertEquals(2, polygonCollection.getCoordinates().size());
 

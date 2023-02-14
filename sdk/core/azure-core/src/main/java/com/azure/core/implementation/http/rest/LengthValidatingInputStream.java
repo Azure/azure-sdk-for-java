@@ -113,11 +113,11 @@ final class LengthValidatingInputStream extends InputStream {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
             if (position > expectedReadSize) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    position, expectedReadSize), position, expectedReadSize);
+                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE, position, expectedReadSize), position,
+                    expectedReadSize);
             } else if (position < expectedReadSize) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    position, expectedReadSize), position, expectedReadSize);
+                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL, position, expectedReadSize), position,
+                    expectedReadSize);
             }
         } else {
             position += readSize;

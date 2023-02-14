@@ -14,7 +14,7 @@ public interface KeyEncryptionKey {
      * @return The key identifier.
      */
     String getKeyId();
-    
+
     /**
      * Encrypts the specified key using the specified algorithm.
      *

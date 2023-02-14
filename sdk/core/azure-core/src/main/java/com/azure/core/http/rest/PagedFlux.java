@@ -140,7 +140,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
-        Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
+                     Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
             ? firstPageRetriever.get().flux()
             : nextPageRetriever.apply(continuationToken).flux(), true);
@@ -168,7 +168,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
     public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
-        BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
+                     BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
             ? firstPageRetriever.apply(pageSize).flux()
             : nextPageRetriever.apply(continuationToken, pageSize).flux(), true);
@@ -256,20 +256,18 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? byPage()
-                : byPage(continuationToken);
+            Flux<PagedResponse<T>> flux = (continuationToken == null) ? byPage() : byPage(continuationToken);
             return flux.map(mapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
-        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
-            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null);
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(), pagedResponse
+            .getStatusCode(), pagedResponse.getHeaders(), pagedResponse
+                .getValue()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList()), pagedResponse.getContinuationToken(), null);
     }
 }

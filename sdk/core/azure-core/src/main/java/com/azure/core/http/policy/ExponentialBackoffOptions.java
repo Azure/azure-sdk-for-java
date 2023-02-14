@@ -22,8 +22,7 @@ public class ExponentialBackoffOptions {
     /**
      * Creates a new instance of {@link ExponentialBackoffOptions}.
      */
-    public ExponentialBackoffOptions() {
-    }
+    public ExponentialBackoffOptions() {}
 
     /**
      * Gets the max retry attempts that can be made.

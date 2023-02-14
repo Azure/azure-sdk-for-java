@@ -37,8 +37,9 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-                    PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+                LOGGER
+                    .verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                        PROPERTY_AZURE_REQUEST_RETRY_COUNT);
             }
         }
 
@@ -66,17 +67,14 @@ public class ExponentialBackoff implements RetryStrategy {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public ExponentialBackoff(ExponentialBackoffOptions options) {
-        this(
-            ObjectsUtil.requireNonNullElse(
-                Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
-                DEFAULT_MAX_RETRIES),
-            ObjectsUtil.requireNonNullElse(
-                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
-                DEFAULT_BASE_DELAY),
-            ObjectsUtil.requireNonNullElse(
-                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY)
-        );
+        this(ObjectsUtil
+            .requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES), ObjectsUtil
+                    .requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
+                        DEFAULT_BASE_DELAY), ObjectsUtil
+                            .requireNonNullElse(Objects
+                                .requireNonNull(options, "'options' cannot be null.")
+                                .getMaxDelay(), DEFAULT_MAX_DELAY));
     }
 
     /**
@@ -116,7 +114,8 @@ public class ExponentialBackoff implements RetryStrategy {
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
         // Introduce a small amount of jitter to base delay
-        long delayWithJitterInNanos = ThreadLocalRandom.current()
+        long delayWithJitterInNanos = ThreadLocalRandom
+            .current()
             .nextLong((long) (baseDelayNanos * (1 - JITTER_FACTOR)), (long) (baseDelayNanos * (1 + JITTER_FACTOR)));
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
     }

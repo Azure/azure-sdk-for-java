@@ -69,8 +69,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instance of {@link CookiePolicy}.
      */
-    public CookiePolicy() {
-    }
+    public CookiePolicy() {}
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

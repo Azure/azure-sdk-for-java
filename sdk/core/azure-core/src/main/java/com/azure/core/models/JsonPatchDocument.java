@@ -470,8 +470,10 @@ public final class JsonPatchDocument {
         return Option.of(new String(bytes, StandardCharsets.UTF_8));
     }
 
-    private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind, String from, String path,
-        Option<String> optionalValue) {
+    private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind,
+                                              String from,
+                                              String path,
+                                              Option<String> optionalValue) {
         operations.add(new JsonPatchOperation(operationKind, from, path, optionalValue));
         return this;
     }

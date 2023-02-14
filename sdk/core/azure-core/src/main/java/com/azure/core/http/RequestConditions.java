@@ -18,8 +18,7 @@ public class RequestConditions extends MatchConditions {
     /**
      * Creates a new instance of {@link RequestConditions}.
      */
-    public RequestConditions() {
-    }
+    public RequestConditions() {}
 
     /**
      * Optionally limit requests to resources that match the passed ETag.

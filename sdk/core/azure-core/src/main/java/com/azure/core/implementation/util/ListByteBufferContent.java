@@ -26,8 +26,8 @@ public class ListByteBufferContent extends BinaryDataContent {
     private final List<ByteBuffer> content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ListByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ListByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ListByteBufferContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(ListByteBufferContent.class, byte[].class, "bytes");
 
     private Long cachedLength;
 
@@ -40,6 +40,7 @@ public class ListByteBufferContent extends BinaryDataContent {
     public ListByteBufferContent(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
+
     @Override
     public Long getLength() {
         if (cachedLength == null) {

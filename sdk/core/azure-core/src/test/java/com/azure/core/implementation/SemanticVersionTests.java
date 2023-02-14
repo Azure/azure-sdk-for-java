@@ -65,7 +65,7 @@ public class SemanticVersionTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"nonsense", "a.b.c", "1.2", "1.2-c", "c.1.2.3", "1.2.3?beta", ""})
+    @ValueSource(strings = { "nonsense", "a.b.c", "1.2", "1.2-c", "c.1.2.3", "1.2.3?beta", "" })
     public void malformedVersion(String versionStr) {
         SemanticVersion malformed = SemanticVersion.parse(versionStr);
         assertFalse(malformed.isValid());
@@ -107,7 +107,7 @@ public class SemanticVersionTests {
     @Test
     public void classVersion() {
         SemanticVersion version = SemanticVersion
-                .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
+            .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
         assertTrue(version.isValid());
 
         version = SemanticVersion.getPackageVersionForClass("org.reactivestreams.Processor");
@@ -115,7 +115,7 @@ public class SemanticVersionTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"nonsense", ""})
+    @ValueSource(strings = { "nonsense", "" })
     public void malformedClassVersion(String className) {
         SemanticVersion version = SemanticVersion.getPackageVersionForClass(className);
         assertFalse(version.isValid());

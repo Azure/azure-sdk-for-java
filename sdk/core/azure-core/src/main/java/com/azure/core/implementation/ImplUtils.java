@@ -81,15 +81,16 @@ public final class ImplUtils {
 
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
-            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
+        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER, headerValue -> tryParseLongOrDateTime(
+            headerValue, nowSupplier));
 
         // Either the retry delay will have been found or it'll be null, null indicates no retry after.
         return retryDelay;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
-        Function<String, Duration> delayParser) {
+    private static Duration tryGetRetryDelay(HttpHeaders headers,
+                                             HttpHeaderName headerName,
+                                             Function<String, Duration> delayParser) {
         String headerValue = headers.getValue(headerName);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
@@ -286,11 +287,17 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
@@ -318,6 +325,5 @@ public final class ImplUtils {
         }
     }
 
-    private ImplUtils() {
-    }
+    private ImplUtils() {}
 }

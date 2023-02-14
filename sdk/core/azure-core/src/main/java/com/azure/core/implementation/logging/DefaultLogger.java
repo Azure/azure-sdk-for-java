@@ -193,7 +193,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         return isInfoEnabled;
     }
 
-
     /**
      * {@inheritDoc}
      */

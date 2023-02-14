@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 /**
  * Annotation to notify the validator to skip validation for the properties in the parent class.
  */
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SkipParentValidation {
-}
+public @interface SkipParentValidation {}

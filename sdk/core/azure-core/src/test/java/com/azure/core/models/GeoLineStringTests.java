@@ -30,8 +30,8 @@ public class GeoLineStringTests {
 
     @Test
     public void simpleConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays
+            .asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
 
         GeoLineString line = new GeoLineString(expectedPositions);
 
@@ -43,8 +43,8 @@ public class GeoLineStringTests {
 
     @Test
     public void complexConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays
+            .asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
         GeoBoundingBox expectedBoundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> expectedProperties = Collections.singletonMap("key", "value");
 
@@ -84,24 +84,22 @@ public class GeoLineStringTests {
         GeoLineString line = new GeoLineString(positions);
         GeoLineString line1 = new GeoLineString(positions1, boundingBox, properties);
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(line, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(line, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(line, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(line, 1, false),
 
-            // Other is itself.
-            Arguments.of(line, line, true),
-            Arguments.of(line1, line1, true),
+                // Other is itself.
+                Arguments.of(line, line, true), Arguments.of(line1, line1, true),
 
-            // Other is a different value.
-            Arguments.of(line, line1, false),
-            Arguments.of(line1, line, false),
+                // Other is a different value.
+                Arguments.of(line, line1, false), Arguments.of(line1, line, false),
 
-            // Other is the same value.
-            Arguments.of(line, new GeoLineString(positions), true),
-            Arguments.of(line1, new GeoLineString(positions1, boundingBox, properties), true)
-        );
+                // Other is the same value.
+                Arguments.of(line, new GeoLineString(positions), true), Arguments
+                    .of(line1, new GeoLineString(positions1, boundingBox, properties), true));
     }
 }

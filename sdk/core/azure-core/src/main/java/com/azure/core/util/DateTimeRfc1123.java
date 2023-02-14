@@ -80,17 +80,16 @@ public final class DateTimeRfc1123 {
      */
     private static OffsetDateTime parse(final String date) {
         try {
-            return OffsetDateTime.of(
-                LocalDateTime.of(
-                    parseInt(date, 12, 16),  // year
-                    parseMonth(date),        // month
-                    parseInt(date, 5, 7),    // dayOfMonth
-                    parseInt(date, 17, 19),  // hour
-                    parseInt(date, 20, 22),  // minute
-                    parseInt(date, 23, 25),  // second
-                    0                        // nanoOfSecond
-                ),
-                ZoneOffset.UTC);
+            return OffsetDateTime
+                .of(LocalDateTime
+                    .of(parseInt(date, 12, 16),  // year
+                        parseMonth(date),        // month
+                        parseInt(date, 5, 7),    // dayOfMonth
+                        parseInt(date, 17, 19),  // hour
+                        parseInt(date, 20, 22),  // minute
+                        parseInt(date, 23, 25),  // second
+                        0                        // nanoOfSecond
+                    ), ZoneOffset.UTC);
         } catch (DateTimeException | IllegalArgumentException | IndexOutOfBoundsException e) {
             return OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
         }
@@ -137,36 +136,52 @@ public final class DateTimeRfc1123 {
             case 'J':
                 // Jan, Jun, Jul
                 switch (date.charAt(9)) {
-                    case 'a': return Month.JANUARY;
+                    case 'a':
+                        return Month.JANUARY;
                     case 'u':
                         switch (date.charAt(10)) {
-                            case 'n': return Month.JUNE;
-                            case 'l': return Month.JULY;
-                            default: throw LOGGER.logExceptionAsError(
-                                new IllegalArgumentException("Unknown month " + date));
+                            case 'n':
+                                return Month.JUNE;
+                            case 'l':
+                                return Month.JULY;
+                            default:
+                                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                         }
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'F': return Month.FEBRUARY;
+            case 'F':
+                return Month.FEBRUARY;
             case 'M':
                 // Mar, May
                 switch (date.charAt(10)) {
-                    case 'r': return Month.MARCH;
-                    case 'y': return Month.MAY;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    case 'r':
+                        return Month.MARCH;
+                    case 'y':
+                        return Month.MAY;
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(10)) {
-                    case 'r': return Month.APRIL;
-                    case 'g': return Month.AUGUST;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    case 'r':
+                        return Month.APRIL;
+                    case 'g':
+                        return Month.AUGUST;
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'S': return Month.SEPTEMBER;
-            case 'O': return Month.OCTOBER;
-            case 'N': return Month.NOVEMBER;
-            case 'D': return Month.DECEMBER;
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+            case 'S':
+                return Month.SEPTEMBER;
+            case 'O':
+                return Month.OCTOBER;
+            case 'N':
+                return Month.NOVEMBER;
+            case 'D':
+                return Month.DECEMBER;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
         }
     }
 
@@ -227,7 +242,8 @@ public final class DateTimeRfc1123 {
                 bytes[2] = 'n';
                 break;
 
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
         }
 
         bytes[3] = ',';
@@ -310,7 +326,8 @@ public final class DateTimeRfc1123 {
                 bytes[10] = 'c';
                 break;
 
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
         }
         bytes[11] = ' ';
 

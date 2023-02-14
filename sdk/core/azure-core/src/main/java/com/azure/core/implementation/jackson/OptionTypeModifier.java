@@ -36,9 +36,7 @@ final class OptionTypeModifier extends TypeModifier implements java.io.Serializa
     private static final long serialVersionUID = 1L;
 
     @Override
-    public JavaType modifyType(JavaType type, Type jdkType,
-                               TypeBindings bindings,
-                               TypeFactory typeFactory) {
+    public JavaType modifyType(JavaType type, Type jdkType, TypeBindings bindings, TypeFactory typeFactory) {
         if (type.isReferenceType() || type.isContainerType()) {
             return type;
         } else if (type.getRawClass() == Option.class) {

@@ -33,8 +33,8 @@ import java.util.Map;
 final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
     private static final ClientLogger LOGGER = new ClientLogger(GeoJsonSerializer.class);
 
-    private static final SimpleModule MODULE = new SimpleModule().addSerializer(GeoObject.class, new GeoJsonSerializer());
-
+    private static final SimpleModule MODULE = new SimpleModule()
+        .addSerializer(GeoObject.class, new GeoJsonSerializer());
 
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
@@ -101,8 +101,9 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
             }
             gen.writeEndArray();
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("Geo type '%s' isn't supported.", value.getClass().getName())));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(String
+                    .format("Geo type '%s' isn't supported.", value.getClass().getName())));
         }
 
         writeBoundingBox(value.getBoundingBox(), gen);
@@ -139,8 +140,7 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
         gen.writeStringField(GeoJsonDeserializer.TYPE_PROPERTY, type.toString());
     }
 
-    private static void writeBoundingBox(GeoBoundingBox boundingBox, JsonGenerator gen)
-        throws IOException {
+    private static void writeBoundingBox(GeoBoundingBox boundingBox, JsonGenerator gen) throws IOException {
         if (boundingBox == null) {
             return;
         }
@@ -166,7 +166,7 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
     }
 
     private static void writeAdditionalProperties(Map<String, Object> properties, JsonGenerator gen)
-        throws IOException {
+                                                                                                     throws IOException {
         if (CoreUtils.isNullOrEmpty(properties)) {
             return;
         }

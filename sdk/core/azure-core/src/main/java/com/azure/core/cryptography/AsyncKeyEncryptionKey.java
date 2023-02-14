@@ -16,7 +16,7 @@ public interface AsyncKeyEncryptionKey {
      * @return A {@link Mono} containing key identifier.
      */
     Mono<String> getKeyId();
-    
+
     /**
      * Encrypts the specified key using the specified algorithm.
      *

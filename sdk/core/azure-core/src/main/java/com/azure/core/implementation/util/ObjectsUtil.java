@@ -10,8 +10,7 @@ import java.util.Objects;
  */
 public final class ObjectsUtil {
 
-    private ObjectsUtil() {
-    }
+    private ObjectsUtil() {}
 
     /**
      * Returns the first argument if it is non-{@code null} and

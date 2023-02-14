@@ -54,14 +54,16 @@ public final class XmlMapperFactory {
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR);
 
             createXmlMapperBuilder = publicLookup.unreflect(xmlMapper.getDeclaredMethod("builder"));
-            defaultUseWrapper = publicLookup.unreflect(xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper",
-                boolean.class));
+            defaultUseWrapper = publicLookup
+                .unreflect(xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class));
 
-            enableWriteXmlDeclaration = publicLookup.unreflect(xmlMapperBuilder.getDeclaredMethod("enable",
-                Array.newInstance(toXmlGenerator, 0).getClass()));
+            enableWriteXmlDeclaration = publicLookup
+                .unreflect(xmlMapperBuilder
+                    .getDeclaredMethod("enable", Array.newInstance(toXmlGenerator, 0).getClass()));
             writeXmlDeclaration = toXmlGenerator.getDeclaredField("WRITE_XML_DECLARATION").get(null);
-            enableEmptyElementAsNull = publicLookup.unreflect(xmlMapperBuilder.getDeclaredMethod("enable",
-                Array.newInstance(fromXmlParser, 0).getClass()));
+            enableEmptyElementAsNull = publicLookup
+                .unreflect(xmlMapperBuilder
+                    .getDeclaredMethod("enable", Array.newInstance(fromXmlParser, 0).getClass()));
             emptyElementAsNull = fromXmlParser.getDeclaredField("EMPTY_ELEMENT_AS_NULL").get(null);
         } catch (Throwable ex) {
             // Throw the Error only if it isn't a LinkageError.
@@ -70,10 +72,12 @@ public final class XmlMapperFactory {
                 throw (Error) ex;
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to retrieve MethodHandles used to "
-                + "create XmlMapper. XML serialization won't be supported until "
-                + "'com.fasterxml.jackson.dataformat:jackson-dataformat-xml' is added to the classpath or updated to a "
-                + "supported version. " + JacksonVersion.getHelpInfo(), ex));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Failed to retrieve MethodHandles used to "
+                    + "create XmlMapper. XML serialization won't be supported until "
+                    + "'com.fasterxml.jackson.dataformat:jackson-dataformat-xml' is added to the classpath or updated to a "
+                    + "supported version. "
+                    + JacksonVersion.getHelpInfo(), ex));
         }
 
         this.createXmlMapperBuilder = createXmlMapperBuilder;
@@ -93,13 +97,17 @@ public final class XmlMapperFactory {
             Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
             Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
 
-            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
-                MethodType.methodType(mutableCoercionConfig));
-            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
-                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
-            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
-                coercionInputShapeClass).invoke();
-            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
+            coercionConfigDefaults = publicLookup
+                .findVirtual(ObjectMapper.class, "coercionConfigDefaults", MethodType
+                    .methodType(mutableCoercionConfig));
+            setCoercion = publicLookup
+                .findVirtual(mutableCoercionConfig, "setCoercion", MethodType
+                    .methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
+            coercionInputShapeEmptyString = publicLookup
+                .findStaticGetter(coercionInputShapeClass, "EmptyString", coercionInputShapeClass)
+                .invoke();
+            coercionActionAsNull = publicLookup
+                .findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
                 .invoke();
             useReflectionToSetCoercion = true;
         } catch (Throwable ex) {
@@ -109,9 +117,10 @@ public final class XmlMapperFactory {
                 throw (Error) ex;
             }
 
-            LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
-                + "Setting coercion configurations will be skipped. "
-                + "Please update your Jackson dependencies to at least version 2.12", ex);
+            LOGGER
+                .verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
+                    + "Setting coercion configurations will be skipped. "
+                    + "Please update your Jackson dependencies to at least version 2.12", ex);
         }
 
         this.coercionConfigDefaults = coercionConfigDefaults;
@@ -137,7 +146,7 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Throwable e) {
+        } catch (Throwable e) {
             if (e instanceof Error) {
                 throw (Error) e;
             }

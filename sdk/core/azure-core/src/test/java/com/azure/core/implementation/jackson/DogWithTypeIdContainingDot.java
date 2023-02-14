@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonFlatten
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = DogWithTypeIdContainingDot.class)
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "@odata\\.type",
+              defaultImpl = DogWithTypeIdContainingDot.class)
 @JsonTypeName("#Favourite.Pet.DogWithTypeIdContainingDot")
 public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     @JsonProperty(value = "breed")

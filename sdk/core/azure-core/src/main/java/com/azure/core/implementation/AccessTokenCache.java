@@ -47,7 +47,8 @@ public final class AccessTokenCache {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+        this.shouldRefresh = accessToken -> OffsetDateTime
+            .now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
@@ -58,10 +59,11 @@ public final class AccessTokenCache {
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
+        return Mono
+            .defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
-            .repeatWhenEmpty((Flux<Long> longFlux) ->
-                longFlux.concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
+            .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux
+                .concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
     }
 
     /**
@@ -79,8 +81,10 @@ public final class AccessTokenCache {
         return () -> {
             try {
                 if (tokenRequestContext == null) {
-                    return Mono.error(LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("The token request context input cannot be null.")));
+                    return Mono
+                        .error(LOGGER
+                            .logExceptionAsError(new IllegalArgumentException(
+                                "The token request context input cannot be null.")));
                 }
                 if (wip.compareAndSet(null, Sinks.one())) {
                     final Sinks.One<AccessToken> sinksOne = wip.get();
@@ -94,8 +98,8 @@ public final class AccessTokenCache {
                     boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
                         || this.tokenRequestContext == null;
 
-                    Supplier<Mono<AccessToken>> tokenSupplier = () ->
-                        tokenCredential.getToken(this.tokenRequestContext);
+                    Supplier<Mono<AccessToken>> tokenSupplier = () -> tokenCredential
+                        .getToken(this.tokenRequestContext);
 
                     if (forceRefresh) {
                         this.tokenRequestContext = tokenRequestContext;
@@ -112,7 +116,8 @@ public final class AccessTokenCache {
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
+                            tokenRefresh = Mono
+                                .defer(tokenSupplier)
                                 .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
@@ -160,19 +165,22 @@ public final class AccessTokenCache {
 
     private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-            : (tokenRequestContext.getClaims() == null ? false
-            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            && (this.tokenRequestContext.getClaims() == null
+                ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null
+                    ? false
+                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
-        Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
+    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(Sinks.One<AccessToken> sinksOne,
+                                                                                                 OffsetDateTime now,
+                                                                                                 Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                LOGGER.log(LogLevel.INFORMATIONAL,  () -> refreshLog(cache, now, "Acquired a new access token"));
+                LOGGER.log(LogLevel.INFORMATIONAL, () -> refreshLog(cache, now, "Acquired a new access token"));
                 cache = accessToken;
                 sinksOne.tryEmitValue(accessToken);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
@@ -194,9 +202,15 @@ public final class AccessTokenCache {
             info.append(".");
         } else {
             Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
+            info
+                .append(" at ")
+                .append(tte.abs().getSeconds())
+                .append(" seconds ")
+                .append(tte.isNegative() ? "after" : "before")
+                .append(" expiry. ")
+                .append("Retry may be attempted after ")
+                .append(REFRESH_DELAY.getSeconds())
+                .append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }

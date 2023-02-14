@@ -171,14 +171,16 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @throws NullPointerException If {@code pageRetrieverProvider} is null.
      * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
      */
-    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, Integer pageSize,
-        Predicate<C> continuationPredicate) {
+    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider,
+                                       Integer pageSize,
+                                       Predicate<C> continuationPredicate) {
         super(continuationPredicate);
-        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
-            "'pageRetrieverProvider' function cannot be null.");
+        this.pageRetrieverProvider = Objects
+            .requireNonNull(pageRetrieverProvider, "'pageRetrieverProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
     }
@@ -208,8 +210,9 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     @Override
     public Flux<P> byPage(int preferredPageSize) {
         if (preferredPageSize <= 0) {
-            return Flux.error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
-                + preferredPageSize));
+            return Flux
+                .error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
+                    + preferredPageSize));
         }
         return byPage(this.pageRetrieverProvider, null, preferredPageSize);
     }
@@ -217,8 +220,9 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     @Override
     public Flux<P> byPage(C continuationToken, int preferredPageSize) {
         if (preferredPageSize <= 0) {
-            return Flux.error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
-                + preferredPageSize));
+            return Flux
+                .error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
+                    + preferredPageSize));
         }
         if (continuationToken == null) {
             return Flux.empty();
@@ -234,14 +238,10 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      */
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
-        byPage(this.pageRetrieverProvider, null, this.defaultPageSize)
-            .flatMap(page -> {
-                IterableStream<T> iterableStream = page.getElements();
-                return iterableStream == null
-                    ? Flux.empty()
-                    : Flux.fromIterable(page.getElements());
-            })
-            .subscribe(coreSubscriber);
+        byPage(this.pageRetrieverProvider, null, this.defaultPageSize).flatMap(page -> {
+            IterableStream<T> iterableStream = page.getElements();
+            return iterableStream == null ? Flux.empty() : Flux.fromIterable(page.getElements());
+        }).subscribe(coreSubscriber);
     }
 
     /**
@@ -277,18 +277,18 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          * return multiple pages, but in the case only one page is retrieved the buffer won't need to be resized or
          * request additional pages from the service.
          */
-        return retrievePage(state, pageRetriever, pageSize)
-            .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken());
-                return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
-            }, 4);
+        return retrievePage(state, pageRetriever, pageSize).expand(page -> {
+            state.setLastContinuationToken(page.getContinuationToken());
+            return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
+        }, 4);
     }
 
     private Flux<P> retrievePage(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
         if (state.isDone()) {
             return Flux.empty();
         } else {
-            return pageRetriever.get(state.getLastContinuationToken(), pageSize)
+            return pageRetriever
+                .get(state.getLastContinuationToken(), pageSize)
                 .switchIfEmpty(Mono.fromRunnable(() -> state.setLastContinuationToken(null)));
         }
     }

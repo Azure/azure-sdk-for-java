@@ -453,7 +453,7 @@ public final class BinaryData {
         // 1. The content is limited in size as it collects into a byte array which is limited to ~2GB in size.
         // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
         //    arrays.
-        long[] trueLength = new long[]{0};
+        long[] trueLength = new long[] { 0 };
         return data.map(buffer -> {
             int bufferSize = buffer.remaining();
             ByteBuffer copy = ByteBuffer.allocate(bufferSize);
@@ -462,9 +462,7 @@ public final class BinaryData {
             copy.flip();
 
             return copy;
-        })
-        .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-        .map(buffers -> {
+        }).collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add).map(buffers -> {
             // TODO (alzimmer): What should be done when length != null but it differs from the true length
             //  seen when doing the buffering.
             return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),

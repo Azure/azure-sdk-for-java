@@ -51,23 +51,26 @@ public class SyncStatusCheckPollingStrategy<T, U> implements SyncPollingStrategy
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType) {
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
-            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
+    public PollResponse<T> onInitialResponse(Response<?> response,
+                                             PollingContext<T> pollingContext,
+                                             TypeReference<T> pollResponseType) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, PollingUtils
+                .convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
-            throw LOGGER.logExceptionAsError(new AzureException("Operation failed or cancelled: "
-                + response.getStatusCode()));
+            throw LOGGER
+                .logExceptionAsError(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
         }
     }
 
     @Override
     public PollResponse<T> poll(PollingContext<T> context, TypeReference<T> pollResponseType) {
-        throw LOGGER.logExceptionAsError(new IllegalStateException(
-            "StatusCheckPollingStrategy doesn't support polling"));
+        throw LOGGER
+            .logExceptionAsError(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
     }
 
     @Override

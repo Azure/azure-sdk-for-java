@@ -22,8 +22,10 @@ public class QuerySubstitution extends Substitution {
      * @param multipleParams Whether the value from the method argument needs to be sent as string in case the values
      * are a list or as multiple query parameters.
      */
-    public QuerySubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
-        boolean multipleParams) {
+    public QuerySubstitution(String urlParameterName,
+                             int methodParameterIndex,
+                             boolean shouldEncode,
+                             boolean multipleParams) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
         this.multipleParams = multipleParams;
     }

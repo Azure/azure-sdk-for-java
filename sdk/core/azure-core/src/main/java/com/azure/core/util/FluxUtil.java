@@ -116,7 +116,8 @@ public final class FluxUtil {
      * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream) {
-        return stream.collect(ByteBufferCollector::new, ByteBufferCollector::write)
+        return stream
+            .collect(ByteBufferCollector::new, ByteBufferCollector::write)
             .map(ByteBufferCollector::toByteArray);
     }
 
@@ -135,7 +136,8 @@ public final class FluxUtil {
      * Integer#MAX_VALUE}.
      */
     public static Mono<byte[]> collectBytesInByteBufferStream(Flux<ByteBuffer> stream, int sizeHint) {
-        return stream.collect(() -> new ByteBufferCollector(sizeHint), ByteBufferCollector::write)
+        return stream
+            .collect(() -> new ByteBufferCollector(sizeHint), ByteBufferCollector::write)
             .map(ByteBufferCollector::toByteArray);
     }
 
@@ -197,7 +199,8 @@ public final class FluxUtil {
      * @return A {@link Flux} that downloads reliably.
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
+                                                               BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+                                                               int maxRetries) {
         return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
     }
 
@@ -212,7 +215,9 @@ public final class FluxUtil {
      * @return A {@link Flux} that downloads reliably.
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+                                                               BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+                                                               int maxRetries,
+                                                               long position) {
         return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
     }
 
@@ -358,17 +363,18 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
-        Map<String, String> contextAttributes) {
+                                          Map<String, String> contextAttributes) {
         return Mono.deferContextual(context -> {
-            final Context[] azureContext = new Context[]{Context.NONE};
+            final Context[] azureContext = new Context[] { Context.NONE };
 
             if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
                 contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
             }
 
             if (!context.isEmpty()) {
-                context.stream().forEach(entry ->
-                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                context
+                    .stream()
+                    .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
             }
 
             return serviceCall.apply(azureContext[0]);
@@ -467,11 +473,12 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(ContextView context) {
-        final Context[] azureContext = new Context[]{Context.NONE};
+        final Context[] azureContext = new Context[] { Context.NONE };
 
         if (!context.isEmpty()) {
-            context.stream().forEach(entry ->
-                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            context
+                .stream()
+                .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
         }
 
         return azureContext[0];
@@ -608,8 +615,7 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return Mono.create(emitter -> content.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
+        return Mono.create(emitter -> content.subscribe(new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
     }
 
     /**
@@ -636,17 +642,16 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return content.publishOn(Schedulers.boundedElastic())
-            .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    try {
-                        channel.write(buffer);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
+        return content.publishOn(Schedulers.boundedElastic()).map(buffer -> {
+            while (buffer.hasRemaining()) {
+                try {
+                    channel.write(buffer);
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
                 }
-                return buffer;
-            }).then();
+            }
+            return buffer;
+        }).then();
     }
 
     /**
@@ -659,8 +664,10 @@ public final class FluxUtil {
      * @param length The number of bytes to read from the file.
      * @return the Flux.
      */
-    public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset,
-        long length) {
+    public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel,
+                                            int chunkSize,
+                                            long offset,
+                                            long length) {
         return new FileReadFlux(fileChannel, chunkSize, offset, length);
     }
 
@@ -708,8 +715,8 @@ public final class FluxUtil {
 
         @Override
         public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-            FileReadSubscription subscription =
-                new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
+            FileReadSubscription subscription = new FileReadSubscription(actual, fileChannel, chunkSize, offset,
+                length);
             actual.onSubscribe(subscription);
         }
 
@@ -731,16 +738,19 @@ public final class FluxUtil {
             private volatile boolean cancelled;
             //
             volatile int wip;
-            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
-                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP = AtomicIntegerFieldUpdater
+                .newUpdater(FileReadSubscription.class, "wip");
 
             volatile long requested;
-            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
-                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
+            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED = AtomicLongFieldUpdater
+                .newUpdater(FileReadSubscription.class, "requested");
             //
 
-            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
-                int chunkSize, long offset, long length) {
+            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber,
+                                 AsynchronousFileChannel fileChannel,
+                                 int chunkSize,
+                                 long offset,
+                                 long length) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;
@@ -879,8 +889,6 @@ public final class FluxUtil {
         }
     }
 
-
     // Private Ctr
-    private FluxUtil() {
-    }
+    private FluxUtil() {}
 }

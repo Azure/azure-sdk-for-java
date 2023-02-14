@@ -49,17 +49,20 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
-    public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+    public Mono<PollResponse<T>> onInitialResponse(Response<?> response,
+                                                   PollingContext<T> pollingContext,
+                                                   TypeReference<T> pollResponseType) {
         if (response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204) {
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
+            return PollingUtils
+                .convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null, retryAfter)));
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null,
+                        retryAfter)));
         } else {
             return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
         }

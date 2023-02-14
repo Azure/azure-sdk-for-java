@@ -58,8 +58,9 @@ public interface SyncPollingStrategy<T, U> {
      * response body should be kept. This should match the generic parameter {@link U}.
      * @return the poll response containing the status and the response content
      */
-    PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType);
+    PollResponse<T> onInitialResponse(Response<?> response,
+                                      PollingContext<T> pollingContext,
+                                      TypeReference<T> pollResponseType);
 
     /**
      * Parses the response from the polling URL into a {@link PollResponse}, and stores information useful for further

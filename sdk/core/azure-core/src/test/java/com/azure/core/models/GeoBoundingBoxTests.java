@@ -26,8 +26,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 180;
         double expectedNorth = 90;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -47,8 +46,8 @@ public class GeoBoundingBoxTests {
         double expectedMinAltitude = -1000;
         double expectedMaxAltitude = 1000;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth, expectedMinAltitude, expectedMaxAltitude);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth,
+            expectedMinAltitude, expectedMaxAltitude);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -65,8 +64,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 200;
         double expectedNorth = 100;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -84,24 +82,24 @@ public class GeoBoundingBoxTests {
         GeoBoundingBox pikePlaceBoundingBox = PIKES_PLACE_BOUNDING_BOX.get();
         GeoBoundingBox mtRainierBoundingBox = MT_RAINIER_BOUNDING_BOX.get();
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(pikePlaceBoundingBox, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(pikePlaceBoundingBox, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(pikePlaceBoundingBox, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(pikePlaceBoundingBox, 1, false),
 
-            // Other is itself.
-            Arguments.of(pikePlaceBoundingBox, pikePlaceBoundingBox, true),
-            Arguments.of(mtRainierBoundingBox, mtRainierBoundingBox, true),
+                // Other is itself.
+                Arguments.of(pikePlaceBoundingBox, pikePlaceBoundingBox, true), Arguments
+                    .of(mtRainierBoundingBox, mtRainierBoundingBox, true),
 
-            // Other is a different value.
-            Arguments.of(pikePlaceBoundingBox, mtRainierBoundingBox, false),
-            Arguments.of(mtRainierBoundingBox, pikePlaceBoundingBox, false),
+                // Other is a different value.
+                Arguments.of(pikePlaceBoundingBox, mtRainierBoundingBox, false), Arguments
+                    .of(mtRainierBoundingBox, pikePlaceBoundingBox, false),
 
-            // Other is the same value.
-            Arguments.of(pikePlaceBoundingBox, PIKES_PLACE_BOUNDING_BOX.get(), true),
-            Arguments.of(mtRainierBoundingBox, MT_RAINIER_BOUNDING_BOX.get(), true)
-        );
+                // Other is the same value.
+                Arguments.of(pikePlaceBoundingBox, PIKES_PLACE_BOUNDING_BOX.get(), true), Arguments
+                    .of(mtRainierBoundingBox, MT_RAINIER_BOUNDING_BOX.get(), true));
     }
 }

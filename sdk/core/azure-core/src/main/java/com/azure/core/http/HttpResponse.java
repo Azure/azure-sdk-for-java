@@ -173,9 +173,7 @@ public abstract class HttpResponse implements Closeable {
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
-            FluxUtil.writeToWritableByteChannel(body, channel)
-                .doFinally(ignored -> close())
-                .block();
+            FluxUtil.writeToWritableByteChannel(body, channel).doFinally(ignored -> close()).block();
         }
     }
 
@@ -183,6 +181,5 @@ public abstract class HttpResponse implements Closeable {
      * Closes the response content stream, if any.
      */
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

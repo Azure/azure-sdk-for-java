@@ -66,12 +66,13 @@ public final class Providers<TProvider, TInstance> {
     }
 
     private String formatNoSpecificProviderErrorMessage(String selectedImplementation) {
-        return String.format("A request was made to use a specific "
+        return String
+            .format("A request was made to use a specific "
                 + "%s but it wasn't found on the classpath. If you're using a dependency manager ensure you're "
                 + "including the dependency that provides the specific implementation. If you're including the "
                 + "specific implementation ensure that the %s service it supplies is being included in the "
-                + "'META-INF/services' file '%s'. The requested provider was: %s.",
-                providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
+                + "'META-INF/services' file '%s'. The requested provider was: %s.", providerClass.getSimpleName(),
+                providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
     }
 
     /**
@@ -86,7 +87,8 @@ public final class Providers<TProvider, TInstance> {
      * @throws IllegalStateException when requested provider cannot be found and fallback instance is null.
      */
     public TInstance create(Function<TProvider, TInstance> createInstance,
-                                TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
+                            TInstance fallbackInstance,
+                            Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         if (selectedImplementation == null && noDefaultImplementation) {
             provider = defaultProvider;
@@ -98,11 +100,15 @@ public final class Providers<TProvider, TInstance> {
                 return fallbackInstance;
             }
         } else {
-            String implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
+            String implementationName = selectedImplementation == null
+                ? defaultImplementation
+                : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
             if (provider == null) {
                 // no fallback here - user requested specific implementation, and it was not found
-                throw LOGGER.logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(
+                        implementationName)));
             }
         }
 

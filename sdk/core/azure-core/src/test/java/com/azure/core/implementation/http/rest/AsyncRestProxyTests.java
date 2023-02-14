@@ -54,10 +54,7 @@ public class AsyncRestProxyTests {
     }
 
     public static Stream<Arguments> handleBodyReturnTypeBoolean() {
-        return Stream.of(
-            Arguments.of(boolean.class, 200, true),
-            Arguments.of(Boolean.class, 404, false)
-        );
+        return Stream.of(Arguments.of(boolean.class, 200, true), Arguments.of(Boolean.class, 404, false));
     }
 
     /**
@@ -66,7 +63,7 @@ public class AsyncRestProxyTests {
     @ParameterizedTest
     @MethodSource
     public void handleBodyReturnTypeBoolean(Type returnType, int statusCode, Boolean expectedValue)
-        throws NoSuchMethodException {
+                                                                                                    throws NoSuchMethodException {
 
         // Arrange
         SwaggerMethodParser methodParser = swaggerInterfaceParser
@@ -74,8 +71,8 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, statusCode);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof Boolean);
                 assertEquals(expectedValue, value);
@@ -99,8 +96,8 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof byte[]);
                 assertArrayEquals(expectedBytes, (byte[]) value);
@@ -108,7 +105,6 @@ public class AsyncRestProxyTests {
             .expectComplete()
             .verify();
     }
-
 
     /**
      * Validates scenario for decoding input stream.
@@ -125,8 +121,8 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof InputStream);
 

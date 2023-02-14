@@ -40,8 +40,9 @@ public class AsyncRestProxy extends RestProxyBase {
      * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      */
-    public AsyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer,
-        SwaggerInterfaceParser interfaceParser) {
+    public AsyncRestProxy(HttpPipeline httpPipeline,
+                          SerializerAdapter serializer,
+                          SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -58,8 +59,14 @@ public class AsyncRestProxy extends RestProxyBase {
 
     @Override
     @SuppressWarnings("try")
-    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-        Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
+    public Object invoke(Object proxy,
+                         Method method,
+                         RequestOptions options,
+                         EnumSet<ErrorOptions> errorOptions,
+                         Consumer<HttpRequest> requestCallback,
+                         SwaggerMethodParser methodParser,
+                         HttpRequest request,
+                         Context context) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         context = startTracingSpan(methodParser, context);
@@ -71,20 +78,19 @@ public class AsyncRestProxy extends RestProxyBase {
         }
 
         final Context finalContext = context;
-        final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
-            .flatMap(r -> {
-                // correlates logs
-                try (AutoCloseable scope = tracer.makeSpanCurrent(finalContext)) {
-                    return send(r, finalContext);
-                } catch (Throwable ex) {
-                    return Mono.error(ex);
-                }
-            });
+        final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request).flatMap(r -> {
+            // correlates logs
+            try (AutoCloseable scope = tracer.makeSpanCurrent(finalContext)) {
+                return send(r, finalContext);
+            } catch (Throwable ex) {
+                return Mono.error(ex);
+            }
+        });
         Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder
             .decode(asyncResponse, methodParser);
 
-        return handleRestReturnType(asyncDecodedResponse, methodParser,
-            methodParser.getReturnType(), context, options, errorOptions);
+        return handleRestReturnType(asyncDecodedResponse, methodParser, methodParser.getReturnType(), context, options,
+            errorOptions);
     }
 
     /**
@@ -100,9 +106,10 @@ public class AsyncRestProxy extends RestProxyBase {
      * @param options Additional options passed as part of the request.
      * @return An async-version of the provided decodedResponse.
      */
-    private Mono<HttpResponseDecoder.HttpDecodedResponse> ensureExpectedStatus(
-        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse, SwaggerMethodParser methodParser,
-        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+    private Mono<HttpResponseDecoder.HttpDecodedResponse> ensureExpectedStatus(Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse,
+                                                                               SwaggerMethodParser methodParser,
+                                                                               RequestOptions options,
+                                                                               EnumSet<ErrorOptions> errorOptions) {
         return asyncDecodedResponse.flatMap(decodedResponse -> {
             int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
@@ -118,30 +125,36 @@ public class AsyncRestProxy extends RestProxyBase {
             // First, try to create an error with the response body.
             // If there is no response body create an error without the response body.
             // Finally, return the error reactively.
-            return decodedResponse.getSourceResponse().getBodyAsByteArray()
+            return decodedResponse
+                .getSourceResponse()
+                .getBodyAsByteArray()
                 .map(bytes -> instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                     decodedResponse.getSourceResponse(), bytes, decodedResponse.getDecodedBody(bytes)))
-                .switchIfEmpty(Mono.fromSupplier(() -> instantiateUnexpectedException(
-                    methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
-                    null, null)))
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> instantiateUnexpectedException(methodParser
+                        .getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(), null, null)))
                 .flatMap(Mono::error);
         });
     }
 
     private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
-        final SwaggerMethodParser methodParser, final Type entityType) {
+                                                 final SwaggerMethodParser methodParser,
+                                                 final Type entityType) {
         if (methodParser.isStreamResponse()) {
             return Mono.fromSupplier(() -> new StreamResponse(response.getSourceResponse()));
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                return response.getSourceResponse().getBody().ignoreElements()
+                return response
+                    .getSourceResponse()
+                    .getBody()
+                    .ignoreElements()
                     .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
                 return handleBodyReturnType(response.getSourceResponse(), response::getDecodedBody, methodParser,
                     bodyType)
-                    .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
-                    .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
+                        .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                        .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             }
         } else {
             // For now, we're just throwing if the Maybe didn't emit a value.
@@ -150,8 +163,10 @@ public class AsyncRestProxy extends RestProxyBase {
         }
     }
 
-    static Mono<?> handleBodyReturnType(HttpResponse sourceResponse, Function<byte[], Object> getDecodedBody,
-        SwaggerMethodParser methodParser, Type entityType) {
+    static Mono<?> handleBodyReturnType(HttpResponse sourceResponse,
+                                        Function<byte[], Object> getDecodedBody,
+                                        SwaggerMethodParser methodParser,
+                                        Type entityType) {
         final int responseStatusCode = sourceResponse.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -159,7 +174,7 @@ public class AsyncRestProxy extends RestProxyBase {
         final Mono<?> asyncResult;
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+                || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
@@ -201,10 +216,13 @@ public class AsyncRestProxy extends RestProxyBase {
      * @return the deserialized result
      */
     private Object handleRestReturnType(Mono<HttpResponseDecoder.HttpDecodedResponse> asyncHttpDecodedResponse,
-        SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
-        EnumSet<ErrorOptions> errorOptionsSet) {
-        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet)
+                                        SwaggerMethodParser methodParser,
+                                        Type returnType,
+                                        Context context,
+                                        RequestOptions options,
+                                        EnumSet<ErrorOptions> errorOptionsSet) {
+        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(
+            asyncHttpDecodedResponse, methodParser, options, errorOptionsSet)
                 .doOnEach(this::endTracingSpan)
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
@@ -216,14 +234,14 @@ public class AsyncRestProxy extends RestProxyBase {
                 result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
                 // ProxyMethod ReturnType: Mono<? extends ResponseBase<?, ?>>
-                result = asyncExpectedResponse.flatMap(response ->
-                    handleRestResponseReturnType(response, methodParser, monoTypeParam));
+                result = asyncExpectedResponse
+                    .flatMap(response -> handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }
         } else if (FluxUtil.isFluxByteBuffer(returnType)) {
             // ProxyMethod ReturnType: Flux<ByteBuffer>
             result = asyncExpectedResponse.flatMapMany(ar -> ar.getSourceResponse().getBody());
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
-            Void.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void
             asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).block();
             result = null;
@@ -259,7 +277,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
     @SuppressWarnings("unchecked")
     public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter)
-        throws IOException {
+                                                                                                                      throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
@@ -292,8 +310,9 @@ public class AsyncRestProxy extends RestProxyBase {
         } else if (bodyContentObject instanceof ByteBuffer) {
             request.setBody(Flux.just((ByteBuffer) bodyContentObject));
         } else {
-            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject,
-                SerializerEncoding.fromHeaders(request.getHeaders())));
+            request
+                .setBody(serializerAdapter
+                    .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders())));
         }
     }
 

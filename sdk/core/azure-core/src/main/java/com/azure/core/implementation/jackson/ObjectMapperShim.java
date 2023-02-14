@@ -43,8 +43,8 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, MethodHandle> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
-        = new ConcurrentHashMap<>();
+    private static final Map<Type, MethodHandle> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE =
+        new ConcurrentHashMap<>();
 
     // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
     private static final MethodHandle NO_CONSTRUCTOR_HANDLE = MethodHandles.identity(ObjectMapperShim.class);
@@ -58,7 +58,7 @@ public final class ObjectMapperShim {
      * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
-        BiConsumer<ObjectMapper, ObjectMapper> configure) {
+                                                    BiConsumer<ObjectMapper, ObjectMapper> configure) {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim.mapper);
             configure.accept(mapper, innerMapperShim.mapper);
@@ -140,7 +140,6 @@ public final class ObjectMapperShim {
 
     private final ObjectMapper mapper;
     private MemberNameConverterImpl memberNameConverter;
-
 
     public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -284,7 +283,8 @@ public final class ObjectMapperShim {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return getFromTypeCache(type, t -> mapper.getTypeFactory()
+            return getFromTypeCache(type, t -> mapper
+                .getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
             return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
@@ -313,8 +313,10 @@ public final class ObjectMapperShim {
                 throw (RuntimeException) throwable;
             }
 
-            LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
-                + deserializedHeadersType + ".");
+            LOGGER
+                .verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
+                    + deserializedHeadersType
+                    + ".");
         }
 
         T deserializedHeaders = mapper.convertValue(headers, createJavaType(deserializedHeadersType));

@@ -156,7 +156,6 @@ public final class Option<T> {
         return Objects.hashCode(value);
     }
 
-
     private Option() {
         this.isInitialized = false;
         this.value = null;

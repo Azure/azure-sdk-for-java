@@ -35,9 +35,8 @@ public final class InputStreamContent extends BinaryDataContent {
     private final boolean isReplayable;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
-
+    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
 
     /**
      * Creates an instance of {@link InputStreamContent}.
@@ -127,7 +126,8 @@ public final class InputStreamContent extends BinaryDataContent {
             return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
         }
 
-        return Mono.just(inputStream)
+        return Mono
+            .just(inputStream)
             .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
     }
@@ -138,26 +138,22 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent createMarkResetContent(InputStream inputStream, Long length) {
         inputStream.mark(length.intValue());
-        return new InputStreamContent(
-            () -> {
-                try {
-                    inputStream.reset();
-                    return inputStream;
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            }, length, true
-        );
+        return new InputStreamContent(() -> {
+            try {
+                inputStream.reset();
+                return inputStream;
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }, length, true);
     }
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            List<ByteBuffer> byteBuffers = StreamUtil
+                .readStreamToListOfByteBuffers(inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamContent(
-                () -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, true);
+            return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), length, true);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }

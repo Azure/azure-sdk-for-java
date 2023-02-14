@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 public final class HttpPipelineNextSyncPolicyHelper {
     private static HttpPipelineNextSyncPolicyAccessor accessor;
 
-    private HttpPipelineNextSyncPolicyHelper() { }
+    private HttpPipelineNextSyncPolicyHelper() {}
 
     public interface HttpPipelineNextSyncPolicyAccessor {
         HttpPipelineNextPolicy toAsyncPolicy(HttpPipelineNextSyncPolicy syncPolicy);

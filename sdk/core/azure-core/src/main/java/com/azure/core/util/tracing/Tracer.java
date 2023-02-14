@@ -237,7 +237,8 @@ public interface Tracer {
                 if (spanBuilder == null) {
                     // we can't return context here, because caller would not know that span was not created.
                     // it will add attributes or events to parent span and end parent span.
-                    Utils.LOGGER.atWarning()
+                    Utils.LOGGER
+                        .atWarning()
                         .addKeyValue("spanName", spanName)
                         .addKeyValue("processKind", processKind)
                         .log("Start span is called without builder on the context, creating default builder.");
@@ -266,9 +267,10 @@ public interface Tracer {
                     spanBuilder = new StartSpanOptions(SpanKind.CONSUMER).setRemoteParent(context);
                 }
                 addMessagingAttributes(spanBuilder, context);
-                return start(spanName, spanBuilder,  context);
+                return start(spanName, spanBuilder, context);
             default:
-                Utils.LOGGER.atWarning()
+                Utils.LOGGER
+                    .atWarning()
                     .addKeyValue("spanName", spanName)
                     .addKeyValue("processKind", processKind)
                     .log("Start span is called with unknown process kind, suppressing the span.");
@@ -367,7 +369,7 @@ public interface Tracer {
      * tracer.setAttribute&#40;&quot;foo&quot;, 42, span&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
-
+    
      * @param key attribute name
      * @param value atteribute value
      * @param context tracing context
@@ -511,8 +513,7 @@ public interface Tracer {
      * @param headerSetter callback to set context with.
      * @param context trace context instance
      */
-    default void injectContext(BiConsumer<String, String> headerSetter, Context context) {
-    }
+    default void injectContext(BiConsumer<String, String> headerSetter, Context context) {}
 
     /**
      * Returns a span builder with the provided name in {@link Context}.
@@ -533,7 +534,8 @@ public interface Tracer {
             return context;
         }
 
-        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
+        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY,
+            com.azure.core.util.tracing.SpanKind.class);
         if (spanKind == null) {
             spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
         }
@@ -587,8 +589,7 @@ public interface Tracer {
      * @param context the call metadata containing information of the span to which the event should be associated with.
      * @throws NullPointerException if {@code eventName} is {@code null}.
      */
-    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
-                          Context context) {
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
 
     }
 

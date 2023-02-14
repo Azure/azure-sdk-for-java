@@ -25,6 +25,5 @@ public final class ContentType {
     /**
      * Private ctr.
      */
-    private ContentType() {
-    }
+    private ContentType() {}
 }

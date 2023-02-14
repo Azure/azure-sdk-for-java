@@ -5,5 +5,4 @@ package com.azure.core.http.policy;
 /**
  * Implementing classes are automatically added as policies before the retry policy.
  */
-public interface BeforeRetryPolicyProvider extends HttpPolicyProvider {
-}
+public interface BeforeRetryPolicyProvider extends HttpPolicyProvider {}

@@ -10,5 +10,4 @@ import com.azure.core.annotation.Immutable;
  * Implementation is capable of handling different attribute types, caching and optimizing the internal representation.
  */
 @Immutable
-public interface TelemetryAttributes {
-}
+public interface TelemetryAttributes {}

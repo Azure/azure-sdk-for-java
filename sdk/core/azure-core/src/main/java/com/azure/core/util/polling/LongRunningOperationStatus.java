@@ -27,8 +27,7 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
      * @deprecated Use one of the constants or the {@link #fromString(String, boolean)} factory method.
      */
     @Deprecated
-    public LongRunningOperationStatus() {
-    }
+    public LongRunningOperationStatus() {}
 
     /** Represents that polling has not yet started for this long-running operation. */
     public static final LongRunningOperationStatus NOT_STARTED = fromString("NOT_STARTED", false);
@@ -37,8 +36,7 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
     public static final LongRunningOperationStatus IN_PROGRESS = fromString("IN_PROGRESS", false);
 
     /** Represent that the long-running operation is completed successfully. */
-    public static final LongRunningOperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED",
-        true);
+    public static final LongRunningOperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED", true);
 
     /**
      * Represents that the long-running operation has failed to successfully complete, however this is still
@@ -79,11 +77,12 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
 
         // Get the known status first and validate as it's a smaller lookup map.
         LongRunningOperationStatus operationStatus = (OPERATION_STATUS_MAP != null)
-            ? OPERATION_STATUS_MAP.get(name) : null;
+            ? OPERATION_STATUS_MAP.get(name)
+            : null;
         if (operationStatus != null) {
             if (operationStatus.isComplete() != isComplete) {
-                throw new IllegalArgumentException(
-                    String.format("Cannot set complete status %s for operation status %s", isComplete, name));
+                throw new IllegalArgumentException(String
+                    .format("Cannot set complete status %s for operation status %s", isComplete, name));
             }
         }
 

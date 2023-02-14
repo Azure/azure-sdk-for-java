@@ -35,8 +35,8 @@ public final class ResponseError {
      * @param message the error message of this error.
      */
     @JsonCreator
-    public ResponseError(@JsonProperty(value = "code", required = true)String code,
-                         @JsonProperty(value = "message", required = true)String message) {
+    public ResponseError(@JsonProperty(value = "code", required = true) String code,
+                         @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }

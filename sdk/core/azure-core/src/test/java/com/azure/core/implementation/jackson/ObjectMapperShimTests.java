@@ -33,7 +33,8 @@ public class ObjectMapperShimTests {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testConfigureJacksonAdapter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testConfigureJacksonAdapter() throws NoSuchMethodException, InvocationTargetException,
+                                              IllegalAccessException {
         final AtomicReference<Boolean> configureIsCalled = new AtomicReference<>(false);
         final AtomicReference<ObjectMapper> outerMapper = new AtomicReference<>(null);
         final AtomicReference<ObjectMapper> innerMapper = new AtomicReference<>(null);

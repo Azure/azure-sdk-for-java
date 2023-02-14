@@ -41,8 +41,7 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
         super(base);
     }
 
-    private OptionBeanPropertyWriter(OptionBeanPropertyWriter base,
-                                     PropertyName newName) {
+    private OptionBeanPropertyWriter(OptionBeanPropertyWriter base, PropertyName newName) {
         super(base, newName);
     }
 
@@ -57,9 +56,8 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
     }
 
     @Override
-    public void serializeAsField(Object bean,
-                                 JsonGenerator jsonGenerator,
-                                 SerializerProvider provider) throws Exception {
+    public void serializeAsField(Object bean, JsonGenerator jsonGenerator, SerializerProvider provider)
+                                                                                                        throws Exception {
         // Follow the same pattern that standard Optional serializer (Jdk8Module) follows.
         if (super._nullSerializer == null) {
             Object option = super.get(bean);
@@ -73,8 +71,7 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
     private static final class UnwrappingOptionBeanPropertyWriter extends UnwrappingBeanPropertyWriter {
         private static final long serialVersionUID = 1L;
 
-        UnwrappingOptionBeanPropertyWriter(BeanPropertyWriter base,
-                                           NameTransformer transformer) {
+        UnwrappingOptionBeanPropertyWriter(BeanPropertyWriter base, NameTransformer transformer) {
             super(base, transformer);
         }
 
@@ -85,15 +82,13 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
         }
 
         @Override
-        protected UnwrappingBeanPropertyWriter _new(NameTransformer transformer,
-                                                    SerializedString newName) {
+        protected UnwrappingBeanPropertyWriter _new(NameTransformer transformer, SerializedString newName) {
             return new UnwrappingOptionBeanPropertyWriter(this, transformer, newName);
         }
 
         @Override
-        public void serializeAsField(Object bean,
-                                     JsonGenerator jsonGenerator,
-                                     SerializerProvider provider) throws Exception {
+        public void serializeAsField(Object bean, JsonGenerator jsonGenerator, SerializerProvider provider)
+                                                                                                            throws Exception {
             // Follow the same pattern that standard Optional serializer (Jdk8Module) follows.
             if (super._nullSerializer == null) {
                 Object option = super.get(bean);

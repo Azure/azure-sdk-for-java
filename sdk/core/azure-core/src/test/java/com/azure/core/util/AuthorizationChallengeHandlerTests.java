@@ -39,8 +39,12 @@ public class AuthorizationChallengeHandlerTests {
 
     private static final String DEFAULT_USERNAME = "Mufasa";
     private static final String DEFAULT_PASSWORD = "Circle Of Life";
-    private static final String EXPECTED_BASIC = "Basic " + Base64.getEncoder()
-        .encodeToString(String.format("%s:%s", DEFAULT_USERNAME, DEFAULT_PASSWORD).getBytes(StandardCharsets.UTF_8));
+    private static final String EXPECTED_BASIC = "Basic "
+        + Base64
+            .getEncoder()
+            .encodeToString(String
+                .format("%s:%s", DEFAULT_USERNAME, DEFAULT_PASSWORD)
+                .getBytes(StandardCharsets.UTF_8));
 
     /**
      * Tests that {@link AuthorizationChallengeHandler} is able to handle Basic authentication challenges.
@@ -94,8 +98,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "auth", "MD5",
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -117,8 +121,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "auth", "MD5",
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -161,8 +165,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("http-auth@example.org", "auth", "SHA-256",
             "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v", "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS", null);
 
-        String authorizationHandler = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHandler = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHandler);
         assertEquals(expectedResponse, extractValue(authorizationHandler, RESPONSE));
@@ -186,8 +190,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> sha256Challenge = createChallenge("http-auth@example.org", "auth", "SHA-256",
             "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v", "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS", null);
 
-        String authorizationHandler = challengeHandler.handleDigest(method, uri,
-            Arrays.asList(md5Challenge, sha256Challenge), () -> new byte[0]);
+        String authorizationHandler = challengeHandler
+            .handleDigest(method, uri, Arrays.asList(md5Challenge, sha256Challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHandler);
         assertEquals(expectedResponse, extractValue(authorizationHandler, RESPONSE));
@@ -209,8 +213,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "auth", null,
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -233,8 +237,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("api@example.org", "auth", "SHA-512-256",
             "5TsQWLVdgBdmrQ0XsxbDODV+57QdFR34I9HAbC/RVvkK", "HRPCssKJSGjCrkzDg8OhwpzCiGPChXYjwrI2QmXDnsOS", true);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedUsername, extractValue(authorizationHeader, USERNAME));
@@ -257,8 +261,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "unknownQop", "MD5",
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -280,8 +284,9 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "auth-int", "MD5",
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> "Hello World!".getBytes(StandardCharsets.UTF_8));
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> "Hello World!"
+                .getBytes(StandardCharsets.UTF_8));
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -303,8 +308,8 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "", "MD5-sess",
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
@@ -351,8 +356,8 @@ public class AuthorizationChallengeHandlerTests {
 
         Map<String, String> challenge = createChallenge("realm", "auth", "MD5", nonce, "opaque", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
 
@@ -383,26 +388,23 @@ public class AuthorizationChallengeHandlerTests {
         Map<String, String> challenge = createChallenge("testrealm@host.com", "auth", "MD5", nonce,
             "5ccc069c403ebaf9f0171e9517f40e41", null);
 
-        String authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(expectedResponse, extractValue(authorizationHeader, RESPONSE));
 
         challengeHandler.consumeAuthenticationInfoHeader(authenticationInfo);
 
-        authorizationHeader = challengeHandler.handleDigest(method, uri, Collections.singletonList(challenge),
-            () -> new byte[0]);
+        authorizationHeader = challengeHandler
+            .handleDigest(method, uri, Collections.singletonList(challenge), () -> new byte[0]);
 
         assertNotNull(authorizationHeader);
         assertEquals(nonce, extractValue(authorizationHeader, NONCE));
     }
 
     private static Stream<Arguments> nullOrEmptyAuthenticationInfoHeadersSupplier() {
-        return Stream.of(
-            Arguments.of((Map<String, String>) null),
-            Arguments.of(Collections.emptyMap())
-        );
+        return Stream.of(Arguments.of((Map<String, String>) null), Arguments.of(Collections.emptyMap()));
     }
 
     /**
@@ -411,10 +413,10 @@ public class AuthorizationChallengeHandlerTests {
      */
     @ParameterizedTest
     @MethodSource("parseAuthenticationOrAuthorizationHeaderSupplier")
-    public void parseAuthenticationOrAuthorizationHeader(String header, int expectedSize,
-        Map<String, String> expectedMap) {
-        Map<String, String> parsedMap = AuthorizationChallengeHandler
-            .parseAuthenticationOrAuthorizationHeader(header);
+    public void parseAuthenticationOrAuthorizationHeader(String header,
+                                                         int expectedSize,
+                                                         Map<String, String> expectedMap) {
+        Map<String, String> parsedMap = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(header);
 
         assertEquals(expectedSize, parsedMap.size());
         assertEquals(expectedMap, parsedMap);
@@ -426,23 +428,24 @@ public class AuthorizationChallengeHandlerTests {
         expectedMultiMap.put("nc", "00000001");
         expectedMultiMap.put(NEXT_NONCE, nextNonce);
 
-        return Stream.of(
-            // Tests that a null header will produce an empty map.
-            Arguments.of(null, 0, Collections.emptyMap()),
+        return Stream
+            .of(
+                // Tests that a null header will produce an empty map.
+                Arguments.of(null, 0, Collections.emptyMap()),
 
-            // Tests that an empty header will produce an empty map.
-            Arguments.of("", 0, Collections.emptyMap()),
+                // Tests that an empty header will produce an empty map.
+                Arguments.of("", 0, Collections.emptyMap()),
 
-            // Tests that a header with quoted strings will produce a key-value pair without the quotes.
-            Arguments.of("nextnonce=\"" + nextNonce + "\"", 1, Collections.singletonMap(NEXT_NONCE, nextNonce)),
+                // Tests that a header with quoted strings will produce a key-value pair without the quotes.
+                Arguments.of("nextnonce=\"" + nextNonce + "\"", 1, Collections.singletonMap(NEXT_NONCE, nextNonce)),
 
-            // Tests that a header will multiple key-value pairs will parse them into a full map.
-            Arguments.of("nc=00000001, nextnonce=\"" + nextNonce + "\"", 2, expectedMultiMap)
-        );
+                // Tests that a header will multiple key-value pairs will parse them into a full map.
+                Arguments.of("nc=00000001, nextnonce=\"" + nextNonce + "\"", 2, expectedMultiMap));
     }
 
-    private static AuthorizationChallengeHandler prepareChallengeHandler(String username, String password,
-        String nonce) {
+    private static AuthorizationChallengeHandler prepareChallengeHandler(String username,
+                                                                         String password,
+                                                                         String nonce) {
         return new AuthorizationChallengeHandler(username, password) {
             @Override
             String generateNonce() {
@@ -451,8 +454,12 @@ public class AuthorizationChallengeHandlerTests {
         };
     }
 
-    private static Map<String, String> createChallenge(String realm, String qop, String algorithm, String nonce,
-        String opaque, Boolean userhash) {
+    private static Map<String, String> createChallenge(String realm,
+                                                       String qop,
+                                                       String algorithm,
+                                                       String nonce,
+                                                       String opaque,
+                                                       Boolean userhash) {
         Map<String, String> challenge = new HashMap<>();
 
         challenge.put(REALM, realm);
@@ -475,7 +482,8 @@ public class AuthorizationChallengeHandlerTests {
         // The authorization header will be "Digest <authorization info>", this removes the digest portion.
         String authorizationInfo = authorizationHeader.split(" ", 2)[1];
 
-        return Stream.of(authorizationInfo.split(","))
+        return Stream
+            .of(authorizationInfo.split(","))
             .map(String::trim) // Cleanup any leading or trailing whitespaces.
             .map(info -> info.split("=", 2)) // Split the info into its key-value pair.
             .filter(kvp -> kvp[0].equalsIgnoreCase(valueKey)) // Select the value we are looking for.

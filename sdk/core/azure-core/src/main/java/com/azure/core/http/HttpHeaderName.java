@@ -23,8 +23,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HttpHeaderName() {
-    }
+    public HttpHeaderName() {}
 
     /**
      * Gets the HTTP header name based on the name passed into {@link #fromString(String)}.
@@ -95,8 +94,8 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     /**
      * {@code Access-Control-Allow-Credentials}/{@code access-control-allow-credentials}
      */
-    public static final HttpHeaderName ACCESS_CONTROL_ALLOW_CREDENTIALS
-        = fromString("Access-Control-Allow-Credentials");
+    public static final HttpHeaderName ACCESS_CONTROL_ALLOW_CREDENTIALS = fromString(
+        "Access-Control-Allow-Credentials");
 
     /**
      * {@code Access-Control-Allow-Headers}/{@code access-control-allow-headers}

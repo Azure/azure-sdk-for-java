@@ -272,21 +272,21 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                       Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
-        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext,
-            activationOperation,
+        this.fetchResultOperation = Objects
+            .requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
+        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext, activationOperation,
             // mapper
             activationResult -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResult)).getMono();
-        this.syncActivationOperation =
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block());
+        this.syncActivationOperation = cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+            activationOperation.apply(cxt).block());
     }
 
     /**
@@ -319,17 +319,12 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @param <U> The type of the final result of long running operation.
      * @return PollerFlux
      */
-    public static <T, U> PollerFlux<T, U>
-        create(Duration pollInterval,
-               Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
-               Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-               BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-               Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        return new PollerFlux<>(pollInterval,
-            activationOperation,
-            pollOperation,
-            cancelOperation,
-            fetchResultOperation,
+    public static <T, U> PollerFlux<T, U> create(Duration pollInterval,
+                                                 Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
+                                                 Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+                                                 BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+                                                 Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
+        return new PollerFlux<>(pollInterval, activationOperation, pollOperation, cancelOperation, fetchResultOperation,
             true);
     }
 
@@ -355,25 +350,22 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @return PollerFlux
      */
     @SuppressWarnings("unchecked")
-    public static <T, U> PollerFlux<T, U>
-        create(Duration pollInterval,
-               Supplier<Mono<? extends Response<?>>> initialOperation,
-               PollingStrategy<T, U> strategy,
-               TypeReference<T> pollResponseType,
-               TypeReference<U> resultType) {
-        return create(
-            pollInterval,
-            context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    return strategy.onInitialResponse(response, context, pollResponseType);
-                })),
-            context -> strategy.poll(context, pollResponseType),
-            strategy::cancel,
-            context -> strategy.getResult(context, resultType));
+    public static <T, U> PollerFlux<T, U> create(Duration pollInterval,
+                                                 Supplier<Mono<? extends Response<?>>> initialOperation,
+                                                 PollingStrategy<T, U> strategy,
+                                                 TypeReference<T> pollResponseType,
+                                                 TypeReference<U> resultType) {
+        return create(pollInterval, context -> initialOperation
+            .get()
+            .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                if (!canPoll) {
+                    return Mono
+                        .error(new IllegalStateException("Cannot poll with strategy "
+                            + strategy.getClass().getSimpleName()));
+                }
+                return strategy.onInitialResponse(response, context, pollResponseType);
+            })), context -> strategy.poll(context, pollResponseType), strategy::cancel, context -> strategy
+                .getResult(context, resultType));
     }
 
     private PollerFlux(Duration pollInterval,
@@ -384,17 +376,17 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                        boolean ignored) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
-        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext,
-            activationOperation,
+        this.fetchResultOperation = Objects
+            .requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
+        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext, activationOperation,
             // mapper
             Function.identity()).getMono();
         this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
@@ -412,8 +404,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @see Flux#error(Throwable)
      */
     public static <T, U> PollerFlux<T, U> error(Exception ex) {
-        return new PollerFlux<>(Duration.ofMillis(1L), context -> Mono.error(ex), context -> Mono.error(ex),
-            (context, response) -> Mono.error(ex), context -> Mono.error(ex));
+        return new PollerFlux<>(Duration.ofMillis(1L), context -> Mono.error(ex), context -> Mono.error(ex), (context,
+                                                                                                              response) -> Mono
+                                                                                                                  .error(
+                                                                                                                      ex),
+            context -> Mono.error(ex));
     }
 
     /**
@@ -428,8 +423,9 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     public PollerFlux<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         return this;
@@ -446,18 +442,15 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
 
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
-        this.oneTimeActivationMono
-            .flatMapMany(ignored -> {
-                final PollResponse<T> activationResponse = this.rootContext.getActivationResponse();
-                if (activationResponse.getStatus().isComplete()) {
-                    return Flux.just(new AsyncPollResponse<>(this.rootContext,
-                        this.cancelOperation,
-                        this.fetchResultOperation));
-                } else {
-                    return this.pollingLoop();
-                }
-            })
-            .subscribe(actual);
+        this.oneTimeActivationMono.flatMapMany(ignored -> {
+            final PollResponse<T> activationResponse = this.rootContext.getActivationResponse();
+            if (activationResponse.getStatus().isComplete()) {
+                return Flux
+                    .just(new AsyncPollResponse<>(this.rootContext, this.cancelOperation, this.fetchResultOperation));
+            } else {
+                return this.pollingLoop();
+            }
+        }).subscribe(actual);
     }
 
     /**
@@ -466,11 +459,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @return a synchronous blocking poller.
      */
     public SyncPoller<T, U> getSyncPoller() {
-        return new SyncOverAsyncPoller<>(this.pollInterval,
-            this.syncActivationOperation,
-            this.pollOperation,
-            this.cancelOperation,
-            this.fetchResultOperation);
+        return new SyncOverAsyncPoller<>(this.pollInterval, this.syncActivationOperation, this.pollOperation,
+            this.cancelOperation, this.fetchResultOperation);
     }
 
     /**
@@ -479,29 +469,28 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @return a Flux that emits polling event.
      */
     private Flux<AsyncPollResponse<T, U>> pollingLoop() {
-        return Flux.using(
-            // Create a Polling Context per subscription
-            () -> this.rootContext.copy(),
-            // Do polling
-            // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
-            cxt -> Mono.defer(() -> {
-                final Mono<PollResponse<T>> pollOnceMono = this.pollOperation.apply(cxt);
-                // Execute (subscribe to) the pollOnceMono after the default poll-interval
-                // or duration specified in the last retry-after response header elapses.
-                return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
-            })
-                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat()
-                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                .concatMap(currentPollResponse -> {
-                    cxt.setLatestResponse(currentPollResponse);
-                    return Mono.just(new AsyncPollResponse<>(cxt,
-                        this.cancelOperation,
-                        this.fetchResultOperation));
-                }),
-            //
-            // No cleaning needed, Polling Context will be GC-ed
-            cxt -> { });
+        return Flux
+            .using(
+                // Create a Polling Context per subscription
+                () -> this.rootContext.copy(),
+                // Do polling
+                // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
+                cxt -> Mono.defer(() -> {
+                    final Mono<PollResponse<T>> pollOnceMono = this.pollOperation.apply(cxt);
+                    // Execute (subscribe to) the pollOnceMono after the default poll-interval
+                    // or duration specified in the last retry-after response header elapses.
+                    return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
+                })
+                    .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
+                    .repeat()
+                    .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                    .concatMap(currentPollResponse -> {
+                        cxt.setLatestResponse(currentPollResponse);
+                        return Mono.just(new AsyncPollResponse<>(cxt, this.cancelOperation, this.fetchResultOperation));
+                    }),
+                //
+                // No cleaning needed, Polling Context will be GC-ed
+                cxt -> {});
     }
 
     /**
@@ -515,9 +504,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         if (retryAfter == null) {
             return this.pollInterval;
         } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                ? retryAfter
-                : this.pollInterval;
+            return retryAfter.compareTo(Duration.ZERO) > 0 ? retryAfter : this.pollInterval;
         }
     }
 
@@ -594,8 +581,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     }
                     return activationMono
                         .map(this.activationPollResponseMapper)
-                        .switchIfEmpty(Mono.fromSupplier(() ->
-                            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
+                        .switchIfEmpty(Mono
+                            .fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
                         .map(activationResponse -> {
                             this.rootContext.setOnetimeActivationResponse(activationResponse);
                             this.activated = true;
@@ -612,8 +599,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     return Mono.empty();
                 }
             })
-            // Keep resubscribing as long as Mono.defer [holding activation work] emits empty().
-            .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
+                // Keep resubscribing as long as Mono.defer [holding activation work] emits empty().
+                .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
         }
     }
 }

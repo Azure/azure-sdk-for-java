@@ -33,7 +33,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
     private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
     private static final HttpHeaderName CLIENT_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
-    private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
+    private static final String LEGACY_OTEL_POLICY_NAME =
+        "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;
@@ -48,8 +49,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             foundLegacyOTelPolicy = false;
         }
     }
-    public InstrumentationPolicy() {
-    }
+
+    public InstrumentationPolicy() {}
 
     public void initialize(Tracer tracer) {
         this.tracer = tracer;
@@ -155,7 +156,9 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
-        return tracer != null && tracer.isEnabled() && !foundLegacyOTelPolicy
+        return tracer != null
+            && tracer.isEnabled()
+            && !foundLegacyOTelPolicy
             && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 

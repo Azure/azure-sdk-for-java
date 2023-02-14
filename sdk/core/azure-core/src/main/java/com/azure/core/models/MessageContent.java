@@ -17,8 +17,7 @@ public class MessageContent {
     /**
      * Creates a new instance of {@link MessageContent}.
      */
-    public MessageContent() {
-    }
+    public MessageContent() {}
 
     /**
      * Gets the message body.

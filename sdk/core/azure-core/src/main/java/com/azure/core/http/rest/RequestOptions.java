@@ -120,16 +120,14 @@ public final class RequestOptions {
 
     private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
 
-    private Consumer<HttpRequest> requestCallback = request -> {
-    };
+    private Consumer<HttpRequest> requestCallback = request -> {};
     private EnumSet<ErrorOptions> errorOptions = DEFAULT;
     private Context context;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
      */
-    public RequestOptions() {
-    }
+    public RequestOptions() {}
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
@@ -267,8 +265,9 @@ public final class RequestOptions {
         Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
 
         if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
         }
 
         this.errorOptions = errorOptions;

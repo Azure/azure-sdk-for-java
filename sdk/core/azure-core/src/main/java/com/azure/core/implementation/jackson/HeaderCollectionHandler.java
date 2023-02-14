@@ -47,7 +47,7 @@ final class HeaderCollectionHandler {
         values.put(headerName.substring(prefixLength), headerValue);
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
         /*
          * First check if the deserialized headers type has a public setter.
@@ -102,8 +102,9 @@ final class HeaderCollectionHandler {
                 throw (Error) ex;
             }
 
-            logger.verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
-                clazzSimpleName, ex);
+            logger
+                .verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
+                    clazzSimpleName, ex);
             return false;
         }
     }
@@ -112,8 +113,11 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static MethodHandle getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
-        String fieldName, ClientLogger logger) {
+    private static MethodHandle getFromCache(Field key,
+                                             Class<?> clazz,
+                                             String clazzSimpleName,
+                                             String fieldName,
+                                             ClientLogger logger) {
         if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_CACHE.clear();
         }
@@ -123,7 +127,10 @@ final class HeaderCollectionHandler {
             try {
                 lookupToUse = ReflectionUtils.getLookupToUse(clazz);
             } catch (Exception ex) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}. Will attempt to make field accessible.", field, ex);
+                logger
+                    .verbose(
+                        "Failed to retrieve MethodHandles.Lookup for field {}. Will attempt to make field accessible.",
+                        field, ex);
 
                 // In a previous implementation compute returned null here in an attempt to indicate that there is no
                 // setter for the field. Unfortunately, null isn't a valid indicator to computeIfAbsent that a
@@ -139,29 +146,30 @@ final class HeaderCollectionHandler {
             String setterName = getPotentialSetterName(fieldName);
 
             try {
-                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
-                    MethodType.methodType(clazz, Map.class));
+                MethodHandle handle = lookupToUse
+                    .findVirtual(clazz, setterName, MethodType.methodType(clazz, Map.class));
 
                 logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
 
                 return handle;
             } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}. "
-                    + "Will attempt to make field accessible. "
-                    + "Please consider adding public setter.", setterName,
-                    clazzSimpleName, ex);
+                logger
+                    .verbose("Failed to retrieve MethodHandle for setter {} on class {}. "
+                        + "Will attempt to make field accessible. "
+                        + "Please consider adding public setter.", setterName, clazzSimpleName, ex);
             }
 
             try {
                 Method setterMethod = clazz.getDeclaredMethod(setterName, Map.class);
                 MethodHandle handle = lookupToUse.unreflect(setterMethod);
 
-                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName);
+                logger
+                    .verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
 
                 return handle;
             } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}."
+                logger
+                    .verbose("Failed to unreflect MethodHandle for setter {} on class {}."
                         + "Will attempt to make field accessible. "
                         + "Please consider adding public setter.", setterName, clazzSimpleName, ex);
             }

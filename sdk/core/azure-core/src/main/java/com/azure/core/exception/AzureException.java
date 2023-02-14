@@ -55,8 +55,10 @@ public class AzureException extends RuntimeException {
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public AzureException(final String message, final Throwable cause, final boolean enableSuppression,
-        final boolean writableStackTrace) {
+    public AzureException(final String message,
+                          final Throwable cause,
+                          final boolean enableSuppression,
+                          final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

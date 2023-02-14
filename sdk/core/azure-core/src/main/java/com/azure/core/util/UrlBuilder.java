@@ -218,7 +218,9 @@ public final class UrlBuilder {
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
-        return query.entrySet().stream()
+        return query
+            .entrySet()
+            .stream()
             // get all parameters joined by a comma.
             // name=a&name=b&name=c becomes name=a,b,c
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue()));
@@ -307,8 +309,9 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    ImplUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
-                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
+                    ImplUtils
+                        .parseQueryParameters(tokenText)
+                        .forEachRemaining(queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -399,8 +402,9 @@ public final class UrlBuilder {
         if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
             PARSED_URLS.clear();
         }
-        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
-            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
+        return PARSED_URLS
+            .computeIfAbsent(concurrentSafeUrl, u -> new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST))
+            .copy();
     }
 
     /**

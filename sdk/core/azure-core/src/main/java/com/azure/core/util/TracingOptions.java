@@ -7,7 +7,8 @@ package com.azure.core.util;
  * Metrics configuration options for clients.
  */
 public class TracingOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("tracing.disabled")
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder
+        .ofBoolean("tracing.disabled")
         .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
         .shared(true)
         .defaultValue(false)

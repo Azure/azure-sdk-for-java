@@ -42,10 +42,10 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
-    private static final HttpHeaderName DEFAULT_OPERATION_LOCATION_HEADER
-        = HttpHeaderName.fromString("Operation-Location");
-    private static final TypeReference<PollResult> POLL_RESULT_TYPE_REFERENCE
-        = TypeReference.createInstance(PollResult.class);
+    private static final HttpHeaderName DEFAULT_OPERATION_LOCATION_HEADER = HttpHeaderName
+        .fromString("Operation-Location");
+    private static final TypeReference<PollResult> POLL_RESULT_TYPE_REFERENCE = TypeReference
+        .createInstance(PollResult.class);
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
@@ -69,7 +69,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long-running operation
      */
-    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline,
+                                            ObjectSerializer serializer,
                                             String operationLocationHeaderName) {
         this(httpPipeline, serializer, operationLocationHeaderName, Context.NONE);
     }
@@ -81,8 +82,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param operationLocationHeaderName a custom header for polling the long-running operation
      * @param context an instance of {@link com.azure.core.util.Context}
      */
-    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                                            String operationLocationHeaderName, Context context) {
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline,
+                                            ObjectSerializer serializer,
+                                            String operationLocationHeaderName,
+                                            Context context) {
         this(httpPipeline, null, serializer, operationLocationHeaderName, context);
     }
 
@@ -95,20 +98,27 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param operationLocationHeaderName a custom header for polling the long-running operation.
      * @param context an instance of {@link com.azure.core.util.Context}.
      */
-    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
-        String operationLocationHeaderName, Context context) {
-        this(httpPipeline, endpoint, serializer,
-            operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            context);
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline,
+                                            String endpoint,
+                                            ObjectSerializer serializer,
+                                            String operationLocationHeaderName,
+                                            Context context) {
+        this(httpPipeline, endpoint, serializer, operationLocationHeaderName == null
+            ? null
+            : HttpHeaderName.fromString(operationLocationHeaderName), context);
     }
 
-    private OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
-        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, Context context) {
+    private OperationResourcePollingStrategy(HttpPipeline httpPipeline,
+                                             String endpoint,
+                                             ObjectSerializer serializer,
+                                             HttpHeaderName operationLocationHeaderName,
+                                             Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.endpoint = endpoint;
         this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
         this.operationLocationHeaderName = (operationLocationHeaderName == null)
-            ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
+            ? DEFAULT_OPERATION_LOCATION_HEADER
+            : operationLocationHeaderName;
         this.context = context == null ? Context.NONE : context;
     }
 
@@ -127,60 +137,71 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     }
 
     @Override
-    public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
+    public Mono<PollResponse<T>> onInitialResponse(Response<?> response,
+                                                   PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
         HttpHeader operationLocationHeader = response.getHeaders().get(operationLocationHeaderName);
         HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
         if (operationLocationHeader != null) {
-            pollingContext.setData(operationLocationHeaderName.getCaseSensitiveName(),
-                getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
+            pollingContext
+                .setData(operationLocationHeaderName.getCaseSensitiveName(), getAbsolutePath(operationLocationHeader
+                    .getValue(), endpoint, LOGGER));
         }
         if (locationHeader != null) {
-            pollingContext.setData(PollingConstants.LOCATION,
-                getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
+            pollingContext
+                .setData(PollingConstants.LOCATION, getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
         }
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
         if (response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204) {
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
+            return PollingUtils
+                .convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
-            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
-                + ", '%s' header: %s, and response body: %s", response.getStatusCode(), operationLocationHeaderName,
-                operationLocationHeader, PollingUtils.serializeResponse(response.getValue(), serializer))));
+            return Mono
+                .error(new AzureException(String
+                    .format("Operation failed or cancelled with status code %d,"
+                        + ", '%s' header: %s, and response body: %s", response.getStatusCode(),
+                        operationLocationHeaderName, operationLocationHeader, PollingUtils
+                            .serializeResponse(response.getValue(), serializer))));
         }
     }
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName
-            .getCaseSensitiveName()));
-        return FluxUtil.withContext(context1 -> httpPipeline.send(request,
-                CoreUtils.mergeContexts(context1, this.context))).flatMap(response -> response.getBodyAsByteArray()
-            .map(BinaryData::fromBytes)
-            .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, POLL_RESULT_TYPE_REFERENCE)
-                .map(pollResult -> {
-                    final String resourceLocation = pollResult.getResourceLocation();
-                    if (resourceLocation != null) {
-                        pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
-                            getAbsolutePath(resourceLocation, endpoint, LOGGER));
-                    }
-                    pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                    return pollResult.getStatus();
-                })
-                .flatMap(status -> {
-                    Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(),
-                        OffsetDateTime::now);
-                    return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
-                        .map(value -> new PollResponse<>(status, value, retryAfter));
-                })));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext
+            .getData(operationLocationHeaderName.getCaseSensitiveName()));
+        return FluxUtil
+            .withContext(context1 -> httpPipeline.send(request, CoreUtils.mergeContexts(context1, this.context)))
+            .flatMap(response -> response
+                .getBodyAsByteArray()
+                .map(BinaryData::fromBytes)
+                .flatMap(binaryData -> PollingUtils
+                    .deserializeResponse(binaryData, serializer, POLL_RESULT_TYPE_REFERENCE)
+                    .map(pollResult -> {
+                        final String resourceLocation = pollResult.getResourceLocation();
+                        if (resourceLocation != null) {
+                            pollingContext
+                                .setData(PollingConstants.RESOURCE_LOCATION, getAbsolutePath(resourceLocation, endpoint,
+                                    LOGGER));
+                        }
+                        pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
+                        return pollResult.getStatus();
+                    })
+                    .flatMap(status -> {
+                        Duration retryAfter = ImplUtils
+                            .getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+                        return PollingUtils
+                            .deserializeResponse(binaryData, serializer, pollResponseType)
+                            .map(value -> new PollResponse<>(status, value, retryAfter));
+                    })));
     }
 
     @Override
@@ -194,7 +215,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         if (finalGetUrl == null) {
             String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
-                    || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+                || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
             } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
@@ -208,8 +229,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return FluxUtil.withContext(context1 -> httpPipeline.send(request,
-                    CoreUtils.mergeContexts(context1, this.context)))
+            return FluxUtil
+                .withContext(context1 -> httpPipeline.send(request, CoreUtils.mergeContexts(context1, this.context)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));

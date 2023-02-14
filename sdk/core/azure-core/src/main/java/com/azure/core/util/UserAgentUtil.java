@@ -43,8 +43,10 @@ public final class UserAgentUtil {
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
      */
-    public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
-        Configuration configuration) {
+    public static String toUserAgentString(String applicationId,
+                                           String sdkName,
+                                           String sdkVersion,
+                                           Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
@@ -58,18 +60,11 @@ public final class UserAgentUtil {
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
-            .append("-")
-            .append(sdkName)
-            .append("/")
-            .append(sdkVersion);
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER).append("-").append(sdkName).append("/").append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
-            userAgentBuilder.append(" ")
-                .append("(")
-                .append(getPlatformInfo())
-                .append(")");
+            userAgentBuilder.append(" ").append("(").append(getPlatformInfo()).append(")");
         }
 
         return userAgentBuilder.toString();

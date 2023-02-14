@@ -52,11 +52,12 @@ public final class ReflectionUtils {
             classGetModule = lookup.unreflect(Class.class.getDeclaredMethod("getModule"));
             moduleIsNamed = lookup.unreflect(moduleClass.getDeclaredMethod("isNamed"));
             moduleAddReads = lookup.unreflect(moduleClass.getDeclaredMethod("addReads", moduleClass));
-            methodHandlesPrivateLookupIn = lookup.findStatic(MethodHandles.class, "privateLookupIn",
-                MethodType.methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
+            methodHandlesPrivateLookupIn = lookup
+                .findStatic(MethodHandles.class, "privateLookupIn", MethodType
+                    .methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
             moduleIsOpenUnconditionally = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class));
-            moduleIsOpenToOtherModule = lookup.unreflect(
-                moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
+            moduleIsOpenToOtherModule = lookup
+                .unreflect(moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
 
             coreModule = classGetModule.invokeWithArguments(ReflectionUtils.class);
             moduleBased = true;
@@ -64,16 +65,17 @@ public final class ReflectionUtils {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
             } else {
-                LOGGER.log(LogLevel.INFORMATIONAL,
-                    () -> "Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
-                        + "Will attempt to fallback to using the package-private constructor.", throwable);
+                LOGGER
+                    .log(LogLevel.INFORMATIONAL,
+                        () -> "Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
+                            + "Will attempt to fallback to using the package-private constructor.", throwable);
             }
         }
 
         if (!moduleBased) {
             try {
-                Constructor<MethodHandles.Lookup> privateLookupInConstructor =
-                    MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+                Constructor<MethodHandles.Lookup> privateLookupInConstructor = MethodHandles.Lookup.class
+                    .getDeclaredConstructor(Class.class);
 
                 if (!privateLookupInConstructor.isAccessible()) {
                     privateLookupInConstructor.setAccessible(true);
@@ -81,8 +83,9 @@ public final class ReflectionUtils {
 
                 jdkInternalPrivateLookupInConstructor = lookup.unreflectConstructor(privateLookupInConstructor);
             } catch (ReflectiveOperationException ex) {
-                throw LOGGER.logExceptionAsError(
-                    new RuntimeException("Unable to use package-private MethodHandles.Lookup constructor.", ex));
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException(
+                        "Unable to use package-private MethodHandles.Lookup constructor.", ex));
             }
         }
 
@@ -126,7 +129,6 @@ public final class ReflectionUtils {
                     return performSafePrivateLookupIn(targetClass);
                 }
 
-
                 // If the response module is the Core module return the Core private lookup.
                 if (responseModule == CORE_MODULE) {
                     return LOOKUP;
@@ -138,7 +140,7 @@ public final class ReflectionUtils {
                 if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE
                     .invokeWithArguments(responseModule, packageName)
                     || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE
-                    .invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
+                        .invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
                     MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
@@ -187,6 +189,5 @@ public final class ReflectionUtils {
         return MODULE_BASED;
     }
 
-    ReflectionUtils() {
-    }
+    ReflectionUtils() {}
 }

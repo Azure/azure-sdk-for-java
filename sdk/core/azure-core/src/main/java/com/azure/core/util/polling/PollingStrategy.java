@@ -63,7 +63,8 @@ public interface PollingStrategy<T, U> {
      *                         response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the poll response containing the status and the response content
      */
-    Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
+    Mono<PollResponse<T>> onInitialResponse(Response<?> response,
+                                            PollingContext<T> pollingContext,
                                             TypeReference<T> pollResponseType);
 
     /**

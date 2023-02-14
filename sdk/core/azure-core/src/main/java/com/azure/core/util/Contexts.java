@@ -64,8 +64,7 @@ public final class Contexts {
      * Defines {@link Context} keys commonly used in Azure SDKs.
      */
     private static final class Keys {
-        private Keys() {
-        }
+        private Keys() {}
 
         /**
          * A {@link Context} key for the outgoing request's {@link ProgressReporter}.

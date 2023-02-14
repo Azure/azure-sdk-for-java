@@ -119,10 +119,10 @@ public final class CloudEvent {
     private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.emptyMap();
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =
-        new TypeReference<List<CloudEvent>>() {
-        };
+        new TypeReference<List<CloudEvent>>() {};
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
-    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {{
+    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {
+        {
             add("specversion");
             add("id");
             add("source");
@@ -133,7 +133,8 @@ public final class CloudEvent {
             add("time");
             add("data");
             add("data_base64");
-        }};
+        }
+    };
 
     /*
      * An identifier for the event. The combination of id and source must be
@@ -208,8 +209,6 @@ public final class CloudEvent {
     @JsonIgnore
     private BinaryData binaryData;
 
-
-
     /**
      * Create an instance of {@link CloudEvent}.
      * <p>{@code source}, {@code type}, {@code id}, and {@code specversion} are required attributes according to the
@@ -278,7 +277,11 @@ public final class CloudEvent {
      * @throws IllegalArgumentException if format is {@link CloudEventDataFormat#JSON} but the data isn't in a correct
      * JSON format.
      */
-    public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
+    public CloudEvent(String source,
+                      String type,
+                      BinaryData data,
+                      CloudEventDataFormat format,
+                      String dataContentType) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         Objects.requireNonNull(type, "'type' cannot be null.");
         this.source = source;
@@ -291,8 +294,8 @@ public final class CloudEvent {
                 try {
                     this.data = BINARY_DATA_OBJECT_MAPPER.readTree(data.toBytes());
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
-                        e));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format", e));
                 }
             }
         }
@@ -354,9 +357,9 @@ public final class CloudEvent {
     public static List<CloudEvent> fromString(String cloudEventsJson, boolean skipValidation) {
         Objects.requireNonNull(cloudEventsJson, "'cloudEventsJson' cannot be null");
         try {
-            List<CloudEvent> events = SERIALIZER.deserialize(
-                new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
-                DESERIALIZER_TYPE_REFERENCE);
+            List<CloudEvent> events = SERIALIZER
+                .deserialize(new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
+                    DESERIALIZER_TYPE_REFERENCE);
             if (skipValidation) {
                 return events;
             }
@@ -373,18 +376,22 @@ public final class CloudEvent {
                     if (event.getType() == null) {
                         nullAttributes.add("'type'");
                     }
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
-                            + " This Json string doesn't have " + String.join(",", nullAttributes)
-                            + " for the object at index " + i
-                            + ". Please make sure the input Json string has the required attributes"
-                            + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException(
+                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
+                                + " This Json string doesn't have "
+                                + String.join(",", nullAttributes)
+                                + " for the object at index "
+                                + i
+                                + ". Please make sure the input Json string has the required attributes"
+                                + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
                 }
             }
             return events;
         } catch (UncheckedIOException uncheckedIOException) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
-                uncheckedIOException.getCause()));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
+                    uncheckedIOException.getCause()));
         }
     }
 
@@ -520,7 +527,8 @@ public final class CloudEvent {
     @JsonAnyGetter
     public Map<String, Object> getExtensionAttributes() {
         return this.extensionAttributes == null
-            ? EMPTY_ATTRIBUTES_MAP : Collections.unmodifiableMap(this.extensionAttributes);
+            ? EMPTY_ATTRIBUTES_MAP
+            : Collections.unmodifiableMap(this.extensionAttributes);
     }
 
     /**
@@ -538,9 +546,11 @@ public final class CloudEvent {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
         if (!validateAttributeName(name)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Extension attribute 'name' must have only lower-case alphanumeric characters and not be one of the "
-                    + "CloudEvent reserved attribute names: " + String.join(",", RESERVED_ATTRIBUTE_NAMES)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "Extension attribute 'name' must have only lower-case alphanumeric characters and not be one of the "
+                        + "CloudEvent reserved attribute names: "
+                        + String.join(",", RESERVED_ATTRIBUTE_NAMES)));
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();

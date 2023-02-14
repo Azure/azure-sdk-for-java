@@ -52,13 +52,12 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil
+                .getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
             MethodHandle handle = defaultCache.get(responseClass);
             // Step2: Invoke Constructor using Reflection.
-            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response);
         }
@@ -70,17 +69,16 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil
+                .getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using LambdaMetaFactory.
-            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor =
-                lambdaMetaCache.get(responseClass);
+            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor = lambdaMetaCache
+                .get(responseClass);
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
-            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }
@@ -92,16 +90,16 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil
+                .getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
             Constructor<? extends Response<?>> constructor = reflectionNoCache.get(responseClass);
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = reflectionNoCache.invoke(constructor, inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Mono<Response<?>> response = reflectionNoCache
+                .invoke(constructor, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }

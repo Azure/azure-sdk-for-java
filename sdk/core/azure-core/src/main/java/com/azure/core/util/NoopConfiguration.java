@@ -10,8 +10,7 @@ import java.util.function.Function;
 class NoopConfiguration extends Configuration {
 
     @SuppressWarnings("deprecation")
-    NoopConfiguration() {
-    }
+    NoopConfiguration() {}
 
     @Override
     public String get(String name) {

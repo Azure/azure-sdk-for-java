@@ -70,8 +70,9 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
         SimpleModule module = new SimpleModule();
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
-            public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
-                JsonSerializer<?> serializer) {
+            public JsonSerializer<?> modifySerializer(SerializationConfig config,
+                                                      BeanDescription beanDesc,
+                                                      JsonSerializer<?> serializer) {
                 for (Class<?> c : TypeUtil.getAllClasses(beanDesc.getBeanClass())) {
                     if (c.isAssignableFrom(Object.class)) {
                         continue;
@@ -143,8 +144,10 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
     }
 
     @Override
-    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSerializer) throws IOException {
+    public void serializeWithType(Object value,
+                                  JsonGenerator gen,
+                                  SerializerProvider provider,
+                                  TypeSerializer typeSerializer) throws IOException {
         serialize(value, gen, provider);
     }
 }

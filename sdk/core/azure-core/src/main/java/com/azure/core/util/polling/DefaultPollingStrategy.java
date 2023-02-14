@@ -75,11 +75,14 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @param context an instance of {@link Context}.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, Context context) {
-        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
-            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
-            new StatusCheckPollingStrategy<>(serializer)));
+    public DefaultPollingStrategy(HttpPipeline httpPipeline,
+                                  String endpoint,
+                                  JsonSerializer serializer,
+                                  Context context) {
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays
+            .asList(new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
+                new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
+                new StatusCheckPollingStrategy<>(serializer)));
     }
 
     @Override
@@ -93,8 +96,9 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     @Override
-    public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+    public Mono<PollResponse<T>> onInitialResponse(Response<?> response,
+                                                   PollingContext<T> pollingContext,
+                                                   TypeReference<T> pollResponseType) {
         return chainedPollingStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 

@@ -117,15 +117,15 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeList(List<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeList(values, format);
+        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter().serializeList(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeIterable(Iterable<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
+        String actualSerializedString = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .serializeIterable(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
@@ -133,22 +133,22 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }
 
     private static Stream<Arguments> serializeCollectionSupplier() {
-        return Stream.of(
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"),
-            Arguments.of(Arrays.asList("foo", null, "baz"), CollectionFormat.CSV, "foo,,baz"),
-            Arguments.of(Arrays.asList(null, "bar", null, null), CollectionFormat.CSV, ",bar,,"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.CSV, "1,2,3"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.PIPES, "1|2|3"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.SSV, "1 2 3"),
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz")
-        );
+        return Stream
+            .of(Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"), Arguments
+                .of(Arrays.asList("foo", null, "baz"), CollectionFormat.CSV, "foo,,baz"), Arguments
+                    .of(Arrays.asList(null, "bar", null, null), CollectionFormat.CSV, ",bar,,"), Arguments
+                        .of(Arrays.asList(1, 2, 3), CollectionFormat.CSV, "1,2,3"), Arguments
+                            .of(Arrays.asList(1, 2, 3), CollectionFormat.PIPES, "1|2|3"), Arguments
+                                .of(Arrays.asList(1, 2, 3), CollectionFormat.SSV, "1 2 3"), Arguments
+                                    .of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz"));
     }
 
     private static Stream<Arguments> deserializeJsonSupplier() {
@@ -156,18 +156,18 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
-            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
-            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+        return Stream
+            .of(Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue), Arguments
+                .of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue), Arguments
+                    .of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch), Arguments
+                        .of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeXmlSupplier")
     public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
@@ -178,12 +178,11 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
-            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
-            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+        return Stream
+            .of(Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue), Arguments
+                .of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue), Arguments
+                    .of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch), Arguments
+                        .of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @JacksonXmlRootElement(localName = "Wrapper")
@@ -207,7 +206,8 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.createDefaultSerializerAdapter()
+        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
@@ -217,20 +217,23 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
 
-        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
+        assertThrows(DateTimeParseException.class, () -> JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class));
     }
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
-                InvalidStronglyTypedHeaders.class);
+            JacksonAdapter
+                .createDefaultSerializerAdapter()
+                .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {
             assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
-                + ex.getCause().getClass().getName() + " instead of the expected JsonProcessingException type.");
+                + ex.getCause().getClass().getName()
+                + " instead of the expected JsonProcessingException type.");
         }
     }
 
@@ -241,13 +244,10 @@ public class JacksonAdapterTests {
     }
 
     private static Stream<Arguments> quoteRemovalSupplier() {
-        return Stream.of(
-            Arguments.of("", ""),
-            Arguments.of("\"\"", ""),
-            Arguments.of("\"\"\"\"\"\"\"\"", ""),
-            Arguments.of("\"\"hello\"\"", "hello"),
-            Arguments.of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you")
-        );
+        return Stream
+            .of(Arguments.of("", ""), Arguments.of("\"\"", ""), Arguments.of("\"\"\"\"\"\"\"\"", ""), Arguments
+                .of("\"\"hello\"\"", "hello"), Arguments
+                    .of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you"));
     }
 
     @ParameterizedTest
@@ -284,24 +284,17 @@ public class JacksonAdapterTests {
     private static Stream<Arguments> textSerializationSupplier() {
         Map<String, String> map = Collections.singletonMap("key", "value");
 
-        return Stream.of(
-            Arguments.of(1, "1"),
-            Arguments.of(1L, "1"),
-            Arguments.of(1.0F, "1.0"),
-            Arguments.of(1.0D, "1.0"),
-            Arguments.of("1", "1"),
-            Arguments.of(HttpMethod.GET, "GET"),
-            Arguments.of(GeoObjectType.POINT, "Point"),
-            Arguments.of(map, String.valueOf(map)),
-            Arguments.of(null, null)
-        );
+        return Stream
+            .of(Arguments.of(1, "1"), Arguments.of(1L, "1"), Arguments.of(1.0F, "1.0"), Arguments.of(1.0D, "1.0"),
+                Arguments.of("1", "1"), Arguments.of(HttpMethod.GET, "GET"), Arguments.of(GeoObjectType.POINT, "Point"),
+                Arguments.of(map, String.valueOf(map)), Arguments.of(null, null));
     }
 
     @ParameterizedTest
     @MethodSource("textDeserializationSupplier")
     public void stringToTextDeserialization(byte[] stringBytes, Class<?> type, Object expected) throws IOException {
-        Object actual = ADAPTER.deserialize(new String(stringBytes, StandardCharsets.UTF_8), type,
-            SerializerEncoding.TEXT);
+        Object actual = ADAPTER
+            .deserialize(new String(stringBytes, StandardCharsets.UTF_8), type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
             assertArrayEquals((byte[]) expected, (byte[]) actual);
@@ -325,7 +318,7 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("textDeserializationSupplier")
     public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected)
-        throws IOException {
+                                                                                                          throws IOException {
         Object actual = ADAPTER.deserialize(new ByteArrayInputStream(inputStreamBytes), type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
@@ -346,51 +339,49 @@ public class JacksonAdapterTests {
         HttpMethod httpMethod = HttpMethod.GET;
         GeoObjectType geoObjectType = GeoObjectType.POINT;
 
-        return Stream.of(
-            Arguments.of(helloBytes, String.class, "hello"),
-            Arguments.of(helloBytes, CharSequence.class, "hello"),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), int.class, 1),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), Integer.class, 1),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), byte.class, (byte) 49),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), Byte.class, (byte) 49),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), long.class, 1L),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), Long.class, 1L),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), short.class, (short) 1),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), Short.class, (short) 1),
-            Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), double.class, 1.0D),
-            Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), Double.class, 1.0D),
-            Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), float.class, 1.0F),
-            Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), Float.class, 1.0F),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), char.class, '1'),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), Character.class, '1'),
-            Arguments.of("1".getBytes(StandardCharsets.UTF_8), byte[].class, "1".getBytes(StandardCharsets.UTF_8)),
-            Arguments.of("true".getBytes(StandardCharsets.UTF_8), boolean.class, true),
-            Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true),
-            Arguments.of(urlUriBytes, URL.class, new URL(urlUri)),
-            Arguments.of(urlUriBytes, URI.class, URI.create(urlUri)),
-            Arguments.of(getObjectBytes(offsetDateTime), OffsetDateTime.class, offsetDateTime),
-            Arguments.of(getObjectBytes(dateTimeRfc1123), DateTimeRfc1123.class, dateTimeRfc1123),
-            Arguments.of(getObjectBytes(localDate), LocalDate.class, localDate),
-            Arguments.of(getObjectBytes(uuid), UUID.class, uuid),
-            Arguments.of(getObjectBytes(httpMethod), HttpMethod.class, httpMethod),
-            Arguments.of(getObjectBytes(geoObjectType), GeoObjectType.class, geoObjectType)
-        );
+        return Stream
+            .of(Arguments.of(helloBytes, String.class, "hello"), Arguments.of(helloBytes, CharSequence.class, "hello"),
+                Arguments.of("1".getBytes(StandardCharsets.UTF_8), int.class, 1), Arguments
+                    .of("1".getBytes(StandardCharsets.UTF_8), Integer.class, 1), Arguments
+                        .of("1".getBytes(StandardCharsets.UTF_8), byte.class, (byte) 49), Arguments
+                            .of("1".getBytes(StandardCharsets.UTF_8), Byte.class, (byte) 49), Arguments
+                                .of("1".getBytes(StandardCharsets.UTF_8), long.class, 1L), Arguments
+                                    .of("1".getBytes(StandardCharsets.UTF_8), Long.class, 1L), Arguments
+                                        .of("1".getBytes(StandardCharsets.UTF_8), short.class, (short) 1), Arguments
+                                            .of("1".getBytes(StandardCharsets.UTF_8), Short.class, (short) 1), Arguments
+                                                .of("1.0".getBytes(StandardCharsets.UTF_8), double.class, 1.0D),
+                Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), Double.class, 1.0D), Arguments
+                    .of("1.0".getBytes(StandardCharsets.UTF_8), float.class, 1.0F), Arguments
+                        .of("1.0".getBytes(StandardCharsets.UTF_8), Float.class, 1.0F), Arguments
+                            .of("1".getBytes(StandardCharsets.UTF_8), char.class, '1'), Arguments
+                                .of("1".getBytes(StandardCharsets.UTF_8), Character.class, '1'), Arguments
+                                    .of("1".getBytes(StandardCharsets.UTF_8), byte[].class, "1"
+                                        .getBytes(StandardCharsets.UTF_8)), Arguments
+                                            .of("true".getBytes(StandardCharsets.UTF_8), boolean.class, true), Arguments
+                                                .of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true),
+                Arguments.of(urlUriBytes, URL.class, new URL(urlUri)), Arguments
+                    .of(urlUriBytes, URI.class, URI.create(urlUri)), Arguments
+                        .of(getObjectBytes(offsetDateTime), OffsetDateTime.class, offsetDateTime), Arguments
+                            .of(getObjectBytes(dateTimeRfc1123), DateTimeRfc1123.class, dateTimeRfc1123), Arguments
+                                .of(getObjectBytes(localDate), LocalDate.class, localDate), Arguments
+                                    .of(getObjectBytes(uuid), UUID.class, uuid), Arguments
+                                        .of(getObjectBytes(httpMethod), HttpMethod.class, httpMethod), Arguments
+                                            .of(getObjectBytes(geoObjectType), GeoObjectType.class, geoObjectType));
     }
 
     @ParameterizedTest
     @MethodSource("textUnsupportedDeserializationSupplier")
     public void unsupportedTextTypesDeserialization(Class<?> unsupportedType,
-        Class<? extends Throwable> exceptionType) {
+                                                    Class<? extends Throwable> exceptionType) {
         assertThrows(exceptionType, () -> ADAPTER.deserialize(":////", unsupportedType, SerializerEncoding.TEXT));
     }
 
     private static Stream<Arguments> textUnsupportedDeserializationSupplier() {
-        return Stream.of(
-            Arguments.of(InputStream.class, IllegalStateException.class),
-            Arguments.of(JsonPatchDocument.class, IllegalStateException.class),
-            Arguments.of(URL.class, IOException.class), // Thrown when the String isn't a valid URL
-            Arguments.of(URI.class, IllegalArgumentException.class) // Thrown when the String isn't a valid URI
-        );
+        return Stream
+            .of(Arguments.of(InputStream.class, IllegalStateException.class), Arguments
+                .of(JsonPatchDocument.class, IllegalStateException.class), Arguments.of(URL.class, IOException.class), // Thrown when the String isn't a valid URL
+                Arguments.of(URI.class, IllegalArgumentException.class) // Thrown when the String isn't a valid URI
+            );
     }
 
     public static final class StronglyTypedHeaders {

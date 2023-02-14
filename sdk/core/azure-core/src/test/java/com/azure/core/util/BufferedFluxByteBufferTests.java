@@ -22,16 +22,18 @@ public class BufferedFluxByteBufferTests {
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)));
+        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(Flux
+            .fromArray(splitBytesIntoBuffers(randomBytes)));
 
         // Run once to verify that the results are expected.
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
             .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
             .verifyComplete();
 
         // Run again to verify that the results are consistent.
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
             .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
             .verifyComplete();
     }
@@ -42,16 +44,19 @@ public class BufferedFluxByteBufferTests {
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)).share());
+        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(Flux
+            .fromArray(splitBytesIntoBuffers(randomBytes))
+            .share());
 
         // Run once to verify that the results are expected.
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
             .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
             .verifyComplete();
 
         // Run again to verify that the results are consistent.
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
             .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
             .verifyComplete();
     }

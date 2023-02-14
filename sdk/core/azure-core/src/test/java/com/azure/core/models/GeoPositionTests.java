@@ -63,24 +63,24 @@ public class GeoPositionTests {
         GeoPosition pikePlacePosition = PIKES_PLACE_POSITION.get();
         GeoPosition mtRainierPosition = MT_RAINIER_POSITION.get();
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(pikePlacePosition, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(pikePlacePosition, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(pikePlacePosition, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(pikePlacePosition, 1, false),
 
-            // Other is itself.
-            Arguments.of(pikePlacePosition, pikePlacePosition, true),
-            Arguments.of(mtRainierPosition, mtRainierPosition, true),
+                // Other is itself.
+                Arguments.of(pikePlacePosition, pikePlacePosition, true), Arguments
+                    .of(mtRainierPosition, mtRainierPosition, true),
 
-            // Other is a different value.
-            Arguments.of(pikePlacePosition, mtRainierPosition, false),
-            Arguments.of(mtRainierPosition, pikePlacePosition, false),
+                // Other is a different value.
+                Arguments.of(pikePlacePosition, mtRainierPosition, false), Arguments
+                    .of(mtRainierPosition, pikePlacePosition, false),
 
-            // Other is the same value.
-            Arguments.of(pikePlacePosition, PIKES_PLACE_POSITION.get(), true),
-            Arguments.of(mtRainierPosition, MT_RAINIER_POSITION.get(), true)
-        );
+                // Other is the same value.
+                Arguments.of(pikePlacePosition, PIKES_PLACE_POSITION.get(), true), Arguments
+                    .of(mtRainierPosition, MT_RAINIER_POSITION.get(), true));
     }
 }

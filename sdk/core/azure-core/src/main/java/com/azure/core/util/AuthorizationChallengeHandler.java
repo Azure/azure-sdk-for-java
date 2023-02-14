@@ -62,14 +62,12 @@ public class AuthorizationChallengeHandler {
     private static final String MD5_SESS = MD5 + SESS;
 
     // TODO: Prefer SESS based challenges?
-    private static final String[] ALGORITHM_PREFERENCE_ORDER = {
-        SHA_512_256,
+    private static final String[] ALGORITHM_PREFERENCE_ORDER = { SHA_512_256,
         SHA_512_256_SESS,
         SHA_256,
         SHA_256_SESS,
         MD5,
-        MD5_SESS
-    };
+        MD5_SESS };
 
     /**
      * Header representing a server requesting authentication.
@@ -142,8 +140,10 @@ public class AuthorizationChallengeHandler {
      * {@code "qop=auth-int"}.
      * @return Authorization header for Digest authentication challenges.
      */
-    public final String handleDigest(String method, String uri, List<Map<String, String>> challenges,
-        Supplier<byte[]> entityBodySupplier) {
+    public final String handleDigest(String method,
+                                     String uri,
+                                     List<Map<String, String>> challenges,
+                                     Supplier<byte[]> entityBodySupplier) {
         authorizationPipeliningType.set(DIGEST);
         Map<String, List<Map<String, String>>> challengesByType = partitionByChallengeType(challenges);
 
@@ -160,7 +160,8 @@ public class AuthorizationChallengeHandler {
                 continue;
             }
 
-            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
+            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType
+                .get(algorithm)
                 .get(0));
             lastChallenge.set(challenge);
 
@@ -242,18 +243,24 @@ public class AuthorizationChallengeHandler {
             header = header.split(" ", 2)[1];
         }
 
-        return Stream.of(header.split(","))
+        return Stream
+            .of(header.split(","))
             .map(String::trim)
             .map(kvp -> kvp.split("=", 2))
-            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT),
-                kvpPieces -> kvpPieces[1].replace("\"", "")));
+            .collect(Collectors
+                .toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT), kvpPieces -> kvpPieces[1]
+                    .replace("\"", "")));
     }
 
     /*
      * Creates the Authorization header for the Digest authentication challenge.
      */
-    private String createDigestAuthorizationHeader(String method, String uri, Map<String, String> challenge,
-        String algorithm, Supplier<byte[]> entityBodySupplier, Function<byte[], byte[]> digestFunction) {
+    private String createDigestAuthorizationHeader(String method,
+                                                   String uri,
+                                                   Map<String, String> challenge,
+                                                   String algorithm,
+                                                   Supplier<byte[]> entityBodySupplier,
+                                                   Function<byte[], byte[]> digestFunction) {
         String realm = challenge.get(REALM);
         String nonce = challenge.get(NONCE);
         String qop = getQop(challenge.get(QOP));
@@ -330,8 +337,8 @@ public class AuthorizationChallengeHandler {
      * - Return the resulting bytes as a hex string.
      */
     private String calculateHa1NoSess(Function<byte[], byte[]> digestFunction, String realm) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s:%s", username, realm, password)
-            .getBytes(StandardCharsets.UTF_8)));
+        return hexStringOf(digestFunction
+            .apply(String.format("%s:%s:%s", username, realm, password).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -343,10 +350,14 @@ public class AuthorizationChallengeHandler {
      * - Create the digest of (userPassHex + ":" nonce + ":" + cnonce).
      * - Return the resulting bytes as a hex string.
      */
-    private String calculateHa1Sess(Function<byte[], byte[]> digestFunction, String realm, String nonce,
-        String cnonce) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s:%s", calculateHa1NoSess(digestFunction, realm),
-            nonce, cnonce).getBytes(StandardCharsets.UTF_8)));
+    private String calculateHa1Sess(Function<byte[], byte[]> digestFunction,
+                                    String realm,
+                                    String nonce,
+                                    String cnonce) {
+        return hexStringOf(digestFunction
+            .apply(String
+                .format("%s:%s:%s", calculateHa1NoSess(digestFunction, realm), nonce, cnonce)
+                .getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -357,8 +368,8 @@ public class AuthorizationChallengeHandler {
      * - Return the resulting bytes as a hex string.
      */
     private String calculateHa2AuthQopOrEmpty(Function<byte[], byte[]> digestFunction, String httpMethod, String uri) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s", httpMethod, uri)
-            .getBytes(StandardCharsets.UTF_8)));
+        return hexStringOf(digestFunction
+            .apply(String.format("%s:%s", httpMethod, uri).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -375,10 +386,14 @@ public class AuthorizationChallengeHandler {
      * the body being replay-able this runs into risks when the body is very large and potentially consuming large
      * amounts of memory.
      */
-    private String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
-        byte[] requestEntityBody) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s:%s", httpMethod, uri,
-            hexStringOf(digestFunction.apply(requestEntityBody))).getBytes(StandardCharsets.UTF_8)));
+    private String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction,
+                                          String httpMethod,
+                                          String uri,
+                                          byte[] requestEntityBody) {
+        return hexStringOf(digestFunction
+            .apply(String
+                .format("%s:%s:%s", httpMethod, uri, hexStringOf(digestFunction.apply(requestEntityBody)))
+                .getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -388,10 +403,12 @@ public class AuthorizationChallengeHandler {
      * - Create the digest of (ha1 + ":" + nonce + ":" + ha2).
      * - Return the resulting bytes as a hex string.
      */
-    private String calculateResponseUnknownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
-        String ha2) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s:%s", ha1, nonce, ha2)
-            .getBytes(StandardCharsets.UTF_8)));
+    private String calculateResponseUnknownQop(Function<byte[], byte[]> digestFunction,
+                                               String ha1,
+                                               String nonce,
+                                               String ha2) {
+        return hexStringOf(digestFunction
+            .apply(String.format("%s:%s:%s", ha1, nonce, ha2).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -403,18 +420,25 @@ public class AuthorizationChallengeHandler {
      *
      * nc, nonce count, is represented in a hexadecimal format.
      */
-    private String calculateResponseKnownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce, int nc,
-        String cnonce, String qop, String ha2) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s:%08X:%s:%s:%s", ha1, nonce, nc, cnonce, qop, ha2)
-            .getBytes(StandardCharsets.UTF_8)));
+    private String calculateResponseKnownQop(Function<byte[], byte[]> digestFunction,
+                                             String ha1,
+                                             String nonce,
+                                             int nc,
+                                             String cnonce,
+                                             String qop,
+                                             String ha2) {
+        return hexStringOf(digestFunction
+            .apply(String
+                .format("%s:%s:%08X:%s:%s:%s", ha1, nonce, nc, cnonce, qop, ha2)
+                .getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
      * Calculates the hashed username value if the authenticate challenge has 'userhash=true'.
      */
     private String calculateUserhash(Function<byte[], byte[]> digestFunction, String realm) {
-        return hexStringOf(digestFunction.apply(String.format("%s:%s", username, realm)
-            .getBytes(StandardCharsets.UTF_8)));
+        return hexStringOf(digestFunction
+            .apply(String.format("%s:%s", username, realm).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -445,8 +469,7 @@ public class AuthorizationChallengeHandler {
     /*
      * Splits the Authenticate challenges by the algorithm it uses.
      */
-    private static Map<String, List<Map<String, String>>> partitionByChallengeType(
-        List<Map<String, String>> challenges) {
+    private static Map<String, List<Map<String, String>>> partitionByChallengeType(List<Map<String, String>> challenges) {
         return challenges.stream().collect(Collectors.groupingBy(headers -> {
             String algorithmHeader = headers.get(ALGORITHM);
 
@@ -467,16 +490,36 @@ public class AuthorizationChallengeHandler {
     /*
      * Creates the Authorization/Proxy-Authorization header value based on the computed Digest authentication value.
      */
-    private static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm,
-        String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
+    private static String buildAuthorizationHeader(String username,
+                                                   String realm,
+                                                   String uri,
+                                                   String algorithm,
+                                                   String nonce,
+                                                   int nc,
+                                                   String cnonce,
+                                                   String qop,
+                                                   String response,
+                                                   String opaque,
+                                                   boolean userhash) {
         StringBuilder authorizationBuilder = new StringBuilder(512);
 
-        authorizationBuilder.append(DIGEST)
-            .append("username=\"").append(username).append("\", ")
-            .append("realm=\"").append(realm).append("\", ")
-            .append("nonce=\"").append(nonce).append("\", ")
-            .append("uri=\"").append(uri).append("\", ")
-            .append("response=\"").append(response).append("\"");
+        authorizationBuilder
+            .append(DIGEST)
+            .append("username=\"")
+            .append(username)
+            .append("\", ")
+            .append("realm=\"")
+            .append(realm)
+            .append("\", ")
+            .append("nonce=\"")
+            .append(nonce)
+            .append("\", ")
+            .append("uri=\"")
+            .append(uri)
+            .append("\", ")
+            .append("response=\"")
+            .append(response)
+            .append("\"");
 
         if (!CoreUtils.isNullOrEmpty(algorithm)) {
             authorizationBuilder.append(", ").append("algorithm=").append(algorithm);

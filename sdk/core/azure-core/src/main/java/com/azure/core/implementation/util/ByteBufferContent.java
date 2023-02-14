@@ -22,8 +22,8 @@ public final class ByteBufferContent extends BinaryDataContent {
     private final ByteBuffer content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link BinaryDataContent}.

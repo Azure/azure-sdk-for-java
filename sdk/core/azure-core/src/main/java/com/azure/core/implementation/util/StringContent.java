@@ -22,8 +22,8 @@ public final class StringContent extends BinaryDataContent {
     private final String content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER = AtomicReferenceFieldUpdater
+        .newUpdater(StringContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link StringContent}.

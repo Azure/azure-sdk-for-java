@@ -70,8 +70,9 @@ public final class SyncChainedPollingStrategy<T, U> implements SyncPollingStrate
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
     @Override
-    public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType) {
+    public PollResponse<T> onInitialResponse(Response<?> response,
+                                             PollingContext<T> pollingContext,
+                                             TypeReference<T> pollResponseType) {
         return pollableStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 

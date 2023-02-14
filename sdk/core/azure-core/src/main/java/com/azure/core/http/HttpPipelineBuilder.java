@@ -55,8 +55,7 @@ public class HttpPipelineBuilder {
      * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
      * creating an instance of it.
      */
-    public HttpPipelineBuilder() {
-    }
+    public HttpPipelineBuilder() {}
 
     /**
      * Creates an {@link HttpPipeline} based on options set in the builder. Every time {@code build()} is called, a new

@@ -35,13 +35,14 @@ public class LoggingBenchmark {
 
     @Setup
     public void setup() {
-        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
+        EnvironmentConfiguration
+            .getGlobalConfiguration()
+            .put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);
 
         System.setOut(new PrintStream(new OutputStream() {
             @Override
-            public void write(int b) throws IOException {
-            }
+            public void write(int b) throws IOException {}
         }));
     }
 
@@ -52,10 +53,7 @@ public class LoggingBenchmark {
 
     @Benchmark
     public void loggingAtDisabledLevelWithContext() {
-        logger.atInfo()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", 1)
-            .log("hello");
+        logger.atInfo().addKeyValue("connectionId", "foo").addKeyValue("linkName", 1).log("hello");
     }
 
     @Benchmark
@@ -65,10 +63,7 @@ public class LoggingBenchmark {
 
     @Benchmark
     public void loggingAtEnabledLevelWithContext() {
-        logger.atError()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", 1)
-            .log("hello");
+        logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", 1).log("hello");
     }
 
     public static void main(String... args) throws IOException, RunnerException {

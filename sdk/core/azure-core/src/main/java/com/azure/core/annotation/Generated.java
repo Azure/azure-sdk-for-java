@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * <p>This annotation is expected to be used in classes that are annotated with {@link ServiceClient} only.</p>
  */
 @Retention(SOURCE)
-@Target({METHOD, CONSTRUCTOR, FIELD})
+@Target({ METHOD, CONSTRUCTOR, FIELD })
 public @interface Generated {
 
 }

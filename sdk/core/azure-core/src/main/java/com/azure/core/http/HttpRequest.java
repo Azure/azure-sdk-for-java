@@ -248,7 +248,7 @@ public class HttpRequest {
     public HttpRequest setBody(Flux<ByteBuffer> content) {
         if (content != null) {
             this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
-        } else  {
+        } else {
             this.body = null;
         }
         return this;

@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  * <p>
@@ -29,7 +28,8 @@ import java.lang.reflect.Proxy;
  */
 public final class RestProxy implements InvocationHandler {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration.getGlobalConfiguration()
+    private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration
+        .getGlobalConfiguration()
         .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", false);
 
     private final SwaggerInterfaceParser interfaceParser;
@@ -84,16 +84,20 @@ public final class RestProxy implements InvocationHandler {
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();
-        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE)
+        boolean syncRestProxyEnabled = (boolean) context
+            .getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE)
             .orElse(GLOBAL_SYNC_PROXY_ENABLE);
 
-
         if (isReactive || !syncRestProxyEnabled) {
-            return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+            return asyncRestProxy
+                .invoke(proxy, method, options, options != null ? options.getErrorOptions() : null, options != null
+                    ? options.getRequestCallback()
+                    : null, methodParser, isReactive, args);
         } else {
-            return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+            return syncRestProxy
+                .invoke(proxy, method, options, options != null ? options.getErrorOptions() : null, options != null
+                    ? options.getRequestCallback()
+                    : null, methodParser, isReactive, args);
         }
     }
 
@@ -105,8 +109,8 @@ public final class RestProxy implements InvocationHandler {
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface) {
-        return create(swaggerInterface, RestProxyUtils.createDefaultPipeline(),
-            RestProxyUtils.createDefaultSerializer());
+        return create(swaggerInterface, RestProxyUtils.createDefaultPipeline(), RestProxyUtils
+            .createDefaultSerializer());
     }
 
     /**
@@ -134,7 +138,7 @@ public final class RestProxy implements InvocationHandler {
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
-            restProxy);
+        return (A) Proxy
+            .newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface }, restProxy);
     }
 }

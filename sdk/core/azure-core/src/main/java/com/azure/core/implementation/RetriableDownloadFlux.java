@@ -35,13 +35,17 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
      * @param position The initial offset for the download.
      */
     public RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+                                 BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+                                 int maxRetries,
+                                 long position) {
         this(downloadSupplier, onDownloadErrorResume, maxRetries, position, 0);
     }
 
     private RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position,
-        int retryCount) {
+                                  BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+                                  int maxRetries,
+                                  long position,
+                                  int retryCount) {
         this.downloadSupplier = downloadSupplier;
         this.onDownloadErrorResume = onDownloadErrorResume;
         this.maxRetries = maxRetries;
@@ -51,28 +55,32 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
 
     @Override
     public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-        final long[] currentPosition = new long[]{position};
+        final long[] currentPosition = new long[] { position };
 
-        downloadSupplier.get()
-            .map(buffer -> {
-                currentPosition[0] += buffer.remaining();
-                return buffer;
-            })
-            .onErrorResume(Exception.class, exception -> {
-                int updatedRetryCount = retryCount + 1;
+        downloadSupplier.get().map(buffer -> {
+            currentPosition[0] += buffer.remaining();
+            return buffer;
+        }).onErrorResume(Exception.class, exception -> {
+            int updatedRetryCount = retryCount + 1;
 
-                if (updatedRetryCount > maxRetries) {
-                    LOGGER.log(LogLevel.ERROR, () -> "Exhausted all retry attempts while downloading, "
-                        + maxRetries + " of " + maxRetries + ".", exception);
-                    return Flux.error(exception);
-                }
+            if (updatedRetryCount > maxRetries) {
+                LOGGER
+                    .log(LogLevel.ERROR, () -> "Exhausted all retry attempts while downloading, "
+                        + maxRetries
+                        + " of "
+                        + maxRetries
+                        + ".", exception);
+                return Flux.error(exception);
+            }
 
-                LOGGER.log(LogLevel.INFORMATIONAL,
-                    () -> "Using retry attempt " + updatedRetryCount + " of " + maxRetries + " while downloading.",
-                    exception);
-                return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(exception, currentPosition[0]),
-                    onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
-            })
-            .subscribe(actual);
+            LOGGER
+                .log(LogLevel.INFORMATIONAL, () -> "Using retry attempt "
+                    + updatedRetryCount
+                    + " of "
+                    + maxRetries
+                    + " while downloading.", exception);
+            return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(exception, currentPosition[0]),
+                onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
+        }).subscribe(actual);
     }
 }

@@ -35,7 +35,6 @@ public enum SerializerEncoding {
     private static final Map<String, SerializerEncoding> SUPPORTED_MIME_TYPES;
     private static final SerializerEncoding DEFAULT_ENCODING = JSON;
 
-
     static {
         // Encodings and suffixes from: https://tools.ietf.org/html/rfc6838
         SUPPORTED_MIME_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -72,8 +71,9 @@ public enum SerializerEncoding {
 
         int contentTypeTypeSplit = contentType.indexOf('/');
         if (contentTypeTypeSplit == -1) {
-            LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
-                + "Returning default: {}", contentType, DEFAULT_ENCODING);
+            LOGGER
+                .warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
+                    + "Returning default: {}", contentType, DEFAULT_ENCODING);
             return DEFAULT_ENCODING;
         }
 
@@ -94,8 +94,9 @@ public enum SerializerEncoding {
             return JSON;
         }
 
-        LOGGER.warning("Content-Type '{}' does not match any supported one. Returning default: {}",
-            mimeContentType, DEFAULT_ENCODING);
+        LOGGER
+            .warning("Content-Type '{}' does not match any supported one. Returning default: {}", mimeContentType,
+                DEFAULT_ENCODING);
 
         return DEFAULT_ENCODING;
     }

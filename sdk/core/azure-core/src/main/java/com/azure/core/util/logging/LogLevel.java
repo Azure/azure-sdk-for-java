@@ -40,8 +40,8 @@ public enum LogLevel {
     private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
     static {
-        for (LogLevel logLevel: LogLevel.values()) {
-            for (String val: logLevel.allowedLogLevelVariables) {
+        for (LogLevel logLevel : LogLevel.values()) {
+            for (String val : logLevel.allowedLogLevelVariables) {
                 LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
             }
         }

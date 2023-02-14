@@ -30,15 +30,13 @@ import java.util.concurrent.TimeUnit;
 public class RestProxySpecialParametersBenchmark {
     // Context is last as it's usually the last parameter in the generated interface.
     // There isn't an exact known size of parameters but 7 is a good rough estimate for the average.
-    private static final Object[] REST_PROXY_PARAMETERS = new Object[] {
-        "a string",
+    private static final Object[] REST_PROXY_PARAMETERS = new Object[] { "a string",
         1,
         1.5D,
         "another string",
         new Object(),
         -7,
-        Context.NONE
-    };
+        Context.NONE };
 
     /**
      * Benchmarks retrieving either {@link Context} or {@link RequestOptions} from the parameters array passed into

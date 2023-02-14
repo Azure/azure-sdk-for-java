@@ -25,10 +25,8 @@ public class AzureSasCredentialTests {
     }
 
     private static Stream<Arguments> invalidConstructorParametersSupplier() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
-            Arguments.of("", IllegalArgumentException.class)
-        );
+        return Stream
+            .of(Arguments.of(null, NullPointerException.class), Arguments.of("", IllegalArgumentException.class));
     }
 
     @Test

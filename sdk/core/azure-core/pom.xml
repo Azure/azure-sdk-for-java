@@ -82,6 +82,7 @@
     <compiler.failondeprecatedstatus/>
     <javadoc.excludePackageNames/>
 
+    <spotless.disabled>false</spotless.disabled>
   </properties>
 
   <developers>

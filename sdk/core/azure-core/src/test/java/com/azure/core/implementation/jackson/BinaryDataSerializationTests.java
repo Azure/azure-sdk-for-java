@@ -35,14 +35,11 @@ public class BinaryDataSerializationTests {
 
     private static final byte[] HELLO_BYTES = "hello".getBytes(StandardCharsets.UTF_8);
     private static final String BASE64_HELLO_BYTES = Base64.getEncoder().encodeToString(HELLO_BYTES);
-    private static final SimplePojo SIMPLE_POJO = new SimplePojo()
-        .setString("hello")
-        .setNumber(3.14)
-        .setBool(true);
+    private static final SimplePojo SIMPLE_POJO = new SimplePojo().setString("hello").setNumber(3.14).setBool(true);
 
     private static final BinaryData FROM_BYTES = BinaryData.fromBytes(HELLO_BYTES);
-    private static final Supplier<BinaryData> FROM_STREAM
-        = () -> BinaryData.fromStream(new ByteArrayInputStream(HELLO_BYTES));
+    private static final Supplier<BinaryData> FROM_STREAM = () -> BinaryData
+        .fromStream(new ByteArrayInputStream(HELLO_BYTES));
     private static final BinaryData FROM_STRING = BinaryData.fromString("hello");
     private static final BinaryData FROM_OBJECT = BinaryData.fromObject(SIMPLE_POJO);
     private static final BinaryData FROM_STRING_BASE64 = BinaryData.fromString(BASE64_HELLO_BYTES);
@@ -52,12 +49,11 @@ public class BinaryDataSerializationTests {
     private static final String SIMPLE_PROPERTY_BYTES_JSON = "{\"simpleProperty\":\"" + BASE64_HELLO_BYTES + "\"}";
     private static final String SIMPLE_PROPERTY_STREAM_JSON = "{\"simpleProperty\":\"" + BASE64_HELLO_BYTES + "\"}";
     private static final String SIMPLE_PROPERTY_STRING_JSON = "{\"simpleProperty\":\"hello\"}";
-    private static final String SIMPLE_PROPERTY_OBJECT_JSON
-        = "{\"simpleProperty\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}";
+    private static final String SIMPLE_PROPERTY_OBJECT_JSON =
+        "{\"simpleProperty\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}";
 
     private static final SimpleProperty SIMPLE_PROPERTY_NULL = new SimpleProperty();
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_BYTES = new SimpleProperty()
-        .setSimpleProperty(FROM_BYTES);
+    private static final SimpleProperty SIMPLE_PROPERTY_FROM_BYTES = new SimpleProperty().setSimpleProperty(FROM_BYTES);
     private static final SimpleProperty SIMPLE_PROPERTY_FROM_STREAM = new SimpleProperty()
         .setSimpleProperty(FROM_STREAM.get());
     private static final SimpleProperty SIMPLE_PROPERTY_FROM_STRING = new SimpleProperty()
@@ -70,10 +66,13 @@ public class BinaryDataSerializationTests {
     private static final String LIST_PROPERTY_BYTES_JSON = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\"]}";
     private static final String LIST_PROPERTY_STREAM_JSON = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\"]}";
     private static final String LIST_PROPERTY_STRING_JSON = "{\"listProperty\":[\"hello\"]}";
-    private static final String LIST_PROPERTY_OBJECT_JSON
-        = "{\"listProperty\":[{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
-    private static final String LIST_PROPERTY_MULTI_JSON
-        = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\",\"" + BASE64_HELLO_BYTES + "\",\"hello\","
+    private static final String LIST_PROPERTY_OBJECT_JSON =
+        "{\"listProperty\":[{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
+    private static final String LIST_PROPERTY_MULTI_JSON = "{\"listProperty\":[\""
+        + BASE64_HELLO_BYTES
+        + "\",\""
+        + BASE64_HELLO_BYTES
+        + "\",\"hello\","
         + "{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
 
     private static final ListProperty LIST_PROPERTY_NULL = new ListProperty();
@@ -95,11 +94,15 @@ public class BinaryDataSerializationTests {
     private static final String MAP_PROPERTY_BYTES_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STREAM_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STRING_JSON = "{\"mapProperty\":{\"key\":\"hello\"}}";
-    private static final String MAP_PROPERTY_OBJECT_JSON
-        = "{\"mapProperty\":{\"key\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
+    private static final String MAP_PROPERTY_OBJECT_JSON =
+        "{\"mapProperty\":{\"key\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
     private static final String MAP_PROPERTY_MULTI_JSON = "{\"mapProperty\":{"
-        + "\"fromBytes\":\"" + BASE64_HELLO_BYTES + "\","
-        + "\"fromStream\":\"" + BASE64_HELLO_BYTES + "\","
+        + "\"fromBytes\":\""
+        + BASE64_HELLO_BYTES
+        + "\","
+        + "\"fromStream\":\""
+        + BASE64_HELLO_BYTES
+        + "\","
         + "\"fromString\":\"hello\","
         + "\"fromObject\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
 
@@ -138,27 +141,26 @@ public class BinaryDataSerializationTests {
     }
 
     private static Stream<Arguments> binaryDataSerializationSupplier() {
-        return Stream.of(
-            Arguments.of(SIMPLE_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_BYTES, SIMPLE_PROPERTY_BYTES_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_STREAM, SIMPLE_PROPERTY_STREAM_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_STRING, SIMPLE_PROPERTY_STRING_JSON),
-            Arguments.of(SIMPLE_PROPERTY_FROM_OBJECT, SIMPLE_PROPERTY_OBJECT_JSON),
+        return Stream
+            .of(Arguments.of(SIMPLE_PROPERTY_NULL, EMPTY_OBJECT_JSON), Arguments
+                .of(SIMPLE_PROPERTY_FROM_BYTES, SIMPLE_PROPERTY_BYTES_JSON), Arguments
+                    .of(SIMPLE_PROPERTY_FROM_STREAM, SIMPLE_PROPERTY_STREAM_JSON), Arguments
+                        .of(SIMPLE_PROPERTY_FROM_STRING, SIMPLE_PROPERTY_STRING_JSON), Arguments
+                            .of(SIMPLE_PROPERTY_FROM_OBJECT, SIMPLE_PROPERTY_OBJECT_JSON),
 
-            Arguments.of(LIST_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_BYTES, LIST_PROPERTY_BYTES_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_STREAM, LIST_PROPERTY_STREAM_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_STRING, LIST_PROPERTY_STRING_JSON),
-            Arguments.of(LIST_PROPERTY_FROM_OBJECT, LIST_PROPERTY_OBJECT_JSON),
-            Arguments.of(LIST_PROPERTY_MULTIPLE, LIST_PROPERTY_MULTI_JSON),
+                Arguments.of(LIST_PROPERTY_NULL, EMPTY_OBJECT_JSON), Arguments
+                    .of(LIST_PROPERTY_FROM_BYTES, LIST_PROPERTY_BYTES_JSON), Arguments
+                        .of(LIST_PROPERTY_FROM_STREAM, LIST_PROPERTY_STREAM_JSON), Arguments
+                            .of(LIST_PROPERTY_FROM_STRING, LIST_PROPERTY_STRING_JSON), Arguments
+                                .of(LIST_PROPERTY_FROM_OBJECT, LIST_PROPERTY_OBJECT_JSON), Arguments
+                                    .of(LIST_PROPERTY_MULTIPLE, LIST_PROPERTY_MULTI_JSON),
 
-            Arguments.of(MAP_PROPERTY_NULL, EMPTY_OBJECT_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_BYTES, MAP_PROPERTY_BYTES_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_STREAM, MAP_PROPERTY_STREAM_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON),
-            Arguments.of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON),
-            Arguments.of(MAP_PROPERTY_MULTIPLE, MAP_PROPERTY_MULTI_JSON)
-        );
+                Arguments.of(MAP_PROPERTY_NULL, EMPTY_OBJECT_JSON), Arguments
+                    .of(MAP_PROPERTY_FROM_BYTES, MAP_PROPERTY_BYTES_JSON), Arguments
+                        .of(MAP_PROPERTY_FROM_STREAM, MAP_PROPERTY_STREAM_JSON), Arguments
+                            .of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON), Arguments
+                                .of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON), Arguments
+                                    .of(MAP_PROPERTY_MULTIPLE, MAP_PROPERTY_MULTI_JSON));
     }
 
     @ParameterizedTest
@@ -171,27 +173,26 @@ public class BinaryDataSerializationTests {
     }
 
     private static Stream<Arguments> binaryDataDeserializationSupplier() {
-        return Stream.of(
-            Arguments.of(SIMPLE_PROPERTY_NULL, EMPTY_OBJECT_JSON, SimpleProperty.class),
-            Arguments.of(SIMPLE_PROPERTY_BASE64, SIMPLE_PROPERTY_BYTES_JSON, SimpleProperty.class),
-            Arguments.of(SIMPLE_PROPERTY_BASE64, SIMPLE_PROPERTY_STREAM_JSON, SimpleProperty.class),
-            Arguments.of(SIMPLE_PROPERTY_FROM_STRING, SIMPLE_PROPERTY_STRING_JSON, SimpleProperty.class),
-            Arguments.of(SIMPLE_PROPERTY_FROM_OBJECT, SIMPLE_PROPERTY_OBJECT_JSON, SimpleProperty.class),
+        return Stream
+            .of(Arguments.of(SIMPLE_PROPERTY_NULL, EMPTY_OBJECT_JSON, SimpleProperty.class), Arguments
+                .of(SIMPLE_PROPERTY_BASE64, SIMPLE_PROPERTY_BYTES_JSON, SimpleProperty.class), Arguments
+                    .of(SIMPLE_PROPERTY_BASE64, SIMPLE_PROPERTY_STREAM_JSON, SimpleProperty.class), Arguments
+                        .of(SIMPLE_PROPERTY_FROM_STRING, SIMPLE_PROPERTY_STRING_JSON, SimpleProperty.class), Arguments
+                            .of(SIMPLE_PROPERTY_FROM_OBJECT, SIMPLE_PROPERTY_OBJECT_JSON, SimpleProperty.class),
 
-            Arguments.of(LIST_PROPERTY_NULL, EMPTY_OBJECT_JSON, ListProperty.class),
-            Arguments.of(LIST_PROPERTY_BASE64, LIST_PROPERTY_BYTES_JSON, ListProperty.class),
-            Arguments.of(LIST_PROPERTY_BASE64, LIST_PROPERTY_STREAM_JSON, ListProperty.class),
-            Arguments.of(LIST_PROPERTY_FROM_STRING, LIST_PROPERTY_STRING_JSON, ListProperty.class),
-            Arguments.of(LIST_PROPERTY_FROM_OBJECT, LIST_PROPERTY_OBJECT_JSON, ListProperty.class),
-            Arguments.of(LIST_PROPERTY_BASE64_MULTIPLE, LIST_PROPERTY_MULTI_JSON, ListProperty.class),
+                Arguments.of(LIST_PROPERTY_NULL, EMPTY_OBJECT_JSON, ListProperty.class), Arguments
+                    .of(LIST_PROPERTY_BASE64, LIST_PROPERTY_BYTES_JSON, ListProperty.class), Arguments
+                        .of(LIST_PROPERTY_BASE64, LIST_PROPERTY_STREAM_JSON, ListProperty.class), Arguments
+                            .of(LIST_PROPERTY_FROM_STRING, LIST_PROPERTY_STRING_JSON, ListProperty.class), Arguments
+                                .of(LIST_PROPERTY_FROM_OBJECT, LIST_PROPERTY_OBJECT_JSON, ListProperty.class), Arguments
+                                    .of(LIST_PROPERTY_BASE64_MULTIPLE, LIST_PROPERTY_MULTI_JSON, ListProperty.class),
 
-            Arguments.of(MAP_PROPERTY_NULL, EMPTY_OBJECT_JSON, MapProperty.class),
-            Arguments.of(MAP_PROPERTY_BASE64, MAP_PROPERTY_BYTES_JSON, MapProperty.class),
-            Arguments.of(MAP_PROPERTY_BASE64, MAP_PROPERTY_STREAM_JSON, MapProperty.class),
-            Arguments.of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON, MapProperty.class),
-            Arguments.of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON, MapProperty.class),
-            Arguments.of(MAP_PROPERTY_BASE64_MULTIPLE, MAP_PROPERTY_MULTI_JSON, MapProperty.class)
-        );
+                Arguments.of(MAP_PROPERTY_NULL, EMPTY_OBJECT_JSON, MapProperty.class), Arguments
+                    .of(MAP_PROPERTY_BASE64, MAP_PROPERTY_BYTES_JSON, MapProperty.class), Arguments
+                        .of(MAP_PROPERTY_BASE64, MAP_PROPERTY_STREAM_JSON, MapProperty.class), Arguments
+                            .of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON, MapProperty.class), Arguments
+                                .of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON, MapProperty.class), Arguments
+                                    .of(MAP_PROPERTY_BASE64_MULTIPLE, MAP_PROPERTY_MULTI_JSON, MapProperty.class));
     }
 
     public static final class SimpleProperty {

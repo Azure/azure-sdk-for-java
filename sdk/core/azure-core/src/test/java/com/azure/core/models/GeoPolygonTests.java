@@ -80,24 +80,22 @@ public class GeoPolygonTests {
         GeoPolygon polygon = new GeoPolygon(squareLine);
         GeoPolygon polygon1 = new GeoPolygon(triangleLine, boundingBox, properties);
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(polygon, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(polygon, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(polygon, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(polygon, 1, false),
 
-            // Other is itself.
-            Arguments.of(polygon, polygon, true),
-            Arguments.of(polygon1, polygon1, true),
+                // Other is itself.
+                Arguments.of(polygon, polygon, true), Arguments.of(polygon1, polygon1, true),
 
-            // Other is a different value.
-            Arguments.of(polygon, polygon1, false),
-            Arguments.of(polygon1, polygon, false),
+                // Other is a different value.
+                Arguments.of(polygon, polygon1, false), Arguments.of(polygon1, polygon, false),
 
-            // Other is the same value.
-            Arguments.of(polygon, new GeoPolygon(squareLine), true),
-            Arguments.of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true)
-        );
+                // Other is the same value.
+                Arguments.of(polygon, new GeoPolygon(squareLine), true), Arguments
+                    .of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true));
     }
 }

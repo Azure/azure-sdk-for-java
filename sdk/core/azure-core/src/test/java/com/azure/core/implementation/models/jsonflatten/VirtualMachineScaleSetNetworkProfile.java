@@ -17,8 +17,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
-    public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(
-        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

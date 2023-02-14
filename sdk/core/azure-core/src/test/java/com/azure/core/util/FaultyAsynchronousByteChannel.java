@@ -21,14 +21,15 @@ public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
     private final AtomicInteger errorEmitted = new AtomicInteger();
     private final long emitAfterOffset;
 
-    public FaultyAsynchronousByteChannel(
-        AsynchronousByteChannel delegate, Supplier<IOException> exceptionSupplier, int maxErrorCount, long emitAfterOffset) {
+    public FaultyAsynchronousByteChannel(AsynchronousByteChannel delegate,
+                                         Supplier<IOException> exceptionSupplier,
+                                         int maxErrorCount,
+                                         long emitAfterOffset) {
         this.delegate = new ByteCountingAsynchronousByteChannel(delegate, null, null);
         this.exceptionSupplier = exceptionSupplier;
         this.maxErrorCount = maxErrorCount;
         this.emitAfterOffset = emitAfterOffset;
     }
-
 
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
@@ -75,7 +76,8 @@ public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
     }
 
     private boolean shouldEmitError() {
-        return errorEmitted.get() < maxErrorCount && (delegate.getBytesWritten() >= emitAfterOffset || delegate.getBytesRead() >= emitAfterOffset);
+        return errorEmitted.get() < maxErrorCount
+            && (delegate.getBytesWritten() >= emitAfterOffset || delegate.getBytesRead() >= emitAfterOffset);
     }
 
     @Override

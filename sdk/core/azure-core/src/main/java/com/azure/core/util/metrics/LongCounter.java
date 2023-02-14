@@ -22,7 +22,6 @@ public interface LongCounter {
      */
     void add(long value, TelemetryAttributes attributes, Context context);
 
-
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,
      * e.g. measuring latency.

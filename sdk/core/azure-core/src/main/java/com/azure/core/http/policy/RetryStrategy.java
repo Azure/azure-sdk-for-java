@@ -45,8 +45,8 @@ public interface RetryStrategy {
         return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
             || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection does not define HTTP status 429
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-            && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-            && code != HttpURLConnection.HTTP_VERSION));
+                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                && code != HttpURLConnection.HTTP_VERSION));
     }
 
     /**

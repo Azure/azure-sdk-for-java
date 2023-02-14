@@ -56,61 +56,55 @@ public class RestProxyTests {
     @ServiceInterface(name = "myService")
     interface TestInterface {
         @Post("my/url/path")
-        @ExpectedResponses({200})
-        Mono<Response<Void>> testMethod(
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> request,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @ExpectedResponses({ 200 })
+        Mono<Response<Void>> testMethod(@BodyParam("application/octet-stream") Flux<ByteBuffer> request,
+                                        @HeaderParam("Content-Type") String contentType,
+                                        @HeaderParam("Content-Length") Long contentLength);
 
         @Post("my/url/path")
-        @ExpectedResponses({200})
-        Mono<Response<Void>> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @ExpectedResponses({ 200 })
+        Mono<Response<Void>> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+                                        @HeaderParam("Content-Type") String contentType,
+                                        @HeaderParam("Content-Length") Long contentLength);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> testMethodReturnsMonoVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void testVoidMethod();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> testMethodReturnsMonoResponseVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Response<Void> testMethodReturnsResponseVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         StreamResponse testDownload();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<StreamResponse> testDownloadAsync();
     }
 
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(Flux.just(ByteBuffer.wrap(bytes)),
-                "application/json", (long) bytes.length)
+        Response<Void> response = testInterface
+            .testMethod(Flux.just(ByteBuffer.wrap(bytes)), "application/json", (long) bytes.length)
             .block();
         assertEquals(200, response.getStatusCode());
     }
@@ -118,9 +112,7 @@ public class RestProxyTests {
     @Test
     public void streamResponseShouldHaveHttpResponseReferenceSync() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         StreamResponse streamResponse = testInterface.testDownload();
@@ -132,14 +124,11 @@ public class RestProxyTests {
     @Test
     public void streamResponseShouldHaveHttpResponseReferenceAsync() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(
-                testInterface.testDownloadAsync()
-                    .doOnNext(StreamResponse::close))
+        StepVerifier
+            .create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
             .expectNextCount(1)
             .verifyComplete();
         // This indirectly tests that StreamResponse has HttpResponse reference
@@ -150,9 +139,7 @@ public class RestProxyTests {
     @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
     public void knownLengthBinaryDataIsPassthrough(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
@@ -166,46 +153,39 @@ public class RestProxyTests {
         Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
-            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
-                BinaryData.fromObject(bytes).getLength())
-        );
+        return Stream
+            .of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length), Arguments
+                .of(Named.of("string", BinaryData.fromString(string)), bytes.length), Arguments
+                    .of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
+                        .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData
+                            .fromObject(bytes)
+                            .getLength()));
     }
 
     @ParameterizedTest
     @MethodSource("doesNotChangeBinaryDataContentTypeDataProvider")
     public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
 
-
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethod(data,
-                "application/json", contentLength)
-            .block();
+        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
 
-        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper.getContent(
-            client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
+        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper
+            .getContent(client.getLastHttpRequest().getBodyAsBinaryData())
+            .getClass();
         assertEquals(expectedContentClazz, actualContentClazz);
     }
 
     @Test
     public void monoVoidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testMethodReturnsMonoVoid())
-            .verifyComplete();
+        StepVerifier.create(testInterface.testMethodReturnsMonoVoid()).verifyComplete();
 
         assertTrue(client.closeCalledOnResponse);
     }
@@ -213,9 +193,7 @@ public class RestProxyTests {
     @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
 
@@ -227,9 +205,7 @@ public class RestProxyTests {
     @Test
     public void voidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
 
@@ -243,14 +219,10 @@ public class RestProxyTests {
     @Test
     public void monoVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(
-                testInterface.testMethodReturnsMonoVoid())
-            .verifyComplete();
+        StepVerifier.create(testInterface.testMethodReturnsMonoVoid()).verifyComplete();
 
         assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
         assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
@@ -260,15 +232,10 @@ public class RestProxyTests {
     @Test
     public void monoResponseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(
-                testInterface.testMethodReturnsMonoResponseVoid())
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(testInterface.testMethodReturnsMonoResponseVoid()).expectNextCount(1).verifyComplete();
 
         assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
         assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
@@ -278,10 +245,7 @@ public class RestProxyTests {
     @Test
     public void responseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testMethodReturnsResponseVoid();
@@ -294,10 +258,7 @@ public class RestProxyTests {
     @Test
     public void streamResponseDoesNotEagerlyReadsResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testDownload();
@@ -308,13 +269,11 @@ public class RestProxyTests {
     @Test
     public void monoWithStreamResponseDoesNotEagerlyReadsResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
+        StepVerifier
+            .create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
             .expectNextCount(1)
             .verifyComplete();
 
@@ -328,20 +287,27 @@ public class RestProxyTests {
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
-            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
-            Arguments.of(Named.of("eager flux with length",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
-            Arguments.of(Named.of("lazy flux",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block()), bytes.length),
-            Arguments.of(Named.of("lazy flux with length",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), (long) bytes.length, false).block()), bytes.length),
-            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
-                BinaryData.fromObject(bytes).getLength())
-        );
+        return Stream
+            .of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length), Arguments
+                .of(Named.of("string", BinaryData.fromString(string)), bytes.length), Arguments
+                    .of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
+                        .of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length), Arguments
+                            .of(Named
+                                .of("eager flux with length", BinaryData
+                                    .fromFlux(Flux.just(ByteBuffer.wrap(bytes)))
+                                    .block()), bytes.length), Arguments
+                                        .of(Named
+                                            .of("lazy flux", BinaryData
+                                                .fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false)
+                                                .block()), bytes.length), Arguments
+                                                    .of(Named
+                                                        .of("lazy flux with length", BinaryData
+                                                            .fromFlux(Flux.just(ByteBuffer.wrap(bytes)),
+                                                                (long) bytes.length, false)
+                                                            .block()), bytes.length), Arguments
+                                                                .of(Named
+                                                                    .of("serializable", BinaryData.fromObject(bytes)),
+                                                                    BinaryData.fromObject(bytes).getLength()));
     }
 
     private static final class LocalHttpClient implements HttpClient {
@@ -382,14 +348,18 @@ public class RestProxyTests {
 
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
-    public void mergeRequestOptionsContext(Context context, RequestOptions options,
-        Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+    public void mergeRequestOptionsContext(Context context,
+                                           RequestOptions options,
+                                           Map<Object, Object> expectedContextValues) {
+        Map<Object, Object> actualContextValues = RestProxyUtils
+            .mergeRequestOptionsContext(context, options)
+            .getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () ->
-                "Missing expected key '" + expectedKvp.getKey() + "'.");
+            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () -> "Missing expected key '"
+                + expectedKvp.getKey()
+                + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
         }
     }
@@ -399,41 +369,40 @@ public class RestProxyTests {
         twoValuesMap.put("key", "value");
         twoValuesMap.put("key2", "value2");
 
-        return Stream.of(
-            // Cases where the RequestOptions or it's Context doesn't exist.
-            Arguments.of(Context.NONE, null, Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions(), Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
+        return Stream
+            .of(
+                // Cases where the RequestOptions or it's Context doesn't exist.
+                Arguments.of(Context.NONE, null, Collections.emptyMap()), Arguments
+                    .of(Context.NONE, new RequestOptions(), Collections.emptyMap()), Arguments
+                        .of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
 
-            // Case where the RequestOptions Context is merged into an empty Context.
-            Arguments.of(Context.NONE, new RequestOptions().setContext(new Context("key", "value")),
-                Collections.singletonMap("key", "value")),
+                // Case where the RequestOptions Context is merged into an empty Context.
+                Arguments
+                    .of(Context.NONE, new RequestOptions().setContext(new Context("key", "value")), Collections
+                        .singletonMap("key", "value")),
 
-            // Case where the RequestOptions Context is merged, without replacement, into an existing Context.
-            Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key2", "value2")),
-                twoValuesMap),
+                // Case where the RequestOptions Context is merged, without replacement, into an existing Context.
+                Arguments
+                    .of(new Context("key", "value"), new RequestOptions().setContext(new Context("key2", "value2")),
+                        twoValuesMap),
 
-            // Case where the RequestOptions Context is merged and overrides an existing Context.
-            Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
-                Collections.singletonMap("key", "value2"))
-        );
+                // Case where the RequestOptions Context is merged and overrides an existing Context.
+                Arguments
+                    .of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
+                        Collections.singletonMap("key", "value2")));
     }
 
     @Test
     public void doesNotChangeEncodedPath() {
         String nextLinkUrl =
             "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                assertEquals(nextLinkUrl, request.getUrl().toString());
-                return Mono.just(new MockHttpResponse(null, 200));
-            })
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(nextLinkUrl, request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(null, 200));
+        }).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
 
-        StepVerifier.create(testInterface.testListNext(nextLinkUrl))
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(testInterface.testListNext(nextLinkUrl)).expectNextCount(1).verifyComplete();
     }
 }

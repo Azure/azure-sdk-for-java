@@ -34,7 +34,10 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * @param deserializedHeaders The headers, deserialized into an instance of type H.
      */
     @SuppressWarnings("deprecation")
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
+    public PagedResponseBase(HttpRequest request,
+                             int statusCode,
+                             HttpHeaders headers,
+                             Page<T> page,
                              H deserializedHeaders) {
         this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
@@ -50,8 +53,12 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      *      from the same place in the paged iteration.
      * @param deserializedHeaders The headers, deserialized into an instance of type H.
      */
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
-                             String continuationToken, H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request,
+                             int statusCode,
+                             HttpHeaders headers,
+                             List<T> items,
+                             String continuationToken,
+                             H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -113,6 +120,5 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

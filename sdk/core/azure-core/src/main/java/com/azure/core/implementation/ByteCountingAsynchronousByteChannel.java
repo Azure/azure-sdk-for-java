@@ -30,10 +30,9 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesRead");
     private volatile long bytesRead;
 
-    public ByteCountingAsynchronousByteChannel(
-        AsynchronousByteChannel channel,
-        ProgressReporter readProgressReporter,
-        ProgressReporter writeProgressReporter) {
+    public ByteCountingAsynchronousByteChannel(AsynchronousByteChannel channel,
+                                               ProgressReporter readProgressReporter,
+                                               ProgressReporter writeProgressReporter) {
         this.channel = Objects.requireNonNull(channel, "'channel' must not be null");
         this.readProgressReporter = readProgressReporter;
         this.writeProgressReporter = writeProgressReporter;
@@ -41,15 +40,16 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
 
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
-        this.channel.read(dst, attachment,
-            new DelegatingCompletionHandler<A>(handler, BYTES_READ_ATOMIC_UPDATER, readProgressReporter));
+        this.channel
+            .read(dst, attachment, new DelegatingCompletionHandler<A>(handler, BYTES_READ_ATOMIC_UPDATER,
+                readProgressReporter));
     }
 
     @Override
     public Future<Integer> read(ByteBuffer dst) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        channel.read(dst, dst,
-            new DelegatingCompletionHandler<>(future, BYTES_READ_ATOMIC_UPDATER, readProgressReporter));
+        channel
+            .read(dst, dst, new DelegatingCompletionHandler<>(future, BYTES_READ_ATOMIC_UPDATER, readProgressReporter));
         return future;
     }
 
@@ -57,8 +57,9 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
     public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        this.channel.write(src, attachment,
-            new DelegatingCompletionHandler<A>(handler, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
+        this.channel
+            .write(src, attachment, new DelegatingCompletionHandler<A>(handler, BYTES_WRITTEN_ATOMIC_UPDATER,
+                writeProgressReporter));
     }
 
     @Override
@@ -66,8 +67,9 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         CompletableFuture<Integer> future = new CompletableFuture<>();
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        channel.write(src, src,
-            new DelegatingCompletionHandler<>(future, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
+        channel
+            .write(src, src, new DelegatingCompletionHandler<>(future, BYTES_WRITTEN_ATOMIC_UPDATER,
+                writeProgressReporter));
         return future;
     }
 
@@ -95,20 +97,18 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         private final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater;
         private final ProgressReporter progressReporter;
 
-        private DelegatingCompletionHandler(
-            CompletionHandler<Integer, ? super T> handler,
-            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
-            ProgressReporter progressReporter) {
+        private DelegatingCompletionHandler(CompletionHandler<Integer, ? super T> handler,
+                                            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
+                                            ProgressReporter progressReporter) {
             this.handler = handler;
             this.future = null;
             this.atomicLongFieldUpdater = atomicLongFieldUpdater;
             this.progressReporter = progressReporter;
         }
 
-        private DelegatingCompletionHandler(
-            CompletableFuture<Integer> future,
-            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
-            ProgressReporter progressReporter) {
+        private DelegatingCompletionHandler(CompletableFuture<Integer> future,
+                                            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
+                                            ProgressReporter progressReporter) {
             this.handler = null;
             this.future = future;
             this.atomicLongFieldUpdater = atomicLongFieldUpdater;

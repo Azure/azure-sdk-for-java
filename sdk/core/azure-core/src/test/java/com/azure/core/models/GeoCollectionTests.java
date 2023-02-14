@@ -87,24 +87,22 @@ public class GeoCollectionTests {
         GeoCollection collection = new GeoCollection(geometries);
         GeoCollection collection1 = new GeoCollection(geometries1, boundingBox, properties);
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(collection, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(collection, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(collection, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(collection, 1, false),
 
-            // Other is itself.
-            Arguments.of(collection, collection, true),
-            Arguments.of(collection1, collection1, true),
+                // Other is itself.
+                Arguments.of(collection, collection, true), Arguments.of(collection1, collection1, true),
 
-            // Other is a different value.
-            Arguments.of(collection, collection1, false),
-            Arguments.of(collection1, collection, false),
+                // Other is a different value.
+                Arguments.of(collection, collection1, false), Arguments.of(collection1, collection, false),
 
-            // Other is the same value.
-            Arguments.of(collection, new GeoCollection(geometries), true),
-            Arguments.of(collection1, new GeoCollection(geometries1, boundingBox, properties), true)
-        );
+                // Other is the same value.
+                Arguments.of(collection, new GeoCollection(geometries), true), Arguments
+                    .of(collection1, new GeoCollection(geometries1, boundingBox, properties), true));
     }
 }

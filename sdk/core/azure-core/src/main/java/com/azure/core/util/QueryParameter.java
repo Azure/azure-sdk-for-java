@@ -30,8 +30,8 @@ class QueryParameter {
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
-    private static final AtomicReferenceFieldUpdater<QueryParameter, String> CACHED_STRING_VALUE_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(QueryParameter.class, String.class, "cachedStringValue");
+    private static final AtomicReferenceFieldUpdater<QueryParameter, String> CACHED_STRING_VALUE_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(QueryParameter.class, String.class, "cachedStringValue");
 
     /**
      * Create a QueryParameter instance using the provided name and value.
@@ -98,7 +98,7 @@ class QueryParameter {
      */
     public String[] getValues() {
         if (value != null) {
-            return new String[] {value};
+            return new String[] { value };
         } else if (!CoreUtils.isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {

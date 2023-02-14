@@ -29,8 +29,10 @@ public class RangeReplaceSubstitution extends Substitution {
      * taking place.
      * @param substitutionBase The string that will have its ranges substituted.
      */
-    public RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
-        String substitutionBase) {
+    public RangeReplaceSubstitution(String urlParameterName,
+                                    int methodParameterIndex,
+                                    boolean shouldEncode,
+                                    String substitutionBase) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
         this.ranges = new ArrayList<>();
 

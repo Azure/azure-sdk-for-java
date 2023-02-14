@@ -41,7 +41,8 @@ import java.util.function.Function;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class AddDatePolicyBenchmark {
-    private static final Function<HttpRequest, HttpResponse> MOCK_RESPONSE_GENERATOR = request -> new HttpResponse(request) {
+    private static final Function<HttpRequest, HttpResponse> MOCK_RESPONSE_GENERATOR = request -> new HttpResponse(
+        request) {
         @Override
         public int getStatusCode() {
             return 0;
@@ -119,8 +120,7 @@ public class AddDatePolicyBenchmark {
      */
     @Benchmark
     public void dateTimeRfc1123(Blackhole blackhole) {
-        blackhole.consume(dateTimeRfc1123Pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"))
-            .block());
+        blackhole.consume(dateTimeRfc1123Pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")).block());
     }
 
     /**
@@ -129,7 +129,7 @@ public class AddDatePolicyBenchmark {
      */
     @Benchmark
     public void dateTimeFormatter(Blackhole blackhole) {
-        blackhole.consume(dateTimeFormatterPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"))
-            .block());
+        blackhole
+            .consume(dateTimeFormatterPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")).block());
     }
 }
