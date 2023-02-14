@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SuggestResultHelper;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 
@@ -48,7 +47,6 @@ public final class SuggestResult {
      *
      * @param text The text of the suggestion result.
      */
-    @JsonCreator
     public SuggestResult(String text) {
         this.text = text;
     }

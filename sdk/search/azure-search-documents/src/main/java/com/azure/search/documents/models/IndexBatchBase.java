@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class IndexBatchBase<T> {
      * Constructor of {@link IndexBatchBase}
      * @param actions The actions in the batch.
      */
-    public IndexBatchBase(@JsonProperty(value = "value", required = true) List<IndexAction<T>> actions) {
+    public IndexBatchBase(List<IndexAction<T>> actions) {
         this.actions = actions;
     }
 
