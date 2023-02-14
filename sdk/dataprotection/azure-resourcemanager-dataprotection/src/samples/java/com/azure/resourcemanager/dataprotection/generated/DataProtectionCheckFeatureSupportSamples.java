@@ -10,7 +10,7 @@ import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequest;
 /** Samples for DataProtection CheckFeatureSupport. */
 public final class DataProtectionCheckFeatureSupportSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/CheckfeatureSupport.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/CheckfeatureSupport.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.

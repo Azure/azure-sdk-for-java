@@ -23,6 +23,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourceInner;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResultsGetResponse;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupVaultOperationResultsClient. */
@@ -62,7 +63,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
         Mono<BackupVaultOperationResultsGetResponse> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("operationId") String operationId,
@@ -73,7 +74,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +127,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -177,7 +178,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +195,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -212,7 +213,7 @@ public final class BackupVaultOperationResultsClientImpl implements BackupVaultO
     /**
      * The get operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

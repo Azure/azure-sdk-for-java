@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultAction. */
+/** The default action of allow or deny when no other rules match. */
 public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
     /** Static value Allow for DefaultAction. */
     public static final DefaultAction ALLOW = fromString("Allow");
 
     /** Static value Deny for DefaultAction. */
     public static final DefaultAction DENY = fromString("Deny");
+
+    /**
+     * Creates a new instance of DefaultAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultAction() {
+    }
 
     /**
      * Creates or finds a DefaultAction from its string representation.
@@ -27,7 +36,11 @@ public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
         return fromString(name, DefaultAction.class);
     }
 
-    /** @return known DefaultAction values. */
+    /**
+     * Gets known DefaultAction values.
+     *
+     * @return known DefaultAction values.
+     */
     public static Collection<DefaultAction> values() {
         return values(DefaultAction.class);
     }

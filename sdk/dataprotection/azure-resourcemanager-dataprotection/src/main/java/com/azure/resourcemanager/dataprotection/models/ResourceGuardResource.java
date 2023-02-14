@@ -55,15 +55,6 @@ public interface ResourceGuardResource {
     String etag();
 
     /**
-     * Gets the identity property: DppIdentityDetails
-     *
-     * <p>Input Managed Identity Details.
-     *
-     * @return the identity value.
-     */
-    DppIdentityDetails identity();
-
-    /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
@@ -140,7 +131,7 @@ public interface ResourceGuardResource {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group where the backup vault is present.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -150,10 +141,7 @@ public interface ResourceGuardResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithProperties {
+            extends DefinitionStages.WithTags, DefinitionStages.WithEtag, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -189,19 +177,6 @@ public interface ResourceGuardResource {
              */
             WithCreate withEtag(String etag);
         }
-        /** The stage of the ResourceGuardResource definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: DppIdentityDetails
-             *
-             * <p>Input Managed Identity Details.
-             *
-             * @param identity DppIdentityDetails
-             *     <p>Input Managed Identity Details.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(DppIdentityDetails identity);
-        }
         /** The stage of the ResourceGuardResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -221,7 +196,7 @@ public interface ResourceGuardResource {
     ResourceGuardResource.Update update();
 
     /** The template for ResourceGuardResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -242,35 +217,12 @@ public interface ResourceGuardResource {
         /** The stage of the ResourceGuardResource update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Resource Guard tags..
              *
-             * @param tags Resource tags.
+             * @param tags Resource Guard tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ResourceGuardResource update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: DppIdentityDetails
-             *
-             * <p>Input Managed Identity Details.
-             *
-             * @param identity DppIdentityDetails
-             *     <p>Input Managed Identity Details.
-             * @return the next definition stage.
-             */
-            Update withIdentity(DppIdentityDetails identity);
-        }
-        /** The stage of the ResourceGuardResource update allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Resource properties..
-             *
-             * @param properties Resource properties.
-             * @return the next definition stage.
-             */
-            Update withProperties(PatchBackupVaultInput properties);
         }
     }
     /**
