@@ -13,7 +13,7 @@ public interface Jobs {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface Jobs {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +38,7 @@ public interface Jobs {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
@@ -53,7 +53,7 @@ public interface Jobs {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.

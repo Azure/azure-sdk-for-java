@@ -122,9 +122,9 @@ com.azure:azure-json-gson;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-json-reflect;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventgrid;4.14.0;4.15.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.15.1;5.15.2
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.16.2;1.16.3
-com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-messaging-eventhubs;5.15.2;5.16.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.16.3;1.17.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -138,7 +138,7 @@ com.azure:azure-mixedreality-remoterendering;1.1.14;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.7;1.0.0-beta.8
 com.azure:azure-monitor-ingestion;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-monitor-query;1.1.0;1.2.0-beta.1
+com.azure:azure-monitor-query;1.1.0;1.1.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
@@ -176,7 +176,7 @@ com.azure:azure-xml;1.0.0-beta.1;1.0.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-developer-loadtesting;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-identity-extensions;1.1.0;1.2.0-beta.2
+com.azure:azure-identity-extensions;1.1.1;1.2.0-beta.2
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.11.0;2.12.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;2.11.0;2.12.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.10.0;2.11.0-beta.1
@@ -261,7 +261,7 @@ com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.5;1.0.0-beta.6
-com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.4
@@ -353,7 +353,7 @@ com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
@@ -67,7 +66,8 @@ public final class ResourceProvidersGetOperationResultWithResponseMockTests {
         Vault response =
             manager
                 .resourceProviders()
-                .getOperationResultWithResponse("fimrzrtuzqogse", "nevfdnw", "wmewzsyy", Context.NONE)
+                .getOperationResultWithResponse(
+                    "fimrzrtuzqogse", "nevfdnw", "wmewzsyy", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("xsdszuempsb", response.location());
