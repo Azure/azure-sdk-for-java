@@ -32,6 +32,7 @@ import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -45,14 +46,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.time.ZoneId;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -76,8 +72,9 @@ public final class CallAutomationAsyncClient {
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
+    private final CommunicationIdentifierModel sourceIdentity;
 
-    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient) {
+    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
@@ -86,13 +83,13 @@ public final class CallAutomationAsyncClient {
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceEndpoint = callServiceClient.getEndpoint();
+        this.sourceIdentity = sourceIdentity == null ? null : CommunicationIdentifierConverter.convert(sourceIdentity);
     }
 
     //region Pre-call Actions
     /**
      * Create a  call connection request from a source identity to a list of target identity.
      *
-     * @param source The caller of the call.
      * @param targets The list of targets.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -173,6 +170,14 @@ public final class CallAutomationAsyncClient {
             return monoError(logger, ex);
         }
     }
+    
+    /**
+     * Get Source Identity that is used for create and answer call  
+     * @return {@link CommunicationUserIdentifier} represent source
+     */
+    public CommunicationUserIdentifier getSourceIdentity() {
+        return sourceIdentity == null ? null : (CommunicationUserIdentifier) CommunicationIdentifierConverter.convert(sourceIdentity);
+    }
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
@@ -230,7 +235,7 @@ public final class CallAutomationAsyncClient {
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
-            .setSourceIdentity()
+            .setSourceIdentity(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
@@ -298,7 +303,8 @@ public final class CallAutomationAsyncClient {
 
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
-                .setCallbackUri(answerCallOptions.getCallbackUrl());
+                .setCallbackUri(answerCallOptions.getCallbackUrl())
+                .setAnsweredByIdentifier(sourceIdentity);
 
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =

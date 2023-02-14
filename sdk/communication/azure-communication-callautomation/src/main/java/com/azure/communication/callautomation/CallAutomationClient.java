@@ -43,7 +43,6 @@ public final class CallAutomationClient {
     /**
      * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param source The caller.
      * @param targets The list of targets.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -60,7 +59,6 @@ public final class CallAutomationClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The caller.
      * @param callInvite call invitee's information
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.

@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallRejectReason;
-import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
@@ -31,16 +30,16 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
 
     @Test
     public void createCall() {
-        CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
+        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
+        
+        CallAutomationClient callAutomationClient = getCallAutomationClientWithSourceIdentity(caller, new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
-        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CallSource callSource = new CallSource(caller);
 
-        CreateCallResult createCallResult = callAutomationClient.createCall(callSource, targets, CALL_CALLBACK_URL);
+        CreateCallResult createCallResult = callAutomationClient.createCall(targets, CALL_CALLBACK_URL);
 
         assertNotNull(createCallResult);
     }
@@ -54,7 +53,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateGroupCallOptions callOptions = new CreateGroupCallOptions(new CallSource(caller), targets, CALL_CALLBACK_URL);
+        CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
 
         Response<CreateCallResult> createCallResult = callAutomationClient.createCallWithResponse(callOptions, Context.NONE);

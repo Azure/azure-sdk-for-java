@@ -14,11 +14,11 @@ import java.time.Duration;
  */
 @Fluent
 public final class AddParticipantOptions {
-	
-	/**
-	 * Information for the target being add
-	 */
-	private final CallInvite targetCallInvite;
+    
+    /**
+     * Information for the target being add
+     */
+    private final CallInvite targetCallInvite;
 
     /**
      * The operational context
@@ -36,7 +36,7 @@ public final class AddParticipantOptions {
      * @param targetCallInvite target callinvite
      */
     public AddParticipantOptions(CallInvite targetCallInvite) {
-    	this.targetCallInvite = targetCallInvite;
+        this.targetCallInvite = targetCallInvite;
     }
     
     /**
@@ -44,11 +44,11 @@ public final class AddParticipantOptions {
      * @return target callInvite
      */
     public CallInvite getTargetCallInvite() {
-		return targetCallInvite;
-	}
+        return targetCallInvite;
+    }
 
 
-	/**
+    /**
      * Get the operationContext.
      *
      * @return the operationContext

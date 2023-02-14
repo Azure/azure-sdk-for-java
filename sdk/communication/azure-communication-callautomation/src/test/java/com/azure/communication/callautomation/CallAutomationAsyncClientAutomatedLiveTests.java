@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
@@ -14,6 +13,7 @@ import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -46,9 +46,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
          * 4. hang up the call.
          * 5. once call is hung up, verify disconnected event
          */
-        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
-            .buildAsyncClient();
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
@@ -58,14 +55,19 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
         try {
             // create caller and receiver
-            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier target = identityAsyncClient.createUser().block();
+            
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+                    .sourceIdentity(caller)
+                    .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(caller), targets,
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
@@ -137,9 +139,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
          * 2. Reject
          * 3. See if call is not established
          */
-        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
-            .buildAsyncClient();
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
@@ -147,14 +146,19 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
         try {
             // create caller and receiver
-            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier target = identityAsyncClient.createUser().block();
+            
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+                    .sourceIdentity(caller)
+                    .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(new CallSource(caller), targets,
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 

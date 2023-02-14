@@ -237,8 +237,8 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), new HashMap<String, String>());
         Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
             new AddParticipantOptions(callInvite)
-                .setOperationContext(CALL_OPERATION_CONTEXT)
-                , Context.NONE);
+                .setOperationContext(CALL_OPERATION_CONTEXT),
+                Context.NONE);
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
@@ -255,7 +255,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         RemoveParticipantResult removeParticipantsResult = callConnection.removeParticipants(
-           new CommunicationUserIdentifier(CALL_TARGET_ID));
+            new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(removeParticipantsResult);
         assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());
