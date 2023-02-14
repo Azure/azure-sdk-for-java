@@ -84,11 +84,7 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
-      - template: /eng/pipelines/templates/steps/build-and-test.yml
-        parameters:
-          GraalVMJdkVersion: '22.3.0'
-
-      - template: /eng/pipelines/templates/steps/build-and-test.yml
+      - template: /eng/pipelines/templates/steps/build-and-test-native.yml
         parameters:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
