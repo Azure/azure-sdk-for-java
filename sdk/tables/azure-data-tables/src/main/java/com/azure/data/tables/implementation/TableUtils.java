@@ -24,6 +24,9 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -36,6 +39,7 @@ public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS = 5;
 
     private TableUtils() {
         throw new UnsupportedOperationException("Cannot instantiate TablesUtils");
@@ -334,5 +338,29 @@ public final class TableUtils {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
     }
 }

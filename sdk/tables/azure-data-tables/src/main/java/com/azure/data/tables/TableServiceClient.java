@@ -55,9 +55,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -87,6 +85,7 @@ import java.util.stream.Collectors;
 @ServiceClient(builder = TableServiceClientBuilder.class)
 public final class TableServiceClient {
 
+    private static final ExecutorService THREAD_POOL = TableUtils.getThreadPoolWithShutdownHook();
     private final ClientLogger logger = new ClientLogger(TableServiceClient.class);
     private final AzureTableImpl implementation;
     private final String accountName;
@@ -247,13 +246,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
-        Future<Response<TableClient>> future = scheduler.submit(callable);
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(callable).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
@@ -321,13 +317,10 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
-        Future<Response<TableClient>> future = scheduler.submit(callable);
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(callable).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -403,13 +396,9 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
-        Future<Response<Void>> future =
-            scheduler.submit(() -> deleteTableWithResponse(tableName, context));
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(() -> deleteTableWithResponse(tableName, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             Exception exception = (Exception) TableUtils.mapThrowableToTableServiceException(e);
             if (exception instanceof TableServiceException
@@ -482,12 +471,9 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
-        Future<PagedIterable<TableItem>> future = scheduler.submit(() -> listTables(options, context));
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(() -> listTables(options, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -630,12 +616,9 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
-        Future<Response<TableServiceProperties>> future = scheduler.submit(() -> getPropertiesWithResponse(context));
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(() -> getPropertiesWithResponse(context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
@@ -790,12 +773,9 @@ public final class TableServiceClient {
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
                                                     Context context) {
 
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
-        Future<Response<Void>> future = scheduler.submit(() -> setPropertiesWithResponse(tableServiceProperties, context));
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(() -> setPropertiesWithResponse(tableServiceProperties, context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
@@ -924,12 +904,9 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = TableUtils.setTimeout(timeout);
-        Future<Response<TableServiceStatistics>> future = scheduler.submit(() -> getStatisticsWithResponse(context));
-        scheduler.shutdown();
         try {
-            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            return THREAD_POOL.submit(() -> getStatisticsWithResponse(context)).get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
