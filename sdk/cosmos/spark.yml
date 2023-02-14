@@ -16,6 +16,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      CosmosContainerName: 'sampleContainer1'
       DatabricksEndpoint: $(spark-databricks-endpoint)
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-1_2-12'
@@ -30,6 +31,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      CosmosContainerName: 'sampleContainer2'
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-2_2-12'
       ClusterName: 'oltp-ci-spark32-2workers-ds3v2'
@@ -43,6 +45,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      CosmosContainerName: 'sampleContainer3'
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'

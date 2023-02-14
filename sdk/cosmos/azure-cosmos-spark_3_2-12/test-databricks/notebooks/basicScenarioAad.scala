@@ -13,9 +13,9 @@ val tenantId = dbutils.widgets.get("tenantId")
 val resourceGroupName = dbutils.widgets.get("resourceGroupName")
 val clientId = dbutils.widgets.get("clientId")
 val clientSecret = dbutils.widgets.get("clientSecret")
+val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
 
 val cosmosDatabaseName = "sampleDB"
-val cosmosContainerName = "sampleContainer"
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
@@ -100,3 +100,7 @@ df.filter(col("isAlive") === true)
     .show()
 
 // COMMAND ----------
+
+// cleanup
+spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")
+spark.sql(s"DROP DATABASE cosmosCatalog.${cosmosDatabaseName}")
