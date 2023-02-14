@@ -304,6 +304,12 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
+          "code" : "java.annotation.attributeValueChanged",
+          "old" : "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
+          "new" : "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
+          "justification": "Import ServiceBusJmsPasswordlessConfiguration.class"
+        },
+        {
           "regex": true,
           "code": "java.method.numberOfParametersChanged",
           "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
