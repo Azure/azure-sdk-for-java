@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration for TelemtryClient
+ * Configuration for TelemetryClient
  */
 @Configuration
 public class TelemetryConfig {

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Exports Get. */
 public final class ExportsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportGetByEnrollmentAccount.
@@ -26,7 +26,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByManagementGroup.json
      */
     /**
      * Sample code: ExportGetByManagementGroup.
@@ -45,7 +45,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByDepartment.json
      */
     /**
      * Sample code: ExportGetByDepartment.
@@ -63,7 +63,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetBySubscription.json
      */
     /**
      * Sample code: ExportGetBySubscription.
@@ -81,7 +81,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByBillingAccount.json
      */
     /**
      * Sample code: ExportGetByBillingAccount.
@@ -100,7 +100,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportGetByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportGetByResourceGroup.json
      */
     /**
      * Sample code: ExportGetByResourceGroup.

@@ -118,8 +118,8 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 
 List<Object> logs = getLogs();
-UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs);
-System.out.println("Logs upload result status " + result.getStatus());
+client.upload("<data-collection-rule-id>", "<stream-name>", logs);
+System.out.println("Logs uploaded successfully");
 ```
 
 ### Upload custom logs with max concurrency
@@ -139,9 +139,9 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
 List<Object> logs = getLogs();
 UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
         .setMaxConcurrency(3);
-UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
         Context.NONE);
-System.out.println("Logs upload result status " + result.getStatus());
+System.out.println("Logs uploaded successfully");
 ```
 
 ### Handle logs ingestion response

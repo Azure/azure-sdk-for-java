@@ -49,6 +49,10 @@ public final class WorkloadGroupImpl implements WorkloadGroup, WorkloadGroup.Def
         return this.innerModel().queryExecutionTimeout();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadGroupInner innerModel() {
         return this.innerObject;
     }

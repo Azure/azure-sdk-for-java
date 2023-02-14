@@ -39,7 +39,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -66,7 +65,11 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getShowStatsContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getSkipContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getTopContinuesToken;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
@@ -248,7 +251,7 @@ class AnalyzeHealthcareEntityUtilClient {
                         finalIncludeStatistics, finalContext))
             );
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -271,30 +274,17 @@ class AnalyzeHealthcareEntityUtilClient {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-                if (service != null) {
-                    return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
-                        context)
-                        .map(this::toHealthcarePagedResponse)
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-                }
-
-                return legacyService.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue,
-                    context)
-                    .map(this::toTextAnalyticsPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            } else {
-                if (service != null) {
-                    return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                        .map(this::toHealthcarePagedResponse)
-                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-                }
-                return legacyService.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
-                    .map(this::toTextAnalyticsPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                top = getTopContinuesToken(continuationTokenMap);
+                skip = getSkipContinuesToken(continuationTokenMap);
+                showStats = getShowStatsContinuesToken(continuationTokenMap);
             }
+            return service != null
+                ? service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+                .map(this::toHealthcarePagedResponse)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
+                : legacyService.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
+                .map(this::toTextAnalyticsPagedResponse)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -304,9 +294,9 @@ class AnalyzeHealthcareEntityUtilClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            top = getTopContinuesToken(continuationTokenMap);
+            skip = getSkipContinuesToken(continuationTokenMap);
+            showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return service != null
             ? toHealthcarePagedResponse(service.jobStatusWithResponse(

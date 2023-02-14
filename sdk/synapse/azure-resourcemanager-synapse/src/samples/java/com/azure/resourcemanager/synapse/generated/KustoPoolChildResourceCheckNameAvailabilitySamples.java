@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.Type;
 
@@ -29,7 +28,7 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
                 new DatabaseCheckNameRequest()
                     .withName("adc1")
                     .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_ATTACHED_DATABASE_CONFIGURATIONS),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -51,6 +50,6 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
                 new DatabaseCheckNameRequest()
                     .withName("database1")
                     .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

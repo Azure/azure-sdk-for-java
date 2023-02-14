@@ -17,6 +17,10 @@ public final class KeyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private KeyProperties innerProperties;
 
+    /** Creates an instance of KeyInner class. */
+    public KeyInner() {
+    }
+
     /**
      * Get the innerProperties property: Keys resource properties.
      *

@@ -23,7 +23,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.costmanagement.fluent.ForecastsClient;
-import com.azure.resourcemanager.costmanagement.fluent.models.QueryResultInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.ForecastResultInner;
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 import reactor.core.publisher.Mono;
@@ -56,9 +56,9 @@ public final class ForecastsClientImpl implements ForecastsClient {
     public interface ForecastsService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/forecast")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> usage(
+        Mono<Response<ForecastResultInner>> usage(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -71,7 +71,7 @@ public final class ForecastsClientImpl implements ForecastsClient {
         @Post("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/forecast")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> externalCloudProviderUsage(
+        Mono<Response<ForecastResultInner>> externalCloudProviderUsage(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -106,10 +106,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response} on successful completion of {@link Mono}.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
         String scope, ForecastDefinition parameters, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -166,10 +166,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response} on successful completion of {@link Mono}.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
         String scope, ForecastDefinition parameters, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -212,10 +212,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query on successful completion of {@link Mono}.
+     * @return result of forecast on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> usageAsync(String scope, ForecastDefinition parameters) {
+    private Mono<ForecastResultInner> usageAsync(String scope, ForecastDefinition parameters) {
         final String filter = null;
         return usageWithResponseAsync(scope, parameters, filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -245,10 +245,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResultInner> usageWithResponse(
+    public Response<ForecastResultInner> usageWithResponse(
         String scope, ForecastDefinition parameters, String filter, Context context) {
         return usageWithResponseAsync(scope, parameters, filter, context).block();
     }
@@ -274,10 +274,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner usage(String scope, ForecastDefinition parameters) {
+    public ForecastResultInner usage(String scope, ForecastDefinition parameters) {
         final String filter = null;
         return usageWithResponse(scope, parameters, filter, Context.NONE).getValue();
     }
@@ -297,10 +297,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response} on successful completion of {@link Mono}.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> externalCloudProviderUsageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -360,10 +360,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response} on successful completion of {@link Mono}.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> externalCloudProviderUsageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -417,10 +417,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query on successful completion of {@link Mono}.
+     * @return result of forecast on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> externalCloudProviderUsageAsync(
+    private Mono<ForecastResultInner> externalCloudProviderUsageAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters) {
@@ -446,10 +446,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResultInner> externalCloudProviderUsageWithResponse(
+    public Response<ForecastResultInner> externalCloudProviderUsageWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -472,10 +472,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner externalCloudProviderUsage(
+    public ForecastResultInner externalCloudProviderUsage(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters) {

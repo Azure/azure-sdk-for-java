@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for Query UsageByExternalCloudProviderType. */
 public final class QueryUsageByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionsQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionsQuery.json
      */
     /**
      * Sample code: ExternalSubscriptionsQuery.
@@ -48,7 +48,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -56,14 +56,14 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)
@@ -72,7 +72,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountsQuery.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountsQuery.json
      */
     /**
      * Sample code: ExternalBillingAccountQueryList.
@@ -102,7 +102,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                         Arrays
                                                             .asList(
                                                                 new QueryFilter()
-                                                                    .withDimension(
+                                                                    .withDimensions(
                                                                         new QueryComparisonExpression()
                                                                             .withName("ResourceLocation")
                                                                             .withOperator(QueryOperatorType.IN)
@@ -110,14 +110,14 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
                                                                 new QueryFilter()
-                                                                    .withTag(
+                                                                    .withTags(
                                                                         new QueryComparisonExpression()
                                                                             .withName("Environment")
                                                                             .withOperator(QueryOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
                                                 new QueryFilter()
-                                                    .withDimension(
+                                                    .withDimensions(
                                                         new QueryComparisonExpression()
                                                             .withName("ResourceGroup")
                                                             .withOperator(QueryOperatorType.IN)

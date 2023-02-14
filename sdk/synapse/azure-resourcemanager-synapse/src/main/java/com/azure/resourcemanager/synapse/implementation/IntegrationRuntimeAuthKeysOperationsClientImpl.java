@@ -60,7 +60,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface IntegrationRuntimeAuthKeysOperationsService {
+    public interface IntegrationRuntimeAuthKeysOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -96,7 +96,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * Regenerate the authentication key for an integration runtime.
+     * Regenerate integration runtime authentication key
+     *
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -165,7 +167,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * Regenerate the authentication key for an integration runtime.
+     * Regenerate integration runtime authentication key
+     *
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -233,7 +237,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * Regenerate the authentication key for an integration runtime.
+     * Regenerate integration runtime authentication key
+     *
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -252,40 +258,13 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
         IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         return regenerateWithResponseAsync(
                 resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters)
-            .flatMap(
-                (Response<IntegrationRuntimeAuthKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Regenerate the authentication key for an integration runtime.
+     * Regenerate integration runtime authentication key
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateAsync(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters)
-            .block();
-    }
-
-    /**
-     * Regenerate the authentication key for an integration runtime.
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -310,7 +289,34 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * List authentication keys in an integration runtime.
+     * Regenerate integration runtime authentication key
+     *
+     * <p>Regenerate the authentication key for an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeAuthKeysInner regenerate(
+        String resourceGroupName,
+        String workspaceName,
+        String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateWithResponse(
+                resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -367,7 +373,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * List authentication keys in an integration runtime.
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -422,7 +430,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     }
 
     /**
-     * List authentication keys in an integration runtime.
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -436,35 +446,13 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     private Mono<IntegrationRuntimeAuthKeysInner> listAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeAuthKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List authentication keys in an integration runtime.
+     * List integration runtime authentication keys
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return listAsync(resourceGroupName, workspaceName, integrationRuntimeName).block();
-    }
-
-    /**
-     * List authentication keys in an integration runtime.
+     * <p>List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -479,5 +467,24 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     public Response<IntegrationRuntimeAuthKeysInner> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeAuthKeysInner list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

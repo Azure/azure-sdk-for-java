@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolUsages List. */
 public final class SqlPoolUsagesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class SqlPoolUsagesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listTheUsagesOfASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolUsages().list("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", Context.NONE);
+        manager.sqlPoolUsages().list("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", com.azure.core.util.Context.NONE);
     }
 }

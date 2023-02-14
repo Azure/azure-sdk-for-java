@@ -30,6 +30,9 @@ public enum RecommendedSensitivityLabelUpdateKind {
      */
     @JsonCreator
     public static RecommendedSensitivityLabelUpdateKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RecommendedSensitivityLabelUpdateKind[] items = RecommendedSensitivityLabelUpdateKind.values();
         for (RecommendedSensitivityLabelUpdateKind item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RecommendedSensitivityLabelUpdateKind {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
