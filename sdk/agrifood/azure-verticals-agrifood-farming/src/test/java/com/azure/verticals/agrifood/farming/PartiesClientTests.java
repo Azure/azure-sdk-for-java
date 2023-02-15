@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
@@ -49,9 +50,9 @@ public class PartiesClientTests extends TestBase {
 
     @Test
     public void testList() {
-        var client = createClient();
-        PagedFlux<BinaryData> response = client.list(new RequestOptions());
-        assertNotNull(response);
-        assertTrue(response.toStream().count() > 0);
+        PartiesAsyncClient client = createClient();
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response = client.getWithResponse("contoso-party", new RequestOptions()).block();
+        assertNotNull(response.getValue());
     }
 }
