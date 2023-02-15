@@ -38,6 +38,8 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMeterName;
+import com.azure.cosmos.models.CosmosMeterOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -1046,6 +1048,44 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
+            CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMeterName name);
+        }
+    }
+
+    public static final class CosmosMeterOptionsHelper {
+        private static final AtomicReference<CosmosMeterOptionsAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosMeterOptionsClassLoaded = new AtomicBoolean(false);
+
+        private CosmosMeterOptionsHelper() {}
+
+        public static void setCosmosMeterOptionsAccessor(final CosmosMeterOptionsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosMeterOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosMeterOptionsAccessor...");
+                cosmosMeterOptionsClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosMeterOptionsAccessor getCosmosMeterOptionsAccessor() {
+            if (!cosmosMeterOptionsClassLoaded.get()) {
+                logger.debug("Initializing CosmosMeterOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosMeterOptionsHelper.CosmosMeterOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosMeterOptionsAccessor is not initialized yet!");
+                System.exit(9726); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosMeterOptionsAccessor {
+            EnumSet<TagName> getSuppressedTagNames(CosmosMeterOptions options);
+            boolean isHistogramPublishingEnabled(CosmosMeterOptions options);
+            double[] getPercentiles(CosmosMeterOptions options);
         }
     }
 
@@ -1133,6 +1173,8 @@ public class ImplementationBridgeHelpers {
             Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
             void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            CosmosMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMeterName name);
+            CosmosMeterOptions createDisabledMeterOptions(CosmosMeterName name);
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);

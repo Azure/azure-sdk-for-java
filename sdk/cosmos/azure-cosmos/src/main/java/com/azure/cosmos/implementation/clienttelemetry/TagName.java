@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
+import java.util.EnumSet;
 import java.util.Locale;
 
 public enum TagName {
@@ -41,5 +42,41 @@ public enum TagName {
     public int value() {
         return this.value;
     }
+
+    public static final EnumSet<TagName> DEFAULT_TAGS = EnumSet.of(
+        TagName.Container,
+        TagName.Operation,
+        TagName.OperationStatusCode,
+        TagName.ClientCorrelationId,
+        TagName.RequestStatusCode,
+        TagName.RequestOperationType,
+        TagName.ServiceAddress,
+        TagName.RegionName
+    );
+
+    public static final EnumSet<TagName> ALL_TAGS = EnumSet.of(
+        TagName.Container,
+        TagName.Operation,
+        TagName.OperationStatusCode,
+        TagName.ClientCorrelationId,
+        TagName.ConsistencyLevel,
+        TagName.PartitionKeyRangeId,
+        TagName.RequestStatusCode,
+        TagName.RequestOperationType,
+        TagName.RegionName,
+        TagName.ServiceEndpoint,
+        TagName.ServiceAddress,
+        TagName.IsForceRefresh,
+        TagName.IsForceCollectionRoutingMapRefresh
+    );
+
+    public static final EnumSet<TagName> MINIMUM_TAGS = EnumSet.of(
+        TagName.Container,
+        TagName.Operation,
+        TagName.OperationStatusCode,
+        TagName.ClientCorrelationId,
+        TagName.RequestStatusCode,
+        TagName.RequestOperationType
+    );
 }
 

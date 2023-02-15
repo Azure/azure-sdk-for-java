@@ -22,6 +22,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsComp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.models.CosmosMeterName;
+import com.azure.cosmos.models.CosmosMeterOptions;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.FunctionCounter;
@@ -41,6 +43,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +54,8 @@ public final class ClientTelemetryMetrics {
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetryMetrics.class);
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    private static final ImplementationBridgeHelpers.CosmosMeterOptionsHelper.CosmosMeterOptionsAccessor optionsAccessor =
+        ImplementationBridgeHelpers.CosmosMeterOptionsHelper.getCosmosMeterOptionsAccessor();
     private static final
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -98,7 +103,7 @@ public final class ClientTelemetryMetrics {
         }
 
         DistributionSummary averageSystemCpuUsageMeter = DistributionSummary
-            .builder(nameOf(CosmosMetricNames.System.AvgCpuLoad))
+            .builder(CosmosMeterName.SYSTEM_CPU.toString())
             .baseUnit("%")
             .description("Avg. System CPU load")
             .maximumExpectedValue(100d)
@@ -108,7 +113,7 @@ public final class ClientTelemetryMetrics {
         averageSystemCpuUsageMeter.record(averageSystemCpuUsage);
 
         DistributionSummary freeMemoryAvailableInMBMeter = DistributionSummary
-            .builder(nameOf(CosmosMetricNames.System.FreeMemoryAvailable))
+            .builder(CosmosMeterName.SYSTEM_MEMORY_FREE.toString())
             .baseUnit("MB")
             .description("Free memory available")
             .publishPercentiles()
@@ -163,6 +168,7 @@ public final class ClientTelemetryMetrics {
 
         OperationMetricProducer metricProducer = new OperationMetricProducer(metricCategories, metricTagNames, operationTags);
         metricProducer.recordOperation(
+            cosmosAsyncClient,
             requestCharge,
             latency,
             maxItemCount == null ? -1 : maxItemCount,
@@ -209,10 +215,6 @@ public final class ClientTelemetryMetrics {
 
     public static String escape(String value) {
         return PERCENT_ESCAPER.escape(value);
-    }
-
-    private static String nameOf(final String member) {
-        return "cosmos.client." + member;
     }
 
     private static Tags createOperationTags(
@@ -278,6 +280,27 @@ public final class ClientTelemetryMetrics {
         return Tags.of(effectiveTags);
     }
 
+    private static Tags getEffectiveTags(Tags tags, CosmosMeterOptions meterOptions) {
+        EnumSet<TagName> suppressedTags = optionsAccessor.getSuppressedTagNames(meterOptions);
+        if (suppressedTags == null || suppressedTags.isEmpty()) {
+            return tags;
+        }
+
+        Tags result = Tags.empty();
+        HashSet<String> suppressedNames = new HashSet<>();
+        for (TagName t: suppressedTags) {
+            suppressedNames.add(t.name());
+        }
+
+        for (Tag t: tags) {
+            if (!suppressedNames.contains(t.getKey())) {
+                result.and(t);
+            }
+        }
+
+        return result;
+    }
+
     private static class OperationMetricProducer {
         private final EnumSet<TagName> metricTagNames;
         private final EnumSet<MetricCategory> metricCategories;
@@ -290,6 +313,7 @@ public final class ClientTelemetryMetrics {
         }
 
         public void recordOperation(
+            CosmosAsyncClient cosmosAsyncClient,
             float requestCharge,
             Duration latency,
             int maxItemCount,
@@ -297,51 +321,72 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnostics diagnostics,
             Set<String> contactedRegions) {
 
-            Counter operationsCounter = Counter
-                .builder(nameOf(CosmosMetricNames.OperationSummary.Calls))
-                .baseUnit("calls")
-                .description("Operation calls")
-                .tags(operationTags)
-                .register(compositeRegistry);
-            operationsCounter.increment();
+            CosmosMeterOptions callsOptions = clientAccessor.getMeterOptions(
+                cosmosAsyncClient,
+                CosmosMeterName.OPERATION_SUMMARY_CALLS);
 
-            DistributionSummary requestChargeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.OperationSummary.RequestCharge))
-                .baseUnit("RU (request unit)")
-                .description("Operation RU charge")
-                .maximumExpectedValue(10_000_000d)
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            requestChargeMeter.record(Math.min(requestCharge, 10_000_000d));
-
-            if (this.metricCategories.contains(MetricCategory.OperationDetails)) {
-                DistributionSummary regionsContactedMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.OperationDetails.RegionsContacted))
-                    .baseUnit("Regions contacted")
-                    .description("Operation - regions contacted")
-                    .maximumExpectedValue(100d)
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(operationTags)
+            if (callsOptions.isEnabled()) {
+                Counter operationsCounter = Counter
+                    .builder(callsOptions.getMeterName().toString())
+                    .baseUnit("calls")
+                    .description("Operation calls")
+                    .tags(getEffectiveTags(operationTags, callsOptions))
                     .register(compositeRegistry);
-                if (contactedRegions != null && contactedRegions.size() > 0) {
-                    regionsContactedMeter.record(Math.min(contactedRegions.size(), 100d));
-                }
-
-                this.recordItemCounts(maxItemCount, actualItemCount);
+                operationsCounter.increment();
             }
 
-            Timer latencyMeter = Timer
-                .builder(nameOf(CosmosMetricNames.OperationSummary.Latency))
-                .description("Operation latency")
-                .maximumExpectedValue(Duration.ofSeconds(300))
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            latencyMeter.record(latency);
+            CosmosMeterOptions requestChargeOptions = clientAccessor.getMeterOptions(
+                cosmosAsyncClient,
+                CosmosMeterName.OPERATION_SUMMARY_REQUEST_CHARGE);
+            if (requestChargeOptions.isEnabled()) {
+                DistributionSummary requestChargeMeter = DistributionSummary
+                    .builder(requestChargeOptions.getMeterName().toString())
+                    .baseUnit("RU (request unit)")
+                    .description("Operation RU charge")
+                    .maximumExpectedValue(100_000d)
+                    .publishPercentiles(optionsAccessor.getPercentiles(requestChargeOptions))
+                    .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(requestChargeOptions))
+                    .tags(getEffectiveTags(operationTags, requestChargeOptions))
+                    .register(compositeRegistry);
+                requestChargeMeter.record(Math.min(requestCharge, 100_000d));
+            }
+
+            if (this.metricCategories.contains(MetricCategory.OperationDetails)) {
+                CosmosMeterOptions regionsOptions = clientAccessor.getMeterOptions(
+                    cosmosAsyncClient,
+                    CosmosMeterName.OPERATION_DETAILS_REGIONS_CONTACTED);
+                if (regionsOptions.isEnabled()) {
+                    DistributionSummary regionsContactedMeter = DistributionSummary
+                        .builder(regionsOptions.getMeterName().toString())
+                        .baseUnit("Regions contacted")
+                        .description("Operation - regions contacted")
+                        .maximumExpectedValue(100d)
+                        .publishPercentiles(optionsAccessor.getPercentiles(regionsOptions))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(regionsOptions))
+                        .tags(getEffectiveTags(operationTags, regionsOptions))
+                        .register(compositeRegistry);
+                    if (contactedRegions != null && contactedRegions.size() > 0) {
+                        regionsContactedMeter.record(Math.min(contactedRegions.size(), 100d));
+                    }
+                }
+
+                this.recordItemCounts(cosmosAsyncClient, maxItemCount, actualItemCount);
+            }
+
+            CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                cosmosAsyncClient,
+                CosmosMeterName.OPERATION_SUMMARY_LATENCY);
+            if (latencyOptions.isEnabled()) {
+                Timer latencyMeter = Timer
+                    .builder(latencyOptions.getMeterName().toString())
+                    .description("Operation latency")
+                    .maximumExpectedValue(Duration.ofSeconds(300))
+                    .publishPercentiles(optionsAccessor.getPercentiles(latencyOptions))
+                    .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(latencyOptions))
+                    .tags(getEffectiveTags(operationTags, latencyOptions))
+                    .register(compositeRegistry);
+                latencyMeter.record(latency);
+            }
 
             List<ClientSideRequestStatistics> clientSideRequestStatistics =
                 diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
@@ -349,10 +394,18 @@ public final class ClientTelemetryMetrics {
             if (clientSideRequestStatistics != null) {
                 for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
 
-                    recordStoreResponseStatistics(requestStatistics.getResponseStatisticsList());
-                    recordStoreResponseStatistics(requestStatistics.getSupplementalResponseStatisticsList());
-                    recordGatewayStatistics(requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
-                    recordAddressResolutionStatistics(requestStatistics.getAddressResolutionStatistics());
+                    recordStoreResponseStatistics(
+                        cosmosAsyncClient,
+                        requestStatistics.getResponseStatisticsList());
+                    recordStoreResponseStatistics(
+                        cosmosAsyncClient,
+                        requestStatistics.getSupplementalResponseStatisticsList());
+                    recordGatewayStatistics(
+                        cosmosAsyncClient,
+                        requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
+                    recordAddressResolutionStatistics(
+                        cosmosAsyncClient,
+                        requestStatistics.getAddressResolutionStatistics());
                 }
             }
 
@@ -366,10 +419,11 @@ public final class ClientTelemetryMetrics {
             QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
                 feedDiagnostics.getQueryPlanDiagnosticsContext();
 
-            recordQueryPlanDiagnostics(queryPlanDiagnostics);
+            recordQueryPlanDiagnostics(cosmosAsyncClient, queryPlanDiagnostics);
         }
 
         private void recordQueryPlanDiagnostics(
+            CosmosAsyncClient cosmosAsyncClient,
             QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics
         ) {
             if (queryPlanDiagnostics == null || !this.metricCategories.contains(MetricCategory.RequestSummary)) {
@@ -380,86 +434,120 @@ public final class ClientTelemetryMetrics {
                 createQueryPlanTags(metricTagNames)
             );
 
-            Counter requestCounter = Counter
-                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Requests))
-                .baseUnit("requests")
-                .description("Gateway requests")
-                .tags(requestTags)
-                .register(compositeRegistry);
-            requestCounter.increment();
+            CosmosMeterOptions requestsOptions = clientAccessor.getMeterOptions(
+                cosmosAsyncClient,
+                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+            if (requestsOptions.isEnabled()) {
+                Counter requestCounter = Counter
+                    .builder(requestsOptions.getMeterName().toString())
+                    .baseUnit("requests")
+                    .description("Gateway requests")
+                    .tags(getEffectiveTags(requestTags, requestsOptions))
+                    .register(compositeRegistry);
+                requestCounter.increment();
+            }
 
             Duration latency = queryPlanDiagnostics.getDuration();
 
             if (latency != null) {
-                Timer requestLatencyMeter = Timer
-                    .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Latency))
-                    .description("Gateway Request latency")
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                requestLatencyMeter.record(latency);
+                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                    cosmosAsyncClient,
+                    CosmosMeterName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+                if (latencyOptions.isEnabled()) {
+                    Timer requestLatencyMeter = Timer
+                        .builder(latencyOptions.getMeterName().toString())
+                        .description("Gateway Request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(latencyOptions))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(latencyOptions))
+                        .tags(getEffectiveTags(requestTags, latencyOptions))
+                        .register(compositeRegistry);
+                    requestLatencyMeter.record(latency);
+                }
             }
 
             recordRequestTimeline(
-                CosmosMetricNames.RequestDetails.Gateway.TimelinePrefix,
+                cosmosAsyncClient,
+                CosmosMeterName.REQUEST_DETAILS_GATEWAY_TIMELINE,
                 queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
         private void recordRequestPayloadSizes(
+            CosmosAsyncClient client,
             int requestPayloadSizeInBytes,
             int responsePayloadSizeInBytes
         ) {
-            DistributionSummary requestPayloadSizeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.RequestSummary.RequestPayloadSize))
-                .baseUnit("bytes")
-                .description("Request payload size in bytes")
-                .maximumExpectedValue(16d * 1024)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            requestPayloadSizeMeter.record(requestPayloadSizeInBytes);
+            CosmosMeterOptions reqSizeOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.REQUEST_SUMMARY_SIZE_REQUEST);
+            if (reqSizeOptions.isEnabled()) {
+                DistributionSummary requestPayloadSizeMeter = DistributionSummary
+                    .builder(reqSizeOptions.getMeterName().toString())
+                    .baseUnit("bytes")
+                    .description("Request payload size in bytes")
+                    .maximumExpectedValue(16d * 1024)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(getEffectiveTags(operationTags, reqSizeOptions))
+                    .register(compositeRegistry);
+                requestPayloadSizeMeter.record(requestPayloadSizeInBytes);
+            }
 
-            DistributionSummary responsePayloadSizeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.RequestSummary.ResponsePayloadSize))
-                .baseUnit("bytes")
-                .description("Response payload size in bytes")
-                .maximumExpectedValue(16d * 1024)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            responsePayloadSizeMeter.record(responsePayloadSizeInBytes);
+            CosmosMeterOptions rspSizeOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.REQUEST_SUMMARY_SIZE_RESPONSE);
+            if (rspSizeOptions.isEnabled()) {
+                DistributionSummary responsePayloadSizeMeter = DistributionSummary
+                    .builder(rspSizeOptions.getMeterName().toString())
+                    .baseUnit("bytes")
+                    .description("Response payload size in bytes")
+                    .maximumExpectedValue(16d * 1024)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(getEffectiveTags(operationTags, rspSizeOptions))
+                    .register(compositeRegistry);
+                responsePayloadSizeMeter.record(responsePayloadSizeInBytes);
+            }
         }
 
         private void recordItemCounts(
+            CosmosAsyncClient client,
             int maxItemCount,
             int actualItemCount
         ) {
             if (maxItemCount > 0 && this.metricCategories.contains(MetricCategory.OperationDetails)) {
-                DistributionSummary maxItemCountMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.OperationSummary.MaxItemCount))
-                    .baseUnit("item count")
-                    .description("Request max. item count")
-                    .maximumExpectedValue(1_000_000d)
-                    .publishPercentiles()
-                    .publishPercentileHistogram(false)
-                    .tags(operationTags)
-                    .register(compositeRegistry);
-                maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 1_000_000d)));
 
-                DistributionSummary actualItemCountMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.OperationSummary.ActualItemCount))
-                    .baseUnit("item count")
-                    .description("Response actual item count")
-                    .maximumExpectedValue(1_000_000d)
-                    .publishPercentiles()
-                    .publishPercentileHistogram(false)
-                    .tags(operationTags)
-                    .register(compositeRegistry);
-                actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 1_000_000d)));
+                CosmosMeterOptions maxItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.OPERATION_DETAILS_MAX_ITEM_COUNT);
+                if (maxItemCountOptions.isEnabled()) {
+                    DistributionSummary maxItemCountMeter = DistributionSummary
+                        .builder(maxItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Request max. item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(operationTags, maxItemCountOptions))
+                        .register(compositeRegistry);
+                    maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 100_000d)));
+                }
+
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
+                if (actualItemCountOptions.isEnabled()) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(operationTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
+                }
             }
         }
 
@@ -559,54 +647,80 @@ public final class ClientTelemetryMetrics {
             return Tags.of(effectiveTags);
         }
 
-        private void recordRntbdEndpointStatistics(RntbdEndpointStatistics endpointStatistics, Tags requestTags) {
+        private void recordRntbdEndpointStatistics(
+            CosmosAsyncClient client,
+            RntbdEndpointStatistics endpointStatistics,
+            Tags requestTags) {
             if (endpointStatistics == null || !this.metricCategories.contains(MetricCategory.Legacy)) {
                 return;
             }
 
-            DistributionSummary acquiredChannelsMeter = DistributionSummary
-                .builder(
-                    nameOf(CosmosMetricNames.DisabledByDefaultLegacy.RntbdRequestEndpointStatistics.AcquiredChannels))
-                .baseUnit("#")
-                .description("Endpoint statistics(acquired channels)")
-                .maximumExpectedValue(100_000d)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(requestTags)
-                .register(compositeRegistry);
+            CosmosMeterOptions acquiredOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_ACQUIRED);
+            if (acquiredOptions.isEnabled()) {
+                DistributionSummary acquiredChannelsMeter = DistributionSummary
+                    .builder(acquiredOptions.getMeterName().toString())
+                    .baseUnit("#")
+                    .description("Endpoint statistics(acquired channels)")
+                    .maximumExpectedValue(100_000d)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(getEffectiveTags(requestTags, acquiredOptions))
+                    .register(compositeRegistry);
 
-            acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
+                acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
+            }
 
-            DistributionSummary availableChannelsMeter = DistributionSummary
-                .builder(
-                    nameOf(CosmosMetricNames.DisabledByDefaultLegacy.RntbdRequestEndpointStatistics.AvailableChannels))
-                .baseUnit("#")
-                .description("Endpoint statistics(available channels)")
-                .maximumExpectedValue(100_000d)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(requestTags)
-                .register(compositeRegistry);
-            availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
+            CosmosMeterOptions availableOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_AVAILABLE);
+            if (availableOptions.isEnabled()) {
+                DistributionSummary availableChannelsMeter = DistributionSummary
+                    .builder(availableOptions.getMeterName().toString())
+                    .baseUnit("#")
+                    .description("Endpoint statistics(available channels)")
+                    .maximumExpectedValue(100_000d)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(getEffectiveTags(requestTags, availableOptions))
+                    .register(compositeRegistry);
+                availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
+            }
 
-            DistributionSummary inflightRequestsMeter = DistributionSummary
-                .builder(
-                    nameOf(CosmosMetricNames.DisabledByDefaultLegacy.RntbdRequestEndpointStatistics.InflightRequests))
-                .baseUnit("#")
-                .description("Endpoint statistics(inflight requests)")
-                .tags(requestTags)
-                .maximumExpectedValue(1_000_000d)
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
-                .register(compositeRegistry);
-            inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
+            CosmosMeterOptions inflightOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_INFLIGHT);
+            if (inflightOptions.isEnabled()) {
+                DistributionSummary inflightRequestsMeter = DistributionSummary
+                    .builder(inflightOptions.getMeterName().toString())
+                    .baseUnit("#")
+                    .description("Endpoint statistics(inflight requests)")
+                    .tags(getEffectiveTags(requestTags, inflightOptions))
+                    .maximumExpectedValue(1_000_000d)
+                    .publishPercentiles(optionsAccessor.getPercentiles(inflightOptions))
+                    .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(inflightOptions))
+                    .register(compositeRegistry);
+                inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
+            }
         }
 
-        private void recordRequestTimeline(String prefix, RequestTimeline requestTimeline, Tags requestTags) {
+        private void recordRequestTimeline(
+            CosmosAsyncClient client,
+            CosmosMeterName name,
+            RequestTimeline requestTimeline,
+            Tags requestTags) {
+
             if (requestTimeline == null || !this.metricCategories.contains(MetricCategory.RequestDetails)) {
                 return;
             }
 
+            CosmosMeterOptions timelineOptions = clientAccessor.getMeterOptions(
+                client,
+                name);
+            if (!timelineOptions.isEnabled()) {
+                return;
+            }
             for (RequestTimeline.Event event : requestTimeline) {
                 Duration duration = event.getDuration();
                 if (duration == null || duration == Duration.ZERO) {
@@ -614,18 +728,19 @@ public final class ClientTelemetryMetrics {
                 }
 
                 Timer eventMeter = Timer
-                    .builder(nameOf(prefix + escape(event.getName())))
+                    .builder(timelineOptions.getMeterName().toString() + "." + escape(event.getName()))
                     .description(String.format("Request timeline (%s)", event.getName()))
                     .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(requestTags)
+                    .publishPercentiles(optionsAccessor.getPercentiles(timelineOptions))
+                    .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(timelineOptions))
+                    .tags(getEffectiveTags(requestTags, timelineOptions))
                     .register(compositeRegistry);
                 eventMeter.record(duration);
             }
         }
 
         private void recordStoreResponseStatistics(
+            CosmosAsyncClient client,
             List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
@@ -653,69 +768,94 @@ public final class ClientTelemetryMetrics {
                 Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
 
                 if (backendLatency != null) {
-                    DistributionSummary backendRequestLatencyMeter = DistributionSummary
-                        .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.BackendLatency))
-                        .baseUnit("ms")
-                        .description("Backend service latency")
-                        .maximumExpectedValue(6_000d)
-                        .publishPercentiles(0.95, 0.99)
-                        .publishPercentileHistogram(true)
-                        .tags(requestTags)
-                        .register(compositeRegistry);
-                    backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
+
+                    CosmosMeterOptions beLatencyOptions = clientAccessor.getMeterOptions(
+                        client,
+                        CosmosMeterName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
+                    if (beLatencyOptions.isEnabled()) {
+                        DistributionSummary backendRequestLatencyMeter = DistributionSummary
+                            .builder(beLatencyOptions.getMeterName().toString())
+                            .baseUnit("ms")
+                            .description("Backend service latency")
+                            .maximumExpectedValue(6_000d)
+                            .publishPercentiles(optionsAccessor.getPercentiles(beLatencyOptions))
+                            .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(beLatencyOptions))
+                            .tags(getEffectiveTags(requestTags, beLatencyOptions))
+                            .register(compositeRegistry);
+                        backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
+                    }
                 }
 
-                double requestCharge = storeResponseDiagnostics.getRequestCharge();
-                DistributionSummary requestChargeMeter = DistributionSummary
-                    .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.RequestCharge))
-                    .baseUnit("RU (request unit)")
-                    .description("RNTBD Request RU charge")
-                    .maximumExpectedValue(1_000_000d)
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
-
-                Duration latency = responseStatistics.getDuration();
-                if (latency != null) {
-                    Timer requestLatencyMeter = Timer
-                        .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.Latency))
-                        .description("RNTBD Request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(6))
-                        .publishPercentiles(0.95, 0.99)
-                        .publishPercentileHistogram(true)
-                        .tags(requestTags)
+                CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
+                if (ruOptions.isEnabled()) {
+                    double requestCharge = storeResponseDiagnostics.getRequestCharge();
+                    DistributionSummary requestChargeMeter = DistributionSummary
+                        .builder(ruOptions.getMeterName().toString())
+                        .baseUnit("RU (request unit)")
+                        .description("RNTBD Request RU charge")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles(optionsAccessor.getPercentiles(ruOptions))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(ruOptions))
+                        .tags(getEffectiveTags(requestTags, ruOptions))
                         .register(compositeRegistry);
-                    requestLatencyMeter.record(latency);
+                    requestChargeMeter.record(Math.min(requestCharge, 100_000d));
                 }
 
-                Counter requestCounter = Counter
-                    .builder(nameOf(CosmosMetricNames.RequestSummary.Direct.Requests))
-                    .baseUnit("requests")
-                    .description("RNTBD requests")
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                requestCounter.increment();
+                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_LATENCY);
+                if (latencyOptions.isEnabled()) {
+                    Duration latency = responseStatistics.getDuration();
+                    if (latency != null) {
+                        Timer requestLatencyMeter = Timer
+                            .builder(latencyOptions.getMeterName().toString())
+                            .description("RNTBD Request latency")
+                            .maximumExpectedValue(Duration.ofSeconds(6))
+                            .publishPercentiles(optionsAccessor.getPercentiles(latencyOptions))
+                            .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(latencyOptions))
+                            .tags(getEffectiveTags(requestTags, latencyOptions))
+                            .register(compositeRegistry);
+                        requestLatencyMeter.record(latency);
+                    }
+                }
+
+                CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_REQUESTS);
+                if (reqOptions.isEnabled()) {
+                    Counter requestCounter = Counter
+                        .builder(reqOptions.getMeterName().toString())
+                        .baseUnit("requests")
+                        .description("RNTBD requests")
+                        .tags(getEffectiveTags(requestTags, reqOptions))
+                        .register(compositeRegistry);
+                    requestCounter.increment();
+                }
 
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
-                        CosmosMetricNames.RequestDetails.Direct.TimelinePrefix,
+                        client,
+                        CosmosMeterName.REQUEST_DETAILS_DIRECT_TIMELINE,
                         storeResponseDiagnostics.getRequestTimeline(), requestTags);
                 }
 
                 recordRequestPayloadSizes(
+                    client,
                     storeResponseDiagnostics.getRequestPayloadLength(),
                     storeResponseDiagnostics.getResponsePayloadLength()
                 );
 
                 recordRntbdEndpointStatistics(
+                    client,
                     storeResponseDiagnostics.getRntbdEndpointStatistics(),
                     requestTags);
             }
         }
 
         private void recordGatewayStatistics(
+            CosmosAsyncClient client,
             Duration latency,
             ClientSideRequestStatistics.GatewayStatistics gatewayStatistics) {
 
@@ -741,44 +881,61 @@ public final class ClientTelemetryMetrics {
                     null)
             );
 
-            Counter requestCounter = Counter
-                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Requests))
-                .baseUnit("requests")
-                .description("Gateway requests")
-                .tags(requestTags)
-                .register(compositeRegistry);
-            requestCounter.increment();
+            CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+            if (reqOptions.isEnabled()) {
+                Counter requestCounter = Counter
+                    .builder(reqOptions.getMeterName().toString())
+                    .baseUnit("requests")
+                    .description("Gateway requests")
+                    .tags(getEffectiveTags(requestTags, reqOptions))
+                    .register(compositeRegistry);
+                requestCounter.increment();
+            }
 
-            double requestCharge = gatewayStatistics.getRequestCharge();
-            DistributionSummary requestChargeMeter = DistributionSummary
-                .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.RequestCharge))
-                .baseUnit("RU (request unit)")
-                .description("Gateway Request RU charge")
-                .maximumExpectedValue(1_000_000d)
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
-                .tags(requestTags)
-                .register(compositeRegistry);
-            requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
+            CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
+                client,
+                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
+            if (ruOptions.isEnabled()) {
+                double requestCharge = gatewayStatistics.getRequestCharge();
+                DistributionSummary requestChargeMeter = DistributionSummary
+                    .builder(ruOptions.getMeterName().toString())
+                    .baseUnit("RU (request unit)")
+                    .description("Gateway Request RU charge")
+                    .maximumExpectedValue(100_000d)
+                    .publishPercentiles(optionsAccessor.getPercentiles(ruOptions))
+                    .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(ruOptions))
+                    .tags(getEffectiveTags(requestTags, ruOptions))
+                    .register(compositeRegistry);
+                requestChargeMeter.record(Math.min(requestCharge, 100_000d));
+            }
 
             if (latency != null) {
-                Timer requestLatencyMeter = Timer
-                    .builder(nameOf(CosmosMetricNames.RequestSummary.Gateway.Latency))
-                    .description("Gateway Request latency")
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                requestLatencyMeter.record(latency);
+                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+                if (latencyOptions.isEnabled()) {
+                    Timer requestLatencyMeter = Timer
+                        .builder(latencyOptions.getMeterName().toString())
+                        .description("Gateway Request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(latencyOptions))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(latencyOptions))
+                        .tags(getEffectiveTags(requestTags, latencyOptions))
+                        .register(compositeRegistry);
+                    requestLatencyMeter.record(latency);
+                }
             }
 
             recordRequestTimeline(
-                CosmosMetricNames.RequestDetails.Gateway.TimelinePrefix,
+                client,
+                CosmosMeterName.REQUEST_DETAILS_GATEWAY_TIMELINE,
                 gatewayStatistics.getRequestTimeline(), requestTags);
         }
 
         private void recordAddressResolutionStatistics(
+            CosmosAsyncClient client,
             Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap) {
 
             if (addressResolutionStatisticsMap == null
@@ -813,23 +970,33 @@ public final class ClientTelemetryMetrics {
                     addressResolutionStatistics.getStartTimeUTC(),
                     addressResolutionStatistics.getEndTimeUTC());
 
-                Timer addressResolutionLatencyMeter = Timer
-                    .builder(nameOf(CosmosMetricNames.Direct.AddressResolution.Latency))
-                    .description("Address resolution latency")
-                    .maximumExpectedValue(Duration.ofSeconds(6))
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(addressResolutionTags)
-                    .register(compositeRegistry);
-                addressResolutionLatencyMeter.record(latency);
+                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
+                if (latencyOptions.isEnabled()) {
+                    Timer addressResolutionLatencyMeter = Timer
+                        .builder(latencyOptions.getMeterName().toString())
+                        .description("Address resolution latency")
+                        .maximumExpectedValue(Duration.ofSeconds(6))
+                        .publishPercentiles(optionsAccessor.getPercentiles(latencyOptions))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(latencyOptions))
+                        .tags(getEffectiveTags(addressResolutionTags, latencyOptions))
+                        .register(compositeRegistry);
+                    addressResolutionLatencyMeter.record(latency);
+                }
 
-                Counter requestCounter = Counter
-                    .builder(nameOf(CosmosMetricNames.Direct.AddressResolution.Requests))
-                    .baseUnit("requests")
-                    .description("Address resolution requests")
-                    .tags(addressResolutionTags)
-                    .register(compositeRegistry);
-                requestCounter.increment();
+                CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMeterName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
+                if (reqOptions.isEnabled()) {
+                    Counter requestCounter = Counter
+                        .builder(reqOptions.getMeterName().toString())
+                        .baseUnit("requests")
+                        .description("Address resolution requests")
+                        .tags(getEffectiveTags(addressResolutionTags, reqOptions))
+                        .register(compositeRegistry);
+                    requestCounter.increment();
+                }
             }
         }
     }
@@ -844,64 +1011,101 @@ public final class ClientTelemetryMetrics {
 
         private RntbdMetricsV2(MeterRegistry registry, RntbdTransportClient client, RntbdEndpoint endpoint) {
             Tags tags = Tags.of(endpoint.clientMetricTag());
-
             this.metricCategories = client.getMetricCategories();
-
             if (metricCategories.contains(MetricCategory.DirectRequests)) {
-                this.requests = Timer
-                    .builder(nameOf(CosmosMetricNames.Direct.Requests.Latency))
-                    .description("RNTBD request latency")
-                    .tags(tags)
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentileHistogram(true)
-                    .publishPercentiles(0.95, 0.99)
-                    .register(registry);
 
-                this.responseErrors = Timer
-                    .builder(nameOf(CosmosMetricNames.Direct.Requests.FailedRequestLatency))
-                    .description("RNTBD failed request latency")
-                    .tags(tags)
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentileHistogram(true)
-                    .publishPercentiles(0.95, 0.99)
-                    .register(registry);
+                CosmosMeterOptions options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY);
+                if (options.isEnabled()) {
+                    this.requests = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(tags, options))
+                        .register(registry);
+                } else {
+                    this.requests = null;
+                }
 
-                this.responseSuccesses = Timer
-                    .builder(nameOf(CosmosMetricNames.Direct.Requests.SuccessRequestLatency))
-                    .description("RNTBD successful request latency")
-                    .tags(tags)
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentileHistogram(true)
-                    .publishPercentiles(0.95, 0.99)
-                    .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY_FAILED);
+                if (options.isEnabled()) {
+                    this.responseErrors = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD failed request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(tags, options))
+                        .register(registry);
+                } else {
+                    this.responseErrors = null;
+                }
 
-                Gauge.builder(nameOf(CosmosMetricNames.Direct.Requests.Concurrent), endpoint, RntbdEndpoint::concurrentRequests)
-                     .description("RNTBD concurrent requests (executing or queued request count)")
-                     .tags(tags)
-                     .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY_SUCCESS);
+                if (options.isEnabled()) {
+                    this.responseSuccesses = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD successful request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(tags, options))
+                        .register(registry);
+                } else {
+                    this.responseSuccesses = null;
+                }
 
-                Gauge.builder(nameOf(CosmosMetricNames.Direct.Requests.Queued), endpoint, RntbdEndpoint::requestQueueLength)
-                     .description("RNTBD queued request count")
-                     .tags(tags)
-                     .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_CONCURRENT_COUNT);
+                if (options.isEnabled()) {
+                    Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::concurrentRequests)
+                         .description("RNTBD concurrent requests (executing or queued request count)")
+                         .tags(getEffectiveTags(tags, options))
+                         .register(registry);
+                }
 
-                this.requestSize = DistributionSummary.builder(nameOf(CosmosMetricNames.Direct.Requests.RequestPayloadSize))
-                                                      .description("RNTBD request size (bytes)")
-                                                      .baseUnit("bytes")
-                                                      .tags(tags)
-                                                      .maximumExpectedValue(16_000_000d)
-                                                      .publishPercentileHistogram(false)
-                                                      .publishPercentiles()
-                                                      .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_QUEUED_COUNT);
+                if (options.isEnabled()) {
+                    Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::requestQueueLength)
+                         .description("RNTBD queued request count")
+                         .tags(getEffectiveTags(tags, options))
+                         .register(registry);
+                }
 
-                this.responseSize = DistributionSummary.builder(nameOf(CosmosMetricNames.Direct.Requests.ResponsePayloadSize))
-                                                       .description("RNTBD response size (bytes)")
-                                                       .baseUnit("bytes")
-                                                       .tags(tags)
-                                                       .maximumExpectedValue(16_000_000d)
-                                                       .publishPercentileHistogram(false)
-                                                       .publishPercentiles()
-                                                       .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_SIZE_REQUEST);
+                if (options.isEnabled()) {
+                    this.requestSize = DistributionSummary.builder(options.getMeterName().toString())
+                                                          .description("RNTBD request size (bytes)")
+                                                          .baseUnit("bytes")
+                                                          .tags(getEffectiveTags(tags, options))
+                                                          .maximumExpectedValue(16_000_000d)
+                                                          .publishPercentileHistogram(false)
+                                                          .publishPercentiles()
+                                                          .register(registry);
+                } else {
+                    this.requestSize = null;
+                }
+
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_SIZE_RESPONSE);
+                if (options.isEnabled()) {
+                    this.responseSize = DistributionSummary.builder(options.getMeterName().toString())
+                                                           .description("RNTBD response size (bytes)")
+                                                           .baseUnit("bytes")
+                                                           .tags(getEffectiveTags(tags, options))
+                                                           .maximumExpectedValue(16_000_000d)
+                                                           .publishPercentileHistogram(false)
+                                                           .publishPercentiles()
+                                                           .register(registry);
+                } else {
+                    this.responseSize = null;
+                }
             } else {
                 this.requests = null;
                 this.responseErrors = null;
@@ -911,39 +1115,59 @@ public final class ClientTelemetryMetrics {
             }
 
             if (metricCategories.contains(MetricCategory.DirectEndpoints)) {
-                Gauge.builder(nameOf(CosmosMetricNames.Direct.Endpoints.Count), client, RntbdTransportClient::endpointCount)
-                     .description("RNTBD endpoint count")
-                     .register(registry);
+                CosmosMeterOptions options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_ENDPOINTS_COUNT);
+                if (options.isEnabled()) {
+                    Gauge.builder(options.getMeterName().toString(), client, RntbdTransportClient::endpointCount)
+                         .description("RNTBD endpoint count")
+                         .register(registry);
+                }
 
-                FunctionCounter.builder(
-                    nameOf(CosmosMetricNames.Direct.Endpoints.EvictedCount),
-                    client,
-                    RntbdTransportClient::endpointEvictionCount)
-                               .description("RNTBD endpoint eviction count")
-                               .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_ENDPOINTS_EVICTED);
+                if (options.isEnabled()) {
+                    FunctionCounter.builder(
+                        options.getMeterName().toString(),
+                        client,
+                        RntbdTransportClient::endpointEvictionCount)
+                                   .description("RNTBD endpoint eviction count")
+                                   .register(registry);
+                }
             }
 
             if (metricCategories.contains(MetricCategory.DirectChannels)) {
-                FunctionCounter.builder(
-                    nameOf(CosmosMetricNames.Direct.Channels.Acquired),
-                    endpoint,
-                    RntbdEndpoint::totalChannelsAcquiredMetric)
-                               .description("RNTBD acquired channel count")
-                               .tags(tags)
-                               .register(registry);
+                CosmosMeterOptions options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_ACQUIRED_COUNT);
+                if (options.isEnabled()) {
+                    FunctionCounter.builder(
+                        options.getMeterName().toString(),
+                        endpoint,
+                        RntbdEndpoint::totalChannelsAcquiredMetric)
+                                   .description("RNTBD acquired channel count")
+                                   .tags(getEffectiveTags(tags, options))
+                                   .register(registry);
+                }
 
-                FunctionCounter.builder(
-                    nameOf(CosmosMetricNames.Direct.Channels.Closed),
-                    endpoint,
-                    RntbdEndpoint::totalChannelsClosedMetric)
-                               .description("RNTBD closed channel count")
-                               .tags(tags)
-                               .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_CLOSED_COUNT);
+                if (options.isEnabled()) {
+                    FunctionCounter.builder(
+                        options.getMeterName().toString(),
+                        endpoint,
+                        RntbdEndpoint::totalChannelsClosedMetric)
+                                   .description("RNTBD closed channel count")
+                                   .tags(getEffectiveTags(tags, options))
+                                   .register(registry);
+                }
 
-                Gauge.builder(nameOf(CosmosMetricNames.Direct.Channels.Available), endpoint, RntbdEndpoint::channelsAvailableMetric)
-                     .description("RNTBD available channel count")
-                     .tags(tags)
-                     .register(registry);
+                options = client
+                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_AVAILABLE_COUNT);
+                if (options.isEnabled()) {
+                    Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::channelsAvailableMetric)
+                         .description("RNTBD available channel count")
+                         .tags(getEffectiveTags(tags, options))
+                         .register(registry);
+                }
             }
         }
 

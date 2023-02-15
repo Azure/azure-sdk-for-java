@@ -28,6 +28,8 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosMeterName;
+import com.azure.cosmos.models.CosmosMeterOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -751,6 +753,12 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
                     return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
+
+                @Override
+                public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMeterName name) {
+                    return  telemetryConfigAccessor
+                        .getMeterOptions(client.clientTelemetryConfig, name);
                 }
             }
         );

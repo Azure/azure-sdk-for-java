@@ -18,6 +18,9 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMeterName;
+import com.azure.cosmos.models.CosmosMeterOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -93,7 +96,7 @@ public class RntbdTransportClient extends TransportClient {
     private final Tag tag;
     private boolean channelAcquisitionContextEnabled;
     private final GlobalEndpointManager globalEndpointManager;
-    private final EnumSet<MetricCategory> metricCategories;
+    private final CosmosClientTelemetryConfig metricConfig;
 
     // endregion
 
@@ -130,7 +133,7 @@ public class RntbdTransportClient extends TransportClient {
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
-        this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+        this.metricConfig = null;
     }
 
     RntbdTransportClient(
@@ -154,12 +157,9 @@ public class RntbdTransportClient extends TransportClient {
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
-            this.metricCategories = ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .getMetricCategories(clientTelemetry.getClientTelemetryConfig());
+            this.metricConfig = clientTelemetry.getClientTelemetryConfig();
         } else {
-            this.metricCategories = MetricCategory.DEFAULT_CATEGORIES;
+            this.metricConfig = null;
         }
     }
 
@@ -371,7 +371,23 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     public EnumSet<MetricCategory> getMetricCategories() {
-        return this.metricCategories;
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
+    }
+
+    public CosmosMeterOptions getMeterOptions(CosmosMeterName name) {
+        return this.metricConfig != null ?
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getMeterOptions(this.metricConfig, name) :
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .createDisabledMeterOptions(name);
     }
 
     // endregion
