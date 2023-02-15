@@ -34,9 +34,9 @@
  * Let's take a look at the individual authentication scenarios and their respective credential use below.
  *
  * <H2> Authenticating on Azure Hosted Platforms via Managed Identity</H2>
- * The Managed Identity credential authenticates the configured managed identity (system or user assigned) of an Azure resource. So, if the
+ * The {@link com.azure.identity.ManagedIdentityCredential} authenticates the configured managed identity (system or user assigned) of an Azure resource. So, if the
  * application is running inside an Azure resource that supports Managed Identity through IDENTITY/MSI, IMDS endpoints,
- * or both, then the ManagedIdentityCredential will get your application authenticated, and offers a great secretless authentication experience.
+ * or both, then the {@link com.azure.identity.ManagedIdentityCredential} will get your application authenticated, and offers a great secretless authentication experience.
  * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/managedidentity/docs"> conceptual knowledge and configuration details </a>.
  *
  * <p><strong>Sample: Construct a Managed Identity Credential</strong></p>
@@ -78,14 +78,14 @@
  *     </tr>
  *   </tbody>
  * </table>
- *
+ * <br> <br/>
  * Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.
  *
  * <H2> Authenticate with Service Principals</H2>
  * The Azure Active Directory (Azure AD) allows users to register service principals which can be used as an identity for authentication.
- * The authenticating is supported via a client secret or client certificate. The {@link com.azure.identity.ClientCertificateCredential} or {@link com.azure.identity.ClientSecretCredential}
+ * The authentication is supported via a client secret or client certificate. The {@link com.azure.identity.ClientCertificateCredential} or {@link com.azure.identity.ClientSecretCredential}
  * here will work well to get your application authenticated.
- * For more information refer to <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/docs"> Conceptual knowledge and configuration details </a>.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/docs"> conceptual knowledge and configuration details </a>.
  *
  * <p><strong>Sample: Construct a ClientSecretCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
@@ -123,13 +123,13 @@
  *     </tr>
  *   </tbody>
  * </table>
- *
+ * <br> <br/>
  * Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.
  *
  * <H2> Authenticate with User Credentials</H2>
  * The Azure Identity library supports user credentials based authentication via {@link com.azure.identity.InteractiveBrowserCredential},
  * {@link com.azure.identity.DeviceCodeCredential} and {@link com.azure.identity.UsernamePasswordCredential}.
- * For more information refer to <a href="https://aka.ms/azsdk/java/identity/usercredential/docs"> Conceptual knowledge and configuration details </a>.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/usercredential/docs"> conceptual knowledge and configuration details </a>.
  *
  * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
@@ -175,14 +175,14 @@
  *     </tr>
  *   </tbody>
  * </table>
- *
+ * <br> <br/>
  * Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.
  *
  * <H2> Authenticate in Developer Environment</H2>
  * The Azure Identity library supports authenticating in developer environment via {@link com.azure.identity.AzureCliCredential} and
  * {@link com.azure.identity.IntelliJCredential}. These credentials offer a seamless authentication experience by utilizing
  * the cached Azure Plugin login information from their respective IDE tool.
- * For more information refer to <a href="https://aka.ms/azsdk/java/identity/developerenvironment/docs"> Conceptual knowledge and configuration details </a>.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/developerenvironment/docs"> conceptual knowledge and configuration details </a>.
  *
  * <p><strong>Sample: Construct AzureCliCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
@@ -218,7 +218,7 @@
  *     </tr>
  *   </tbody>
  * </table>
- *
+ * <br> <br/>
  * Refer to the JavaDoc for each of these classes for more details about when these credential types should be used.
  *
  * @see com.azure.identity.DefaultAzureCredential
