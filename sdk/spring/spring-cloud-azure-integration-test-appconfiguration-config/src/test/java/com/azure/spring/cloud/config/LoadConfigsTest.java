@@ -3,11 +3,7 @@ package com.azure.spring.cloud.config;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.LinkedHashMap;
-
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,21 +19,17 @@ import org.springframework.test.context.TestPropertySource;
 @EnableConfigurationProperties(value = MessageProperties.class)
 public class LoadConfigsTest {
 
-    private final Logger log = LoggerFactory.getLogger(LoadConfigsTest.class);
-
     @Autowired
     private MessageProperties properties;
     
     @Autowired
     private Environment env;
 
+    @SuppressWarnings("null")
     @Test
     public void sampleTest() {
         assertEquals("Test", properties.getMessage());
         assertEquals("From Key Vault", properties.getSecret());
-        
-        @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Boolean> map = env.getProperty("feature-management.featureManagement", LinkedHashMap.class);
-        assertTrue(map.get("Alpha"));
+        assertTrue(env.getProperty("feature-management.featureManagement.Alpha", Boolean.class));
     }
 }
