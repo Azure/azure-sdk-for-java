@@ -44,16 +44,16 @@ public final class PurviewWorkflowAsyncClient {
      *     id: String (Required)
      *     triggers (Required): [
      *          (Required){
-     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested/when_dsar_deletion_is_requested/when_dsar_export_is_requested) (Required)
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
      *             underGlossaryHierarchy: String (Optional)
      *             underCollection: String (Optional)
      *             underGlossary: String (Optional)
      *         }
      *     ]
-     *     createdTime: OffsetDateTime (Required)
-     *     createdBy: String (Required)
-     *     lastUpdateTime: OffsetDateTime (Required)
-     *     updatedBy: String (Required)
+     *     createdTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastUpdateTime: OffsetDateTime (Optional)
+     *     updatedBy: String (Optional)
      *     name: String (Required)
      *     isEnabled: boolean (Required)
      *     description: String (Required)
@@ -83,16 +83,16 @@ public final class PurviewWorkflowAsyncClient {
      *     id: String (Required)
      *     triggers (Required): [
      *          (Required){
-     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested/when_dsar_deletion_is_requested/when_dsar_export_is_requested) (Required)
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
      *             underGlossaryHierarchy: String (Optional)
      *             underCollection: String (Optional)
      *             underGlossary: String (Optional)
      *         }
      *     ]
-     *     createdTime: OffsetDateTime (Required)
-     *     createdBy: String (Required)
-     *     lastUpdateTime: OffsetDateTime (Required)
-     *     updatedBy: String (Required)
+     *     createdTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastUpdateTime: OffsetDateTime (Optional)
+     *     updatedBy: String (Optional)
      *     name: String (Required)
      *     isEnabled: boolean (Required)
      *     description: String (Required)
@@ -123,7 +123,7 @@ public final class PurviewWorkflowAsyncClient {
      * {
      *     triggers (Required): [
      *          (Required){
-     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested/when_dsar_deletion_is_requested/when_dsar_export_is_requested) (Required)
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
      *             underGlossaryHierarchy: String (Optional)
      *             underCollection: String (Optional)
      *             underGlossary: String (Optional)
@@ -143,16 +143,16 @@ public final class PurviewWorkflowAsyncClient {
      *     id: String (Required)
      *     triggers (Required): [
      *          (Required){
-     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested/when_dsar_deletion_is_requested/when_dsar_export_is_requested) (Required)
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
      *             underGlossaryHierarchy: String (Optional)
      *             underCollection: String (Optional)
      *             underGlossary: String (Optional)
      *         }
      *     ]
-     *     createdTime: OffsetDateTime (Required)
-     *     createdBy: String (Required)
-     *     lastUpdateTime: OffsetDateTime (Required)
-     *     updatedBy: String (Required)
+     *     createdTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastUpdateTime: OffsetDateTime (Optional)
+     *     updatedBy: String (Optional)
      *     name: String (Required)
      *     isEnabled: boolean (Required)
      *     description: String (Required)
@@ -204,7 +204,7 @@ public final class PurviewWorkflowAsyncClient {
      * {
      *     operations (Required): [
      *          (Required){
-     *             type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *             type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *             payload: Object (Required)
      *         }
      *     ]
@@ -220,7 +220,7 @@ public final class PurviewWorkflowAsyncClient {
      *     requestor: String (Required)
      *     operations (Required): [
      *          (Required){
-     *             type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *             type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *             payload: Object (Required)
      *             workflowRunIds (Optional): [
      *                 String (Optional)
@@ -259,7 +259,6 @@ public final class PurviewWorkflowAsyncClient {
      *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
      *     <tr><td>runStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow runs by workflow run status. In the form of "," separated string.</td></tr>
-     *     <tr><td>userRequestIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by user request id list. In the form of "," separated string.</td></tr>
      *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
      *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time.</td></tr>
      * </table>
@@ -276,7 +275,7 @@ public final class PurviewWorkflowAsyncClient {
      *     requestor: String (Required)
      *     userRequestId: String (Optional)
      *     runPayload (Required): {
-     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *         targetValue: String (Required)
      *     }
      *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
@@ -312,7 +311,7 @@ public final class PurviewWorkflowAsyncClient {
      *     requestor: String (Optional)
      *     userRequestId: String (Optional)
      *     runPayload (Optional): {
-     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *         targetValue: String (Required)
      *         payload: Object (Required)
      *     }
@@ -401,7 +400,7 @@ public final class PurviewWorkflowAsyncClient {
      *     createdTime: OffsetDateTime (Required)
      *     lastUpdateTime: OffsetDateTime (Required)
      *     payload (Required): {
-     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *         targetValue: String (Required)
      *         payload: Object (Optional)
      *     }
@@ -452,7 +451,7 @@ public final class PurviewWorkflowAsyncClient {
      *     createdTime: OffsetDateTime (Required)
      *     lastUpdateTime: OffsetDateTime (Required)
      *     payload (Required): {
-     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess/DSARDelete/DSARExport) (Required)
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
      *         targetValue: String (Required)
      *         payload: Object (Optional)
      *     }
@@ -582,7 +581,7 @@ public final class PurviewWorkflowAsyncClient {
      *
      * <pre>{@code
      * {
-     *     newStatus: String(Not Started/In Progress/Completed/Canceled) (Required)
+     *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
      * }</pre>
@@ -598,63 +597,8 @@ public final class PurviewWorkflowAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateTaskRequestWithResponse(
+    public Mono<Response<Void>> updateTaskStatusWithResponse(
             String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
-        return this.serviceClient.updateTaskRequestWithResponseAsync(taskId, taskUpdateCommand, requestOptions);
-    }
-
-    /**
-     * Claim a DSAR task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     comment: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param taskId The task id.
-     * @param dsarTaskClaimCommand Request body of claiming DSAR task request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> claimDsarTaskRequestWithResponse(
-            String taskId, BinaryData dsarTaskClaimCommand, RequestOptions requestOptions) {
-        return this.serviceClient.claimDsarTaskRequestWithResponseAsync(taskId, dsarTaskClaimCommand, requestOptions);
-    }
-
-    /**
-     * Release a DSAR task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     comment: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param taskId The task id.
-     * @param dsarTaskReleaseCommand Request body of releasing DSAR task request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> releaseDsarTaskRequestWithResponse(
-            String taskId, BinaryData dsarTaskReleaseCommand, RequestOptions requestOptions) {
-        return this.serviceClient.releaseDsarTaskRequestWithResponseAsync(
-                taskId, dsarTaskReleaseCommand, requestOptions);
+        return this.serviceClient.updateTaskStatusWithResponseAsync(taskId, taskUpdateCommand, requestOptions);
     }
 }
