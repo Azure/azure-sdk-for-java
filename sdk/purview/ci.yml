@@ -15,6 +15,7 @@ trigger:
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-workflow/pom.xml
 
 pr:
   branches:
@@ -32,6 +33,8 @@ pr:
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-workflow/pom.xml
+
 
 parameters:
   - name: release_azureanalyticspurviewadministration

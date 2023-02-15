@@ -20,9 +20,10 @@ public class WorkflowDelete {
                         .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.deleteworkflow.workflowdelete
         RequestOptions requestOptions = new RequestOptions();
+        String workflowId = "4afb5752-e47f-43a1-8ba7-c696bf8d2745";
         Response<Void> response =
                 purviewWorkflowClient.deleteWorkflowWithResponse(
-                        "4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
+                    workflowId, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.deleteworkflow.workflowdelete
     }
 }

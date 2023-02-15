@@ -21,9 +21,10 @@ public class WorkTaskGet {
                         .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.getworkflowtask.worktaskget
         RequestOptions requestOptions = new RequestOptions();
+        String taskId = "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c";
         Response<BinaryData> response =
                 purviewWorkflowClient.getWorkflowTaskWithResponse(
-                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
+                        taskId, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.getworkflowtask.worktaskget
     }
 }

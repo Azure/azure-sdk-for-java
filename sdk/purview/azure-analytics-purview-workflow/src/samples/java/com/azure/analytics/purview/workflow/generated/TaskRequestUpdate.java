@@ -22,9 +22,10 @@ public class TaskRequestUpdate {
         // BEGIN:com.azure.analytics.purview.workflow.generated.updatetaskrequest.taskrequestupdate
         BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"In Progress\"}");
         RequestOptions requestOptions = new RequestOptions();
+        String taskId = "d5bd0215-df84-4245-8e18-3a8f012be376";
         Response<Void> response =
                 purviewWorkflowClient.updateTaskRequestWithResponse(
-                        "d5bd0215-df84-4245-8e18-3a8f012be376", taskUpdateCommand, requestOptions);
+                    taskId, taskUpdateCommand, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.updatetaskrequest.taskrequestupdate
     }
 }

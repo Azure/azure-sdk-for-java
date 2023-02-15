@@ -22,9 +22,10 @@ public class WorkflowRunCancel {
         // BEGIN:com.azure.analytics.purview.workflow.generated.cancelworkflowrun.workflowruncancel
         BinaryData runCancelReply = BinaryData.fromString("{\"comment\":\"Thanks!\"}");
         RequestOptions requestOptions = new RequestOptions();
+        String workflowRunId = "b7aaf54b-59c2-4a0e-a7d0-f431044f2198";
         Response<Void> response =
                 purviewWorkflowClient.cancelWorkflowRunWithResponse(
-                        "b7aaf54b-59c2-4a0e-a7d0-f431044f2198", runCancelReply, requestOptions);
+                    workflowRunId, runCancelReply, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.cancelworkflowrun.workflowruncancel
     }
 }

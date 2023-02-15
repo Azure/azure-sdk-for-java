@@ -21,9 +21,10 @@ public class WorkflowRunGet {
                         .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.getworkflowrun.workflowrunget
         RequestOptions requestOptions = new RequestOptions();
+        String workflowRunId = "04334a74-3400-11ed-a261-0242ac120002";
         Response<BinaryData> response =
                 purviewWorkflowClient.getWorkflowRunWithResponse(
-                        "04334a74-3400-11ed-a261-0242ac120002", requestOptions);
+                    workflowRunId, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.getworkflowrun.workflowrunget
     }
 }
