@@ -73,7 +73,7 @@ public class ServiceBusJmsPasswordlessConfiguration {
         return mergedProperties;
     }
 
-    class ServiceBusJmsConnectionStringProvider implements ServiceConnectionStringProvider<AzureServiceType.ServiceBus> {
+    static class ServiceBusJmsConnectionStringProvider implements ServiceConnectionStringProvider<AzureServiceType.ServiceBus> {
 
         @Override
         public AzureServiceType.ServiceBus getServiceType() {
