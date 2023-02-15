@@ -19,6 +19,8 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
+    @Disabled("Disabling this test for this release - fix after recording update")
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",

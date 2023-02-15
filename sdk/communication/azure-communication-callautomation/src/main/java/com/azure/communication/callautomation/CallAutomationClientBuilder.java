@@ -165,7 +165,7 @@ public final class CallAutomationClientBuilder implements
         this.connectionString = connectionString;
         return this;
     }
-    
+
     /**
      * Set Source Identity used to create and answer call
      * @param sourceIdentity {@link CommunicationUserIdentifier} to used to create and answer call.
@@ -337,14 +337,13 @@ public final class CallAutomationClientBuilder implements
             "false");
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
+        if (!(isConnectionStringSet && isEndpointSet && isCustomEndpointUsed)) {
+            isCustomEndpointUsed = false;
+        }
+
         if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
-        }
-
-        if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isCustomEndpointUsed) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Custom Endpoint mode requires 'ConnectionString/TokenCredential' and 'Endpoint' both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
