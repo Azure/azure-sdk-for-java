@@ -331,6 +331,7 @@ class SparkE2EChangeFeedITest
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
   "spark change feed query (incremental)" can "filter feed ranges" in {
