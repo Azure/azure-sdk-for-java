@@ -9,10 +9,12 @@ trigger:
   paths:
     include:
       - sdk/devcenter/ci.yml
+      - sdk/devcenter/azure-developer-devcenter/
       - sdk/devcenter/azure-resourcemanager-devcenter/
     exclude:
       - sdk/devcenter/pom.xml
       - sdk/devcenter/azure-resourcemanager-devcenter/pom.xml
+      - sdk/devcenter/azure-developer-devcenter/pom.xml
 
 pr:
   branches:
@@ -25,11 +27,18 @@ pr:
     include:
       - sdk/devcenter/ci.yml
       - sdk/devcenter/azure-resourcemanager-devcenter/
+      - sdk/devcenter/azure-developer-devcenter/
     exclude:
       - sdk/devcenter/pom.xml
+      - sdk/devcenter/azure-developer-devcenter/pom.xml
       - sdk/devcenter/azure-resourcemanager-devcenter/pom.xml
 
 parameters:
+  - name: release_azuredeveloperdevcenter
+    displayName: azure-developer-devcenter
+    type: boolean
+    default: true
+    
   - name: release_azureresourcemanagerdevcenter
     displayName: azure-resourcemanager-devcenter
     type: boolean
@@ -45,3 +54,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdevcenter
         releaseInBatch: ${{ parameters.release_azureresourcemanagerdevcenter }}
+      - name: azure-developer-devcenter
+        groupId: com.azure
+        safeName: azuredeveloperdevcenter
+        releaseInBatch: ${{ parameters.release_azuredeveloperdevcenter }}

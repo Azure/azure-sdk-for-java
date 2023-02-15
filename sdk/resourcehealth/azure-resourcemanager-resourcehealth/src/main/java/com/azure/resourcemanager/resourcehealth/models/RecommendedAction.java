@@ -28,6 +28,10 @@ public final class RecommendedAction {
     @JsonProperty(value = "actionUrlText")
     private String actionUrlText;
 
+    /** Creates an instance of RecommendedAction class. */
+    public RecommendedAction() {
+    }
+
     /**
      * Get the action property: Recommended action.
      *

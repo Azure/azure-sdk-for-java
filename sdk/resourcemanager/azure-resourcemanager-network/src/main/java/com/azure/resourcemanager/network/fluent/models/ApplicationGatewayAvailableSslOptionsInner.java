@@ -29,6 +29,10 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ApplicationGatewayAvailableSslOptionsInner class. */
+    public ApplicationGatewayAvailableSslOptionsInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway available SSL options.
      *

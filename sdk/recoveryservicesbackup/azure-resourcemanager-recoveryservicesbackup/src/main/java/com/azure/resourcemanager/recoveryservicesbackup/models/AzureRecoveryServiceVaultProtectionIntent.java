@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureRecoveryServiceVaultProtectionIntent extends ProtectionIntent {
+    /** Creates an instance of AzureRecoveryServiceVaultProtectionIntent class. */
+    public AzureRecoveryServiceVaultProtectionIntent() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withBackupManagementType(

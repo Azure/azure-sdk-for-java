@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationType. */
+/** Application Type. */
 public final class ApplicationType extends ExpandableStringEnum<ApplicationType> {
     /** Static value SAP-HANA for ApplicationType. */
     public static final ApplicationType SAP_HANA = fromString("SAP-HANA");

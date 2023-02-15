@@ -40,15 +40,6 @@ public final class DevBoxDefinitionsImpl implements DevBoxDefinitions {
         return Utils.mapPage(inner, inner1 -> new DevBoxDefinitionImpl(inner1, this.manager()));
     }
 
-    public DevBoxDefinition get(String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
-        DevBoxDefinitionInner inner = this.serviceClient().get(resourceGroupName, devCenterName, devBoxDefinitionName);
-        if (inner != null) {
-            return new DevBoxDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DevBoxDefinition> getWithResponse(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
         Response<DevBoxDefinitionInner> inner =
@@ -59,6 +50,15 @@ public final class DevBoxDefinitionsImpl implements DevBoxDefinitions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DevBoxDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DevBoxDefinition get(String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+        DevBoxDefinitionInner inner = this.serviceClient().get(resourceGroupName, devCenterName, devBoxDefinitionName);
+        if (inner != null) {
+            return new DevBoxDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,16 +84,6 @@ public final class DevBoxDefinitionsImpl implements DevBoxDefinitions {
         return Utils.mapPage(inner, inner1 -> new DevBoxDefinitionImpl(inner1, this.manager()));
     }
 
-    public DevBoxDefinition getByProject(String resourceGroupName, String projectName, String devBoxDefinitionName) {
-        DevBoxDefinitionInner inner =
-            this.serviceClient().getByProject(resourceGroupName, projectName, devBoxDefinitionName);
-        if (inner != null) {
-            return new DevBoxDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DevBoxDefinition> getByProjectWithResponse(
         String resourceGroupName, String projectName, String devBoxDefinitionName, Context context) {
         Response<DevBoxDefinitionInner> inner =
@@ -106,6 +96,16 @@ public final class DevBoxDefinitionsImpl implements DevBoxDefinitions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DevBoxDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DevBoxDefinition getByProject(String resourceGroupName, String projectName, String devBoxDefinitionName) {
+        DevBoxDefinitionInner inner =
+            this.serviceClient().getByProject(resourceGroupName, projectName, devBoxDefinitionName);
+        if (inner != null) {
+            return new DevBoxDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }

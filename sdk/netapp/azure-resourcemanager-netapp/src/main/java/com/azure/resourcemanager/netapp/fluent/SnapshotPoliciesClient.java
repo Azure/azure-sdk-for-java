@@ -244,7 +244,9 @@ public interface SnapshotPoliciesClient {
     void delete(String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -258,7 +260,9 @@ public interface SnapshotPoliciesClient {
     SnapshotPolicyVolumeListInner listVolumes(String resourceGroupName, String accountName, String snapshotPolicyName);
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

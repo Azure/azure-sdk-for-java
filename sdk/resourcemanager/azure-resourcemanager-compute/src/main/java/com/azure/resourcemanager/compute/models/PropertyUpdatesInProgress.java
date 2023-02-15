@@ -16,6 +16,10 @@ public final class PropertyUpdatesInProgress {
     @JsonProperty(value = "targetTier")
     private String targetTier;
 
+    /** Creates an instance of PropertyUpdatesInProgress class. */
+    public PropertyUpdatesInProgress() {
+    }
+
     /**
      * Get the targetTier property: The target performance tier of the disk if a tier change operation is in progress.
      *

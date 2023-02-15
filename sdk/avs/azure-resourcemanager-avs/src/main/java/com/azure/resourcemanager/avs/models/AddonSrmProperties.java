@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SRM")
 @Fluent
 public final class AddonSrmProperties extends AddonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddonSrmProperties.class);
-
     /*
      * The Site Recovery Manager (SRM) license
      */
     @JsonProperty(value = "licenseKey")
     private String licenseKey;
+
+    /** Creates an instance of AddonSrmProperties class. */
+    public AddonSrmProperties() {
+    }
 
     /**
      * Get the licenseKey property: The Site Recovery Manager (SRM) license.

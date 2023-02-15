@@ -18,8 +18,8 @@ public final class Permission {
     private List<String> actions;
 
     /*
-     * Action permissions that are excluded but not denied. They may be granted
-     * by other role definitions assigned to a principal.
+     * Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a
+     * principal.
      */
     @JsonProperty(value = "notActions")
     private List<String> notActions;
@@ -31,11 +31,14 @@ public final class Permission {
     private List<DataAction> dataActions;
 
     /*
-     * Data action permissions that are excluded but not denied. They may be
-     * granted by other role definitions assigned to a principal.
+     * Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned
+     * to a principal.
      */
     @JsonProperty(value = "notDataActions")
     private List<DataAction> notDataActions;
+
+    /** Creates an instance of Permission class. */
+    public Permission() {}
 
     /**
      * Get the actions property: Action permissions that are granted.

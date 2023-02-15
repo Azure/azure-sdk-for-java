@@ -33,6 +33,10 @@ public final class HardwareProfile {
     @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
+
     /**
      * Get the vmSize property: Specifies the size of the virtual machine. &lt;br&gt;&lt;br&gt; The enum data type is
      * currently deprecated and will be removed by December 23rd 2023. &lt;br&gt;&lt;br&gt; Recommended way to get the

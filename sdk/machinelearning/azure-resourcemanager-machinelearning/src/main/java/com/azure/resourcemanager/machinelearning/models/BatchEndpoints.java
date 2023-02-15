@@ -20,7 +20,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchEndpointData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<BatchEndpoint> list(String resourceGroupName, String workspaceName);
 
     /**
      * Lists Batch inference endpoint in the workspace.
@@ -35,7 +35,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchEndpointData> list(
+    PagedIterable<BatchEndpoint> list(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context);
 
     /**
@@ -69,12 +69,14 @@ public interface BatchEndpoints {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Name for the Batch Endpoint.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference endpoint by name.
+     * @return a batch inference endpoint by name along with {@link Response}.
      */
-    BatchEndpointData get(String resourceGroupName, String workspaceName, String endpointName);
+    Response<BatchEndpoint> getWithResponse(
+        String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
      * Gets a batch inference endpoint by name.
@@ -82,27 +84,12 @@ public interface BatchEndpoints {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Name for the Batch Endpoint.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference endpoint by name along with {@link Response}.
+     * @return a batch inference endpoint by name.
      */
-    Response<BatchEndpointData> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, Context context);
-
-    /**
-     * Lists batch Inference Endpoint keys.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Inference Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
-    EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName);
+    BatchEndpoint get(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Lists batch Inference Endpoint keys.
@@ -120,6 +107,19 @@ public interface BatchEndpoints {
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
+     * Lists batch Inference Endpoint keys.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Inference Endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keys for endpoint authentication.
+     */
+    EndpointAuthKeys listKeys(String resourceGroupName, String workspaceName, String endpointName);
+
+    /**
      * Gets a batch inference endpoint by name.
      *
      * @param id the resource ID.
@@ -128,7 +128,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name along with {@link Response}.
      */
-    BatchEndpointData getById(String id);
+    BatchEndpoint getById(String id);
 
     /**
      * Gets a batch inference endpoint by name.
@@ -140,7 +140,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name along with {@link Response}.
      */
-    Response<BatchEndpointData> getByIdWithResponse(String id, Context context);
+    Response<BatchEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Batch Inference Endpoint (asynchronous).
@@ -164,10 +164,10 @@ public interface BatchEndpoints {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new BatchEndpointData resource.
+     * Begins definition for a new BatchEndpoint resource.
      *
      * @param name resource name.
-     * @return the first stage of the new BatchEndpointData definition.
+     * @return the first stage of the new BatchEndpoint definition.
      */
-    BatchEndpointData.DefinitionStages.Blank define(String name);
+    BatchEndpoint.DefinitionStages.Blank define(String name);
 }

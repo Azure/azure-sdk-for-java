@@ -15,10 +15,9 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkDnsForw
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRuleset;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRulesets;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkDnsForwardingRuleset;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsForwardingRulesetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DnsForwardingRulesetsImpl.class);
 
     private final DnsForwardingRulesetsClient innerClient;
 
@@ -107,7 +106,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
     public DnsForwardingRuleset getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
     public Response<DnsForwardingRuleset> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +138,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +160,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

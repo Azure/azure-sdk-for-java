@@ -32,6 +32,10 @@ public final class RouteTableInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of RouteTableInner class. */
+    public RouteTableInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the route table.
      *

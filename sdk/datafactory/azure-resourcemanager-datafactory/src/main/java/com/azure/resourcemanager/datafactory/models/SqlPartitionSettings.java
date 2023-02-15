@@ -34,6 +34,10 @@ public final class SqlPartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
+    /** Creates an instance of SqlPartitionSettings class. */
+    public SqlPartitionSettings() {
+    }
+
     /**
      * Get the partitionColumnName property: The name of the column in integer or datetime type that will be used for
      * proceeding partitioning. If not specified, the primary key of the table is auto-detected and used as the

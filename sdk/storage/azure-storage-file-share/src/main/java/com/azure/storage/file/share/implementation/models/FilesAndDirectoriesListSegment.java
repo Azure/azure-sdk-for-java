@@ -29,6 +29,9 @@ public final class FilesAndDirectoriesListSegment {
     @JsonProperty("File")
     private List<FileItem> fileItems = new ArrayList<>();
 
+    /** Creates an instance of FilesAndDirectoriesListSegment class. */
+    public FilesAndDirectoriesListSegment() {}
+
     /**
      * Get the directoryItems property: The DirectoryItems property.
      *

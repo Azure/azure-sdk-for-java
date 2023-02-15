@@ -34,6 +34,10 @@ public final class ApplicationGatewayRewriteRuleCondition {
     @JsonProperty(value = "negate")
     private Boolean negate;
 
+    /** Creates an instance of ApplicationGatewayRewriteRuleCondition class. */
+    public ApplicationGatewayRewriteRuleCondition() {
+    }
+
     /**
      * Get the variable property: The condition parameter of the RewriteRuleCondition.
      *

@@ -61,6 +61,10 @@ public final class RecurrentSchedule {
     @JsonProperty(value = "minutes", required = true)
     private List<Integer> minutes;
 
+    /** Creates an instance of RecurrentSchedule class. */
+    public RecurrentSchedule() {
+    }
+
     /**
      * Get the timeZone property: the timezone for the hours of the profile. Some examples of valid time zones are:
      * Dateline Standard Time, UTC-11, Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time (Mexico),

@@ -29,17 +29,6 @@ public final class ContainerAppsRevisionReplicasImpl implements ContainerAppsRev
         this.serviceManager = serviceManager;
     }
 
-    public Replica getReplica(
-        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
-        ReplicaInner inner =
-            this.serviceClient().getReplica(resourceGroupName, containerAppName, revisionName, replicaName);
-        if (inner != null) {
-            return new ReplicaImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Replica> getReplicaWithResponse(
         String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context) {
         Response<ReplicaInner> inner =
@@ -57,11 +46,12 @@ public final class ContainerAppsRevisionReplicasImpl implements ContainerAppsRev
         }
     }
 
-    public ReplicaCollection listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
-        ReplicaCollectionInner inner =
-            this.serviceClient().listReplicas(resourceGroupName, containerAppName, revisionName);
+    public Replica getReplica(
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
+        ReplicaInner inner =
+            this.serviceClient().getReplica(resourceGroupName, containerAppName, revisionName, replicaName);
         if (inner != null) {
-            return new ReplicaCollectionImpl(inner, this.manager());
+            return new ReplicaImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,6 +67,16 @@ public final class ContainerAppsRevisionReplicasImpl implements ContainerAppsRev
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ReplicaCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ReplicaCollection listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
+        ReplicaCollectionInner inner =
+            this.serviceClient().listReplicas(resourceGroupName, containerAppName, revisionName);
+        if (inner != null) {
+            return new ReplicaCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

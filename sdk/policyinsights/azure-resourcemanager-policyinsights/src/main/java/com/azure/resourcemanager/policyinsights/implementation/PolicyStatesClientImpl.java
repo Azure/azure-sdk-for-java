@@ -27,7 +27,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyStatesClient;
@@ -35,6 +34,7 @@ import com.azure.resourcemanager.policyinsights.fluent.models.PolicyStateInner;
 import com.azure.resourcemanager.policyinsights.fluent.models.SummarizeResultsInner;
 import com.azure.resourcemanager.policyinsights.models.PolicyStatesQueryResults;
 import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
+import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResourceType;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
@@ -42,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyStatesClient. */
 public final class PolicyStatesClientImpl implements PolicyStatesClient {
-    private final ClientLogger logger = new ClientLogger(PolicyStatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyStatesService service;
 
@@ -99,7 +97,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForManagementGroup(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("managementGroupsNamespace") String managementGroupsNamespace,
             @PathParam("managementGroupName") String managementGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -140,7 +138,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForSubscription(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$top") Integer top,
@@ -181,7 +179,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForResourceGroup(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -219,7 +217,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForResource(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$top") Integer top,
@@ -289,7 +287,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForPolicySetDefinition(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("authorizationNamespace") String authorizationNamespace,
             @PathParam("policySetDefinitionName") String policySetDefinitionName,
@@ -335,7 +333,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForPolicyDefinition(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("authorizationNamespace") String authorizationNamespace,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -381,7 +379,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForSubscriptionLevelPolicyAssignment(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("authorizationNamespace") String authorizationNamespace,
             @PathParam("policyAssignmentName") String policyAssignmentName,
@@ -428,7 +426,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SummarizeResultsInner>> summarizeForResourceGroupLevelPolicyAssignment(
             @HostParam("$host") String endpoint,
-            @PathParam("policyStatesSummaryResource") String policyStatesSummaryResource,
+            @PathParam("policyStatesSummaryResource") PolicyStatesSummaryResourceType policyStatesSummaryResource,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("authorizationNamespace") String authorizationNamespace,
@@ -471,7 +469,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForManagementGroupSinglePageAsync(
@@ -557,7 +555,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForManagementGroupSinglePageAsync(
@@ -640,7 +638,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForManagementGroupAsync(
@@ -679,7 +677,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForManagementGroupAsync(
@@ -731,7 +729,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForManagementGroupAsync(
@@ -772,7 +770,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForManagementGroup(
@@ -813,7 +811,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForManagementGroup(
@@ -846,6 +844,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the management group.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param managementGroupName Management group name.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -856,22 +856,32 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForManagementGroupWithResponseAsync(
-        String managementGroupName, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String managementGroupName,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (managementGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String managementGroupsNamespace = "Microsoft.Management";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -897,6 +907,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the management group.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param managementGroupName Management group name.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -908,10 +920,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForManagementGroupWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String managementGroupName,
         Integer top,
         OffsetDateTime from,
@@ -924,11 +937,16 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (managementGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String managementGroupsNamespace = "Microsoft.Management";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -951,79 +969,31 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the management group.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param managementGroupName Management group name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForManagementGroupAsync(
-        String managementGroupName, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
-        return summarizeForManagementGroupWithResponseAsync(managementGroupName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the resources under the management group.
-     *
-     * @param managementGroupName Management group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForManagementGroupAsync(String managementGroupName) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String managementGroupName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
-        return summarizeForManagementGroupWithResponseAsync(managementGroupName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return summarizeForManagementGroupWithResponseAsync(
+                policyStatesSummaryResource, managementGroupName, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the resources under the management group.
      *
-     * @param managementGroupName Management group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForManagementGroup(String managementGroupName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForManagementGroupAsync(managementGroupName, top, from, to, filter).block();
-    }
-
-    /**
-     * Summarizes policy states for the resources under the management group.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param managementGroupName Management group name.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -1035,18 +1005,43 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForManagementGroupWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String managementGroupName,
         Integer top,
         OffsetDateTime from,
         OffsetDateTime to,
         String filter,
         Context context) {
-        return summarizeForManagementGroupWithResponseAsync(managementGroupName, top, from, to, filter, context)
+        return summarizeForManagementGroupWithResponseAsync(
+                policyStatesSummaryResource, managementGroupName, top, from, to, filter, context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the resources under the management group.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param managementGroupName Management group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForManagementGroup(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String managementGroupName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForManagementGroupWithResponse(
+                policyStatesSummaryResource, managementGroupName, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1071,7 +1066,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionSinglePageAsync(
@@ -1154,7 +1149,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionSinglePageAsync(
@@ -1234,7 +1229,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionAsync(
@@ -1264,7 +1259,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionAsync(
@@ -1307,7 +1302,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionAsync(
@@ -1348,7 +1343,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForSubscription(
@@ -1389,7 +1384,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForSubscription(
@@ -1422,6 +1417,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the subscription.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -1432,21 +1429,31 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForSubscriptionWithResponseAsync(
-        String subscriptionId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         return FluxUtil
@@ -1470,6 +1477,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the subscription.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -1481,21 +1490,32 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForSubscriptionWithResponseAsync(
-        String subscriptionId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter, Context context) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1516,79 +1536,31 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the subscription.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForSubscriptionAsync(
-        String subscriptionId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
-        return summarizeForSubscriptionWithResponseAsync(subscriptionId, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the resources under the subscription.
-     *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForSubscriptionAsync(String subscriptionId) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String subscriptionId) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
-        return summarizeForSubscriptionWithResponseAsync(subscriptionId, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return summarizeForSubscriptionWithResponseAsync(
+                policyStatesSummaryResource, subscriptionId, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the resources under the subscription.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForSubscription(String subscriptionId) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForSubscriptionAsync(subscriptionId, top, from, to, filter).block();
-    }
-
-    /**
-     * Summarizes policy states for the resources under the subscription.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -1600,12 +1572,43 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForSubscriptionWithResponse(
-        String subscriptionId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter, Context context) {
-        return summarizeForSubscriptionWithResponseAsync(subscriptionId, top, from, to, filter, context).block();
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter,
+        Context context) {
+        return summarizeForSubscriptionWithResponseAsync(
+                policyStatesSummaryResource, subscriptionId, top, from, to, filter, context)
+            .block();
+    }
+
+    /**
+     * Summarizes policy states for the resources under the subscription.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForSubscription(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String subscriptionId) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForSubscriptionWithResponse(
+                policyStatesSummaryResource, subscriptionId, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1631,7 +1634,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupSinglePageAsync(
@@ -1721,7 +1724,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupSinglePageAsync(
@@ -1808,7 +1811,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupAsync(
@@ -1850,7 +1853,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupAsync(
@@ -1904,7 +1907,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupAsync(
@@ -1948,7 +1951,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResourceGroup(
@@ -2000,7 +2003,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResourceGroup(
@@ -2035,6 +2038,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the resource group.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param top Maximum number of records to return.
@@ -2046,10 +2051,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceGroupWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         Integer top,
@@ -2062,6 +2068,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -2069,7 +2081,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         return FluxUtil
@@ -2094,6 +2105,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the resource group.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param top Maximum number of records to return.
@@ -2106,10 +2119,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceGroupWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         Integer top,
@@ -2123,6 +2137,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -2130,7 +2150,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2152,88 +2171,32 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resources under the resource group.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param resourceGroupName Resource group name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForResourceGroupAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        Integer top,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter) {
-        return summarizeForResourceGroupWithResponseAsync(subscriptionId, resourceGroupName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the resources under the resource group.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForResourceGroupAsync(
-        String subscriptionId, String resourceGroupName) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String subscriptionId, String resourceGroupName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
-        return summarizeForResourceGroupWithResponseAsync(subscriptionId, resourceGroupName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return summarizeForResourceGroupWithResponseAsync(
+                policyStatesSummaryResource, subscriptionId, resourceGroupName, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the resources under the resource group.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param resourceGroupName Resource group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForResourceGroup(String subscriptionId, String resourceGroupName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForResourceGroupAsync(subscriptionId, resourceGroupName, top, from, to, filter).block();
-    }
-
-    /**
-     * Summarizes policy states for the resources under the resource group.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param top Maximum number of records to return.
@@ -2246,10 +2209,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForResourceGroupWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         Integer top,
@@ -2258,8 +2222,32 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         String filter,
         Context context) {
         return summarizeForResourceGroupWithResponseAsync(
-                subscriptionId, resourceGroupName, top, from, to, filter, context)
+                policyStatesSummaryResource, subscriptionId, resourceGroupName, top, from, to, filter, context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the resources under the resource group.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForResourceGroup(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String subscriptionId, String resourceGroupName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForResourceGroupWithResponse(
+                policyStatesSummaryResource, subscriptionId, resourceGroupName, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2285,7 +2273,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceSinglePageAsync(
@@ -2371,7 +2359,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceSinglePageAsync(
@@ -2454,7 +2442,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceAsync(
@@ -2485,7 +2473,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceAsync(
@@ -2530,7 +2518,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceAsync(
@@ -2573,7 +2561,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResource(
@@ -2616,7 +2604,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResource(
@@ -2651,6 +2639,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -2661,21 +2651,31 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceWithResponseAsync(
-        String resourceId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String resourceId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         return FluxUtil
@@ -2699,6 +2699,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -2710,21 +2712,32 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceWithResponseAsync(
-        String resourceId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter, Context context) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String resourceId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2745,79 +2758,30 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param resourceId Resource ID.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForResourceAsync(
-        String resourceId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter) {
-        return summarizeForResourceWithResponseAsync(resourceId, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the resource.
-     *
-     * @param resourceId Resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForResourceAsync(String resourceId) {
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String resourceId) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
-        return summarizeForResourceWithResponseAsync(resourceId, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return summarizeForResourceWithResponseAsync(policyStatesSummaryResource, resourceId, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the resource.
      *
-     * @param resourceId Resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForResource(String resourceId) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForResourceAsync(resourceId, top, from, to, filter).block();
-    }
-
-    /**
-     * Summarizes policy states for the resource.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
@@ -2829,12 +2793,43 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForResourceWithResponse(
-        String resourceId, Integer top, OffsetDateTime from, OffsetDateTime to, String filter, Context context) {
-        return summarizeForResourceWithResponseAsync(resourceId, top, from, to, filter, context).block();
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String resourceId,
+        Integer top,
+        OffsetDateTime from,
+        OffsetDateTime to,
+        String filter,
+        Context context) {
+        return summarizeForResourceWithResponseAsync(
+                policyStatesSummaryResource, resourceId, top, from, to, filter, context)
+            .block();
+    }
+
+    /**
+     * Summarizes policy states for the resource.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param resourceId Resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForResource(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource, String resourceId) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForResourceWithResponse(
+                policyStatesSummaryResource, resourceId, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2844,7 +2839,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerSubscriptionEvaluationWithResponseAsync(String subscriptionId) {
@@ -2876,7 +2871,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerSubscriptionEvaluationWithResponseAsync(
@@ -2904,7 +2899,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerSubscriptionEvaluationAsync(String subscriptionId) {
@@ -2923,7 +2918,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerSubscriptionEvaluationAsync(
@@ -2942,7 +2937,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(String subscriptionId) {
@@ -2957,7 +2952,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(
@@ -2972,7 +2967,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerSubscriptionEvaluationAsync(String subscriptionId) {
@@ -2989,7 +2984,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerSubscriptionEvaluationAsync(String subscriptionId, Context context) {
@@ -3033,7 +3028,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerResourceGroupEvaluationWithResponseAsync(
@@ -3071,7 +3066,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerResourceGroupEvaluationWithResponseAsync(
@@ -3105,7 +3100,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerResourceGroupEvaluationAsync(
@@ -3127,7 +3122,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerResourceGroupEvaluationAsync(
@@ -3148,7 +3143,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
@@ -3165,7 +3160,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
@@ -3181,7 +3176,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName) {
@@ -3199,7 +3194,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerResourceGroupEvaluationAsync(
@@ -3261,7 +3256,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicySetDefinitionSinglePageAsync(
@@ -3354,7 +3349,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicySetDefinitionSinglePageAsync(
@@ -3444,7 +3439,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicySetDefinitionAsync(
@@ -3486,7 +3481,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicySetDefinitionAsync(
@@ -3540,7 +3535,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicySetDefinitionAsync(
@@ -3584,7 +3579,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForPolicySetDefinition(
@@ -3636,7 +3631,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForPolicySetDefinition(
@@ -3671,6 +3666,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy set definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @param top Maximum number of records to return.
@@ -3682,10 +3679,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForPolicySetDefinitionWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policySetDefinitionName,
         Integer top,
@@ -3698,6 +3696,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -3706,7 +3710,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                 .error(
                     new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -3733,6 +3736,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy set definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @param top Maximum number of records to return.
@@ -3745,10 +3750,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForPolicySetDefinitionWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policySetDefinitionName,
         Integer top,
@@ -3762,6 +3768,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -3770,7 +3782,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                 .error(
                     new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -3794,92 +3805,34 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy set definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForPolicySetDefinitionAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
-        String policySetDefinitionName,
-        Integer top,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter) {
-        return summarizeForPolicySetDefinitionWithResponseAsync(
-                subscriptionId, policySetDefinitionName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy set definition.
-     *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policySetDefinitionName Policy set definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForPolicySetDefinitionAsync(
-        String subscriptionId, String policySetDefinitionName) {
+        String policySetDefinitionName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
         return summarizeForPolicySetDefinitionWithResponseAsync(
-                subscriptionId, policySetDefinitionName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                policyStatesSummaryResource, subscriptionId, policySetDefinitionName, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the subscription level policy set definition.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policySetDefinitionName Policy set definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForPolicySetDefinition(
-        String subscriptionId, String policySetDefinitionName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForPolicySetDefinitionAsync(subscriptionId, policySetDefinitionName, top, from, to, filter)
-            .block();
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy set definition.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @param top Maximum number of records to return.
@@ -3892,10 +3845,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForPolicySetDefinitionWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policySetDefinitionName,
         Integer top,
@@ -3904,8 +3858,41 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         String filter,
         Context context) {
         return summarizeForPolicySetDefinitionWithResponseAsync(
-                subscriptionId, policySetDefinitionName, top, from, to, filter, context)
+                policyStatesSummaryResource, subscriptionId, policySetDefinitionName, top, from, to, filter, context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the subscription level policy set definition.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policySetDefinitionName Policy set definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForPolicySetDefinition(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        String policySetDefinitionName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForPolicySetDefinitionWithResponse(
+                policyStatesSummaryResource,
+                subscriptionId,
+                policySetDefinitionName,
+                top,
+                from,
+                to,
+                filter,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3931,7 +3918,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicyDefinitionSinglePageAsync(
@@ -4023,7 +4010,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicyDefinitionSinglePageAsync(
@@ -4112,7 +4099,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicyDefinitionAsync(
@@ -4154,7 +4141,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicyDefinitionAsync(
@@ -4208,7 +4195,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForPolicyDefinitionAsync(
@@ -4252,7 +4239,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForPolicyDefinition(
@@ -4304,7 +4291,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForPolicyDefinition(
@@ -4339,6 +4326,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @param top Maximum number of records to return.
@@ -4350,10 +4339,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForPolicyDefinitionWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyDefinitionName,
         Integer top,
@@ -4366,6 +4356,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -4373,7 +4369,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -4400,6 +4395,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @param top Maximum number of records to return.
@@ -4412,10 +4409,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForPolicyDefinitionWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyDefinitionName,
         Integer top,
@@ -4429,6 +4427,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -4436,7 +4440,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -4460,90 +4463,34 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy definition.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForPolicyDefinitionAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
-        String policyDefinitionName,
-        Integer top,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter) {
-        return summarizeForPolicyDefinitionWithResponseAsync(
-                subscriptionId, policyDefinitionName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy definition.
-     *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policyDefinitionName Policy definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForPolicyDefinitionAsync(
-        String subscriptionId, String policyDefinitionName) {
+        String policyDefinitionName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
         return summarizeForPolicyDefinitionWithResponseAsync(
-                subscriptionId, policyDefinitionName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                policyStatesSummaryResource, subscriptionId, policyDefinitionName, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the subscription level policy definition.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policyDefinitionName Policy definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForPolicyDefinition(String subscriptionId, String policyDefinitionName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForPolicyDefinitionAsync(subscriptionId, policyDefinitionName, top, from, to, filter).block();
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy definition.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @param top Maximum number of records to return.
@@ -4556,10 +4503,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForPolicyDefinitionWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyDefinitionName,
         Integer top,
@@ -4568,8 +4516,34 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         String filter,
         Context context) {
         return summarizeForPolicyDefinitionWithResponseAsync(
-                subscriptionId, policyDefinitionName, top, from, to, filter, context)
+                policyStatesSummaryResource, subscriptionId, policyDefinitionName, top, from, to, filter, context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the subscription level policy definition.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policyDefinitionName Policy definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForPolicyDefinition(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        String policyDefinitionName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForPolicyDefinitionWithResponse(
+                policyStatesSummaryResource, subscriptionId, policyDefinitionName, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -4595,7 +4569,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(
@@ -4687,7 +4661,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionLevelPolicyAssignmentSinglePageAsync(
@@ -4776,7 +4750,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(
@@ -4818,7 +4792,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(
@@ -4872,7 +4846,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(
@@ -4916,7 +4890,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForSubscriptionLevelPolicyAssignment(
@@ -4968,7 +4942,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForSubscriptionLevelPolicyAssignment(
@@ -5003,6 +4977,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
@@ -5014,10 +4990,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForSubscriptionLevelPolicyAssignmentWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyAssignmentName,
         Integer top,
@@ -5030,6 +5007,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -5037,7 +5020,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -5064,6 +5046,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
@@ -5076,10 +5060,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForSubscriptionLevelPolicyAssignmentWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyAssignmentName,
         Integer top,
@@ -5093,6 +5078,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -5100,7 +5091,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -5124,93 +5114,34 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the subscription level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForSubscriptionLevelPolicyAssignmentAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
-        String policyAssignmentName,
-        Integer top,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter) {
-        return summarizeForSubscriptionLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, policyAssignmentName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy assignment.
-     *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policyAssignmentName Policy assignment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForSubscriptionLevelPolicyAssignmentAsync(
-        String subscriptionId, String policyAssignmentName) {
+        String policyAssignmentName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
         return summarizeForSubscriptionLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, policyAssignmentName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                policyStatesSummaryResource, subscriptionId, policyAssignmentName, top, from, to, filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the subscription level policy assignment.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param policyAssignmentName Policy assignment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForSubscriptionLevelPolicyAssignment(
-        String subscriptionId, String policyAssignmentName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForSubscriptionLevelPolicyAssignmentAsync(
-                subscriptionId, policyAssignmentName, top, from, to, filter)
-            .block();
-    }
-
-    /**
-     * Summarizes policy states for the subscription level policy assignment.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
@@ -5223,10 +5154,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForSubscriptionLevelPolicyAssignmentWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String policyAssignmentName,
         Integer top,
@@ -5235,8 +5167,34 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         String filter,
         Context context) {
         return summarizeForSubscriptionLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, policyAssignmentName, top, from, to, filter, context)
+                policyStatesSummaryResource, subscriptionId, policyAssignmentName, top, from, to, filter, context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the subscription level policy assignment.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param policyAssignmentName Policy assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForSubscriptionLevelPolicyAssignment(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        String policyAssignmentName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForSubscriptionLevelPolicyAssignmentWithResponse(
+                policyStatesSummaryResource, subscriptionId, policyAssignmentName, top, from, to, filter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -5263,7 +5221,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(
@@ -5362,7 +5320,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupLevelPolicyAssignmentSinglePageAsync(
@@ -5458,7 +5416,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(
@@ -5503,7 +5461,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(
@@ -5562,7 +5520,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyStateInner> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(
@@ -5609,7 +5567,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResourceGroupLevelPolicyAssignment(
@@ -5666,7 +5624,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyStateInner> listQueryResultsForResourceGroupLevelPolicyAssignment(
@@ -5703,6 +5661,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource group level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
@@ -5715,10 +5675,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceGroupLevelPolicyAssignmentWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         String policyAssignmentName,
@@ -5732,6 +5693,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -5743,7 +5710,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -5771,6 +5737,8 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource group level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
@@ -5784,10 +5752,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SummarizeResultsInner>> summarizeForResourceGroupLevelPolicyAssignmentWithResponseAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         String policyAssignmentName,
@@ -5802,6 +5771,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (policyStatesSummaryResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter policyStatesSummaryResource is required and cannot be null."));
+        }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
@@ -5813,7 +5788,6 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
         final String apiVersion = "2019-10-01";
         final String accept = "application/json";
@@ -5838,97 +5812,43 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Summarizes policy states for the resource group level policy assignment.
      *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
-     * @param top Maximum number of records to return.
-     * @param from ISO 8601 formatted timestamp specifying the start time of the interval to query. When not specified,
-     *     the service uses ($to - 1-day).
-     * @param to ISO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the
-     *     service uses request time.
-     * @param filter OData filter expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SummarizeResultsInner> summarizeForResourceGroupLevelPolicyAssignmentAsync(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
-        String policyAssignmentName,
-        Integer top,
-        OffsetDateTime from,
-        OffsetDateTime to,
-        String filter) {
-        return summarizeForResourceGroupLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, resourceGroupName, policyAssignmentName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Summarizes policy states for the resource group level policy assignment.
-     *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param resourceGroupName Resource group name.
-     * @param policyAssignmentName Policy assignment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SummarizeResultsInner> summarizeForResourceGroupLevelPolicyAssignmentAsync(
-        String subscriptionId, String resourceGroupName, String policyAssignmentName) {
+        String policyAssignmentName) {
         final Integer top = null;
         final OffsetDateTime from = null;
         final OffsetDateTime to = null;
         final String filter = null;
         return summarizeForResourceGroupLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, resourceGroupName, policyAssignmentName, top, from, to, filter)
-            .flatMap(
-                (Response<SummarizeResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                policyStatesSummaryResource,
+                subscriptionId,
+                resourceGroupName,
+                policyAssignmentName,
+                top,
+                from,
+                to,
+                filter)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Summarizes policy states for the resource group level policy assignment.
      *
-     * @param subscriptionId Microsoft Azure subscription ID.
-     * @param resourceGroupName Resource group name.
-     * @param policyAssignmentName Policy assignment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SummarizeResultsInner summarizeForResourceGroupLevelPolicyAssignment(
-        String subscriptionId, String resourceGroupName, String policyAssignmentName) {
-        final Integer top = null;
-        final OffsetDateTime from = null;
-        final OffsetDateTime to = null;
-        final String filter = null;
-        return summarizeForResourceGroupLevelPolicyAssignmentAsync(
-                subscriptionId, resourceGroupName, policyAssignmentName, top, from, to, filter)
-            .block();
-    }
-
-    /**
-     * Summarizes policy states for the resource group level policy assignment.
-     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
@@ -5942,10 +5862,11 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summarize action results.
+     * @return summarize action results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummarizeResultsInner> summarizeForResourceGroupLevelPolicyAssignmentWithResponse(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
         String subscriptionId,
         String resourceGroupName,
         String policyAssignmentName,
@@ -5955,18 +5876,63 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
         String filter,
         Context context) {
         return summarizeForResourceGroupLevelPolicyAssignmentWithResponseAsync(
-                subscriptionId, resourceGroupName, policyAssignmentName, top, from, to, filter, context)
+                policyStatesSummaryResource,
+                subscriptionId,
+                resourceGroupName,
+                policyAssignmentName,
+                top,
+                from,
+                to,
+                filter,
+                context)
             .block();
+    }
+
+    /**
+     * Summarizes policy states for the resource group level policy assignment.
+     *
+     * @param policyStatesSummaryResource The virtual resource under PolicyStates resource type for summarize action. In
+     *     a given time range, 'latest' represents the latest policy state(s) and is the only allowed value.
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @param policyAssignmentName Policy assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return summarize action results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SummarizeResultsInner summarizeForResourceGroupLevelPolicyAssignment(
+        PolicyStatesSummaryResourceType policyStatesSummaryResource,
+        String subscriptionId,
+        String resourceGroupName,
+        String policyAssignmentName) {
+        final Integer top = null;
+        final OffsetDateTime from = null;
+        final OffsetDateTime to = null;
+        final String filter = null;
+        return summarizeForResourceGroupLevelPolicyAssignmentWithResponse(
+                policyStatesSummaryResource,
+                subscriptionId,
+                resourceGroupName,
+                policyAssignmentName,
+                top,
+                from,
+                to,
+                filter,
+                Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> nextLinkSinglePageAsync(String nextLink) {
@@ -5990,12 +5956,13 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyStateInner>> nextLinkSinglePageAsync(String nextLink, Context context) {

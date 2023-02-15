@@ -36,6 +36,9 @@ public final class ArrowField {
     @JsonProperty(value = "Scale")
     private Integer scale;
 
+    /** Creates an instance of ArrowField class. */
+    public ArrowField() {}
+
     /**
      * Get the type property: The Type property.
      *

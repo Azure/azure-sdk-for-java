@@ -25,6 +25,10 @@ public final class ResourceUriList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ResourceUriList class. */
+    public ResourceUriList() {
+    }
+
     /**
      * Get the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.
      *

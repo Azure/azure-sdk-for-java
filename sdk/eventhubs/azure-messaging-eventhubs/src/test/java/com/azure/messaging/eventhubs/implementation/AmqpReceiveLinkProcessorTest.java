@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -51,6 +52,8 @@ import static org.mockito.Mockito.when;
 
 class AmqpReceiveLinkProcessorTest {
     private static final int PREFETCH = 5;
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
+        new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
 
     @Mock
     private AmqpReceiveLink link1;
@@ -91,7 +94,7 @@ class AmqpReceiveLinkProcessorTest {
 
         when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
-        linkProcessor = new AmqpReceiveLinkProcessor("entity-path", PREFETCH, parentConnection);
+        linkProcessor = new AmqpReceiveLinkProcessor("entity-path", PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messageProcessor.flux());
@@ -110,11 +113,11 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void constructor() {
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
-            "entity-path", PREFETCH, null));
+            "entity-path", PREFETCH,  "partition", null, DEFAULT_INSTRUMENTATION));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(
-            "ENTITY", -1, parentConnection));
+            "ENTITY", -1, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
-            null, PREFETCH, parentConnection));
+            null, PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
     }
 
     /**

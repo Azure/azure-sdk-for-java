@@ -461,10 +461,12 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     }
 
     /**
+     * Gets a synchronous blocking poller.
+     *
      * @return a synchronous blocking poller.
      */
     public SyncPoller<T, U> getSyncPoller() {
-        return DefaultSyncPoller.createSyncOverAsyncPoller(this.pollInterval,
+        return new SyncOverAsyncPoller<>(this.pollInterval,
             this.syncActivationOperation,
             this.pollOperation,
             this.cancelOperation,
@@ -521,11 +523,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
 
     /**
      * A utility to get One-Time-Executable-Mono that execute an activation function at most once.
-     *
+     * <p>
      * When subscribed to such a Mono it internally subscribes to a Mono that perform an activation
      * function. The One-Time-Executable-Mono caches the result of activation function as a PollResponse
      * in {@code rootContext}, this cached response will be used by any future subscriptions.
-     *
+     * <p>
      * Note: The standard cache() operator can't be used to achieve one time execution, because it caches
      * error terminal signal and forward it to any future subscriptions. If there is an error while executing
      * activation function then error should not be cached but it should be forward it to subscription that
@@ -533,7 +535,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * instead activation function should again invoked. Once a subscription result in successful execution
      * of activation function then it will be cached in {@code rootContext} and will be used by any future
      * subscriptions.
-     *
+     * <p>
      * The One-Time-Executable-Mono handles concurrent calls to activation. Only one of them will be able
      * to execute the activation function and other subscriptions will keep resubscribing until it sees
      * a activation happened or get a chance to call activation as the one previously entered the critical

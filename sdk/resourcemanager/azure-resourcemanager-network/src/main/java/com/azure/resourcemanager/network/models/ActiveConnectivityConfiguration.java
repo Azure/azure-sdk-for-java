@@ -24,6 +24,10 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     @JsonProperty(value = "region")
     private String region;
 
+    /** Creates an instance of ActiveConnectivityConfiguration class. */
+    public ActiveConnectivityConfiguration() {
+    }
+
     /**
      * Get the commitTime property: Deployment time string.
      *

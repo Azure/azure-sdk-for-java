@@ -24,6 +24,10 @@ public final class JoinRequestList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of JoinRequestList class. */
+    public JoinRequestList() {
+    }
+
     /**
      * Get the value property: The list of requests.
      *

@@ -24,6 +24,10 @@ public final class PrestoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PrestoLinkedServiceTypeProperties innerTypeProperties = new PrestoLinkedServiceTypeProperties();
 
+    /** Creates an instance of PrestoLinkedService class. */
+    public PrestoLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Presto server linked service properties.
      *

@@ -20,6 +20,10 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of CapacityReservationInstanceViewWithName class. */
+    public CapacityReservationInstanceViewWithName() {
+    }
+
     /**
      * Get the name property: The name of the capacity reservation.
      *

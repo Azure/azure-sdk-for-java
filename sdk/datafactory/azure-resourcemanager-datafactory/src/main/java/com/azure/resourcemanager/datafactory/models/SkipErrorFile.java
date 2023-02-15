@@ -24,6 +24,10 @@ public final class SkipErrorFile {
     @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;
 
+    /** Creates an instance of SkipErrorFile class. */
+    public SkipErrorFile() {
+    }
+
     /**
      * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
      * (or Expression with resultType boolean).

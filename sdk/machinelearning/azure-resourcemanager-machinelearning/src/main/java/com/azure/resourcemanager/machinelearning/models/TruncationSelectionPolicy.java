@@ -20,6 +20,10 @@ public final class TruncationSelectionPolicy extends EarlyTerminationPolicy {
     @JsonProperty(value = "truncationPercentage")
     private Integer truncationPercentage;
 
+    /** Creates an instance of TruncationSelectionPolicy class. */
+    public TruncationSelectionPolicy() {
+    }
+
     /**
      * Get the truncationPercentage property: The percentage of runs to cancel at each evaluation interval.
      *

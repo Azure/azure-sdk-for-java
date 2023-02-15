@@ -32,6 +32,10 @@ public final class DpmJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
+    /** Creates an instance of DpmJobExtendedInfo class. */
+    public DpmJobExtendedInfo() {
+    }
+
     /**
      * Get the tasksList property: List of tasks associated with this job.
      *

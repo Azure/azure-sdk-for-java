@@ -16,6 +16,10 @@ public final class CloudServiceRoleProperties {
     @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
+    /** Creates an instance of CloudServiceRoleProperties class. */
+    public CloudServiceRoleProperties() {
+    }
+
     /**
      * Get the uniqueId property: Specifies the ID which uniquely identifies a cloud service role.
      *

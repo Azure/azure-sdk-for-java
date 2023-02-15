@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
     private static final String LONG_BODY_PATH = "/long";
-    private static final byte[] LONG_BODY = new byte[4 * 1024 * 1024]; // 4 MB
+    private static final byte[] LONG_BODY = new byte[1024 * 1024]; // 1 MB
 
     private static ResourceLeakDetector.Level originalLevel;
     private static WireMockServer wireMockServer;

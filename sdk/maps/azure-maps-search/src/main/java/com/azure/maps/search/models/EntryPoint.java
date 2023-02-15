@@ -19,11 +19,13 @@ public final class EntryPoint {
     private EntryPointType type;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "position")
     private LatLongPairAbbreviated position;
+
+    /** Creates an instance of EntryPoint class. */
+    public EntryPoint() {}
 
     /**
      * Get the type property: The type of entry point. Value can be either _main_ or _minor_.

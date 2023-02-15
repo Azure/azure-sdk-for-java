@@ -46,6 +46,10 @@ public final class IntegrationRuntimeDataFlowProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeDataFlowProperties class. */
+    public IntegrationRuntimeDataFlowProperties() {
+    }
+
     /**
      * Get the computeType property: Compute type of the cluster which will execute data flow job.
      *

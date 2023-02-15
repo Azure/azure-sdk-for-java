@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ThreatIntelligenceIndicator ReplaceTags. */
 public final class ThreatIntelligenceIndicatorReplaceTagsSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
      */
     /**
      * Sample code: Replace tags to a Threat Intelligence.

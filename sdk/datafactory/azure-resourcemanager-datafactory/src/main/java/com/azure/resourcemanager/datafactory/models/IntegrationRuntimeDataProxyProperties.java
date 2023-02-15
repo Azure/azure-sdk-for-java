@@ -28,6 +28,10 @@ public final class IntegrationRuntimeDataProxyProperties {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of IntegrationRuntimeDataProxyProperties class. */
+    public IntegrationRuntimeDataProxyProperties() {
+    }
+
     /**
      * Get the connectVia property: The self-hosted integration runtime reference.
      *

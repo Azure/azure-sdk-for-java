@@ -81,14 +81,14 @@ public final class MapsRouteClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery.setDestinations&#40;destinations&#41;;
@@ -119,14 +119,14 @@ public final class MapsRouteClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery.setDestinations&#40;destinations&#41;;
@@ -352,7 +352,7 @@ public final class MapsRouteClient {
      * <!-- src_embed com.azure.maps.search.sync.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * client.getRouteRange&#40;rangeOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.route_range -->
@@ -373,7 +373,7 @@ public final class MapsRouteClient {
      * <!-- src_embed com.azure.maps.search.sync.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * client.getRouteRange&#40;rangeOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.route_range -->

@@ -32,23 +32,23 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
     }
 
-    private static final Mono<ByteBuffer> EMPTY_BUFFER_MONO = Mono.just(ByteBuffer.allocate(0));
+    private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
+
     private final StreamResponse sourceResponse;
     private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
     private final DownloadRetryOptions retryOptions;
-
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
      *
      * @param request Request sent to the service.
      * @param statusCode Response status code returned by the service.
-     * @param headers Raw headers returned in the response.
+     * @param headers Raw headers returned by the response.
      * @param value Stream of download data being returned by the service.
      * @param deserializedHeaders Headers deserialized into an object.
      */
     public BlobDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
-                                     BlobDownloadHeaders deserializedHeaders) {
+        BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
         this.sourceResponse = null;
         this.onErrorResume = null;
@@ -62,36 +62,27 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    BlobDownloadAsyncResponse(
-        StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        DownloadRetryOptions retryOptions) {
-        super(sourceResponse.getRequest(), sourceResponse.getStatusCode(),
-            sourceResponse.getHeaders(),
-            createResponseFlux(sourceResponse, onErrorResume, retryOptions),
-            extractHeaders(sourceResponse));
+    BlobDownloadAsyncResponse(StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
+        super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
+            createResponseFlux(sourceResponse, onErrorResume, retryOptions), extractHeaders(sourceResponse));
         this.sourceResponse = Objects.requireNonNull(sourceResponse, "'sourceResponse' must not be null");
         this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
     }
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
-        BlobsDownloadHeaders blobsDownloadHeaders =
-            ModelHelper.transformBlobDownloadHeaders(response.getHeaders());
-        return ModelHelper.populateBlobDownloadHeaders(
-            blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
+        HttpHeaders headers = response.getHeaders();
+        return ModelHelper.populateBlobDownloadHeaders(new BlobsDownloadHeaders(headers),
+            ModelHelper.getErrorCode(headers));
     }
 
-    private static Flux<ByteBuffer> createResponseFlux(
-        StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        DownloadRetryOptions retryOptions) {
-        return FluxUtil.createRetriableDownloadFlux(
-                sourceResponse::getValue,
-                (throwable, position) -> onErrorResume.apply(throwable, position)
-                    .flatMapMany(StreamResponse::getValue),
+    private static Flux<ByteBuffer> createResponseFlux(StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
+        return FluxUtil.createRetriableDownloadFlux(sourceResponse::getValue,
+                (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(StreamResponse::getValue),
                 retryOptions.getMaxRetryRequests())
-            .switchIfEmpty(EMPTY_BUFFER_MONO);
+            .defaultIfEmpty(EMPTY_BUFFER);
     }
 
     /**
@@ -103,12 +94,11 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (sourceResponse != null) {
-            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse,
-                onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
+            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse, onErrorResume,
+                progressReporter, retryOptions.getMaxRetryRequests());
         } else if (super.getValue() != null) {
             return FluxUtil.writeToAsynchronousByteChannel(
-                FluxUtil.addProgressReporting(super.getValue(), progressReporter),
-                channel);
+                FluxUtil.addProgressReporting(super.getValue(), progressReporter), channel);
         } else {
             return Mono.empty();
         }

@@ -24,6 +24,10 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     @JsonProperty(value = "countIPv6")
     private Integer countIPv6;
 
+    /** Creates an instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs class. */
+    public ManagedClusterLoadBalancerProfileManagedOutboundIPs() {
+    }
+
     /**
      * Get the count property: The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load
      * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.

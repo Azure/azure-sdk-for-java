@@ -36,6 +36,10 @@ public final class ResourceSkuRestrictions {
     @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuRestrictionsReasonCode reasonCode;
 
+    /** Creates an instance of ResourceSkuRestrictions class. */
+    public ResourceSkuRestrictions() {
+    }
+
     /**
      * Get the type property: The type of restrictions.
      *

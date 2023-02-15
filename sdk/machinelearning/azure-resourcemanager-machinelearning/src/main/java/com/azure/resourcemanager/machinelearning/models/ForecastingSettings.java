@@ -13,17 +13,14 @@ import java.util.List;
 public final class ForecastingSettings {
     /*
      * Country or region for holidays for forecasting tasks.
-     * These should be ISO 3166 two-letter country/region codes, for example
-     * 'US' or 'GB'.
+     * These should be ISO 3166 two-letter country/region codes, for example 'US' or 'GB'.
      */
     @JsonProperty(value = "countryOrRegionForHolidays")
     private String countryOrRegionForHolidays;
 
     /*
-     * Number of periods between the origin time of one CV fold and the next
-     * fold. For
-     * example, if `CVStepSize` = 3 for daily data, the origin time for each
-     * fold will be
+     * Number of periods between the origin time of one CV fold and the next fold. For
+     * example, if `CVStepSize` = 3 for daily data, the origin time for each fold will be
      * three days apart.
      */
     @JsonProperty(value = "cvStepSize")
@@ -42,16 +39,14 @@ public final class ForecastingSettings {
     private ForecastHorizon forecastHorizon;
 
     /*
-     * When forecasting, this parameter represents the period with which the
-     * forecast is desired, for example daily, weekly, yearly, etc. The
-     * forecast frequency is dataset frequency by default.
+     * When forecasting, this parameter represents the period with which the forecast is desired, for example daily,
+     * weekly, yearly, etc. The forecast frequency is dataset frequency by default.
      */
     @JsonProperty(value = "frequency")
     private String frequency;
 
     /*
-     * Set time series seasonality as an integer multiple of the series
-     * frequency.
+     * Set time series seasonality as an integer multiple of the series frequency.
      * If seasonality is set to 'auto', it will be inferred.
      */
     @JsonProperty(value = "seasonality")
@@ -64,11 +59,9 @@ public final class ForecastingSettings {
     private ShortSeriesHandlingConfiguration shortSeriesHandlingConfig;
 
     /*
-     * The function to be used to aggregate the time series target column to
-     * conform to a user specified frequency.
-     * If the TargetAggregateFunction is set i.e. not 'None', but the freq
-     * parameter is not set, the error is raised. The possible target
-     * aggregation functions are: "sum", "max", "min" and "mean".
+     * The function to be used to aggregate the time series target column to conform to a user specified frequency.
+     * If the TargetAggregateFunction is set i.e. not 'None', but the freq parameter is not set, the error is raised.
+     * The possible target aggregation functions are: "sum", "max", "min" and "mean".
      */
     @JsonProperty(value = "targetAggregateFunction")
     private TargetAggregationFunction targetAggregateFunction;
@@ -80,25 +73,22 @@ public final class ForecastingSettings {
     private TargetLags targetLags;
 
     /*
-     * The number of past periods used to create a rolling window average of
-     * the target column.
+     * The number of past periods used to create a rolling window average of the target column.
      */
     @JsonProperty(value = "targetRollingWindowSize")
     private TargetRollingWindowSize targetRollingWindowSize;
 
     /*
-     * The name of the time column. This parameter is required when forecasting
-     * to specify the datetime column in the input data used for building the
-     * time series and inferring its frequency.
+     * The name of the time column. This parameter is required when forecasting to specify the datetime column in the
+     * input data used for building the time series and inferring its frequency.
      */
     @JsonProperty(value = "timeColumnName")
     private String timeColumnName;
 
     /*
-     * The names of columns used to group a timeseries. It can be used to
-     * create multiple series.
-     * If grain is not defined, the data set is assumed to be one time-series.
-     * This parameter is used with task type forecasting.
+     * The names of columns used to group a timeseries. It can be used to create multiple series.
+     * If grain is not defined, the data set is assumed to be one time-series. This parameter is used with task type
+     * forecasting.
      */
     @JsonProperty(value = "timeSeriesIdColumnNames")
     private List<String> timeSeriesIdColumnNames;
@@ -108,6 +98,10 @@ public final class ForecastingSettings {
      */
     @JsonProperty(value = "useStl")
     private UseStl useStl;
+
+    /** Creates an instance of ForecastingSettings class. */
+    public ForecastingSettings() {
+    }
 
     /**
      * Get the countryOrRegionForHolidays property: Country or region for holidays for forecasting tasks. These should

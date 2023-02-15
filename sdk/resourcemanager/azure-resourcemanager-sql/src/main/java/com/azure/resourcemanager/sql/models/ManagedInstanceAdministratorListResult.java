@@ -24,6 +24,10 @@ public final class ManagedInstanceAdministratorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ManagedInstanceAdministratorListResult class. */
+    public ManagedInstanceAdministratorListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

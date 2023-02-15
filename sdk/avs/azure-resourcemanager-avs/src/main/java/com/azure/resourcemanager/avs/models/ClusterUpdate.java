@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.ClusterUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An update of a cluster resource. */
 @Fluent
 public final class ClusterUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdate.class);
-
     /*
      * The properties of a cluster resource that may be updated
      */
     @JsonProperty(value = "properties")
     private ClusterUpdateProperties innerProperties;
+
+    /** Creates an instance of ClusterUpdate class. */
+    public ClusterUpdate() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a cluster resource that may be updated.

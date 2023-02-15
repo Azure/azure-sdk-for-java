@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PortMirroringStatusEnum. */
+/** Port Mirroring Status. */
 public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirroringStatusEnum> {
     /** Static value SUCCESS for PortMirroringStatusEnum. */
     public static final PortMirroringStatusEnum SUCCESS = fromString("SUCCESS");
@@ -27,7 +27,11 @@ public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirr
         return fromString(name, PortMirroringStatusEnum.class);
     }
 
-    /** @return known PortMirroringStatusEnum values. */
+    /**
+     * Gets known PortMirroringStatusEnum values.
+     *
+     * @return known PortMirroringStatusEnum values.
+     */
     public static Collection<PortMirroringStatusEnum> values() {
         return values(PortMirroringStatusEnum.class);
     }

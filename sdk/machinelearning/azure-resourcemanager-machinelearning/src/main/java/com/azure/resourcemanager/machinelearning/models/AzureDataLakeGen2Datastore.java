@@ -15,7 +15,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datastoreType")
 @JsonTypeName("AzureDataLakeGen2")
 @Fluent
-public final class AzureDataLakeGen2Datastore extends DatastoreDetails {
+public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
     /*
      * [Required] Storage account name.
      */
@@ -41,11 +41,14 @@ public final class AzureDataLakeGen2Datastore extends DatastoreDetails {
     private String protocol;
 
     /*
-     * Indicates which identity to use to authenticate service data access to
-     * customer's storage.
+     * Indicates which identity to use to authenticate service data access to customer's storage.
      */
     @JsonProperty(value = "serviceDataAccessAuthIdentity")
     private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
+
+    /** Creates an instance of AzureDataLakeGen2Datastore class. */
+    public AzureDataLakeGen2Datastore() {
+    }
 
     /**
      * Get the accountName property: [Required] Storage account name.

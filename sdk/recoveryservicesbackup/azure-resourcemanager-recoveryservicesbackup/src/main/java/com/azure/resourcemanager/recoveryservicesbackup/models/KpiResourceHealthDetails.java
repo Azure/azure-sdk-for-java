@@ -23,6 +23,10 @@ public final class KpiResourceHealthDetails {
     @JsonProperty(value = "resourceHealthDetails")
     private List<ResourceHealthDetails> resourceHealthDetails;
 
+    /** Creates an instance of KpiResourceHealthDetails class. */
+    public KpiResourceHealthDetails() {
+    }
+
     /**
      * Get the resourceHealthStatus property: Resource Health Status.
      *

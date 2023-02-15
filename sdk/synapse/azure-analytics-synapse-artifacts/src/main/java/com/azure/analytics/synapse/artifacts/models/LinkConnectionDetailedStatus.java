@@ -6,6 +6,7 @@ package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** The LinkConnectionDetailedStatus model. */
 @Fluent
@@ -47,7 +48,9 @@ public final class LinkConnectionDetailedStatus {
     private Object stopTime;
 
     /*
-     * Link connection status
+     * Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -63,6 +66,21 @@ public final class LinkConnectionDetailedStatus {
      */
     @JsonProperty(value = "error")
     private Object error;
+
+    /*
+     * Link connection refresh status
+     */
+    @JsonProperty(value = "refreshStatus")
+    private LinkConnectionRefreshStatus refreshStatus;
+
+    /*
+     * Link connection landing zone credential expire time
+     */
+    @JsonProperty(value = "landingZoneCredentialExpireTime")
+    private OffsetDateTime landingZoneCredentialExpireTime;
+
+    /** Creates an instance of LinkConnectionDetailedStatus class. */
+    public LinkConnectionDetailedStatus() {}
 
     /**
      * Get the id property: Link connection id.
@@ -185,7 +203,9 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Get the status property: Link connection status.
+     * Get the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @return the status value.
      */
@@ -194,7 +214,9 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Set the status property: Link connection status.
+     * Set the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @param status the status value to set.
      * @return the LinkConnectionDetailedStatus object itself.
@@ -241,6 +263,47 @@ public final class LinkConnectionDetailedStatus {
      */
     public LinkConnectionDetailedStatus setError(Object error) {
         this.error = error;
+        return this;
+    }
+
+    /**
+     * Get the refreshStatus property: Link connection refresh status.
+     *
+     * @return the refreshStatus value.
+     */
+    public LinkConnectionRefreshStatus getRefreshStatus() {
+        return this.refreshStatus;
+    }
+
+    /**
+     * Set the refreshStatus property: Link connection refresh status.
+     *
+     * @param refreshStatus the refreshStatus value to set.
+     * @return the LinkConnectionDetailedStatus object itself.
+     */
+    public LinkConnectionDetailedStatus setRefreshStatus(LinkConnectionRefreshStatus refreshStatus) {
+        this.refreshStatus = refreshStatus;
+        return this;
+    }
+
+    /**
+     * Get the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
+     *
+     * @return the landingZoneCredentialExpireTime value.
+     */
+    public OffsetDateTime getLandingZoneCredentialExpireTime() {
+        return this.landingZoneCredentialExpireTime;
+    }
+
+    /**
+     * Set the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
+     *
+     * @param landingZoneCredentialExpireTime the landingZoneCredentialExpireTime value to set.
+     * @return the LinkConnectionDetailedStatus object itself.
+     */
+    public LinkConnectionDetailedStatus setLandingZoneCredentialExpireTime(
+            OffsetDateTime landingZoneCredentialExpireTime) {
+        this.landingZoneCredentialExpireTime = landingZoneCredentialExpireTime;
         return this;
     }
 }

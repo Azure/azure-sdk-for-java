@@ -37,6 +37,10 @@ public final class NetworkManagerCommitInner {
     @JsonProperty(value = "commitType", required = true)
     private ConfigurationType commitType;
 
+    /** Creates an instance of NetworkManagerCommitInner class. */
+    public NetworkManagerCommitInner() {
+    }
+
     /**
      * Get the commitId property: Commit Id.
      *

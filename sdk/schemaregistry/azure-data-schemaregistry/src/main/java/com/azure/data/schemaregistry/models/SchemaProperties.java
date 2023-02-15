@@ -21,12 +21,14 @@ public final class SchemaProperties {
     private final SchemaFormat format;
     private final String groupName;
     private final String name;
+    private final int version;
 
     static {
         SchemaRegistryHelper.setAccessor(new SchemaRegistryHelper.SchemaRegistryModelsAccessor() {
             @Override
-            public SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name) {
-                return new SchemaProperties(id, format, groupName, name);
+            public SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name,
+                int version) {
+                return new SchemaProperties(id, format, groupName, name, version);
             }
         });
     }
@@ -38,7 +40,7 @@ public final class SchemaProperties {
      * @param format The type of schema, e.g. avro, json.
      */
     public SchemaProperties(String id, SchemaFormat format) {
-        this(id, format, null, null);
+        this(id, format, null, null, -1);
     }
 
     /**
@@ -49,11 +51,12 @@ public final class SchemaProperties {
      * @param groupName The schema group for this schema.
      * @param name The name of the schema.
      */
-    SchemaProperties(String id, SchemaFormat format, String groupName, String name) {
+    SchemaProperties(String id, SchemaFormat format, String groupName, String name, int version) {
         this.id = id;
         this.format = format;
         this.groupName = groupName;
         this.name = name;
+        this.version = version;
     }
 
     /**
@@ -89,5 +92,14 @@ public final class SchemaProperties {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets the version of the schema.
+     *
+     * @return The version of the schema.
+     */
+    public int getVersion() {
+        return version;
     }
 }

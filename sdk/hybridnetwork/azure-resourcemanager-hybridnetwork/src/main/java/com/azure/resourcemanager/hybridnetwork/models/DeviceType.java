@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeviceType. */
+/** The type of the device. */
 public final class DeviceType extends ExpandableStringEnum<DeviceType> {
     /** Static value Unknown for DeviceType. */
     public static final DeviceType UNKNOWN = fromString("Unknown");
@@ -27,7 +27,11 @@ public final class DeviceType extends ExpandableStringEnum<DeviceType> {
         return fromString(name, DeviceType.class);
     }
 
-    /** @return known DeviceType values. */
+    /**
+     * Gets known DeviceType values.
+     *
+     * @return known DeviceType values.
+     */
     public static Collection<DeviceType> values() {
         return values(DeviceType.class);
     }

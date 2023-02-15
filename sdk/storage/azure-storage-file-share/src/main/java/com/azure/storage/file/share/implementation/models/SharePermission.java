@@ -18,6 +18,9 @@ public final class SharePermission {
     @JsonProperty(value = "permission", required = true)
     private String permission;
 
+    /** Creates an instance of SharePermission class. */
+    public SharePermission() {}
+
     /**
      * Get the permission property: The permission in the Security Descriptor Definition Language (SDDL).
      *

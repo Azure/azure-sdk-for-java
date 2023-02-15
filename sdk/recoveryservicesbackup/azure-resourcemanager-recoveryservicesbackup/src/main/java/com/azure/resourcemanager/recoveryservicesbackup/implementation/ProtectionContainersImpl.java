@@ -27,17 +27,6 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         this.serviceManager = serviceManager;
     }
 
-    public ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        ProtectionContainerResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName);
-        if (inner != null) {
-            return new ProtectionContainerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProtectionContainerResource> getWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String containerName, Context context) {
         Response<ProtectionContainerResourceInner> inner =
@@ -53,8 +42,15 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
     }
 
-    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        this.serviceClient().unregister(vaultName, resourceGroupName, fabricName, containerName);
+    public ProtectionContainerResource get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        ProtectionContainerResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName);
+        if (inner != null) {
+            return new ProtectionContainerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> unregisterWithResponse(
@@ -64,8 +60,8 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
             .unregisterWithResponse(vaultName, resourceGroupName, fabricName, containerName, context);
     }
 
-    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        this.serviceClient().inquire(vaultName, resourceGroupName, fabricName, containerName);
+    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        this.serviceClient().unregister(vaultName, resourceGroupName, fabricName, containerName);
     }
 
     public Response<Void> inquireWithResponse(
@@ -80,13 +76,17 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
             .inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, context);
     }
 
-    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
-        this.serviceClient().refresh(vaultName, resourceGroupName, fabricName);
+    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        this.serviceClient().inquire(vaultName, resourceGroupName, fabricName, containerName);
     }
 
     public Response<Void> refreshWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String filter, Context context) {
         return this.serviceClient().refreshWithResponse(vaultName, resourceGroupName, fabricName, filter, context);
+    }
+
+    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
+        this.serviceClient().refresh(vaultName, resourceGroupName, fabricName);
     }
 
     public ProtectionContainerResource getById(String id) {

@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class DocumentDbCollectionDataset extends Dataset {
     /*
-     * Document Database collection name. Type: string (or Expression with
-     * resultType string).
+     * Document Database collection name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;
+
+    /** Creates an instance of DocumentDbCollectionDataset class. */
+    public DocumentDbCollectionDataset() {}
 
     /**
      * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType

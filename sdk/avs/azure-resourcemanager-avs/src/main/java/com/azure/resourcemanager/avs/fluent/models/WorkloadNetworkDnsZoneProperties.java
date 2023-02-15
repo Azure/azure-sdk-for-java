@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX DNS Zone Properties. */
 @Fluent
 public final class WorkloadNetworkDnsZoneProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDnsZoneProperties.class);
-
     /*
      * Display name of the DNS Zone.
      */
@@ -57,6 +53,10 @@ public final class WorkloadNetworkDnsZoneProperties {
      */
     @JsonProperty(value = "revision")
     private Long revision;
+
+    /** Creates an instance of WorkloadNetworkDnsZoneProperties class. */
+    public WorkloadNetworkDnsZoneProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the DNS Zone.

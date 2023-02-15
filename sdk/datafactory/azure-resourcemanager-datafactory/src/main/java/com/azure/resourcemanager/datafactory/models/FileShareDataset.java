@@ -23,6 +23,10 @@ public final class FileShareDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private FileShareDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of FileShareDataset class. */
+    public FileShareDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: On-premises file system dataset properties.
      *

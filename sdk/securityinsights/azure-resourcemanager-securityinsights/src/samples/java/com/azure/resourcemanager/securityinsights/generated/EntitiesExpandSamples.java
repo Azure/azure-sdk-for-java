@@ -12,7 +12,7 @@ import java.util.UUID;
 /** Samples for Entities Expand. */
 public final class EntitiesExpandSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/expand/PostExpandEntity.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/expand/PostExpandEntity.json
      */
     /**
      * Sample code: Expand an entity.

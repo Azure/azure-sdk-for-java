@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Categories. */
+/** The categories of resource that is at risk when the assessment is unhealthy. */
 public final class Categories extends ExpandableStringEnum<Categories> {
     /** Static value Compute for Categories. */
     public static final Categories COMPUTE = fromString("Compute");
@@ -36,7 +36,11 @@ public final class Categories extends ExpandableStringEnum<Categories> {
         return fromString(name, Categories.class);
     }
 
-    /** @return known Categories values. */
+    /**
+     * Gets known Categories values.
+     *
+     * @return known Categories values.
+     */
     public static Collection<Categories> values() {
         return values(Categories.class);
     }

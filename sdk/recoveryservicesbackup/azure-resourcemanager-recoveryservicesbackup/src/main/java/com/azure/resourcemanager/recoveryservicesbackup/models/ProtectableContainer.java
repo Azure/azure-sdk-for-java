@@ -47,6 +47,10 @@ public class ProtectableContainer {
     @JsonProperty(value = "containerId")
     private String containerId;
 
+    /** Creates an instance of ProtectableContainer class. */
+    public ProtectableContainer() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the container.
      *

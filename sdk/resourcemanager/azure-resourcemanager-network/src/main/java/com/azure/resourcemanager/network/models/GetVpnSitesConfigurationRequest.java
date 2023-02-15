@@ -24,6 +24,10 @@ public final class GetVpnSitesConfigurationRequest {
     @JsonProperty(value = "outputBlobSasUrl", required = true)
     private String outputBlobSasUrl;
 
+    /** Creates an instance of GetVpnSitesConfigurationRequest class. */
+    public GetVpnSitesConfigurationRequest() {
+    }
+
     /**
      * Get the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
      *

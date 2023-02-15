@@ -16,15 +16,13 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphImplicitGrantSettings {
     /*
-     * Specifies whether this web application can request an access token using
-     * the OAuth 2.0 implicit flow.
+     * Specifies whether this web application can request an access token using the OAuth 2.0 implicit flow.
      */
     @JsonProperty(value = "enableAccessTokenIssuance")
     private Boolean enableAccessTokenIssuance;
 
     /*
-     * Specifies whether this web application can request an ID token using the
-     * OAuth 2.0 implicit flow.
+     * Specifies whether this web application can request an ID token using the OAuth 2.0 implicit flow.
      */
     @JsonProperty(value = "enableIdTokenIssuance")
     private Boolean enableIdTokenIssuance;
@@ -33,6 +31,10 @@ public final class MicrosoftGraphImplicitGrantSettings {
      * implicitGrantSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphImplicitGrantSettings class. */
+    public MicrosoftGraphImplicitGrantSettings() {
+    }
 
     /**
      * Get the enableAccessTokenIssuance property: Specifies whether this web application can request an access token

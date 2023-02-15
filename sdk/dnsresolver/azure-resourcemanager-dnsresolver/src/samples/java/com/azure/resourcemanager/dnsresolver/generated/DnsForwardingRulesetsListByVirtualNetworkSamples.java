@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets ListByVirtualNetwork. */
 public final class DnsForwardingRulesetsListByVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by virtual network.

@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class RestoreRequest {
+    /** Creates an instance of RestoreRequest class. */
+    public RestoreRequest() {
+    }
+
     /**
      * Validates the instance.
      *

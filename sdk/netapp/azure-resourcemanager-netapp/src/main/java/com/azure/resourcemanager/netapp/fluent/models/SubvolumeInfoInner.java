@@ -19,8 +19,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     private SubvolumeProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -44,7 +43,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the path property: path Path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
@@ -53,7 +54,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the path property: path Path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -67,7 +70,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the size property: size Truncate subvolume to the provided size in bytes.
+     * Get the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
@@ -76,7 +81,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the size property: size Truncate subvolume to the provided size in bytes.
+     * Set the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @param size the size value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -90,7 +97,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the parentPath property: name parent path to the subvolume.
+     * Get the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @return the parentPath value.
      */
@@ -99,7 +108,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the parentPath property: name parent path to the subvolume.
+     * Set the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeInfoInner object itself.

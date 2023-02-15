@@ -4,21 +4,17 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Availability group configuration. */
-@Immutable
+@Fluent
 public final class AgConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgConfiguration.class);
-
     /*
      * Replica configurations.
      */
-    @JsonProperty(value = "replicas", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "replicas")
     private List<AgReplica> replicas;
 
     /**
@@ -28,6 +24,17 @@ public final class AgConfiguration {
      */
     public List<AgReplica> replicas() {
         return this.replicas;
+    }
+
+    /**
+     * Set the replicas property: Replica configurations.
+     *
+     * @param replicas the replicas value to set.
+     * @return the AgConfiguration object itself.
+     */
+    public AgConfiguration withReplicas(List<AgReplica> replicas) {
+        this.replicas = replicas;
+        return this;
     }
 
     /**

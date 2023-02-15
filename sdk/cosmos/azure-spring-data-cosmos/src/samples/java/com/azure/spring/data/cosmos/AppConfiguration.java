@@ -43,8 +43,11 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
-    @Value("${azure.cosmos.maxBufferedItemCount")
+    @Value("${azure.cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
+
+    @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -65,6 +68,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }

@@ -95,21 +95,6 @@ public interface NetworkInterfaceIpConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the ip configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceIpConfigurationInner get(
-        String resourceGroupName, String networkInterfaceName, String ipConfigurationName);
-
-    /**
-     * Gets the specified network interface ip configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the ip configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,4 +104,19 @@ public interface NetworkInterfaceIpConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceIpConfigurationInner> getWithResponse(
         String resourceGroupName, String networkInterfaceName, String ipConfigurationName, Context context);
+
+    /**
+     * Gets the specified network interface ip configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the ip configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface ip configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkInterfaceIpConfigurationInner get(
+        String resourceGroupName, String networkInterfaceName, String ipConfigurationName);
 }

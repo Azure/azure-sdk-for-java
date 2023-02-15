@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
@@ -22,6 +23,9 @@ import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -414,8 +418,28 @@ public class ReadmeSamples {
             documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
+            // Do something with the exception
         }
         // END: readme-sample-handlingException
+    }
+
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingExceptionAsync() {
+        DocumentModelAdministrationAsyncClient administrationAsyncClient = new DocumentModelAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-async-handlingException
+        administrationAsyncClient.deleteDocumentModel("{modelId}")
+            .doOnSuccess(
+                ignored -> System.out.println("Success!"))
+            .doOnError(
+                error -> error instanceof ResourceNotFoundException,
+                error -> System.out.println("Exception: Delete could not be performed."));
+        // END: readme-sample-async-handlingException
     }
 
     /**
@@ -428,5 +452,19 @@ public class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: readme-sample-asyncClient
+    }
+
+    /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void enableLoggingDocumentAnalysisClient() {
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: readme-sample-enablehttplogging
+        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(defaultCredential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: readme-sample-enablehttplogging
     }
 }

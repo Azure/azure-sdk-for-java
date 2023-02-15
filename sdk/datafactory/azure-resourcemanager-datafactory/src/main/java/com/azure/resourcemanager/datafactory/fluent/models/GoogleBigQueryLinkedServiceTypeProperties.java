@@ -93,6 +93,10 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GoogleBigQueryLinkedServiceTypeProperties class. */
+    public GoogleBigQueryLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the project property: The default BigQuery project to query against.
      *

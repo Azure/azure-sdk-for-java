@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The status of an Azure resource at the time the operation was called. */
 @Immutable
 public final class Status {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Status.class);
-
     /*
      * The short label for the status.
      */
@@ -22,8 +18,7 @@ public final class Status {
     private String displayStatus;
 
     /*
-     * The detailed message for the status, including alerts and error
-     * messages.
+     * The detailed message for the status, including alerts and error messages.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
@@ -33,6 +28,10 @@ public final class Status {
      */
     @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
+
+    /** Creates an instance of Status class. */
+    public Status() {
+    }
 
     /**
      * Get the displayStatus property: The short label for the status.

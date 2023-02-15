@@ -223,12 +223,6 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
         return this;
     }
 
-    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        return serviceManager
-            .factories()
-            .getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
-    }
-
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
         GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context) {
         return serviceManager
@@ -236,14 +230,20 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
             .getGitHubAccessTokenWithResponse(resourceGroupName, factoryName, gitHubAccessTokenRequest, context);
     }
 
-    public AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy) {
-        return serviceManager.factories().getDataPlaneAccess(resourceGroupName, factoryName, policy);
+    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        return serviceManager
+            .factories()
+            .getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
     }
 
     public Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(UserAccessPolicy policy, Context context) {
         return serviceManager
             .factories()
             .getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy, context);
+    }
+
+    public AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy) {
+        return serviceManager.factories().getDataPlaneAccess(resourceGroupName, factoryName, policy);
     }
 
     public FactoryImpl withRegion(Region location) {

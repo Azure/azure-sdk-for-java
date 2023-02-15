@@ -40,15 +40,6 @@ public final class LinkedServicesImpl implements LinkedServices {
         return Utils.mapPage(inner, inner1 -> new LinkedServiceResourceImpl(inner1, this.manager()));
     }
 
-    public LinkedServiceResource get(String resourceGroupName, String factoryName, String linkedServiceName) {
-        LinkedServiceResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, linkedServiceName);
-        if (inner != null) {
-            return new LinkedServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LinkedServiceResource> getWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch, Context context) {
         Response<LinkedServiceResourceInner> inner =
@@ -66,13 +57,22 @@ public final class LinkedServicesImpl implements LinkedServices {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String linkedServiceName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, linkedServiceName);
+    public LinkedServiceResource get(String resourceGroupName, String factoryName, String linkedServiceName) {
+        LinkedServiceResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, linkedServiceName);
+        if (inner != null) {
+            return new LinkedServiceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, linkedServiceName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String linkedServiceName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, linkedServiceName);
     }
 
     public LinkedServiceResource getById(String id) {

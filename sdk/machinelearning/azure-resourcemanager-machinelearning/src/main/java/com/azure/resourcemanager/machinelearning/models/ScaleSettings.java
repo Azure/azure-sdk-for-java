@@ -24,11 +24,14 @@ public final class ScaleSettings {
     private Integer minNodeCount;
 
     /*
-     * Node Idle Time before scaling down amlCompute. This string needs to be
-     * in the RFC Format.
+     * Node Idle Time before scaling down amlCompute. This string needs to be in the RFC Format.
      */
     @JsonProperty(value = "nodeIdleTimeBeforeScaleDown")
     private Duration nodeIdleTimeBeforeScaleDown;
+
+    /** Creates an instance of ScaleSettings class. */
+    public ScaleSettings() {
+    }
 
     /**
      * Get the maxNodeCount property: Max number of nodes to use.

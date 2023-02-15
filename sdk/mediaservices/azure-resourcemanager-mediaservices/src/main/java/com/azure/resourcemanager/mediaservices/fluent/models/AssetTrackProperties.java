@@ -24,6 +24,10 @@ public final class AssetTrackProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AssetTrackProperties class. */
+    public AssetTrackProperties() {
+    }
+
     /**
      * Get the track property: Detailed information about a track in the asset.
      *

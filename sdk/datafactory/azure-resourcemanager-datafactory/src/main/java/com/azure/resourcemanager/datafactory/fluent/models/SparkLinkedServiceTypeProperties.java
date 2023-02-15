@@ -104,6 +104,10 @@ public final class SparkLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SparkLinkedServiceTypeProperties class. */
+    public SparkLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: IP address or host name of the Spark server.
      *

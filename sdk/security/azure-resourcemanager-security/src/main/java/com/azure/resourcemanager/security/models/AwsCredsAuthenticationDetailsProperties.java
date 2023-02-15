@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("awsCreds")
 @Fluent
 public final class AwsCredsAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwsCredsAuthenticationDetailsProperties.class);
-
     /*
      * The ID of the cloud account
      */
@@ -39,6 +36,10 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
      */
     @JsonProperty(value = "awsSecretAccessKey", required = true)
     private String awsSecretAccessKey;
+
+    /** Creates an instance of AwsCredsAuthenticationDetailsProperties class. */
+    public AwsCredsAuthenticationDetailsProperties() {
+    }
 
     /**
      * Get the accountId property: The ID of the cloud account.
@@ -98,17 +99,19 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
     public void validate() {
         super.validate();
         if (awsAccessKeyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsAccessKeyId in model AwsCredsAuthenticationDetailsProperties"));
         }
         if (awsSecretAccessKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property awsSecretAccessKey in model"
                             + " AwsCredsAuthenticationDetailsProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwsCredsAuthenticationDetailsProperties.class);
 }

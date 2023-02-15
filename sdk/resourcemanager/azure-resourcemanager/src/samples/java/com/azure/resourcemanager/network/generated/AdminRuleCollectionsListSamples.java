@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AdminRuleCollections List. */
 public final class AdminRuleCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleCollectionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerAdminRuleCollectionList.json
      */
     /**
      * Sample code: List security admin rule collections.

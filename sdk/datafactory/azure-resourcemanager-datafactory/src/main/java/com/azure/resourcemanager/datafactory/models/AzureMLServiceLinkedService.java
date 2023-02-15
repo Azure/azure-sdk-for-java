@@ -25,6 +25,10 @@ public final class AzureMLServiceLinkedService extends LinkedService {
     private AzureMLServiceLinkedServiceTypeProperties innerTypeProperties =
         new AzureMLServiceLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureMLServiceLinkedService class. */
+    public AzureMLServiceLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Service linked service properties.
      *

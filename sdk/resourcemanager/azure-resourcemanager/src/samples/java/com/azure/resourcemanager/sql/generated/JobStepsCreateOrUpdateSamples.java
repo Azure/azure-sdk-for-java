@@ -17,7 +17,7 @@ import java.util.UUID;
 /** Samples for JobSteps CreateOrUpdate. */
 public final class JobStepsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobStepMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMin.json
      */
     /**
      * Sample code: Create or update a job step with minimal properties specified.
@@ -40,14 +40,13 @@ public final class JobStepsCreateOrUpdateSamples {
                 new JobStepInner()
                     .withTargetGroup(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup0")
-                    .withCredential(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0")
+                    .withCredential("fakeTokenPlaceholder")
                     .withAction(new JobStepAction().withValue("select 1")),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobStepMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMax.json
      */
     /**
      * Sample code: Create or update a job step with all properties specified.
@@ -71,8 +70,7 @@ public final class JobStepsCreateOrUpdateSamples {
                     .withStepId(1)
                     .withTargetGroup(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1")
-                    .withCredential(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1")
+                    .withCredential("fakeTokenPlaceholder")
                     .withAction(
                         new JobStepAction()
                             .withType(JobStepActionType.TSQL)
@@ -87,15 +85,14 @@ public final class JobStepsCreateOrUpdateSamples {
                             .withDatabaseName("database3")
                             .withSchemaName("myschema1234")
                             .withTableName("mytable5678")
-                            .withCredential(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0"))
+                            .withCredential("fakeTokenPlaceholder"))
                     .withExecutionOptions(
                         new JobStepExecutionOptions()
                             .withTimeoutSeconds(1234)
                             .withRetryAttempts(42)
                             .withInitialRetryIntervalSeconds(11)
                             .withMaximumRetryIntervalSeconds(222)
-                            .withRetryIntervalBackoffMultiplier(3.0f)),
+                            .withRetryIntervalBackoffMultiplier(3.0F)),
                 Context.NONE);
     }
 }

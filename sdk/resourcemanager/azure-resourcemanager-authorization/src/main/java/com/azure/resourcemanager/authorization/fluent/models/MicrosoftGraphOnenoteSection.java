@@ -30,8 +30,7 @@ public final class MicrosoftGraphOnenoteSection extends MicrosoftGraphOnenoteEnt
     private MicrosoftGraphSectionLinks links;
 
     /*
-     * The pages endpoint where you can get details for all the pages in the
-     * section. Read-only.
+     * The pages endpoint where you can get details for all the pages in the section. Read-only.
      */
     @JsonProperty(value = "pagesUrl")
     private String pagesUrl;
@@ -58,6 +57,10 @@ public final class MicrosoftGraphOnenoteSection extends MicrosoftGraphOnenoteEnt
      * onenoteSection
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenoteSection class. */
+    public MicrosoftGraphOnenoteSection() {
+    }
 
     /**
      * Get the isDefault property: Indicates whether this is the user's default section. Read-only.

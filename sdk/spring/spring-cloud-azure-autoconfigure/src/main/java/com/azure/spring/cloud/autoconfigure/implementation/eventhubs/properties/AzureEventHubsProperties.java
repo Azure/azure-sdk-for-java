@@ -121,7 +121,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
         propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
+        AzurePropertiesUtils.mergeAzureCommonProperties(properties, this.processor.getCheckpointStore(), properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
 
         return properties;
@@ -302,7 +302,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
             /**
              * The load balancing strategy for claiming partition ownership.
              */
-            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+            private LoadBalancingStrategy strategy;
             /**
              * The time duration after which the ownership of partition expires.
              */

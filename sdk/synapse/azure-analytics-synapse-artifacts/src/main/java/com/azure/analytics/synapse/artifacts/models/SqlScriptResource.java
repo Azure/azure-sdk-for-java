@@ -24,8 +24,7 @@ public final class SqlScriptResource {
     private String name;
 
     /*
-     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -41,6 +40,9 @@ public final class SqlScriptResource {
      */
     @JsonProperty(value = "properties", required = true)
     private SqlScript properties;
+
+    /** Creates an instance of SqlScriptResource class. */
+    public SqlScriptResource() {}
 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -

@@ -61,7 +61,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkInterfaceIpConfigurationsService {
+    public interface NetworkInterfaceIpConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -138,7 +138,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -199,7 +199,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -331,7 +331,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -389,7 +389,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -428,23 +428,6 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the ip configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceIpConfigurationInner get(
-        String resourceGroupName, String networkInterfaceName, String ipConfigurationName) {
-        return getAsync(resourceGroupName, networkInterfaceName, ipConfigurationName).block();
-    }
-
-    /**
-     * Gets the specified network interface ip configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the ip configuration name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +438,23 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
     public Response<NetworkInterfaceIpConfigurationInner> getWithResponse(
         String resourceGroupName, String networkInterfaceName, String ipConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkInterfaceName, ipConfigurationName, context).block();
+    }
+
+    /**
+     * Gets the specified network interface ip configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the ip configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface ip configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceIpConfigurationInner get(
+        String resourceGroupName, String networkInterfaceName, String ipConfigurationName) {
+        return getWithResponse(resourceGroupName, networkInterfaceName, ipConfigurationName, Context.NONE).getValue();
     }
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AttributeFilter. */
+/** The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks. */
 public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter> {
     /** Static value All for AttributeFilter. */
     public static final AttributeFilter ALL = fromString("All");
@@ -21,6 +21,15 @@ public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter>
 
     /** Static value ValueEquals for AttributeFilter. */
     public static final AttributeFilter VALUE_EQUALS = fromString("ValueEquals");
+
+    /**
+     * Creates a new instance of AttributeFilter value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AttributeFilter() {
+    }
 
     /**
      * Creates or finds a AttributeFilter from its string representation.

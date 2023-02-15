@@ -47,6 +47,10 @@ public final class AzureFirewallInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of AzureFirewallInner class. */
+    public AzureFirewallInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the azure firewall.
      *

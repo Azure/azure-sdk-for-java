@@ -82,6 +82,10 @@ public final class VpnClientConnectionHealthDetail {
     @JsonProperty(value = "maxPacketsPerSecond", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxPacketsPerSecond;
 
+    /** Creates an instance of VpnClientConnectionHealthDetail class. */
+    public VpnClientConnectionHealthDetail() {
+    }
+
     /**
      * Get the vpnConnectionId property: The vpn client Id.
      *

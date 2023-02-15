@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedRuleExclusionMatchVariable. */
+/** The variable type to be excluded. */
 public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnum<ManagedRuleExclusionMatchVariable> {
     /** Static value RequestHeaderNames for ManagedRuleExclusionMatchVariable. */
     public static final ManagedRuleExclusionMatchVariable REQUEST_HEADER_NAMES = fromString("RequestHeaderNames");
@@ -28,6 +28,15 @@ public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnu
         fromString("RequestBodyJsonArgNames");
 
     /**
+     * Creates a new instance of ManagedRuleExclusionMatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedRuleExclusionMatchVariable() {
+    }
+
+    /**
      * Creates or finds a ManagedRuleExclusionMatchVariable from its string representation.
      *
      * @param name a name to look for.
@@ -38,7 +47,11 @@ public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnu
         return fromString(name, ManagedRuleExclusionMatchVariable.class);
     }
 
-    /** @return known ManagedRuleExclusionMatchVariable values. */
+    /**
+     * Gets known ManagedRuleExclusionMatchVariable values.
+     *
+     * @return known ManagedRuleExclusionMatchVariable values.
+     */
     public static Collection<ManagedRuleExclusionMatchVariable> values() {
         return values(ManagedRuleExclusionMatchVariable.class);
     }

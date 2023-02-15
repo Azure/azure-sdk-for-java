@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 
 /** Samples for VirtualMachines RunCommand. */
 public final class VirtualMachinesRunCommandSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/runCommandExamples/VirtualMachineRunCommand.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineRunCommand.json
      */
     /**
      * Sample code: VirtualMachineRunCommand.
@@ -24,6 +23,9 @@ public final class VirtualMachinesRunCommandSamples {
             .serviceClient()
             .getVirtualMachines()
             .runCommand(
-                "crptestar98131", "vm3036", new RunCommandInput().withCommandId("RunPowerShellScript"), Context.NONE);
+                "crptestar98131",
+                "vm3036",
+                new RunCommandInput().withCommandId("RunPowerShellScript"),
+                com.azure.core.util.Context.NONE);
     }
 }

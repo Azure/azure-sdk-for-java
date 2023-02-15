@@ -44,6 +44,10 @@ public final class MaintenanceConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of MaintenanceConfigurationInner class. */
+    public MaintenanceConfigurationInner() {
+    }
+
     /**
      * Get the systemData property: The system metadata relating to this resource.
      *

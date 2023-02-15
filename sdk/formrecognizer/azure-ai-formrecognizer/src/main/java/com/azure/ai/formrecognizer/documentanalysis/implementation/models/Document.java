@@ -42,6 +42,9 @@ public final class Document {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
+    /** Creates an instance of Document class. */
+    public Document() {}
+
     /**
      * Get the docType property: Document type.
      *

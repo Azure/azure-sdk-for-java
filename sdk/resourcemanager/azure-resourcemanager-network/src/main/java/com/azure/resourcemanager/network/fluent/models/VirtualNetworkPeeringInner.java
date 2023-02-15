@@ -41,6 +41,10 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of VirtualNetworkPeeringInner class. */
+    public VirtualNetworkPeeringInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the virtual network peering.
      *

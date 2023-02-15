@@ -17,6 +17,10 @@ public final class ActionGroupPatch {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of ActionGroupPatch class. */
+    public ActionGroupPatch() {
+    }
+
     /**
      * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its actions will be activated.

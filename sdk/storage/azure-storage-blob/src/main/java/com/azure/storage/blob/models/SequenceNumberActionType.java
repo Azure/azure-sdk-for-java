@@ -33,6 +33,9 @@ public enum SequenceNumberActionType {
      */
     @JsonCreator
     public static SequenceNumberActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SequenceNumberActionType[] items = SequenceNumberActionType.values();
         for (SequenceNumberActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SequenceNumberActionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StochasticOptimizer. */
+/** Stochastic optimizer for image models. */
 public final class StochasticOptimizer extends ExpandableStringEnum<StochasticOptimizer> {
     /** Static value None for StochasticOptimizer. */
     public static final StochasticOptimizer NONE = fromString("None");
@@ -21,6 +21,15 @@ public final class StochasticOptimizer extends ExpandableStringEnum<StochasticOp
 
     /** Static value Adamw for StochasticOptimizer. */
     public static final StochasticOptimizer ADAMW = fromString("Adamw");
+
+    /**
+     * Creates a new instance of StochasticOptimizer value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StochasticOptimizer() {
+    }
 
     /**
      * Creates or finds a StochasticOptimizer from its string representation.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TeradataAuthenticationType. */
+/** AuthenticationType to be used for connection. */
 public final class TeradataAuthenticationType extends ExpandableStringEnum<TeradataAuthenticationType> {
     /** Static value Basic for TeradataAuthenticationType. */
     public static final TeradataAuthenticationType BASIC = fromString("Basic");
@@ -27,7 +27,11 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
         return fromString(name, TeradataAuthenticationType.class);
     }
 
-    /** @return known TeradataAuthenticationType values. */
+    /**
+     * Gets known TeradataAuthenticationType values.
+     *
+     * @return known TeradataAuthenticationType values.
+     */
     public static Collection<TeradataAuthenticationType> values() {
         return values(TeradataAuthenticationType.class);
     }

@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/devhub/ci.yml
+      - sdk/devhub/azure-resourcemanager-devhub/
+    exclude:
+      - sdk/devhub/pom.xml
+      - sdk/devhub/azure-resourcemanager-devhub/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/devhub/ci.yml
+      - sdk/devhub/azure-resourcemanager-devhub/
+    exclude:
+      - sdk/devhub/pom.xml
+      - sdk/devhub/azure-resourcemanager-devhub/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerdevhub
+    displayName: azure-resourcemanager-devhub
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: devhub
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-devhub
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdevhub
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdevhub }}

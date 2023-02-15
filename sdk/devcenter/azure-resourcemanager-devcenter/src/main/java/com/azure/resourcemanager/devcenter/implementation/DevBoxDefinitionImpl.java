@@ -10,9 +10,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinition;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitionUpdate;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
 import com.azure.resourcemanager.devcenter.models.ImageValidationStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import java.util.Collections;
 import java.util.Map;
@@ -52,7 +54,7 @@ public final class DevBoxDefinitionImpl
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -78,6 +80,10 @@ public final class DevBoxDefinitionImpl
 
     public String osStorageType() {
         return this.innerModel().osStorageType();
+    }
+
+    public HibernateSupport hibernateSupport() {
+        return this.innerModel().hibernateSupport();
     }
 
     public Region region() {
@@ -237,6 +243,16 @@ public final class DevBoxDefinitionImpl
             return this;
         } else {
             this.updateBody.withOsStorageType(osStorageType);
+            return this;
+        }
+    }
+
+    public DevBoxDefinitionImpl withHibernateSupport(HibernateSupport hibernateSupport) {
+        if (isInCreateMode()) {
+            this.innerModel().withHibernateSupport(hibernateSupport);
+            return this;
+        } else {
+            this.updateBody.withHibernateSupport(hibernateSupport);
             return this;
         }
     }

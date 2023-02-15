@@ -13,15 +13,7 @@ public final class AzureProfileProperties extends AzureProfileOptionsAdapter {
     private String tenantId;
     private String subscriptionId;
     private AzureProfileOptionsProvider.CloudType cloudType;
-    private final AzureEnvironmentProperties environment;
-
-    /**
-     * Construct an {@link AzureProfileProperties} instance with default value.
-     */
-    public AzureProfileProperties() {
-        environment = new AzureEnvironmentProperties();
-        setCloudType(AzureProfileOptionsProvider.CloudType.AZURE);
-    }
+    private final AzureEnvironmentProperties environment = new AzureEnvironmentProperties();
 
     @Override
     public String getTenantId() {

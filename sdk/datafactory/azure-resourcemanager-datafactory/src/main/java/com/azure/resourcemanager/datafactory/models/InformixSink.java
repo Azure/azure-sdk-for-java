@@ -20,6 +20,10 @@ public final class InformixSink extends CopySink {
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
+    /** Creates an instance of InformixSink class. */
+    public InformixSink() {
+    }
+
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
      * resultType string).

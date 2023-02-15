@@ -37,7 +37,9 @@ public final class ResourceQuotaInner {
     private ResourceName name;
 
     /*
-     * Limit. The maximum permitted quota of the resource.
+     * Limit.
+     *
+     * The maximum permitted quota of the resource.
      */
     @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Long limit;
@@ -47,6 +49,10 @@ public final class ResourceQuotaInner {
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaUnit unit;
+
+    /** Creates an instance of ResourceQuotaInner class. */
+    public ResourceQuotaInner() {
+    }
 
     /**
      * Get the id property: Specifies the resource ID.
@@ -85,7 +91,9 @@ public final class ResourceQuotaInner {
     }
 
     /**
-     * Get the limit property: Limit. The maximum permitted quota of the resource.
+     * Get the limit property: Limit.
+     *
+     * <p>The maximum permitted quota of the resource.
      *
      * @return the limit value.
      */

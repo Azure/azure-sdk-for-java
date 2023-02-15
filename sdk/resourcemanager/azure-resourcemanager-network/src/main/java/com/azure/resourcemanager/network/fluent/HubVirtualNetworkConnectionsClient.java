@@ -304,20 +304,6 @@ public interface HubVirtualNetworkConnectionsClient {
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HubVirtualNetworkConnectionInner get(String resourceGroupName, String virtualHubName, String connectionName);
-
-    /**
-     * Retrieves the details of a HubVirtualNetworkConnection.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -327,6 +313,20 @@ public interface HubVirtualNetworkConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HubVirtualNetworkConnectionInner> getWithResponse(
         String resourceGroupName, String virtualHubName, String connectionName, Context context);
+
+    /**
+     * Retrieves the details of a HubVirtualNetworkConnection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param connectionName The name of the vpn connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hubVirtualNetworkConnection Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HubVirtualNetworkConnectionInner get(String resourceGroupName, String virtualHubName, String connectionName);
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.

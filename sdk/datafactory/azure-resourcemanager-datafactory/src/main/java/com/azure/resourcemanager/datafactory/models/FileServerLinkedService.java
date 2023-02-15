@@ -24,6 +24,10 @@ public final class FileServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private FileServerLinkedServiceTypeProperties innerTypeProperties = new FileServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of FileServerLinkedService class. */
+    public FileServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: File system linked service properties.
      *

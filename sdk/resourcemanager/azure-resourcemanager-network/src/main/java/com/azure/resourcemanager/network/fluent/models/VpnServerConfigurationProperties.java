@@ -117,6 +117,10 @@ public final class VpnServerConfigurationProperties {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of VpnServerConfigurationProperties class. */
+    public VpnServerConfigurationProperties() {
+    }
+
     /**
      * Get the name property: The name of the VpnServerConfiguration that is unique within a resource group.
      *

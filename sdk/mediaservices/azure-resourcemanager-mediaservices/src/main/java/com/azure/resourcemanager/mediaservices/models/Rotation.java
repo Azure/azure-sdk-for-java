@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Rotation. */
+/** The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto. */
 public final class Rotation extends ExpandableStringEnum<Rotation> {
     /** Static value Auto for Rotation. */
     public static final Rotation AUTO = fromString("Auto");
@@ -27,6 +27,15 @@ public final class Rotation extends ExpandableStringEnum<Rotation> {
 
     /** Static value Rotate270 for Rotation. */
     public static final Rotation ROTATE270 = fromString("Rotate270");
+
+    /**
+     * Creates a new instance of Rotation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Rotation() {
+    }
 
     /**
      * Creates or finds a Rotation from its string representation.

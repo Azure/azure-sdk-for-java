@@ -162,12 +162,12 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()
-        state.serialize(clientCacheItems(0).get.client)
+        state.serialize(clientCacheItems(0).get.cosmosClient)
 
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(1).get.client)
+          throughputControlState.get.serialize(clientCacheItems(1).get.cosmosClient)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)

@@ -19,11 +19,15 @@ public final class AccountFilterCollection {
     private List<AccountFilterInner> value;
 
     /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
+     * A link to the next page of the collection (when the collection contains too many results to return in one
+     * response).
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of AccountFilterCollection class. */
+    public AccountFilterCollection() {
+    }
 
     /**
      * Get the value property: A collection of AccountFilter items.

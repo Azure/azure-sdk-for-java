@@ -29,6 +29,10 @@ public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionPropertie
     @JsonProperty(value = "fqdns", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> fqdns;
 
+    /** Creates an instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties class. */
+    public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties() {
+    }
+
     /**
      * Get the groupId property: The group ID for current private link connection.
      *

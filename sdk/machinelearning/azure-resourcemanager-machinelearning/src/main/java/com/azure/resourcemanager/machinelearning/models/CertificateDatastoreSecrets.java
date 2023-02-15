@@ -21,6 +21,10 @@ public final class CertificateDatastoreSecrets extends DatastoreSecretsInner {
     @JsonProperty(value = "certificate")
     private String certificate;
 
+    /** Creates an instance of CertificateDatastoreSecrets class. */
+    public CertificateDatastoreSecrets() {
+    }
+
     /**
      * Get the certificate property: Service principal certificate.
      *

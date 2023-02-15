@@ -136,20 +136,6 @@ public interface RouteTablesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route table on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName, String expand);
-
-    /**
-     * Gets the specified route table.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,19 +143,6 @@ public interface RouteTablesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName);
-
-    /**
-     * Gets the specified route table.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName);
 
     /**
      * Gets the specified route table.
@@ -186,6 +159,19 @@ public interface RouteTablesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteTableInner> getByResourceGroupWithResponse(
         String resourceGroupName, String routeTableName, String expand, Context context);
+
+    /**
+     * Gets the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified route table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName);
 
     /**
      * Create or updates a route table in a specified resource group.
@@ -328,20 +314,6 @@ public interface RouteTablesClient
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route table resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters);
-
-    /**
-     * Updates a route table tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to update route table tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -351,6 +323,20 @@ public interface RouteTablesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteTableInner> updateTagsWithResponse(
         String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
+
+    /**
+     * Updates a route table tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters);
 
     /**
      * Gets all route tables in a resource group.

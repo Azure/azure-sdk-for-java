@@ -58,6 +58,10 @@ public final class ExpressRouteProviderPortProperties {
     @JsonProperty(value = "remainingBandwidthInMbps")
     private Integer remainingBandwidthInMbps;
 
+    /** Creates an instance of ExpressRouteProviderPortProperties class. */
+    public ExpressRouteProviderPortProperties() {
+    }
+
     /**
      * Get the portPairDescriptor property: The name of the port pair.
      *

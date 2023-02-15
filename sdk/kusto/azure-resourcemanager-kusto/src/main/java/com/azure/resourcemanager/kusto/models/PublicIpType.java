@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpType. */
+/** Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6). */
 public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
     /** Static value IPv4 for PublicIpType. */
     public static final PublicIpType IPV4 = fromString("IPv4");
@@ -27,7 +27,11 @@ public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
         return fromString(name, PublicIpType.class);
     }
 
-    /** @return known PublicIpType values. */
+    /**
+     * Gets known PublicIpType values.
+     *
+     * @return known PublicIpType values.
+     */
     public static Collection<PublicIpType> values() {
         return values(PublicIpType.class);
     }

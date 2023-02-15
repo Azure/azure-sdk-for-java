@@ -23,6 +23,10 @@ public final class ConfigurationGroup {
     @JsonProperty(value = "properties")
     private NetworkGroupProperties innerProperties;
 
+    /** Creates an instance of ConfigurationGroup class. */
+    public ConfigurationGroup() {
+    }
+
     /**
      * Get the id property: Network group ID.
      *

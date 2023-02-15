@@ -52,8 +52,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
     private Boolean isEnabled;
 
     /*
-     * Indicates if the rule is read-only and cannot be modified or deleted by
-     * the rules REST API.
+     * Indicates if the rule is read-only and cannot be modified or deleted by the rules REST API.
      */
     @JsonProperty(value = "isReadOnly")
     private Boolean isReadOnly;
@@ -68,6 +67,10 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
      * messageRule
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessageRule class. */
+    public MicrosoftGraphMessageRule() {
+    }
 
     /**
      * Get the actions property: messageRuleActions.

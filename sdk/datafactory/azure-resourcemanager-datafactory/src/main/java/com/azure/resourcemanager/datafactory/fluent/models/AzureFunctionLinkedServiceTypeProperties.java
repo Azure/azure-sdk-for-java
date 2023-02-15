@@ -51,6 +51,10 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     @JsonProperty(value = "authentication")
     private Object authentication;
 
+    /** Creates an instance of AzureFunctionLinkedServiceTypeProperties class. */
+    public AzureFunctionLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.

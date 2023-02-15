@@ -29,6 +29,10 @@ public final class AmlOperationInner {
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
+    /** Creates an instance of AmlOperationInner class. */
+    public AmlOperationInner() {
+    }
+
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
      *

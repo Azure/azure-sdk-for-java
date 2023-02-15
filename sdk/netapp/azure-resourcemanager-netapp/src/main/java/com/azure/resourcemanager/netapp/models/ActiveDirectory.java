@@ -24,8 +24,7 @@ public final class ActiveDirectory {
     private String username;
 
     /*
-     * Plain text password of Active Directory domain administrator, value is
-     * masked in the response
+     * Plain text password of Active Directory domain administrator, value is masked in the response
      */
     @JsonProperty(value = "password")
     private String password;
@@ -37,8 +36,7 @@ public final class ActiveDirectory {
     private String domain;
 
     /*
-     * Comma separated list of DNS server IP addresses (IPv4 only) for the
-     * Active Directory domain
+     * Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain
      */
     @JsonProperty(value = "dns")
     private String dns;
@@ -56,8 +54,8 @@ public final class ActiveDirectory {
     private String statusDetails;
 
     /*
-     * NetBIOS name of the SMB server. This name will be registered as a
-     * computer account in the AD and used to mount volumes
+     * NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount
+     * volumes
      */
     @JsonProperty(value = "smbServerName")
     private String smbServerName;
@@ -69,44 +67,41 @@ public final class ActiveDirectory {
     private String organizationalUnit;
 
     /*
-     * The Active Directory site the service will limit Domain Controller
-     * discovery to
+     * The Active Directory site the service will limit Domain Controller discovery to
      */
     @JsonProperty(value = "site")
     private String site;
 
     /*
-     * Users to be added to the Built-in Backup Operator active directory
-     * group. A list of unique usernames without domain specifier
+     * Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without
+     * domain specifier
      */
     @JsonProperty(value = "backupOperators")
     private List<String> backupOperators;
 
     /*
-     * Users to be added to the Built-in Administrators active directory group.
-     * A list of unique usernames without domain specifier
+     * Users to be added to the Built-in Administrators active directory group. A list of unique usernames without
+     * domain specifier
      */
     @JsonProperty(value = "administrators")
     private List<String> administrators;
 
     /*
-     * kdc server IP addresses for the active directory machine. This optional
-     * parameter is used only while creating kerberos volume.
+     * kdc server IP addresses for the active directory machine. This optional parameter is used only while creating
+     * kerberos volume.
      */
     @JsonProperty(value = "kdcIP")
     private String kdcIp;
 
     /*
-     * Name of the active directory machine. This optional parameter is used
-     * only while creating kerberos volume
+     * Name of the active directory machine. This optional parameter is used only while creating kerberos volume
      */
     @JsonProperty(value = "adName")
     private String adName;
 
     /*
-     * When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root
-     * CA certificate, this optional parameter is used only for dual protocol
+     * When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory
+     * Certificate Service's self-signed root CA certificate, this optional parameter is used only for dual protocol
      * with LDAP user-mapping volumes.
      */
     @JsonProperty(value = "serverRootCACertificate")
@@ -125,9 +120,8 @@ public final class ActiveDirectory {
     private Boolean ldapSigning;
 
     /*
-     * Domain Users in the Active directory to be given SeSecurityPrivilege
-     * privilege (Needed for SMB Continuously available shares for SQL). A list
-     * of unique usernames without domain specifier
+     * Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously
+     * available shares for SQL). A list of unique usernames without domain specifier
      */
     @JsonProperty(value = "securityOperators")
     private List<String> securityOperators;
@@ -139,15 +133,13 @@ public final class ActiveDirectory {
     private Boolean ldapOverTls;
 
     /*
-     * If enabled, NFS client local users can also (in addition to LDAP users)
-     * access the NFS volumes.
+     * If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
      */
     @JsonProperty(value = "allowLocalNfsUsersWithLdap")
     private Boolean allowLocalNfsUsersWithLdap;
 
     /*
-     * If enabled, Traffic between the SMB server to Domain Controller (DC)
-     * will be encrypted.
+     * If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted.
      */
     @JsonProperty(value = "encryptDCConnections")
     private Boolean encryptDCConnections;

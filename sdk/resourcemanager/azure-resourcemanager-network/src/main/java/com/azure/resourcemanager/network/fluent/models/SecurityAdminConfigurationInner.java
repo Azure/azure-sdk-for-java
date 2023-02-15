@@ -27,6 +27,10 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SecurityAdminConfigurationInner class. */
+    public SecurityAdminConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Indicates the properties for the network manager security admin configuration.
      *

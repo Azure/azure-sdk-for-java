@@ -2,16 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "testApplicationId": {
-      "type": "string"
-    },
-    "testApplicationSecret": {
-      "type": "string"
-    },
-    "tenantId": {
-      "defaultValue": "[subscription().tenantId]",
-      "type": "string"
-    },
     "testApplicationOid": {
       "type": "String"
     },
@@ -22,6 +12,10 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "serviceBusEndpointSuffix": {
+      "type": "String",
+      "defaultValue": ".servicebus.windows.net"
     }
   },
   "variables": {
@@ -384,18 +378,6 @@
     }
   ],
   "outputs": {
-    "AZURE_SPRING_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationID')]"
-    },
-    "AZURE_SPRING_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
-    "AZURE_SPRING_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
     "AZURE_SERVICE_BUS_JMS_CONNECTION_STRING": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('azureServiceBusNamespaceName'), 'RootManageSharedAccessKey'), '2022-01-01-preview').primaryConnectionString]"
@@ -423,6 +405,10 @@
     "AZURE_SERVICE_BUS_NAMESPACE3": {
       "type": "string",
       "value": "[variables('azureServiceBusNamespaceName_3')]"
+    },
+    "AZURE_SERVICE_BUS_DOMAIN_NAME": {
+      "type": "string",
+      "value": "[substring(parameters('serviceBusEndpointSuffix'), 1)]"
     }
   }
 }

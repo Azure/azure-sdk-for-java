@@ -13,10 +13,9 @@ import com.azure.resourcemanager.dnsresolver.fluent.VirtualNetworkLinksClient;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLink;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLinks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinksImpl.class);
 
     private final VirtualNetworkLinksClient innerClient;
 
@@ -93,7 +92,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
     public VirtualNetworkLink getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,7 +100,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
     public Response<VirtualNetworkLink> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +143,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +164,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +206,7 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         }
         String virtualNetworkLinkName = Utils.getValueFromIdByName(id, "virtualNetworkLinks");
         if (virtualNetworkLinkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

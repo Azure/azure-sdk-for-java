@@ -40,6 +40,9 @@ public class Transformation {
     @JsonProperty(value = "flowlet")
     private DataFlowReference flowlet;
 
+    /** Creates an instance of Transformation class. */
+    public Transformation() {}
+
     /**
      * Get the name property: Transformation name.
      *

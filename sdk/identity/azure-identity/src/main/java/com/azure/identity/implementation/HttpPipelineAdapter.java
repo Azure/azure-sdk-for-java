@@ -7,6 +7,9 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -15,7 +18,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.HttpRequest;
 import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +31,6 @@ import java.util.stream.Collectors;
  */
 class HttpPipelineAdapter implements IHttpClient {
     private static final ClientLogger CLIENT_LOGGER = new ClientLogger(HttpPipelineAdapter.class);
-//    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonFactory JSON_FACTORY = new JsonFactory();
     private static final String ACCOUNT_IDENTIFIER_LOG_MESSAGE = "[Authenticated account] Client ID: {0}, Tenant ID: {1}"
         + ", User Principal Name: {2}, Object ID (user): {3})";
@@ -63,26 +64,18 @@ class HttpPipelineAdapter implements IHttpClient {
             request.setBody(httpRequest.body());
         }
 
-        return httpPipeline.send(request)
-            .flatMap(response -> response.getBodyAsString()
-                .map(body -> {
-                    logAccountIdentifiersIfConfigured(body);
-                    com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
-                        .body(body)
-                        .statusCode(response.getStatusCode());
-                    httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                        HttpHeader::getValuesList)));
-                    return httpResponse;
-                })
-                // if no body
-                .switchIfEmpty(Mono.defer(() -> {
-                    com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
-                        .statusCode(response.getStatusCode());
-                    httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                        HttpHeader::getValuesList)));
-                    return Mono.just(httpResponse);
-                })))
-            .block();
+        HttpResponse response = httpPipeline.sendSync(request, Context.NONE);
+        String body =  response.getBodyAsBinaryData().toString();
+
+        logAccountIdentifiersIfConfigured(body);
+        com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
+            .statusCode(response.getStatusCode());
+        if (!CoreUtils.isNullOrEmpty(body)) {
+            httpResponse.body(body);
+        }
+        httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
+            HttpHeader::getValuesList)));
+        return httpResponse;
     }
 
     private void logAccountIdentifiersIfConfigured(String body) {

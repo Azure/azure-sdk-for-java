@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateIaasVMRestoreOperationRequest")
 @Fluent
 public final class ValidateIaasVMRestoreOperationRequest extends ValidateRestoreOperationRequest {
+    /** Creates an instance of ValidateIaasVMRestoreOperationRequest class. */
+    public ValidateIaasVMRestoreOperationRequest() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ValidateIaasVMRestoreOperationRequest withRestoreRequest(RestoreRequest restoreRequest) {

@@ -22,14 +22,18 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-json-gson</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
 
+See `azure-json` for key concepts.
+
 ## Examples
+
+See `azure-json` for examples.
 
 ## Next steps
 

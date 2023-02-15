@@ -61,13 +61,15 @@ public final class SearchSummary {
     private Integer fuzzyLevel;
 
     /*
-     * Indication when the internal search engine has applied a geospatial bias
-     * to improve the ranking of results.  In  some methods, this can be
-     * affected by setting the lat and lon parameters where available.  In
-     * other cases it is  purely internal.
+     * Indication when the internal search engine has applied a geospatial bias to improve the ranking of results.  In
+     * some methods, this can be affected by setting the lat and lon parameters where available.  In other cases it is
+     * purely internal.
      */
     @JsonProperty(value = "geoBias", access = JsonProperty.Access.WRITE_ONLY)
     private LatLongPairAbbreviated geoBias;
+
+    /** Creates an instance of SearchSummary class. */
+    public SearchSummary() {}
 
     /**
      * Get the query property: The query parameter that was used to produce these search results.

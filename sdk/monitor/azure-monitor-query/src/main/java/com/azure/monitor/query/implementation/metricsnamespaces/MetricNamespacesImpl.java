@@ -15,19 +15,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.query.implementation.metricsnamespaces.models.ErrorResponseException;
-import com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespaceCollection;
 import com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace;
+import com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespaceCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricNamespaces. */
@@ -39,7 +37,7 @@ public final class MetricNamespacesImpl {
     private final MetricsNamespacesClientImpl client;
 
     /**
-     * Initializes an instance of MetricNamespacesImpl.
+     * Initializes an instance of MetricNamespaces.
      *
      * @param client the instance of the service client containing this operation class.
      */
@@ -51,11 +49,11 @@ public final class MetricNamespacesImpl {
     }
 
     /**
-     * The interface defining all the services for MetricsNamespacesClientMetricNamespaces to be used by the proxy
+     * The interface defining all the services for MonitorManagementClientMetricNamespaces to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MetricsNamespacesCli")
+    @ServiceInterface(name = "MonitorManagementCli")
     public interface MetricNamespacesService {
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({200})
@@ -77,7 +75,8 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(String resourceUri, String startTime) {
@@ -90,16 +89,14 @@ public final class MetricNamespacesImpl {
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.list(
-                                this.client.getHost(),
-                                resourceUri,
-                                this.client.getApiVersion(),
-                                startTime,
-                                accept,
-                                context))
-                .onErrorMap(ErrorResponseException.class, ex -> new HttpResponseException(ex.getMessage(),
-                        ex.getResponse(), new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage())))
+                        context ->
+                                service.list(
+                                        this.client.getHost(),
+                                        resourceUri,
+                                        this.client.getApiVersion(),
+                                        startTime,
+                                        accept,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -120,7 +117,8 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(
@@ -134,8 +132,6 @@ public final class MetricNamespacesImpl {
         }
         final String accept = "application/json";
         return service.list(this.client.getHost(), resourceUri, this.client.getApiVersion(), startTime, accept, context)
-                .onErrorMap(ErrorResponseException.class, ex -> new HttpResponseException(ex.getMessage(),
-                        ex.getResponse(), new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage())))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -155,7 +151,7 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespace> listAsync(String resourceUri, String startTime) {
@@ -171,7 +167,7 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespace> listAsync(String resourceUri, String startTime, Context context) {
@@ -186,7 +182,38 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<MetricNamespace> listSinglePage(String resourceUri, String startTime) {
+        return listSinglePageAsync(resourceUri, startTime).block();
+    }
+
+    /**
+     * Lists the metric namespaces for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<MetricNamespace> listSinglePage(String resourceUri, String startTime, Context context) {
+        return listSinglePageAsync(resourceUri, startTime, context).block();
+    }
+
+    /**
+     * Lists the metric namespaces for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime) {
@@ -202,7 +229,7 @@ public final class MetricNamespacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric namespaces.
+     * @return represents collection of metric namespaces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime, Context context) {

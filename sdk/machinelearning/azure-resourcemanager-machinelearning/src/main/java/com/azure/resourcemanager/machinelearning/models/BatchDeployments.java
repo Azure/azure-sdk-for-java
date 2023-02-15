@@ -21,7 +21,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchDeploymentData> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<BatchDeployment> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Lists Batch inference deployments in the workspace.
@@ -38,7 +38,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchDeploymentData> list(
+    PagedIterable<BatchDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -82,12 +82,14 @@ public interface BatchDeployments {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
      * @param deploymentName The identifier for the Batch deployments.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference deployment by id.
+     * @return a batch inference deployment by id along with {@link Response}.
      */
-    BatchDeploymentData get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    Response<BatchDeployment> getWithResponse(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
      * Gets a batch inference deployment by id.
@@ -96,14 +98,12 @@ public interface BatchDeployments {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
      * @param deploymentName The identifier for the Batch deployments.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch inference deployment by id along with {@link Response}.
+     * @return a batch inference deployment by id.
      */
-    Response<BatchDeploymentData> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    BatchDeployment get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
      * Gets a batch inference deployment by id.
@@ -114,7 +114,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id along with {@link Response}.
      */
-    BatchDeploymentData getById(String id);
+    BatchDeployment getById(String id);
 
     /**
      * Gets a batch inference deployment by id.
@@ -126,7 +126,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id along with {@link Response}.
      */
-    Response<BatchDeploymentData> getByIdWithResponse(String id, Context context);
+    Response<BatchDeployment> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Batch Inference deployment (asynchronous).
@@ -150,10 +150,10 @@ public interface BatchDeployments {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new BatchDeploymentData resource.
+     * Begins definition for a new BatchDeployment resource.
      *
      * @param name resource name.
-     * @return the first stage of the new BatchDeploymentData definition.
+     * @return the first stage of the new BatchDeployment definition.
      */
-    BatchDeploymentData.DefinitionStages.Blank define(String name);
+    BatchDeployment.DefinitionStages.Blank define(String name);
 }

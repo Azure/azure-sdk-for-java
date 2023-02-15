@@ -19,18 +19,19 @@ import java.util.Map;
 @Fluent
 public class AmazonRdsForSqlServerTableDataset extends Dataset {
     /*
-     * The schema name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
+
+    /** Creates an instance of AmazonRdsForSqlServerTableDataset class. */
+    public AmazonRdsForSqlServerTableDataset() {}
 
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the SQL Server dataset. Type: string (or

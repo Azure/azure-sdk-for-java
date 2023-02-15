@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NatGateways ListByResourceGroup. */
 public final class NatGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NatGatewayList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NatGatewayList.json
      */
     /**
      * Sample code: List nat gateways in resource group.

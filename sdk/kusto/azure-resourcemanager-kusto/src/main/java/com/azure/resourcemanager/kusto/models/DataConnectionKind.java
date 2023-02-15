@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataConnectionKind. */
+/** Kind of the endpoint for the data connection. */
 public final class DataConnectionKind extends ExpandableStringEnum<DataConnectionKind> {
     /** Static value EventHub for DataConnectionKind. */
     public static final DataConnectionKind EVENT_HUB = fromString("EventHub");
@@ -30,7 +30,11 @@ public final class DataConnectionKind extends ExpandableStringEnum<DataConnectio
         return fromString(name, DataConnectionKind.class);
     }
 
-    /** @return known DataConnectionKind values. */
+    /**
+     * Gets known DataConnectionKind values.
+     *
+     * @return known DataConnectionKind values.
+     */
     public static Collection<DataConnectionKind> values() {
         return values(DataConnectionKind.class);
     }

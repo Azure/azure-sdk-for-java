@@ -54,6 +54,10 @@
 - [ListUsages](#locations_listusages)
 - [ValidateClusterCreateRequest](#locations_validateclustercreaterequest)
 
+## Operations
+
+- [List](#operations_list)
+
 ## PrivateEndpointConnections
 
 - [CreateOrUpdate](#privateendpointconnections_createorupdate)
@@ -333,7 +337,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withMinInstanceCount(1)
@@ -344,7 +348,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withMinInstanceCount(1)
@@ -355,7 +359,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -365,7 +369,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storagekey")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -419,7 +423,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withTargetInstanceCount(3)
@@ -429,7 +433,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")))
+                                                            .withPassword("fakeTokenPlaceholder")))
                                             .withDataDisksGroups(
                                                 Arrays.asList(new DataDisksGroups().withDisksPerNode(8))),
                                         new Role()
@@ -441,7 +445,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("kafkamanagementnode")
                                             .withTargetInstanceCount(2)
@@ -451,7 +455,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("kafkauser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -461,7 +465,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storagekey")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -567,7 +571,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")))
+                                                            .withPassword("fakeTokenPlaceholder")))
                                             .withScriptActions(Arrays.asList()))))
                     .withStorageProfile(
                         new StorageProfile()
@@ -578,7 +582,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("hdinsight-autoscale-tes-2019-06-18t05-49-16-591z")
-                                            .withKey("storagekey")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -645,7 +649,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withMinInstanceCount(1)
@@ -656,7 +660,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -666,7 +670,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storagekey")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -731,7 +735,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -755,7 +759,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -779,7 +783,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storage account key")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -828,7 +832,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withMinInstanceCount(1)
@@ -839,7 +843,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withMinInstanceCount(1)
@@ -850,7 +854,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -860,7 +864,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.dfs.core.windows.net")
                                             .withIsDefault(true)
                                             .withFileSystem("default")
-                                            .withKey("storagekey")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -901,7 +905,7 @@ public final class ClustersCreateSamples {
                             .withOrganizationalUnitDN("OU=Hadoop,DC=hdinsight,DC=test")
                             .withLdapsUrls(Arrays.asList("ldaps://10.10.0.4:636"))
                             .withDomainUsername("DomainUsername")
-                            .withDomainUserPassword("**********")
+                            .withDomainUserPassword("fakeTokenPlaceholder")
                             .withClusterUsersGroupDNs(Arrays.asList("hdiusers")))
                     .withComputeProfile(
                         new ComputeProfile()
@@ -918,7 +922,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -944,7 +948,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -970,7 +974,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -995,7 +999,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storage account key")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -1045,7 +1049,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withMinInstanceCount(1)
@@ -1056,7 +1060,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -1066,7 +1070,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storageapikey*")))))
+                                            .withKey("fakeTokenPlaceholder")))))
             .create();
     }
 
@@ -1112,7 +1116,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -1136,7 +1140,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -1160,7 +1164,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storage account key"))))
+                                            .withKey("fakeTokenPlaceholder"))))
                     .withNetworkProperties(
                         new NetworkProperties()
                             .withResourceProviderConnection(ResourceProviderConnection.OUTBOUND)
@@ -1211,7 +1215,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withTargetInstanceCount(3)
@@ -1221,7 +1225,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withTargetInstanceCount(3)
@@ -1231,7 +1235,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -1241,7 +1245,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("default8525")
-                                            .withKey("storagekey"))))
+                                            .withKey("fakeTokenPlaceholder"))))
                     .withMinSupportedTlsVersion("1.2"))
             .create();
     }
@@ -1289,7 +1293,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withTargetInstanceCount(3)
@@ -1299,7 +1303,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withTargetInstanceCount(3)
@@ -1309,7 +1313,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -1319,7 +1323,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("default8525")
-                                            .withKey("storagekey"))))
+                                            .withKey("fakeTokenPlaceholder"))))
                     .withDiskEncryptionProperties(new DiskEncryptionProperties().withEncryptionAtHost(true)))
             .create();
     }
@@ -1367,7 +1371,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("workernode")
                                             .withTargetInstanceCount(3)
@@ -1377,7 +1381,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))),
+                                                            .withPassword("fakeTokenPlaceholder"))),
                                         new Role()
                                             .withName("zookeepernode")
                                             .withTargetInstanceCount(3)
@@ -1387,7 +1391,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
+                                                            .withPassword("fakeTokenPlaceholder"))))))
                     .withStorageProfile(
                         new StorageProfile()
                             .withStorageaccounts(
@@ -1397,7 +1401,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage.blob.core.windows.net")
                                             .withIsDefault(true)
                                             .withContainer("default8525")
-                                            .withKey("storagekey"))))
+                                            .withKey("fakeTokenPlaceholder"))))
                     .withEncryptionInTransitProperties(
                         new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(true)))
             .create();
@@ -1445,7 +1449,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -1463,7 +1467,7 @@ public final class ClustersCreateSamples {
                                                     .withLinuxOperatingSystemProfile(
                                                         new LinuxOperatingSystemProfile()
                                                             .withUsername("sshuser")
-                                                            .withPassword("**********")
+                                                            .withPassword("fakeTokenPlaceholder")
                                                             .withSshProfile(
                                                                 new SshProfile()
                                                                     .withPublicKeys(
@@ -1481,7 +1485,7 @@ public final class ClustersCreateSamples {
                                             .withName("mystorage")
                                             .withIsDefault(true)
                                             .withContainer("containername")
-                                            .withKey("storage account key"))))
+                                            .withKey("fakeTokenPlaceholder"))))
                     .withComputeIsolationProperties(new ComputeIsolationProperties().withEnableComputeIsolation(true)))
             .create();
     }
@@ -1738,8 +1742,8 @@ public final class ClustersRotateDiskEncryptionKeySamples {
                 "cluster1",
                 new ClusterDiskEncryptionParameters()
                     .withVaultUri("https://newkeyvault.vault.azure.net/")
-                    .withKeyName("newkeyname")
-                    .withKeyVersion("newkeyversion"),
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
@@ -1923,7 +1927,7 @@ public final class ClustersUpdateIdentityCertificateSamples {
                 new UpdateClusterIdentityCertificateParameters()
                     .withApplicationId("applicationId")
                     .withCertificate("base64encodedcertificate")
-                    .withCertificatePassword("**********"),
+                    .withCertificatePassword("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
@@ -2056,7 +2060,9 @@ public final class ExtensionsCreateSamples {
                 "rg1",
                 "cluster1",
                 "clustermonitoring",
-                new Extension().withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163").withPrimaryKey("**********"),
+                new Extension()
+                    .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
+                    .withPrimaryKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
@@ -2149,7 +2155,7 @@ public final class ExtensionsEnableAzureMonitorSamples {
                 "cluster1",
                 new AzureMonitorRequest()
                     .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
-                    .withPrimaryKey("**********"),
+                    .withPrimaryKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
@@ -2179,7 +2185,7 @@ public final class ExtensionsEnableMonitoringSamples {
                 "cluster1",
                 new ClusterMonitoringRequest()
                     .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
-                    .withPrimaryKey("**********"),
+                    .withPrimaryKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
@@ -2464,7 +2470,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("workernode")
@@ -2476,7 +2482,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("zookeepernode")
@@ -2489,7 +2495,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("**********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()))))
                             .withStorageProfile(
                                 new StorageProfile()
@@ -2500,7 +2506,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                     .withName("storagename.blob.core.windows.net")
                                                     .withIsDefault(true)
                                                     .withContainer("contianername")
-                                                    .withKey("*******")
+                                                    .withKey("fakeTokenPlaceholder")
                                                     .withResourceId(
                                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storagename"))))
                             .withMinSupportedTlsVersion("1.2"))
@@ -2520,6 +2526,27 @@ public final class LocationsValidateClusterCreateRequestSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### Operations_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Operations List. */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ListHDInsightOperations.json
+     */
+    /**
+     * Sample code: Lists all of the available operations.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void listsAllOfTheAvailableOperations(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager.operations().list(Context.NONE);
     }
 }
 ```

@@ -21,6 +21,10 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
+    /** Creates an instance of AzureSqlProtectionPolicy class. */
+    public AzureSqlProtectionPolicy() {
+    }
+
     /**
      * Get the retentionPolicy property: Retention policy details.
      *

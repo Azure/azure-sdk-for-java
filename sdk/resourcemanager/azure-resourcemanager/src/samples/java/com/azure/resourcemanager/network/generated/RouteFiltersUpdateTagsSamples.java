@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for RouteFilters UpdateTags. */
 public final class RouteFiltersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/RouteFilterUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.

@@ -20,6 +20,10 @@ public final class PyTorch extends DistributionConfiguration {
     @JsonProperty(value = "processCountPerInstance")
     private Integer processCountPerInstance;
 
+    /** Creates an instance of PyTorch class. */
+    public PyTorch() {
+    }
+
     /**
      * Get the processCountPerInstance property: Number of processes per node.
      *

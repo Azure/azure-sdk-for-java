@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Complexity. */
+/**
+ * Allows you to configure the encoder settings to control the balance between speed and quality. Example: set
+ * Complexity as Speed for faster encoding but less compression efficiency.
+ */
 public final class Complexity extends ExpandableStringEnum<Complexity> {
     /** Static value Speed for Complexity. */
     public static final Complexity SPEED = fromString("Speed");
@@ -18,6 +21,15 @@ public final class Complexity extends ExpandableStringEnum<Complexity> {
 
     /** Static value Quality for Complexity. */
     public static final Complexity QUALITY = fromString("Quality");
+
+    /**
+     * Creates a new instance of Complexity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Complexity() {
+    }
 
     /**
      * Creates or finds a Complexity from its string representation.

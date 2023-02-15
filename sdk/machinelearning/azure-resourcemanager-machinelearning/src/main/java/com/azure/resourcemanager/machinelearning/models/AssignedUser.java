@@ -23,6 +23,10 @@ public final class AssignedUser {
     @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
+    /** Creates an instance of AssignedUser class. */
+    public AssignedUser() {
+    }
+
     /**
      * Get the objectId property: User’s AAD Object Id.
      *

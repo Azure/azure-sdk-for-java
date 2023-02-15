@@ -24,6 +24,10 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
+    /** Creates an instance of AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest class. */
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest() {
+    }
+
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
      *

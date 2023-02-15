@@ -135,7 +135,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rerunTriggerInstanceAsync(String triggerName, String runId) {
-        return rerunTriggerInstanceWithResponseAsync(triggerName, runId).flatMap((Response<Void> res) -> Mono.empty());
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -151,22 +151,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rerunTriggerInstanceAsync(String triggerName, String runId, Context context) {
-        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Rerun single trigger instance by runId.
-     *
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rerunTriggerInstance(String triggerName, String runId) {
-        rerunTriggerInstanceAsync(triggerName, runId).block();
+        return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -183,6 +168,20 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rerunTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
         return rerunTriggerInstanceWithResponseAsync(triggerName, runId, context).block();
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rerunTriggerInstance(String triggerName, String runId) {
+        rerunTriggerInstanceWithResponse(triggerName, runId, Context.NONE);
     }
 
     /**
@@ -237,7 +236,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId) {
-        return cancelTriggerInstanceWithResponseAsync(triggerName, runId).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -253,22 +252,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelTriggerInstanceAsync(String triggerName, String runId, Context context) {
-        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancel single trigger instance by runId.
-     *
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelTriggerInstance(String triggerName, String runId) {
-        cancelTriggerInstanceAsync(triggerName, runId).block();
+        return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -285,6 +269,20 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
         return cancelTriggerInstanceWithResponseAsync(triggerName, runId, context).block();
+    }
+
+    /**
+     * Cancel single trigger instance by runId.
+     *
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelTriggerInstance(String triggerName, String runId) {
+        cancelTriggerInstanceWithResponse(triggerName, runId, Context.NONE);
     }
 
     /**
@@ -338,14 +336,7 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(RunFilterParameters filterParameters) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters)
-                .flatMap(
-                        (Response<TriggerRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -362,28 +353,7 @@ public final class TriggerRunsImpl {
     public Mono<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceAsync(
             RunFilterParameters filterParameters, Context context) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context)
-                .flatMap(
-                        (Response<TriggerRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Query trigger runs.
-     *
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerRunsQueryResponse queryTriggerRunsByWorkspace(RunFilterParameters filterParameters) {
-        return queryTriggerRunsByWorkspaceAsync(filterParameters).block();
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -400,5 +370,19 @@ public final class TriggerRunsImpl {
     public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
             RunFilterParameters filterParameters, Context context) {
         return queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context).block();
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param filterParameters Parameters to filter the pipeline run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerRunsQueryResponse queryTriggerRunsByWorkspace(RunFilterParameters filterParameters) {
+        return queryTriggerRunsByWorkspaceWithResponse(filterParameters, Context.NONE).getValue();
     }
 }

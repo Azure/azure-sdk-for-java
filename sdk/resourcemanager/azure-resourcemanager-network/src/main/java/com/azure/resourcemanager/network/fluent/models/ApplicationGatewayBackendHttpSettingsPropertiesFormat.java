@@ -102,6 +102,10 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat class. */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat() {
+    }
+
     /**
      * Get the port property: The destination port on the backend.
      *

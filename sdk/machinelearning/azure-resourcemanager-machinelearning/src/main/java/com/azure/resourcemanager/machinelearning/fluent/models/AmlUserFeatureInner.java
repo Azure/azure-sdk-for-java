@@ -28,6 +28,10 @@ public final class AmlUserFeatureInner {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of AmlUserFeatureInner class. */
+    public AmlUserFeatureInner() {
+    }
+
     /**
      * Get the id property: Specifies the feature ID.
      *

@@ -25,6 +25,10 @@ public final class NetworkGroupInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of NetworkGroupInner class. */
+    public NetworkGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: The Network Group properties.
      *

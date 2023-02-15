@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CachingType. */
+/** The type of caching to enable for the disk. */
 public enum CachingType {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +33,9 @@ public enum CachingType {
      */
     @JsonCreator
     public static CachingType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CachingType[] items = CachingType.values();
         for (CachingType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum CachingType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

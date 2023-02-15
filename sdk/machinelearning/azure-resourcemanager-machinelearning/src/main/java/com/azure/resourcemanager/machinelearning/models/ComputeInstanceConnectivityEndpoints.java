@@ -17,11 +17,14 @@ public final class ComputeInstanceConnectivityEndpoints {
     private String publicIpAddress;
 
     /*
-     * Private IP Address of this ComputeInstance (local to the VNET in which
-     * the compute instance is deployed).
+     * Private IP Address of this ComputeInstance (local to the VNET in which the compute instance is deployed).
      */
     @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
+
+    /** Creates an instance of ComputeInstanceConnectivityEndpoints class. */
+    public ComputeInstanceConnectivityEndpoints() {
+    }
 
     /**
      * Get the publicIpAddress property: Public IP Address of this ComputeInstance.

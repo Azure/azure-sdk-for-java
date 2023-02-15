@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.VolumeQuotaRulePatch;
 /** An instance of this class provides access to all the operations defined in VolumeQuotaRulesClient. */
 public interface VolumeQuotaRulesClient {
     /**
-     * List all quota rules associated with the volume.
+     * Get all quota rules for a volume
+     *
+     * <p>List all quota rules associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -33,7 +35,9 @@ public interface VolumeQuotaRulesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all quota rules associated with the volume.
+     * Get all quota rules for a volume
+     *
+     * <p>List all quota rules associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -50,7 +54,9 @@ public interface VolumeQuotaRulesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -67,7 +73,9 @@ public interface VolumeQuotaRulesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
 
     /**
-     * Get details of the specified quota rule.
+     * Describe a quota rule
+     *
+     * <p>Get details of the specified quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -90,7 +98,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Create the specified quota rule within the given volume.
+     * Create a quota rule
+     *
+     * <p>Create the specified quota rule within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -113,7 +123,9 @@ public interface VolumeQuotaRulesClient {
         VolumeQuotaRuleInner body);
 
     /**
-     * Create the specified quota rule within the given volume.
+     * Create a quota rule
+     *
+     * <p>Create the specified quota rule within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -138,7 +150,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Create the specified quota rule within the given volume.
+     * Create a quota rule
+     *
+     * <p>Create the specified quota rule within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -161,7 +175,9 @@ public interface VolumeQuotaRulesClient {
         VolumeQuotaRuleInner body);
 
     /**
-     * Create the specified quota rule within the given volume.
+     * Create a quota rule
+     *
+     * <p>Create the specified quota rule within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -186,7 +202,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Patch a quota rule.
+     * Update a quota rule
+     *
+     * <p>Patch a quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -209,7 +227,9 @@ public interface VolumeQuotaRulesClient {
         VolumeQuotaRulePatch body);
 
     /**
-     * Patch a quota rule.
+     * Update a quota rule
+     *
+     * <p>Patch a quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -234,7 +254,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Patch a quota rule.
+     * Update a quota rule
+     *
+     * <p>Patch a quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -257,7 +279,9 @@ public interface VolumeQuotaRulesClient {
         VolumeQuotaRulePatch body);
 
     /**
-     * Patch a quota rule.
+     * Update a quota rule
+     *
+     * <p>Patch a quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -282,7 +306,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -299,7 +325,9 @@ public interface VolumeQuotaRulesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -322,7 +350,9 @@ public interface VolumeQuotaRulesClient {
         Context context);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -338,7 +368,9 @@ public interface VolumeQuotaRulesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
 
     /**
-     * Delete quota rule.
+     * Delete a quota rule
+     *
+     * <p>Delete quota rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

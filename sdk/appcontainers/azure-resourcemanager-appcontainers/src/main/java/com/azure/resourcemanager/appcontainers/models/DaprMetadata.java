@@ -23,11 +23,14 @@ public final class DaprMetadata {
     private String value;
 
     /*
-     * Name of the Dapr Component secret from which to pull the metadata
-     * property value.
+     * Name of the Dapr Component secret from which to pull the metadata property value.
      */
     @JsonProperty(value = "secretRef")
     private String secretRef;
+
+    /** Creates an instance of DaprMetadata class. */
+    public DaprMetadata() {
+    }
 
     /**
      * Get the name property: Metadata property name.

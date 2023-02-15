@@ -19,10 +19,9 @@ import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringResponse;
 import com.azure.resourcemanager.hdinsight.models.Extension;
 import com.azure.resourcemanager.hdinsight.models.Extensions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExtensionsImpl implements Extensions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionsImpl.class);
 
     private final ExtensionsClient innerClient;
 
@@ -43,15 +42,6 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().enableMonitoring(resourceGroupName, clusterName, parameters, context);
     }
 
-    public ClusterMonitoringResponse getMonitoringStatus(String resourceGroupName, String clusterName) {
-        ClusterMonitoringResponseInner inner = this.serviceClient().getMonitoringStatus(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ClusterMonitoringResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ClusterMonitoringResponse> getMonitoringStatusWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         Response<ClusterMonitoringResponseInner> inner =
@@ -62,6 +52,15 @@ public final class ExtensionsImpl implements Extensions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterMonitoringResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterMonitoringResponse getMonitoringStatus(String resourceGroupName, String clusterName) {
+        ClusterMonitoringResponseInner inner = this.serviceClient().getMonitoringStatus(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ClusterMonitoringResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,15 +83,6 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().enableAzureMonitor(resourceGroupName, clusterName, parameters, context);
     }
 
-    public AzureMonitorResponse getAzureMonitorStatus(String resourceGroupName, String clusterName) {
-        AzureMonitorResponseInner inner = this.serviceClient().getAzureMonitorStatus(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new AzureMonitorResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AzureMonitorResponse> getAzureMonitorStatusWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         Response<AzureMonitorResponseInner> inner =
@@ -103,6 +93,15 @@ public final class ExtensionsImpl implements Extensions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AzureMonitorResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureMonitorResponse getAzureMonitorStatus(String resourceGroupName, String clusterName) {
+        AzureMonitorResponseInner inner = this.serviceClient().getAzureMonitorStatus(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new AzureMonitorResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -125,15 +124,6 @@ public final class ExtensionsImpl implements Extensions {
         this.serviceClient().create(resourceGroupName, clusterName, extensionName, parameters, context);
     }
 
-    public ClusterMonitoringResponse get(String resourceGroupName, String clusterName, String extensionName) {
-        ClusterMonitoringResponseInner inner = this.serviceClient().get(resourceGroupName, clusterName, extensionName);
-        if (inner != null) {
-            return new ClusterMonitoringResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ClusterMonitoringResponse> getWithResponse(
         String resourceGroupName, String clusterName, String extensionName, Context context) {
         Response<ClusterMonitoringResponseInner> inner =
@@ -149,25 +139,21 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
+    public ClusterMonitoringResponse get(String resourceGroupName, String clusterName, String extensionName) {
+        ClusterMonitoringResponseInner inner = this.serviceClient().get(resourceGroupName, clusterName, extensionName);
+        if (inner != null) {
+            return new ClusterMonitoringResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String extensionName) {
         this.serviceClient().delete(resourceGroupName, clusterName, extensionName);
     }
 
     public void delete(String resourceGroupName, String clusterName, String extensionName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, extensionName, context);
-    }
-
-    public AsyncOperationResult getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String extensionName, String operationId) {
-        AsyncOperationResultInner inner =
-            this
-                .serviceClient()
-                .getAzureAsyncOperationStatus(resourceGroupName, clusterName, extensionName, operationId);
-        if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
@@ -183,6 +169,19 @@ public final class ExtensionsImpl implements Extensions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationResult getAzureAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String extensionName, String operationId) {
+        AsyncOperationResultInner inner =
+            this
+                .serviceClient()
+                .getAzureAsyncOperationStatus(resourceGroupName, clusterName, extensionName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }

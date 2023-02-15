@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of NSX dhcp entities. */
 @Immutable
 public final class WorkloadNetworkDhcpList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDhcpList.class);
-
     /*
      * The items on the page
      */
@@ -27,6 +23,10 @@ public final class WorkloadNetworkDhcpList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkloadNetworkDhcpList class. */
+    public WorkloadNetworkDhcpList() {
+    }
 
     /**
      * Get the value property: The items on the page.

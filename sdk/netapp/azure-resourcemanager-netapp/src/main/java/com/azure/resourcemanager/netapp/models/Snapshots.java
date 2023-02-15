@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Snapshots. */
 public interface Snapshots {
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -25,7 +27,9 @@ public interface Snapshots {
     PagedIterable<Snapshot> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -41,7 +45,9 @@ public interface Snapshots {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -56,7 +62,9 @@ public interface Snapshots {
     Snapshot get(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -78,7 +86,9 @@ public interface Snapshots {
         Context context);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -100,7 +110,9 @@ public interface Snapshots {
         Object body);
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -124,7 +136,9 @@ public interface Snapshots {
         Context context);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -138,7 +152,9 @@ public interface Snapshots {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -159,7 +175,9 @@ public interface Snapshots {
         Context context);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -180,7 +198,9 @@ public interface Snapshots {
         SnapshotRestoreFiles body);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -203,7 +223,9 @@ public interface Snapshots {
         Context context);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +236,9 @@ public interface Snapshots {
     Snapshot getById(String id);
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -226,7 +250,9 @@ public interface Snapshots {
     Response<Snapshot> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +262,9 @@ public interface Snapshots {
     void deleteById(String id);
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

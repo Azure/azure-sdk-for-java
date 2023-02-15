@@ -22,6 +22,10 @@ public final class SecurityGroupNetworkInterface {
     @JsonProperty(value = "securityRuleAssociations")
     private SecurityRuleAssociations securityRuleAssociations;
 
+    /** Creates an instance of SecurityGroupNetworkInterface class. */
+    public SecurityGroupNetworkInterface() {
+    }
+
     /**
      * Get the id property: ID of the network interface.
      *

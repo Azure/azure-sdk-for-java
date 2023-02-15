@@ -23,6 +23,16 @@ public final class ManagedRuleOverride {
     @JsonProperty(value = "state")
     private ManagedRuleEnabledState state;
 
+    /*
+     * Describes the override action to be applied when rule matches.
+     */
+    @JsonProperty(value = "action")
+    private ActionType action;
+
+    /** Creates an instance of ManagedRuleOverride class. */
+    public ManagedRuleOverride() {
+    }
+
     /**
      * Get the ruleId property: Identifier for the managed rule.
      *
@@ -60,6 +70,26 @@ public final class ManagedRuleOverride {
      */
     public ManagedRuleOverride withState(ManagedRuleEnabledState state) {
         this.state = state;
+        return this;
+    }
+
+    /**
+     * Get the action property: Describes the override action to be applied when rule matches.
+     *
+     * @return the action value.
+     */
+    public ActionType action() {
+        return this.action;
+    }
+
+    /**
+     * Set the action property: Describes the override action to be applied when rule matches.
+     *
+     * @param action the action value to set.
+     * @return the ManagedRuleOverride object itself.
+     */
+    public ManagedRuleOverride withAction(ActionType action) {
+        this.action = action;
         return this;
     }
 

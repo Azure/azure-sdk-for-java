@@ -49,7 +49,7 @@ public final class CallConnectionPropertiesConstructorProxy {
      */
     public static CallConnectionProperties create(CallConnectionPropertiesInternal internalResponse) throws URISyntaxException {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
-        // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
+        // application accesses CallConnectionProperties which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new CallConnectionProperties();

@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBackupServerEngine")
 @Fluent
 public final class AzureBackupServerEngine extends BackupEngineBase {
+    /** Creates an instance of AzureBackupServerEngine class. */
+    public AzureBackupServerEngine() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureBackupServerEngine withFriendlyName(String friendlyName) {

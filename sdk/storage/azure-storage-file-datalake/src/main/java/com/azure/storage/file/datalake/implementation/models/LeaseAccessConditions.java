@@ -13,11 +13,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class LeaseAccessConditions {
     /*
-     * If specified, the operation only succeeds if the resource's lease is
-     * active and matches this ID.
+     * If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      */
     @JsonProperty(value = "leaseId")
     private String leaseId;
+
+    /** Creates an instance of LeaseAccessConditions class. */
+    public LeaseAccessConditions() {}
 
     /**
      * Get the leaseId property: If specified, the operation only succeeds if the resource's lease is active and matches

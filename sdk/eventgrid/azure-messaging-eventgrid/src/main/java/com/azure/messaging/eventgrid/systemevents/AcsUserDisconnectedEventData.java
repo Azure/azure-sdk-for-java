@@ -4,11 +4,11 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event. */
-@Immutable
+@Fluent
 public final class AcsUserDisconnectedEventData {
     /*
      * The communication identifier of the user who was disconnected

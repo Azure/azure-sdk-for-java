@@ -52,6 +52,10 @@ public final class HDInsightPigActivityTypeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
+    /** Creates an instance of HDInsightPigActivityTypeProperties class. */
+    public HDInsightPigActivityTypeProperties() {
+    }
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

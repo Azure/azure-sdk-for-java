@@ -28,6 +28,16 @@ public final class ManagedClusterStorageProfile {
     @JsonProperty(value = "snapshotController")
     private ManagedClusterStorageProfileSnapshotController snapshotController;
 
+    /*
+     * AzureBlob CSI Driver settings for the storage profile.
+     */
+    @JsonProperty(value = "blobCSIDriver")
+    private ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver;
+
+    /** Creates an instance of ManagedClusterStorageProfile class. */
+    public ManagedClusterStorageProfile() {
+    }
+
     /**
      * Get the diskCsiDriver property: AzureDisk CSI Driver settings for the storage profile.
      *
@@ -90,6 +100,26 @@ public final class ManagedClusterStorageProfile {
     }
 
     /**
+     * Get the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
+     *
+     * @return the blobCsiDriver value.
+     */
+    public ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver() {
+        return this.blobCsiDriver;
+    }
+
+    /**
+     * Set the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
+     *
+     * @param blobCsiDriver the blobCsiDriver value to set.
+     * @return the ManagedClusterStorageProfile object itself.
+     */
+    public ManagedClusterStorageProfile withBlobCsiDriver(ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver) {
+        this.blobCsiDriver = blobCsiDriver;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -103,6 +133,9 @@ public final class ManagedClusterStorageProfile {
         }
         if (snapshotController() != null) {
             snapshotController().validate();
+        }
+        if (blobCsiDriver() != null) {
+            blobCsiDriver().validate();
         }
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -67,7 +68,7 @@ public final class PathsGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-resource-type property.
@@ -153,6 +154,28 @@ public final class PathsGetPropertiesHeaders {
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
+
+    private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
+
+    private static final HttpHeaderName X_MS_RESOURCE_TYPE = HttpHeaderName.fromString("x-ms-resource-type");
+
+    private static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
+
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsGetPropertiesHeaders class.
@@ -160,35 +183,38 @@ public final class PathsGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        this.xMsGroup = rawHeaders.getValue("x-ms-group");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
-        this.contentRange = rawHeaders.getValue("Content-Range");
-        this.xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
-        this.xMsAcl = rawHeaders.getValue("x-ms-acl");
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
+        this.xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        this.xMsAcl = rawHeaders.getValue(X_MS_ACL);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
-        this.xMsResourceType = rawHeaders.getValue("x-ms-resource-type");
-        this.contentMD5 = rawHeaders.getValue("Content-MD5");
-        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
-        this.cacheControl = rawHeaders.getValue("Cache-Control");
-        this.eTag = rawHeaders.getValue("ETag");
-        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
-        this.xMsPermissions = rawHeaders.getValue("x-ms-permissions");
-        this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
-        if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
+        this.xMsResourceType = rawHeaders.getValue(X_MS_RESOURCE_TYPE);
+        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
+        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
+        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
+        this.xMsPermissions = rawHeaders.getValue(X_MS_PERMISSIONS);
+        this.xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.contentLanguage = rawHeaders.getValue("Content-Language");
-        this.xMsOwner = rawHeaders.getValue("x-ms-owner");
-        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
@@ -359,28 +385,28 @@ public final class PathsGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
-    public PathsGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public PathsGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

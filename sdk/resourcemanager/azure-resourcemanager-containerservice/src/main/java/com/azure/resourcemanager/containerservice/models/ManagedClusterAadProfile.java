@@ -34,19 +34,19 @@ public final class ManagedClusterAadProfile {
     private List<String> adminGroupObjectIDs;
 
     /*
-     * The client AAD application ID.
+     * (DEPRECATED) The client AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
      */
     @JsonProperty(value = "clientAppID")
     private String clientAppId;
 
     /*
-     * The server AAD application ID.
+     * (DEPRECATED) The server AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
      */
     @JsonProperty(value = "serverAppID")
     private String serverAppId;
 
     /*
-     * The server AAD application secret.
+     * (DEPRECATED) The server AAD application secret. Learn more at https://aka.ms/aks/aad-legacy.
      */
     @JsonProperty(value = "serverAppSecret")
     private String serverAppSecret;
@@ -57,6 +57,10 @@ public final class ManagedClusterAadProfile {
      */
     @JsonProperty(value = "tenantID")
     private String tenantId;
+
+    /** Creates an instance of ManagedClusterAadProfile class. */
+    public ManagedClusterAadProfile() {
+    }
 
     /**
      * Get the managed property: Whether to enable managed AAD.
@@ -119,7 +123,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the clientAppId property: The client AAD application ID.
+     * Get the clientAppId property: (DEPRECATED) The client AAD application ID. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @return the clientAppId value.
      */
@@ -128,7 +133,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the clientAppId property: The client AAD application ID.
+     * Set the clientAppId property: (DEPRECATED) The client AAD application ID. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @param clientAppId the clientAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
@@ -139,7 +145,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the serverAppId property: The server AAD application ID.
+     * Get the serverAppId property: (DEPRECATED) The server AAD application ID. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @return the serverAppId value.
      */
@@ -148,7 +155,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the serverAppId property: The server AAD application ID.
+     * Set the serverAppId property: (DEPRECATED) The server AAD application ID. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @param serverAppId the serverAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
@@ -159,7 +167,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the serverAppSecret property: The server AAD application secret.
+     * Get the serverAppSecret property: (DEPRECATED) The server AAD application secret. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @return the serverAppSecret value.
      */
@@ -168,7 +177,8 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the serverAppSecret property: The server AAD application secret.
+     * Set the serverAppSecret property: (DEPRECATED) The server AAD application secret. Learn more at
+     * https://aka.ms/aks/aad-legacy.
      *
      * @param serverAppSecret the serverAppSecret value to set.
      * @return the ManagedClusterAadProfile object itself.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignmentCheckNameRequest;
 
 /** Samples for KustoPoolPrincipalAssignments CheckNameAvailability. */
@@ -26,6 +25,6 @@ public final class KustoPoolPrincipalAssignmentsCheckNameAvailabilitySamples {
                 "kustoclusterrptest4",
                 "kustorptest",
                 new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -37,6 +37,10 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayRedirectConfigurationInner class. */
+    public ApplicationGatewayRedirectConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway redirect configuration.
      *

@@ -74,6 +74,13 @@ public interface StorageAccount {
     Integer containerCount();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountInner object.
      *
      * @return the inner object.

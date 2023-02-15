@@ -28,82 +28,86 @@ pr:
       - eng/pipelines/
 
 parameters:
-- name: release_dependsonlivetests
-  displayName: 'Release depends on live tests'
-  type: boolean
-  default: true
-- name: release_azurecore
-  displayName: 'azure-core'
-  type: boolean
-  default: true
-- name: release_azurecoreamqp
-  displayName: 'azure-core-amqp'
-  type: boolean
-  default: true
-- name: release_azurecoreamqpexperimental
-  displayName: 'azure-core-amqp-experimental'
-  type: boolean
-  default: false
-- name: release_azurecoreexperimental
-  displayName: 'azure-core-experimental'
-  type: boolean
-  default: true
-- name: release_azurecorehttpjdkhttpclient
-  displayName: 'azure-core-http-jdk-httpclient'
-  type: boolean
-  default: false
-- name: release_azurecorehttpnetty
-  displayName: 'azure-core-http-netty'
-  type: boolean
-  default: true
-- name: release_azurecorehttpokhttp
-  displayName: 'azure-core-http-okhttp'
-  type: boolean
-  default: true
-- name: release_azurecorehttpvertx
-  displayName: 'azure-core-http-vertx'
-  type: boolean
-  default: false
-- name: release_azurecoremanagement
-  displayName: 'azure-core-management'
-  type: boolean
-  default: true
-- name: release_azurecoremetricsopentelemetry
-  displayName: 'azure-core-metrics-opentelemetry'
-  type: boolean
-  default: true
-- name: release_azurecoreserializeravroapache
-  displayName: 'azure-core-serializer-avro-apache'
-  type: boolean
-  default: true
-- name: release_azurecoreserializerjsongson
-  displayName: 'azure-core-serializer-json-gson'
-  type: boolean
-  default: true
-- name: release_azurecoreserializerjsonjackson
-  displayName: 'azure-core-serializer-json-jackson'
-  type: boolean
-  default: true
-- name: release_azurecoretest
-  displayName: 'azure-core-test'
-  type: boolean
-  default: true
-- name: release_azurecoretracingopentelemetry
-  displayName: 'azure-core-tracing-opentelemetry'
-  type: boolean
-  default: true
-- name: release_azurejson
-  displayName: 'azure-json'
-  type: boolean
-  default: false
-- name: release_azurejsongson
-  displayName: 'azure-json-gson'
-  type: boolean
-  default: false
-- name: release_azurexml
-  displayName: 'azure-xml'
-  type: boolean
-  default: false
+  - name: release_dependsonlivetests
+    displayName: 'Release depends on live tests'
+    type: boolean
+    default: true
+  - name: release_azurecore
+    displayName: 'azure-core'
+    type: boolean
+    default: true
+  - name: release_azurecoreamqp
+    displayName: 'azure-core-amqp'
+    type: boolean
+    default: true
+  - name: release_azurecoreamqpexperimental
+    displayName: 'azure-core-amqp-experimental'
+    type: boolean
+    default: false
+  - name: release_azurecoreexperimental
+    displayName: 'azure-core-experimental'
+    type: boolean
+    default: true
+  - name: release_azurecorehttpjdkhttpclient
+    displayName: 'azure-core-http-jdk-httpclient'
+    type: boolean
+    default: false
+  - name: release_azurecorehttpnetty
+    displayName: 'azure-core-http-netty'
+    type: boolean
+    default: true
+  - name: release_azurecorehttpokhttp
+    displayName: 'azure-core-http-okhttp'
+    type: boolean
+    default: true
+  - name: release_azurecorehttpvertx
+    displayName: 'azure-core-http-vertx'
+    type: boolean
+    default: false
+  - name: release_azurecoremanagement
+    displayName: 'azure-core-management'
+    type: boolean
+    default: true
+  - name: release_azurecoremetricsopentelemetry
+    displayName: 'azure-core-metrics-opentelemetry'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializeravroapache
+    displayName: 'azure-core-serializer-avro-apache'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializerjsongson
+    displayName: 'azure-core-serializer-json-gson'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializerjsonjackson
+    displayName: 'azure-core-serializer-json-jackson'
+    type: boolean
+    default: true
+  - name: release_azurecoretest
+    displayName: 'azure-core-test'
+    type: boolean
+    default: true
+  - name: release_azurecoretracingopentelemetry
+    displayName: 'azure-core-tracing-opentelemetry'
+    type: boolean
+    default: true
+  - name: release_azurejson
+    displayName: 'azure-json'
+    type: boolean
+    default: false
+  - name: release_azurejsongson
+    displayName: 'azure-json-gson'
+    type: boolean
+    default: false
+  - name: release_azurejsonreflect
+    displayName: 'azure-json-reflect'
+    type: boolean
+    default: false
+  - name: release_azurexml
+    displayName: 'azure-xml'
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -180,6 +184,10 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
+      - name: azure-json-reflect
+        groupId: com.azure
+        safeName: azurejsonreflect
+        releaseInBatch: ${{ parameters.release_azurejsonreflect }}
       - name: azure-xml
         groupId: com.azure
         safeName: azurexml
@@ -187,26 +195,66 @@ extends:
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
-      - stage: JacksonUnsupportedVersions
-        displayName: 'Jackson Unsupported Versions'
+      - stage: DependencyVersionOverridesTests
+        displayName: 'Dependency Version Overrides'
         dependsOn: []
         jobs:
           - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
             parameters:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
-                - Name: jackson_unsupported_version_tests
-                  Path: sdk/core/unsupported-version-matrix.json
-                  Selection: sparse
-                  NonSparseParameters:
-                    - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
+                - Name: version_overrides_tests
+                  Path: sdk/core/version-overrides-matrix.json
+                  Selection: all
                   GenerateVMJobs: true
               AdditionalParameters:
                 ServiceDirectory: core
                 Artifacts:
-                  - name: azure-core-jackson-tests
+                  - name: azure-core
                     groupId: com.azure
-                    safeName: azurecorejacksontests
+                    safeName: azurecore
+                  - name: azure-core-amqp
+                    groupId: com.azure
+                    safeName: azurecoreamqp
+                  - name: azure-core-http-jdk-httpclient
+                    groupId: com.azure
+                    safeName: azurecorehttpjdkhttpclient
+                    releaseInBatch: ${{ parameters.release_azurecorehttpjdkhttpclient }}
+                  - name: azure-core-http-netty
+                    groupId: com.azure
+                    safeName: azurecorehttpnetty
+                    releaseInBatch: ${{ parameters.release_azurecorehttpnetty }}
+                  - name: azure-core-http-okhttp
+                    groupId: com.azure
+                    safeName: azurecorehttpokhttp
+                    releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+                  - name: azure-core-management
+                    groupId: com.azure
+                    safeName: azurecoremanagement
+                    releaseInBatch: ${{ parameters.release_azurecoremanagement }}
+                  - name: azure-core-serializer-json-jackson
+                    groupId: com.azure
+                    safeName: azurecoreserializerjsonjackson
+                    releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
+      - stage: AzureJsonReflectVersionSupport
+        displayName: 'azure-json-reflect Version Support'
+        dependsOn: []
+        jobs:
+          - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+            parameters:
+              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+              MatrixConfigs:
+                - Name: azure_json_reflect_version_support
+                  Path: sdk/core/azure-json-reflect-version-support-matrix.json
+                  Selection: all
+                  GenerateVMJobs: true
+              AdditionalParameters:
+                ServiceDirectory: core
+                Artifacts:
+                  - name: azure-json-reflect
+                    groupId: com.azure
+                    safeName: azurejsonreflect
+
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
@@ -254,19 +302,20 @@ extends:
             - name: azure-core-tracing-opentelemetry
               groupId: com.azure
               safeName: azurecoretracingopentelemetry
+            - name: azure-core-tracing-opentelemetry-samples
+              groupId: com.azure
+              safeName: azurecoretracingopentelemetrysamples
             - name: azure-json
               groupId: com.azure
               safeName: azurejson
             - name: azure-json-gson
               groupId: com.azure
               safeName: azurejsongson
+            - name: azure-json-reflect
+              groupId: com.azure
+              safeName: azurejsonreflect
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-          AdditionalMatrixConfigs:
-            - Name: version_overrides_tests
-              Path: sdk/core/version-overrides-matrix.json
-              Selection: all
-              GenerateVMJobs: true
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:

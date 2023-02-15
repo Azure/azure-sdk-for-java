@@ -29,6 +29,10 @@ public final class VirtualMachineAgentInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of VirtualMachineAgentInstanceView class. */
+    public VirtualMachineAgentInstanceView() {
+    }
+
     /**
      * Get the vmAgentVersion property: The VM Agent full version.
      *

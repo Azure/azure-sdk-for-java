@@ -9,16 +9,20 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.util.Beta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -96,6 +100,8 @@ public class CosmosClientBuilder implements
     TokenCredentialTrait<CosmosClientBuilder>,
     AzureKeyCredentialTrait<CosmosClientBuilder>,
     EndpointTrait<CosmosClientBuilder> {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -117,8 +123,10 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private final ClientTelemetryConfig clientTelemetryConfig;
+    private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
+    private Boolean clientTelemetryEnabledOverride = null;
+    private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -129,7 +137,7 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.clientTelemetryConfig = ClientTelemetryConfig.getDefaultConfig();
+        this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -246,7 +254,6 @@ public class CosmosClientBuilder implements
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    @Beta(value = Beta.SinceVersion.V4_24_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = Objects.requireNonNull(cosmosAuthorizationTokenResolver,
@@ -426,6 +433,15 @@ public class CosmosClientBuilder implements
      */
     AzureKeyCredential getCredential() {
         return credential;
+    }
+
+    /**
+     * Gets the {@link CosmosContainerProactiveInitConfig} to be used
+     *
+     * @return {@link CosmosContainerProactiveInitConfig}
+     * */
+    CosmosContainerProactiveInitConfig getProactiveContainerInitConfig() {
+        return proactiveContainerInitConfig;
     }
 
     /**
@@ -642,7 +658,21 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryConfig.setClientTelemetryEnabled(clientTelemetryEnabled);
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
+            ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor();
+
+        Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+
+        if (explicitlySetInConfig != null) {
+            CosmosClientTelemetryConfig newTelemetryConfig = accessor
+                .createSnapshot(this.clientTelemetryConfig, clientTelemetryEnabled);
+            accessor.resetIsSendClientTelemetryToServiceEnabled(newTelemetryConfig);
+            this.clientTelemetryConfig = newTelemetryConfig;
+        }
+
+        this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
 
@@ -662,6 +692,23 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
+     * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()}.
+     *
+     * <p>
+     *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
+     * </p>
+     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
+     *                                     proactive connection regions
+     * @return current CosmosClientBuilder
+     * */
+    public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
     }
 
@@ -744,7 +791,22 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return this.clientTelemetryConfig.isClientTelemetryEnabled();
+        Boolean explicitlySetInConfig = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+
+        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
+
+        if (this.clientTelemetryEnabledOverride != null) {
+            return this.clientTelemetryEnabledOverride;
+        }
+
+        if (explicitlySetInConfig != null) {
+            return explicitlySetInConfig;
+        }
+
+        return ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED;
     }
 
     /**
@@ -763,8 +825,34 @@ public class CosmosClientBuilder implements
         return readRequestsFallbackEnabled;
     }
 
-    ClientTelemetryConfig getClientTelemetryConfig() {
+    /**
+     * Returns the client telemetry config instance for this builder
+     * @return the client telemetry config instance for this builder
+     */
+    CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return this.clientTelemetryConfig;
+    }
+
+    /**
+     * Returns the client telemetry config instance for this builder
+     * @param telemetryConfig the client telemetry configuration to be used
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder clientTelemetryConfig(CosmosClientTelemetryConfig telemetryConfig) {
+        ifThrowIllegalArgException(telemetryConfig == null,
+            "Parameter 'telemetryConfig' must not be null.");
+
+        Boolean explicitValueFromConfig = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isSendClientTelemetryToServiceEnabled(telemetryConfig);
+        if (explicitValueFromConfig != null) {
+            this.clientTelemetryEnabledOverride = null;
+        }
+
+        this.clientTelemetryConfig = telemetryConfig;
+
+        return this;
     }
 
     /**
@@ -773,10 +861,14 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
-
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosAsyncClient(this);
+        CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
+        cosmosAsyncClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosAsyncClient);
+        return cosmosAsyncClient;
     }
 
     /**
@@ -785,10 +877,14 @@ public class CosmosClientBuilder implements
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
-
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosClient(this);
+        CosmosClient cosmosClient = new CosmosClient(this);
+        cosmosClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosClient.asyncClient());
+        return cosmosClient;
     }
 
     //  Connection policy has to be built before it can be used by this builder
@@ -821,13 +917,19 @@ public class CosmosClientBuilder implements
 
         if (preferredRegions != null) {
             // validate preferredRegions
-            preferredRegions.stream().forEach(
+            preferredRegions.forEach(
                 preferredRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
                     String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");
                     LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
                 }
             );
+        }
+
+        if (proactiveContainerInitConfig != null) {
+            Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
+                    "cannot be greater than the no.of preferred regions");
         }
 
         ifThrowIllegalArgException(this.serviceEndpoint == null,
@@ -861,6 +963,22 @@ public class CosmosClientBuilder implements
         }
     }
 
+    private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
+        stopwatch.stop();
+
+        if (logger.isInfoEnabled()) {
+            long time = stopwatch.getTime();
+            // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
+            logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
+                    "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}].",
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
+                isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig());
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//

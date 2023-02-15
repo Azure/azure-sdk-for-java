@@ -22,6 +22,10 @@ public class ProjectUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ProjectUpdateProperties class. */
+    public ProjectUpdateProperties() {
+    }
+
     /**
      * Get the devCenterId property: Resource Id of an associated DevCenter.
      *

@@ -26,6 +26,10 @@ public final class IfConditionActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private IfConditionActivityTypeProperties innerTypeProperties = new IfConditionActivityTypeProperties();
 
+    /** Creates an instance of IfConditionActivity class. */
+    public IfConditionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: IfCondition activity properties.
      *

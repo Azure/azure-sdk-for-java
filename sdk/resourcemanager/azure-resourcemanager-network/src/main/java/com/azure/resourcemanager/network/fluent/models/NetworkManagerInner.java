@@ -41,6 +41,10 @@ public final class NetworkManagerInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkManagerInner class. */
+    public NetworkManagerInner() {
+    }
+
     /**
      * Get the innerProperties property: The network manager properties.
      *

@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.ModelContainerDetails;
+import com.azure.resourcemanager.machinelearning.models.ModelContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ModelContainers CreateOrUpdate. */
 public final class ModelContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ModelContainer/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ModelContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Model Container.
@@ -25,7 +25,7 @@ public final class ModelContainersCreateOrUpdateSamples {
             .define("testContainer")
             .withExistingWorkspace("testrg123", "workspace123")
             .withProperties(
-                new ModelContainerDetails()
+                new ModelContainerProperties()
                     .withDescription("Model container description")
                     .withTags(mapOf("tag1", "value1", "tag2", "value2")))
             .create();

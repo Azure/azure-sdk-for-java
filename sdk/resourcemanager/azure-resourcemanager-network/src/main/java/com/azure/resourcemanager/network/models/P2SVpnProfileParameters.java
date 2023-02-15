@@ -16,6 +16,10 @@ public final class P2SVpnProfileParameters {
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
+    /** Creates an instance of P2SVpnProfileParameters class. */
+    public P2SVpnProfileParameters() {
+    }
+
     /**
      * Get the authenticationMethod property: VPN client authentication method.
      *

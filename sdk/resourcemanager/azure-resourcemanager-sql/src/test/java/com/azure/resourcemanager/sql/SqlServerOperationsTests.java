@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -25,13 +26,12 @@ import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
-import com.azure.resourcemanager.sql.models.ServiceObjective;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
-import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -39,6 +39,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
@@ -52,8 +53,7 @@ import com.azure.resourcemanager.sql.models.SqlWarehouse;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -68,8 +68,13 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
@@ -202,7 +207,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertNotNull(sqlSyncGroup);
 
-        sqlSyncGroup.update().withInterval(600).withConflictResolutionPolicyMemberWins().apply();
+        // service no longer supports updating ConflictResolutionPolicy
+        // sqlSyncGroup.update().withInterval(600).withConflictResolutionPolicyMemberWins().apply();
 
         Assertions
             .assertTrue(
@@ -627,11 +633,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
+    // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
     public void canCRUDSqlServerWithImportDatabase() throws Exception {
-        if (isPlaybackMode()) {
-            // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
-            return;
-        }
         // Create
 
         String sqlServerAdminName = "sqladmin";
@@ -717,6 +721,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         String sqlServerAdminName = "sqladmin";
         String id = generateRandomUuid();
+        if (!isPlaybackMode()) {
+            id = clientIdFromFile();
+        }
 
         SqlServer sqlServer =
             sqlServerManager
@@ -823,23 +830,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         firewallRule.delete();
     }
 
-    @Disabled("Depends on the existing SQL server")
-    @Test
-    public void canListRecommendedElasticPools() throws Exception {
-        SqlServer sqlServer = sqlServerManager.sqlServers().getByResourceGroup("ans", "ans-secondary");
-        sqlServer
-            .databases()
-            .list()
-            .get(0)
-            .listServiceTierAdvisors()
-            .values()
-            .iterator()
-            .next()
-            .serviceLevelObjectiveUsageMetric();
-        Map<String, RecommendedElasticPool> recommendedElasticPools = sqlServer.listRecommendedElasticPools();
-        Assertions.assertNotNull(recommendedElasticPools);
-    }
-
     @Test
     public void canCRUDSqlServer() throws Exception {
 
@@ -859,12 +849,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions
             .assertEquals(
                 CheckNameAvailabilityReason.ALREADY_EXISTS.toString(), checkNameResult.unavailabilityReason());
-
-        List<ServiceObjective> serviceObjectives = sqlServer.listServiceObjectives();
-
-        Assertions.assertNotEquals(serviceObjectives.size(), 0);
-        Assertions.assertNotNull(serviceObjectives.get(0).refresh());
-        Assertions.assertNotNull(sqlServer.getServiceObjective("d1737d22-a8ea-4de7-9bd0-33395d2a7419"));
 
         sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
@@ -992,26 +976,49 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
+        // Test security alert policy settings.
+
+        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
+        StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+        String accountKey = storageAccount.getKeys().get(0).value();
+        String blobEntrypoint = storageAccount.endPoints().primary().blob();
+
+        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
+
+        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
+            .withPolicyEnabled()
+            .withStorageEndpoint(blobEntrypoint)
+            .withStorageAccountAccessKey(accountKey)
+            .withAlertsFilter(disabledAlerts)
+            .create();
+
+        sqlDatabase.refresh();
+
+        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
+        Assertions.assertNotNull(alertPolicy);
+        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
+        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
+
+        // Done testing security alert policy
+
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();
         Assertions.assertNotNull(transparentDataEncryption.status());
 
-        List<TransparentDataEncryptionActivity> transparentDataEncryptionActivities =
-            transparentDataEncryption.listActivities();
-        Assertions.assertNotNull(transparentDataEncryptionActivities);
+        transparentDataEncryption = transparentDataEncryption.updateStatus(TransparentDataEncryptionState.ENABLED);
 
-        transparentDataEncryption = transparentDataEncryption.updateStatus(TransparentDataEncryptionStatus.ENABLED);
         Assertions.assertNotNull(transparentDataEncryption);
-        Assertions.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStatus.ENABLED);
+        Assertions.assertEquals(TransparentDataEncryptionState.ENABLED, transparentDataEncryption.status());
 
-        transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
-        Assertions.assertNotNull(transparentDataEncryptionActivities);
-
-        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         transparentDataEncryption =
-            sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStatus.DISABLED);
+            sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionState.DISABLED);
+
         Assertions.assertNotNull(transparentDataEncryption);
-        Assertions.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStatus.DISABLED);
+        Assertions.assertEquals(TransparentDataEncryptionState.DISABLED, transparentDataEncryption.status());
         Assertions.assertEquals(transparentDataEncryption.sqlServerName(), sqlServerName);
         Assertions.assertEquals(transparentDataEncryption.databaseName(), SQL_DATABASE_NAME);
         Assertions.assertNotNull(transparentDataEncryption.name());
@@ -1019,16 +1026,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Done testing with encryption settings.
 
         // Assertions.assertNotNull(sqlDatabase.getUpgradeHint()); // This property is null
-
-        // Test Service tier advisors.
-        Map<String, ServiceTierAdvisor> serviceTierAdvisors = sqlDatabase.listServiceTierAdvisors();
-        Assertions.assertNotNull(serviceTierAdvisors);
-        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetric());
-        Assertions.assertNotEquals(serviceTierAdvisors.size(), 0);
-
-        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().refresh());
-        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetric());
-        // End of testing service tier advisors.
 
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
@@ -1151,8 +1148,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         validateSqlServer(sqlServer);
 
-        // List usages for the server.
-        Assertions.assertNotNull(sqlServer.listUsageMetrics());
+        // List usages for the server.TODO (xiaofeicao) server backend not deployed
+//        Assertions.assertNotNull(sqlServer.listUsageMetrics());
 
         Mono<SqlDatabase> resourceStream =
             sqlServer
@@ -1174,12 +1171,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertNotNull(dataWarehouse);
         Assertions.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
-        Assertions.assertEquals(dataWarehouse.edition(), DatabaseEdition.DATA_WAREHOUSE);
+        Assertions.assertEquals(DatabaseEdition.DATA_WAREHOUSE, dataWarehouse.edition());
 
         // List Restore points.
         Assertions.assertNotNull(dataWarehouse.listRestorePoints());
-        // Get usages.
-        Assertions.assertNotNull(dataWarehouse.listUsageMetrics());
+        // Get usages. TODO (xiaofeicao) server backend not deployed
+//        Assertions.assertNotNull(dataWarehouse.listUsageMetrics());
 
         // Pause warehouse
         dataWarehouse.pauseDataWarehouse();
@@ -1265,9 +1262,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // List Activity in elastic pool
         Assertions.assertNotNull(elasticPool.listActivities());
-
-        // List Database activity in elastic pool.
-        Assertions.assertNotNull(elasticPool.listDatabaseActivities());
 
         // List databases in elastic pool.
         List<SqlDatabase> databasesInElasticPool = elasticPool.listDatabases();
@@ -1468,7 +1462,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlElasticPool ep2 = sqlServer.elasticPools().get(elasticPool2Name);
 
         Assertions.assertNotNull(ep2);
-        Assertions.assertEquals(ep2.edition(), ElasticPoolEdition.PREMIUM);
+        Assertions.assertEquals(ElasticPoolEdition.PREMIUM, ep2.edition());
         Assertions.assertEquals(ep2.listDatabases().size(), 2);
         Assertions.assertNotNull(ep2.getDatabase(database1InEPName));
         Assertions.assertNotNull(ep2.getDatabase(database2InEPName));
@@ -1476,7 +1470,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlElasticPool ep3 = sqlServer.elasticPools().get(elasticPool3Name);
 
         Assertions.assertNotNull(ep3);
-        Assertions.assertEquals(ep3.edition(), ElasticPoolEdition.STANDARD);
+        Assertions.assertEquals(ElasticPoolEdition.STANDARD, ep3.edition());
 
         if (!deleteUsingUpdate) {
             sqlServer.databases().delete(database2Name);
@@ -1640,7 +1634,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(sqlDatabase.name(), databaseName);
         Assertions.assertEquals(sqlServerName, sqlDatabase.sqlServerName());
         Assertions.assertEquals(sqlDatabase.collation(), COLLATION);
-        Assertions.assertEquals(sqlDatabase.edition(), DatabaseEdition.STANDARD);
+        Assertions.assertEquals(DatabaseEdition.STANDARD, sqlDatabase.edition());
     }
 
     private void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase, String databaseName) {
@@ -1650,23 +1644,24 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void testRandomSku() {
-        List<DatabaseSku> databaseSkus = new LinkedList<>(Arrays.asList(DatabaseSku.getAll().toArray(new DatabaseSku[0])));
+        // "M" series is not supported in this region
+        List<DatabaseSku> databaseSkus = DatabaseSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(databaseSkus);
-        List<ElasticPoolSku> elasticPoolSkus = new LinkedList<>(Arrays.asList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0])));
+        List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT) {
+                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
                             databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
                         }
                     });
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
                     edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT) {
+                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
                             elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
                         }
                     });
@@ -1680,10 +1675,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withAdministratorPassword(password())
             .create();
 
+        // Too many elastic pools defined will hit sql server DTU quota limits.
+        // https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-logical-server?view=azuresql#logical-server-limits
         Flux.merge(
-            Flux.range(0, 5)
+            Flux.range(0, 3)
                 .flatMap(i -> sqlServer.databases().define("database" + i).withSku(databaseSkus.get(i)).createAsync().cast(Indexable.class)),
-            Flux.range(0, 5)
+            Flux.range(0, 3)
                 .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
         )
             .blockLast();

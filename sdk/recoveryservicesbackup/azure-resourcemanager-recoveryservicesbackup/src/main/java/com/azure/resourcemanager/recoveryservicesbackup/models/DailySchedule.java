@@ -18,6 +18,10 @@ public final class DailySchedule {
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
+    /** Creates an instance of DailySchedule class. */
+    public DailySchedule() {
+    }
+
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.
      *

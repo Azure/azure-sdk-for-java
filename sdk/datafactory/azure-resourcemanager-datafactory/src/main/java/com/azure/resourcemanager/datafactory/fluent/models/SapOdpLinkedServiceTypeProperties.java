@@ -129,6 +129,10 @@ public final class SapOdpLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapOdpLinkedServiceTypeProperties class. */
+    public SapOdpLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).

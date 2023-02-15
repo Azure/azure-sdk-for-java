@@ -54,6 +54,10 @@ public class EffectiveBaseSecurityAdminRule {
     @JsonProperty(value = "ruleGroups")
     private List<ConfigurationGroup> ruleGroups;
 
+    /** Creates an instance of EffectiveBaseSecurityAdminRule class. */
+    public EffectiveBaseSecurityAdminRule() {
+    }
+
     /**
      * Get the id property: Resource ID.
      *

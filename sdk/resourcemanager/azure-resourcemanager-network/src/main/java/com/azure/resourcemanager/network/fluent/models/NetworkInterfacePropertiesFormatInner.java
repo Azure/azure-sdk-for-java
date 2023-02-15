@@ -79,6 +79,12 @@ public final class NetworkInterfacePropertiesFormatInner {
     private Boolean enableAcceleratedNetworking;
 
     /*
+     * Indicates whether to disable tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
+
+    /*
      * Indicates whether IP forwarding is enabled on this network interface.
      */
     @JsonProperty(value = "enableIPForwarding")
@@ -137,6 +143,10 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     @JsonProperty(value = "auxiliaryMode")
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /** Creates an instance of NetworkInterfacePropertiesFormatInner class. */
+    public NetworkInterfacePropertiesFormatInner() {
+    }
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
@@ -274,6 +284,26 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     public NetworkInterfacePropertiesFormatInner withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicies;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for DatabaseAccounts FailoverPriorityChange. */
 public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountFailoverPriorityChange.
@@ -35,6 +34,6 @@ public final class DatabaseAccountsFailoverPriorityChangeSamples {
                             .asList(
                                 new FailoverPolicy().withLocationName("eastus").withFailoverPriority(0),
                                 new FailoverPolicy().withLocationName("westus").withFailoverPriority(1))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

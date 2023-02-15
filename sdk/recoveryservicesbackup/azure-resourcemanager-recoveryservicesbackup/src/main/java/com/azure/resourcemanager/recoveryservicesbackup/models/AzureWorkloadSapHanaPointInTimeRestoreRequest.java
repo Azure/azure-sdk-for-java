@@ -32,6 +32,10 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
     @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
 
+    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreRequest class. */
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest() {
+    }
+
     /**
      * Get the pointInTime property: PointInTime value.
      *

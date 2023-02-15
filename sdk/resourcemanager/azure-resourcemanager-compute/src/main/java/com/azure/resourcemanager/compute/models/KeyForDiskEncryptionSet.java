@@ -25,6 +25,10 @@ public final class KeyForDiskEncryptionSet {
     @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
+    /** Creates an instance of KeyForDiskEncryptionSet class. */
+    public KeyForDiskEncryptionSet() {
+    }
+
     /**
      * Get the sourceVault property: Resource id of the KeyVault containing the key or secret. This property is optional
      * and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set subscription.

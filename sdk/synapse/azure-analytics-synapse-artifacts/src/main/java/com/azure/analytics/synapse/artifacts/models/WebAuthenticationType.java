@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebAuthenticationType. */
+/** Type of authentication used to connect to the web table source. */
 public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthenticationType> {
     /** Static value Basic for WebAuthenticationType. */
     public static final WebAuthenticationType BASIC = fromString("Basic");
@@ -30,7 +30,11 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
         return fromString(name, WebAuthenticationType.class);
     }
 
-    /** @return known WebAuthenticationType values. */
+    /**
+     * Gets known WebAuthenticationType values.
+     *
+     * @return known WebAuthenticationType values.
+     */
     public static Collection<WebAuthenticationType> values() {
         return values(WebAuthenticationType.class);
     }

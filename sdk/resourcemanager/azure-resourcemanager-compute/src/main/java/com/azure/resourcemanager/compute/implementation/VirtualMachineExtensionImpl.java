@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation of VirtualMachineExtension. */
 class VirtualMachineExtensionImpl
@@ -91,8 +92,8 @@ class VirtualMachineExtensionImpl
     public Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync() {
         return this
             .client
-            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
-            .map(inner -> inner.instanceView());
+            .getWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
+            .flatMap(inner -> Mono.justOrEmpty(inner.getValue().instanceView()));
     }
 
     @Override

@@ -16,10 +16,9 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("Sweep")
 @Fluent
-public final class SweepJob extends JobBaseDetails {
+public final class SweepJob extends JobBaseProperties {
     /*
-     * Early termination policies enable canceling poor-performing runs before
-     * they complete
+     * Early termination policies enable canceling poor-performing runs before they complete
      */
     @JsonProperty(value = "earlyTermination")
     private EarlyTerminationPolicy earlyTermination;
@@ -57,8 +56,8 @@ public final class SweepJob extends JobBaseDetails {
     private SamplingAlgorithm samplingAlgorithm;
 
     /*
-     * [Required] A dictionary containing each parameter and its distribution.
-     * The dictionary key is the name of the parameter
+     * [Required] A dictionary containing each parameter and its distribution. The dictionary key is the name of the
+     * parameter
      */
     @JsonProperty(value = "searchSpace", required = true)
     private Object searchSpace;
@@ -68,6 +67,10 @@ public final class SweepJob extends JobBaseDetails {
      */
     @JsonProperty(value = "trial", required = true)
     private TrialComponent trial;
+
+    /** Creates an instance of SweepJob class. */
+    public SweepJob() {
+    }
 
     /**
      * Get the earlyTermination property: Early termination policies enable canceling poor-performing runs before they
@@ -235,6 +238,13 @@ public final class SweepJob extends JobBaseDetails {
 
     /** {@inheritDoc} */
     @Override
+    public SweepJob withComponentId(String componentId) {
+        super.withComponentId(componentId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SweepJob withComputeId(String computeId) {
         super.withComputeId(computeId);
         return this;
@@ -265,13 +275,6 @@ public final class SweepJob extends JobBaseDetails {
     @Override
     public SweepJob withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withSchedule(ScheduleBase schedule) {
-        super.withSchedule(schedule);
         return this;
     }
 

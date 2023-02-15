@@ -12,12 +12,17 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "azConfigEndpointSuffix": {
+      "defaultValue": ".azconfig.io",
+      "type": "string"
     }
   },
   "variables": {
     "configurationStoresName": "[concat(parameters('baseName'),'-test-appconfiguration')]",
-    "azureManagedApplicationContributorRoleRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/641177b8-a67a-45b9-a033-47bc880bb21e",
-    "location": "[resourceGroup().location]"
+    "azureAppConfigurationDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b",
+    "location": "[resourceGroup().location]",
+    "endpointValue": "[concat('https://', variables('configurationStoresName'), parameters('azConfigEndpointSuffix'))]"
   },
   "resources": [
     {
@@ -37,9 +42,9 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureManagedApplicationContributorRoleRoleId'), parameters('baseName')))]",
+      "name": "[guid(concat(variables('azureAppConfigurationDataOwnerRoleId'), parameters('baseName')))]",
       "properties": {
-        "roleDefinitionId": "[variables('azureManagedApplicationContributorRoleRoleId')]",
+        "roleDefinitionId": "[variables('azureAppConfigurationDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
     }
@@ -47,7 +52,7 @@
   "outputs": {
     "AZURE_APPCONFIGURATION_ENDPOINT": {
       "type": "string",
-      "value": "[reference(variables('configurationStoresName')).endpoint]"
+      "value": "[variables('endpointValue')]"
     }
   }
 }

@@ -92,14 +92,6 @@ public class ReactorHandlerProvider {
         final boolean isSystemProxyConfigured = WebSocketsProxyConnectionHandler.shouldUseProxy(
             options.getFullyQualifiedNamespace(), options.getPort());
 
-        // TODO (conniey): See if we this is supported later on.
-        if (isCustomEndpointConfigured && (isUserProxyConfigured || isSystemProxyConfigured)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                "Unable to proxy connection to custom endpoint. Custom endpoint: %s. Proxy settings: %s. "
-                    + "Namespace: %s", options.getHostname(), options.getProxyOptions().getProxyAddress(),
-                options.getFullyQualifiedNamespace())));
-        }
-
         if (isUserProxyConfigured) {
             LOGGER.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
                 options.getFullyQualifiedNamespace(), options.getPort(), options.getProxyOptions().getProxyAddress());

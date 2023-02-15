@@ -14,10 +14,9 @@ import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkResourceList
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResource;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResourceListResult;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
@@ -27,15 +26,6 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PrivateLinkResourceListResult listByCluster(String resourceGroupName, String clusterName) {
-        PrivateLinkResourceListResultInner inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new PrivateLinkResourceListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PrivateLinkResourceListResult> listByClusterWithResponse(
@@ -53,11 +43,10 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public PrivateLinkResource get(String resourceGroupName, String clusterName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, privateLinkResourceName);
+    public PrivateLinkResourceListResult listByCluster(String resourceGroupName, String clusterName) {
+        PrivateLinkResourceListResultInner inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
         if (inner != null) {
-            return new PrivateLinkResourceImpl(inner, this.manager());
+            return new PrivateLinkResourceListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -73,6 +62,16 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResource get(String resourceGroupName, String clusterName, String privateLinkResourceName) {
+        PrivateLinkResourceInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, privateLinkResourceName);
+        if (inner != null) {
+            return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

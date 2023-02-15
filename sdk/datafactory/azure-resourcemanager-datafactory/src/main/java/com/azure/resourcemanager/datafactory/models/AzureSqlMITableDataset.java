@@ -23,6 +23,10 @@ public final class AzureSqlMITableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureSqlMITableDataset class. */
+    public AzureSqlMITableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance dataset properties.
      *

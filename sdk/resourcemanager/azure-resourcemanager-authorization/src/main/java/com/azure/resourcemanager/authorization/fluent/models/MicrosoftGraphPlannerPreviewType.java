@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphPlannerPreviewType. */
+/** plannerPreviewType. */
 public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum<MicrosoftGraphPlannerPreviewType> {
     /** Static value automatic for MicrosoftGraphPlannerPreviewType. */
     public static final MicrosoftGraphPlannerPreviewType AUTOMATIC = fromString("automatic");
@@ -36,7 +36,11 @@ public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphPlannerPreviewType.class);
     }
 
-    /** @return known MicrosoftGraphPlannerPreviewType values. */
+    /**
+     * Gets known MicrosoftGraphPlannerPreviewType values.
+     *
+     * @return known MicrosoftGraphPlannerPreviewType values.
+     */
     public static Collection<MicrosoftGraphPlannerPreviewType> values() {
         return values(MicrosoftGraphPlannerPreviewType.class);
     }

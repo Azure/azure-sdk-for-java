@@ -5,210 +5,116 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Class representing a Traffic Manager profile. */
-@JsonFlatten
 @Fluent
-public class ProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
+public final class ProfileInner extends Resource {
+    /*
+     * The properties of the Traffic Manager profile.
+     */
+    @JsonProperty(value = "properties")
+    private ProfileProperties innerProperties;
 
     /*
-     * The status of the Traffic Manager profile.
+     * Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
      */
-    @JsonProperty(value = "properties.profileStatus")
-    private ProfileStatus profileStatus;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
-     * The traffic routing method of the Traffic Manager profile.
+     * The name of the resource
      */
-    @JsonProperty(value = "properties.trafficRoutingMethod")
-    private TrafficRoutingMethod trafficRoutingMethod;
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
-     * The DNS settings of the Traffic Manager profile.
+     * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      */
-    @JsonProperty(value = "properties.dnsConfig")
-    private DnsConfig dnsConfig;
+    @JsonProperty(value = "type")
+    private String type;
 
-    /*
-     * The endpoint monitoring settings of the Traffic Manager profile.
-     */
-    @JsonProperty(value = "properties.monitorConfig")
-    private MonitorConfig monitorConfig;
-
-    /*
-     * The list of endpoints in the Traffic Manager profile.
-     */
-    @JsonProperty(value = "properties.endpoints")
-    private List<EndpointInner> endpoints;
-
-    /*
-     * Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
-     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this
-     * feature will increase the cost of the Traffic Manage profile.
-     */
-    @JsonProperty(value = "properties.trafficViewEnrollmentStatus")
-    private TrafficViewEnrollmentStatus trafficViewEnrollmentStatus;
-
-    /*
-     * Maximum number of endpoints to be returned for MultiValue routing type.
-     */
-    @JsonProperty(value = "properties.maxReturn")
-    private Long maxReturn;
-
-    /**
-     * Get the profileStatus property: The status of the Traffic Manager profile.
-     *
-     * @return the profileStatus value.
-     */
-    public ProfileStatus profileStatus() {
-        return this.profileStatus;
+    /** Creates an instance of ProfileInner class. */
+    public ProfileInner() {
     }
 
     /**
-     * Set the profileStatus property: The status of the Traffic Manager profile.
+     * Get the innerProperties property: The properties of the Traffic Manager profile.
      *
-     * @param profileStatus the profileStatus value to set.
+     * @return the innerProperties value.
+     */
+    private ProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
+     *
+     * @param id the id value to set.
      * @return the ProfileInner object itself.
      */
-    public ProfileInner withProfileStatus(ProfileStatus profileStatus) {
-        this.profileStatus = profileStatus;
+    public ProfileInner withId(String id) {
+        this.id = id;
         return this;
     }
 
     /**
-     * Get the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
+     * Get the name property: The name of the resource.
      *
-     * @return the trafficRoutingMethod value.
+     * @return the name value.
      */
-    public TrafficRoutingMethod trafficRoutingMethod() {
-        return this.trafficRoutingMethod;
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
+     * Set the name property: The name of the resource.
      *
-     * @param trafficRoutingMethod the trafficRoutingMethod value to set.
+     * @param name the name value to set.
      * @return the ProfileInner object itself.
      */
-    public ProfileInner withTrafficRoutingMethod(TrafficRoutingMethod trafficRoutingMethod) {
-        this.trafficRoutingMethod = trafficRoutingMethod;
+    public ProfileInner withName(String name) {
+        this.name = name;
         return this;
     }
 
     /**
-     * Get the dnsConfig property: The DNS settings of the Traffic Manager profile.
+     * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      *
-     * @return the dnsConfig value.
+     * @return the type value.
      */
-    public DnsConfig dnsConfig() {
-        return this.dnsConfig;
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the dnsConfig property: The DNS settings of the Traffic Manager profile.
+     * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      *
-     * @param dnsConfig the dnsConfig value to set.
+     * @param type the type value to set.
      * @return the ProfileInner object itself.
      */
-    public ProfileInner withDnsConfig(DnsConfig dnsConfig) {
-        this.dnsConfig = dnsConfig;
-        return this;
-    }
-
-    /**
-     * Get the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
-     *
-     * @return the monitorConfig value.
-     */
-    public MonitorConfig monitorConfig() {
-        return this.monitorConfig;
-    }
-
-    /**
-     * Set the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
-     *
-     * @param monitorConfig the monitorConfig value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withMonitorConfig(MonitorConfig monitorConfig) {
-        this.monitorConfig = monitorConfig;
-        return this;
-    }
-
-    /**
-     * Get the endpoints property: The list of endpoints in the Traffic Manager profile.
-     *
-     * @return the endpoints value.
-     */
-    public List<EndpointInner> endpoints() {
-        return this.endpoints;
-    }
-
-    /**
-     * Set the endpoints property: The list of endpoints in the Traffic Manager profile.
-     *
-     * @param endpoints the endpoints value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withEndpoints(List<EndpointInner> endpoints) {
-        this.endpoints = endpoints;
-        return this;
-    }
-
-    /**
-     * Get the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
-     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
-     * Manage profile.
-     *
-     * @return the trafficViewEnrollmentStatus value.
-     */
-    public TrafficViewEnrollmentStatus trafficViewEnrollmentStatus() {
-        return this.trafficViewEnrollmentStatus;
-    }
-
-    /**
-     * Set the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
-     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
-     * Manage profile.
-     *
-     * @param trafficViewEnrollmentStatus the trafficViewEnrollmentStatus value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withTrafficViewEnrollmentStatus(TrafficViewEnrollmentStatus trafficViewEnrollmentStatus) {
-        this.trafficViewEnrollmentStatus = trafficViewEnrollmentStatus;
-        return this;
-    }
-
-    /**
-     * Get the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
-     *
-     * @return the maxReturn value.
-     */
-    public Long maxReturn() {
-        return this.maxReturn;
-    }
-
-    /**
-     * Set the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
-     *
-     * @param maxReturn the maxReturn value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withMaxReturn(Long maxReturn) {
-        this.maxReturn = maxReturn;
+    public ProfileInner withType(String type) {
+        this.type = type;
         return this;
     }
 
@@ -227,19 +133,178 @@ public class ProfileInner extends Resource {
     }
 
     /**
+     * Get the profileStatus property: The status of the Traffic Manager profile.
+     *
+     * @return the profileStatus value.
+     */
+    public ProfileStatus profileStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().profileStatus();
+    }
+
+    /**
+     * Set the profileStatus property: The status of the Traffic Manager profile.
+     *
+     * @param profileStatus the profileStatus value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withProfileStatus(ProfileStatus profileStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withProfileStatus(profileStatus);
+        return this;
+    }
+
+    /**
+     * Get the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
+     *
+     * @return the trafficRoutingMethod value.
+     */
+    public TrafficRoutingMethod trafficRoutingMethod() {
+        return this.innerProperties() == null ? null : this.innerProperties().trafficRoutingMethod();
+    }
+
+    /**
+     * Set the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
+     *
+     * @param trafficRoutingMethod the trafficRoutingMethod value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withTrafficRoutingMethod(TrafficRoutingMethod trafficRoutingMethod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withTrafficRoutingMethod(trafficRoutingMethod);
+        return this;
+    }
+
+    /**
+     * Get the dnsConfig property: The DNS settings of the Traffic Manager profile.
+     *
+     * @return the dnsConfig value.
+     */
+    public DnsConfig dnsConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsConfig();
+    }
+
+    /**
+     * Set the dnsConfig property: The DNS settings of the Traffic Manager profile.
+     *
+     * @param dnsConfig the dnsConfig value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withDnsConfig(DnsConfig dnsConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withDnsConfig(dnsConfig);
+        return this;
+    }
+
+    /**
+     * Get the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
+     *
+     * @return the monitorConfig value.
+     */
+    public MonitorConfig monitorConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().monitorConfig();
+    }
+
+    /**
+     * Set the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
+     *
+     * @param monitorConfig the monitorConfig value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withMonitorConfig(MonitorConfig monitorConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withMonitorConfig(monitorConfig);
+        return this;
+    }
+
+    /**
+     * Get the endpoints property: The list of endpoints in the Traffic Manager profile.
+     *
+     * @return the endpoints value.
+     */
+    public List<EndpointInner> endpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
+    }
+
+    /**
+     * Set the endpoints property: The list of endpoints in the Traffic Manager profile.
+     *
+     * @param endpoints the endpoints value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withEndpoints(List<EndpointInner> endpoints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withEndpoints(endpoints);
+        return this;
+    }
+
+    /**
+     * Get the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
+     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
+     * Manage profile.
+     *
+     * @return the trafficViewEnrollmentStatus value.
+     */
+    public TrafficViewEnrollmentStatus trafficViewEnrollmentStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().trafficViewEnrollmentStatus();
+    }
+
+    /**
+     * Set the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
+     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
+     * Manage profile.
+     *
+     * @param trafficViewEnrollmentStatus the trafficViewEnrollmentStatus value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withTrafficViewEnrollmentStatus(TrafficViewEnrollmentStatus trafficViewEnrollmentStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withTrafficViewEnrollmentStatus(trafficViewEnrollmentStatus);
+        return this;
+    }
+
+    /**
+     * Get the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
+     *
+     * @return the maxReturn value.
+     */
+    public Long maxReturn() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxReturn();
+    }
+
+    /**
+     * Set the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
+     *
+     * @param maxReturn the maxReturn value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withMaxReturn(Long maxReturn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withMaxReturn(maxReturn);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dnsConfig() != null) {
-            dnsConfig().validate();
-        }
-        if (monitorConfig() != null) {
-            monitorConfig().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

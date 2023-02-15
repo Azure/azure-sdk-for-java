@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessageImportance. */
+/** chatMessageImportance. */
 public final class MicrosoftGraphChatMessageImportance
     extends ExpandableStringEnum<MicrosoftGraphChatMessageImportance> {
     /** Static value normal for MicrosoftGraphChatMessageImportance. */
@@ -34,7 +34,11 @@ public final class MicrosoftGraphChatMessageImportance
         return fromString(name, MicrosoftGraphChatMessageImportance.class);
     }
 
-    /** @return known MicrosoftGraphChatMessageImportance values. */
+    /**
+     * Gets known MicrosoftGraphChatMessageImportance values.
+     *
+     * @return known MicrosoftGraphChatMessageImportance values.
+     */
     public static Collection<MicrosoftGraphChatMessageImportance> values() {
         return values(MicrosoftGraphChatMessageImportance.class);
     }

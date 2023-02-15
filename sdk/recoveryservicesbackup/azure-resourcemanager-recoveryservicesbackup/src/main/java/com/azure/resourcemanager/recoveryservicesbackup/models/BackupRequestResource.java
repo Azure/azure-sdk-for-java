@@ -24,6 +24,10 @@ public final class BackupRequestResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of BackupRequestResource class. */
+    public BackupRequestResource() {
+    }
+
     /**
      * Get the properties property: BackupRequestResource properties.
      *

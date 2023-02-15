@@ -17,15 +17,13 @@ import java.util.List;
 @Fluent
 public final class ShareServiceProperties {
     /*
-     * A summary of request statistics grouped by API in hourly aggregates for
-     * files.
+     * A summary of request statistics grouped by API in hourly aggregates for files.
      */
     @JsonProperty(value = "HourMetrics")
     private ShareMetrics hourMetrics;
 
     /*
-     * A summary of request statistics grouped by API in minute aggregates for
-     * files.
+     * A summary of request statistics grouped by API in minute aggregates for files.
      */
     @JsonProperty(value = "MinuteMetrics")
     private ShareMetrics minuteMetrics;
@@ -51,6 +49,9 @@ public final class ShareServiceProperties {
      */
     @JsonProperty(value = "ProtocolSettings")
     private ShareProtocolSettings protocol;
+
+    /** Creates an instance of ShareServiceProperties class. */
+    public ShareServiceProperties() {}
 
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.

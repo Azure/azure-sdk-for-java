@@ -48,25 +48,6 @@ public interface LinkedServicesClient {
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String linkedServiceName,
-        LinkedServiceResourceInner linkedService);
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
      * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -85,18 +66,23 @@ public interface LinkedServicesClient {
         Context context);
 
     /**
-     * Gets a linked service.
+     * Creates or updates a linked service.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
+     * @param linkedService Linked service resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
+     * @return linked service resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedServiceResourceInner get(String resourceGroupName, String factoryName, String linkedServiceName);
+    LinkedServiceResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String linkedServiceName,
+        LinkedServiceResourceInner linkedService);
 
     /**
      * Gets a linked service.
@@ -117,7 +103,7 @@ public interface LinkedServicesClient {
         String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a linked service.
+     * Gets a linked service.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -125,9 +111,10 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a linked service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String linkedServiceName);
+    LinkedServiceResourceInner get(String resourceGroupName, String factoryName, String linkedServiceName);
 
     /**
      * Deletes a linked service.
@@ -144,4 +131,17 @@ public interface LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, Context context);
+
+    /**
+     * Deletes a linked service.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param linkedServiceName The linked service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String linkedServiceName);
 }

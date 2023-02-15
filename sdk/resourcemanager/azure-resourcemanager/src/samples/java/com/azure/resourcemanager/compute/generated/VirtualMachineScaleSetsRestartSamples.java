@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets Restart. */
 public final class VirtualMachineScaleSetsRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Restart_MaximumSet_Gen.
@@ -29,11 +28,11 @@ public final class VirtualMachineScaleSetsRestartSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Restart_MinimumSet_Gen.
@@ -47,6 +46,6 @@ public final class VirtualMachineScaleSetsRestartSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .restart("rgcompute", "aaaa", null, Context.NONE);
+            .restart("rgcompute", "aaaa", null, com.azure.core.util.Context.NONE);
     }
 }

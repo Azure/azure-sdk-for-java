@@ -20,15 +20,13 @@ import java.util.Map;
 public class SapCloudForCustomerLinkedService extends LinkedService {
     /*
      * The URL of SAP Cloud for Customer OData API. For example,
-     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string
-     * (or Expression with resultType string).
+     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -40,13 +38,15 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SapCloudForCustomerLinkedService class. */
+    public SapCloudForCustomerLinkedService() {}
 
     /**
      * Get the url property: The URL of SAP Cloud for Customer OData API. For example,

@@ -60,6 +60,10 @@ public final class PublicIpAddressInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of PublicIpAddressInner class. */
+    public PublicIpAddressInner() {
+    }
+
     /**
      * Get the extendedLocation property: The extended location of the public ip address.
      *

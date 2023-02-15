@@ -41,18 +41,6 @@ public interface StudentLabsClient {
      * Get the details for a specified lab associated with the student lab.
      *
      * @param studentLabName Student lab name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details for a specified lab associated with the student lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StudentLabDetailsInner get(String studentLabName);
-
-    /**
-     * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,4 +49,16 @@ public interface StudentLabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StudentLabDetailsInner> getWithResponse(String studentLabName, Context context);
+
+    /**
+     * Get the details for a specified lab associated with the student lab.
+     *
+     * @param studentLabName Student lab name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for a specified lab associated with the student lab.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StudentLabDetailsInner get(String studentLabName);
 }

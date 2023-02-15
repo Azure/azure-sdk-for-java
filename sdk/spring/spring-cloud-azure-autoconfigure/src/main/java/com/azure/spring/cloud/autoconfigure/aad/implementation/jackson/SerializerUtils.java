@@ -10,7 +10,7 @@ import org.springframework.security.jackson2.CoreJackson2Module;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public final class SerializerUtils {
@@ -33,6 +33,11 @@ public final class SerializerUtils {
     private SerializerUtils() {
     }
 
+    /**
+     * Serialize {@link Map} to {@link String}.
+     * @param authorizedClients the map to be serialized. It will not be modified in this method.
+     * @return The serialized {@link String}.
+     */
     public static String serializeOAuth2AuthorizedClientMap(Map<String, OAuth2AuthorizedClient> authorizedClients) {
         String result;
         try {
@@ -43,9 +48,14 @@ public final class SerializerUtils {
         return result;
     }
 
+    /**
+     * Deserialize {@link String} to {@link Map}.
+     * @param authorizedClientsString the String to be deserialized
+     * @return The deserialized {@link Map}. Return {@link Collections#emptyMap()} if authorizedClientsString is null.
+     */
     public static Map<String, OAuth2AuthorizedClient> deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
         if (authorizedClientsString == null) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
         Map<String, OAuth2AuthorizedClient> authorizedClients;
         try {

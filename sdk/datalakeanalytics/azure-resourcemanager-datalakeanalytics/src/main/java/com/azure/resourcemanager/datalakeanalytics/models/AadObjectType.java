@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AadObjectType. */
+/** The type of AAD object the object identifier refers to. */
 public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
     /** Static value User for AadObjectType. */
     public static final AadObjectType USER = fromString("User");
@@ -18,6 +18,15 @@ public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
 
     /** Static value ServicePrincipal for AadObjectType. */
     public static final AadObjectType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
+
+    /**
+     * Creates a new instance of AadObjectType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AadObjectType() {
+    }
 
     /**
      * Creates or finds a AadObjectType from its string representation.
@@ -30,7 +39,11 @@ public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
         return fromString(name, AadObjectType.class);
     }
 
-    /** @return known AadObjectType values. */
+    /**
+     * Gets known AadObjectType values.
+     *
+     * @return known AadObjectType values.
+     */
     public static Collection<AadObjectType> values() {
         return values(AadObjectType.class);
     }

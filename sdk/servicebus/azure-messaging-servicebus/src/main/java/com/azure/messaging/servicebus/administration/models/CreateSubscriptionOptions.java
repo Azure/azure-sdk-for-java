@@ -33,6 +33,7 @@ public final class CreateSubscriptionOptions {
     private int maxDeliveryCount;
     private boolean requiresSession;
     private String userMetadata;
+    private RuleProperties defaultRule;
 
     /**
      * Creates an instance. Default values for the subscription are populated. The properties populated with defaults
@@ -64,6 +65,7 @@ public final class CreateSubscriptionOptions {
         this.maxDeliveryCount = 10;
         this.requiresSession = false;
         this.status = EntityStatus.ACTIVE;
+        this.defaultRule = null;
     }
 
     /**
@@ -87,6 +89,7 @@ public final class CreateSubscriptionOptions {
         this.requiresSession = subscription.isSessionRequired();
         this.status = subscription.getStatus();
         this.userMetadata = subscription.getUserMetadata();
+        this.defaultRule = null;
     }
 
     /**
@@ -361,6 +364,27 @@ public final class CreateSubscriptionOptions {
      */
     public CreateSubscriptionOptions setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
+        return this;
+    }
+
+    /***
+     * Get the rule that the subscription was created with, if any.
+     *
+     * @return the Rule description
+     */
+    public RuleProperties getDefaultRule() {
+        return this.defaultRule;
+    }
+
+    /***
+     * Set the rule that the subscriptions should be created with, if any.
+     *
+     * @param ruleProperties the rule description (name, action, filter)
+     *
+     * @return the CreateSubscriptionOptions object itself.
+     */
+    public CreateSubscriptionOptions setDefaultRule(RuleProperties ruleProperties) {
+        this.defaultRule = ruleProperties;
         return this;
     }
 }

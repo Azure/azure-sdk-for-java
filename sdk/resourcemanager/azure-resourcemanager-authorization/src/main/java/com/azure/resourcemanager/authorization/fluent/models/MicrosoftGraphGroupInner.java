@@ -15,40 +15,39 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * group Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * group
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
 public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * The list of sensitivity label pairs (label ID, label name) associated
-     * with an Microsoft 365 group. Returned only on $select. Read-only.
+     * The list of sensitivity label pairs (label ID, label name) associated with an Microsoft 365 group. Returned only
+     * on $select. Read-only.
      */
     @JsonProperty(value = "assignedLabels")
     private List<MicrosoftGraphAssignedLabel> assignedLabels;
 
     /*
-     * The licenses that are assigned to the group. Returned only on $select.
-     * Read-only.
+     * The licenses that are assigned to the group. Returned only on $select. Read-only.
      */
     @JsonProperty(value = "assignedLicenses")
     private List<MicrosoftGraphAssignedLicense> assignedLicenses;
 
     /*
-     * Describes a classification for the group (such as low, medium or high
-     * business impact). Valid values for this property are defined by creating
-     * a ClassificationList setting value, based on the template
-     * definition.Returned by default.
+     * Describes a classification for the group (such as low, medium or high business impact). Valid values for this
+     * property are defined by creating a ClassificationList setting value, based on the template definition.Returned
+     * by default.
      */
     @JsonProperty(value = "classification")
     private String classification;
 
     /*
-     * Timestamp of when the group was created. The value cannot be modified
-     * and is automatically populated when the group is created. The Timestamp
-     * type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'. Returned by default. Read-only.
+     * Timestamp of when the group was created. The value cannot be modified and is automatically populated when the
+     * group is created. The Timestamp type represents date and time information using ISO 8601 format and is always in
+     * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by
+     * default. Read-only.
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
@@ -60,41 +59,34 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private String description;
 
     /*
-     * The display name for the group. This property is required when a group
-     * is created and cannot be cleared during updates. Returned by default.
-     * Supports $filter and $orderby.
+     * The display name for the group. This property is required when a group is created and cannot be cleared during
+     * updates. Returned by default. Supports $filter and $orderby.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Timestamp of when the group is set to expire. The value cannot be
-     * modified and is automatically populated when the group is created. The
-     * Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by default.
-     * Read-only.
+     * Timestamp of when the group is set to expire. The value cannot be modified and is automatically populated when
+     * the group is created. The Timestamp type represents date and time information using ISO 8601 format and is
+     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
+     * Returned by default. Read-only.
      */
     @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
-     * Specifies the group type and its membership.  If the collection contains
-     * Unified, the group is a Microsoft 365 group; otherwise, it's either a
-     * security group or distribution group. For details, see groups
-     * overview.If the collection includes DynamicMembership, the group has
-     * dynamic membership; otherwise, membership is static.  Returned by
-     * default. Supports $filter.
+     * Specifies the group type and its membership.  If the collection contains Unified, the group is a Microsoft 365
+     * group; otherwise, it's either a security group or distribution group. For details, see groups overview.If the
+     * collection includes DynamicMembership, the group has dynamic membership; otherwise, membership is static.
+     * Returned by default. Supports $filter.
      */
     @JsonProperty(value = "groupTypes")
     private List<String> groupTypes;
 
     /*
-     * Indicates whether there are members in this group that have license
-     * errors from its group-based license assignment. This property is never
-     * returned on a GET operation. You can use it as a $filter argument to get
-     * groups that have members with license errors (that is, filter for this
-     * property being true). See an example.
+     * Indicates whether there are members in this group that have license errors from its group-based license
+     * assignment. This property is never returned on a GET operation. You can use it as a $filter argument to get
+     * groups that have members with license errors (that is, filter for this property being true). See an example.
      */
     @JsonProperty(value = "hasMembersWithLicenseErrors")
     private Boolean hasMembersWithLicenseErrors;
@@ -106,9 +98,8 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private MicrosoftGraphLicenseProcessingState licenseProcessingState;
 
     /*
-     * The SMTP address for the group, for example,
-     * 'serviceadmins@contoso.onmicrosoft.com'. Returned by default. Read-only.
-     * Supports $filter.
+     * The SMTP address for the group, for example, 'serviceadmins@contoso.onmicrosoft.com'. Returned by default.
+     * Read-only. Supports $filter.
      */
     @JsonProperty(value = "mail")
     private String mail;
@@ -126,17 +117,16 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private String mailNickname;
 
     /*
-     * The rule that determines members for this group if the group is a
-     * dynamic group (groupTypes contains DynamicMembership). For more
-     * information about the syntax of the membership rule, see Membership
-     * Rules syntax. Returned by default.
+     * The rule that determines members for this group if the group is a dynamic group (groupTypes contains
+     * DynamicMembership). For more information about the syntax of the membership rule, see Membership Rules syntax.
+     * Returned by default.
      */
     @JsonProperty(value = "membershipRule")
     private String membershipRule;
 
     /*
-     * Indicates whether the dynamic membership processing is on or paused.
-     * Possible values are 'On' or 'Paused'. Returned by default.
+     * Indicates whether the dynamic membership processing is on or paused. Possible values are 'On' or 'Paused'.
+     * Returned by default.
      */
     @JsonProperty(value = "membershipRuleProcessingState")
     private String membershipRuleProcessingState;
@@ -166,42 +156,38 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors;
 
     /*
-     * Contains the on-premises SAM account name synchronized from the
-     * on-premises directory. The property is only populated for customers who
-     * are synchronizing their on-premises directory to Azure Active Directory
-     * via Azure AD Connect.Returned by default. Read-only.
+     * Contains the on-premises SAM account name synchronized from the on-premises directory. The property is only
+     * populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD
+     * Connect.Returned by default. Read-only.
      */
     @JsonProperty(value = "onPremisesSamAccountName")
     private String onPremisesSamAccountName;
 
     /*
-     * Contains the on-premises security identifier (SID) for the group that
-     * was synchronized from on-premises to the cloud. Returned by default.
-     * Read-only.
+     * Contains the on-premises security identifier (SID) for the group that was synchronized from on-premises to the
+     * cloud. Returned by default. Read-only.
      */
     @JsonProperty(value = "onPremisesSecurityIdentifier")
     private String onPremisesSecurityIdentifier;
 
     /*
-     * true if this group is synced from an on-premises directory; false if
-     * this group was originally synced from an on-premises directory but is no
-     * longer synced; null if this object has never been synced from an
-     * on-premises directory (default). Returned by default. Read-only.
-     * Supports $filter.
+     * true if this group is synced from an on-premises directory; false if this group was originally synced from an
+     * on-premises directory but is no longer synced; null if this object has never been synced from an on-premises
+     * directory (default). Returned by default. Read-only. Supports $filter.
      */
     @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
 
     /*
-     * The preferred data location for the group. For more information, see
-     * OneDrive Online Multi-Geo. Returned by default.
+     * The preferred data location for the group. For more information, see  OneDrive Online Multi-Geo. Returned by
+     * default.
      */
     @JsonProperty(value = "preferredDataLocation")
     private String preferredDataLocation;
 
     /*
-     * The preferred language for an Microsoft 365 group. Should follow ISO
-     * 639-1 Code; for example 'en-US'. Returned by default.
+     * The preferred language for an Microsoft 365 group. Should follow ISO 639-1 Code; for example 'en-US'. Returned
+     * by default.
      */
     @JsonProperty(value = "preferredLanguage")
     private String preferredLanguage;
@@ -213,90 +199,82 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<String> proxyAddresses;
 
     /*
-     * Timestamp of when the group was last renewed. This cannot be modified
-     * directly and is only updated via the renew service action. The Timestamp
-     * type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'. Returned by default. Read-only.
+     * Timestamp of when the group was last renewed. This cannot be modified directly and is only updated via the renew
+     * service action. The Timestamp type represents date and time information using ISO 8601 format and is always in
+     * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by
+     * default. Read-only.
      */
     @JsonProperty(value = "renewedDateTime")
     private OffsetDateTime renewedDateTime;
 
     /*
-     * Specifies whether the group is a security group. Returned by default.
-     * Supports $filter.
+     * Specifies whether the group is a security group. Returned by default. Supports $filter.
      */
     @JsonProperty(value = "securityEnabled")
     private Boolean securityEnabled;
 
     /*
-     * Security identifier of the group, used in Windows scenarios. Returned by
-     * default.
+     * Security identifier of the group, used in Windows scenarios. Returned by default.
      */
     @JsonProperty(value = "securityIdentifier")
     private String securityIdentifier;
 
     /*
-     * Specifies an Microsoft 365 group's color theme. Possible values are
-     * Teal, Purple, Green, Blue, Pink, Orange or Red. Returned by default.
+     * Specifies an Microsoft 365 group's color theme. Possible values are Teal, Purple, Green, Blue, Pink, Orange or
+     * Red. Returned by default.
      */
     @JsonProperty(value = "theme")
     private String theme;
 
     /*
-     * Specifies the visibility of a Microsoft 365 group. Possible values are:
-     * Private, Public, or Hiddenmembership; blank values are treated as
-     * public.  See group visibility options to learn more.Visibility can be
-     * set only when a group is created; it is not editable.Visibility is
-     * supported only for unified groups; it is not supported for security
-     * groups. Returned by default.
+     * Specifies the visibility of a Microsoft 365 group. Possible values are: Private, Public, or Hiddenmembership;
+     * blank values are treated as public.  See group visibility options to learn more.Visibility can be set only when
+     * a group is created; it is not editable.Visibility is supported only for unified groups; it is not supported for
+     * security groups. Returned by default.
      */
     @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
-     * Indicates if people external to the organization can send messages to
-     * the group. Default value is false. Returned only on $select.
+     * Indicates if people external to the organization can send messages to the group. Default value is false.
+     * Returned only on $select.
      */
     @JsonProperty(value = "allowExternalSenders")
     private Boolean allowExternalSenders;
 
     /*
-     * Indicates if new members added to the group will be auto-subscribed to
-     * receive email notifications. You can set this property in a PATCH
-     * request for the group; do not set it in the initial POST request that
-     * creates the group. Default value is false. Returned only on $select.
+     * Indicates if new members added to the group will be auto-subscribed to receive email notifications. You can set
+     * this property in a PATCH request for the group; do not set it in the initial POST request that creates the
+     * group. Default value is false. Returned only on $select.
      */
     @JsonProperty(value = "autoSubscribeNewMembers")
     private Boolean autoSubscribeNewMembers;
 
     /*
-     * True if the group is not displayed in certain parts of the Outlook UI:
-     * the Address Book, address lists for selecting message recipients, and
-     * the Browse Groups dialog for searching groups; otherwise, false. Default
-     * value is false. Returned only on $select.
+     * True if the group is not displayed in certain parts of the Outlook UI: the Address Book, address lists for
+     * selecting message recipients, and the Browse Groups dialog for searching groups; otherwise, false. Default value
+     * is false. Returned only on $select.
      */
     @JsonProperty(value = "hideFromAddressLists")
     private Boolean hideFromAddressLists;
 
     /*
-     * True if the group is not displayed in Outlook clients, such as Outlook
-     * for Windows and Outlook on the web; otherwise, false. Default value is
-     * false. Returned only on $select.
+     * True if the group is not displayed in Outlook clients, such as Outlook for Windows and Outlook on the web;
+     * otherwise, false. Default value is false. Returned only on $select.
      */
     @JsonProperty(value = "hideFromOutlookClients")
     private Boolean hideFromOutlookClients;
 
     /*
-     * Indicates whether the signed-in user is subscribed to receive email
-     * conversations. Default value is true. Returned only on $select.
+     * Indicates whether the signed-in user is subscribed to receive email conversations. Default value is true.
+     * Returned only on $select.
      */
     @JsonProperty(value = "isSubscribedByMail")
     private Boolean isSubscribedByMail;
 
     /*
-     * Count of conversations that have received new posts since the signed-in
-     * user last visited the group. Returned only on $select.
+     * Count of conversations that have received new posts since the signed-in user last visited the group. Returned
+     * only on $select.
      */
     @JsonProperty(value = "unseenCount")
     private Integer unseenCount;
@@ -314,42 +292,39 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
-     * directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity
-     * types.
+     * directoryObject
+     *
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonProperty(value = "createdOnBehalfOf")
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
 
     /*
-     * Groups that this group is a member of. HTTP Methods: GET (supported for
-     * all groups). Read-only. Nullable.
+     * Groups that this group is a member of. HTTP Methods: GET (supported for all groups). Read-only. Nullable.
      */
     @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
-     * Users and groups that are members of this group. HTTP Methods: GET
-     * (supported for all groups), POST (supported for Microsoft 365 groups,
-     * security groups and mail-enabled security groups), DELETE (supported for
-     * Microsoft 365 groups and security groups) Nullable.
+     * Users and groups that are members of this group. HTTP Methods: GET (supported for all groups), POST (supported
+     * for Microsoft 365 groups, security groups and mail-enabled security groups), DELETE (supported for Microsoft 365
+     * groups and security groups) Nullable.
      */
     @JsonProperty(value = "members")
     private List<MicrosoftGraphDirectoryObjectInner> members;
 
     /*
-     * A list of group members with license errors from this group-based
-     * license assignment. Read-only.
+     * A list of group members with license errors from this group-based license assignment. Read-only.
      */
     @JsonProperty(value = "membersWithLicenseErrors")
     private List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors;
 
     /*
-     * The owners of the group. The owners are a set of non-admin users who are
-     * allowed to modify this object. Limited to 100 owners. HTTP Methods: GET
-     * (supported for all groups), POST (supported for Microsoft 365 groups,
-     * security groups and mail-enabled security groups), DELETE (supported for
-     * Microsoft 365 groups and security groups). Nullable.
+     * The owners of the group. The owners are a set of non-admin users who are allowed to modify this object. Limited
+     * to 100 owners. HTTP Methods: GET (supported for all groups), POST (supported for Microsoft 365 groups, security
+     * groups and mail-enabled security groups), DELETE (supported for Microsoft 365 groups and security groups).
+     * Nullable.
      */
     @JsonProperty(value = "owners")
     private List<MicrosoftGraphDirectoryObjectInner> owners;
@@ -379,9 +354,8 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMembers;
 
     /*
-     * The list of users or groups that are allowed to create post's or
-     * calendar events in this group. If this list is non-empty then only users
-     * or groups listed here are allowed to post.
+     * The list of users or groups that are allowed to create post's or calendar events in this group. If this list is
+     * non-empty then only users or groups listed here are allowed to post.
      */
     @JsonProperty(value = "acceptedSenders")
     private List<MicrosoftGraphDirectoryObjectInner> acceptedSenders;
@@ -423,8 +397,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphProfilePhoto> photos;
 
     /*
-     * The list of users or groups that are not allowed to create posts or
-     * calendar events in this group. Nullable
+     * The list of users or groups that are not allowed to create posts or calendar events in this group. Nullable
      */
     @JsonProperty(value = "rejectedSenders")
     private List<MicrosoftGraphDirectoryObjectInner> rejectedSenders;
@@ -448,22 +421,19 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphDrive> drives;
 
     /*
-     * The list of SharePoint sites in this group. Access the default site with
-     * /sites/root.
+     * The list of SharePoint sites in this group. Access the default site with /sites/root.
      */
     @JsonProperty(value = "sites")
     private List<MicrosoftGraphSite> sites;
 
     /*
-     * The collection of open extensions defined for the group. Read-only.
-     * Nullable.
+     * The collection of open extensions defined for the group. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * The collection of lifecycle policies for this group. Read-only.
-     * Nullable.
+     * The collection of lifecycle policies for this group. Read-only. Nullable.
      */
     @JsonProperty(value = "groupLifecyclePolicies")
     private List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies;
@@ -487,10 +457,14 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private MicrosoftGraphTeamInner team;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGroupInner class. */
+    public MicrosoftGraphGroupInner() {
+    }
 
     /**
      * Get the assignedLabels property: The list of sensitivity label pairs (label ID, label name) associated with an
@@ -1345,8 +1319,10 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Get the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity types.
+     * Get the createdOnBehalfOf property: directoryObject
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @return the createdOnBehalfOf value.
      */
@@ -1355,8 +1331,10 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
-     * directoryObject type is the base type for many other directory entity types.
+     * Set the createdOnBehalfOf property: directoryObject
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
      * @return the MicrosoftGraphGroupInner object itself.

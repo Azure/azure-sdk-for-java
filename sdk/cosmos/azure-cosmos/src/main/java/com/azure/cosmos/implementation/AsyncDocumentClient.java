@@ -5,13 +5,16 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -27,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +96,9 @@ public interface AsyncDocumentClient {
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
         private ApiType apiType;
-        ClientTelemetryConfig clientTelemetryConfig;
+        CosmosClientTelemetryConfig clientTelemetryConfig;
+        private String clientCorrelationId = null;
+        private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -110,6 +116,18 @@ public interface AsyncDocumentClient {
 
         public Builder withApiType(ApiType apiType) {
             this.apiType = apiType;
+            return this;
+        }
+
+        public Builder withClientCorrelationId(String clientCorrelationId) {
+            this.clientCorrelationId = clientCorrelationId;
+
+            return this;
+        }
+
+        public Builder withMetricTagNames(EnumSet<TagName> tagNames) {
+            this.metricTagNames = tagNames;
+
             return this;
         }
 
@@ -214,11 +232,11 @@ public interface AsyncDocumentClient {
         /***
          * Set the client telemetry config.
          *
-         * @param clientTelemetryConfig the {@link ClientTelemetryConfig}.
+         * @param clientTelemetryConfig the {@link CosmosClientTelemetryConfig}.
          *
          * @return the current builder.
          */
-        public Builder withClientTelemetryConfig(ClientTelemetryConfig clientTelemetryConfig) {
+        public Builder withClientTelemetryConfig(CosmosClientTelemetryConfig clientTelemetryConfig) {
             this.clientTelemetryConfig = clientTelemetryConfig;
             return this;
         }
@@ -254,7 +272,9 @@ public interface AsyncDocumentClient {
                 contentResponseOnWriteEnabled,
                 state,
                 apiType,
-                clientTelemetryConfig);
+                clientTelemetryConfig,
+                clientCorrelationId,
+                metricTagNames);
 
             client.init(state, null);
             return client;
@@ -355,6 +375,10 @@ public interface AsyncDocumentClient {
      * @return the client telemetry
      */
     ClientTelemetry getClientTelemetry();
+
+    String getClientCorrelationId();
+
+    String getMachineId();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -1630,12 +1654,15 @@ public interface AsyncDocumentClient {
      *
      * @param group the throughput control group.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    /***
-     *  Warming up the caches and connections to all replicas of the container for the current read region.
+    /**
+     * Warm up caches and open connections for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link CosmosContainerProactiveInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
-     * @param containerLink the container link.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
+     * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 }

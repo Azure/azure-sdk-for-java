@@ -29,6 +29,10 @@ public final class OperationInner {
     @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the isDataAction property: Indicates whether the operation applies to data-plane.
      *

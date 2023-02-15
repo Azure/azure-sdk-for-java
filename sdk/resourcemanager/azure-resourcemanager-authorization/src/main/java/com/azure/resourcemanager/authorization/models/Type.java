@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Type. */
+/** Type of the role assignment schedule expiration. */
 public final class Type extends ExpandableStringEnum<Type> {
     /** Static value AfterDuration for Type. */
     public static final Type AFTER_DURATION = fromString("AfterDuration");
@@ -30,7 +30,11 @@ public final class Type extends ExpandableStringEnum<Type> {
         return fromString(name, Type.class);
     }
 
-    /** @return known Type values. */
+    /**
+     * Gets known Type values.
+     *
+     * @return known Type values.
+     */
     public static Collection<Type> values() {
         return values(Type.class);
     }

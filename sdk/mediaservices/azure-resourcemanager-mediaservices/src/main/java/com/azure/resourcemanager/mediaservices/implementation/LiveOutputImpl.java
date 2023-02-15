@@ -52,6 +52,10 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
         return this.innerModel().archiveWindowLength();
     }
 
+    public Duration rewindWindowLength() {
+        return this.innerModel().rewindWindowLength();
+    }
+
     public String manifestName() {
         return this.innerModel().manifestName();
     }
@@ -159,6 +163,11 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
 
     public LiveOutputImpl withArchiveWindowLength(Duration archiveWindowLength) {
         this.innerModel().withArchiveWindowLength(archiveWindowLength);
+        return this;
+    }
+
+    public LiveOutputImpl withRewindWindowLength(Duration rewindWindowLength) {
+        this.innerModel().withRewindWindowLength(rewindWindowLength);
         return this;
     }
 

@@ -46,6 +46,10 @@ public final class FrontendIpConfigurationInner extends SubResource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of FrontendIpConfigurationInner class. */
+    public FrontendIpConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the load balancer probe.
      *

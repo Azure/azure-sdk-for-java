@@ -16,19 +16,6 @@ public interface DataFlows {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param dataFlowName The data flow name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
-     */
-    DataFlowResource get(String resourceGroupName, String factoryName, String dataFlowName);
-
-    /**
-     * Gets a data flow.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
      *     existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
@@ -41,7 +28,7 @@ public interface DataFlows {
         String resourceGroupName, String factoryName, String dataFlowName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a data flow.
+     * Gets a data flow.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -49,8 +36,9 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow.
      */
-    void delete(String resourceGroupName, String factoryName, String dataFlowName);
+    DataFlowResource get(String resourceGroupName, String factoryName, String dataFlowName);
 
     /**
      * Deletes a data flow.
@@ -66,6 +54,18 @@ public interface DataFlows {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, Context context);
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFlowName The data flow name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String factoryName, String dataFlowName);
 
     /**
      * Lists data flows.

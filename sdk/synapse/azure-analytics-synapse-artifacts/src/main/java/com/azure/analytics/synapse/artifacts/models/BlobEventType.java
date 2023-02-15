@@ -27,7 +27,11 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
         return fromString(name, BlobEventType.class);
     }
 
-    /** @return known BlobEventType values. */
+    /**
+     * Gets known BlobEventType values.
+     *
+     * @return known BlobEventType values.
+     */
     public static Collection<BlobEventType> values() {
         return values(BlobEventType.class);
     }

@@ -33,6 +33,10 @@ public final class ExpressRoutePortsLocationInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ExpressRoutePortsLocationInner class. */
+    public ExpressRoutePortsLocationInner() {
+    }
+
     /**
      * Get the innerProperties property: ExpressRoutePorts Location Properties
      *

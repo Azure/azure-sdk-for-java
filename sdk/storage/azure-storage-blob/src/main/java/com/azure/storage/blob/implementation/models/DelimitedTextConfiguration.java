@@ -42,6 +42,9 @@ public final class DelimitedTextConfiguration {
     @JsonProperty(value = "HasHeaders")
     private Boolean headersPresent;
 
+    /** Creates an instance of DelimitedTextConfiguration class. */
+    public DelimitedTextConfiguration() {}
+
     /**
      * Get the columnSeparator property: The string used to separate columns.
      *

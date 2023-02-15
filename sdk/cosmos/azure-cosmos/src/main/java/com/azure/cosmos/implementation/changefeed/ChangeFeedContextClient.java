@@ -5,12 +5,15 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -22,6 +25,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * The interface that captures the APIs required to handle change feed processing logic.
@@ -87,6 +91,14 @@ public interface ChangeFeedContextClient {
      */
     Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                                 CosmosItemRequestOptions options);
+
+    /**
+     * DELETE all cosmos items.
+     *
+     * @param cosmosItemIdentities the cosmos identities.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     */
+    Flux<CosmosBulkOperationResponse<Object>> deleteAllItems(List<CosmosItemIdentity> cosmosItemIdentities);
 
     /**
      * Replaces a cosmos item.
@@ -161,4 +173,13 @@ public interface ChangeFeedContextClient {
      * @param scheduler a {@link Scheduler} that hosts a pool of ExecutorService-based workers.
      */
     void setScheduler(Scheduler scheduler);
+
+    /**
+     * Get the overlapping partition key ranges.
+     *
+     * @param range the range.
+     *
+     * @return The list of partition key ranges.
+     */
+    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
 }

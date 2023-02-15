@@ -28,8 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.GroupsGroupsClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfGroup;
 import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
@@ -40,6 +38,8 @@ import com.azure.resourcemanager.authorization.fluent.models.Get8ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GroupsGroupsClient. */
@@ -67,7 +67,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface GroupsGroupsService {
+    public interface GroupsGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get("/groups")
         @ExpectedResponses({200})
@@ -175,11 +175,17 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -247,11 +253,17 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listGroup(
@@ -495,29 +507,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphGroupInner> createGroupAsync(MicrosoftGraphGroupInner body) {
-        return createGroupWithResponseAsync(body)
-            .flatMap(
-                (Response<MicrosoftGraphGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Add new entity to groups.
-     *
-     * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphGroupInner createGroup(MicrosoftGraphGroupInner body) {
-        return createGroupAsync(body).block();
+        return createGroupWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -533,6 +523,20 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphGroupInner> createGroupWithResponse(MicrosoftGraphGroupInner body, Context context) {
         return createGroupWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Add new entity to groups.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphGroupInner createGroup(MicrosoftGraphGroupInner body) {
+        return createGroupWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -561,9 +565,13 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -610,9 +618,13 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getGroup(
@@ -623,32 +635,6 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
                 expandConverted,
                 accept,
                 context);
-    }
-
-    /**
-     * Get entity from groups by key.
-     *
-     * @param groupId key: id of group.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from groups by key on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphGroupInner> getGroupAsync(
-        String groupId, String consistencyLevel, List<Get2ItemsItem> select, List<Get3ItemsItem> expand) {
-        return getGroupWithResponseAsync(groupId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
     }
 
     /**
@@ -666,31 +652,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         final List<Get2ItemsItem> select = null;
         final List<Get3ItemsItem> expand = null;
         return getGroupWithResponseAsync(groupId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get entity from groups by key.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from groups by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphGroupInner getGroup(String groupId) {
-        final String consistencyLevel = null;
-        final List<Get2ItemsItem> select = null;
-        final List<Get3ItemsItem> expand = null;
-        return getGroupAsync(groupId, consistencyLevel, select, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -714,6 +676,23 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
         List<Get3ItemsItem> expand,
         Context context) {
         return getGroupWithResponseAsync(groupId, consistencyLevel, select, expand, context).block();
+    }
+
+    /**
+     * Get entity from groups by key.
+     *
+     * @param groupId key: id of group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from groups by key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphGroupInner getGroup(String groupId) {
+        final String consistencyLevel = null;
+        final List<Get2ItemsItem> select = null;
+        final List<Get3ItemsItem> expand = null;
+        return getGroupWithResponse(groupId, consistencyLevel, select, expand, Context.NONE).getValue();
     }
 
     /**
@@ -793,21 +772,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateGroupAsync(String groupId, MicrosoftGraphGroupInner body) {
-        return updateGroupWithResponseAsync(groupId, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update entity in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateGroup(String groupId, MicrosoftGraphGroupInner body) {
-        updateGroupAsync(groupId, body).block();
+        return updateGroupWithResponseAsync(groupId, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -824,6 +789,20 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateGroupWithResponse(String groupId, MicrosoftGraphGroupInner body, Context context) {
         return updateGroupWithResponseAsync(groupId, body, context).block();
+    }
+
+    /**
+     * Update entity in groups.
+     *
+     * @param groupId key: id of group.
+     * @param body New property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateGroup(String groupId, MicrosoftGraphGroupInner body) {
+        updateGroupWithResponse(groupId, body, Context.NONE);
     }
 
     /**
@@ -884,21 +863,6 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
      * Delete entity from groups.
      *
      * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteGroupAsync(String groupId, String ifMatch) {
-        return deleteGroupWithResponseAsync(groupId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from groups.
-     *
-     * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -907,21 +871,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGroupAsync(String groupId) {
         final String ifMatch = null;
-        return deleteGroupWithResponseAsync(groupId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete entity from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteGroup(String groupId) {
-        final String ifMatch = null;
-        deleteGroupAsync(groupId, ifMatch).block();
+        return deleteGroupWithResponseAsync(groupId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -941,9 +891,24 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
     }
 
     /**
+     * Delete entity from groups.
+     *
+     * @param groupId key: id of group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteGroup(String groupId) {
+        final String ifMatch = null;
+        deleteGroupWithResponse(groupId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -971,7 +936,8 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.

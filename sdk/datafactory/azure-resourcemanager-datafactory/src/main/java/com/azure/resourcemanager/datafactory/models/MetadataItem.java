@@ -22,6 +22,10 @@ public final class MetadataItem {
     @JsonProperty(value = "value")
     private Object value;
 
+    /** Creates an instance of MetadataItem class. */
+    public MetadataItem() {
+    }
+
     /**
      * Get the name property: Metadata item key name. Type: string (or Expression with resultType string).
      *

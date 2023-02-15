@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class containing endpoint monitoring settings in a Traffic Manager profile. */
 @Fluent
 public final class MonitorConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfig.class);
-
     /*
      * The profile-level monitoring status of the Traffic Manager profile.
      */
@@ -34,32 +30,28 @@ public final class MonitorConfig {
     private Long port;
 
     /*
-     * The path relative to the endpoint domain name used to probe for endpoint
-     * health.
+     * The path relative to the endpoint domain name used to probe for endpoint health.
      */
     @JsonProperty(value = "path")
     private String path;
 
     /*
-     * The monitor interval for endpoints in this profile. This is the interval
-     * at which Traffic Manager will check the health of each endpoint in this
-     * profile.
+     * The monitor interval for endpoints in this profile. This is the interval at which Traffic Manager will check the
+     * health of each endpoint in this profile.
      */
     @JsonProperty(value = "intervalInSeconds")
     private Long intervalInSeconds;
 
     /*
-     * The monitor timeout for endpoints in this profile. This is the time that
-     * Traffic Manager allows endpoints in this profile to response to the
-     * health check.
+     * The monitor timeout for endpoints in this profile. This is the time that Traffic Manager allows endpoints in
+     * this profile to response to the health check.
      */
     @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
-     * The number of consecutive failed health check that Traffic Manager
-     * tolerates before declaring an endpoint in this profile Degraded after
-     * the next failed health check.
+     * The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in
+     * this profile Degraded after the next failed health check.
      */
     @JsonProperty(value = "toleratedNumberOfFailures")
     private Long toleratedNumberOfFailures;
@@ -75,6 +67,10 @@ public final class MonitorConfig {
      */
     @JsonProperty(value = "expectedStatusCodeRanges")
     private List<MonitorConfigExpectedStatusCodeRangesItem> expectedStatusCodeRanges;
+
+    /** Creates an instance of MonitorConfig class. */
+    public MonitorConfig() {
+    }
 
     /**
      * Get the profileMonitorStatus property: The profile-level monitoring status of the Traffic Manager profile.

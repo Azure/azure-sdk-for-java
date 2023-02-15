@@ -33,6 +33,10 @@ public class AzureWorkloadSqlPointInTimeRestoreRequest extends AzureWorkloadSqlR
     @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
 
+    /** Creates an instance of AzureWorkloadSqlPointInTimeRestoreRequest class. */
+    public AzureWorkloadSqlPointInTimeRestoreRequest() {
+    }
+
     /**
      * Get the pointInTime property: PointInTime value.
      *

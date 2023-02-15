@@ -25,8 +25,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
-     * User specified arguments to HDInsightActivity. Type: array (or
-     * Expression with resultType array).
+     * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
     @JsonProperty(value = "typeProperties.arguments")
     private Object arguments;
@@ -54,6 +53,9 @@ public class HDInsightPigActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
+
+    /** Creates an instance of HDInsightPigActivity class. */
+    public HDInsightPigActivity() {}
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.

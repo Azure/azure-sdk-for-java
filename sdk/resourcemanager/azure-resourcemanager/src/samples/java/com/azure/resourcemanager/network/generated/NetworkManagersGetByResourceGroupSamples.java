@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkManagers GetByResourceGroup. */
 public final class NetworkManagersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerGet.json
      */
     /**
      * Sample code: NetworkManagersGet.

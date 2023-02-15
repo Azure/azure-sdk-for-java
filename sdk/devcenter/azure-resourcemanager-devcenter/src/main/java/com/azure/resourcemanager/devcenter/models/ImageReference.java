@@ -41,6 +41,10 @@ public final class ImageReference {
     @JsonProperty(value = "sku")
     private String sku;
 
+    /** Creates an instance of ImageReference class. */
+    public ImageReference() {
+    }
+
     /**
      * Get the id property: Image ID, or Image version ID. When Image ID is provided, its latest version will be used.
      *

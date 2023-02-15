@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StreamingEndpointResourceState. */
+/** The resource state of the streaming endpoint. */
 public final class StreamingEndpointResourceState extends ExpandableStringEnum<StreamingEndpointResourceState> {
     /** Static value Stopped for StreamingEndpointResourceState. */
     public static final StreamingEndpointResourceState STOPPED = fromString("Stopped");
@@ -27,6 +27,15 @@ public final class StreamingEndpointResourceState extends ExpandableStringEnum<S
 
     /** Static value Scaling for StreamingEndpointResourceState. */
     public static final StreamingEndpointResourceState SCALING = fromString("Scaling");
+
+    /**
+     * Creates a new instance of StreamingEndpointResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamingEndpointResourceState() {
+    }
 
     /**
      * Creates or finds a StreamingEndpointResourceState from its string representation.

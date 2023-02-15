@@ -17,6 +17,10 @@ public final class WinRMConfiguration {
     @JsonProperty(value = "listeners")
     private List<WinRMListener> listeners;
 
+    /** Creates an instance of WinRMConfiguration class. */
+    public WinRMConfiguration() {
+    }
+
     /**
      * Get the listeners property: The list of Windows Remote Management listeners.
      *

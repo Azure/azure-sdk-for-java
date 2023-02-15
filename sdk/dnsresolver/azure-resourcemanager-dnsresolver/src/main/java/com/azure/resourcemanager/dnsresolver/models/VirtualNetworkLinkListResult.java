@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to an enumeration operation on virtual network links. */
 @Fluent
 public final class VirtualNetworkLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkListResult.class);
-
     /*
      * Enumeration of the virtual network links.
      */

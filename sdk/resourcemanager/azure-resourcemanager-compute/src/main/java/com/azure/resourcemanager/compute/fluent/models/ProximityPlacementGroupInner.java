@@ -30,6 +30,10 @@ public final class ProximityPlacementGroupInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of ProximityPlacementGroupInner class. */
+    public ProximityPlacementGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Proximity Placement Group.
      *

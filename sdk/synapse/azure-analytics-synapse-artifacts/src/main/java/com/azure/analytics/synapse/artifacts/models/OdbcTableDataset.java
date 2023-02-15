@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class OdbcTableDataset extends Dataset {
     /*
-     * The ODBC table name. Type: string (or Expression with resultType
-     * string).
+     * The ODBC table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
+
+    /** Creates an instance of OdbcTableDataset class. */
+    public OdbcTableDataset() {}
 
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).

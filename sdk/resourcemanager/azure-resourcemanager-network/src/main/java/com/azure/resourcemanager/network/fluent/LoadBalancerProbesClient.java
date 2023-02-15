@@ -90,20 +90,6 @@ public interface LoadBalancerProbesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param probeName The name of the probe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProbeInner get(String resourceGroupName, String loadBalancerName, String probeName);
-
-    /**
-     * Gets load balancer probe.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,4 +99,18 @@ public interface LoadBalancerProbesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProbeInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String probeName, Context context);
+
+    /**
+     * Gets load balancer probe.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param probeName The name of the probe.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load balancer probe.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProbeInner get(String resourceGroupName, String loadBalancerName, String probeName);
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackPropertyType. */
+/** Track property type. */
 public final class TrackPropertyType extends ExpandableStringEnum<TrackPropertyType> {
     /** Static value Unknown for TrackPropertyType. */
     public static final TrackPropertyType UNKNOWN = fromString("Unknown");
 
     /** Static value FourCC for TrackPropertyType. */
     public static final TrackPropertyType FOUR_CC = fromString("FourCC");
+
+    /**
+     * Creates a new instance of TrackPropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackPropertyType() {
+    }
 
     /**
      * Creates or finds a TrackPropertyType from its string representation.

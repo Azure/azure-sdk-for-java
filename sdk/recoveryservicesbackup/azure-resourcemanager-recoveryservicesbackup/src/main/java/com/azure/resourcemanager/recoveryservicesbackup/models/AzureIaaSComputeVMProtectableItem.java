@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Compute/virtualMachines")
 @Fluent
 public final class AzureIaaSComputeVMProtectableItem extends IaaSvmProtectableItem {
+    /** Creates an instance of AzureIaaSComputeVMProtectableItem class. */
+    public AzureIaaSComputeVMProtectableItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureIaaSComputeVMProtectableItem withVirtualMachineId(String virtualMachineId) {

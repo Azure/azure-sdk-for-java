@@ -36,6 +36,9 @@ public enum ListFilesIncludeType {
      */
     @JsonCreator
     public static ListFilesIncludeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ListFilesIncludeType[] items = ListFilesIncludeType.values();
         for (ListFilesIncludeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum ListFilesIncludeType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

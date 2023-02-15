@@ -22,6 +22,10 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
+    /** Creates an instance of CosmosDbMongoDbApiSink class. */
+    public CosmosDbMongoDbApiSink() {
+    }
+
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType

@@ -57,7 +57,7 @@ public final class ExpressRouteServiceProvidersClientImpl implements ExpressRout
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteServiceProvidersService {
+    public interface ExpressRouteServiceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
         @ExpectedResponses({200})
@@ -102,7 +102,7 @@ public final class ExpressRouteServiceProvidersClientImpl implements ExpressRout
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -145,7 +145,7 @@ public final class ExpressRouteServiceProvidersClientImpl implements ExpressRout
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

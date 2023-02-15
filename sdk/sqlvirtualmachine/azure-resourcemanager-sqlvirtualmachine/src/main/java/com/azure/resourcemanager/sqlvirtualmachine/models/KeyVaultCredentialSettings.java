@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configure your SQL virtual machine to be able to connect to the Azure Key Vault service. */
 @Fluent
 public final class KeyVaultCredentialSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultCredentialSettings.class);
-
     /*
      * Enable or disable key vault credential setting.
      */

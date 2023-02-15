@@ -37,6 +37,10 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of PeerExpressRouteCircuitConnectionInner class. */
+    public PeerExpressRouteCircuitConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the peer express route circuit connection.
      *

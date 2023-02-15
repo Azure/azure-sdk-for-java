@@ -31,6 +31,10 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ApplicationGatewayRewriteRuleSet class. */
+    public ApplicationGatewayRewriteRuleSet() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway rewrite rule set.
      *

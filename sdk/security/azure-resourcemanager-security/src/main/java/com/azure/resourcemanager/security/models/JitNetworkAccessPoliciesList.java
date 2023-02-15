@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.JitNetworkAccessPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JitNetworkAccessPoliciesList model. */
 @Fluent
 public final class JitNetworkAccessPoliciesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPoliciesList.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class JitNetworkAccessPoliciesList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of JitNetworkAccessPoliciesList class. */
+    public JitNetworkAccessPoliciesList() {
+    }
 
     /**
      * Get the value property: The value property.

@@ -17,6 +17,10 @@ public final class AzPowerShellSetupTypeProperties {
     @JsonProperty(value = "version", required = true)
     private String version;
 
+    /** Creates an instance of AzPowerShellSetupTypeProperties class. */
+    public AzPowerShellSetupTypeProperties() {
+    }
+
     /**
      * Get the version property: The required version of Azure PowerShell to install.
      *

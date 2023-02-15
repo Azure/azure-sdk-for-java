@@ -65,6 +65,10 @@ public final class AksSchemaProperties {
     @JsonProperty(value = "loadBalancerSubnet")
     private String loadBalancerSubnet;
 
+    /** Creates an instance of AksSchemaProperties class. */
+    public AksSchemaProperties() {
+    }
+
     /**
      * Get the clusterFqdn property: Cluster full qualified domain name.
      *

@@ -10,28 +10,24 @@ parameters:
   displayName: 'Should publish'
   type: boolean
   default: true
-- name: StageOnly
-  displayName: 'Stage Only'
-  type: boolean
-  default: false
 
 resources:
   repositories:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20220329.1
+      ref: refs/tags/azure-sdk-build-tools_20230206.1
 
 variables:
   BuildToolScripts: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
   Artifacts: $(Pipeline.Workspace)/artifacts
-  SignedArtifact: $(Pipeline.Workspace)/packages-signed
+  EsrpArtifacts: $(Pipeline.Workspace)/packages-esrp
 
 jobs:
 - job: Signing
   pool:
-    name: azsdk-pool-mms-win-2019-general
-    vmImage: windows-2019
+    name: azsdk-pool-mms-win-2022-general
+    vmImage: windows-2022
   steps:
   - checkout: azure-sdk-build-tools
     path: azure-sdk-build-tools
@@ -47,31 +43,39 @@ jobs:
     parameters:
       ArtifactDirectory: $(Artifacts)
 
-  - publish: $(Artifacts)
-    artifact: packages-signed
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactName: packages-signed
+      ArtifactPath: $(Artifacts)
 - job: Release
   dependsOn: Signing
   pool:
-    name: azsdk-pool-mms-win-2019-general
-    vmImage: windows-2019
+    name: azsdk-pool-mms-win-2022-general
+    vmImage: windows-2022
   steps:
   - checkout: self
     path: azure-sdk-for-java
+
   - checkout: azure-sdk-build-tools
     path: azure-sdk-build-tools
+
   - download: current
     displayName: Download Signed Artifacts
     artifact: packages-signed
+
   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+
   - template: /eng/pipelines/templates/steps/java-publishing.yml
     parameters:
-      ArtifactDirectory: $(SignedArtifact)
-      Target: MavenCentral
+      ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+      OutputDirectory: $(EsrpArtifacts)
+      Target: EsrpRelease
       BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
       JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
       ShouldPublish: ${{ parameters.ShouldPublish }}
-      StageOnly: ${{ parameters.StageOnly }}
+      StageOnly: false
+
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
-      ArtifactName: packages-mavencentral-$(System.JobAttempt)
-      ArtifactPath: $(SignedArtifact)
+      ArtifactName: packages-esrp-$(System.JobAttempt)
+      ArtifactPath: $(EsrpArtifacts)

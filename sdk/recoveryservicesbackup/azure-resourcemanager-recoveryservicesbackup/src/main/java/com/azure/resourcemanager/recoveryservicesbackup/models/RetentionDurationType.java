@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RetentionDurationType. */
+/** Retention duration type of retention policy. */
 public final class RetentionDurationType extends ExpandableStringEnum<RetentionDurationType> {
     /** Static value Invalid for RetentionDurationType. */
     public static final RetentionDurationType INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class RetentionDurationType extends ExpandableStringEnum<RetentionD
 
     /** Static value Years for RetentionDurationType. */
     public static final RetentionDurationType YEARS = fromString("Years");
+
+    /**
+     * Creates a new instance of RetentionDurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RetentionDurationType() {
+    }
 
     /**
      * Creates or finds a RetentionDurationType from its string representation.

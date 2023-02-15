@@ -33,7 +33,11 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
         return fromString(name, SparkErrorSource.class);
     }
 
-    /** @return known SparkErrorSource values. */
+    /**
+     * Gets known SparkErrorSource values.
+     *
+     * @return known SparkErrorSource values.
+     */
     public static Collection<SparkErrorSource> values() {
         return values(SparkErrorSource.class);
     }

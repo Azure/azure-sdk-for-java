@@ -59,7 +59,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface LoadBalancerLoadBalancingRulesService {
+    public interface LoadBalancerLoadBalancingRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -136,7 +136,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -197,7 +197,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -327,7 +327,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -385,7 +385,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -424,22 +424,6 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName) {
-        return getAsync(resourceGroupName, loadBalancerName, loadBalancingRuleName).block();
-    }
-
-    /**
-     * Gets the specified load balancer load balancing rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -450,6 +434,22 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
     public Response<LoadBalancingRuleInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String loadBalancingRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, loadBalancingRuleName, context).block();
+    }
+
+    /**
+     * Gets the specified load balancer load balancing rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName) {
+        return getWithResponse(resourceGroupName, loadBalancerName, loadBalancingRuleName, Context.NONE).getValue();
     }
 
     /**

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.elastic.fluent.DeploymentInfoesClient;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoResponse;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DeploymentInfoesImpl implements DeploymentInfoes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInfoesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentInfoesImpl.class);
 
     private final DeploymentInfoesClient innerClient;
 
@@ -25,15 +24,6 @@ public final class DeploymentInfoesImpl implements DeploymentInfoes {
         DeploymentInfoesClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public DeploymentInfoResponse list(String resourceGroupName, String monitorName) {
-        DeploymentInfoResponseInner inner = this.serviceClient().list(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new DeploymentInfoResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DeploymentInfoResponse> listWithResponse(
@@ -46,6 +36,15 @@ public final class DeploymentInfoesImpl implements DeploymentInfoes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeploymentInfoResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeploymentInfoResponse list(String resourceGroupName, String monitorName) {
+        DeploymentInfoResponseInner inner = this.serviceClient().list(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new DeploymentInfoResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VR")
 @Fluent
 public final class AddonVrProperties extends AddonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddonVrProperties.class);
-
     /*
      * The vSphere Replication Server (VRS) count
      */
     @JsonProperty(value = "vrsCount", required = true)
     private int vrsCount;
+
+    /** Creates an instance of AddonVrProperties class. */
+    public AddonVrProperties() {
+    }
 
     /**
      * Get the vrsCount property: The vSphere Replication Server (VRS) count.

@@ -25,12 +25,10 @@ public class JsonDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The code page name of the preferred encoding. If not specified, the
-     * default value is UTF-8, unless BOM denotes another Unicode encoding.
-     * Refer to the name column of the table in the following link to set
-     * supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If not specified, the default value is UTF-8, unless BOM denotes
+     * another Unicode encoding. Refer to the name column of the table in the following link to set supported values:
+     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.encodingName")
     private Object encodingName;
@@ -40,6 +38,9 @@ public class JsonDataset extends Dataset {
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of JsonDataset class. */
+    public JsonDataset() {}
 
     /**
      * Get the location property: The location of the json data storage.

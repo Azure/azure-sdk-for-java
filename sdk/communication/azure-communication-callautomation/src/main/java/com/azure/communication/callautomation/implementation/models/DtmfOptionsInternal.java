@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.communication.callautomation.models.Tone;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -28,7 +27,7 @@ public final class DtmfOptionsInternal {
      * List of tones that will stop recognizing.
      */
     @JsonProperty(value = "stopTones")
-    private List<Tone> stopTones;
+    private List<DtmfToneInternal> stopTones;
 
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
@@ -75,7 +74,7 @@ public final class DtmfOptionsInternal {
      *
      * @return the stopTones value.
      */
-    public List<Tone> getStopTones() {
+    public List<DtmfToneInternal> getStopTones() {
         return this.stopTones;
     }
 
@@ -85,7 +84,7 @@ public final class DtmfOptionsInternal {
      * @param stopTones the stopTones value to set.
      * @return the DtmfOptionsInternal object itself.
      */
-    public DtmfOptionsInternal setStopTones(List<Tone> stopTones) {
+    public DtmfOptionsInternal setStopTones(List<DtmfToneInternal> stopTones) {
         this.stopTones = stopTones;
         return this;
     }

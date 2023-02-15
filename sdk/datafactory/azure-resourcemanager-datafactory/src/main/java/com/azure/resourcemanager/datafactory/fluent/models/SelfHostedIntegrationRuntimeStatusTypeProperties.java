@@ -115,6 +115,10 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     @JsonProperty(value = "autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime autoUpdateEta;
 
+    /** Creates an instance of SelfHostedIntegrationRuntimeStatusTypeProperties class. */
+    public SelfHostedIntegrationRuntimeStatusTypeProperties() {
+    }
+
     /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
      *

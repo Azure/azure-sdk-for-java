@@ -28,6 +28,10 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of CassandraKeyspaceGetPropertiesResource class. */
+    public CassandraKeyspaceGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

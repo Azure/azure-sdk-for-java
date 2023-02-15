@@ -31,7 +31,7 @@ public class CreationSource {
         if (createOption == DiskCreateOption.IMPORT) {
             return CreationSourceType.IMPORTED_FROM_VHD;
         }
-        if (createOption == DiskCreateOption.COPY) {
+        if (createOption == DiskCreateOption.COPY || createOption == DiskCreateOption.COPY_START) {
             String sourceResourceId = this.creationData.sourceResourceId();
             if (sourceResourceId == null && this.creationData.sourceUri() != null) {
                 sourceResourceId = this.creationData.sourceUri();

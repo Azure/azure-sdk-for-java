@@ -18,11 +18,13 @@ public final class RerunTriggerListResponse {
     private List<RerunTriggerResource> value;
 
     /*
-     * The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of RerunTriggerListResponse class. */
+    public RerunTriggerListResponse() {}
 
     /**
      * Get the value property: List of rerun triggers.

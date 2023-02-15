@@ -17,9 +17,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     /*
-     * An optional label. Typically describes the data or business sensitivity
-     * of the team. Must match one of a pre-configured set in the tenant's
-     * directory.
+     * An optional label. Typically describes the data or business sensitivity of the team. Must match one of a
+     * pre-configured set in the tenant's directory.
      */
     @JsonProperty(value = "classification")
     private String classification;
@@ -49,8 +48,8 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     private MicrosoftGraphTeamGuestSettings guestSettings;
 
     /*
-     * A unique ID for the team that has been used in a few places such as the
-     * audit log/Office 365 Management Activity API.
+     * A unique ID for the team that has been used in a few places such as the audit log/Office 365 Management Activity
+     * API.
      */
     @JsonProperty(value = "internalId")
     private String internalId;
@@ -86,10 +85,9 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     private MicrosoftGraphTeamVisibilityType visibility;
 
     /*
-     * A hyperlink that will go to the team in the Microsoft Teams client. This
-     * is the URL that you get when you right-click a team in the Microsoft
-     * Teams client and select Get link to team. This URL should be treated as
-     * an opaque blob, and not parsed.
+     * A hyperlink that will go to the team in the Microsoft Teams client. This is the URL that you get when you
+     * right-click a team in the Microsoft Teams client and select Get link to team. This URL should be treated as an
+     * opaque blob, and not parsed.
      */
     @JsonProperty(value = "webUrl")
     private String webUrl;
@@ -107,8 +105,10 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     private List<MicrosoftGraphChannel> channels;
 
     /*
-     * group Represents an Azure Active Directory object. The directoryObject
-     * type is the base type for many other directory entity types.
+     * group
+     *
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonProperty(value = "group")
     private MicrosoftGraphGroupInner group;
@@ -147,6 +147,10 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
      * team
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamInner class. */
+    public MicrosoftGraphTeamInner() {
+    }
 
     /**
      * Get the classification property: An optional label. Typically describes the data or business sensitivity of the
@@ -437,8 +441,10 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the group property: group Represents an Azure Active Directory object. The directoryObject type is the base
-     * type for many other directory entity types.
+     * Get the group property: group
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @return the group value.
      */
@@ -447,8 +453,10 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the group property: group Represents an Azure Active Directory object. The directoryObject type is the base
-     * type for many other directory entity types.
+     * Set the group property: group
+     *
+     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+     * directory entity types.
      *
      * @param group the group value to set.
      * @return the MicrosoftGraphTeamInner object itself.

@@ -72,7 +72,7 @@ public final class IpAllocationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface IpAllocationsService {
+    public interface IpAllocationsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -214,7 +214,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -265,7 +265,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -450,7 +450,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -504,7 +504,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -517,24 +517,6 @@ public final class IpAllocationsClientImpl
                 expand,
                 accept,
                 context);
-    }
-
-    /**
-     * Gets the specified IpAllocation by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipAllocationName The name of the IpAllocation.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified IpAllocation by resource group on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpAllocationInner> getByResourceGroupAsync(
-        String resourceGroupName, String ipAllocationName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, ipAllocationName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -559,22 +541,6 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified IpAllocation by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpAllocationInner getByResourceGroup(String resourceGroupName, String ipAllocationName) {
-        final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, ipAllocationName, expand).block();
-    }
-
-    /**
-     * Gets the specified IpAllocation by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipAllocationName The name of the IpAllocation.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,6 +552,22 @@ public final class IpAllocationsClientImpl
     public Response<IpAllocationInner> getByResourceGroupWithResponse(
         String resourceGroupName, String ipAllocationName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ipAllocationName, expand, context).block();
+    }
+
+    /**
+     * Gets the specified IpAllocation by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipAllocationName The name of the IpAllocation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified IpAllocation by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IpAllocationInner getByResourceGroup(String resourceGroupName, String ipAllocationName) {
+        final String expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, ipAllocationName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -627,7 +609,7 @@ public final class IpAllocationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +667,7 @@ public final class IpAllocationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -898,7 +880,7 @@ public final class IpAllocationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -956,7 +938,7 @@ public final class IpAllocationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -995,22 +977,6 @@ public final class IpAllocationsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipAllocation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, ipAllocationName, parameters).block();
-    }
-
-    /**
-     * Updates a IpAllocation tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipAllocationName The name of the IpAllocation.
-     * @param parameters Parameters supplied to update IpAllocation tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1021,6 +987,22 @@ public final class IpAllocationsClientImpl
     public Response<IpAllocationInner> updateTagsWithResponse(
         String resourceGroupName, String ipAllocationName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, parameters, context).block();
+    }
+
+    /**
+     * Updates a IpAllocation tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipAllocationName The name of the IpAllocation.
+     * @param parameters Parameters supplied to update IpAllocation tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ipAllocation resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, ipAllocationName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1045,7 +1027,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1088,7 +1070,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1185,7 +1167,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1240,7 +1222,7 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

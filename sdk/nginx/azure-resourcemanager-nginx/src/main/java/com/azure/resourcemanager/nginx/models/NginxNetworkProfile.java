@@ -22,6 +22,10 @@ public final class NginxNetworkProfile {
     @JsonProperty(value = "networkInterfaceConfiguration")
     private NginxNetworkInterfaceConfiguration networkInterfaceConfiguration;
 
+    /** Creates an instance of NginxNetworkProfile class. */
+    public NginxNetworkProfile() {
+    }
+
     /**
      * Get the frontEndIpConfiguration property: The frontEndIPConfiguration property.
      *

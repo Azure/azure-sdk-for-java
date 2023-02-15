@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * Tracked Resource The resource model definition for an Azure Resource Manager tracked top level resource which has
- * 'tags' and a 'location'.
+ * Tracked Resource
+ *
+ * <p>The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a
+ * 'location'.
  */
 @Fluent
 public class TrackedResource extends Resource {
@@ -25,6 +27,9 @@ public class TrackedResource extends Resource {
      */
     @JsonProperty(value = "location", required = true)
     private String location;
+
+    /** Creates an instance of TrackedResource class. */
+    public TrackedResource() {}
 
     /**
      * Get the tags property: Resource tags.

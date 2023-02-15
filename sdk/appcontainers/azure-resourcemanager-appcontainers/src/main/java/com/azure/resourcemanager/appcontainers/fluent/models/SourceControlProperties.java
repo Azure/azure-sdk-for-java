@@ -38,6 +38,10 @@ public final class SourceControlProperties {
     @JsonProperty(value = "githubActionConfiguration")
     private GithubActionConfiguration githubActionConfiguration;
 
+    /** Creates an instance of SourceControlProperties class. */
+    public SourceControlProperties() {
+    }
+
     /**
      * Get the operationState property: Current provisioning State of the operation.
      *

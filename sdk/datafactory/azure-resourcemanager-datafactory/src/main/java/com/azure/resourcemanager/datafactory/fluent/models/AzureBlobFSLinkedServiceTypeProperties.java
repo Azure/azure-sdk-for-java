@@ -82,6 +82,10 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
+    /** Creates an instance of AzureBlobFSLinkedServiceTypeProperties class. */
+    public AzureBlobFSLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageType. */
+/** Storage type. */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /** Static value Invalid for StorageType. */
     public static final StorageType INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /** Static value ReadAccessGeoZoneRedundant for StorageType. */
     public static final StorageType READ_ACCESS_GEO_ZONE_REDUNDANT = fromString("ReadAccessGeoZoneRedundant");
+
+    /**
+     * Creates a new instance of StorageType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageType() {
+    }
 
     /**
      * Creates or finds a StorageType from its string representation.

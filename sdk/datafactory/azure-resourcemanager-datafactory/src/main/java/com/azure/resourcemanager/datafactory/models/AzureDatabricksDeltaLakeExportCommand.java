@@ -28,6 +28,10 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeExportCommand class. */
+    public AzureDatabricksDeltaLakeExportCommand() {
+    }
+
     /**
      * Get the dateFormat property: Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type:
      * string (or Expression with resultType string).

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Extended Information about the job. */
 @Fluent
 public final class JobExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobExtendedInfo.class);
-
     /*
      * Job's Additional Details
      */
@@ -59,6 +55,10 @@ public final class JobExtendedInfo {
      */
     @JsonProperty(value = "targetRecoverPoint", access = JsonProperty.Access.WRITE_ONLY)
     private RestoreJobRecoveryPointDetails targetRecoverPoint;
+
+    /** Creates an instance of JobExtendedInfo class. */
+    public JobExtendedInfo() {
+    }
 
     /**
      * Get the additionalDetails property: Job's Additional Details.

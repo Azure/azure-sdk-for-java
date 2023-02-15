@@ -24,6 +24,10 @@ public final class DataworldLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DataworldLinkedServiceTypeProperties innerTypeProperties = new DataworldLinkedServiceTypeProperties();
 
+    /** Creates an instance of DataworldLinkedService class. */
+    public DataworldLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dataworld linked service properties.
      *

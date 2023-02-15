@@ -25,6 +25,10 @@ public class TrackedResourceUpdate {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of TrackedResourceUpdate class. */
+    public TrackedResourceUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

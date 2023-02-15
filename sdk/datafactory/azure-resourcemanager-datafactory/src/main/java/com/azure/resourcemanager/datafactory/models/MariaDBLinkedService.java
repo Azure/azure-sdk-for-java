@@ -24,6 +24,10 @@ public final class MariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MariaDBLinkedServiceTypeProperties innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
 
+    /** Creates an instance of MariaDBLinkedService class. */
+    public MariaDBLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MariaDB server linked service properties.
      *

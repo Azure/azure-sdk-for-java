@@ -13,7 +13,7 @@ public final class EmailRecipients {
     /*
      * Email To recipients
      */
-    @JsonProperty(value = "to", required = true)
+    @JsonProperty(value = "to")
     private Iterable<EmailAddress> to;
 
     /*
@@ -29,20 +29,23 @@ public final class EmailRecipients {
     private Iterable<EmailAddress> bcc;
 
     /**
-     * Constructor for EmailRecipients
-     * @param to the email to recipients
-     */
-    public EmailRecipients(Iterable<EmailAddress> to) {
-        this.to = to;
-    }
-
-    /**
      * Get the to property: Email To recipients.
      *
      * @return the to value.
      */
     public Iterable<EmailAddress> getTo() {
         return this.to;
+    }
+
+    /**
+     * Set the to property: Email to recipients.
+     *
+     * @param to the to value to set.
+     * @return the EmailRecipients object itself.
+     */
+    public EmailRecipients setTo(Iterable<EmailAddress> to) {
+        this.to = to;
+        return this;
     }
 
     /**

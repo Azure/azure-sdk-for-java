@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
-import org.hamcrest.Matcher;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
@@ -19,12 +19,12 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
 
@@ -62,26 +62,41 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    void onlyAddScopeOnceEvenConvertMethodExecutedMultipleTimes() {
+        getContextRunner().run(context -> {
+            AadClientRegistrationRepository repository =
+                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
+                    new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
+            ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
+            OAuth2AuthorizationCodeGrantRequest request = createCodeGrantRequest(azure);
+            // Convert method execute 2 times
+            converter.convert(request);
+            RequestEntity<?> entity = converter.convert(request);
+            MultiValueMap<String, String> map = WebApplicationContextRunnerUtils.toMultiValueMap(entity);
+            assertEquals(1, map.get("scope").size());
+        });
+    }
+
+    @Test
     void addHeadersForAzureClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
                 (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(azure));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));
+            testHttpHeaders(httpHeaders);
         });
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void addHeadersForAuthorizationCodeClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
                 (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(arm));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));
+            testHttpHeaders(httpHeaders);
         });
     }
 
@@ -95,13 +110,12 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
                        .orElse(null);
     }
 
-    private Object[] expectedHeaders(AadClientRegistrationRepository repository) {
-        return new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes())
-            .getHttpHeaders()
-            .entrySet()
-            .stream()
-            .filter(entry -> !entry.getKey().equals("client-request-id"))
-            .toArray();
+    private void testHttpHeaders(HttpHeaders headers) {
+        assertTrue(headers.containsKey("x-client-SKU"));
+        assertEquals(Collections.singletonList(AzureSpringIdentifier.AZURE_SPRING_AAD), headers.get("x-client-SKU"));
+        assertTrue(headers.containsKey("x-client-VER"));
+        assertEquals(Collections.singletonList(AzureSpringIdentifier.VERSION), headers.get("x-client-VER"));
+        assertTrue(headers.containsKey("client-request-id"));
     }
 
     private MultiValueMap<String, String> convertedBodyOf(AadClientRegistrationRepository repository,

@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.DataConnectionsClient;
@@ -47,8 +46,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataConnectionsClient. */
 public final class DataConnectionsClientImpl implements DataConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(DataConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataConnectionsService service;
 
@@ -851,14 +848,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         String databaseName,
         DataConnectionCheckNameRequest dataConnectionName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1041,14 +1031,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     private Mono<DataConnectionInner> getAsync(
         String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName)
-            .flatMap(
-                (Response<DataConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

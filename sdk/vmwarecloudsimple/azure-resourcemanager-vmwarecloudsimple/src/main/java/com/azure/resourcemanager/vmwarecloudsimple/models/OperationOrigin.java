@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OperationOrigin. */
+/** The origin of operation. */
 public enum OperationOrigin {
     /** Enum value user. */
     USER("user"),
@@ -33,6 +33,9 @@ public enum OperationOrigin {
      */
     @JsonCreator
     public static OperationOrigin fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OperationOrigin[] items = OperationOrigin.values();
         for (OperationOrigin item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum OperationOrigin {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

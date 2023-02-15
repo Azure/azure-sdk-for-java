@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnvironmentProvisioningState. */
+/** Provisioning state of the Environment. */
 public final class EnvironmentProvisioningState extends ExpandableStringEnum<EnvironmentProvisioningState> {
     /** Static value Succeeded for EnvironmentProvisioningState. */
     public static final EnvironmentProvisioningState SUCCEEDED = fromString("Succeeded");

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ExpressRouteAuthorizationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an ExpressRoute Circuit Authorization resource. */
 @Fluent
 public final class ExpressRouteAuthorizationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteAuthorizationProperties.class);
-
     /*
      * The state of the  ExpressRoute Circuit Authorization provisioning
      */
@@ -38,6 +34,10 @@ public final class ExpressRouteAuthorizationProperties {
      */
     @JsonProperty(value = "expressRouteId")
     private String expressRouteId;
+
+    /** Creates an instance of ExpressRouteAuthorizationProperties class. */
+    public ExpressRouteAuthorizationProperties() {
+    }
 
     /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.

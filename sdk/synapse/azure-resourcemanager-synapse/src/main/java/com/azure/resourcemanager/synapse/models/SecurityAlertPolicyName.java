@@ -14,6 +14,15 @@ public final class SecurityAlertPolicyName extends ExpandableStringEnum<Security
     public static final SecurityAlertPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of SecurityAlertPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityAlertPolicyName() {
+    }
+
+    /**
      * Creates or finds a SecurityAlertPolicyName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class SecurityAlertPolicyName extends ExpandableStringEnum<Security
         return fromString(name, SecurityAlertPolicyName.class);
     }
 
-    /** @return known SecurityAlertPolicyName values. */
+    /**
+     * Gets known SecurityAlertPolicyName values.
+     *
+     * @return known SecurityAlertPolicyName values.
+     */
     public static Collection<SecurityAlertPolicyName> values() {
         return values(SecurityAlertPolicyName.class);
     }

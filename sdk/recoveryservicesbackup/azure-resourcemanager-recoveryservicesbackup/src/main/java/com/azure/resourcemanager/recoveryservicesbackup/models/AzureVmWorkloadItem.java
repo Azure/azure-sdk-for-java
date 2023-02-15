@@ -57,6 +57,10 @@ public class AzureVmWorkloadItem extends WorkloadItem {
     @JsonProperty(value = "subWorkloadItemCount")
     private Integer subWorkloadItemCount;
 
+    /** Creates an instance of AzureVmWorkloadItem class. */
+    public AzureVmWorkloadItem() {
+    }
+
     /**
      * Get the parentName property: Name for instance or AG.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationStatus. */
+/** The configuration status of the machines group or machine or rule. */
 public final class ConfigurationStatus extends ExpandableStringEnum<ConfigurationStatus> {
     /** Static value Configured for ConfigurationStatus. */
     public static final ConfigurationStatus CONFIGURED = fromString("Configured");
@@ -36,7 +36,11 @@ public final class ConfigurationStatus extends ExpandableStringEnum<Configuratio
         return fromString(name, ConfigurationStatus.class);
     }
 
-    /** @return known ConfigurationStatus values. */
+    /**
+     * Gets known ConfigurationStatus values.
+     *
+     * @return known ConfigurationStatus values.
+     */
     public static Collection<ConfigurationStatus> values() {
         return values(ConfigurationStatus.class);
     }

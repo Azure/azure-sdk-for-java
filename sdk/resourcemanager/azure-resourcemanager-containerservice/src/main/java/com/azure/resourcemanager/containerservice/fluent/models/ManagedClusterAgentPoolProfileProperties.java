@@ -349,6 +349,10 @@ public class ManagedClusterAgentPoolProfileProperties {
     @JsonProperty(value = "hostGroupID")
     private String hostGroupId;
 
+    /** Creates an instance of ManagedClusterAgentPoolProfileProperties class. */
+    public ManagedClusterAgentPoolProfileProperties() {
+    }
+
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
      * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default

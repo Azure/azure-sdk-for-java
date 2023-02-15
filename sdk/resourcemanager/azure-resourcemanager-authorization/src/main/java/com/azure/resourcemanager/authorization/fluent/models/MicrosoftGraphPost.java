@@ -42,23 +42,20 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphRecipient from;
 
     /*
-     * Indicates whether the post has at least one attachment. This is a
-     * default property.
+     * Indicates whether the post has at least one attachment. This is a default property.
      */
     @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
-     * Conversation participants that were added to the thread as part of this
-     * post.
+     * Conversation participants that were added to the thread as part of this post.
      */
     @JsonProperty(value = "newParticipants")
     private List<MicrosoftGraphRecipient> newParticipants;
 
     /*
-     * Specifies when the post was received. The DateTimeOffset type represents
-     * date and time information using ISO 8601 format and is always in UTC
-     * time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * Specifies when the post was received. The DateTimeOffset type represents date and time information using ISO
+     * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "receivedDateTime")
@@ -77,8 +74,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     private List<MicrosoftGraphAttachment> attachments;
 
     /*
-     * The collection of open extensions defined for the post. Read-only.
-     * Nullable.
+     * The collection of open extensions defined for the post. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
@@ -90,15 +86,13 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphPost inReplyTo;
 
     /*
-     * The collection of multi-value extended properties defined for the post.
-     * Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the post. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the post.
-     * Read-only. Nullable.
+     * The collection of single-value extended properties defined for the post. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -107,6 +101,10 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
      * post
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPost class. */
+    public MicrosoftGraphPost() {
+    }
 
     /**
      * Get the body property: itemBody.

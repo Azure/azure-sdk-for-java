@@ -22,6 +22,9 @@ public final class CurrencyValue {
     @JsonProperty(value = "currencySymbol")
     private String currencySymbol;
 
+    /** Creates an instance of CurrencyValue class. */
+    public CurrencyValue() {}
+
     /**
      * Get the amount property: Currency amount.
      *

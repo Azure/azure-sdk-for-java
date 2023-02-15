@@ -35,6 +35,10 @@ public final class LinuxPatchSettings {
     @JsonProperty(value = "automaticByPlatformSettings")
     private LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
+    /** Creates an instance of LinuxPatchSettings class. */
+    public LinuxPatchSettings() {
+    }
+
     /**
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible

@@ -20,6 +20,10 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
+    /** Creates an instance of AzureResourceProtectionIntent class. */
+    public AzureResourceProtectionIntent() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the VM represented by this backup item.
      *

@@ -54,6 +54,16 @@ public class FactoryRepoConfiguration {
     @JsonProperty(value = "lastCommitId")
     private String lastCommitId;
 
+    /*
+     * Disable manual publish operation in ADF studio to favor automated publish.
+     */
+    @JsonProperty(value = "disablePublish")
+    private Boolean disablePublish;
+
+    /** Creates an instance of FactoryRepoConfiguration class. */
+    public FactoryRepoConfiguration() {
+    }
+
     /**
      * Get the accountName property: Account name.
      *
@@ -151,6 +161,26 @@ public class FactoryRepoConfiguration {
      */
     public FactoryRepoConfiguration withLastCommitId(String lastCommitId) {
         this.lastCommitId = lastCommitId;
+        return this;
+    }
+
+    /**
+     * Get the disablePublish property: Disable manual publish operation in ADF studio to favor automated publish.
+     *
+     * @return the disablePublish value.
+     */
+    public Boolean disablePublish() {
+        return this.disablePublish;
+    }
+
+    /**
+     * Set the disablePublish property: Disable manual publish operation in ADF studio to favor automated publish.
+     *
+     * @param disablePublish the disablePublish value to set.
+     * @return the FactoryRepoConfiguration object itself.
+     */
+    public FactoryRepoConfiguration withDisablePublish(Boolean disablePublish) {
+        this.disablePublish = disablePublish;
         return this;
     }
 

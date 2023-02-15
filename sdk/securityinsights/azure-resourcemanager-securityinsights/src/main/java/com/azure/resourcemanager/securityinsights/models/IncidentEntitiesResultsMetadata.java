@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IncidentEntitiesResultsMetadata {
     /*
-     * Total number of aggregations of the given kind in the incident related
-     * entities result.
+     * Total number of aggregations of the given kind in the incident related entities result.
      */
     @JsonProperty(value = "count", required = true)
     private int count;

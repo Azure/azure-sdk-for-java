@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -43,6 +44,7 @@ public class ClientSideRequestStatistics {
     private GatewayStatistics gatewayStatistics;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private int requestPayloadSizeInBytes = 0;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -58,6 +60,7 @@ public class ClientSideRequestStatistics {
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
+        this.requestPayloadSizeInBytes = 0;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -76,9 +79,21 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
+        this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
     }
 
+    @JsonIgnore
     public Duration getDuration() {
+        if (requestStartTimeUTC == null ||
+            requestEndTimeUTC == null ||
+            requestEndTimeUTC.isBefore(requestStartTimeUTC)) {
+            return null;
+        }
+
+        if (requestStartTimeUTC == requestEndTimeUTC) {
+            return Duration.ZERO;
+        }
+
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
@@ -95,6 +110,7 @@ public class ClientSideRequestStatistics {
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
+        storeResponseStatistics.requestStartTimeUTC = this.requestStartTimeUTC;
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
@@ -102,6 +118,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         activityId = request.getActivityId().toString();
 
+        this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
@@ -116,7 +133,9 @@ public class ClientSideRequestStatistics {
             }
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                storeResponseStatistics.regionName =
+                    globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
+                this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -153,6 +172,7 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
+                this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
             }
             this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
@@ -164,6 +184,10 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
+    }
+
+    public int getRequestPayloadSizeInBytes() {
+        return this.requestPayloadSizeInBytes;
     }
 
     public String recordAddressResolutionStart(
@@ -263,6 +287,27 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    public int getMaxResponsePayloadSizeInBytes() {
+        if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
+            return 0;
+        }
+
+        int maxResponsePayloadSizeInBytes = 0;
+        int currentResponsePayloadSizeInBytes = 0;
+        for (StoreResponseStatistics responseDiagnostic : responseStatisticsList) {
+            StoreResultDiagnostics storeResultDiagnostics;
+            StoreResponseDiagnostics storeResponseDiagnostics;
+            if ((storeResultDiagnostics = responseDiagnostic.getStoreResult()) != null &&
+                (storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics()) != null &&
+                (currentResponsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength()) > maxResponsePayloadSizeInBytes) {
+
+                maxResponsePayloadSizeInBytes = currentResponsePayloadSizeInBytes;
+            }
+        }
+
+        return maxResponsePayloadSizeInBytes;
+    }
+
     public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
         return supplementalResponseStatisticsList;
     }
@@ -280,12 +325,17 @@ public class ClientSideRequestStatistics {
         private StoreResultDiagnostics storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private Instant requestResponseTimeUTC;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        private Instant requestStartTimeUTC;
         @JsonSerialize
         private ResourceType requestResourceType;
         @JsonSerialize
         private OperationType requestOperationType;
         @JsonSerialize
         private String requestSessionToken;
+
+        @JsonIgnore
+        private String regionName;
 
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
@@ -303,8 +353,27 @@ public class ClientSideRequestStatistics {
             return requestOperationType;
         }
 
+        public String getRegionName() { return regionName; }
+
+
         public String getRequestSessionToken() { return requestSessionToken; }
+
+        @JsonIgnore
+        public Duration getDuration() {
+            if (requestStartTimeUTC == null ||
+                requestResponseTimeUTC == null ||
+                requestResponseTimeUTC.isBefore(requestStartTimeUTC)) {
+                return null;
+            }
+
+            if (requestStartTimeUTC == requestResponseTimeUTC) {
+                return Duration.ZERO;
+            }
+
+            return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);
+        }
     }
+
     public static class SystemInformation {
         private String usedMemory;
         private String availableMemory;
@@ -341,9 +410,9 @@ public class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics
-                .getDuration()
-                .toMillis();
+            Duration duration = statistics
+                .getDuration();
+            long requestLatency = duration != null ? duration.toMillis() : 0;
             generator.writeStringField("userAgent", Utils.getUserAgent());
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);

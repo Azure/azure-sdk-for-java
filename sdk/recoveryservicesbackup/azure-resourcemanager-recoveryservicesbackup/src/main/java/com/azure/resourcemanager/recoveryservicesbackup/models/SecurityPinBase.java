@@ -17,6 +17,10 @@ public final class SecurityPinBase {
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
+    /** Creates an instance of SecurityPinBase class. */
+    public SecurityPinBase() {
+    }
+
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
      *

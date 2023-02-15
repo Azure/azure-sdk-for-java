@@ -16,6 +16,10 @@ public final class P2SVpnConnectionHealthInner {
     @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
+    /** Creates an instance of P2SVpnConnectionHealthInner class. */
+    public P2SVpnConnectionHealthInner() {
+    }
+
     /**
      * Get the sasUrl property: Returned sas url of the blob to which the p2s vpn connection detailed health will be
      * written.

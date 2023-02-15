@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
+import com.azure.resourcemanager.cognitiveservices.models.CallRateLimit;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import java.util.Collections;
@@ -34,6 +35,10 @@ public final class AccountModelImpl implements AccountModel {
 
     public String version() {
         return this.innerModel().version();
+    }
+
+    public CallRateLimit callRateLimit() {
+        return this.innerModel().callRateLimit();
     }
 
     public DeploymentModel baseModel() {

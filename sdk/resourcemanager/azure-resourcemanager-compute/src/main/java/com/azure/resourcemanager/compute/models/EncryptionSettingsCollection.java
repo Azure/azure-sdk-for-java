@@ -32,6 +32,10 @@ public final class EncryptionSettingsCollection {
     @JsonProperty(value = "encryptionSettingsVersion")
     private String encryptionSettingsVersion;
 
+    /** Creates an instance of EncryptionSettingsCollection class. */
+    public EncryptionSettingsCollection() {
+    }
+
     /**
      * Get the enabled property: Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to
      * enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable

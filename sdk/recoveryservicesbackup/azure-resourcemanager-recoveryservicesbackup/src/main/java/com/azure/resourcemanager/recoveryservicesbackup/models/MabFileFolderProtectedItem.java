@@ -58,6 +58,10 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
     @JsonProperty(value = "extendedInfo")
     private MabFileFolderProtectedItemExtendedInfo extendedInfo;
 
+    /** Creates an instance of MabFileFolderProtectedItem class. */
+    public MabFileFolderProtectedItem() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of this backup item.
      *
@@ -200,20 +204,6 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public MabFileFolderProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MabFileFolderProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public MabFileFolderProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -307,6 +297,13 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
     @Override
     public MabFileFolderProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MabFileFolderProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

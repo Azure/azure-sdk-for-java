@@ -9,14 +9,28 @@ import com.azure.core.util.Context;
 /** Samples for DaprComponents Get. */
 public final class DaprComponentsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/DaprComponents_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/DaprComponents_Get_SecretStoreComponent.json
      */
     /**
-     * Sample code: Get Dapr Component.
+     * Sample code: Get Dapr Component with secret store component.
      *
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void getDaprComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void getDaprComponentWithSecretStoreComponent(
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.daprComponents().getWithResponse("examplerg", "myenvironment", "reddog", Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/DaprComponents_Get_Secrets.json
+     */
+    /**
+     * Sample code: Get Dapr Component with secrets.
+     *
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void getDaprComponentWithSecrets(
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.daprComponents().getWithResponse("examplerg", "myenvironment", "reddog", Context.NONE);
     }
 }

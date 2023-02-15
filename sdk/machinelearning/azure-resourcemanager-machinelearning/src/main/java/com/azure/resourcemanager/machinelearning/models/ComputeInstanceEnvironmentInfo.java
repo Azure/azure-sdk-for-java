@@ -22,6 +22,10 @@ public final class ComputeInstanceEnvironmentInfo {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ComputeInstanceEnvironmentInfo class. */
+    public ComputeInstanceEnvironmentInfo() {
+    }
+
     /**
      * Get the name property: name of environment.
      *

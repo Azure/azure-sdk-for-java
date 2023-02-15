@@ -42,6 +42,10 @@ public final class SapOpenHubSource extends TabularSource {
     @JsonProperty(value = "sapDataColumnDelimiter")
     private Object sapDataColumnDelimiter;
 
+    /** Creates an instance of SapOpenHubSource class. */
+    public SapOpenHubSource() {
+    }
+
     /**
      * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).

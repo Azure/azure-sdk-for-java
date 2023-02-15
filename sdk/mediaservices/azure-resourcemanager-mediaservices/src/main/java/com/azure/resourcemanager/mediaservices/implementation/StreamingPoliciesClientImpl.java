@@ -58,7 +58,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesSt")
-    private interface StreamingPoliciesService {
+    public interface StreamingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -138,7 +138,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -174,6 +176,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -184,7 +187,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             top,
                             orderby,
@@ -203,7 +206,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -240,6 +245,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -248,7 +254,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 top,
                 orderby,
@@ -266,7 +272,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -288,7 +296,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -308,7 +318,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -331,7 +343,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -349,7 +363,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Lists the Streaming Policies in the account.
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -370,7 +386,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -407,6 +425,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,14 +437,16 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -463,6 +484,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -472,13 +494,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -496,23 +520,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingPolicyName The Streaming Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingPolicyInner get(String resourceGroupName, String accountName, String streamingPolicyName) {
-        return getAsync(resourceGroupName, accountName, streamingPolicyName).block();
-    }
-
-    /**
-     * Get the details of a Streaming Policy in the Media Services account.
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -530,7 +540,27 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Create a Streaming Policy in the Media Services account.
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Streaming Policy in the Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingPolicyInner get(String resourceGroupName, String accountName, String streamingPolicyName) {
+        return getWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a Streaming Policy
+     *
+     * <p>Create a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -572,6 +602,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -583,7 +614,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -591,7 +622,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Create a Streaming Policy in the Media Services account.
+     * Create a Streaming Policy
+     *
+     * <p>Create a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -638,6 +671,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -647,14 +681,16 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Create a Streaming Policy in the Media Services account.
+     * Create a Streaming Policy
+     *
+     * <p>Create a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -673,25 +709,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Create a Streaming Policy in the Media Services account.
+     * Create a Streaming Policy
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingPolicyName The Streaming Policy name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingPolicyInner create(
-        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
-        return createAsync(resourceGroupName, accountName, streamingPolicyName, parameters).block();
-    }
-
-    /**
-     * Create a Streaming Policy in the Media Services account.
+     * <p>Create a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -715,7 +735,30 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Create a Streaming Policy
+     *
+     * <p>Create a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Streaming Policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingPolicyInner create(
+        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
+        return createWithResponse(resourceGroupName, accountName, streamingPolicyName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -751,6 +794,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -762,14 +806,16 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -806,6 +852,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -815,13 +862,15 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -838,22 +887,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * Delete a Streaming Policy
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingPolicyName The Streaming Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
-        deleteAsync(resourceGroupName, accountName, streamingPolicyName).block();
-    }
-
-    /**
-     * Deletes a Streaming Policy in the Media Services account.
+     * <p>Deletes a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -871,9 +907,27 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     }
 
     /**
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
+        deleteWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -909,7 +963,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

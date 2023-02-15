@@ -60,7 +60,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -259,22 +259,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
-        return getOperationStatusAsync(vaultName, resourceGroupName, operationId).block();
-    }
-
-    /**
-     * Fetches operation status for data move operation on vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,6 +269,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<OperationStatusInner> getOperationStatusWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return getOperationStatusWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    }
+
+    /**
+     * Fetches operation status for data move operation on vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
+        return getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -454,7 +454,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -472,7 +472,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -713,7 +713,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -731,7 +731,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1075,7 +1075,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String protectedItemName,
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
             .getSyncPoller();
     }
@@ -1106,7 +1107,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters,
         Context context) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName,
                 resourceGroupName,
                 fabricName,

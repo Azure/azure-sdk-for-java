@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class InformixTableDataset extends Dataset {
     /*
-     * The Informix table name. Type: string (or Expression with resultType
-     * string).
+     * The Informix table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
+
+    /** Creates an instance of InformixTableDataset class. */
+    public InformixTableDataset() {}
 
     /**
      * Get the tableName property: The Informix table name. Type: string (or Expression with resultType string).

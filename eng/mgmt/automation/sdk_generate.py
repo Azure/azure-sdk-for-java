@@ -16,6 +16,7 @@ from generate_data import (
     get_or_update_sdk_readme,
     sdk_automation_readme,
     update_readme,
+    sdk_automation_cadl,
 )
 from generate_utils import (
     compare_with_maven_package,
@@ -133,14 +134,32 @@ def codegen_sdk_automation(config: dict) -> List[dict]:
 
 
 def sdk_automation(input_file: str, output_file: str):
-    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
     with open(input_file, 'r') as fin:
         config = json.load(fin)
         logging.info(f"sdk_automation input: {config}")
 
+    # cadl
+    packages = sdk_automation_cadl(config)
+    # autorest
+    if not packages:
+        packages = sdk_automation_autorest(config)
+
+    with open(output_file, 'w') as fout:
+        output = {
+            'packages': packages,
+        }
+        json.dump(output, fout)
+
+
+def sdk_automation_autorest(config: dict) -> List[dict]:
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
+
     packages = []
+    if 'relatedReadmeMdFile' not in config or not config['relatedReadmeMdFile']:
+        return packages
+
     readme = config['relatedReadmeMdFile']
     match = re.search(
         '(specification)?/?([^/]+)/resource-manager/readme.md',
@@ -158,7 +177,7 @@ def sdk_automation(input_file: str, output_file: str):
 
         pre_suffix = SUFFIX
         suffix = get_suffix_from_api_specs(api_specs_file, spec)
-        if suffix == None:
+        if suffix is None:
             suffix = SUFFIX
         update_parameters(suffix)
 
@@ -224,11 +243,7 @@ def sdk_automation(input_file: str, output_file: str):
             if len(package['path']) > 0:
                 package['packageFolder'] = package['path'][0]
 
-    with open(output_file, 'w') as fout:
-        output = {
-            'packages': packages,
-        }
-        json.dump(output, fout)
+    return packages
 
 
 def main():

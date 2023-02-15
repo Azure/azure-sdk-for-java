@@ -22,7 +22,7 @@ public final class MonitorResourceListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -77,12 +77,6 @@ public final class MonitorResourceListResult {
                     new IllegalArgumentException("Missing required property value in model MonitorResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
-        }
-        if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nextLink in model MonitorResourceListResult"));
         }
     }
 

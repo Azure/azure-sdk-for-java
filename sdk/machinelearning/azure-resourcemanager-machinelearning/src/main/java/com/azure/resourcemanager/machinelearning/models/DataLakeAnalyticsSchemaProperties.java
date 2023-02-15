@@ -16,6 +16,10 @@ public final class DataLakeAnalyticsSchemaProperties {
     @JsonProperty(value = "dataLakeStoreAccountName")
     private String dataLakeStoreAccountName;
 
+    /** Creates an instance of DataLakeAnalyticsSchemaProperties class. */
+    public DataLakeAnalyticsSchemaProperties() {
+    }
+
     /**
      * Get the dataLakeStoreAccountName property: DataLake Store Account Name.
      *

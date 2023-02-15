@@ -41,6 +41,9 @@ public final class DocumentFieldSchema {
     @JsonProperty(value = "properties")
     private Map<String, DocumentFieldSchema> properties;
 
+    /** Creates an instance of DocumentFieldSchema class. */
+    public DocumentFieldSchema() {}
+
     /**
      * Get the type property: Semantic data type of the field value.
      *

@@ -35,6 +35,10 @@ public final class IpConfigurationBgpPeeringAddress {
     @JsonProperty(value = "tunnelIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tunnelIpAddresses;
 
+    /** Creates an instance of IpConfigurationBgpPeeringAddress class. */
+    public IpConfigurationBgpPeeringAddress() {
+    }
+
     /**
      * Get the ipconfigurationId property: The ID of IP configuration which belongs to gateway.
      *

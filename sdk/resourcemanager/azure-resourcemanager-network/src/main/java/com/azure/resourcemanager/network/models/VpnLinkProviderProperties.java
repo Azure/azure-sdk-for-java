@@ -22,6 +22,10 @@ public final class VpnLinkProviderProperties {
     @JsonProperty(value = "linkSpeedInMbps")
     private Integer linkSpeedInMbps;
 
+    /** Creates an instance of VpnLinkProviderProperties class. */
+    public VpnLinkProviderProperties() {
+    }
+
     /**
      * Get the linkProviderName property: Name of the link provider.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobType. */
+/** Enum to determine the type of job. */
 public final class JobType extends ExpandableStringEnum<JobType> {
     /** Static value AutoML for JobType. */
     public static final JobType AUTO_ML = fromString("AutoML");
@@ -21,6 +21,15 @@ public final class JobType extends ExpandableStringEnum<JobType> {
 
     /** Static value Pipeline for JobType. */
     public static final JobType PIPELINE = fromString("Pipeline");
+
+    /**
+     * Creates a new instance of JobType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobType() {
+    }
 
     /**
      * Creates or finds a JobType from its string representation.

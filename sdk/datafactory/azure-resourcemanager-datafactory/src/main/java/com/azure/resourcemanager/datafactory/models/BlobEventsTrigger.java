@@ -23,6 +23,10 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties", required = true)
     private BlobEventsTriggerTypeProperties innerTypeProperties = new BlobEventsTriggerTypeProperties();
 
+    /** Creates an instance of BlobEventsTrigger class. */
+    public BlobEventsTrigger() {
+    }
+
     /**
      * Get the innerTypeProperties property: Blob Events Trigger properties.
      *

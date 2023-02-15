@@ -19,11 +19,15 @@ public final class ContentKeyPolicyCollection {
     private List<ContentKeyPolicyInner> value;
 
     /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
+     * A link to the next page of the collection (when the collection contains too many results to return in one
+     * response).
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of ContentKeyPolicyCollection class. */
+    public ContentKeyPolicyCollection() {
+    }
 
     /**
      * Get the value property: A collection of ContentKeyPolicy items.

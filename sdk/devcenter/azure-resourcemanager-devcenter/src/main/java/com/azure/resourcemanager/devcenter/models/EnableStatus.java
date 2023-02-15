@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnableStatus. */
+/** Enable or disable status. Indicates whether the property applied to is either enabled or disabled. */
 public final class EnableStatus extends ExpandableStringEnum<EnableStatus> {
     /** Static value Enabled for EnableStatus. */
     public static final EnableStatus ENABLED = fromString("Enabled");

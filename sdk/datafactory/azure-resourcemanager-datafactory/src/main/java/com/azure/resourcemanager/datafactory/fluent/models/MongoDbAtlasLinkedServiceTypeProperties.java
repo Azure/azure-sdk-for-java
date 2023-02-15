@@ -25,6 +25,10 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     @JsonProperty(value = "database", required = true)
     private Object database;
 
+    /** Creates an instance of MongoDbAtlasLinkedServiceTypeProperties class. */
+    public MongoDbAtlasLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

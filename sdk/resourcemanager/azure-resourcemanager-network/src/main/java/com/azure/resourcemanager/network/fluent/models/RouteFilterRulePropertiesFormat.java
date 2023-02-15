@@ -39,6 +39,10 @@ public final class RouteFilterRulePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of RouteFilterRulePropertiesFormat class. */
+    public RouteFilterRulePropertiesFormat() {
+    }
+
     /**
      * Get the access property: The access type of the rule.
      *

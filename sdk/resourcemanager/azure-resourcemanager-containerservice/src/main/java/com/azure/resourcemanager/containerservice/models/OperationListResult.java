@@ -18,6 +18,10 @@ public final class OperationListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationValueInner> value;
 
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
+
     /**
      * Get the value property: The list of operations.
      *

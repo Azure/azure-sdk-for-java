@@ -22,6 +22,9 @@ public final class Expression {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of Expression class. */
+    public Expression() {}
+
     /**
      * Get the type property: Expression type.
      *

@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class DelimitedTextReadSettings extends FormatReadSettings {
     /*
-     * Indicates the number of non-empty rows to skip when reading data from
-     * input files. Type: integer (or Expression with resultType integer).
+     * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression
+     * with resultType integer).
      */
     @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
@@ -26,6 +26,9 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      */
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
+
+    /** Creates an instance of DelimitedTextReadSettings class. */
+    public DelimitedTextReadSettings() {}
 
     /**
      * Get the skipLineCount property: Indicates the number of non-empty rows to skip when reading data from input

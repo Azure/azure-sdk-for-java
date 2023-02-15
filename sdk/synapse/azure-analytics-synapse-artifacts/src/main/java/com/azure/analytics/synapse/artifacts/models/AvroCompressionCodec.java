@@ -36,7 +36,11 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
         return fromString(name, AvroCompressionCodec.class);
     }
 
-    /** @return known AvroCompressionCodec values. */
+    /**
+     * Gets known AvroCompressionCodec values.
+     *
+     * @return known AvroCompressionCodec values.
+     */
     public static Collection<AvroCompressionCodec> values() {
         return values(AvroCompressionCodec.class);
     }

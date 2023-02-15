@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.RegulatoryComplianceStandardsCl
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceStandardInner;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandard;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandards;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegulatoryComplianceStandardsImpl implements RegulatoryComplianceStandards {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceStandardsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceStandardsImpl.class);
 
     private final RegulatoryComplianceStandardsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
         return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
     }
 
-    public RegulatoryComplianceStandard get(String regulatoryComplianceStandardName) {
-        RegulatoryComplianceStandardInner inner = this.serviceClient().get(regulatoryComplianceStandardName);
-        if (inner != null) {
-            return new RegulatoryComplianceStandardImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegulatoryComplianceStandard> getWithResponse(
         String regulatoryComplianceStandardName, Context context) {
         Response<RegulatoryComplianceStandardInner> inner =
@@ -58,6 +48,15 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegulatoryComplianceStandardImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegulatoryComplianceStandard get(String regulatoryComplianceStandardName) {
+        RegulatoryComplianceStandardInner inner = this.serviceClient().get(regulatoryComplianceStandardName);
+        if (inner != null) {
+            return new RegulatoryComplianceStandardImpl(inner, this.manager());
         } else {
             return null;
         }

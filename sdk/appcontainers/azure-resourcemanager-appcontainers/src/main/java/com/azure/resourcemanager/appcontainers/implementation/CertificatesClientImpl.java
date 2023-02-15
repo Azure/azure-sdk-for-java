@@ -466,22 +466,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner get(String resourceGroupName, String environmentName, String certificateName) {
-        return getAsync(resourceGroupName, environmentName, certificateName).block();
-    }
-
-    /**
-     * Get the specified Certificate.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -492,6 +476,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<CertificateInner> getWithResponse(
         String resourceGroupName, String environmentName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, certificateName, context).block();
+    }
+
+    /**
+     * Get the specified Certificate.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner get(String resourceGroupName, String environmentName, String certificateName) {
+        return getWithResponse(resourceGroupName, environmentName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -627,29 +627,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Certificate to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, certificateName, certificateEnvelope)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or Update a Certificate.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,23 +639,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final CertificateInner certificateEnvelope = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, certificateName, certificateEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or Update a Certificate.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(String resourceGroupName, String environmentName, String certificateName) {
-        final CertificateInner certificateEnvelope = null;
-        return createOrUpdateAsync(resourceGroupName, environmentName, certificateName, certificateEnvelope).block();
     }
 
     /**
@@ -705,6 +665,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, environmentName, certificateName, certificateEnvelope, context)
             .block();
+    }
+
+    /**
+     * Create or Update a Certificate.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner createOrUpdate(String resourceGroupName, String environmentName, String certificateName) {
+        final CertificateInner certificateEnvelope = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, environmentName, certificateName, certificateEnvelope, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -838,21 +817,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String environmentName, String certificateName) {
-        deleteAsync(resourceGroupName, environmentName, certificateName).block();
-    }
-
-    /**
-     * Deletes the specified Certificate.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -866,7 +830,24 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Deletes the specified Certificate.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String environmentName, String certificateName) {
+        deleteWithResponse(resourceGroupName, environmentName, certificateName, Context.NONE);
+    }
+
+    /**
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -933,7 +914,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -999,7 +982,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -1022,28 +1007,9 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Update properties of a certificate
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName,
-        String environmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope) {
-        return updateAsync(resourceGroupName, environmentName, certificateName, certificateEnvelope).block();
-    }
-
-    /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * <p>Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -1069,9 +1035,35 @@ public final class CertificatesClientImpl implements CertificatesClient {
     }
 
     /**
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Properties of a certificate that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner update(
+        String resourceGroupName,
+        String environmentName,
+        String certificateName,
+        CertificatePatch certificateEnvelope) {
+        return updateWithResponse(
+                resourceGroupName, environmentName, certificateName, certificateEnvelope, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1106,7 +1098,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationStatusValues. */
+/** Operation status. */
 public final class OperationStatusValues extends ExpandableStringEnum<OperationStatusValues> {
     /** Static value Invalid for OperationStatusValues. */
     public static final OperationStatusValues INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class OperationStatusValues extends ExpandableStringEnum<OperationS
 
     /** Static value Canceled for OperationStatusValues. */
     public static final OperationStatusValues CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of OperationStatusValues value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationStatusValues() {
+    }
 
     /**
      * Creates or finds a OperationStatusValues from its string representation.

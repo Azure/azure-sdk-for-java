@@ -175,15 +175,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionAsync(
             CreateDataFlowDebugSessionRequest request) {
-        return createDataFlowDebugSessionWithResponseAsync(request)
-                .flatMap(
-                        (DataFlowDebugSessionsCreateDataFlowDebugSessionResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createDataFlowDebugSessionWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -200,28 +192,7 @@ public final class DataFlowDebugSessionsImpl {
     public Mono<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionAsync(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context)
-                .flatMap(
-                        (DataFlowDebugSessionsCreateDataFlowDebugSessionResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates a data flow debug session.
-     *
-     * @param request Data flow debug session definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
-        return createDataFlowDebugSessionAsync(request).block();
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -238,6 +209,20 @@ public final class DataFlowDebugSessionsImpl {
     public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse createDataFlowDebugSessionWithResponse(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Creates a data flow debug session.
+     *
+     * @param request Data flow debug session definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
+        return createDataFlowDebugSessionWithResponse(request, Context.NONE).getValue();
     }
 
     /**
@@ -329,6 +314,32 @@ public final class DataFlowDebugSessionsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceSinglePage() {
+        return queryDataFlowDebugSessionsByWorkspaceSinglePageAsync().block();
+    }
+
+    /**
+     * Query all active data flow debug sessions.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceSinglePage(Context context) {
+        return queryDataFlowDebugSessionsByWorkspaceSinglePageAsync(context).block();
+    }
+
+    /**
+     * Query all active data flow debug sessions.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -399,15 +410,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddDataFlowToDebugSessionResponse> addDataFlowAsync(DataFlowDebugPackage request) {
-        return addDataFlowWithResponseAsync(request)
-                .flatMap(
-                        (Response<AddDataFlowToDebugSessionResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return addDataFlowWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -422,29 +425,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddDataFlowToDebugSessionResponse> addDataFlowAsync(DataFlowDebugPackage request, Context context) {
-        return addDataFlowWithResponseAsync(request, context)
-                .flatMap(
-                        (Response<AddDataFlowToDebugSessionResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Add a data flow into debug session.
-     *
-     * @param request Data flow debug session definition with debug content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddDataFlowToDebugSessionResponse addDataFlow(DataFlowDebugPackage request) {
-        return addDataFlowAsync(request).block();
+        return addDataFlowWithResponseAsync(request, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -461,6 +442,20 @@ public final class DataFlowDebugSessionsImpl {
     public Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(
             DataFlowDebugPackage request, Context context) {
         return addDataFlowWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Add a data flow into debug session.
+     *
+     * @param request Data flow debug session definition with debug content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for starting data flow debug session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddDataFlowToDebugSessionResponse addDataFlow(DataFlowDebugPackage request) {
+        return addDataFlowWithResponse(request, Context.NONE).getValue();
     }
 
     /**
@@ -511,7 +506,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowDebugSessionAsync(DeleteDataFlowDebugSessionRequest request) {
-        return deleteDataFlowDebugSessionWithResponseAsync(request).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDataFlowDebugSessionWithResponseAsync(request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -526,21 +521,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowDebugSessionAsync(DeleteDataFlowDebugSessionRequest request, Context context) {
-        return deleteDataFlowDebugSessionWithResponseAsync(request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a data flow debug session.
-     *
-     * @param request Data flow debug session definition for deletion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataFlowDebugSession(DeleteDataFlowDebugSessionRequest request) {
-        deleteDataFlowDebugSessionAsync(request).block();
+        return deleteDataFlowDebugSessionWithResponseAsync(request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -557,6 +538,19 @@ public final class DataFlowDebugSessionsImpl {
     public Response<Void> deleteDataFlowDebugSessionWithResponse(
             DeleteDataFlowDebugSessionRequest request, Context context) {
         return deleteDataFlowDebugSessionWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Deletes a data flow debug session.
+     *
+     * @param request Data flow debug session definition for deletion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDataFlowDebugSession(DeleteDataFlowDebugSessionRequest request) {
+        deleteDataFlowDebugSessionWithResponse(request, Context.NONE);
     }
 
     /**
@@ -609,15 +603,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugCommandResponse> executeCommandAsync(DataFlowDebugCommandRequest request) {
-        return executeCommandWithResponseAsync(request)
-                .flatMap(
-                        (DataFlowDebugSessionsExecuteCommandResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return executeCommandWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -634,29 +620,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugCommandResponse> executeCommandAsync(
             DataFlowDebugCommandRequest request, Context context) {
-        return executeCommandWithResponseAsync(request, context)
-                .flatMap(
-                        (DataFlowDebugSessionsExecuteCommandResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Execute a data flow debug command.
-     *
-     * @param request Data flow debug command definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
-        return executeCommandAsync(request).block();
+        return executeCommandWithResponseAsync(request, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -676,9 +640,24 @@ public final class DataFlowDebugSessionsImpl {
     }
 
     /**
+     * Execute a data flow debug command.
+     *
+     * @param request Data flow debug command definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
+        return executeCommandWithResponse(request, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -707,7 +686,8 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -729,5 +709,38 @@ public final class DataFlowDebugSessionsImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceNextSinglePage(
+            String nextLink) {
+        return queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceNextSinglePage(
+            String nextLink, Context context) {
+        return queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(nextLink, context).block();
     }
 }

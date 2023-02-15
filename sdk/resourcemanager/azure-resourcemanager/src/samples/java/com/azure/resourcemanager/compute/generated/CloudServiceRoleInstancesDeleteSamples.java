@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceRoleInstances Delete. */
 public final class CloudServiceRoleInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRoleInstance_Delete.json
      */
     /**
      * Sample code: Delete Cloud Service Role Instance.
@@ -22,6 +20,6 @@ public final class CloudServiceRoleInstancesDeleteSamples {
             .manager()
             .serviceClient()
             .getCloudServiceRoleInstances()
-            .delete("{roleInstance-name}", "ConstosoRG", "{cs-name}", Context.NONE);
+            .delete("{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

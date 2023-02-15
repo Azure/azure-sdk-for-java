@@ -29,106 +29,117 @@ public class AddressEnumeratorTests {
 
     @Test(groups = "unit")
     public void replicaAddressValidationEnabledComparatorTests() throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        Method sortAddressesMethod = AddressEnumerator.class.getDeclaredMethod("sortAddresses", List.class, RxDocumentServiceRequest.class);
-        sortAddressesMethod.setAccessible(true);
+        try {
+            System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "true");
+            Method sortAddressesMethod = AddressEnumerator.class.getDeclaredMethod("sortAddresses", List.class, RxDocumentServiceRequest.class);
+            sortAddressesMethod.setAccessible(true);
 
-        // set a different health status to each endpoint to test the sorting logic
-        Uri testUri1 = new Uri("https://127.0.0.1:1");
-        assertThat(testUri1.getHealthStatus()).isEqualTo(Unknown);
+            // set a different health status to each endpoint to test the sorting logic
+            Uri testUri1 = new Uri("https://127.0.0.1:1");
+            assertThat(testUri1.getHealthStatus()).isEqualTo(Unknown);
 
-        Uri testUri2 = new Uri("https://127.0.0.1:2");
-        testUri2.setConnected();
-        assertThat(testUri2.getHealthStatus()).isEqualTo(Connected);
+            Uri testUri2 = new Uri("https://127.0.0.1:2");
+            testUri2.setConnected();
+            assertThat(testUri2.getHealthStatus()).isEqualTo(Connected);
 
-        Uri testUri3 = new Uri("https://127.0.0.1:3");
-        testUri3.setUnhealthy();
-        testUri3.setRefreshed();
-        assertThat(testUri3.getHealthStatus()).isEqualTo(UnhealthyPending);
+            Uri testUri3 = new Uri("https://127.0.0.1:3");
+            testUri3.setUnhealthy();
+            testUri3.setRefreshed();
+            assertThat(testUri3.getHealthStatus()).isEqualTo(UnhealthyPending);
 
-        Uri testUri4 = new Uri("https://127.0.0.1:4");
-        testUri4.setUnhealthy();
-        assertThat(testUri4.getHealthStatus()).isEqualTo(Unhealthy);
+            Uri testUri4 = new Uri("https://127.0.0.1:4");
+            testUri4.setUnhealthy();
+            assertThat(testUri4.getHealthStatus()).isEqualTo(Unhealthy);
 
-        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        requestMock.requestContext = new DocumentServiceRequestContext();
-        requestMock.requestContext.replicaAddressValidationEnabled = true;
+            RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
+            requestMock.requestContext = new DocumentServiceRequestContext();
 
-        // when replicaAddressValidation is enabled, we prefer Connected/Unknown > UnhealthyPending > Unhealthy
-        List<SortAddressesTestScenario> testScenarios = Arrays.asList(
+            // when replicaAddressValidation is enabled, we prefer Connected/Unknown > UnhealthyPending > Unhealthy
+            List<SortAddressesTestScenario> testScenarios = Arrays.asList(
                 new SortAddressesTestScenario(Arrays.asList(testUri1, testUri2), Arrays.asList(testUri1, testUri2)), // unknown, connected -> unknown, connected
                 new SortAddressesTestScenario(Arrays.asList(testUri2, testUri1), Arrays.asList(testUri2, testUri1)), // connected, unknown -> connected, unknown
                 new SortAddressesTestScenario(Arrays.asList(testUri3, testUri2), Arrays.asList(testUri2, testUri3)), // unhealthyPending, connected -> connected, unhealthyPending
                 new SortAddressesTestScenario(Arrays.asList(testUri4, testUri1), Arrays.asList(testUri1, testUri4)), // unhealthy, unknown -> unknown, unhealthy
                 new SortAddressesTestScenario(Arrays.asList(testUri4, testUri3), Arrays.asList(testUri3, testUri4))); // unhealthy, unhealthyPending -> unhealthyPending, unhealthy
 
-        for (SortAddressesTestScenario testScenario : testScenarios) {
-            System.out.println("Test scenario, comparing " + testScenario.getAddresses());
-            for (Uri uri : testScenario.getAddresses()) {
-                this.setTimestamp(uri, Instant.now());
-            }
-            List<Uri> sortedAddresses =
+            for (SortAddressesTestScenario testScenario : testScenarios) {
+                System.out.println("Test scenario, comparing " + testScenario.getAddresses());
+                for (Uri uri : testScenario.getAddresses()) {
+                    this.setTimestamp(uri, Instant.now());
+                }
+                List<Uri> sortedAddresses =
                     (List<Uri>) sortAddressesMethod.invoke(null, testScenario.getAddresses(), requestMock);
-            assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
+                assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
+            }
+
+            System.out.println("Test scenario: comparing when unhealthyPending roll into healthy status after 1 min");
+            setTimestamp(testUri3, Instant.now().minusMillis(Duration.ofMinutes(2).toMillis()));
+            List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri3, testUri2), requestMock);
+            assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri3, testUri2));
+
+            System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
+            requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
+            sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
+            assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
+        } finally {
+            System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
         }
 
-        System.out.println("Test scenario: comparing when unhealthyPending roll into healthy status after 1 min");
-        setTimestamp(testUri3, Instant.now().minusMillis(Duration.ofMinutes(2).toMillis()));
-        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri3, testUri2), requestMock);
-        assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri3, testUri2));
-
-        System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
-        requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
-        sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
-        assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
     }
 
     @Test(groups = "unit")
     public void replicaAddressValidationDisabledComparatorTests() throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        Method sortAddressesMethod = AddressEnumerator.class.getDeclaredMethod("sortAddresses", List.class, RxDocumentServiceRequest.class);
-        sortAddressesMethod.setAccessible(true);
+        try {
+            System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
+            Method sortAddressesMethod = AddressEnumerator.class.getDeclaredMethod("sortAddresses", List.class, RxDocumentServiceRequest.class);
+            sortAddressesMethod.setAccessible(true);
 
-        // set a different health status to each endpoint to test the sorting logic
-        Uri testUri1 = new Uri("https://127.0.0.1:1");
-        assertThat(testUri1.getHealthStatus()).isEqualTo(Unknown);
+            // set a different health status to each endpoint to test the sorting logic
+            Uri testUri1 = new Uri("https://127.0.0.1:1");
+            assertThat(testUri1.getHealthStatus()).isEqualTo(Unknown);
 
-        Uri testUri2 = new Uri("https://127.0.0.1:2");
-        testUri2.setConnected();
-        assertThat(testUri2.getHealthStatus()).isEqualTo(Connected);
+            Uri testUri2 = new Uri("https://127.0.0.1:2");
+            testUri2.setConnected();
+            assertThat(testUri2.getHealthStatus()).isEqualTo(Connected);
 
-        Uri testUri3 = new Uri("https://127.0.0.1:3");
-        testUri3.setUnhealthy();
-        testUri3.setRefreshed();
-        assertThat(testUri3.getHealthStatus()).isEqualTo(UnhealthyPending);
+            Uri testUri3 = new Uri("https://127.0.0.1:3");
+            testUri3.setUnhealthy();
+            testUri3.setRefreshed();
+            assertThat(testUri3.getHealthStatus()).isEqualTo(UnhealthyPending);
 
-        Uri testUri4 = new Uri("https://127.0.0.1:4");
-        testUri4.setUnhealthy();
-        assertThat(testUri4.getHealthStatus()).isEqualTo(Unhealthy);
+            Uri testUri4 = new Uri("https://127.0.0.1:4");
+            testUri4.setUnhealthy();
+            assertThat(testUri4.getHealthStatus()).isEqualTo(Unhealthy);
 
-        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        requestMock.requestContext = new DocumentServiceRequestContext();
+            RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
+            requestMock.requestContext = new DocumentServiceRequestContext();
 
-        // when replicaAddressValidation is enabled, we prefer Connected/Unknown/UnhealthyPending > Unhealthy
-        List<SortAddressesTestScenario> testScenarios = Arrays.asList(
+            // when replicaAddressValidation is enabled, we prefer Connected/Unknown/UnhealthyPending > Unhealthy
+            List<SortAddressesTestScenario> testScenarios = Arrays.asList(
                 new SortAddressesTestScenario(Arrays.asList(testUri1, testUri2), Arrays.asList(testUri1, testUri2)), // unknown, connected -> unknown, connected
                 new SortAddressesTestScenario(Arrays.asList(testUri2, testUri1), Arrays.asList(testUri2, testUri1)), // connected, unknown -> connected, unknown
                 new SortAddressesTestScenario(Arrays.asList(testUri3, testUri2), Arrays.asList(testUri3, testUri2)), // unhealthyPending, connected -> unhealthyPending, connected
                 new SortAddressesTestScenario(Arrays.asList(testUri4, testUri1), Arrays.asList(testUri1, testUri4)), // unhealthy, unknown -> unknown, unhealthy
                 new SortAddressesTestScenario(Arrays.asList(testUri4, testUri3), Arrays.asList(testUri3, testUri4))); // unhealthy, unhealthyPending -> unhealthyPending, unhealthy
 
-        for (SortAddressesTestScenario testScenario : testScenarios) {
-            System.out.println("Test scenario, comparing " + testScenario.getAddresses());
-            for (Uri uri : testScenario.getAddresses()) {
-                this.setTimestamp(uri, Instant.now());
-            }
-            List<Uri> sortedAddresses =
+            for (SortAddressesTestScenario testScenario : testScenarios) {
+                System.out.println("Test scenario, comparing " + testScenario.getAddresses());
+                for (Uri uri : testScenario.getAddresses()) {
+                    this.setTimestamp(uri, Instant.now());
+                }
+                List<Uri> sortedAddresses =
                     (List<Uri>) sortAddressesMethod.invoke(null, testScenario.getAddresses(), requestMock);
-            assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
+                assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
+            }
+
+            System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
+            requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
+            List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
+            assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
+        } finally {
+            System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
         }
 
-        System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
-        requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
-        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
-        assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
     }
 
     private void setTimestamp(Uri testUri, Instant time) throws NoSuchFieldException, IllegalAccessException {

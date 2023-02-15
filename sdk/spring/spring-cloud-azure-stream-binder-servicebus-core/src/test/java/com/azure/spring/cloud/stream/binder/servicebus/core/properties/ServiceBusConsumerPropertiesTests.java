@@ -5,14 +5,16 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerPropertiesTests.CONNECTION_STRING_PATTERN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,7 +29,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void autoCompleteDefaultTrue() {
-        assertTrue(consumerProperties.getAutoComplete());
+        assertNull(consumerProperties.getAutoComplete());
     }
 
     @Test
@@ -49,7 +51,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxConcurrentCallsDefaults() {
-        assertEquals(1, consumerProperties.getMaxConcurrentCalls());
+        assertNull(consumerProperties.getMaxConcurrentCalls());
     }
 
     @Test
@@ -71,7 +73,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void subQueueDefaults() {
-        assertNotNull(consumerProperties.getSubQueue());
+        assertNull(consumerProperties.getSubQueue());
     }
 
     @Test
@@ -82,7 +84,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void receiveModeDefaults() {
-        assertEquals(ServiceBusReceiveMode.PEEK_LOCK, consumerProperties.getReceiveMode());
+        assertNull(consumerProperties.getReceiveMode());
     }
 
     @Test
@@ -93,7 +95,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxAutoLockRenewDurationDefaults() {
-        assertEquals(Duration.ofMinutes(5), consumerProperties.getMaxAutoLockRenewDuration());
+        assertNull(consumerProperties.getMaxAutoLockRenewDuration());
     }
 
     @Test
@@ -101,5 +103,65 @@ class ServiceBusConsumerPropertiesTests {
         Duration duration = Duration.ofMinutes(6);
         consumerProperties.setMaxAutoLockRenewDuration(duration);
         assertEquals(duration, consumerProperties.getMaxAutoLockRenewDuration());
+    }
+
+    @Test
+    void domainNameDefaultsToNull() {
+        assertNull(consumerProperties.getDomainName());
+    }
+
+    @Test
+    void domainNameConfigureAsCloud() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), consumerProperties.getDomainName());
+    }
+
+    @Test
+    void customDomainNameShouldSet() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButConnectionStringIsNot() {
+        consumerProperties.setConnectionString(String.format(CONNECTION_STRING_PATTERN, "test"));
+        assertEquals("test.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainNameAreNotNull() {
+        consumerProperties.setNamespace("dev-namespace");
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertEquals("dev-namespace.servicebus.windows.net", consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceAndDomainAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButDomainNameIsNot() {
+        consumerProperties.setDomainName("servicebus.windows.net");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenDomainNameIsNullButNamespaceIsNot() {
+        consumerProperties.setNamespace("test");
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+        assertNull(consumerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void amqpTransportTypeDefaultIsNull() {
+        assertNull(consumerProperties.getClient().getTransportType());
     }
 }

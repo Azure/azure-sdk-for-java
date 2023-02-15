@@ -4,9 +4,10 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource;
+import com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.azure.resourcemanager.compute.models.TargetRegion;
@@ -207,7 +208,7 @@ class GalleryImageVersionImpl
             this.innerModel().withStorageProfile(new GalleryImageVersionStorageProfile());
         }
         if (this.innerModel().storageProfile().source() == null) {
-            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionSource());
+            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionFullSource());
         }
         this.innerModel().storageProfile().source().withId(customImageId);
         return this;
@@ -318,6 +319,13 @@ class GalleryImageVersionImpl
             }
             if (foundIndex != -1) {
                 this.innerModel().publishingProfile().targetRegions().remove(foundIndex);
+
+                GalleryImageVersionSafetyProfile safetyProfile = this.innerModel().safetyProfile();
+                if (safetyProfile == null) {
+                    safetyProfile = new GalleryImageVersionSafetyProfile();
+                    this.innerModel().withSafetyProfile(safetyProfile);
+                }
+                safetyProfile.withAllowDeletionOfReplicatedLocations(true);
             }
         }
         return this;

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.14.0-beta.1 (Unreleased)
+## 5.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,93 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.15.2 (2023-02-13)
+
+### Bugs Fixed
+
+- Fixed NullPointerException when deserializing AMQP message with null body. ([#32939](https://github.com/Azure/azure-sdk-for-java/issues/32939))
+- Added filter to filter out the closed `AmqpReceiveLink` before passing to `AmqpReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
+- Fixed usage of static AmqpAnnotatedMessage when creating empty EventData. ([#33327](https://github.com/Azure/azure-sdk-for-java/issues/33327))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.36.0`.
+- Upgraded `azure-core-amqp` to `2.8.2`.
+
+## 5.15.1 (2023-01-18)
+
+### Features Added
+
+- Added support for setting different value types in `EventData.getProperties()`. ([#32518](https://github.com/Azure/azure-sdk-for-java/issues/32518))
+
+### Bugs Fixed
+
+- Fixed ability to pass in namespace connection string in EventHubClientBuilder. ([#29536](https://github.com/Azure/azure-sdk-for-java/issues/29536))
+- Added retry for createBatch API as this API also makes network calls similar to its companion send API.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.35.0`.
+- Upgraded `azure-core-amqp` to `2.8.1`.
+
+## 5.15.0 (2022-11-16)
+
+### Features Added
+
+- Added `EventHubBufferedProducerBuilder.fullyQualifiedNamespace(String)`
+- Added `EventHubBufferedProducerBuilder.eventHubName(String)`
+
+### Bugs Fixed
+
+- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
+
+### Other Changes
+
+- Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.34.0`.
+- Upgraded `azure-core-amqp` to `2.8.0`.
+
+## 5.14.0 (2022-10-13)
+
+### Features Added
+
+- Enabled metrics for sent events, consumer lag, checkpointing. ([#31024](https://github.com/Azure/azure-sdk-for-java/pull/31024))
+- Enabled distributed tracing for consumer and batch processor. ([#31197](https://github.com/Azure/azure-sdk-for-java/pull/31197))
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+
+### Bugs Fixed
+
+- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([#23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+- Fixed issue where FAIL_OVERFLOW when pushing events in EventHubBufferedProducerClient would result in a tight loop, so no more events would be published. ([#30258](https://github.com/Azure/azure-sdk-for-java/issues/30258))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.33.0`.
+- Upgraded `azure-core-amqp` to `2.7.2`.
+
+## 5.13.1 (2022-09-11)
+
+### Bugs Fixed
+- Fixed issue where EventProcessorClient stop running when load balance thrown 412 status code error. ([#29927](https://github.com/Azure/azure-sdk-for-java/issues/29927))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-amqp` to `2.7.1`.
 
 ## 5.13.0 (2022-08-18)
 
@@ -22,6 +109,18 @@
 
 - Upgraded `azure-core` to `1.31.0`.
 - Upgraded `azure-core-amqp` to `2.7.0`.
+
+## 5.13.0-beta.1 (2022-08-01)
+
+### Features Added
+
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+
+### Bugs Fixed
+
+- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([#23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
 
 ## 5.12.2 (2022-07-07)
 

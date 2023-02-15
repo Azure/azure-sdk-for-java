@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient. */
 public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePrincipalAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabasePrincipalAssignmentsService service;
 
@@ -309,14 +306,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
         return checkNameAvailabilityWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -506,14 +496,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     private Mono<DatabasePrincipalAssignmentInner> getAsync(
         String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .flatMap(
-                (Response<DatabasePrincipalAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

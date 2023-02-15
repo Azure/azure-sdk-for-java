@@ -10,6 +10,10 @@ import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
 /** Specifies information about the Community Gallery that you want to create or update. */
 @Fluent
 public final class CommunityGalleryInner extends PirCommunityGalleryResource {
+    /** Creates an instance of CommunityGalleryInner class. */
+    public CommunityGalleryInner() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CommunityGalleryInner withUniqueId(String uniqueId) {

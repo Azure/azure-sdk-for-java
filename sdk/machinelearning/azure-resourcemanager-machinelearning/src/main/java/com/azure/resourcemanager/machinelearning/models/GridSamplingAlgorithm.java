@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Grid")
 @Immutable
 public final class GridSamplingAlgorithm extends SamplingAlgorithm {
+    /** Creates an instance of GridSamplingAlgorithm class. */
+    public GridSamplingAlgorithm() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentState. */
+/** The current state of the deployment. */
 public final class DeploymentState extends ExpandableStringEnum<DeploymentState> {
     /** Static value In_Progress for DeploymentState. */
     public static final DeploymentState IN_PROGRESS = fromString("In_Progress");

@@ -48,6 +48,10 @@ public final class DedicatedHostGroupProperties {
     @JsonProperty(value = "additionalCapabilities")
     private DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities;
 
+    /** Creates an instance of DedicatedHostGroupProperties class. */
+    public DedicatedHostGroupProperties() {
+    }
+
     /**
      * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
      *

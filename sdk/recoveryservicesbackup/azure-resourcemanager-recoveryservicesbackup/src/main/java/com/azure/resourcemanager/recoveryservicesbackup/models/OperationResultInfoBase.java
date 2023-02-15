@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OperationResultInfoBase {
+    /** Creates an instance of OperationResultInfoBase class. */
+    public OperationResultInfoBase() {
+    }
+
     /**
      * Validates the instance.
      *

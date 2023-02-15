@@ -8,17 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResourceStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of an existing Shared Private Link Resource. */
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceProperties.class);
-
     /*
-     * The group id from the provider of resource the shared private link
-     * resource is for
+     * The group id from the provider of resource the shared private link resource is for
      */
     @JsonProperty(value = "groupId", required = true)
     private String groupId;
@@ -30,14 +26,13 @@ public final class SharedPrivateLinkResourceProperties {
     private String privateLinkResourceId;
 
     /*
-     * Provisioning state of the shared private link resource
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The request message for requesting approval of the shared private link
-     * resource
+     * The request message for requesting approval of the shared private link resource
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
@@ -47,6 +42,10 @@ public final class SharedPrivateLinkResourceProperties {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SharedPrivateLinkResourceStatus status;
+
+    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    public SharedPrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: The group id from the provider of resource the shared private link resource is for.
@@ -89,7 +88,7 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the shared private link resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -133,17 +132,19 @@ public final class SharedPrivateLinkResourceProperties {
      */
     public void validate() {
         if (groupId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupId in model SharedPrivateLinkResourceProperties"));
         }
         if (privateLinkResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property privateLinkResourceId in model"
                             + " SharedPrivateLinkResourceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharedPrivateLinkResourceProperties.class);
 }

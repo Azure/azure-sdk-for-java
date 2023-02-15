@@ -30,6 +30,9 @@ public enum AlignMode {
      */
     @JsonCreator
     public static AlignMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AlignMode[] items = AlignMode.values();
         for (AlignMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AlignMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

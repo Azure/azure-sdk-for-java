@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/FirewallRuleCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule max/min.
@@ -32,7 +32,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/FirewallRuleUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleUpdate.json
      */
     /**
      * Sample code: Update a firewall rule max/min.

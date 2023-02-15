@@ -72,44 +72,55 @@ public interface Volume {
     SystemData systemData();
 
     /**
-     * Gets the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
+     * Gets the fileSystemId property: FileSystem ID
+     *
+     * <p>Unique FileSystem Identifier.
      *
      * @return the fileSystemId value.
      */
     String fileSystemId();
 
     /**
-     * Gets the creationToken property: Creation Token or File Path A unique file path for the volume. Used when
-     * creating mount targets.
+     * Gets the creationToken property: Creation Token or File Path
+     *
+     * <p>A unique file path for the volume. Used when creating mount targets.
      *
      * @return the creationToken value.
      */
     String creationToken();
 
     /**
-     * Gets the serviceLevel property: serviceLevel The service level of the file system.
+     * Gets the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
     ServiceLevel serviceLevel();
 
     /**
-     * Gets the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This
-     * is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Gets the usageThreshold property: usageThreshold
+     *
+     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
     long usageThreshold();
 
     /**
-     * Gets the exportPolicy property: exportPolicy Set of export policy rules.
+     * Gets the exportPolicy property: exportPolicy
+     *
+     * <p>Set of export policy rules.
      *
      * @return the exportPolicy value.
      */
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Gets the protocolTypes property: protocolTypes
+     *
+     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -123,21 +134,35 @@ public interface Volume {
     String provisioningState();
 
     /**
-     * Gets the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
+     * Gets the snapshotId property: Snapshot ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
-     * Gets the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup.
+     * Gets the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
+     * automatically deleted after the volume create operation has finished. Defaults to false.
+     *
+     * @return the deleteBaseSnapshot value.
+     */
+    Boolean deleteBaseSnapshot();
+
+    /**
+     * Gets the backupId property: Backup ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Backup.
      *
      * @return the backupId value.
      */
     String backupId();
 
     /**
-     * Gets the baremetalTenantId property: Baremetal Tenant ID Unique Baremetal Tenant Identifier.
+     * Gets the baremetalTenantId property: Baremetal Tenant ID
+     *
+     * <p>Unique Baremetal Tenant Identifier.
      *
      * @return the baremetalTenantId value.
      */
@@ -152,30 +177,36 @@ public interface Volume {
     String subnetId();
 
     /**
-     * Gets the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     * Gets the networkFeatures property: Network features
+     *
+     * <p>Basic network, or Standard features available to the volume.
      *
      * @return the networkFeatures value.
      */
     NetworkFeatures networkFeatures();
 
     /**
-     * Gets the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
-     * sharing networking resources.
+     * Gets the networkSiblingSetId property: Network Sibling Set ID
+     *
+     * <p>Network Sibling Set ID for the the group of volumes sharing networking resources.
      *
      * @return the networkSiblingSetId value.
      */
     String networkSiblingSetId();
 
     /**
-     * Gets the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
-     * information for the volume.
+     * Gets the storageToNetworkProximity property: Storage to Network Proximity
+     *
+     * <p>Provides storage to network proximity information for the volume.
      *
      * @return the storageToNetworkProximity value.
      */
     VolumeStorageToNetworkProximity storageToNetworkProximity();
 
     /**
-     * Gets the mountTargets property: mountTargets List of mount targets.
+     * Gets the mountTargets property: mountTargets
+     *
+     * <p>List of mount targets.
      *
      * @return the mountTargets value.
      */
@@ -190,8 +221,9 @@ public interface Volume {
     String volumeType();
 
     /**
-     * Gets the dataProtection property: DataProtection DataProtection type volumes include an object containing details
-     * of the replication.
+     * Gets the dataProtection property: DataProtection
+     *
+     * <p>DataProtection type volumes include an object containing details of the replication.
      *
      * @return the dataProtection value.
      */
@@ -235,6 +267,24 @@ public interface Volume {
      * @return the smbEncryption value.
      */
     Boolean smbEncryption();
+
+    /**
+     * Gets the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+     *
+     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbAccessBasedEnumeration value.
+     */
+    SmbAccessBasedEnumeration smbAccessBasedEnumeration();
+
+    /**
+     * Gets the smbNonBrowsable property: smbNonBrowsable
+     *
+     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbNonBrowsable value.
+     */
+    SmbNonBrowsable smbNonBrowsable();
 
     /**
      * Gets the smbContinuouslyAvailable property: Enables continuously available share property for smb volume. Only
@@ -312,8 +362,9 @@ public interface Volume {
     Integer cloneProgress();
 
     /**
-     * Gets the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure VMware Solution
-     * (AVS) datastore purpose.
+     * Gets the avsDataStore property: avsDataStore
+     *
+     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
      *
      * @return the avsDataStore value.
      */
@@ -396,8 +447,9 @@ public interface Volume {
     Boolean encrypted();
 
     /**
-     * Gets the placementRules property: Volume placement rules Application specific placement rules for the particular
-     * volume.
+     * Gets the placementRules property: Volume placement rules
+     *
+     * <p>Application specific placement rules for the particular volume.
      *
      * @return the placementRules value.
      */
@@ -486,11 +538,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify creationToken. */
         interface WithCreationToken {
             /**
-             * Specifies the creationToken property: Creation Token or File Path A unique file path for the volume. Used
-             * when creating mount targets.
+             * Specifies the creationToken property: Creation Token or File Path
              *
-             * @param creationToken Creation Token or File Path A unique file path for the volume. Used when creating
-             *     mount targets.
+             * <p>A unique file path for the volume. Used when creating mount targets.
+             *
+             * @param creationToken Creation Token or File Path
+             *     <p>A unique file path for the volume. Used when creating mount targets.
              * @return the next definition stage.
              */
             WithUsageThreshold withCreationToken(String creationToken);
@@ -498,13 +551,14 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in
-             * bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
-             * Specified in bytes..
+             * Specifies the usageThreshold property: usageThreshold
              *
-             * @param usageThreshold usageThreshold Maximum storage quota allowed for a file system in bytes. This is a
-             *     soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in
-             *     bytes.
+             * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
+             * Minimum size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
+             *
+             * @param usageThreshold usageThreshold
+             *     <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting
+             *     only. Minimum size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -532,6 +586,7 @@ public interface Volume {
                 DefinitionStages.WithExportPolicy,
                 DefinitionStages.WithProtocolTypes,
                 DefinitionStages.WithSnapshotId,
+                DefinitionStages.WithDeleteBaseSnapshot,
                 DefinitionStages.WithBackupId,
                 DefinitionStages.WithNetworkFeatures,
                 DefinitionStages.WithVolumeType,
@@ -541,6 +596,8 @@ public interface Volume {
                 DefinitionStages.WithKerberosEnabled,
                 DefinitionStages.WithSecurityStyle,
                 DefinitionStages.WithSmbEncryption,
+                DefinitionStages.WithSmbAccessBasedEnumeration,
+                DefinitionStages.WithSmbNonBrowsable,
                 DefinitionStages.WithSmbContinuouslyAvailable,
                 DefinitionStages.WithThroughputMibps,
                 DefinitionStages.WithEncryptionKeySource,
@@ -596,9 +653,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel
              *
-             * @param serviceLevel serviceLevel The service level of the file system.
+             * <p>The service level of the file system.
+             *
+             * @param serviceLevel serviceLevel
+             *     <p>The service level of the file system.
              * @return the next definition stage.
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
@@ -606,9 +666,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: exportPolicy Set of export policy rules.
+             * Specifies the exportPolicy property: exportPolicy
              *
-             * @param exportPolicy exportPolicy Set of export policy rules.
+             * <p>Set of export policy rules.
+             *
+             * @param exportPolicy exportPolicy
+             *     <p>Set of export policy rules.
              * @return the next definition stage.
              */
             WithCreate withExportPolicy(VolumePropertiesExportPolicy exportPolicy);
@@ -616,10 +679,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify protocolTypes. */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB
-             * protocol.
+             * Specifies the protocolTypes property: protocolTypes
              *
-             * @param protocolTypes protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             *
+             * @param protocolTypes protocolTypes
+             *     <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -627,20 +692,37 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify snapshotId. */
         interface WithSnapshotId {
             /**
-             * Specifies the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the
-             * Snapshot..
+             * Specifies the snapshotId property: Snapshot ID
              *
-             * @param snapshotId Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
+             * <p>UUID v4 or resource identifier used to identify the Snapshot..
+             *
+             * @param snapshotId Snapshot ID
+             *     <p>UUID v4 or resource identifier used to identify the Snapshot.
              * @return the next definition stage.
              */
             WithCreate withSnapshotId(String snapshotId);
         }
+        /** The stage of the Volume definition allowing to specify deleteBaseSnapshot. */
+        interface WithDeleteBaseSnapshot {
+            /**
+             * Specifies the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from
+             * will be automatically deleted after the volume create operation has finished. Defaults to false.
+             *
+             * @param deleteBaseSnapshot If enabled (true) the snapshot the volume was created from will be
+             *     automatically deleted after the volume create operation has finished. Defaults to false.
+             * @return the next definition stage.
+             */
+            WithCreate withDeleteBaseSnapshot(Boolean deleteBaseSnapshot);
+        }
         /** The stage of the Volume definition allowing to specify backupId. */
         interface WithBackupId {
             /**
-             * Specifies the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup..
+             * Specifies the backupId property: Backup ID
              *
-             * @param backupId Backup ID UUID v4 or resource identifier used to identify the Backup.
+             * <p>UUID v4 or resource identifier used to identify the Backup..
+             *
+             * @param backupId Backup ID
+             *     <p>UUID v4 or resource identifier used to identify the Backup.
              * @return the next definition stage.
              */
             WithCreate withBackupId(String backupId);
@@ -648,10 +730,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify networkFeatures. */
         interface WithNetworkFeatures {
             /**
-             * Specifies the networkFeatures property: Network features Basic network, or Standard features available to
-             * the volume..
+             * Specifies the networkFeatures property: Network features
              *
-             * @param networkFeatures Network features Basic network, or Standard features available to the volume.
+             * <p>Basic network, or Standard features available to the volume..
+             *
+             * @param networkFeatures Network features
+             *     <p>Basic network, or Standard features available to the volume.
              * @return the next definition stage.
              */
             WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
@@ -671,11 +755,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection DataProtection type volumes include an object
-             * containing details of the replication.
+             * Specifies the dataProtection property: DataProtection
              *
-             * @param dataProtection DataProtection DataProtection type volumes include an object containing details of
-             *     the replication.
+             * <p>DataProtection type volumes include an object containing details of the replication.
+             *
+             * @param dataProtection DataProtection
+             *     <p>DataProtection type volumes include an object containing details of the replication.
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
@@ -737,6 +822,34 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withSmbEncryption(Boolean smbEncryption);
+        }
+        /** The stage of the Volume definition allowing to specify smbAccessBasedEnumeration. */
+        interface WithSmbAccessBasedEnumeration {
+            /**
+             * Specifies the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+             *
+             * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
+             * volume.
+             *
+             * @param smbAccessBasedEnumeration smbAccessBasedEnumeration
+             *     <p>Enables access based enumeration share property for SMB Shares. Only applicable for
+             *     SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            WithCreate withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration);
+        }
+        /** The stage of the Volume definition allowing to specify smbNonBrowsable. */
+        interface WithSmbNonBrowsable {
+            /**
+             * Specifies the smbNonBrowsable property: smbNonBrowsable
+             *
+             * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             *
+             * @param smbNonBrowsable smbNonBrowsable
+             *     <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            WithCreate withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
         }
         /** The stage of the Volume definition allowing to specify smbContinuouslyAvailable. */
         interface WithSmbContinuouslyAvailable {
@@ -842,11 +955,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify avsDataStore. */
         interface WithAvsDataStore {
             /**
-             * Specifies the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure
-             * VMware Solution (AVS) datastore purpose.
+             * Specifies the avsDataStore property: avsDataStore
              *
-             * @param avsDataStore avsDataStore Specifies whether the volume is enabled for Azure VMware Solution (AVS)
-             *     datastore purpose.
+             * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+             *
+             * @param avsDataStore avsDataStore
+             *     <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
              * @return the next definition stage.
              */
             WithCreate withAvsDataStore(AvsDataStore avsDataStore);
@@ -921,11 +1035,12 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify placementRules. */
         interface WithPlacementRules {
             /**
-             * Specifies the placementRules property: Volume placement rules Application specific placement rules for
-             * the particular volume.
+             * Specifies the placementRules property: Volume placement rules
              *
-             * @param placementRules Volume placement rules Application specific placement rules for the particular
-             *     volume.
+             * <p>Application specific placement rules for the particular volume.
+             *
+             * @param placementRules Volume placement rules
+             *     <p>Application specific placement rules for the particular volume.
              * @return the next definition stage.
              */
             WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
@@ -993,9 +1108,12 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel
              *
-             * @param serviceLevel serviceLevel The service level of the file system.
+             * <p>The service level of the file system.
+             *
+             * @param serviceLevel serviceLevel
+             *     <p>The service level of the file system.
              * @return the next definition stage.
              */
             Update withServiceLevel(ServiceLevel serviceLevel);
@@ -1003,13 +1121,14 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in
-             * bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
-             * Specified in bytes..
+             * Specifies the usageThreshold property: usageThreshold
              *
-             * @param usageThreshold usageThreshold Maximum storage quota allowed for a file system in bytes. This is a
-             *     soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in
-             *     bytes.
+             * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
+             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
+             *
+             * @param usageThreshold usageThreshold
+             *     <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting
+             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -1017,9 +1136,12 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: exportPolicy Set of export policy rules.
+             * Specifies the exportPolicy property: exportPolicy
              *
-             * @param exportPolicy exportPolicy Set of export policy rules.
+             * <p>Set of export policy rules.
+             *
+             * @param exportPolicy exportPolicy
+             *     <p>Set of export policy rules.
              * @return the next definition stage.
              */
             Update withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy);
@@ -1039,11 +1161,12 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection DataProtection type volumes include an object
-             * containing details of the replication.
+             * Specifies the dataProtection property: DataProtection
              *
-             * @param dataProtection DataProtection DataProtection type volumes include an object containing details of
-             *     the replication.
+             * <p>DataProtection type volumes include an object containing details of the replication.
+             *
+             * @param dataProtection DataProtection
+             *     <p>DataProtection type volumes include an object containing details of the replication.
              * @return the next definition stage.
              */
             Update withDataProtection(VolumePatchPropertiesDataProtection dataProtection);
@@ -1139,7 +1262,9 @@ public interface Volume {
     Volume refresh(Context context);
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param body Object for snapshot to revert supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,7 +1274,9 @@ public interface Volume {
     void revert(VolumeRevert body);
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param body Object for snapshot to revert supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1160,7 +1287,9 @@ public interface Volume {
     void revert(VolumeRevert body, Context context);
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1168,7 +1297,9 @@ public interface Volume {
     void resetCifsPassword();
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1178,7 +1309,9 @@ public interface Volume {
     void resetCifsPassword(Context context);
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param body Optional body to force break the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1188,7 +1321,9 @@ public interface Volume {
     void breakReplication(BreakReplicationRequest body);
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1196,7 +1331,9 @@ public interface Volume {
     void breakReplication();
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param body Optional body to force break the replication.
      * @param context The context to associate with this operation.
@@ -1207,7 +1344,9 @@ public interface Volume {
     void breakReplication(BreakReplicationRequest body, Context context);
 
     /**
-     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
      *
      * @param body body for the id of the source volume.
@@ -1218,7 +1357,9 @@ public interface Volume {
     void reestablishReplication(ReestablishReplicationRequest body);
 
     /**
-     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
      *
      * @param body body for the id of the source volume.
@@ -1230,7 +1371,9 @@ public interface Volume {
     void reestablishReplication(ReestablishReplicationRequest body, Context context);
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1239,7 +1382,9 @@ public interface Volume {
     PagedIterable<Replication> listReplications();
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1250,7 +1395,9 @@ public interface Volume {
     PagedIterable<Replication> listReplications(Context context);
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1259,7 +1406,9 @@ public interface Volume {
     void resyncReplication();
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param context The context to associate with this operation.
@@ -1270,7 +1419,9 @@ public interface Volume {
     void resyncReplication(Context context);
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1278,7 +1429,9 @@ public interface Volume {
     void deleteReplication();
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1288,7 +1441,9 @@ public interface Volume {
     void deleteReplication(Context context);
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param body Authorize request object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1298,7 +1453,9 @@ public interface Volume {
     void authorizeReplication(AuthorizeRequest body);
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param body Authorize request object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1309,7 +1466,9 @@ public interface Volume {
     void authorizeReplication(AuthorizeRequest body, Context context);
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1317,7 +1476,9 @@ public interface Volume {
     void reInitializeReplication();
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1327,7 +1488,9 @@ public interface Volume {
     void reInitializeReplication(Context context);
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param body Move volume to the pool supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,7 +1500,9 @@ public interface Volume {
     void poolChange(PoolChangeRequest body);
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param body Move volume to the pool supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1348,7 +1513,21 @@ public interface Volume {
     void poolChange(PoolChangeRequest body, Context context);
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
+     *
+     * @param body Relocate volume request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void relocate(RelocateVolumeRequest body);
+
+    /**
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1356,17 +1535,22 @@ public interface Volume {
     void relocate();
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
      *
+     * <p>Relocates volume to a new stamp.
+     *
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void relocate(Context context);
+    void relocate(RelocateVolumeRequest body, Context context);
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1374,7 +1558,9 @@ public interface Volume {
     void finalizeRelocation();
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1384,7 +1570,9 @@ public interface Volume {
     void finalizeRelocation(Context context);
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1392,7 +1580,9 @@ public interface Volume {
     void revertRelocation();
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

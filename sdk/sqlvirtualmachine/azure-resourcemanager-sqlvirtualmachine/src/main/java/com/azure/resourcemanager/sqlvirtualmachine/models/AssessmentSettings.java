@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configure assessment for databases in your SQL virtual machine. */
 @Fluent
 public final class AssessmentSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssessmentSettings.class);
-
     /*
      * Enable or disable assessment feature on SQL virtual machine.
      */

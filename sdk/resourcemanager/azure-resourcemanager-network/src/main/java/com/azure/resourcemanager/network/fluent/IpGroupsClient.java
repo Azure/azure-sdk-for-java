@@ -46,21 +46,6 @@ public interface IpGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
-     * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName, String expand);
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,19 +53,6 @@ public interface IpGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<IpGroupInner> getByResourceGroupAsync(String resourceGroupName, String ipGroupsName);
-
-    /**
-     * Gets the specified ipGroups.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ipGroups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName);
 
     /**
      * Gets the specified ipGroups.
@@ -98,6 +70,19 @@ public interface IpGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String ipGroupsName, String expand, Context context);
+
+    /**
+     * Gets the specified ipGroups.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ipGroups.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpGroupInner getByResourceGroup(String resourceGroupName, String ipGroupsName);
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
@@ -239,20 +224,6 @@ public interface IpGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName, TagsObject parameters);
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param parameters Parameters supplied to the update ipGroups operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -262,6 +233,20 @@ public interface IpGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpGroupInner> updateGroupsWithResponse(
         String resourceGroupName, String ipGroupsName, TagsObject parameters, Context context);
+
+    /**
+     * Updates tags of an IpGroups resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ipGroupsName The name of the ipGroups.
+     * @param parameters Parameters supplied to the update ipGroups operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IpGroups resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName, TagsObject parameters);
 
     /**
      * Deletes the specified ipGroups.

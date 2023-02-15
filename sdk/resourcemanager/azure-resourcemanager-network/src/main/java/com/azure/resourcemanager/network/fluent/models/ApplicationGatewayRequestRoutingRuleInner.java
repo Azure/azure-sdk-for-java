@@ -37,6 +37,10 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayRequestRoutingRuleInner class. */
+    public ApplicationGatewayRequestRoutingRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway request routing rule.
      *

@@ -32,6 +32,10 @@ public final class RunQueryFilter {
     @JsonProperty(value = "values", required = true)
     private List<String> values;
 
+    /** Creates an instance of RunQueryFilter class. */
+    public RunQueryFilter() {
+    }
+
     /**
      * Get the operand property: Parameter name to be used for filter. The allowed operands to query pipeline runs are
      * PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart,

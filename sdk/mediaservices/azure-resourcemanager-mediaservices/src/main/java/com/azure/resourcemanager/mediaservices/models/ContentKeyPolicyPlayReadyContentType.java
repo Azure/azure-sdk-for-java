@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyContentType. */
+/** The PlayReady content type. */
 public final class ContentKeyPolicyPlayReadyContentType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyContentType> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyContentType. */
@@ -23,6 +23,15 @@ public final class ContentKeyPolicyPlayReadyContentType
     /** Static value UltraVioletStreaming for ContentKeyPolicyPlayReadyContentType. */
     public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING =
         fromString("UltraVioletStreaming");
+
+    /**
+     * Creates a new instance of ContentKeyPolicyPlayReadyContentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyPlayReadyContentType() {
+    }
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyContentType from its string representation.

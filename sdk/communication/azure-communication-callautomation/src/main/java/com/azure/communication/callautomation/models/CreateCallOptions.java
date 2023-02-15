@@ -6,7 +6,9 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -16,7 +18,7 @@ public class CreateCallOptions {
     /**
      * The source property.
      */
-    private final CommunicationIdentifier source;
+    private final CallSource source;
 
     /**
      * The targets of the call.
@@ -28,21 +30,25 @@ public class CreateCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String sourceCallerId;
+    private String azureCognitiveServicesEndpointUrl;
 
     /**
-     * The subject
+     * A customer set value used to track the answering of a call.
      */
-    private String subject;
+    private String operationContext;
 
     /**
      * Media Streaming Configuration.
      */
-    private MediaStreamingConfiguration mediaStreamingConfiguration;
+    private MediaStreamingOptions mediaStreamingOptions;
+
+    /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -51,10 +57,11 @@ public class CreateCallOptions {
      * @param targets The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
+    public CreateCallOptions(CallSource source, List<CommunicationIdentifier> targets, String callbackUrl) {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -62,7 +69,7 @@ public class CreateCallOptions {
      *
      * @return the source value.
      */
-    public CommunicationIdentifier getSource() {
+    public CallSource getSource() {
         return source;
     }
 
@@ -85,21 +92,22 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the subject.
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
      *
-     * @return the subject value.
+     * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getSubject() {
-        return subject;
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
     }
 
     /**
-     * Get the source caller Id that's shown to the PSTN participant being invited.
+     * Get the operationContext: A customer set value used to track the answering of a call.
      *
-     * @return the sourceCallerId value.
+     * @return the operationContext value.
      */
-    public String getSourceCallerId() {
-        return sourceCallerId;
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
@@ -107,41 +115,61 @@ public class CreateCallOptions {
      *
      * @return the mediaStreamingConfiguration.
      */
-    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
-        return mediaStreamingConfiguration;
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
     }
 
     /**
-     * Set the subject.
+     * Get the Repeatability headers configuration.
      *
-     * @param subject the subject.
-     * @return the CreateCallOptions object itself.
+     * @return the repeatabilityHeaders
      */
-    public CreateCallOptions setSubject(String subject) {
-        this.subject = subject;
-        return this;
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
     }
 
     /**
-     * Set the sourceCallerId.
+     * Set the operationContext: A customer set value used to track the answering of a call.
      *
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant.
+     * @param operationContext A customer set value used to track the answering of a call.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setSourceCallerId(String sourceCallerId) {
-        this.sourceCallerId = sourceCallerId;
+    public CreateCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingConfiguration The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming configuration.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingConfiguration mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

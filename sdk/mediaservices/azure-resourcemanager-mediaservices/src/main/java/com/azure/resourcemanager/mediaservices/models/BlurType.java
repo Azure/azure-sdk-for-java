@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlurType. */
+/** Blur type. */
 public final class BlurType extends ExpandableStringEnum<BlurType> {
     /** Static value Box for BlurType. */
     public static final BlurType BOX = fromString("Box");
@@ -24,6 +24,15 @@ public final class BlurType extends ExpandableStringEnum<BlurType> {
 
     /** Static value Black for BlurType. */
     public static final BlurType BLACK = fromString("Black");
+
+    /**
+     * Creates a new instance of BlurType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlurType() {
+    }
 
     /**
      * Creates or finds a BlurType from its string representation.

@@ -7,118 +7,116 @@ package com.azure.resourcemanager.machinelearning.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
+import java.util.List;
 
-/** Recurrence schedule definition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scheduleType")
-@JsonTypeName("Recurrence")
+/** The RecurrenceSchedule model. */
 @Fluent
-public final class RecurrenceSchedule extends ScheduleBase {
+public final class RecurrenceSchedule {
     /*
-     * [Required] Specifies frequency with with which to trigger schedule
+     * [Required] List of hours for the schedule.
      */
-    @JsonProperty(value = "frequency", required = true)
-    private RecurrenceFrequency frequency;
-
-    /*
-     * [Required] Specifies schedule interval in conjunction with frequency
-     */
-    @JsonProperty(value = "interval", required = true)
-    private int interval;
+    @JsonProperty(value = "hours", required = true)
+    private List<Integer> hours;
 
     /*
-     * Specifies the recurrence schedule pattern
+     * [Required] List of minutes for the schedule.
      */
-    @JsonProperty(value = "pattern")
-    private RecurrencePattern pattern;
+    @JsonProperty(value = "minutes", required = true)
+    private List<Integer> minutes;
 
-    /**
-     * Get the frequency property: [Required] Specifies frequency with with which to trigger schedule.
-     *
-     * @return the frequency value.
+    /*
+     * List of month days for the schedule
      */
-    public RecurrenceFrequency frequency() {
-        return this.frequency;
+    @JsonProperty(value = "monthDays")
+    private List<Integer> monthDays;
+
+    /*
+     * List of days for the schedule.
+     */
+    @JsonProperty(value = "weekDays")
+    private List<WeekDay> weekDays;
+
+    /** Creates an instance of RecurrenceSchedule class. */
+    public RecurrenceSchedule() {
     }
 
     /**
-     * Set the frequency property: [Required] Specifies frequency with with which to trigger schedule.
+     * Get the hours property: [Required] List of hours for the schedule.
      *
-     * @param frequency the frequency value to set.
+     * @return the hours value.
+     */
+    public List<Integer> hours() {
+        return this.hours;
+    }
+
+    /**
+     * Set the hours property: [Required] List of hours for the schedule.
+     *
+     * @param hours the hours value to set.
      * @return the RecurrenceSchedule object itself.
      */
-    public RecurrenceSchedule withFrequency(RecurrenceFrequency frequency) {
-        this.frequency = frequency;
+    public RecurrenceSchedule withHours(List<Integer> hours) {
+        this.hours = hours;
         return this;
     }
 
     /**
-     * Get the interval property: [Required] Specifies schedule interval in conjunction with frequency.
+     * Get the minutes property: [Required] List of minutes for the schedule.
      *
-     * @return the interval value.
+     * @return the minutes value.
      */
-    public int interval() {
-        return this.interval;
+    public List<Integer> minutes() {
+        return this.minutes;
     }
 
     /**
-     * Set the interval property: [Required] Specifies schedule interval in conjunction with frequency.
+     * Set the minutes property: [Required] List of minutes for the schedule.
      *
-     * @param interval the interval value to set.
+     * @param minutes the minutes value to set.
      * @return the RecurrenceSchedule object itself.
      */
-    public RecurrenceSchedule withInterval(int interval) {
-        this.interval = interval;
+    public RecurrenceSchedule withMinutes(List<Integer> minutes) {
+        this.minutes = minutes;
         return this;
     }
 
     /**
-     * Get the pattern property: Specifies the recurrence schedule pattern.
+     * Get the monthDays property: List of month days for the schedule.
      *
-     * @return the pattern value.
+     * @return the monthDays value.
      */
-    public RecurrencePattern pattern() {
-        return this.pattern;
+    public List<Integer> monthDays() {
+        return this.monthDays;
     }
 
     /**
-     * Set the pattern property: Specifies the recurrence schedule pattern.
+     * Set the monthDays property: List of month days for the schedule.
      *
-     * @param pattern the pattern value to set.
+     * @param monthDays the monthDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
-    public RecurrenceSchedule withPattern(RecurrencePattern pattern) {
-        this.pattern = pattern;
+    public RecurrenceSchedule withMonthDays(List<Integer> monthDays) {
+        this.monthDays = monthDays;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public RecurrenceSchedule withEndTime(OffsetDateTime endTime) {
-        super.withEndTime(endTime);
-        return this;
+    /**
+     * Get the weekDays property: List of days for the schedule.
+     *
+     * @return the weekDays value.
+     */
+    public List<WeekDay> weekDays() {
+        return this.weekDays;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public RecurrenceSchedule withScheduleStatus(ScheduleStatus scheduleStatus) {
-        super.withScheduleStatus(scheduleStatus);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RecurrenceSchedule withStartTime(OffsetDateTime startTime) {
-        super.withStartTime(startTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RecurrenceSchedule withTimeZone(String timeZone) {
-        super.withTimeZone(timeZone);
+    /**
+     * Set the weekDays property: List of days for the schedule.
+     *
+     * @param weekDays the weekDays value to set.
+     * @return the RecurrenceSchedule object itself.
+     */
+    public RecurrenceSchedule withWeekDays(List<WeekDay> weekDays) {
+        this.weekDays = weekDays;
         return this;
     }
 
@@ -127,16 +125,16 @@ public final class RecurrenceSchedule extends ScheduleBase {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (frequency() == null) {
+        if (hours() == null) {
             throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property frequency in model RecurrenceSchedule"));
+                    new IllegalArgumentException("Missing required property hours in model RecurrenceSchedule"));
         }
-        if (pattern() != null) {
-            pattern().validate();
+        if (minutes() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property minutes in model RecurrenceSchedule"));
         }
     }
 

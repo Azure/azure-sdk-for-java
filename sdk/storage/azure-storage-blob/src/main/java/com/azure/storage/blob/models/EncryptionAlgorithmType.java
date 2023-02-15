@@ -27,6 +27,9 @@ public enum EncryptionAlgorithmType {
      */
     @JsonCreator
     public static EncryptionAlgorithmType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EncryptionAlgorithmType[] items = EncryptionAlgorithmType.values();
         for (EncryptionAlgorithmType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum EncryptionAlgorithmType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

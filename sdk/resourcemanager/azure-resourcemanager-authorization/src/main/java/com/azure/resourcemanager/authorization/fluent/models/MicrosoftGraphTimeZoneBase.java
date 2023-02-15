@@ -16,9 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphTimeZoneBase {
     /*
-     * The name of a time zone. It can be a standard time zone name such as
-     * 'Hawaii-Aleutian Standard Time', or 'Customized Time Zone' for a custom
-     * time zone.
+     * The name of a time zone. It can be a standard time zone name such as 'Hawaii-Aleutian Standard Time', or
+     * 'Customized Time Zone' for a custom time zone.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -27,6 +26,10 @@ public final class MicrosoftGraphTimeZoneBase {
      * timeZoneBase
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTimeZoneBase class. */
+    public MicrosoftGraphTimeZoneBase() {
+    }
 
     /**
      * Get the name property: The name of a time zone. It can be a standard time zone name such as 'Hawaii-Aleutian

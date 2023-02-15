@@ -16,6 +16,9 @@ public final class NetworkIntentPolicyBasedService extends ExpandableStringEnum<
     /** Static value All for NetworkIntentPolicyBasedService. */
     public static final NetworkIntentPolicyBasedService ALL = fromString("All");
 
+    /** Static value AllowRulesOnly for NetworkIntentPolicyBasedService. */
+    public static final NetworkIntentPolicyBasedService ALLOW_RULES_ONLY = fromString("AllowRulesOnly");
+
     /**
      * Creates or finds a NetworkIntentPolicyBasedService from its string representation.
      *

@@ -17,6 +17,10 @@ public final class ConnectedClusterResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of ConnectedClusterResourceId class. */
+    public ConnectedClusterResourceId() {
+    }
+
     /**
      * Get the id property: Azure Arc connected cluster resource ID.
      *

@@ -19,11 +19,13 @@ import java.util.Map;
 @Fluent
 public class SharePointOnlineListResourceDataset extends Dataset {
     /*
-     * The name of the SharePoint Online list. Type: string (or Expression with
-     * resultType string).
+     * The name of the SharePoint Online list. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.listName")
     private Object listName;
+
+    /** Creates an instance of SharePointOnlineListResourceDataset class. */
+    public SharePointOnlineListResourceDataset() {}
 
     /**
      * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType

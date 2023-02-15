@@ -24,6 +24,10 @@ public final class SsisLogLocationTypeProperties {
     @JsonProperty(value = "logRefreshInterval")
     private Object logRefreshInterval;
 
+    /** Creates an instance of SsisLogLocationTypeProperties class. */
+    public SsisLogLocationTypeProperties() {
+    }
+
     /**
      * Get the accessCredential property: The package execution log access credential.
      *

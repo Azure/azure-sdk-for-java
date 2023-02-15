@@ -24,6 +24,10 @@ public final class DscpConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DscpConfigurationListResult class. */
+    public DscpConfigurationListResult() {
+    }
+
     /**
      * Get the value property: A list of dscp configurations in a resource group.
      *

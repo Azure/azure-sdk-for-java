@@ -21,6 +21,10 @@ public final class RoleManagementPolicyEnablementRule extends RoleManagementPoli
     @JsonProperty(value = "enabledRules")
     private List<EnablementRules> enabledRules;
 
+    /** Creates an instance of RoleManagementPolicyEnablementRule class. */
+    public RoleManagementPolicyEnablementRule() {
+    }
+
     /**
      * Get the enabledRules property: The list of enabled rules.
      *

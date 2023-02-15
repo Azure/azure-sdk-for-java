@@ -17,6 +17,10 @@ public final class ManagedIdentitySettings {
     @JsonProperty(value = "resource")
     private String resource;
 
+    /** Creates an instance of ManagedIdentitySettings class. */
+    public ManagedIdentitySettings() {
+    }
+
     /**
      * Get the resource property: The Resource indicating the App ID URI of the target resource. It also appears in the
      * aud (audience) claim of the issued token.

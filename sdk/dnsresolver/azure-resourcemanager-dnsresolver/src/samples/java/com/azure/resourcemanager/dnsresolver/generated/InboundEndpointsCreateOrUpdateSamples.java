@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for InboundEndpoints CreateOrUpdate. */
 public final class InboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert inbound endpoint for DNS resolver.
@@ -28,7 +28,6 @@ public final class InboundEndpointsCreateOrUpdateSamples {
             .define("sampleInboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withTags(mapOf("key1", "value1"))
             .withIpConfigurations(
                 Arrays
                     .asList(
@@ -37,8 +36,8 @@ public final class InboundEndpointsCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
-                            .withPrivateIpAddress("255.255.255.255")
-                            .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)))
+                            .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 

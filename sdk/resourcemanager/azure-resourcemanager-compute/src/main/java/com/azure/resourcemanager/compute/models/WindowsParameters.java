@@ -42,6 +42,10 @@ public final class WindowsParameters {
     @JsonProperty(value = "maxPatchPublishDate")
     private OffsetDateTime maxPatchPublishDate;
 
+    /** Creates an instance of WindowsParameters class. */
+    public WindowsParameters() {
+    }
+
     /**
      * Get the classificationsToInclude property: The update classifications to select when installing patches for
      * Windows.

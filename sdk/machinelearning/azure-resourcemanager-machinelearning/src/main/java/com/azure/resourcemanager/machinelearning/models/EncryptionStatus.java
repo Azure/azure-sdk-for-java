@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionStatus. */
+/** Indicates whether or not the encryption is enabled for the workspace. */
 public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatus> {
     /** Static value Enabled for EncryptionStatus. */
     public static final EncryptionStatus ENABLED = fromString("Enabled");
 
     /** Static value Disabled for EncryptionStatus. */
     public static final EncryptionStatus DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of EncryptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionStatus() {
+    }
 
     /**
      * Creates or finds a EncryptionStatus from its string representation.

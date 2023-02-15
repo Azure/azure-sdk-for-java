@@ -14,6 +14,15 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
     public static final CredentialReferenceType CREDENTIAL_REFERENCE = fromString("CredentialReference");
 
     /**
+     * Creates a new instance of CredentialReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CredentialReferenceType() {
+    }
+
+    /**
      * Creates or finds a CredentialReferenceType from its string representation.
      *
      * @param name a name to look for.

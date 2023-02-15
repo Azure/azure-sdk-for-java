@@ -1,5 +1,69 @@
 # Release History
 
+## 1.4.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.0-beta.2 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.36.0`.
+- Update `azure-core-http-netty` dependency to `1.13.0`.
+
+## 1.4.0-beta.1 (2023-01-26)
+
+### Features Added
+
+- Added additional `SchemaFormat`s, `SchemaFormat.JSON`, and `SchemaFormat.CUSTOM`.
+- Added new service version, `SchemaRegistryVersion.V2022_10`.
+- Updated the latest service version to `SchemaRegistryVersion.V2022_10`.
+
+## 1.3.2 (2023-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.35.0`.
+- Update `azure-core-http-netty` dependency to `1.12.8`.
+
+## 1.3.1 (2022-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.34.0`.
+- Update `azure-core-http-netty` dependency to `1.12.7`.
+
+## 1.3.0 (2022-10-11)
+
+### Features Added
+
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-core-http-netty` dependency to `1.12.6`.
+
 ## 1.2.4 (2022-09-12)
 
 ### Other Changes

@@ -23,6 +23,10 @@ public final class AlertRuleResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private AlertRule innerProperties = new AlertRule();
 
+    /** Creates an instance of AlertRuleResourceInner class. */
+    public AlertRuleResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The alert rule properties of the resource.
      *

@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for ForwardingRules Update. */
 public final class ForwardingRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Patch.json
      */
     /**
      * Sample code: Update forwarding rule in a DNS forwarding ruleset.

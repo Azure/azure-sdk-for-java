@@ -6,10 +6,8 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptExecutionParameter;
 import com.azure.resourcemanager.avs.models.ScriptExecutionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,13 +16,15 @@ import java.util.Map;
 /** An instance of a script executed by a user - custom or AVS. */
 @Fluent
 public final class ScriptExecutionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionInner.class);
-
     /*
      * The properties of a script execution resource
      */
     @JsonProperty(value = "properties")
     private ScriptExecutionProperties innerProperties;
+
+    /** Creates an instance of ScriptExecutionInner class. */
+    public ScriptExecutionInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a script execution resource.

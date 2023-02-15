@@ -12,15 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PlacementKeyValuePairs {
     /*
-     * Key for an application specific parameter for the placement of volumes
-     * in the volume group
+     * Key for an application specific parameter for the placement of volumes in the volume group
      */
     @JsonProperty(value = "key", required = true)
     private String key;
 
     /*
-     * Value for an application specific parameter for the placement of volumes
-     * in the volume group
+     * Value for an application specific parameter for the placement of volumes in the volume group
      */
     @JsonProperty(value = "value", required = true)
     private String value;

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,271 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-01-19)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.RecoveryPointProperties` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.AzureWorkloadPointInTimeRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.AzureWorkloadRecoveryPoint` was modified
+
+* `recoveryPointProperties()` was added
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.GenericRecoveryPoint` was modified
+
+* `recoveryPointProperties()` was added
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.AzureWorkloadSqlRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+#### `models.IaasVMRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+* `recoveryPointProperties()` was added
+
+#### `models.AzureFileShareRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+* `recoveryPointProperties()` was added
+
+#### `models.AzureWorkloadSapHanaRecoveryPoint` was modified
+
+* `withRecoveryPointProperties(models.RecoveryPointProperties)` was added
+
+## 1.0.0-beta.6 (2022-10-24)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2022-09-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ContainerType` was removed
+
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `withHealthStatus(models.HealthStatus)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withVirtualMachineId(java.lang.String)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withHealthStatus(models.HealthStatus)` was removed
+* `withProtectedItemDataId(java.lang.String)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withLastBackupTime(java.time.OffsetDateTime)` was removed
+
+#### `models.MabFileFolderProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withProtectionStatus(java.lang.String)` was removed
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withProtectionStatus(java.lang.String)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withLastBackupTime(java.time.OffsetDateTime)` was removed
+* `withHealthStatus(models.HealthStatus)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withProtectedItemDataId(java.lang.String)` was removed
+* `withVirtualMachineId(java.lang.String)` was removed
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withProtectionStatus(java.lang.String)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withProtectionStatus(java.lang.String)` was removed
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `withFriendlyName(java.lang.String)` was removed
+* `withProtectionStatus(java.lang.String)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+
+#### `models.ProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `withLastBackupTime(java.time.OffsetDateTime)` was removed
+* `withHealthStatus(models.HealthStatus)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withProtectedItemDataId(java.lang.String)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withHealthStatus(models.HealthStatus)` was removed
+* `withVirtualMachineId(java.lang.String)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+
+#### `models.GenericProtectedItem` was modified
+
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+
+#### `models.AzureFileshareProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+
+#### `models.AzureSqlProtectedItem` was modified
+
+* `withWorkloadType(models.DataSourceType)` was removed
+* `withBackupManagementType(models.BackupManagementType)` was removed
+
+#### `models.DpmProtectedItem` was modified
+
+* `withBackupManagementType(models.BackupManagementType)` was removed
+* `withWorkloadType(models.DataSourceType)` was removed
+
+### Features Added
+
+* `models.AzureVmWorkloadSapHanaHsr` was added
+
+* `models.AzureVmWorkloadSapHanaDBInstance` was added
+
+* `models.DeletedProtectionContainers` was added
+
+* `models.AzureVmWorkloadSapHanaDBInstanceProtectedItem` was added
+
+* `models.ProtectableContainerType` was added
+
+* `models.TieringPolicy` was added
+
+* `models.TieringMode` was added
+
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.MabFileFolderProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.SubProtectionPolicy` was modified
+
+* `withTieringPolicy(java.util.Map)` was added
+* `tieringPolicy()` was added
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureIaaSvmProtectionPolicy` was modified
+
+* `tieringPolicy()` was added
+* `withTieringPolicy(java.util.Map)` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.ProtectedItem` was modified
+
+* `softDeleteRetentionPeriod()` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `RecoveryServicesBackupManager` was modified
+
+* `deletedProtectionContainers()` was added
+
+#### `models.GenericProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadProtectedItemExtendedInfo` was modified
+
+* `withOldestRecoveryPointInArchive(java.time.OffsetDateTime)` was added
+* `newestRecoveryPointInArchive()` was added
+* `withOldestRecoveryPointInVault(java.time.OffsetDateTime)` was added
+* `oldestRecoveryPointInVault()` was added
+* `withNewestRecoveryPointInArchive(java.time.OffsetDateTime)` was added
+* `oldestRecoveryPointInArchive()` was added
+
+#### `models.AzureFileshareProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureSqlProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+
+#### `models.AzureIaaSvmProtectedItemExtendedInfo` was modified
+
+* `newestRecoveryPointInArchive()` was added
+* `oldestRecoveryPointInArchive()` was added
+* `oldestRecoveryPointInVault()` was added
+* `withNewestRecoveryPointInArchive(java.time.OffsetDateTime)` was added
+* `withOldestRecoveryPointInArchive(java.time.OffsetDateTime)` was added
+* `withOldestRecoveryPointInVault(java.time.OffsetDateTime)` was added
+
+#### `models.DpmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was added
 
 ## 1.0.0-beta.5 (2022-05-16)
 

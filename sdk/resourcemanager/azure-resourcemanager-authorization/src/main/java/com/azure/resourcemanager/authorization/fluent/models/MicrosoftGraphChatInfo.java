@@ -38,6 +38,10 @@ public final class MicrosoftGraphChatInfo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphChatInfo class. */
+    public MicrosoftGraphChatInfo() {
+    }
+
     /**
      * Get the messageId property: The unique identifier of a message in a Microsoft Teams channel.
      *

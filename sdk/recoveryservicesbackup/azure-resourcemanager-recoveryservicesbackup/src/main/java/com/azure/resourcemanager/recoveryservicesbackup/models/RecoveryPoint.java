@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class RecoveryPoint {
+    /** Creates an instance of RecoveryPoint class. */
+    public RecoveryPoint() {
+    }
+
     /**
      * Validates the instance.
      *

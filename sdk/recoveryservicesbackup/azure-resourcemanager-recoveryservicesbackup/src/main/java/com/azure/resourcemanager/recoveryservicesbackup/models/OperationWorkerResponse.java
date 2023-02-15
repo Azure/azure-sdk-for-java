@@ -26,6 +26,10 @@ public class OperationWorkerResponse {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> headers;
 
+    /** Creates an instance of OperationWorkerResponse class. */
+    public OperationWorkerResponse() {
+    }
+
     /**
      * Get the statusCode property: HTTP Status Code of the operation.
      *

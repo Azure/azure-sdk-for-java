@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SoftDeleteFeatureState. */
+/** Soft Delete feature state. */
 public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDeleteFeatureState> {
     /** Static value Invalid for SoftDeleteFeatureState. */
     public static final SoftDeleteFeatureState INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDelet
 
     /** Static value Disabled for SoftDeleteFeatureState. */
     public static final SoftDeleteFeatureState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of SoftDeleteFeatureState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SoftDeleteFeatureState() {
+    }
 
     /**
      * Creates or finds a SoftDeleteFeatureState from its string representation.

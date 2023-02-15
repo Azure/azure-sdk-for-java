@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,118 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.11 (2022-09-19)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Volume` was modified
+
+* `relocate(com.azure.core.util.Context)` was removed
+
+#### `models.Volumes` was modified
+
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Vault` was modified
+
+* `location()` was removed
+
+#### `models.AccountEncryption` was modified
+
+* `java.lang.String keySource()` -> `models.KeySource keySource()`
+* `withKeySource(java.lang.String)` was removed
+
+### Features Added
+
+* `models.KeyVaultProperties` was added
+
+* `models.EncryptionIdentity` was added
+
+* `models.IdentityType` was added
+
+* `models.RelocateVolumeRequest` was added
+
+* `models.KeyVaultStatus` was added
+
+* `models.SmbNonBrowsable` was added
+
+* `models.KeySource` was added
+
+* `models.Identity` was added
+
+* `models.RegionInfoAvailabilityZoneMappingsItem` was added
+
+* `models.RegionInfo` was added
+
+* `models.RegionStorageToNetworkProximity` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.SmbAccessBasedEnumeration` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withIdentity(models.Identity)` was added
+
+#### `models.Volume` was modified
+
+* `smbNonBrowsable()` was added
+* `deleteBaseSnapshot()` was added
+* `relocate(models.RelocateVolumeRequest)` was added
+* `smbAccessBasedEnumeration()` was added
+* `relocate(models.RelocateVolumeRequest,com.azure.core.util.Context)` was added
+
+#### `models.NetAppResources` was modified
+
+* `queryRegionInfoWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `queryRegionInfo(java.lang.String)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `withDeleteBaseSnapshot(java.lang.Boolean)` was added
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+
+#### `models.Volumes` was modified
+
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.RelocateVolumeRequest)` was added
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.RelocateVolumeRequest,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `disableShowmount()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+* `smbNonBrowsable()` was added
+* `deleteBaseSnapshot()` was added
+* `withDeleteBaseSnapshot(java.lang.Boolean)` was added
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `smbAccessBasedEnumeration()` was added
+
+#### `models.Accounts` was modified
+
+* `renewCredentials(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `renewCredentials(java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `renewCredentials()` was added
+* `disableShowmount()` was added
+* `identity()` was added
+* `renewCredentials(com.azure.core.util.Context)` was added
+
+#### `models.AccountEncryption` was modified
+
+* `withKeySource(models.KeySource)` was added
+* `withIdentity(models.EncryptionIdentity)` was added
+* `withKeyVaultProperties(models.KeyVaultProperties)` was added
+* `keyVaultProperties()` was added
+* `identity()` was added
 
 ## 1.0.0-beta.10 (2022-07-21)
 

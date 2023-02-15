@@ -20,6 +20,10 @@ public final class CustomSeasonality extends Seasonality {
     @JsonProperty(value = "value", required = true)
     private int value;
 
+    /** Creates an instance of CustomSeasonality class. */
+    public CustomSeasonality() {
+    }
+
     /**
      * Get the value property: [Required] Seasonality value.
      *

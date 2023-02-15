@@ -17,6 +17,10 @@ public final class ClientDiscoveryForServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<ClientDiscoveryForLogSpecification> logSpecifications;
 
+    /** Creates an instance of ClientDiscoveryForServiceSpecification class. */
+    public ClientDiscoveryForServiceSpecification() {
+    }
+
     /**
      * Get the logSpecifications property: List of log specifications of this operation.
      *

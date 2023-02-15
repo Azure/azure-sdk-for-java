@@ -66,6 +66,10 @@ public final class ApplicationGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ApplicationGatewayInner class. */
+    public ApplicationGatewayInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway.
      *

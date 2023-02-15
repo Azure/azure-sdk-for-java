@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** defines the type of alert. */
 @Fluent
 public final class AlertPropertiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertPropertiesDefinition.class);
-
     /*
      * type of alert
      */
@@ -31,6 +27,10 @@ public final class AlertPropertiesDefinition {
      */
     @JsonProperty(value = "criteria")
     private AlertCriteria criteria;
+
+    /** Creates an instance of AlertPropertiesDefinition class. */
+    public AlertPropertiesDefinition() {
+    }
 
     /**
      * Get the type property: type of alert.

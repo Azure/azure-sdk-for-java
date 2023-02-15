@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.26.0</version>
+    <version>3.31.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -123,6 +123,7 @@ In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log
 Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
 Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
 NOTE: Setting this to a very high value can result in high memory consumption.
+Set `responseContinuationTokenLimitInKb` flag to an integer in application.properties to allow the user to limit the length of the continuation token in the query response. The continuation token contains both required and optional fields. The required fields are necessary for resuming the execution from where it was stoped. The optional fields may contain serialized index lookup work that was done but not yet utilized. This avoids redoing the work again in subsequent continuations and hence improve the query performance. Setting the maximum continuation size to 1KB, the Azure Cosmos DB service will only serialize required fields. Starting from 2KB, the Azure Cosmos DB service would serialize as much as it could fit till it reaches the maximum specified size.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -148,9 +149,12 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
-    
+
     @Value("${azure.cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
+
+    @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -171,6 +175,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -214,6 +219,7 @@ public CosmosConfig cosmosConfig() {
                        .enableQueryMetrics(queryMetricsEnabled)
                        .maxDegreeOfParallelism(maxDegreeOfParallelism)
                        .maxBufferedItemCount(maxBufferedItemCount)
+                       .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -692,6 +698,7 @@ public class SecondaryDatasourceConfiguration {
             .enableQueryMetrics(true)
             .maxDegreeOfParallelism(0)
             .maxBufferedItemCount(0)
+            .responseContinuationTokenLimitInKb(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -729,12 +736,13 @@ public CosmosConfig getCosmosConfig() {
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism` or `maxBufferedItemCount` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism`, `maxBufferedItemCount` or `responseContinuationTokenLimitInKb` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
@@ -743,6 +751,7 @@ public CosmosConfig getCosmosConfig() {
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
@@ -921,6 +930,32 @@ public class MultiDatabaseApplication implements CommandLineRunner {
         database1Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
         // Same to this.userRepository1.deleteAll().block();
         database2Template.deleteAll(User2.class.getSimpleName(), User2.class).block();
+    }
+}
+```
+
+### Multi-Tenancy at the Database Level
+- Azure-spring-data-cosmos supports multi-tenancy at the database level configuration by extending `CosmosFactory` and overriding the getDatabaseName() function.
+```java readme-sample-MultiTenantDBCosmosFactory
+public class MultiTenantDBCosmosFactory extends CosmosFactory {
+
+    private String tenantId;
+    
+    /**
+     * Validate config and initialization
+     *
+     * @param cosmosAsyncClient cosmosAsyncClient
+     * @param databaseName      databaseName
+     */
+    public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+        super(cosmosAsyncClient, databaseName);
+        
+        this.tenantId = databaseName;
+    }
+
+    @Override
+    public String getDatabaseName() {
+        return this.getCosmosAsyncClient().getDatabase(this.tenantId).toString();
     }
 }
 ```

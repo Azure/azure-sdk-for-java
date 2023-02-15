@@ -29,6 +29,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.ServiceVersion;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
@@ -95,6 +96,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     private Configuration configuration;
     private ClientOptions clientOptions;
     private KeyVaultAdministrationServiceVersion serviceVersion;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * Creates a {@link KeyVaultAccessControlClientBuilder} instance that is able to configure and construct
@@ -122,7 +124,13 @@ public final class KeyVaultAccessControlClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultAccessControlClient buildClient() {
-        return new KeyVaultAccessControlClient(buildAsyncClient());
+        Configuration buildConfiguration = validateEndpointAndGetConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+        return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -140,6 +148,17 @@ public final class KeyVaultAccessControlClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
+        Configuration buildConfiguration = validateEndpointAndGetConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+    }
+
+
+    private Configuration validateEndpointAndGetConfiguration() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone()
             : configuration;
@@ -151,13 +170,15 @@ public final class KeyVaultAccessControlClientBuilder implements
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+        return buildConfiguration;
+    }
 
-        serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    private KeyVaultAdministrationServiceVersion getServiceVersion() {
+        return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    }
 
-        if (pipeline != null) {
-            return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
-        }
 
+    private HttpPipeline getPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -183,7 +204,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -191,16 +212,16 @@ public final class KeyVaultAccessControlClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-
-        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
-     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
+     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource.
+     * Refer to the following  <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
      *
@@ -434,6 +455,18 @@ public final class KeyVaultAccessControlClientBuilder implements
      */
     public KeyVaultAccessControlClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
+     */
+    public KeyVaultAccessControlClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

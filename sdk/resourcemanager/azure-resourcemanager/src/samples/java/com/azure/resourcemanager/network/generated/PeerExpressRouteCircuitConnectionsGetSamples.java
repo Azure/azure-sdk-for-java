@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PeerExpressRouteCircuitConnections Get. */
 public final class PeerExpressRouteCircuitConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PeerExpressRouteCircuitConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PeerExpressRouteCircuitConnectionGet.json
      */
     /**
      * Sample code: PeerExpressRouteCircuitConnectionGet.

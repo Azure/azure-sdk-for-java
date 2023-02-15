@@ -63,7 +63,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface InboundNatRulesService {
+    public interface InboundNatRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -174,7 +174,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +235,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -363,7 +363,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -420,7 +420,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -624,7 +624,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -684,7 +684,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -698,25 +698,6 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
                 expand,
                 accept,
                 context);
-    }
-
-    /**
-     * Gets the specified load balancer inbound NAT rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param inboundNatRuleName The name of the inbound NAT rule.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InboundNatRuleInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand) {
-        return getWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -744,23 +725,6 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InboundNatRuleInner get(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
-        final String expand = null;
-        return getAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand).block();
-    }
-
-    /**
-     * Gets the specified load balancer inbound NAT rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param inboundNatRuleName The name of the inbound NAT rule.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -772,6 +736,24 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
     public Response<InboundNatRuleInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, expand, context).block();
+    }
+
+    /**
+     * Gets the specified load balancer inbound NAT rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param inboundNatRuleName The name of the inbound NAT rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer inbound NAT rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InboundNatRuleInner get(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
+        final String expand = null;
+        return getWithResponse(resourceGroupName, loadBalancerName, inboundNatRuleName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -824,7 +806,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -895,7 +877,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
         } else {
             inboundNatRuleParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

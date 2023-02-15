@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointAuthMode. */
+/** Enum to determine endpoint authentication mode. */
 public final class EndpointAuthMode extends ExpandableStringEnum<EndpointAuthMode> {
     /** Static value AMLToken for EndpointAuthMode. */
     public static final EndpointAuthMode AMLTOKEN = fromString("AMLToken");
@@ -18,6 +18,15 @@ public final class EndpointAuthMode extends ExpandableStringEnum<EndpointAuthMod
 
     /** Static value AADToken for EndpointAuthMode. */
     public static final EndpointAuthMode AADTOKEN = fromString("AADToken");
+
+    /**
+     * Creates a new instance of EndpointAuthMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointAuthMode() {
+    }
 
     /**
      * Creates or finds a EndpointAuthMode from its string representation.

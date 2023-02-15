@@ -30,6 +30,10 @@ public final class ManagedClusterNatGatewayProfile {
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
+    /** Creates an instance of ManagedClusterNatGatewayProfile class. */
+    public ManagedClusterNatGatewayProfile() {
+    }
+
     /**
      * Get the managedOutboundIpProfile property: Profile of the managed outbound IP resources of the cluster NAT
      * gateway.

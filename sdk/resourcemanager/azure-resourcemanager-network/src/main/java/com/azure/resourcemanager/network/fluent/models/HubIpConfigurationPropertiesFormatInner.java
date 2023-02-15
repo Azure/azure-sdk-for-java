@@ -42,6 +42,10 @@ public final class HubIpConfigurationPropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of HubIpConfigurationPropertiesFormatInner class. */
+    public HubIpConfigurationPropertiesFormatInner() {
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *

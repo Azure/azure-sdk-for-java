@@ -37,6 +37,10 @@ public final class RoleManagementPolicyAssignmentInner {
     @JsonProperty(value = "properties")
     private RoleManagementPolicyAssignmentProperties innerProperties;
 
+    /** Creates an instance of RoleManagementPolicyAssignmentInner class. */
+    public RoleManagementPolicyAssignmentInner() {
+    }
+
     /**
      * Get the id property: The role management policy Id.
      *

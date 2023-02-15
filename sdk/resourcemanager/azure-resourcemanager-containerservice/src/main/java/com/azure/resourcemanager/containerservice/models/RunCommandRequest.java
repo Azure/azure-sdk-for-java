@@ -29,6 +29,10 @@ public final class RunCommandRequest {
     @JsonProperty(value = "clusterToken")
     private String clusterToken;
 
+    /** Creates an instance of RunCommandRequest class. */
+    public RunCommandRequest() {
+    }
+
     /**
      * Get the command property: The command to run.
      *

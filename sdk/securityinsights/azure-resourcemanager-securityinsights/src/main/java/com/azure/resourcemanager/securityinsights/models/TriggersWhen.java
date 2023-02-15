@@ -13,6 +13,9 @@ public final class TriggersWhen extends ExpandableStringEnum<TriggersWhen> {
     /** Static value Created for TriggersWhen. */
     public static final TriggersWhen CREATED = fromString("Created");
 
+    /** Static value Updated for TriggersWhen. */
+    public static final TriggersWhen UPDATED = fromString("Updated");
+
     /**
      * Creates or finds a TriggersWhen from its string representation.
      *

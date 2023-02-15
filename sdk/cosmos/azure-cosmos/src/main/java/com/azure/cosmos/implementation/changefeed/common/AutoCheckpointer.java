@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Auto check-pointer implementation for {@link ChangeFeedObserver}.
@@ -21,7 +22,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     private final Logger logger = LoggerFactory.getLogger(AutoCheckpointer.class);
     private final CheckpointFrequency checkpointFrequency;
     private final ChangeFeedObserver<T> observer;
-    private volatile int processedDocCount;
+    private final AtomicInteger processedDocCount;
     private volatile Instant lastCheckpointTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver<T> observer) {
@@ -36,6 +37,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
         this.checkpointFrequency = checkpointFrequency;
         this.observer = observer;
         this.lastCheckpointTime = Instant.now();
+        this.processedDocCount = new AtomicInteger();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     }
 
     private Mono<Void> afterProcessChanges(ChangeFeedObserverContext<T> context) {
-        this.processedDocCount ++;
+        this.processedDocCount.incrementAndGet();
 
         if (this.isCheckpointNeeded()) {
             return context.checkpoint()
@@ -66,7 +68,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
                     logger.warn("Checkpoint failed; this worker will be killed", throwable);
                 })
                 .doOnSuccess((Void) -> {
-                    this.processedDocCount = 0;
+                    this.processedDocCount.set(0);
                     this.lastCheckpointTime = Instant.now();
                 })
                 .then();
@@ -79,7 +81,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
             return true;
         }
 
-        if (this.processedDocCount >= this.checkpointFrequency.getProcessedDocumentCount()) {
+        if (this.processedDocCount.get() >= this.checkpointFrequency.getProcessedDocumentCount()) {
             return true;
         }
 

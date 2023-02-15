@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.InboundEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to an enumeration operation on inbound endpoints for a DNS resolver. */
 @Fluent
 public final class InboundEndpointListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundEndpointListResult.class);
-
     /*
      * Enumeration of the inbound endpoints for a DNS resolver.
      */

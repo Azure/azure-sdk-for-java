@@ -18,6 +18,10 @@ public final class ReplicaCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ReplicaInner> value;
 
+    /** Creates an instance of ReplicaCollectionInner class. */
+    public ReplicaCollectionInner() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

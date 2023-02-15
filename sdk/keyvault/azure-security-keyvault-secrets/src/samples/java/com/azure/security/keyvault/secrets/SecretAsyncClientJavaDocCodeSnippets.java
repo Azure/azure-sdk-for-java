@@ -3,16 +3,11 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.util.context.Context;
 
@@ -57,25 +52,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation
-        return secretAsyncClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link SecretAsyncClient}.
-     *
-     * @return An instance of {@link SecretAsyncClient}.
-     */
-    public SecretAsyncClient createAsyncClientWithPipeline() {
-        TokenCredential credential = null;
-        // BEGIN: com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withPipeline
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(credential), new RetryPolicy())
-            .build();
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl("<your-key-vault-url>")
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withPipeline
         return secretAsyncClient;
     }
 

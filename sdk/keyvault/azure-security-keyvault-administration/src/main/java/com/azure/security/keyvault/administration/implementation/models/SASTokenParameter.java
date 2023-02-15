@@ -22,6 +22,9 @@ public final class SASTokenParameter {
     @JsonProperty(value = "token", required = true)
     private String token;
 
+    /** Creates an instance of SASTokenParameter class. */
+    public SASTokenParameter() {}
+
     /**
      * Get the storageResourceUri property: Azure Blob storage container Uri.
      *

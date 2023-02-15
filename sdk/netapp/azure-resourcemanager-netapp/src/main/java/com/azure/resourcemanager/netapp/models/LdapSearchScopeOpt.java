@@ -11,22 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LdapSearchScopeOpt {
     /*
-     * This specifies the user DN, which overrides the base DN for user
-     * lookups.
+     * This specifies the user DN, which overrides the base DN for user lookups.
      */
     @JsonProperty(value = "userDN")
     private String userDN;
 
     /*
-     * This specifies the group DN, which overrides the base DN for group
-     * lookups.
+     * This specifies the group DN, which overrides the base DN for group lookups.
      */
     @JsonProperty(value = "groupDN")
     private String groupDN;
 
     /*
-     * This specifies the custom LDAP search filter to be used when looking up
-     * group membership from LDAP server.
+     * This specifies the custom LDAP search filter to be used when looking up group membership from LDAP server.
      */
     @JsonProperty(value = "groupMembershipFilter")
     private String groupMembershipFilter;

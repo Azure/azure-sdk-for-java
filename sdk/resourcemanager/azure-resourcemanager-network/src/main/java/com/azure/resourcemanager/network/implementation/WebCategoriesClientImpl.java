@@ -55,7 +55,7 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface WebCategoriesService {
+    public interface WebCategoriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureWebCategories/{name}")
         @ExpectedResponses({200})
@@ -118,7 +118,7 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -163,26 +163,11 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(this.client.getEndpoint(), name, apiVersion, this.client.getSubscriptionId(), expand, accept, context);
-    }
-
-    /**
-     * Gets the specified Azure Web Category.
-     *
-     * @param name The name of the azureWebCategory.
-     * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureWebCategoryInner> getAsync(String name, String expand) {
-        return getWithResponseAsync(name, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -204,21 +189,6 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
      * Gets the specified Azure Web Category.
      *
      * @param name The name of the azureWebCategory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureWebCategoryInner get(String name) {
-        final String expand = null;
-        return getAsync(name, expand).block();
-    }
-
-    /**
-     * Gets the specified Azure Web Category.
-     *
-     * @param name The name of the azureWebCategory.
      * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,6 +199,21 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureWebCategoryInner> getWithResponse(String name, String expand, Context context) {
         return getWithResponseAsync(name, expand, context).block();
+    }
+
+    /**
+     * Gets the specified Azure Web Category.
+     *
+     * @param name The name of the azureWebCategory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Web Category.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AzureWebCategoryInner get(String name) {
+        final String expand = null;
+        return getWithResponse(name, expand, Context.NONE).getValue();
     }
 
     /**
@@ -253,7 +238,7 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -296,7 +281,7 @@ public final class WebCategoriesClientImpl implements WebCategoriesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

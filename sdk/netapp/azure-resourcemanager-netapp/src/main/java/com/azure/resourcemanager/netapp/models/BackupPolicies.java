@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of BackupPolicies. */
 public interface BackupPolicies {
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -23,7 +25,9 @@ public interface BackupPolicies {
     PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName);
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -36,7 +40,9 @@ public interface BackupPolicies {
     PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -49,7 +55,9 @@ public interface BackupPolicies {
     BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -64,7 +72,9 @@ public interface BackupPolicies {
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -76,7 +86,9 @@ public interface BackupPolicies {
     void delete(String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -89,7 +101,9 @@ public interface BackupPolicies {
     void delete(String resourceGroupName, String accountName, String backupPolicyName, Context context);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +114,9 @@ public interface BackupPolicies {
     BackupPolicy getById(String id);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -112,7 +128,9 @@ public interface BackupPolicies {
     Response<BackupPolicy> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +140,9 @@ public interface BackupPolicies {
     void deleteById(String id);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

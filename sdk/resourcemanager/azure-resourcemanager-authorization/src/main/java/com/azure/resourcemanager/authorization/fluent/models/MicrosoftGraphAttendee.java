@@ -32,6 +32,10 @@ public final class MicrosoftGraphAttendee extends MicrosoftGraphAttendeeBase {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAttendee class. */
+    public MicrosoftGraphAttendee() {
+    }
+
     /**
      * Get the proposedNewTime property: timeSlot.
      *

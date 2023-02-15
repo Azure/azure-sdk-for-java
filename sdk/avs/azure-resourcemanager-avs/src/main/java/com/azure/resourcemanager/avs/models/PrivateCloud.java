@@ -157,6 +157,14 @@ public interface PrivateCloud {
     Circuit secondaryCircuit();
 
     /**
+     * Gets the nsxPublicIpQuotaRaised property: Flag to indicate whether the private cloud has the quota for
+     * provisioned NSX Public IP count raised from 64 to 1024.
+     *
+     * @return the nsxPublicIpQuotaRaised value.
+     */
+    NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised();
+
+    /**
      * Gets the managementCluster property: The default cluster used for management.
      *
      * @return the managementCluster value.
@@ -204,6 +212,13 @@ public interface PrivateCloud {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner object.
@@ -439,7 +454,6 @@ public interface PrivateCloud {
             UpdateStages.WithManagementCluster,
             UpdateStages.WithInternet,
             UpdateStages.WithIdentitySources,
-            UpdateStages.WithAvailability,
             UpdateStages.WithEncryption {
         /**
          * Executes the update request.
@@ -508,17 +522,6 @@ public interface PrivateCloud {
              */
             Update withIdentitySources(List<IdentitySource> identitySources);
         }
-        /** The stage of the PrivateCloud update allowing to specify availability. */
-        interface WithAvailability {
-            /**
-             * Specifies the availability property: Properties describing how the cloud is distributed across
-             * availability zones.
-             *
-             * @param availability Properties describing how the cloud is distributed across availability zones.
-             * @return the next definition stage.
-             */
-            Update withAvailability(AvailabilityProperties availability);
-        }
         /** The stage of the PrivateCloud update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -584,20 +587,20 @@ public interface PrivateCloud {
     /**
      * List the admin credentials for the private cloud.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response}.
+     */
+    Response<AdminCredentials> listAdminCredentialsWithResponse(Context context);
+
+    /**
+     * List the admin credentials for the private cloud.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return administrative credentials for accessing vCenter and NSX-T.
      */
     AdminCredentials listAdminCredentials();
-
-    /**
-     * List the admin credentials for the private cloud.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
-     */
-    Response<AdminCredentials> listAdminCredentialsWithResponse(Context context);
 }

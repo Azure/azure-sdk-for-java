@@ -12,25 +12,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AutoStorageBaseProperties {
     /*
-     * The resource ID of the storage account to be used for auto-storage
-     * account.
+     * The resource ID of the storage account to be used for auto-storage account.
      */
     @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
     /*
-     * The authentication mode which the Batch service will use to manage the
-     * auto-storage account.
+     * The authentication mode which the Batch service will use to manage the auto-storage account.
      */
     @JsonProperty(value = "authenticationMode")
     private AutoStorageAuthenticationMode authenticationMode;
 
     /*
-     * The identity referenced here must be assigned to pools which have
-     * compute nodes that need access to auto-storage.
+     * The identity referenced here must be assigned to pools which have compute nodes that need access to
+     * auto-storage.
      */
     @JsonProperty(value = "nodeIdentityReference")
     private ComputeNodeIdentityReference nodeIdentityReference;
+
+    /** Creates an instance of AutoStorageBaseProperties class. */
+    public AutoStorageBaseProperties() {
+    }
 
     /**
      * Get the storageAccountId property: The resource ID of the storage account to be used for auto-storage account.

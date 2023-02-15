@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters Start. */
 public final class ManagedClustersStartSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersStart.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/ManagedClustersStart.json
      */
     /**
      * Sample code: Start Managed Cluster.
@@ -22,6 +20,6 @@ public final class ManagedClustersStartSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .start("rg1", "clustername1", Context.NONE);
+            .start("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

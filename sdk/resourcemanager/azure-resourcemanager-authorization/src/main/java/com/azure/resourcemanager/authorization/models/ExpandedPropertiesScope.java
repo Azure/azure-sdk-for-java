@@ -28,6 +28,10 @@ public final class ExpandedPropertiesScope {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ExpandedPropertiesScope class. */
+    public ExpandedPropertiesScope() {
+    }
+
     /**
      * Get the id property: Scope id of the resource.
      *

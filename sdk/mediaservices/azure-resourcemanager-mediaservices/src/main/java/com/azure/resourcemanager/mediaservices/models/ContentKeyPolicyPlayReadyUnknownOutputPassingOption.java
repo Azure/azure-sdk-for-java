@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
+/** Configures Unknown output handling settings of the license. */
 public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
@@ -23,6 +23,15 @@ public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
     /** Static value AllowedWithVideoConstriction for ContentKeyPolicyPlayReadyUnknownOutputPassingOption. */
     public static final ContentKeyPolicyPlayReadyUnknownOutputPassingOption ALLOWED_WITH_VIDEO_CONSTRICTION =
         fromString("AllowedWithVideoConstriction");
+
+    /**
+     * Creates a new instance of ContentKeyPolicyPlayReadyUnknownOutputPassingOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyPlayReadyUnknownOutputPassingOption() {
+    }
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyUnknownOutputPassingOption from its string representation.

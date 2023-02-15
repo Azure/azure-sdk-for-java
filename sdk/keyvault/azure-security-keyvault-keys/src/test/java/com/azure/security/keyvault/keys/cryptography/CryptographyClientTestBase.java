@@ -28,7 +28,9 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
@@ -43,8 +45,12 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -66,7 +72,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient)   {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -82,6 +88,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
                 .clientSecret(clientKey)
                 .clientId(clientId)
                 .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
                 .build();
         }
 
@@ -95,7 +102,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new KeyVaultCredentialPolicy(credential, false));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -161,6 +168,24 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    @Test
+    public abstract void signVerifyOkp(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    void encryptDecryptOkpRunner(Consumer<CreateOkpKeyOptions> testRunner) throws Exception {
+        String keyName = testResourceNamer.randomName("testOkpKeySignVerify", 25);
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        CreateOkpKeyOptions okpKeyOptions = new CreateOkpKeyOptions(testResourceNamer.randomName(keyName, 20))
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setTags(tags)
+            .setCurveName(KeyCurveName.ED25519);
+
+        testRunner.accept(okpKeyOptions);
+    }
 
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");

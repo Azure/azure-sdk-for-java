@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for AzureTrafficCollectors UpdateTags. */
 public final class AzureTrafficCollectorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorUpdateTags.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorUpdateTags.json
      */
     /**
      * Sample code: Update Traffic Collector tags.

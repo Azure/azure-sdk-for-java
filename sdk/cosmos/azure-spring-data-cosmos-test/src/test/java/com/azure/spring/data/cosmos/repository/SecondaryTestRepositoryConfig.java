@@ -40,6 +40,9 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.maxBufferedItemCount}")
     private int maxBufferedItemCount;
 
+    @Value("${cosmos.secondary.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
+
     @Bean
     public CosmosClientBuilder secondaryCosmosClientBuilder() {
         return new CosmosClientBuilder()
@@ -65,6 +68,7 @@ public class SecondaryTestRepositoryConfig {
                 .enableQueryMetrics(queryMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .maxBufferedItemCount(maxBufferedItemCount)
+                .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                 .build();
 
             return new ReactiveCosmosTemplate(new CosmosFactory(client, getFirstDatabase()), config, mappingCosmosConverter);
@@ -83,6 +87,7 @@ public class SecondaryTestRepositoryConfig {
                 .enableQueryMetrics(queryMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .maxBufferedItemCount(maxBufferedItemCount)
+                .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                 .build();
 
             return new ReactiveCosmosTemplate(new CosmosFactory(client, getSecondDatabase()), config, mappingCosmosConverter);

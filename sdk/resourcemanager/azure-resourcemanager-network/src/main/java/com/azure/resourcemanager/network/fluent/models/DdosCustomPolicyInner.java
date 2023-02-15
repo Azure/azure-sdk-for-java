@@ -6,11 +6,8 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.models.ProtocolCustomSettingsFormat;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
 /** A DDoS custom policy in a resource group. */
@@ -33,6 +30,10 @@ public final class DdosCustomPolicyInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of DdosCustomPolicyInner class. */
+    public DdosCustomPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the DDoS custom policy.
@@ -104,39 +105,6 @@ public final class DdosCustomPolicyInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the publicIpAddresses property: The list of public IPs associated with the DDoS custom policy resource. This
-     * list is read-only.
-     *
-     * @return the publicIpAddresses value.
-     */
-    public List<SubResource> publicIpAddresses() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddresses();
-    }
-
-    /**
-     * Get the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
-     *
-     * @return the protocolCustomSettings value.
-     */
-    public List<ProtocolCustomSettingsFormat> protocolCustomSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().protocolCustomSettings();
-    }
-
-    /**
-     * Set the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
-     *
-     * @param protocolCustomSettings the protocolCustomSettings value to set.
-     * @return the DdosCustomPolicyInner object itself.
-     */
-    public DdosCustomPolicyInner withProtocolCustomSettings(List<ProtocolCustomSettingsFormat> protocolCustomSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DdosCustomPolicyPropertiesFormat();
-        }
-        this.innerProperties().withProtocolCustomSettings(protocolCustomSettings);
-        return this;
     }
 
     /**

@@ -17,13 +17,6 @@ public interface VMwareCloudSimple {
     String getSubscriptionId();
 
     /**
-     * Gets referer url.
-     *
-     * @return the referer value.
-     */
-    String getReferer();
-
-    /**
      * Gets server parameter.
      *
      * @return the endpoint value.

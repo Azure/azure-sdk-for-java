@@ -52,6 +52,10 @@ public final class GatewayRoute {
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer weight;
 
+    /** Creates an instance of GatewayRoute class. */
+    public GatewayRoute() {
+    }
+
     /**
      * Get the localAddress property: The gateway's local address.
      *

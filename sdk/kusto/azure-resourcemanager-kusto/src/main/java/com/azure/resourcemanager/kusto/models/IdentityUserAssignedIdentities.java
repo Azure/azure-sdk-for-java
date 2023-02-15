@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IdentityUserAssignedIdentities model. */
 @Immutable
 public final class IdentityUserAssignedIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityUserAssignedIdentities.class);
-
     /*
      * The principal id of user assigned identity.
      */

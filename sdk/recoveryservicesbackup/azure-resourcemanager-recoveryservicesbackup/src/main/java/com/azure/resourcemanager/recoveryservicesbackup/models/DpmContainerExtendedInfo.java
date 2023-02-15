@@ -17,6 +17,10 @@ public final class DpmContainerExtendedInfo {
     @JsonProperty(value = "lastRefreshedAt")
     private OffsetDateTime lastRefreshedAt;
 
+    /** Creates an instance of DpmContainerExtendedInfo class. */
+    public DpmContainerExtendedInfo() {
+    }
+
     /**
      * Get the lastRefreshedAt property: Last refresh time of the DPMContainer.
      *

@@ -20,6 +20,9 @@ public final class SybaseSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of SybaseSource class. */
+    public SybaseSource() {}
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

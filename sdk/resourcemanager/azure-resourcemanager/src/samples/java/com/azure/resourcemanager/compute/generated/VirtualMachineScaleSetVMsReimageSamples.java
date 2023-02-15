@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageParameters;
 
 /** Samples for VirtualMachineScaleSetVMs Reimage. */
 public final class VirtualMachineScaleSetVMsReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.
@@ -29,11 +28,11 @@ public final class VirtualMachineScaleSetVMsReimageSamples {
                 "aaaaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMReimageParameters().withTempDisk(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Reimage_MinimumSet_Gen.
@@ -47,6 +46,6 @@ public final class VirtualMachineScaleSetVMsReimageSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .reimage("rgcompute", "aaaaaaa", "aaaaaaaaaaaaa", null, Context.NONE);
+            .reimage("rgcompute", "aaaaaaa", "aaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

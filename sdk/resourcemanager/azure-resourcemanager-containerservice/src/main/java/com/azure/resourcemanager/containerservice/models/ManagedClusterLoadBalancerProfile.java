@@ -55,6 +55,10 @@ public final class ManagedClusterLoadBalancerProfile {
     @JsonProperty(value = "enableMultipleStandardLoadBalancers")
     private Boolean enableMultipleStandardLoadBalancers;
 
+    /** Creates an instance of ManagedClusterLoadBalancerProfile class. */
+    public ManagedClusterLoadBalancerProfile() {
+    }
+
     /**
      * Get the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
      *

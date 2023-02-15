@@ -18,6 +18,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 public @interface UnexpectedResponseExceptionTypes {
     /**
+     * Gets an array of {@link UnexpectedResponseExceptionType} that annotate a method.
+     *
      * @return array of {@link UnexpectedResponseExceptionType} that annotate a method.
      */
     UnexpectedResponseExceptionType[] value();

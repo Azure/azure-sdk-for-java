@@ -35,6 +35,10 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphDriveItemVersion class. */
+    public MicrosoftGraphDriveItemVersion() {
+    }
+
     /**
      * Get the content property: The content stream for this version of the item.
      *

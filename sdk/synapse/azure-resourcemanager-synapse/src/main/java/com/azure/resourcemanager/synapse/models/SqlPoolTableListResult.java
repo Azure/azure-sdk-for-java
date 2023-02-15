@@ -24,6 +24,10 @@ public final class SqlPoolTableListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SqlPoolTableListResult class. */
+    public SqlPoolTableListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

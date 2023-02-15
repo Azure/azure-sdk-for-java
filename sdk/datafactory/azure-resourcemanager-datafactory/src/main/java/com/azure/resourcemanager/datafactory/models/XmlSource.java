@@ -33,6 +33,10 @@ public final class XmlSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of XmlSource class. */
+    public XmlSource() {
+    }
+
     /**
      * Get the storeSettings property: Xml store settings.
      *

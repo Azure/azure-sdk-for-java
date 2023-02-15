@@ -25,6 +25,10 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
     @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
 
+    /** Creates an instance of AzureDataExplorerCommandActivityTypeProperties class. */
+    public AzureDataExplorerCommandActivityTypeProperties() {
+    }
+
     /**
      * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
      * (or Expression with resultType string).

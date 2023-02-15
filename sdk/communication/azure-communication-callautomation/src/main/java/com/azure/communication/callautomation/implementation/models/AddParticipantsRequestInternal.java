@@ -8,15 +8,34 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddParticipantsRequestInternal model. */
+/** The request payload for adding participants to the call. */
 @Fluent
 public final class AddParticipantsRequestInternal {
     /*
-     * The source caller Id that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      */
     @JsonProperty(value = "sourceCallerId")
     private PhoneNumberIdentifierModel sourceCallerId;
+
+    /*
+     * (Optional) The display name of the source that is associated with this
+     * invite operation when
+     * adding a PSTN participant or teams user.  Note: Will not update the
+     * display name in the roster.
+     */
+    @JsonProperty(value = "sourceDisplayName")
+    private String sourceDisplayName;
+
+    /*
+     * (Optional) The identifier of the source of the call for this invite
+     * operation. If SourceDisplayName
+     * is not set, the display name of the source will be used by default when
+     * adding a PSTN participant or teams user.
+     */
+    @JsonProperty(value = "sourceIdentifier")
+    private CommunicationIdentifierModel sourceIdentifier;
 
     /*
      * The participants to invite.
@@ -32,14 +51,15 @@ public final class AddParticipantsRequestInternal {
     private Integer invitationTimeoutInSeconds;
 
     /*
-     * The operation context.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
-     * Get the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * Get the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when inviting a PSTN participant.
      *
      * @return the sourceCallerId value.
      */
@@ -48,14 +68,60 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Set the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * Set the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when inviting a PSTN participant.
      *
      * @param sourceCallerId the sourceCallerId value to set.
      * @return the AddParticipantsRequestInternal object itself.
      */
     public AddParticipantsRequestInternal setSourceCallerId(PhoneNumberIdentifierModel sourceCallerId) {
         this.sourceCallerId = sourceCallerId;
+        return this;
+    }
+
+    /**
+     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
+     * operation when adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     *
+     * @return the sourceDisplayName value.
+     */
+    public String getSourceDisplayName() {
+        return this.sourceDisplayName;
+    }
+
+    /**
+     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
+     * operation when adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     *
+     * @param sourceDisplayName the sourceDisplayName value to set.
+     * @return the AddParticipantsRequestInternal object itself.
+     */
+    public AddParticipantsRequestInternal setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the sourceIdentifier property: (Optional) The identifier of the source of the call for this invite operation.
+     * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
+     * participant or teams user.
+     *
+     * @return the sourceIdentifier value.
+     */
+    public CommunicationIdentifierModel getSourceIdentifier() {
+        return this.sourceIdentifier;
+    }
+
+    /**
+     * Set the sourceIdentifier property: (Optional) The identifier of the source of the call for this invite operation.
+     * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
+     * participant or teams user.
+     *
+     * @param sourceIdentifier the sourceIdentifier value to set.
+     * @return the AddParticipantsRequestInternal object itself.
+     */
+    public AddParticipantsRequestInternal setSourceIdentifier(CommunicationIdentifierModel sourceIdentifier) {
+        this.sourceIdentifier = sourceIdentifier;
         return this;
     }
 
@@ -102,7 +168,8 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Get the operationContext property: The operation context.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @return the operationContext value.
      */
@@ -111,7 +178,8 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Set the operationContext property: The operation context.
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantsRequestInternal object itself.

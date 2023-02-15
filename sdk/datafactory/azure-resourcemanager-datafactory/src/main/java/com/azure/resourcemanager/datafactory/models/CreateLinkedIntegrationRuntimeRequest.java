@@ -34,6 +34,10 @@ public final class CreateLinkedIntegrationRuntimeRequest {
     @JsonProperty(value = "dataFactoryLocation")
     private String dataFactoryLocation;
 
+    /** Creates an instance of CreateLinkedIntegrationRuntimeRequest class. */
+    public CreateLinkedIntegrationRuntimeRequest() {
+    }
+
     /**
      * Get the name property: The name of the linked integration runtime.
      *

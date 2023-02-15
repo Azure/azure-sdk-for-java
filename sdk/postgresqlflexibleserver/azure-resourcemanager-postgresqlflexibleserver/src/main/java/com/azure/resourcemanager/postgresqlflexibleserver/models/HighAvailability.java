@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** High availability properties of a server. */
 @Fluent
 public final class HighAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HighAvailability.class);
-
     /*
      * The HA mode for the server.
      */
@@ -31,6 +27,10 @@ public final class HighAvailability {
      */
     @JsonProperty(value = "standbyAvailabilityZone")
     private String standbyAvailabilityZone;
+
+    /** Creates an instance of HighAvailability class. */
+    public HighAvailability() {
+    }
 
     /**
      * Get the mode property: The HA mode for the server.

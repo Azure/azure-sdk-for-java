@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SecurityPartnerProviders Delete. */
 public final class SecurityPartnerProvidersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/SecurityPartnerProviderDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/SecurityPartnerProviderDelete.json
      */
     /**
      * Sample code: Delete Security Partner Provider.

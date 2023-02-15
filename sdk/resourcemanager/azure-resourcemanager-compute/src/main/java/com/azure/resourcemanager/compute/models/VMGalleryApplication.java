@@ -50,6 +50,10 @@ public final class VMGalleryApplication {
     @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
+    /** Creates an instance of VMGalleryApplication class. */
+    public VMGalleryApplication() {
+    }
+
     /**
      * Get the tags property: Optional, Specifies a passthrough value for more generic context.
      *

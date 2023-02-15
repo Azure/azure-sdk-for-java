@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComputeType. */
+/** The type of compute. */
 public final class ComputeType extends ExpandableStringEnum<ComputeType> {
     /** Static value AKS for ComputeType. */
     public static final ComputeType AKS = fromString("AKS");
@@ -39,6 +39,15 @@ public final class ComputeType extends ExpandableStringEnum<ComputeType> {
 
     /** Static value SynapseSpark for ComputeType. */
     public static final ComputeType SYNAPSE_SPARK = fromString("SynapseSpark");
+
+    /**
+     * Creates a new instance of ComputeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeType() {
+    }
 
     /**
      * Creates or finds a ComputeType from its string representation.

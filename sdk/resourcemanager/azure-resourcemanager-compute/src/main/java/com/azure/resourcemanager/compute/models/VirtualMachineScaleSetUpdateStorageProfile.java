@@ -29,6 +29,16 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
     @JsonProperty(value = "dataDisks")
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
+    /*
+     * The diskControllerType property.
+     */
+    @JsonProperty(value = "diskControllerType")
+    private String diskControllerType;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateStorageProfile class. */
+    public VirtualMachineScaleSetUpdateStorageProfile() {
+    }
+
     /**
      * Get the imageReference property: The image reference.
      *
@@ -86,6 +96,26 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
      */
     public VirtualMachineScaleSetUpdateStorageProfile withDataDisks(List<VirtualMachineScaleSetDataDisk> dataDisks) {
         this.dataDisks = dataDisks;
+        return this;
+    }
+
+    /**
+     * Get the diskControllerType property: The diskControllerType property.
+     *
+     * @return the diskControllerType value.
+     */
+    public String diskControllerType() {
+        return this.diskControllerType;
+    }
+
+    /**
+     * Set the diskControllerType property: The diskControllerType property.
+     *
+     * @param diskControllerType the diskControllerType value to set.
+     * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateStorageProfile withDiskControllerType(String diskControllerType) {
+        this.diskControllerType = diskControllerType;
         return this;
     }
 

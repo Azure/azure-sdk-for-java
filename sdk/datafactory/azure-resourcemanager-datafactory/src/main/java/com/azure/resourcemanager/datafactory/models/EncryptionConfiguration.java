@@ -36,6 +36,10 @@ public final class EncryptionConfiguration {
     @JsonProperty(value = "identity")
     private CmkIdentityDefinition identity;
 
+    /** Creates an instance of EncryptionConfiguration class. */
+    public EncryptionConfiguration() {
+    }
+
     /**
      * Get the keyName property: The name of the key in Azure Key Vault to use as Customer Managed Key.
      *

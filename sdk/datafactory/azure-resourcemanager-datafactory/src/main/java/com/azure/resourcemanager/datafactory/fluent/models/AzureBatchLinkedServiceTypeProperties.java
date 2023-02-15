@@ -57,6 +57,10 @@ public final class AzureBatchLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureBatchLinkedServiceTypeProperties class. */
+    public AzureBatchLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the accountName property: The Azure Batch account name. Type: string (or Expression with resultType string).
      *

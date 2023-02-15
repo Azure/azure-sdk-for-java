@@ -72,8 +72,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
     private OffsetDateTime startDateTime;
 
     /*
-     * Exposes the itemActivities represented in this itemActivityStat
-     * resource.
+     * Exposes the itemActivities represented in this itemActivityStat resource.
      */
     @JsonProperty(value = "activities")
     private List<MicrosoftGraphItemActivity> activities;
@@ -82,6 +81,10 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
      * itemActivityStat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphItemActivityStat class. */
+    public MicrosoftGraphItemActivityStat() {
+    }
 
     /**
      * Get the access property: itemActionStat.

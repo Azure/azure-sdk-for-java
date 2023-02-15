@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevCenterInner;
 import java.util.Map;
@@ -54,11 +55,25 @@ public interface DevCenter {
     ManagedServiceIdentity identity();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    String devCenterUri();
 
     /**
      * Gets the region of the resource.
@@ -123,7 +138,7 @@ public interface DevCenter {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);

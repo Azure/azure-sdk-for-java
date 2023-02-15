@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRoutePortsLocations List. */
 public final class ExpressRoutePortsLocationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ExpressRoutePortsLocationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRoutePortsLocationList.json
      */
     /**
      * Sample code: ExpressRoutePortsLocationList.

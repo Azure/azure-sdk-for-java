@@ -15,6 +15,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
+import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -23,6 +24,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
+import org.apache.qpid.proton.engine.impl.TransportImpl;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
@@ -46,7 +49,9 @@ import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHan
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.MAX_FRAME_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +59,7 @@ public class WebSocketsConnectionHandlerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
-
+    private static final String CUSTOM_ENDPOINT_HOSTNAME = "custom-hostname-random";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
     private static final String PRODUCT = "my-product";
     private static final String CLIENT_VERSION = "1.5.1-alpha";
@@ -221,6 +226,57 @@ public class WebSocketsConnectionHandlerTest {
 
             Assertions.assertEquals(port, connectionOptions.getPort());
             Assertions.assertEquals(port, handler.getProtocolPort());
+        }
+    }
+
+    @Test
+    public void websocketConfigureUsesFqdnAsHostname() {
+        try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
+            handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+            final List<WebSocketImpl> constructed = mockConstruction.constructed();
+            assertEquals(1, constructed.size());
+            // The WebSocketImpl object constructed inside addTransportLayer method.
+            final WebSocketImpl webSocketImpl = constructed.get(0);
+            final String expectedHostName = HOSTNAME;
+            verify(webSocketImpl).configure(eq(expectedHostName),
+                eq("/$servicebus/websocket"),
+                eq(""),
+                eq(0),
+                eq("AMQPWSB10"),
+                eq(null),
+                eq(null));
+        }
+    }
+
+    @Test
+    public void websocketConfigureUsesCustomEndpointHostnameAsHostname() {
+        final String customEndpointHostname = "order-events.contoso.com";
+        final ConnectionOptions connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, customEndpointHostname, 200);
+
+        try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID,
+            connectionOptionsWithCustomEndpoint,
+            peerDetails, AmqpMetricsProvider.noop())) {
+            try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
+                handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                    mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+                final List<WebSocketImpl> constructed = mockConstruction.constructed();
+                assertEquals(1, constructed.size());
+                // The WebSocketImpl object constructed inside addTransportLayer method.
+                final WebSocketImpl webSocketImpl = constructed.get(0);
+                verify(webSocketImpl).configure(eq(customEndpointHostname),
+                    eq("/$servicebus/websocket"),
+                    eq(""),
+                    eq(0),
+                    eq("AMQPWSB10"),
+                    eq(null),
+                    eq(null));
+            }
         }
     }
 

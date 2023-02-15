@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NotebookParameter {
     /*
-     * Notebook parameter value. Type: string (or Expression with resultType
-     * string).
+     * Notebook parameter value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -22,6 +21,9 @@ public final class NotebookParameter {
      */
     @JsonProperty(value = "type")
     private NotebookParameterType type;
+
+    /** Creates an instance of NotebookParameter class. */
+    public NotebookParameter() {}
 
     /**
      * Get the value property: Notebook parameter value. Type: string (or Expression with resultType string).

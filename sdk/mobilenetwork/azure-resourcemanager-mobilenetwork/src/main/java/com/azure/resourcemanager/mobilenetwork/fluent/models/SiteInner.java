@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Site resource. */
+/** Site resource. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class SiteInner extends Resource {
     /*
@@ -23,11 +23,14 @@ public final class SiteInner extends Resource {
     private SitePropertiesFormat innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SiteInner class. */
+    public SiteInner() {
+    }
 
     /**
      * Get the innerProperties property: Site properties.
@@ -71,28 +74,13 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
-     * the user.
+     * Get the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
+     * site will delete any network functions that are deployed in the site.
      *
      * @return the networkFunctions value.
      */
     public List<SubResource> networkFunctions() {
         return this.innerProperties() == null ? null : this.innerProperties().networkFunctions();
-    }
-
-    /**
-     * Set the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
-     * the user.
-     *
-     * @param networkFunctions the networkFunctions value to set.
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withNetworkFunctions(List<SubResource> networkFunctions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePropertiesFormat();
-        }
-        this.innerProperties().withNetworkFunctions(networkFunctions);
-        return this;
     }
 
     /**

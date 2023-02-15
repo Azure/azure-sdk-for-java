@@ -69,7 +69,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface ComputesService {
+    public interface ComputesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
@@ -593,23 +593,6 @@ public final class ComputesClientImpl implements ComputesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute definition by its name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeResourceInner get(String resourceGroupName, String workspaceName, String computeName) {
-        return getAsync(resourceGroupName, workspaceName, computeName).block();
-    }
-
-    /**
-     * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
-     * 'keys' nested resource to get them.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param computeName Name of the Azure Machine Learning compute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -620,6 +603,23 @@ public final class ComputesClientImpl implements ComputesClient {
     public Response<ComputeResourceInner> getWithResponse(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, computeName, context).block();
+    }
+
+    /**
+     * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
+     * 'keys' nested resource to get them.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param computeName Name of the Azure Machine Learning compute.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return compute definition by its name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComputeResourceInner get(String resourceGroupName, String workspaceName, String computeName) {
+        return getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
     }
 
     /**
@@ -822,7 +822,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
     }
 
     /**
@@ -846,7 +846,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         ComputeResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1142,7 +1143,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
         String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
     }
 
     /**
@@ -1166,7 +1167,9 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         ClusterUpdateParameters parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1463,7 +1466,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String workspaceName,
         String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
             .getSyncPoller();
     }
 
@@ -1488,7 +1492,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         UnderlyingResourceAction underlyingResourceAction,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
             .getSyncPoller();
     }
 
@@ -1919,22 +1924,6 @@ public final class ComputesClientImpl implements ComputesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeSecretsInner listKeys(String resourceGroupName, String workspaceName, String computeName) {
-        return listKeysAsync(resourceGroupName, workspaceName, computeName).block();
-    }
-
-    /**
-     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param computeName Name of the Azure Machine Learning compute.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1946,6 +1935,22 @@ public final class ComputesClientImpl implements ComputesClient {
     public Response<ComputeSecretsInner> listKeysWithResponse(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName, computeName, context).block();
+    }
+
+    /**
+     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param computeName Name of the Azure Machine Learning compute.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComputeSecretsInner listKeys(String resourceGroupName, String workspaceName, String computeName) {
+        return listKeysWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
     }
 
     /**
@@ -2110,7 +2115,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2128,7 +2133,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
@@ -2361,7 +2366,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2379,7 +2384,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
@@ -2612,7 +2617,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2630,7 +2635,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
@@ -2705,7 +2710,8 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2741,7 +2747,8 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2778,7 +2785,8 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2813,7 +2821,8 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

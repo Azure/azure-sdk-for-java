@@ -274,7 +274,7 @@ public final class DocumentCollection extends Resource {
         ChangeFeedPolicy policy = super.getObject(Constants.Properties.CHANGE_FEED_POLICY, ChangeFeedPolicy.class);
 
         if (policy == null) {
-            return ChangeFeedPolicy.createIncrementalPolicy();
+            return ChangeFeedPolicy.createLatestVersionPolicy();
         }
 
         return policy;

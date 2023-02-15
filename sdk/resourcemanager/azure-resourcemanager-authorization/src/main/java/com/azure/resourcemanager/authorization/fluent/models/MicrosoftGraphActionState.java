@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphActionState. */
+/** actionState. */
 public final class MicrosoftGraphActionState extends ExpandableStringEnum<MicrosoftGraphActionState> {
     /** Static value none for MicrosoftGraphActionState. */
     public static final MicrosoftGraphActionState NONE = fromString("none");
@@ -42,7 +42,11 @@ public final class MicrosoftGraphActionState extends ExpandableStringEnum<Micros
         return fromString(name, MicrosoftGraphActionState.class);
     }
 
-    /** @return known MicrosoftGraphActionState values. */
+    /**
+     * Gets known MicrosoftGraphActionState values.
+     *
+     * @return known MicrosoftGraphActionState values.
+     */
     public static Collection<MicrosoftGraphActionState> values() {
         return values(MicrosoftGraphActionState.class);
     }

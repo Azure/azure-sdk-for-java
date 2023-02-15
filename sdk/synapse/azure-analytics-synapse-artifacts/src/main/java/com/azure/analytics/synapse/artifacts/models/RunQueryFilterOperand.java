@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunQueryFilterOperand. */
+/**
+ * Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd
+ * and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and
+ * to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
+ */
 public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFilterOperand> {
     /** Static value PipelineName for RunQueryFilterOperand. */
     public static final RunQueryFilterOperand PIPELINE_NAME = fromString("PipelineName");
@@ -57,7 +61,11 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
         return fromString(name, RunQueryFilterOperand.class);
     }
 
-    /** @return known RunQueryFilterOperand values. */
+    /**
+     * Gets known RunQueryFilterOperand values.
+     *
+     * @return known RunQueryFilterOperand values.
+     */
     public static Collection<RunQueryFilterOperand> values() {
         return values(RunQueryFilterOperand.class);
     }

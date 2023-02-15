@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComputeInstanceState. */
+/** Current state of an ComputeInstance. */
 public final class ComputeInstanceState extends ExpandableStringEnum<ComputeInstanceState> {
     /** Static value Creating for ComputeInstanceState. */
     public static final ComputeInstanceState CREATING = fromString("Creating");
@@ -54,6 +54,15 @@ public final class ComputeInstanceState extends ExpandableStringEnum<ComputeInst
 
     /** Static value Unusable for ComputeInstanceState. */
     public static final ComputeInstanceState UNUSABLE = fromString("Unusable");
+
+    /**
+     * Creates a new instance of ComputeInstanceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeInstanceState() {
+    }
 
     /**
      * Creates or finds a ComputeInstanceState from its string representation.

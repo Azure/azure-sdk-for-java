@@ -40,6 +40,10 @@ public final class ConnectionError {
     @JsonProperty(value = "exception")
     private String exception;
 
+    /** Creates an instance of ConnectionError class. */
+    public ConnectionError() {
+    }
+
     /**
      * Get the connectionState property: The kind of connection error that occurred.
      *

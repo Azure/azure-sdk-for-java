@@ -18,6 +18,10 @@ public final class VaultCertificateResponseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ResourceCertificateDetails properties;
 
+    /** Creates an instance of VaultCertificateResponseInner class. */
+    public VaultCertificateResponseInner() {
+    }
+
     /**
      * Get the properties property: Certificate details representing the Vault credentials.
      *

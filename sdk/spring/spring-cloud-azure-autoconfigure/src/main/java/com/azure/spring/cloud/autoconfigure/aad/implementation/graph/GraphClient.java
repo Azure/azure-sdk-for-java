@@ -3,23 +3,23 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.util.JacksonObjectMapperFactory;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
@@ -28,14 +28,21 @@ public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
     private final AadAuthenticationProperties properties;
+    private final RestOperations operations;
+
+    GraphClient(AadAuthenticationProperties properties, RestTemplate restTemplate) {
+        this.properties = properties;
+        this.operations = restTemplate;
+    }
 
     /**
      * Creates a new instance of {@link GraphClient}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public GraphClient(AadAuthenticationProperties properties) {
-        this.properties = properties;
+    public GraphClient(AadAuthenticationProperties properties, RestTemplateBuilder restTemplateBuilder) {
+        this(properties, createRestTemplate(restTemplateBuilder));
     }
 
     /**
@@ -46,59 +53,43 @@ public class GraphClient {
      */
     public GroupInformation getGroupInformation(String accessToken) {
         GroupInformation groupInformation = new GroupInformation();
-        final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
         String aadMembershipRestUri = properties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
-            Memberships memberships;
-            try {
-                String membershipsJson = getUserMemberships(accessToken, aadMembershipRestUri);
-                memberships = objectMapper.readValue(membershipsJson, Memberships.class);
-            } catch (IOException ioException) {
-                LOGGER.error("Can not get group information from graph server.", ioException);
+            Optional<Memberships> userMemberships = getUserMemberships(accessToken, aadMembershipRestUri);
+            if (userMemberships.isPresent()) {
+                for (Membership membership : userMemberships.get().getValue()) {
+                    if (isGroupObject(membership)) {
+                        groupInformation.getGroupsIds().add(membership.getObjectID());
+                        groupInformation.getGroupsNames().add(membership.getDisplayName());
+                    }
+                }
+                aadMembershipRestUri = userMemberships
+                    .map(Memberships::getOdataNextLink)
+                    .orElse(null);
+            } else {
                 break;
             }
-            for (Membership membership : memberships.getValue()) {
-                if (isGroupObject(membership)) {
-                    groupInformation.getGroupsIds().add(membership.getObjectID());
-                    groupInformation.getGroupsNames().add(membership.getDisplayName());
-                }
-            }
-            aadMembershipRestUri = Optional.of(memberships)
-                                           .map(Memberships::getOdataNextLink)
-                                           .orElse(null);
         }
         return groupInformation;
     }
 
-    private String getUserMemberships(String accessToken, String urlString) throws IOException {
-        URL url = new URL(urlString);
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(HttpMethod.GET.toString());
-        connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
-        connection.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        connection.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        final String responseInJson = getResponseString(connection);
-        final int responseCode = connection.getResponseCode();
-        if (responseCode == HTTPResponse.SC_OK) {
-            return responseInJson;
-        } else {
-            throw new IllegalStateException(
-                "Response is not " + HTTPResponse.SC_OK + ", response json: " + responseInJson);
-        }
-    }
-
-    private String getResponseString(HttpURLConnection connection) throws IOException {
-        try (BufferedReader reader =
-                 new BufferedReader(
-                     new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)
-                 )
-        ) {
-            final StringBuilder stringBuffer = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line);
+    Optional<Memberships> getUserMemberships(String accessToken, String urlString) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        try {
+            ResponseEntity<Memberships> response = operations.exchange(urlString, HttpMethod.GET, entity, Memberships.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.of(response.getBody());
+            } else {
+                LOGGER.error("Response code [{}] is not 200, the response body is [{}].", response.getStatusCode(), response.getBody());
+                return Optional.empty();
             }
-            return stringBuffer.toString();
+        } catch (RestClientException restClientException) {
+            LOGGER.error("Can not get group information from graph server.", restClientException);
+            return Optional.empty();
         }
     }
 

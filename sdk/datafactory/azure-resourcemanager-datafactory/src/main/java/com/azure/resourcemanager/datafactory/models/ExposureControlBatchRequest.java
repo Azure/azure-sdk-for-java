@@ -18,6 +18,10 @@ public final class ExposureControlBatchRequest {
     @JsonProperty(value = "exposureControlRequests", required = true)
     private List<ExposureControlRequest> exposureControlRequests;
 
+    /** Creates an instance of ExposureControlBatchRequest class. */
+    public ExposureControlBatchRequest() {
+    }
+
     /**
      * Get the exposureControlRequests property: List of exposure control features.
      *

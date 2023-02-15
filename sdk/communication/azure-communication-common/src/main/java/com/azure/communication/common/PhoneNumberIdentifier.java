@@ -23,7 +23,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }
         this.phoneNumber = phoneNumber;
-        this.setRawId("4:" + phoneNumber.replaceAll("^[+]", ""));
+        this.setRawId("4:" + phoneNumber);
     }
 
     /**

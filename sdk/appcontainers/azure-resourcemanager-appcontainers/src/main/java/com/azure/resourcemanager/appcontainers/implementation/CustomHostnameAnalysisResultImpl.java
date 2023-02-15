@@ -4,10 +4,9 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
-import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseError;
+import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo;
 import com.azure.resourcemanager.appcontainers.models.DnsVerificationTestResult;
 import java.util.Collections;
 import java.util.List;
@@ -24,22 +23,6 @@ public final class CustomHostnameAnalysisResultImpl implements CustomHostnameAna
         this.serviceManager = serviceManager;
     }
 
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String hostname() {
         return this.innerModel().hostname();
     }
@@ -52,12 +35,16 @@ public final class CustomHostnameAnalysisResultImpl implements CustomHostnameAna
         return this.innerModel().customDomainVerificationTest();
     }
 
-    public DefaultErrorResponseError customDomainVerificationFailureInfo() {
+    public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo customDomainVerificationFailureInfo() {
         return this.innerModel().customDomainVerificationFailureInfo();
     }
 
     public Boolean hasConflictOnManagedEnvironment() {
         return this.innerModel().hasConflictOnManagedEnvironment();
+    }
+
+    public Boolean conflictWithEnvironmentCustomDomain() {
+        return this.innerModel().conflictWithEnvironmentCustomDomain();
     }
 
     public String conflictingContainerAppResourceId() {

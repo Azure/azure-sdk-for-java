@@ -10,19 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PrivateEndpointConnections. */
 public interface PrivateEndpointConnections {
     /**
-     * List all private endpoint connections.
+     * List private endpoint connections.
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
-     */
-    PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName);
-
-    /**
-     * List all private endpoint connections.
+     * <p>List all private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -37,20 +27,23 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get the details of a private endpoint connection.
+     * List private endpoint connections.
+     *
+     * <p>List all private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
-     * @param name The name parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a private endpoint connection.
+     * @return list of private endpoint connection associated with the specified storage account.
      */
-    PrivateEndpointConnection get(String resourceGroupName, String accountName, String name);
+    PrivateEndpointConnectionListResult list(String resourceGroupName, String accountName);
 
     /**
-     * Get the details of a private endpoint connection.
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -65,7 +58,9 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String accountName, String name, Context context);
 
     /**
-     * Deletes a private endpoint connection.
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -73,11 +68,14 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a private endpoint connection.
      */
-    void delete(String resourceGroupName, String accountName, String name);
+    PrivateEndpointConnection get(String resourceGroupName, String accountName, String name);
 
     /**
-     * Deletes a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -91,7 +89,23 @@ public interface PrivateEndpointConnections {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String name, Context context);
 
     /**
-     * Get the details of a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String name);
+
+    /**
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +116,9 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection getById(String id);
 
     /**
-     * Get the details of a private endpoint connection.
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -114,7 +130,9 @@ public interface PrivateEndpointConnections {
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +142,9 @@ public interface PrivateEndpointConnections {
     void deleteById(String id);
 
     /**
-     * Deletes a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

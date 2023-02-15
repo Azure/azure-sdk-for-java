@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The TritonModelJobOutput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("TritonModel")
+@JsonTypeName("triton_model")
 @Fluent
 public final class TritonModelJobOutput extends JobOutput {
     /*
@@ -25,6 +25,10 @@ public final class TritonModelJobOutput extends JobOutput {
      */
     @JsonProperty(value = "uri")
     private String uri;
+
+    /** Creates an instance of TritonModelJobOutput class. */
+    public TritonModelJobOutput() {
+    }
 
     /**
      * Get the mode property: Output Asset Delivery Mode.

@@ -21,6 +21,10 @@ public final class AgentPoolUpgradeSettings {
     @JsonProperty(value = "maxSurge")
     private String maxSurge;
 
+    /** Creates an instance of AgentPoolUpgradeSettings class. */
+    public AgentPoolUpgradeSettings() {
+    }
+
     /**
      * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
      *

@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The Swagger XML. */
 @Fluent
 public final class SwaggerXml {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerXml.class);
-
     /*
      * The xml element or attribute name.
      */
@@ -34,8 +31,7 @@ public final class SwaggerXml {
     private String prefix;
 
     /*
-     * Indicates whether the property should be an attribute instead of an
-     * element.
+     * Indicates whether the property should be an attribute instead of an element.
      */
     @JsonProperty(value = "attribute")
     private Boolean attribute;
@@ -50,7 +46,12 @@ public final class SwaggerXml {
      * The vendor extensions.
      */
     @JsonProperty(value = "extensions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extensions;
+
+    /** Creates an instance of SwaggerXml class. */
+    public SwaggerXml() {
+    }
 
     /**
      * Get the name property: The xml element or attribute name.

@@ -75,6 +75,16 @@ public final class BackendAddressPoolPropertiesFormat {
     @JsonProperty(value = "drainPeriodInSeconds")
     private Integer drainPeriodInSeconds;
 
+    /*
+     * A reference to a virtual network.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private SubResource virtualNetwork;
+
+    /** Creates an instance of BackendAddressPoolPropertiesFormat class. */
+    public BackendAddressPoolPropertiesFormat() {
+    }
+
     /**
      * Get the location property: The location of the backend address pool.
      *
@@ -211,6 +221,26 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public BackendAddressPoolPropertiesFormat withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
         this.drainPeriodInSeconds = drainPeriodInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withVirtualNetwork(SubResource virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
         return this;
     }
 

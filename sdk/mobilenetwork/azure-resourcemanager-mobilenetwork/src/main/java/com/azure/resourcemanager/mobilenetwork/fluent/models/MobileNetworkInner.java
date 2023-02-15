@@ -23,11 +23,14 @@ public final class MobileNetworkInner extends Resource {
     private MobileNetworkPropertiesFormat innerProperties = new MobileNetworkPropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of MobileNetworkInner class. */
+    public MobileNetworkInner() {
+    }
 
     /**
      * Get the innerProperties property: Mobile network properties.

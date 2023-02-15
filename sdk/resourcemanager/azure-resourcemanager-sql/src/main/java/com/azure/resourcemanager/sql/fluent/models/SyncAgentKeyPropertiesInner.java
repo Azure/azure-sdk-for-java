@@ -16,6 +16,10 @@ public final class SyncAgentKeyPropertiesInner {
     @JsonProperty(value = "syncAgentKey", access = JsonProperty.Access.WRITE_ONLY)
     private String syncAgentKey;
 
+    /** Creates an instance of SyncAgentKeyPropertiesInner class. */
+    public SyncAgentKeyPropertiesInner() {
+    }
+
     /**
      * Get the syncAgentKey property: Key of sync agent.
      *

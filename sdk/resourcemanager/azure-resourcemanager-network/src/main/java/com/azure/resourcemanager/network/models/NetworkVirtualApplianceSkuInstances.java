@@ -26,6 +26,10 @@ public final class NetworkVirtualApplianceSkuInstances {
     @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
+    /** Creates an instance of NetworkVirtualApplianceSkuInstances class. */
+    public NetworkVirtualApplianceSkuInstances() {
+    }
+
     /**
      * Get the scaleUnit property: Scale Unit.
      *

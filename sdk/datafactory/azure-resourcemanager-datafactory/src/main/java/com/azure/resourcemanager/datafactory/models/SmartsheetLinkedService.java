@@ -24,6 +24,10 @@ public final class SmartsheetLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SmartsheetLinkedServiceTypeProperties innerTypeProperties = new SmartsheetLinkedServiceTypeProperties();
 
+    /** Creates an instance of SmartsheetLinkedService class. */
+    public SmartsheetLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Smartsheet linked service properties.
      *

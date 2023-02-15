@@ -5,6 +5,7 @@ package com.azure.spring.cloud.integration.tests;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
+
 /**
  * {@link EnableAutoConfiguration} will enable the autoconfiguration classes
  * {@link SpringBootConfiguration} will enable find configuration classes with
@@ -14,4 +15,5 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 @EnableAutoConfiguration
 @SpringBootConfiguration
 public class ApplicationConfiguration {
+
 }

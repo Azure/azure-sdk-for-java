@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SendSubscriptionLogsStatus. */
+/** Indicates whether subscription logs are being sent. */
 public final class SendSubscriptionLogsStatus extends ExpandableStringEnum<SendSubscriptionLogsStatus> {
     /** Static value Enabled for SendSubscriptionLogsStatus. */
     public static final SendSubscriptionLogsStatus ENABLED = fromString("Enabled");

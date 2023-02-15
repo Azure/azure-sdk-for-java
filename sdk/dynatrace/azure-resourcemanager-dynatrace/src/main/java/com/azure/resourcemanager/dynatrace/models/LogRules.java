@@ -18,26 +18,22 @@ public final class LogRules {
     private SendAadLogsStatus sendAadLogs;
 
     /*
-     * Flag specifying if subscription logs should be sent for the Monitor
-     * resource.
+     * Flag specifying if subscription logs should be sent for the Monitor resource.
      */
     @JsonProperty(value = "sendSubscriptionLogs")
     private SendSubscriptionLogsStatus sendSubscriptionLogs;
 
     /*
-     * Flag specifying if activity logs from Azure resources should be sent for
-     * the Monitor resource.
+     * Flag specifying if activity logs from Azure resources should be sent for the Monitor resource.
      */
     @JsonProperty(value = "sendActivityLogs")
     private SendActivityLogsStatus sendActivityLogs;
 
     /*
-     * List of filtering tags to be used for capturing logs. This only takes
-     * effect if SendActivityLogs flag is enabled. If empty, all resources will
-     * be captured.
-     * If only Exclude action is specified, the rules will apply to the list of
-     * all available resources. If Include actions are specified, the rules
-     * will only include resources with the associated tags.
+     * List of filtering tags to be used for capturing logs. This only takes effect if SendActivityLogs flag is
+     * enabled. If empty, all resources will be captured.
+     * If only Exclude action is specified, the rules will apply to the list of all available resources. If Include
+     * actions are specified, the rules will only include resources with the associated tags.
      */
     @JsonProperty(value = "filteringTags")
     private List<FilteringTag> filteringTags;

@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartTitleFormat class. */
+    public MicrosoftGraphWorkbookChartTitleFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

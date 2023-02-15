@@ -17,6 +17,10 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     @JsonProperty(value = "publicIPs")
     private List<ResourceReference> publicIPs;
 
+    /** Creates an instance of ManagedClusterLoadBalancerProfileOutboundIPs class. */
+    public ManagedClusterLoadBalancerProfileOutboundIPs() {
+    }
+
     /**
      * Get the publicIPs property: A list of public IP resources.
      *

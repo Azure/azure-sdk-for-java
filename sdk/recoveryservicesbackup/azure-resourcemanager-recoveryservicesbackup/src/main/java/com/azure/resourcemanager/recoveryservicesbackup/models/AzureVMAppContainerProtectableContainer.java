@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VMAppContainer")
 @Fluent
 public final class AzureVMAppContainerProtectableContainer extends ProtectableContainer {
+    /** Creates an instance of AzureVMAppContainerProtectableContainer class. */
+    public AzureVMAppContainerProtectableContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVMAppContainerProtectableContainer withFriendlyName(String friendlyName) {

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebPubSubSkuTier. */
+/**
+ * Optional tier of this particular SKU. 'Standard' or 'Free'.
+ *
+ * <p>`Basic` is deprecated, use `Standard` instead.
+ */
 public final class WebPubSubSkuTier extends ExpandableStringEnum<WebPubSubSkuTier> {
     /** Static value Free for WebPubSubSkuTier. */
     public static final WebPubSubSkuTier FREE = fromString("Free");
@@ -33,7 +37,11 @@ public final class WebPubSubSkuTier extends ExpandableStringEnum<WebPubSubSkuTie
         return fromString(name, WebPubSubSkuTier.class);
     }
 
-    /** @return known WebPubSubSkuTier values. */
+    /**
+     * Gets known WebPubSubSkuTier values.
+     *
+     * @return known WebPubSubSkuTier values.
+     */
     public static Collection<WebPubSubSkuTier> values() {
         return values(WebPubSubSkuTier.class);
     }

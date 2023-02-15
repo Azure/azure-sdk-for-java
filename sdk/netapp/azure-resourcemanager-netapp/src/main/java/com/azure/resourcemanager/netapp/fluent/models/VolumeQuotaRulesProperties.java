@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VolumeQuotaRulesProperties {
     /*
-     * Gets the status of the VolumeQuotaRule at the time the operation was
-     * called.
+     * Gets the status of the VolumeQuotaRule at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -26,16 +25,16 @@ public final class VolumeQuotaRulesProperties {
     private Long quotaSizeInKiBs;
 
     /*
-     * quotaType Type of quota
+     * quotaType
+     *
+     * Type of quota
      */
     @JsonProperty(value = "quotaType")
     private Type quotaType;
 
     /*
-     * UserID/GroupID/SID based on the quota target type. UserID and groupID
-     * can be found by running ‘id’ or ‘getent’ command for the user or group
-     * and SID can be found by running <wmic useraccount where name='user-name'
-     * get sid>
+     * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’
+     * command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
      */
     @JsonProperty(value = "quotaTarget")
     private String quotaTarget;
@@ -70,7 +69,9 @@ public final class VolumeQuotaRulesProperties {
     }
 
     /**
-     * Get the quotaType property: quotaType Type of quota.
+     * Get the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @return the quotaType value.
      */
@@ -79,7 +80,9 @@ public final class VolumeQuotaRulesProperties {
     }
 
     /**
-     * Set the quotaType property: quotaType Type of quota.
+     * Set the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulesProperties object itself.

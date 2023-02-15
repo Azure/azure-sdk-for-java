@@ -16,6 +16,10 @@ public final class ClassicAlertSettings {
     @JsonProperty(value = "alertsForCriticalOperations")
     private AlertsState alertsForCriticalOperations;
 
+    /** Creates an instance of ClassicAlertSettings class. */
+    public ClassicAlertSettings() {
+    }
+
     /**
      * Get the alertsForCriticalOperations property: The alertsForCriticalOperations property.
      *

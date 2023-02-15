@@ -52,6 +52,10 @@ public final class ManagedPrivateEndpointImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ManagedPrivateEndpointInner innerModel() {
         return this.innerObject;
     }

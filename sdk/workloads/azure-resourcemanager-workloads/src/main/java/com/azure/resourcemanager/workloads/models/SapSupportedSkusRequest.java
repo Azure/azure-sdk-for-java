@@ -47,6 +47,10 @@ public final class SapSupportedSkusRequest {
     @JsonProperty(value = "highAvailabilityType")
     private SapHighAvailabilityType highAvailabilityType;
 
+    /** Creates an instance of SapSupportedSkusRequest class. */
+    public SapSupportedSkusRequest() {
+    }
+
     /**
      * Get the appLocation property: The geo-location where the resource is to be created.
      *

@@ -25,6 +25,10 @@ public final class ApplicationGatewayConnectionDraining {
     @JsonProperty(value = "drainTimeoutInSec", required = true)
     private int drainTimeoutInSec;
 
+    /** Creates an instance of ApplicationGatewayConnectionDraining class. */
+    public ApplicationGatewayConnectionDraining() {
+    }
+
     /**
      * Get the enabled property: Whether connection draining is enabled or not.
      *

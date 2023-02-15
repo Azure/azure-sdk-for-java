@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A segment of a compliance assessment. */
 @Immutable
 public final class ComplianceSegment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComplianceSegment.class);
-
     /*
-     * The segment type, e.g. compliant, non-compliance, insufficient coverage,
-     * N/A, etc.
+     * The segment type, e.g. compliant, non-compliance, insufficient coverage, N/A, etc.
      */
     @JsonProperty(value = "segmentType", access = JsonProperty.Access.WRITE_ONLY)
     private String segmentType;
@@ -26,6 +21,10 @@ public final class ComplianceSegment {
      */
     @JsonProperty(value = "percentage", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentage;
+
+    /** Creates an instance of ComplianceSegment class. */
+    public ComplianceSegment() {
+    }
 
     /**
      * Get the segmentType property: The segment type, e.g. compliant, non-compliance, insufficient coverage, N/A, etc.

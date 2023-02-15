@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Policy definition summary. */
 @Fluent
 public final class PolicyDefinitionSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionSummary.class);
-
     /*
      * Policy definition ID.
      */
@@ -44,6 +40,10 @@ public final class PolicyDefinitionSummary {
      */
     @JsonProperty(value = "results")
     private SummaryResults results;
+
+    /** Creates an instance of PolicyDefinitionSummary class. */
+    public PolicyDefinitionSummary() {
+    }
 
     /**
      * Get the policyDefinitionId property: Policy definition ID.

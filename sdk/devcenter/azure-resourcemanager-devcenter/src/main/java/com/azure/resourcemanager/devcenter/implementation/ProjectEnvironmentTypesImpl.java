@@ -40,16 +40,6 @@ public final class ProjectEnvironmentTypesImpl implements ProjectEnvironmentType
         return Utils.mapPage(inner, inner1 -> new ProjectEnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public ProjectEnvironmentType get(String resourceGroupName, String projectName, String environmentTypeName) {
-        ProjectEnvironmentTypeInner inner =
-            this.serviceClient().get(resourceGroupName, projectName, environmentTypeName);
-        if (inner != null) {
-            return new ProjectEnvironmentTypeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProjectEnvironmentType> getWithResponse(
         String resourceGroupName, String projectName, String environmentTypeName, Context context) {
         Response<ProjectEnvironmentTypeInner> inner =
@@ -65,13 +55,23 @@ public final class ProjectEnvironmentTypesImpl implements ProjectEnvironmentType
         }
     }
 
-    public void delete(String resourceGroupName, String projectName, String environmentTypeName) {
-        this.serviceClient().delete(resourceGroupName, projectName, environmentTypeName);
+    public ProjectEnvironmentType get(String resourceGroupName, String projectName, String environmentTypeName) {
+        ProjectEnvironmentTypeInner inner =
+            this.serviceClient().get(resourceGroupName, projectName, environmentTypeName);
+        if (inner != null) {
+            return new ProjectEnvironmentTypeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String projectName, String environmentTypeName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, projectName, environmentTypeName, context);
+    }
+
+    public void delete(String resourceGroupName, String projectName, String environmentTypeName) {
+        this.serviceClient().delete(resourceGroupName, projectName, environmentTypeName);
     }
 
     public ProjectEnvironmentType getById(String id) {

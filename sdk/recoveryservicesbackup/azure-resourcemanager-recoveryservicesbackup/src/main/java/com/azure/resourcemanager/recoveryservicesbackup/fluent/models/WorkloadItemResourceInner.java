@@ -25,6 +25,10 @@ public final class WorkloadItemResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of WorkloadItemResourceInner class. */
+    public WorkloadItemResourceInner() {
+    }
+
     /**
      * Get the properties property: WorkloadItemResource properties.
      *

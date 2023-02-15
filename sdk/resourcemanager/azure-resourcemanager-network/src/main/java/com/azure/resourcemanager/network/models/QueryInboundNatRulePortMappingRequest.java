@@ -23,6 +23,10 @@ public final class QueryInboundNatRulePortMappingRequest {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
+    /** Creates an instance of QueryInboundNatRulePortMappingRequest class. */
+    public QueryInboundNatRulePortMappingRequest() {
+    }
+
     /**
      * Get the ipConfiguration property: NetworkInterfaceIPConfiguration set in load balancer backend address.
      *

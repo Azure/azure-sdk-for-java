@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VolumeGroups Create. */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeGroups_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeGroups_Create.json
      */
     /**
      * Sample code: VolumeGroups_Create.
@@ -42,7 +42,7 @@ public final class VolumeGroupsCreateSamples {
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                            .withThroughputMibps(10.0f)
+                            .withThroughputMibps(10.0F)
                             .withCapacityPoolResourceId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                             .withProximityPlacementGroup(
@@ -55,7 +55,7 @@ public final class VolumeGroupsCreateSamples {
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                            .withThroughputMibps(10.0f)
+                            .withThroughputMibps(10.0F)
                             .withCapacityPoolResourceId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                             .withProximityPlacementGroup(
@@ -68,7 +68,7 @@ public final class VolumeGroupsCreateSamples {
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                            .withThroughputMibps(10.0f)
+                            .withThroughputMibps(10.0F)
                             .withCapacityPoolResourceId(
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
                             .withProximityPlacementGroup(

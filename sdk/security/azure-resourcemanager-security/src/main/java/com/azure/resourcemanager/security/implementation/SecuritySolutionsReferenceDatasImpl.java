@@ -12,10 +12,9 @@ import com.azure.resourcemanager.security.fluent.SecuritySolutionsReferenceDatas
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataListInner;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDataList;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecuritySolutionsReferenceDatasImpl implements SecuritySolutionsReferenceDatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceDatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsReferenceDatasImpl.class);
 
     private final SecuritySolutionsReferenceDatasClient innerClient;
 
@@ -26,15 +25,6 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SecuritySolutionsReferenceDataList list() {
-        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SecuritySolutionsReferenceDataList> listWithResponse(Context context) {
@@ -50,8 +40,8 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
         }
     }
 
-    public SecuritySolutionsReferenceDataList listByHomeRegion(String ascLocation) {
-        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().listByHomeRegion(ascLocation);
+    public SecuritySolutionsReferenceDataList list() {
+        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().list();
         if (inner != null) {
             return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
         } else {
@@ -69,6 +59,15 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecuritySolutionsReferenceDataListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecuritySolutionsReferenceDataList listByHomeRegion(String ascLocation) {
+        SecuritySolutionsReferenceDataListInner inner = this.serviceClient().listByHomeRegion(ascLocation);
+        if (inner != null) {
+            return new SecuritySolutionsReferenceDataListImpl(inner, this.manager());
         } else {
             return null;
         }

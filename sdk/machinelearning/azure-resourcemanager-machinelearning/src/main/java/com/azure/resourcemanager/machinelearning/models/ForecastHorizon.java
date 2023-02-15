@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ForecastHorizon {
+    /** Creates an instance of ForecastHorizon class. */
+    public ForecastHorizon() {
+    }
+
     /**
      * Validates the instance.
      *

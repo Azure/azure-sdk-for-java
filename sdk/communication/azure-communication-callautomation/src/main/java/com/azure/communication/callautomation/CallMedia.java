@@ -90,8 +90,8 @@ public class CallMedia {
      * @param callMediaRecognizeOptions Optional elements for recognize.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void recognize(CallMediaRecognizeOptions callMediaRecognizeOptions) {
-        callMediaAsync.recognize(callMediaRecognizeOptions).block();
+    public void startRecognizing(CallMediaRecognizeOptions callMediaRecognizeOptions) {
+        callMediaAsync.startRecognizing(callMediaRecognizeOptions).block();
     }
 
     /**
@@ -101,7 +101,7 @@ public class CallMedia {
      * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> recognizeWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
+    public Response<Void> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
         return callMediaAsync
             .recognizeWithResponseInternal(callMediaRecognizeOptions, context)
             .block();

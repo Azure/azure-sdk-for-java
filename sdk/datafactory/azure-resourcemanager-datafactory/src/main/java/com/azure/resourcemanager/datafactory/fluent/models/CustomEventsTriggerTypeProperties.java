@@ -38,6 +38,10 @@ public final class CustomEventsTriggerTypeProperties {
     @JsonProperty(value = "scope", required = true)
     private String scope;
 
+    /** Creates an instance of CustomEventsTriggerTypeProperties class. */
+    public CustomEventsTriggerTypeProperties() {
+    }
+
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.

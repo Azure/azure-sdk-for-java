@@ -41,6 +41,9 @@ public final class ReverseSearchAddressResultItem {
     @JsonProperty(value = "matchType", access = JsonProperty.Access.WRITE_ONLY)
     private MatchType matchType;
 
+    /** Creates an instance of ReverseSearchAddressResultItem class. */
+    public ReverseSearchAddressResultItem() {}
+
     /**
      * Get the address property: The address of the result.
      *

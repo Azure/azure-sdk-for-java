@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
-     * Integration runtime state, only valid for managed dedicated integration
-     * runtime.
+     * Integration runtime state, only valid for managed dedicated integration runtime.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
@@ -40,6 +39,9 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     @JsonProperty(value = "typeProperties.ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
+
+    /** Creates an instance of ManagedIntegrationRuntime class. */
+    public ManagedIntegrationRuntime() {}
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.

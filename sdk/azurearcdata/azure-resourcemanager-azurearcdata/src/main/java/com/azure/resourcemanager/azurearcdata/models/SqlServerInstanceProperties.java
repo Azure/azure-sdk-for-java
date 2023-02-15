@@ -6,15 +6,12 @@ package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of SqlServerInstance. */
 @Fluent
 public final class SqlServerInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerInstanceProperties.class);
-
     /*
      * SQL Server version.
      */
@@ -116,6 +113,10 @@ public final class SqlServerInstanceProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /** Creates an instance of SqlServerInstanceProperties class. */
+    public SqlServerInstanceProperties() {
+    }
 
     /**
      * Get the version property: SQL Server version.
@@ -443,16 +444,18 @@ public final class SqlServerInstanceProperties {
      */
     public void validate() {
         if (containerResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property containerResourceId in model SqlServerInstanceProperties"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model SqlServerInstanceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlServerInstanceProperties.class);
 }

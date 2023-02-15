@@ -22,8 +22,7 @@ public final class VolumeQuotaRuleInner extends Resource {
     private VolumeQuotaRulesProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -93,7 +92,9 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the quotaType property: quotaType Type of quota.
+     * Get the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @return the quotaType value.
      */
@@ -102,7 +103,9 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Set the quotaType property: quotaType Type of quota.
+     * Set the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRuleInner object itself.

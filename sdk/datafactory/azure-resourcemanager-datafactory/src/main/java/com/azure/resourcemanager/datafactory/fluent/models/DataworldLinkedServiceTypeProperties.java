@@ -25,6 +25,10 @@ public final class DataworldLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DataworldLinkedServiceTypeProperties class. */
+    public DataworldLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the apiToken property: The api token for the Dataworld source.
      *

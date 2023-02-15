@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SshPublicKeys GetByResourceGroup. */
 public final class SshPublicKeysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/sshPublicKeyExamples/SshPublicKey_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKey_Get.json
      */
     /**
      * Sample code: Get an ssh public key.
@@ -22,6 +20,6 @@ public final class SshPublicKeysGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSshPublicKeys()
-            .getByResourceGroupWithResponse("myResourceGroup", "mySshPublicKeyName", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "mySshPublicKeyName", com.azure.core.util.Context.NONE);
     }
 }

@@ -61,6 +61,10 @@ public final class WebhookActivityTypeProperties {
     @JsonProperty(value = "reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
 
+    /** Creates an instance of WebhookActivityTypeProperties class. */
+    public WebhookActivityTypeProperties() {
+    }
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

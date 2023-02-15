@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecommendationType. */
+/** The type of IoT Security recommendation. */
 public final class RecommendationType extends ExpandableStringEnum<RecommendationType> {
     /** Static value IoT_ACRAuthentication for RecommendationType. */
     public static final RecommendationType IO_T_ACRAUTHENTICATION = fromString("IoT_ACRAuthentication");
@@ -73,7 +73,11 @@ public final class RecommendationType extends ExpandableStringEnum<Recommendatio
         return fromString(name, RecommendationType.class);
     }
 
-    /** @return known RecommendationType values. */
+    /**
+     * Gets known RecommendationType values.
+     *
+     * @return known RecommendationType values.
+     */
     public static Collection<RecommendationType> values() {
         return values(RecommendationType.class);
     }

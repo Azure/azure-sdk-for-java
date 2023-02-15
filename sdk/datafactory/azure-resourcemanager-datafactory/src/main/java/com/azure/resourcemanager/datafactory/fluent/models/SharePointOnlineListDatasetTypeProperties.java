@@ -16,6 +16,10 @@ public final class SharePointOnlineListDatasetTypeProperties {
     @JsonProperty(value = "listName")
     private Object listName;
 
+    /** Creates an instance of SharePointOnlineListDatasetTypeProperties class. */
+    public SharePointOnlineListDatasetTypeProperties() {
+    }
+
     /**
      * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
      * string).

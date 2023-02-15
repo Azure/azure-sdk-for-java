@@ -14,11 +14,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +39,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -229,33 +226,43 @@ public class RntbdTransportClient extends TransportClient {
         final URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
+
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
-        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
+        // If SDK has not sent the request to server, then SDK will not send the request to server
+        // If the request has been sent to server, then SDK will discard the response once get from server
+        return Mono.fromFuture(record).map(storeResponse -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
             }
 
-            if (response != null) {
-                RequestTimeline timeline = record.takeTimelineSnapshot();
-                response.setRequestTimeline(timeline);
-                response.setEndpointStatistics(record.serviceEndpointStatistics());
-                response.setRntbdResponseLength(record.responseLength());
-                response.setRntbdRequestLength(record.requestLength());
-                response.setRequestPayloadLength(request.getContentLength());
-                response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
-                response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-                if(this.channelAcquisitionContextEnabled) {
-                    response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
-                }
+            RequestTimeline timeline = record.takeTimelineSnapshot();
+            storeResponse.setRequestTimeline(timeline);
+            storeResponse.setEndpointStatistics(record.serviceEndpointStatistics());
+            storeResponse.setRntbdResponseLength(record.responseLength());
+            storeResponse.setRntbdRequestLength(record.requestLength());
+            storeResponse.setRequestPayloadLength(request.getContentLength());
+            storeResponse.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
+            storeResponse.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
+            if (this.channelAcquisitionContextEnabled) {
+                storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
 
-        })).onErrorMap(throwable -> {
+            return storeResponse;
+
+        }).onErrorMap(throwable -> {
+
+            record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
+            }
 
             Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -263,11 +270,13 @@ public class RntbdTransportClient extends TransportClient {
 
                 String unexpectedError = RntbdObjectMapper.toJson(error);
 
-                reportIssue(logger, endpoint,
-                    "request completed with an unexpected {}: \\{\"record\":{},\"error\":{}}",
-                    error.getClass(),
-                    record,
-                    unexpectedError);
+                if (!(error instanceof CancellationException)) {
+                    reportIssue(logger, endpoint,
+                        "request completed with an unexpected {}: \\{\"record\":{},\"error\":{}}",
+                        error.getClass(),
+                        record,
+                        unexpectedError);
+                }
 
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),
@@ -286,67 +295,21 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-            if(this.channelAcquisitionContextEnabled) {
+            if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }
 
             return cosmosException;
-        });
-
-        return result.doFinally(signalType -> {
-
-            // This lambda ensures that a pending Direct TCP request in a reactive stream dropped by an end user or the
-            // HA layer completes without bubbling up to reactor.core.publisher.Hooks#onErrorDropped as a
-            // CompletionException error. Pending requests may be left outstanding when, for example, an end user calls
-            // CosmosAsyncClient#close or the HA layer detects that a partition split has occurred. This code guarantees
-            // that each pending Mono<StoreResponse> in the stream will run to completion with a new subscriber.
-            // Consequently the default Hooks#onErrorDropped method will not be called thus preventing distracting error
-            // messages.
-            //
-            // This lambda does not prevent requests that complete exceptionally before the call to this lambda from
-            // bubbling up to Hooks#onErrorDropped as CompletionException errors. We will still see some onErrorDropped
-            // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
-            // in low latency environments on Azure cloud. To avoid the onErrorDropped events to get logged in the
-            // default hook (which logs with level ERROR) we inject a local hook in the Reactor Context to just log it
-            // as DEBUG level for the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
-            // any functional issues.
-            //
-            // One might be tempted to complete a pending request here, but that is ill advised. Testing and
-            // inspection of the reactor code shows that this does not prevent errors from bubbling up to
-            // reactor.core.publisher.Hooks#onErrorDropped. Worse than this it has been seen to cause failures in
-            // the HA layer:
-            //
-            // * Calling record.cancel or record.completeExceptionally causes failures in (low-latency) cloud
-            //   environments and all errors bubble up Hooks#onErrorDropped.
-            //
-            // * Calling record.complete with a null value causes failures in all environments, depending on the
-            //   operation being performed. In short: many of our tests fail.
-
+        }).doFinally(signalType -> {
             if (signalType != SignalType.CANCEL) {
                 return;
             }
 
-            result.subscribe(
-                response -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}}",
-                            RntbdObjectMapper.toJson(record),
-                            response.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(response));
-                    }
-                },
-                throwable -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}",
-                            RntbdObjectMapper.toJson(record),
-                            throwable.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(throwable));
-                    }
-                });
+            // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
+            // But the stated behavior may change in later versions (https://github.com/reactor/reactor-core/issues/3235).
+            // In order to keep consistent behavior, we internally will always cancel the future.
+            record.cancel(true);
+
         }).contextWrite(reactorContext);
     }
 
@@ -471,6 +434,16 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final boolean preferTcpNative;
 
+        @JsonProperty()
+        private final Duration sslHandshakeTimeoutMinDuration;
+
+        /**
+         * This property will be used in {@link RntbdClientChannelHealthChecker} to determine whether there is a readHang.
+         * If there is no successful reads for up to receiveHangDetectionTime, and the number of consecutive timeout has also reached this config,
+         * then SDK is going to treat the channel as unhealthy and close it.
+         */
+        @JsonProperty()
+        private final int transientTimeoutDetectionThreshold;
         // endregion
 
         // region Constructors
@@ -504,6 +477,8 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIntvl = builder.tcpKeepIntvl;
             this.tcpKeepIdle = builder.tcpKeepIdle;
             this.preferTcpNative = builder.preferTcpNative;
+            this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
+            this.transientTimeoutDetectionThreshold = builder.transientTimeoutDetectionThreshold;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -535,7 +510,9 @@ public class RntbdTransportClient extends TransportClient {
             this.channelAcquisitionContextEnabled = false;
             this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
-            this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
+            this.tcpKeepIdle = 1; // Configuration for EpollChannelOption.TCP_KEEPIDLE
+            this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
+            this.transientTimeoutDetectionThreshold = 3;
             this.preferTcpNative = true;
         }
 
@@ -637,6 +614,15 @@ public class RntbdTransportClient extends TransportClient {
 
         public boolean preferTcpNative() { return this.preferTcpNative; }
 
+        public long sslHandshakeTimeoutInMillis() {
+            return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
+        }
+
+        public int transientTimeoutDetectionThreshold() {
+            return this.transientTimeoutDetectionThreshold;
+        }
+
+
         // endregion
 
         // region Methods
@@ -697,7 +683,8 @@ public class RntbdTransportClient extends TransportClient {
          *   "requestTimerResolution": "PT100MS",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
-         *   "threadCount": 16
+         *   "threadCount": 16,
+         *   "transientTimeoutDetectionThreshold": 3
          * }}</pre>
          * </li>
          * </ol>
@@ -794,6 +781,8 @@ public class RntbdTransportClient extends TransportClient {
             private int tcpKeepIntvl;
             private int tcpKeepIdle;
             private boolean preferTcpNative;
+            private Duration sslHandshakeTimeoutMinDuration;
+            private int transientTimeoutDetectionThreshold;
 
             // endregion
 
@@ -827,6 +816,8 @@ public class RntbdTransportClient extends TransportClient {
                 this.tcpKeepIntvl = DEFAULT_OPTIONS.tcpKeepIntvl;
                 this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
+                this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
+                this.transientTimeoutDetectionThreshold = DEFAULT_OPTIONS.transientTimeoutDetectionThreshold;
             }
 
             // endregion

@@ -4,30 +4,34 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobItemProperties;
+import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -66,6 +70,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(BlobCheckpointStore.class);
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
+    private final MetricsHelper metricsHelper;
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
@@ -75,7 +80,20 @@ public class BlobCheckpointStore implements CheckpointStore {
      * blobs in the storage container.
      */
     public BlobCheckpointStore(BlobContainerAsyncClient blobContainerAsyncClient) {
+        this(blobContainerAsyncClient, null);
+    }
+
+
+    /**
+     * Creates an instance of BlobCheckpointStore.
+     *
+     * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
+     * @param options The {@link ClientOptions} to configure this instance.
+     * blobs in the storage container.
+     */
+    public BlobCheckpointStore(BlobContainerAsyncClient blobContainerAsyncClient, ClientOptions options) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;
+        this.metricsHelper = new MetricsHelper(options == null ? null : options.getMetricsOptions(), MeterProvider.getDefaultProvider());
     }
 
     /**
@@ -193,7 +211,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                             LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.error(error);
+                            return Mono.empty();
                         }, Mono::empty);
                 } else {
                     // update existing blob
@@ -203,14 +221,14 @@ public class BlobCheckpointStore implements CheckpointStore {
                             LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.error(error);
+                            return Mono.empty();
                         }, Mono::empty);
                 }
             } catch (Exception ex) {
                 LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
                     .log(Messages.CLAIM_ERROR, ex);
-                return Mono.error(ex);
+                return Mono.empty();
             }
         });
     }
@@ -249,7 +267,7 @@ public class BlobCheckpointStore implements CheckpointStore {
         metadata.put(OFFSET, offset);
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-        return blobAsyncClient.exists().flatMap(exists -> {
+        Mono<Void> response = blobAsyncClient.exists().flatMap(exists -> {
             if (exists) {
                 return blobAsyncClient.setMetadata(metadata);
             } else {
@@ -257,6 +275,22 @@ public class BlobCheckpointStore implements CheckpointStore {
                     metadata, null, null, null).then();
             }
         });
+        return reportMetrics(response, checkpoint, blobName);
+    }
+
+    private Mono<Void> reportMetrics(Mono<Void> checkpointMono, Checkpoint checkpoint, String blobName) {
+        AtomicReference<Instant> startTime = metricsHelper.isCheckpointDurationEnabled() ? new AtomicReference<>() : null;
+        return checkpointMono
+            .doOnEach(signal ->  {
+                if (signal.isOnComplete() || signal.isOnError()) {
+                    metricsHelper.reportCheckpoint(checkpoint, blobName, !signal.hasError(), startTime != null ? startTime.get() : null);
+                }
+            })
+            .doOnSubscribe(ignored -> {
+                if (startTime != null) {
+                    startTime.set(Instant.now());
+                }
+            });
     }
 
     private String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,

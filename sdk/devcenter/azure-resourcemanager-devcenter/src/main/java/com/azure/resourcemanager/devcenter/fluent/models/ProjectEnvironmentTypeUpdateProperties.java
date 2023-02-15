@@ -42,6 +42,10 @@ public class ProjectEnvironmentTypeUpdateProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserRoleAssignmentValue> userRoleAssignments;
 
+    /** Creates an instance of ProjectEnvironmentTypeUpdateProperties class. */
+    public ProjectEnvironmentTypeUpdateProperties() {
+    }
+
     /**
      * Get the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.

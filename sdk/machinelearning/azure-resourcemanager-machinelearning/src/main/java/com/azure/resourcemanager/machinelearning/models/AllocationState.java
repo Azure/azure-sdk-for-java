@@ -8,13 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AllocationState. */
+/**
+ * Allocation state.
+ *
+ * <p>Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There
+ * are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is
+ * created and when no operations are being performed on the compute to change the number of compute nodes. resizing -
+ * Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the compute.
+ */
 public final class AllocationState extends ExpandableStringEnum<AllocationState> {
     /** Static value Steady for AllocationState. */
     public static final AllocationState STEADY = fromString("Steady");
 
     /** Static value Resizing for AllocationState. */
     public static final AllocationState RESIZING = fromString("Resizing");
+
+    /**
+     * Creates a new instance of AllocationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AllocationState() {
+    }
 
     /**
      * Creates or finds a AllocationState from its string representation.

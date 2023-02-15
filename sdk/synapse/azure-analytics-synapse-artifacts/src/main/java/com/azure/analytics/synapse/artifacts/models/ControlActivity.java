@@ -23,6 +23,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "Switch", value = SwitchActivity.class),
     @JsonSubTypes.Type(name = "ForEach", value = ForEachActivity.class),
     @JsonSubTypes.Type(name = "Wait", value = WaitActivity.class),
+    @JsonSubTypes.Type(name = "Fail", value = FailActivity.class),
     @JsonSubTypes.Type(name = "Until", value = UntilActivity.class),
     @JsonSubTypes.Type(name = "Validation", value = ValidationActivity.class),
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
@@ -32,6 +33,9 @@ import java.util.List;
 })
 @Fluent
 public class ControlActivity extends Activity {
+    /** Creates an instance of ControlActivity class. */
+    public ControlActivity() {}
+
     /** {@inheritDoc} */
     @Override
     public ControlActivity setName(String name) {

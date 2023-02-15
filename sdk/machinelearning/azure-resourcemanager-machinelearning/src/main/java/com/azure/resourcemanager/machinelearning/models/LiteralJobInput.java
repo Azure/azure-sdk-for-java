@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Literal input type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("Literal")
+@JsonTypeName("literal")
 @Fluent
 public final class LiteralJobInput extends JobInput {
     /*
@@ -20,6 +20,10 @@ public final class LiteralJobInput extends JobInput {
      */
     @JsonProperty(value = "value", required = true)
     private String value;
+
+    /** Creates an instance of LiteralJobInput class. */
+    public LiteralJobInput() {
+    }
 
     /**
      * Get the value property: [Required] Literal value for the input.

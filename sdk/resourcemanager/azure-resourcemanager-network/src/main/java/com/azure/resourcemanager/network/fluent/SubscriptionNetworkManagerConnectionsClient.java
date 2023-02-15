@@ -52,20 +52,6 @@ public interface SubscriptionNetworkManagerConnectionsClient {
      *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Manager Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkManagerConnectionInner createOrUpdate(
-        String networkManagerConnectionName, NetworkManagerConnectionInner parameters);
-
-    /**
-     * Create a network manager connection on this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
-     * @param parameters Network manager connection to be created/updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,6 +61,20 @@ public interface SubscriptionNetworkManagerConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkManagerConnectionInner> createOrUpdateWithResponse(
         String networkManagerConnectionName, NetworkManagerConnectionInner parameters, Context context);
+
+    /**
+     * Create a network manager connection on this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @param parameters Network manager connection to be created/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network Manager Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerConnectionInner createOrUpdate(
+        String networkManagerConnectionName, NetworkManagerConnectionInner parameters);
 
     /**
      * Get a specified connection created by this subscription.
@@ -105,18 +105,6 @@ public interface SubscriptionNetworkManagerConnectionsClient {
      * Get a specified connection created by this subscription.
      *
      * @param networkManagerConnectionName Name for the network manager connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specified connection created by this subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkManagerConnectionInner get(String networkManagerConnectionName);
-
-    /**
-     * Get a specified connection created by this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,6 +113,18 @@ public interface SubscriptionNetworkManagerConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkManagerConnectionInner> getWithResponse(String networkManagerConnectionName, Context context);
+
+    /**
+     * Get a specified connection created by this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specified connection created by this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerConnectionInner get(String networkManagerConnectionName);
 
     /**
      * Delete specified connection created by this subscription.
@@ -154,17 +154,6 @@ public interface SubscriptionNetworkManagerConnectionsClient {
      * Delete specified connection created by this subscription.
      *
      * @param networkManagerConnectionName Name for the network manager connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String networkManagerConnectionName);
-
-    /**
-     * Delete specified connection created by this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,6 +162,17 @@ public interface SubscriptionNetworkManagerConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String networkManagerConnectionName, Context context);
+
+    /**
+     * Delete specified connection created by this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String networkManagerConnectionName);
 
     /**
      * List all network manager connections created by this subscription.

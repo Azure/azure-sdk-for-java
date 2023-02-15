@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2023-01-01/examples/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: List Private Endpoint Connections by Managed Cluster.
@@ -23,6 +21,6 @@ public final class PrivateEndpointConnectionsListSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .listWithResponse("rg1", "clustername1", Context.NONE);
+            .listWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

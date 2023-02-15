@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Reservation utilization. */
 @Fluent
 public final class ReservationPropertyUtilization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationPropertyUtilization.class);
-
     /*
      * The number of days trend for a reservation
      */
@@ -26,6 +22,10 @@ public final class ReservationPropertyUtilization {
      */
     @JsonProperty(value = "aggregates")
     private List<ReservationUtilizationAggregates> aggregates;
+
+    /** Creates an instance of ReservationPropertyUtilization class. */
+    public ReservationPropertyUtilization() {
+    }
 
     /**
      * Get the trend property: The number of days trend for a reservation.

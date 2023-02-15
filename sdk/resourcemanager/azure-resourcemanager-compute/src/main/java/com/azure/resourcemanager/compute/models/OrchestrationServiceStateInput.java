@@ -23,6 +23,10 @@ public final class OrchestrationServiceStateInput {
     @JsonProperty(value = "action", required = true)
     private OrchestrationServiceStateAction action;
 
+    /** Creates an instance of OrchestrationServiceStateInput class. */
+    public OrchestrationServiceStateInput() {
+    }
+
     /**
      * Get the serviceName property: The name of the service.
      *

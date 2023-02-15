@@ -23,6 +23,10 @@ public final class VpnConnectionPacketCaptureStartParameters {
     @JsonProperty(value = "linkConnectionNames")
     private List<String> linkConnectionNames;
 
+    /** Creates an instance of VpnConnectionPacketCaptureStartParameters class. */
+    public VpnConnectionPacketCaptureStartParameters() {
+    }
+
     /**
      * Get the filterData property: Start Packet capture parameters on vpn connection.
      *

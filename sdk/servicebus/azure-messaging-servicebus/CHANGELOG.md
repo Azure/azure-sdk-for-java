@@ -1,15 +1,65 @@
 # Release History
 
-## 7.11.0-beta.1 (Unreleased)
+## 7.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Added filter to filter out the closed `ServiceBusReceiveLink` before passing to `ServiceBusReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
+- Enabled session processor recovery when broker detaches the link that is waiting to be ACTIVE without an error condition. ([#33313](https://github.com/Azure/azure-sdk-for-java/issues/33313)) 
 ### Other Changes
 
+## 7.13.1 (2023-01-20)
+
+### Bugs Fixed
+- Fixed incorrect queue description parameter order. ([#30880](https://github.com/Azure/azure-sdk-for-java/issues/30880))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+- Upgraded `azure-core-amqp` from `2.8.0` to `2.8.1`.
+- Upgraded `azure-identity` from `1.7.0` to `1.7.3`.
+## 7.13.0 (2022-11-14)
+
+### Features Added
+- Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
+- Added ability to create a subscription with default rule. ([#29885](https://github.com/Azure/azure-sdk-for-java/issues/29885))
+- `ServiceBusAdministrationClientBuilder` now supports using `AzureSasCredential`. ([#30255](https://github.com/Azure/azure-sdk-for-java/issues/30255))
+- `EntityPath` and `FullyQualifiedNamespace` properties are now readable from `ServiceBusReceivedMessageContext`. ([#29089](https://github.com/Azure/azure-sdk-for-java/issues/29089))
+### Bugs Fixed
+- Fixed `ServiceBusReceiverClient` release messages if the prefetch is disabled and there is no active receive call in `RECEIVE_AND_DELETE` mode. ([#30861](https://github.com/Azure/azure-sdk-for-java/issues/30861))
+- Fixed incorrect proxy configuration using environment variables. ([#24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
+- Changed the `sizeInBytes` type in `QueueDescription` and `TopicDescription`  from Integer to Long. ([#32064](https://github.com/Azure/azure-sdk-for-java/issues/32064))
+
+### Other Changes
+- Changed the log level for adding credits from Info to Debug. ([#20836](https://github.com/Azure/azure-sdk-for-java/issues/20836))
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+- Upgraded `azure-core-amqp` from `2.7.2` to `2.8.0`.
+- Upgraded `azure-identity` from `1.6.1` to `1.7.0`.
+## 7.12.1 (2022-10-25)
+
+### Bugs Fixed
+- Fixed `listQueues`, `listTopics`, `listRules`, `listSubscriptions`, `createQueue` and `createSubscriptionWithResponse` in `ServiceBusAdministrationClient` class. ([#31712](https://github.com/Azure/azure-sdk-for-java/issues/31712))
+
+## 7.12.0 (2022-10-20)
+- Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
+- Enabled metrics to track number of sent messages, receiver lag, settlement calls ([#31283](https://github.com/Azure/azure-sdk-for-java/pull/31283))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded `azure-core-amqp` from `2.7.1` to `2.7.2`.
+- Upgraded `azure-identity` from `1.5.5` to `1.6.1`.
+## 7.11.0 (2022-09-19)
+
+### Features Added
+- Added identifier to client. ([#28904](https://github.com/Azure/azure-sdk-for-java/issues/28904))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded `azure-core-amqp` from `2.7.0` to `2.7.1`.
+- Upgraded `azure-identity` from `1.5.3` to `1.5.5`.
 ## 7.10.1 (2022-08-18)
 
 ### Bugs Fixed
@@ -304,7 +354,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 
 ### Breaking Changes
 - Changed `receiveMessages` API to return `ServiceBusReceivedMessage` instead of ServiceBusReceivedMessageContext in 
-  `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient`.
+  `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient`.
 - Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
   [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
 - Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` as creating receiver clients bound to a 
@@ -314,7 +364,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
   `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from 
   the receiver client to the new `ServiceBusSessionProcessorClient`.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
-- Removed `sessionId` specific methods from `ServiceBusReceiverAsynClient` and `ServiceBusReceiverClient` because now 
+- Removed `sessionId` specific methods from `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient` because now 
   receiver client is always tied to one session. 
   
 ### Bug Fixes

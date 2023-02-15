@@ -28,6 +28,10 @@ public final class BekDetails {
     @JsonProperty(value = "secretData")
     private String secretData;
 
+    /** Creates an instance of BekDetails class. */
+    public BekDetails() {
+    }
+
     /**
      * Get the secretUrl property: Secret is BEK.
      *

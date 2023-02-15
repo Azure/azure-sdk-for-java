@@ -12,13 +12,17 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class SnapshotProperties {
     /*
-     * snapshotId UUID v4 used to identify the Snapshot
+     * snapshotId
+     *
+     * UUID v4 used to identify the Snapshot
      */
     @JsonProperty(value = "snapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String snapshotId;
 
     /*
-     * name The creation date of the snapshot
+     * name
+     *
+     * The creation date of the snapshot
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
@@ -30,7 +34,9 @@ public final class SnapshotProperties {
     private String provisioningState;
 
     /**
-     * Get the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Get the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
@@ -39,7 +45,9 @@ public final class SnapshotProperties {
     }
 
     /**
-     * Get the created property: name The creation date of the snapshot.
+     * Get the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */

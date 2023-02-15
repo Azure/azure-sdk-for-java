@@ -49,6 +49,10 @@ public final class CassandraLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CassandraLinkedServiceTypeProperties class. */
+    public CassandraLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
      *

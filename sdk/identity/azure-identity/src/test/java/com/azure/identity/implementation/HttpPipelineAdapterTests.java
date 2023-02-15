@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.HttpRequest;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class HttpPipelineAdapterTests {
         Mono<String> bodyResponse = Mono.just("dummy-body");
         HttpPipeline pipeline = Mockito.mock(HttpPipeline.class);
         HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline, new IdentityClientOptions());
-        HttpRequest req = mockForSendRequest(bodyResponse, pipeline);
+        HttpRequest req = mockForSendRequest(bodyResponse, "dummy-body", pipeline);
         pipelineAdapter.send(req);
     }
 
@@ -35,11 +36,11 @@ public class HttpPipelineAdapterTests {
     public void testSendRequestEmptyBody() throws Exception {
         HttpPipeline pipeline = Mockito.mock(HttpPipeline.class);
         HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline, new IdentityClientOptions());
-        HttpRequest req = mockForSendRequest(Mono.empty(), pipeline);
+        HttpRequest req = mockForSendRequest(Mono.empty(), "", pipeline);
         pipelineAdapter.send(req);
     }
 
-    private HttpRequest mockForSendRequest(Mono<String> bodyResponse, HttpPipeline pipeline) throws MalformedURLException {
+    private HttpRequest mockForSendRequest(Mono<String> bodyResponseMono, String bodyResponse, HttpPipeline pipeline) throws MalformedURLException {
 
         HttpRequest req = Mockito.mock(HttpRequest.class);
         HttpMethod method = HttpMethod.GET;
@@ -50,10 +51,11 @@ public class HttpPipelineAdapterTests {
         Map<String, String> a = new HashMap<>();
         when(req.headers()).thenReturn(a);
         HttpResponse coreResponse = Mockito.mock(HttpResponse.class);
-        when(coreResponse.getBodyAsString()).thenReturn(bodyResponse);
+        when(coreResponse.getBodyAsString()).thenReturn(bodyResponseMono);
+        when(coreResponse.getBodyAsBinaryData()).thenReturn(BinaryData.fromString(bodyResponse));
         when(coreResponse.getHeaders()).thenReturn(new HttpHeaders(a));
         when(coreResponse.getStatusCode()).thenReturn(200);
-        when(pipeline.send(any(com.azure.core.http.HttpRequest.class))).thenReturn(Mono.just(coreResponse));
+        when(pipeline.sendSync(any(com.azure.core.http.HttpRequest.class), any())).thenReturn(coreResponse);
         return req;
     }
 }

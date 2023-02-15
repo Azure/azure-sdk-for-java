@@ -24,7 +24,7 @@ public interface MoveResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of move resources.
+     * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MoveResourceInner> list(String resourceGroupName, String moveCollectionName);
@@ -40,7 +40,7 @@ public interface MoveResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of move resources.
+     * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MoveResourceInner> list(
@@ -52,15 +52,14 @@ public interface MoveResourcesClient {
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the move resource.
+     * @return the {@link SyncPoller} for polling of defines the move resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, MoveResourceInner body);
+        String resourceGroupName, String moveCollectionName, String moveResourceName);
 
     /**
      * Creates or updates a Move Resource in the move collection.
@@ -73,31 +72,15 @@ public interface MoveResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the move resource.
+     * @return the {@link SyncPoller} for polling of defines the move resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MoveResourceInner>, MoveResourceInner> beginCreate(
         String resourceGroupName,
         String moveCollectionName,
         String moveResourceName,
         MoveResourceInner body,
         Context context);
-
-    /**
-     * Creates or updates a Move Resource in the move collection.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param moveCollectionName The Move Collection Name.
-     * @param moveResourceName The Move Resource Name.
-     * @param body Defines the move resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the move resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MoveResourceInner create(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, MoveResourceInner body);
 
     /**
      * Creates or updates a Move Resource in the move collection.
@@ -143,9 +126,9 @@ public interface MoveResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
+     * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName, String moveResourceName);
 
@@ -159,9 +142,9 @@ public interface MoveResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
+     * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
         String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
 
@@ -201,13 +184,15 @@ public interface MoveResourcesClient {
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Move Resource.
+     * @return the Move Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MoveResourceInner get(String resourceGroupName, String moveCollectionName, String moveResourceName);
+    Response<MoveResourceInner> getWithResponse(
+        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
 
     /**
      * Gets the Move Resource.
@@ -215,13 +200,11 @@ public interface MoveResourcesClient {
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Move Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveResourceInner> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    MoveResourceInner get(String resourceGroupName, String moveCollectionName, String moveResourceName);
 }

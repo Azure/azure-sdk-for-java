@@ -24,6 +24,10 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
     @JsonProperty(value = "servers")
     private List<ApplicationGatewayBackendHealthServerInner> servers;
 
+    /** Creates an instance of ApplicationGatewayBackendHealthHttpSettings class. */
+    public ApplicationGatewayBackendHealthHttpSettings() {
+    }
+
     /**
      * Get the backendHttpSettings property: Reference to an ApplicationGatewayBackendHttpSettings resource.
      *

@@ -31,6 +31,10 @@ public final class DeploymentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DeploymentProperties properties;
 
+    /** Creates an instance of DeploymentInner class. */
+    public DeploymentInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

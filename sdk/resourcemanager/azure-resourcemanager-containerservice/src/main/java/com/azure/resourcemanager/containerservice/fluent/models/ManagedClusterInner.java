@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
@@ -14,8 +15,10 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProf
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
@@ -23,6 +26,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
@@ -56,6 +60,16 @@ public final class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ManagedClusterProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ManagedClusterInner class. */
+    public ManagedClusterInner() {
+    }
 
     /**
      * Get the sku property: The managed cluster SKU.
@@ -124,6 +138,15 @@ public final class ManagedClusterInner extends Resource {
      */
     private ManagedClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -455,6 +478,29 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @return the oidcIssuerProfile value.
+     */
+    public ManagedClusterOidcIssuerProfile oidcIssuerProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().oidcIssuerProfile();
+    }
+
+    /**
+     * Set the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @param oidcIssuerProfile the oidcIssuerProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withOidcIssuerProfile(ManagedClusterOidcIssuerProfile oidcIssuerProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withOidcIssuerProfile(oidcIssuerProfile);
+        return this;
+    }
+
+    /**
      * Get the nodeResourceGroup property: The name of the resource group containing agent pool nodes.
      *
      * @return the nodeResourceGroup value.
@@ -501,8 +547,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
-     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      *
      * @return the enablePodSecurityPolicy value.
      */
@@ -511,8 +558,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
-     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      *
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterInner object itself.
@@ -845,6 +893,53 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
+     *
+     * @return the workloadAutoScalerProfile value.
+     */
+    public ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadAutoScalerProfile();
+    }
+
+    /**
+     * Set the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
+     *
+     * @param workloadAutoScalerProfile the workloadAutoScalerProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withWorkloadAutoScalerProfile(
+        ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withWorkloadAutoScalerProfile(workloadAutoScalerProfile);
+        return this;
+    }
+
+    /**
+     * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @return the azureMonitorProfile value.
+     */
+    public ManagedClusterAzureMonitorProfile azureMonitorProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureMonitorProfile();
+    }
+
+    /**
+     * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @param azureMonitorProfile the azureMonitorProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withAzureMonitorProfile(ManagedClusterAzureMonitorProfile azureMonitorProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withAzureMonitorProfile(azureMonitorProfile);
         return this;
     }
 

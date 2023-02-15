@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceIdentityType. */
+/**
+ * The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+ * created identity and a set of user assigned identities.
+ */
 public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
     /** Static value SystemAssigned for ResourceIdentityType. */
     public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
@@ -33,7 +36,11 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
         return fromString(name, ResourceIdentityType.class);
     }
 
-    /** @return known ResourceIdentityType values. */
+    /**
+     * Gets known ResourceIdentityType values.
+     *
+     * @return known ResourceIdentityType values.
+     */
     public static Collection<ResourceIdentityType> values() {
         return values(ResourceIdentityType.class);
     }

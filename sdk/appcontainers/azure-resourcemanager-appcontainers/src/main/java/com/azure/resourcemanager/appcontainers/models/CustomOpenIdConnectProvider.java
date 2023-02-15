@@ -11,25 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomOpenIdConnectProvider {
     /*
-     * <code>false</code> if the custom Open ID provider provider should not be
-     * enabled; otherwise, <code>true</code>.
+     * <code>false</code> if the custom Open ID provider provider should not be enabled; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The configuration settings of the app registration for the custom Open
-     * ID Connect provider.
+     * The configuration settings of the app registration for the custom Open ID Connect provider.
      */
     @JsonProperty(value = "registration")
     private OpenIdConnectRegistration registration;
 
     /*
-     * The configuration settings of the login flow of the custom Open ID
-     * Connect provider.
+     * The configuration settings of the login flow of the custom Open ID Connect provider.
      */
     @JsonProperty(value = "login")
     private OpenIdConnectLogin login;
+
+    /** Creates an instance of CustomOpenIdConnectProvider class. */
+    public CustomOpenIdConnectProvider() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be

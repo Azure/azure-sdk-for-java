@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** signed identifier. */
-@Fluent
 @JacksonXmlRootElement(localName = "SignedIdentifier")
+@Fluent
 public final class BlobSignedIdentifier {
 
     /*
@@ -23,6 +23,9 @@ public final class BlobSignedIdentifier {
      */
     @JsonProperty(value = "AccessPolicy", required = true)
     private BlobAccessPolicy accessPolicy;
+
+    /** Creates an instance of BlobSignedIdentifier class. */
+    public BlobSignedIdentifier() {}
 
     /**
      * Get the id property: a unique id.

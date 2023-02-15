@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultPrincipalsModificationKind. */
+/** The default principals modification kind. */
 public final class DefaultPrincipalsModificationKind extends ExpandableStringEnum<DefaultPrincipalsModificationKind> {
     /** Static value Union for DefaultPrincipalsModificationKind. */
     public static final DefaultPrincipalsModificationKind UNION = fromString("Union");
@@ -30,7 +30,11 @@ public final class DefaultPrincipalsModificationKind extends ExpandableStringEnu
         return fromString(name, DefaultPrincipalsModificationKind.class);
     }
 
-    /** @return known DefaultPrincipalsModificationKind values. */
+    /**
+     * Gets known DefaultPrincipalsModificationKind values.
+     *
+     * @return known DefaultPrincipalsModificationKind values.
+     */
     public static Collection<DefaultPrincipalsModificationKind> values() {
         return values(DefaultPrincipalsModificationKind.class);
     }

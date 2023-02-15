@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status of the sub-assessment. */
 @Immutable
 public final class SubAssessmentStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAssessmentStatus.class);
-
     /*
      * Programmatic code for the status of the assessment
      */
@@ -37,6 +33,10 @@ public final class SubAssessmentStatus {
      */
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
+
+    /** Creates an instance of SubAssessmentStatus class. */
+    public SubAssessmentStatus() {
+    }
 
     /**
      * Get the code property: Programmatic code for the status of the assessment.

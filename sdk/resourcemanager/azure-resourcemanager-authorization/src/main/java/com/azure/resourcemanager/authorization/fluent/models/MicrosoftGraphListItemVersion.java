@@ -27,6 +27,10 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphListItemVersion class. */
+    public MicrosoftGraphListItemVersion() {
+    }
+
     /**
      * Get the fields property: fieldValueSet.
      *

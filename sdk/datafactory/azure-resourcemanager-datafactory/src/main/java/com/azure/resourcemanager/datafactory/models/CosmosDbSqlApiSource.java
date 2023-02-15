@@ -45,6 +45,10 @@ public final class CosmosDbSqlApiSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of CosmosDbSqlApiSource class. */
+    public CosmosDbSqlApiSource() {
+    }
+
     /**
      * Get the query property: SQL API query. Type: string (or Expression with resultType string).
      *

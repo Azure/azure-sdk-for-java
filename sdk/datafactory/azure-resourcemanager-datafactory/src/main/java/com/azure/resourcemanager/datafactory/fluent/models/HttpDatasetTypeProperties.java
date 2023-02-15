@@ -51,6 +51,10 @@ public final class HttpDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of HttpDatasetTypeProperties class. */
+    public HttpDatasetTypeProperties() {
+    }
+
     /**
      * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
      * Type: string (or Expression with resultType string).

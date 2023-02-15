@@ -39,11 +39,18 @@ public interface WebPubSubHub {
     SystemData systemData();
 
     /**
-     * Gets the properties property: Properties of the hub setting.
+     * Gets the properties property: Properties of a hub.
      *
      * @return the properties value.
      */
     WebPubSubHubProperties properties();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner object.
@@ -79,9 +86,9 @@ public interface WebPubSubHub {
         /** The stage of the WebPubSubHub definition allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the hub setting..
+             * Specifies the properties property: Properties of a hub..
              *
-             * @param properties Properties of the hub setting.
+             * @param properties Properties of a hub.
              * @return the next definition stage.
              */
             WithCreate withProperties(WebPubSubHubProperties properties);
@@ -136,9 +143,9 @@ public interface WebPubSubHub {
         /** The stage of the WebPubSubHub update allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the hub setting..
+             * Specifies the properties property: Properties of a hub..
              *
-             * @param properties Properties of the hub setting.
+             * @param properties Properties of a hub.
              * @return the next definition stage.
              */
             Update withProperties(WebPubSubHubProperties properties);

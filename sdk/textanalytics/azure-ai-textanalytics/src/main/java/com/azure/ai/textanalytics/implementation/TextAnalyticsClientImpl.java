@@ -174,6 +174,16 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeHeaders, Void> analyzeSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @BodyParam("application/json") AnalyzeBatchInput body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Get("/analyze/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -186,6 +196,19 @@ public final class TextAnalyticsClientImpl {
                 @QueryParam("$skip") Integer skip,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Get("/analyze/jobs/{jobId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeJobState> analyzeStatusSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") String jobId,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/entities/health/jobs/{jobId}")
         @ExpectedResponses({200})
@@ -200,6 +223,19 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/entities/health/jobs/{jobId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<HealthcareJobState> healthStatusSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") UUID jobId,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("showStats") Boolean showStats,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Delete("/entities/health/jobs/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -209,6 +245,16 @@ public final class TextAnalyticsClientImpl {
                 @PathParam("jobId") UUID jobId,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Delete("/entities/health/jobs/{jobId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<CancelHealthJobHeaders, Void> cancelHealthJobSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/entities/health/jobs")
         @ExpectedResponses({202})
@@ -223,6 +269,19 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/entities/health/jobs")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<HealthHeaders, Void> healthSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Post("/entities/recognition/general")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -236,6 +295,20 @@ public final class TextAnalyticsClientImpl {
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Post("/entities/recognition/general")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<EntitiesResult> entitiesRecognitionGeneralSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/entities/recognition/pii")
         @ExpectedResponses({200})
@@ -253,6 +326,22 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/entities/recognition/pii")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<PiiResult> entitiesRecognitionPiiSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @QueryParam("domain") String domain,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @QueryParam("piiCategories") String piiCategories,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Post("/entities/linking")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -267,6 +356,20 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/entities/linking")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<EntityLinkingResult> entitiesLinkingSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Post("/keyPhrases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -280,6 +383,19 @@ public final class TextAnalyticsClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/keyPhrases")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<KeyPhraseResult> keyPhrasesSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Post("/languages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -292,6 +408,19 @@ public final class TextAnalyticsClientImpl {
                 @BodyParam("application/json") LanguageBatchInput input,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Post("/languages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<LanguageResult> languagesSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @BodyParam("application/json") LanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/sentiment")
         @ExpectedResponses({200})
@@ -307,6 +436,21 @@ public final class TextAnalyticsClientImpl {
                 @BodyParam("application/json") MultiLanguageBatchInput input,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Post("/sentiment")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<SentimentResponse> sentimentSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @QueryParam("opinionMining") Boolean opinionMining,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -323,6 +467,22 @@ public final class TextAnalyticsClientImpl {
     public Mono<ResponseBase<AnalyzeHeaders, Void>> analyzeWithResponseAsync(AnalyzeBatchInput body, Context context) {
         final String accept = "application/json, text/json";
         return service.analyze(this.getEndpoint(), this.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed.
+     *
+     * @param body Collection of documents to analyze and tasks to execute.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeHeaders, Void> analyzeWithResponseSync(AnalyzeBatchInput body, Context context) {
+        final String accept = "application/json, text/json";
+        return service.analyzeSync(this.getEndpoint(), this.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -350,6 +510,30 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are completed, the job
+     * will transition to the completed state and results will be available for each task.
+     *
+     * @param jobId Job ID for Analyze.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param top (Optional) Set the maximum number of results per task. When both $top and $skip are specified, $skip
+     *     is applied first.
+     * @param skip (Optional) Set the number of elements to offset in the response. When both $top and $skip are
+     *     specified, $skip is applied first.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of an analysis job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeJobState> analyzeStatusWithResponseSync(
+        String jobId, Boolean showStats, Integer top, Integer skip, Context context) {
+        final String accept = "application/json, text/json";
+        return service.analyzeStatusSync(
+            this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept, context);
+    }
+
+    /**
      * Get details of the healthcare prediction job specified by the jobId.
      *
      * @param jobId Job ID.
@@ -373,6 +557,29 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * Get details of the healthcare prediction job specified by the jobId.
+     *
+     * @param jobId Job ID.
+     * @param top (Optional) Set the maximum number of results per task. When both $top and $skip are specified, $skip
+     *     is applied first.
+     * @param skip (Optional) Set the number of elements to offset in the response. When both $top and $skip are
+     *     specified, $skip is applied first.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the healthcare prediction job specified by the jobId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HealthcareJobState> healthStatusWithResponseSync(
+        UUID jobId, Integer top, Integer skip, Boolean showStats, Context context) {
+        final String accept = "application/json, text/json";
+        return service.healthStatusSync(
+            this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept, context);
+    }
+
+    /**
      * Cancel healthcare prediction job.
      *
      * @param jobId Job ID.
@@ -388,6 +595,22 @@ public final class TextAnalyticsClientImpl {
             Context context) {
         final String accept = "application/json, text/json";
         return service.cancelHealthJob(this.getEndpoint(), this.getApiVersion(), jobId, accept, context);
+    }
+
+    /**
+     * Cancel healthcare prediction job.
+     *
+     * @param jobId Job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<CancelHealthJobHeaders, Void> cancelHealthJobWithResponseSync(UUID jobId, Context context) {
+        final String accept = "application/json, text/json";
+        return service.cancelHealthJobSync(this.getEndpoint(), this.getApiVersion(), jobId, accept, context);
     }
 
     /**
@@ -429,6 +652,47 @@ public final class TextAnalyticsClientImpl {
                 input,
                 accept,
                 context);
+    }
+
+    /**
+     * Start a healthcare analysis job to recognize healthcare related entities (drugs, conditions, symptoms, etc) and
+     * their relations.
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<HealthHeaders, Void> healthWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        StringIndexType stringIndexType,
+        Boolean loggingOptOut,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.healthSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            stringIndexType,
+            loggingOptOut,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -478,10 +742,56 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of general named entities in a given document. For the list of supported entity types,
+     * check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntitiesResult> entitiesRecognitionGeneralWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        StringIndexType stringIndexType,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.entitiesRecognitionGeneralSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            stringIndexType,
+            input,
+            accept,
+            context);
+    }
+
+    /**
      * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For
-     * the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text
-     * Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics
-     * API&lt;/a&gt; for the list of enabled languages.
+     * the list of supported entity types, check &lt;a href="https://aka.ms/azsdk/language/pii"&gt;Supported Entity
+     * Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text
+     * Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
@@ -533,6 +843,61 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For
+     * the list of supported entity types, check &lt;a href="https://aka.ms/azsdk/language/pii"&gt;Supported Entity
+     * Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text
+     * Analytics API&lt;/a&gt; for the list of enabled languages.
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param domain (Optional) if specified, will set the PII domain to include only a subset of the entity categories.
+     *     Possible values include: 'PHI', 'none'.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
+     * @param piiCategories (Optional) describes the PII categories to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PiiResult> entitiesRecognitionPiiWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        String domain,
+        StringIndexType stringIndexType,
+        List<PiiCategory> piiCategories,
+        Context context) {
+        final String accept = "application/json, text/json";
+        String piiCategoriesConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
+        return service.entitiesRecognitionPiiSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            domain,
+            stringIndexType,
+            piiCategoriesConverted,
+            input,
+            accept,
+            context);
+    }
+
+    /**
      * The API returns a list of recognized entities with links to a well known knowledge base. See the &lt;a
      * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
      * languages.
@@ -578,6 +943,51 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of recognized entities with links to a well known knowledge base. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntityLinkingResult> entitiesLinkingWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        StringIndexType stringIndexType,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.entitiesLinkingSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            stringIndexType,
+            input,
+            accept,
+            context);
+    }
+
+    /**
      * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a
      * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
      * languages.
@@ -618,6 +1028,46 @@ public final class TextAnalyticsClientImpl {
     }
 
     /**
+     * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyPhraseResult> keyPhrasesWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.keyPhrasesSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            input,
+            accept,
+            context);
+    }
+
+    /**
      * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100%
      * certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported
      * languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
@@ -651,6 +1101,42 @@ public final class TextAnalyticsClientImpl {
                 input,
                 accept,
                 context);
+    }
+
+    /**
+     * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100%
+     * certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported
+     * languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     *
+     * @param input Collection of documents to analyze for language endpoint.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LanguageResult> languagesWithResponseSync(
+        LanguageBatchInput input, String modelVersion, Boolean showStats, Boolean loggingOptOut, Context context) {
+        final String accept = "application/json, text/json";
+        return service.languagesSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -699,5 +1185,53 @@ public final class TextAnalyticsClientImpl {
                 input,
                 accept,
                 context);
+    }
+
+    /**
+     * The API returns a detailed sentiment analysis for the input text. The analysis is done in multiple levels of
+     * granularity, start from the a document level, down to sentence and key terms (targets and assessments).
+     *
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param loggingOptOut (Optional) If set to true, you opt-out of having your text input logged for troubleshooting.
+     *     By default, Text Analytics logs your input text for 48 hours, solely to allow for troubleshooting issues in
+     *     providing you with the Text Analytics natural language processing functions. Setting this parameter to true,
+     *     disables input logging and may limit our ability to remediate issues that occur. Please see Cognitive
+     *     Services Compliance and Privacy notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+     *     Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+     * @param opinionMining (Optional) if set to true, response will contain not only sentiment prediction but also
+     *     opinion mining (aspect-based sentiment analysis) results.
+     * @param stringIndexType (Optional) Specifies the method used to interpret string offsets. Defaults to Text
+     *     Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     *     https://aka.ms/text-analytics-offsets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SentimentResponse> sentimentWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        Boolean opinionMining,
+        StringIndexType stringIndexType,
+        Context context) {
+        final String accept = "application/json, text/json";
+        return service.sentimentSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            opinionMining,
+            stringIndexType,
+            input,
+            accept,
+            context);
     }
 }

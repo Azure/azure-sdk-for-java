@@ -77,6 +77,10 @@ public final class MongoDbLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MongoDbLinkedServiceTypeProperties class. */
+    public MongoDbLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
      * resultType string).

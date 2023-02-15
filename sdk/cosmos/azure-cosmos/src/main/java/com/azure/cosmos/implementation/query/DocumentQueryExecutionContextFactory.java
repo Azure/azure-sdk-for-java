@@ -212,13 +212,12 @@ public class DocumentQueryExecutionContextFactory {
                 queryInfo));
     }
 
-    private static void tryCacheQueryPlan(
+    synchronized private static void tryCacheQueryPlan(
         SqlQuerySpec query,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
-        QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
-        if (canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
-            if (queryPlanCache.size() == Constants.QUERYPLAN_CACHE_SIZE) {
+        if (canCacheQuery(partitionedQueryExecutionInfo.getQueryInfo()) && !queryPlanCache.containsKey(query.getQueryText())) {
+            if (queryPlanCache.size() >= Constants.QUERYPLAN_CACHE_SIZE) {
                 logger.warn("Clearing query plan cache as it has reached the maximum size : {}", queryPlanCache.size());
                 queryPlanCache.clear();
             }

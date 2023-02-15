@@ -37,6 +37,10 @@ public final class FlowLogProperties {
     @JsonProperty(value = "format")
     private FlowLogFormatParameters format;
 
+    /** Creates an instance of FlowLogProperties class. */
+    public FlowLogProperties() {
+    }
+
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
      *

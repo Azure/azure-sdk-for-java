@@ -20,6 +20,10 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
+    /** Creates an instance of SimpleRetentionPolicy class. */
+    public SimpleRetentionPolicy() {
+    }
+
     /**
      * Get the retentionDuration property: Retention duration of the protection policy.
      *

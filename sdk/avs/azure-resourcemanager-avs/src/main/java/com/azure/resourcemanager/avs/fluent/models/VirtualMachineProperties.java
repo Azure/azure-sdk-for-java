@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Machine Properties. */
 @Immutable
 public final class VirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProperties.class);
-
     /*
      * Display name of the VM.
      */
@@ -28,8 +24,7 @@ public final class VirtualMachineProperties {
     private String moRefId;
 
     /*
-     * Path to virtual machine's folder starting from datacenter virtual
-     * machine folder
+     * Path to virtual machine's folder starting from datacenter virtual machine folder
      */
     @JsonProperty(value = "folderPath", access = JsonProperty.Access.WRITE_ONLY)
     private String folderPath;
@@ -39,6 +34,10 @@ public final class VirtualMachineProperties {
      */
     @JsonProperty(value = "restrictMovement", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRestrictMovementState restrictMovement;
+
+    /** Creates an instance of VirtualMachineProperties class. */
+    public VirtualMachineProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the VM.

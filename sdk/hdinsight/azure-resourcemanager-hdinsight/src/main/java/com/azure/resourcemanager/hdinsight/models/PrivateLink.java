@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateLink. */
+/** Indicates whether or not private link is enabled. */
 public final class PrivateLink extends ExpandableStringEnum<PrivateLink> {
     /** Static value Disabled for PrivateLink. */
     public static final PrivateLink DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class PrivateLink extends ExpandableStringEnum<PrivateLink> {
         return fromString(name, PrivateLink.class);
     }
 
-    /** @return known PrivateLink values. */
+    /**
+     * Gets known PrivateLink values.
+     *
+     * @return known PrivateLink values.
+     */
     public static Collection<PrivateLink> values() {
         return values(PrivateLink.class);
     }

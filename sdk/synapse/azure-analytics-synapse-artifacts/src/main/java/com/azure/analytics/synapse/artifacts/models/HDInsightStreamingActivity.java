@@ -37,15 +37,13 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
-     * Mapper executable name. Type: string (or Expression with resultType
-     * string).
+     * Mapper executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.mapper", required = true)
     private Object mapper;
 
     /*
-     * Reducer executable name. Type: string (or Expression with resultType
-     * string).
+     * Reducer executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.reducer", required = true)
     private Object reducer;
@@ -75,8 +73,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     private LinkedServiceReference fileLinkedService;
 
     /*
-     * Combiner executable name. Type: string (or Expression with resultType
-     * string).
+     * Combiner executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.combiner")
     private Object combiner;
@@ -92,6 +89,9 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
+
+    /** Creates an instance of HDInsightStreamingActivity class. */
+    public HDInsightStreamingActivity() {}
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.

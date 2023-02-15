@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsageUnit. */
+/** An enum describing the unit of usage measurement. */
 public final class UsageUnit extends ExpandableStringEnum<UsageUnit> {
     /** Static value Count for UsageUnit. */
     public static final UsageUnit COUNT = fromString("Count");
+
+    /**
+     * Creates a new instance of UsageUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsageUnit() {
+    }
 
     /**
      * Creates or finds a UsageUnit from its string representation.

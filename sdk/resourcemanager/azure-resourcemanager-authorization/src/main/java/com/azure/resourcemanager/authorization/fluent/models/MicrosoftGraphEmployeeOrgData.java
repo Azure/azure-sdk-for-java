@@ -16,15 +16,13 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphEmployeeOrgData {
     /*
-     * The cost center associated with the user. Returned only on $select.
-     * Supports $filter.
+     * The cost center associated with the user. Returned only on $select. Supports $filter.
      */
     @JsonProperty(value = "costCenter")
     private String costCenter;
 
     /*
-     * The name of the division in which the user works. Returned only on
-     * $select. Supports $filter.
+     * The name of the division in which the user works. Returned only on $select. Supports $filter.
      */
     @JsonProperty(value = "division")
     private String division;
@@ -33,6 +31,10 @@ public final class MicrosoftGraphEmployeeOrgData {
      * employeeOrgData
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphEmployeeOrgData class. */
+    public MicrosoftGraphEmployeeOrgData() {
+    }
 
     /**
      * Get the costCenter property: The cost center associated with the user. Returned only on $select. Supports

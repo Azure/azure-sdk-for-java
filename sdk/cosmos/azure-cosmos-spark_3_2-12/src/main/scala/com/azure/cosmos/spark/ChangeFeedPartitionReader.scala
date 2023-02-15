@@ -10,8 +10,8 @@ import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import org.apache.spark.TaskContext
 import com.fasterxml.jackson.databind.JsonNode
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -81,9 +81,9 @@ private case class ChangeFeedPartitionReader
 
     var factoryMethod: java.util.function.Function[JsonNode, _] = (_: JsonNode) => {}
       cosmosChangeFeedConfig.changeFeedMode match {
-          case ChangeFeedModes.Incremental =>
+          case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
-          case ChangeFeedModes.FullFidelity =>
+          case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
     }
 

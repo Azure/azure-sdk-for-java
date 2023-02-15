@@ -161,21 +161,6 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyRuleCollectionGroup.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallPolicyRuleCollectionGroupInner get(
-        String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName);
-
-    /**
-     * Gets the specified FirewallPolicyRuleCollectionGroup.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,6 +170,21 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallPolicyRuleCollectionGroupInner> getWithResponse(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context);
+
+    /**
+     * Gets the specified FirewallPolicyRuleCollectionGroup.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified FirewallPolicyRuleCollectionGroup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FirewallPolicyRuleCollectionGroupInner get(
+        String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName);
 
     /**
      * Creates or updates the specified FirewallPolicyRuleCollectionGroup.

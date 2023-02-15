@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks CreateOrUpdate. */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.json
      */
     /**
      * Sample code: Upsert virtual network link to a DNS forwarding ruleset.

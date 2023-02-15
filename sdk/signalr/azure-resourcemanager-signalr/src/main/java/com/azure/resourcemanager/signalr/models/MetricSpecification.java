@@ -36,26 +36,21 @@ public final class MetricSpecification {
     private String unit;
 
     /*
-     * Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
-     * Optional. If set to true, then zero will be returned for time duration
-     * where no metric is emitted/published.
-     * Ex. a metric that returns the number of times a particular error code
-     * was emitted. The error code may not appear
-     * often, instead of the RP publishing 0, Shoebox can auto fill in 0s for
-     * time periods where nothing was emitted.
+     * Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
+     * Ex. a metric that returns the number of times a particular error code was emitted. The error code may not appear
+     * often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing was emitted.
      */
     @JsonProperty(value = "fillGapWithZero")
     private String fillGapWithZero;
 
     /*
-     * The name of the metric category that the metric belongs to. A metric can
-     * only belong to a single category.
+     * The name of the metric category that the metric belongs to. A metric can only belong to a single category.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -65,6 +60,10 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "dimensions")
     private List<Dimension> dimensions;
+
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
 
     /**
      * Get the name property: Name of the metric.

@@ -3,10 +3,8 @@
 
 package com.azure.communication.identity;
 
-import java.util.List;
+import java.time.Duration;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
@@ -16,8 +14,8 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -96,16 +94,61 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with token.
      *
      * @param scopes The list of scopes for the token.
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
+     * @return The created communication user and token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationUserIdentifierAndToken createUserAndToken(
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
+        Objects.requireNonNull(scopes);
+
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
+
+        CommunicationIdentityAccessTokenResult result = client.create(communicationIdentityCreateRequest);
+        return userWithAccessTokenResultConverter(result);
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token.
+     *
+     * @param scopes The list of scopes for the token.
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierAndToken createUserAndToken(
         Iterable<CommunicationTokenScope> scopes) {
+        return createUserAndToken(scopes, null);
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token with response.
+     *
+     * @param scopes The list of scopes for the token.
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
+     * @param context A {@link Context} representing the request context.
+     * @return The created communication user and token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn, Context context) {
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        CommunicationIdentityAccessTokenResult result = client.create(
-            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput));
-        return userWithAccessTokenResultConverter(result);
+        context = context == null ? Context.NONE : context;
+
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
+
+        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
+            communicationIdentityCreateRequest, context).block();
+
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+        }
+        return new SimpleResponse<CommunicationUserIdentifierAndToken>(
+            response,
+            userWithAccessTokenResultConverter(response.getValue()));
     }
 
     /**
@@ -118,18 +161,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
         Iterable<CommunicationTokenScope> scopes, Context context) {
-        Objects.requireNonNull(scopes);
-        context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
-            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput), context).block();
-
-        if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
-        }
-        return new SimpleResponse<CommunicationUserIdentifierAndToken>(
-            response,
-            userWithAccessTokenResultConverter(response.getValue()));
+        return createUserAndTokenWithResponse(scopes, null, context);
     }
 
     /**
@@ -186,44 +218,74 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
-     * @param communicationUser The user to be issued tokens.
-     * @param scopes The scopes that the token should have.
-     * @return the token.
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
+     * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken getToken(CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes) {
+    public AccessToken getToken(
+        CommunicationUserIdentifier communicationUser,
+        Iterable<CommunicationTokenScope> scopes,
+        Duration tokenExpiresIn) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityAccessTokenRequest tokenRequest =
+            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
+
         CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput));
+            tokenRequest);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token.
-     * @param scopes The scopes that the token should have.
-     * @param context the context of the request. Can also be null or
-     *                          Context.NONE.
-     * @return the token with response.
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes, Context context) {
+    public AccessToken getToken(CommunicationUserIdentifier communicationUser,
+        Iterable<CommunicationTokenScope> scopes) {
+        return getToken(communicationUser, scopes, null);
+    }
+
+    /**
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
+     *
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
+     * @param context the context of the request. Can also be null or Context.NONE.
+     * @return the Communication Identity access token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessToken> getTokenWithResponse(
+        CommunicationUserIdentifier communicationUser,
+        Iterable<CommunicationTokenScope> scopes,
+        Duration tokenExpiresIn,
+        Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityAccessTokenRequest tokenRequest =
+            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
+
         Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
-            communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput),
-            context)
+                communicationUser.getId(),
+                tokenRequest,
+                context)
             .block();
 
         if (response == null || response.getValue() == null) {
@@ -233,6 +295,21 @@ public final class CommunicationIdentityClient {
         return new SimpleResponse<AccessToken>(
             response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+    }
+
+    /**
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
+     *
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @param context the context of the request. Can also be null or Context.NONE.
+     * @return the Communication Identity access token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
+        Iterable<CommunicationTokenScope> scopes, Context context) {
+        return getTokenWithResponse(communicationUser, scopes, null, context);
     }
 
     private CommunicationUserIdentifierAndToken userWithAccessTokenResultConverter(
@@ -279,5 +356,4 @@ public final class CommunicationIdentityClient {
             response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
-
 }

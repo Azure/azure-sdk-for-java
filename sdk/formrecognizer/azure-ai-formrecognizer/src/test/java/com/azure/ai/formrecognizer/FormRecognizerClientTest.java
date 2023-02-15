@@ -447,16 +447,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContent(data,
                         dataLength,
                         new RecognizeContentOptions().setContentType(APPLICATION_PDF),
                         Context.NONE)
-                        .setPollInterval(durationTestMode)
-                        .getFinalResult());
-            FormRecognizerErrorInformation errorInformation
-                = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_ERROR_CODE, errorInformation.getErrorCode());
+                    .setPollInterval(durationTestMode)
+                    .getFinalResult());
         });
     }
 

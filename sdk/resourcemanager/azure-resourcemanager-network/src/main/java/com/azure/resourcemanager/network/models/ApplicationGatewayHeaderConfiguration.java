@@ -22,6 +22,10 @@ public final class ApplicationGatewayHeaderConfiguration {
     @JsonProperty(value = "headerValue")
     private String headerValue;
 
+    /** Creates an instance of ApplicationGatewayHeaderConfiguration class. */
+    public ApplicationGatewayHeaderConfiguration() {
+    }
+
     /**
      * Get the headerName property: Header name of the header configuration.
      *

@@ -37,6 +37,10 @@ public final class VpnSiteInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VpnSiteInner class. */
+    public VpnSiteInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the VPN site.
      *

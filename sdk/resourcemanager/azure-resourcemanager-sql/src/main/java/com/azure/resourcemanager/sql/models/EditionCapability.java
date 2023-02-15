@@ -53,6 +53,10 @@ public final class EditionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of EditionCapability class. */
+    public EditionCapability() {
+    }
+
     /**
      * Get the name property: The database edition name.
      *

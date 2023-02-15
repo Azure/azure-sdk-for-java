@@ -34,6 +34,10 @@ public final class SsisEnvironmentReference {
     @JsonProperty(value = "referenceType")
     private String referenceType;
 
+    /** Creates an instance of SsisEnvironmentReference class. */
+    public SsisEnvironmentReference() {
+    }
+
     /**
      * Get the id property: Environment reference id.
      *

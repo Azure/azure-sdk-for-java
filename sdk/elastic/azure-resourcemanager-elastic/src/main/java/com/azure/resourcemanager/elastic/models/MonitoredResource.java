@@ -16,7 +16,9 @@ public interface MonitoredResource {
     String id();
 
     /**
-     * Gets the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * Gets the sendingLogs property: SendingLogs
+     *
+     * <p>Flag indicating the status of the resource for sending logs operation to Elastic.
      *
      * @return the sendingLogs value.
      */

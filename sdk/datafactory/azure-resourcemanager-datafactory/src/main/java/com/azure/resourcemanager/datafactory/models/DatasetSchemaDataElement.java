@@ -32,6 +32,10 @@ public final class DatasetSchemaDataElement {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DatasetSchemaDataElement class. */
+    public DatasetSchemaDataElement() {
+    }
+
     /**
      * Get the name property: Name of the schema column. Type: string (or Expression with resultType string).
      *

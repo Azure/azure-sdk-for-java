@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An parameter that the script will accept. */
 @Fluent
 public final class ScriptParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptParameter.class);
-
     /*
-     * The type of parameter the script is expecting. psCredential is a
-     * PSCredentialObject
+     * The type of parameter the script is expecting. psCredential is a PSCredentialObject
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private ScriptParameterTypes type;
@@ -34,8 +29,7 @@ public final class ScriptParameter {
     private String description;
 
     /*
-     * Should this parameter be visible to arm and passed in the parameters
-     * argument when executing
+     * Should this parameter be visible to arm and passed in the parameters argument when executing
      */
     @JsonProperty(value = "visibility", access = JsonProperty.Access.WRITE_ONLY)
     private VisibilityParameterEnum visibility;
@@ -45,6 +39,10 @@ public final class ScriptParameter {
      */
     @JsonProperty(value = "optional", access = JsonProperty.Access.WRITE_ONLY)
     private OptionalParamEnum optional;
+
+    /** Creates an instance of ScriptParameter class. */
+    public ScriptParameter() {
+    }
 
     /**
      * Get the type property: The type of parameter the script is expecting. psCredential is a PSCredentialObject.

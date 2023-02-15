@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Encryption Key. */
 @Fluent
 public final class EncryptionKeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionKeyVaultProperties.class);
-
     /*
      * The name of the key.
      */
@@ -25,6 +21,12 @@ public final class EncryptionKeyVaultProperties {
      */
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
+
+    /*
+     * The auto-detected version of the key if versionType is auto-detected.
+     */
+    @JsonProperty(value = "autoDetectedKeyVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String autoDetectedKeyVersion;
 
     /*
      * The URL of the vault.
@@ -43,6 +45,10 @@ public final class EncryptionKeyVaultProperties {
      */
     @JsonProperty(value = "versionType", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionVersionType versionType;
+
+    /** Creates an instance of EncryptionKeyVaultProperties class. */
+    public EncryptionKeyVaultProperties() {
+    }
 
     /**
      * Get the keyName property: The name of the key.
@@ -82,6 +88,15 @@ public final class EncryptionKeyVaultProperties {
     public EncryptionKeyVaultProperties withKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
         return this;
+    }
+
+    /**
+     * Get the autoDetectedKeyVersion property: The auto-detected version of the key if versionType is auto-detected.
+     *
+     * @return the autoDetectedKeyVersion value.
+     */
+    public String autoDetectedKeyVersion() {
+        return this.autoDetectedKeyVersion;
     }
 
     /**

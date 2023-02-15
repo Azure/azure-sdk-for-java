@@ -35,6 +35,10 @@ public final class ScriptAction {
     @JsonProperty(value = "parameters")
     private String parameters;
 
+    /** Creates an instance of ScriptAction class. */
+    public ScriptAction() {
+    }
+
     /**
      * Get the name property: The user provided name of the script action.
      *

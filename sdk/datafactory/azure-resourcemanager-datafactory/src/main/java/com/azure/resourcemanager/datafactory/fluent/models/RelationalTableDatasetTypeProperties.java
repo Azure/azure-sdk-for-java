@@ -16,6 +16,10 @@ public final class RelationalTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of RelationalTableDatasetTypeProperties class. */
+    public RelationalTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
      *

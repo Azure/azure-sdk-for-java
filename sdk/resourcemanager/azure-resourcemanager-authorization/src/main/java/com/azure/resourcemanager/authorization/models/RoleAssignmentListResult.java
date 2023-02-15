@@ -19,10 +19,14 @@ public final class RoleAssignmentListResult {
     private List<RoleAssignmentInner> value;
 
     /*
-     * The URL to use for getting the next set of results.
+     * The skipToken to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of RoleAssignmentListResult class. */
+    public RoleAssignmentListResult() {
+    }
 
     /**
      * Get the value property: Role assignment list.
@@ -45,23 +49,12 @@ public final class RoleAssignmentListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
+     * Get the nextLink property: The skipToken to use for getting the next set of results.
      *
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The URL to use for getting the next set of results.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the RoleAssignmentListResult object itself.
-     */
-    public RoleAssignmentListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

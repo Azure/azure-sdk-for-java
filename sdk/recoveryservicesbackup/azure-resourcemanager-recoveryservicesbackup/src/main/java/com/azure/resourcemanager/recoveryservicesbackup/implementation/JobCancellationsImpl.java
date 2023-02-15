@@ -24,13 +24,13 @@ public final class JobCancellationsImpl implements JobCancellations {
         this.serviceManager = serviceManager;
     }
 
-    public void trigger(String vaultName, String resourceGroupName, String jobName) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, jobName);
-    }
-
     public Response<Void> triggerWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         return this.serviceClient().triggerWithResponse(vaultName, resourceGroupName, jobName, context);
+    }
+
+    public void trigger(String vaultName, String resourceGroupName, String jobName) {
+        this.serviceClient().trigger(vaultName, resourceGroupName, jobName);
     }
 
     private JobCancellationsClient serviceClient() {

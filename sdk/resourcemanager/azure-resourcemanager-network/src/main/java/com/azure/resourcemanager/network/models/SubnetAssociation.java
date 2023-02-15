@@ -24,6 +24,10 @@ public final class SubnetAssociation {
     @JsonProperty(value = "securityRules")
     private List<SecurityRuleInner> securityRules;
 
+    /** Creates an instance of SubnetAssociation class. */
+    public SubnetAssociation() {
+    }
+
     /**
      * Get the id property: Subnet ID.
      *

@@ -21,6 +21,10 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
     @JsonProperty(value = "operation")
     private OperationResultInfoBase operation;
 
+    /** Creates an instance of OperationResultInfoBaseResourceInner class. */
+    public OperationResultInfoBaseResourceInner() {
+    }
+
     /**
      * Get the operation property: OperationResultInfoBaseResource operation.
      *

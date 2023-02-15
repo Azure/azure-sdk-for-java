@@ -31,6 +31,10 @@ public final class WorkloadNetworkDhcpImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkDhcpInner innerModel() {
         return this.innerObject;
     }

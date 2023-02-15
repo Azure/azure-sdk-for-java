@@ -22,6 +22,10 @@ public final class LogAnalyticsConfiguration {
     @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
+    /** Creates an instance of LogAnalyticsConfiguration class. */
+    public LogAnalyticsConfiguration() {
+    }
+
     /**
      * Get the customerId property: Log analytics customer id.
      *

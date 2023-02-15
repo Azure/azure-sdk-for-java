@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficViewEnrollmentStatus. */
+/**
+ * Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates
+ * 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile.
+ */
 public final class TrafficViewEnrollmentStatus extends ExpandableStringEnum<TrafficViewEnrollmentStatus> {
     /** Static value Enabled for TrafficViewEnrollmentStatus. */
     public static final TrafficViewEnrollmentStatus ENABLED = fromString("Enabled");
@@ -27,7 +30,11 @@ public final class TrafficViewEnrollmentStatus extends ExpandableStringEnum<Traf
         return fromString(name, TrafficViewEnrollmentStatus.class);
     }
 
-    /** @return known TrafficViewEnrollmentStatus values. */
+    /**
+     * Gets known TrafficViewEnrollmentStatus values.
+     *
+     * @return known TrafficViewEnrollmentStatus values.
+     */
     public static Collection<TrafficViewEnrollmentStatus> values() {
         return values(TrafficViewEnrollmentStatus.class);
     }

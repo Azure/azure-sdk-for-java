@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 
 /** Samples for VirtualMachineScaleSets GetByResourceGroup. */
 public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine scale set placed on a dedicated host group through automatic placement.
@@ -23,11 +23,12 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myVirtualMachineScaleSet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
      */
     /**
      * Sample code: Get a virtual machine scale set.
@@ -40,11 +41,12 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myVirtualMachineScaleSet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
      */
     /**
      * Sample code: Get a virtual machine scale set with UserData.
@@ -57,6 +59,31 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup",
+                "myVirtualMachineScaleSet",
+                ExpandTypesForGetVMScaleSets.USER_DATA,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
+     */
+    /**
+     * Sample code: Get VM scale set VM with Disk Controller Type.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getVMScaleSetVMWithDiskControllerType(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getByResourceGroupWithResponse(
+                "myResourceGroup",
+                "myVirtualMachineScaleSet",
+                ExpandTypesForGetVMScaleSets.USER_DATA,
+                com.azure.core.util.Context.NONE);
     }
 }

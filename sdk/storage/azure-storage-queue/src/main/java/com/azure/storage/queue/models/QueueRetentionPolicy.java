@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** the retention policy. */
-@Fluent
 @JacksonXmlRootElement(localName = "RetentionPolicy")
+@Fluent
 public final class QueueRetentionPolicy {
 
     /*
@@ -19,11 +19,14 @@ public final class QueueRetentionPolicy {
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted
-     * data should be retained. All data older than this value will be deleted
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older
+     * than this value will be deleted
      */
     @JsonProperty(value = "Days")
     private Integer days;
+
+    /** Creates an instance of QueueRetentionPolicy class. */
+    public QueueRetentionPolicy() {}
 
     /**
      * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.

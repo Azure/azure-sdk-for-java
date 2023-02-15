@@ -180,11 +180,8 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetricValue;
 import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
@@ -500,6 +497,11 @@ public final class Utils {
         StringBuilder zones = new StringBuilder().append("\n\tZones: ");
         zones.append(resource.availabilityZones());
 
+        StringBuilder securityProfile = new StringBuilder().append("\n\tSecurityProfile: ");
+        securityProfile.append("\n\t\t\tSecurity type: ").append(resource.securityType());
+        securityProfile.append("\n\t\t\tSecure Boot enabled: ").append(resource.isSecureBootEnabled());
+        securityProfile.append("\n\t\t\tvTPM enabled: ").append(resource.isVTpmEnabled());
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -513,6 +515,7 @@ public final class Utils {
                 .append(extensions)
                 .append(msi)
                 .append(zones)
+                .append(securityProfile)
                 .toString());
     }
 
@@ -1887,39 +1890,11 @@ public final class Utils {
      */
     public static void print(SqlDatabaseUsageMetric dbUsageMetric) {
         StringBuilder builder = new StringBuilder().append("SQL Database Usage Metric")
-                .append("Name: ").append(dbUsageMetric.name())
-                .append("\n\tResource Name: ").append(dbUsageMetric.resourceName())
-                .append("\n\tDisplay Name: ").append(dbUsageMetric.displayName())
-                .append("\n\tCurrent Value: ").append(dbUsageMetric.currentValue())
-                .append("\n\tLimit: ").append(dbUsageMetric.limit())
-                .append("\n\tUnit: ").append(dbUsageMetric.unit())
-                .append("\n\tNext Reset Time: ").append(dbUsageMetric.nextResetTime());
-
-        System.out.println(builder.toString());
-    }
-
-    /**
-     * Prints information for the passed SQL database metric.
-     *
-     * @param dbMetric metric to be printed.
-     */
-    public static void print(SqlDatabaseMetric dbMetric) {
-        StringBuilder builder = new StringBuilder().append("SQL Database Metric")
-                .append("Name: ").append(dbMetric.name())
-                .append("\n\tStart Time: ").append(dbMetric.startTime())
-                .append("\n\tEnd Time: ").append(dbMetric.endTime())
-                .append("\n\tTime Grain: ").append(dbMetric.timeGrain())
-                .append("\n\tUnit: ").append(dbMetric.unit());
-        for (SqlDatabaseMetricValue metricValue : dbMetric.metricValues()) {
-            builder
-                    .append("\n\tMetric Value: ")
-                    .append("\n\t\tCount: ").append(metricValue.count())
-                    .append("\n\t\tAverage: ").append(metricValue.average())
-                    .append("\n\t\tMaximum: ").append(metricValue.maximum())
-                    .append("\n\t\tMinimum: ").append(metricValue.minimum())
-                    .append("\n\t\tTimestamp: ").append(metricValue.timestamp())
-                    .append("\n\t\tTotal: ").append(metricValue.total());
-        }
+            .append("Name: ").append(dbUsageMetric.name())
+            .append("\n\tDisplay Name: ").append(dbUsageMetric.displayName())
+            .append("\n\tCurrent Value: ").append(dbUsageMetric.currentValue())
+            .append("\n\tLimit: ").append(dbUsageMetric.limit())
+            .append("\n\tUnit: ").append(dbUsageMetric.unit());
 
         System.out.println(builder.toString());
     }
@@ -2012,36 +1987,10 @@ public final class Utils {
                 .append("\n\tError message of activity: ").append(elasticPoolActivity.errorMessage())
                 .append("\n\tError severity of activity: ").append(elasticPoolActivity.errorSeverity())
                 .append("\n\tOperation: ").append(elasticPoolActivity.operation())
-                .append("\n\tCompleted percentage of activity: ").append(elasticPoolActivity.percentComplete())
-                .append("\n\tRequested DTU max limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMax())
-                .append("\n\tRequested DTU min limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMin())
-                .append("\n\tRequested DTU limit in activity: ").append(elasticPoolActivity.requestedDtu());
+                .append("\n\tCompleted percentage of activity: ").append(elasticPoolActivity.percentComplete());
 
         System.out.println(builder.toString());
 
-    }
-
-    /**
-     * Prints information of the database activity.
-     *
-     * @param databaseActivity database activity to be printed
-     */
-    public static void print(ElasticPoolDatabaseActivity databaseActivity) {
-        StringBuilder builder = new StringBuilder().append("Sql elastic pool database activity: ").append(databaseActivity.id())
-                .append("Name: ").append(databaseActivity.name())
-                .append("\n\tResource group: ").append(databaseActivity.resourceGroupName())
-                .append("\n\tSQL Server Name: ").append(databaseActivity.serverName())
-                .append("\n\tDatabase name name: ").append(databaseActivity.databaseName())
-                .append("\n\tCurrent elastic pool name of the database: ").append(databaseActivity.currentElasticPoolName())
-                .append("\n\tState: ").append(databaseActivity.state())
-                .append("\n\tStart time of activity: ").append(databaseActivity.startTime())
-                .append("\n\tEnd time of activity: ").append(databaseActivity.endTime())
-                .append("\n\tCompleted percentage: ").append(databaseActivity.percentComplete())
-                .append("\n\tError code of activity: ").append(databaseActivity.errorCode())
-                .append("\n\tError message of activity: ").append(databaseActivity.errorMessage())
-                .append("\n\tError severity of activity: ").append(databaseActivity.errorSeverity());
-
-        System.out.println(builder.toString());
     }
 
     /**
@@ -2631,6 +2580,14 @@ public final class Utils {
             builder.append("\n\t\tPermission Not Actions: " + permission.notActions().size());
             for (String notAction : permission.notActions()) {
                 builder.append("\n\t\t\tName :").append(notAction);
+            }
+            builder.append("\n\t\tPermission Data Actions: " + permission.dataActions().size());
+            for (String dataActions : permission.dataActions()) {
+                builder.append("\n\t\t\tName :").append(dataActions);
+            }
+            builder.append("\n\t\tPermission Not Data Actions: " + permission.notDataActions().size());
+            for (String notDataActions : permission.notDataActions()) {
+                builder.append("\n\t\t\tName :").append(notDataActions);
             }
         }
 

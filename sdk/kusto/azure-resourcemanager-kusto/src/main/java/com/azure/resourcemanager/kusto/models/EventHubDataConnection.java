@@ -5,13 +5,12 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.EventHubConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Class representing an event hub data connection. */
@@ -19,8 +18,6 @@ import java.util.List;
 @JsonTypeName("EventHub")
 @Fluent
 public final class EventHubDataConnection extends DataConnectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubDataConnection.class);
-
     /*
      * The Event Hub data connection properties to validate.
      */
@@ -275,6 +272,33 @@ public final class EventHubDataConnection extends DataConnectionInner {
             this.innerProperties = new EventHubConnectionProperties();
         }
         this.innerProperties().withDatabaseRouting(databaseRouting);
+        return this;
+    }
+
+    /**
+     * Get the retrievalStartDate property: When defined, the data connection retrieves existing Event hub events
+     * created since the Retrieval start date. It can only retrieve events retained by the Event hub, based on its
+     * retention period.
+     *
+     * @return the retrievalStartDate value.
+     */
+    public OffsetDateTime retrievalStartDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().retrievalStartDate();
+    }
+
+    /**
+     * Set the retrievalStartDate property: When defined, the data connection retrieves existing Event hub events
+     * created since the Retrieval start date. It can only retrieve events retained by the Event hub, based on its
+     * retention period.
+     *
+     * @param retrievalStartDate the retrievalStartDate value to set.
+     * @return the EventHubDataConnection object itself.
+     */
+    public EventHubDataConnection withRetrievalStartDate(OffsetDateTime retrievalStartDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withRetrievalStartDate(retrievalStartDate);
         return this;
     }
 

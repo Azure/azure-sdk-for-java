@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/traffic/incident/viewport/json?api-version=1.0&boundingbox=45.0%2C45.0%2C45.0%2C45.0&boundingzoom=2&overviewbox=45.0%2C45.0%2C45.0%2C45.0&overviewzoom=2&copyright=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaTrafficSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "213",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, must-revalidate, no-cache, max-age=0, private",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 32E33F21F35E40109520DC43E7574E32 Ref B: PAOEDGE0520 Ref C: 2022-10-24T21:06:51Z",
+      "Body" : "{\"viewpResp\":{\"trafficState\":{\"@trafficAge\":31,\"@trafficModelId\":\"1666645580\"},\"copyrightIds\":\"https://www.tomtom.com/en_gb/thirdpartyproductterms/\",\"@version\":\"traffic-service-incidents 1.0.062\",\"@maps\":\"world\"}}",
+      "Date" : "Mon, 24 Oct 2022 21:06:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

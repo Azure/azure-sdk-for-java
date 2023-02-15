@@ -323,7 +323,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
           val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
           patchPartialUpdateItem.fields().asScala.foreach(field => {
-            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, operationType, s"/${field.getKey}")
+            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+              field.getKey, operationType, s"/${field.getKey}", false)
           })
 
           val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -413,7 +414,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
 
           // Only trying to operate at 0 index
-          columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig("newItemInPropArray", operationType, "/propArray/0")
+          columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig(
+            "newItemInPropArray", operationType, "/propArray/0", false)
 
           val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
           val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partitionKeyPath, partialUpdateSchema)
@@ -491,7 +493,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     newParentNode.put("firstName", "John")
     newParentNode.put("lastName", "Anderson")
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-    columnConfigsMap += parent2PropertyName -> CosmosPatchColumnConfig(parent2PropertyName, CosmosPatchOperationTypes.Add, s"/family/parent2")
+    columnConfigsMap += parent2PropertyName -> CosmosPatchColumnConfig(
+      parent2PropertyName, CosmosPatchOperationTypes.Add, s"/family/parent2", false)
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
     pointWriterForPatch.scheduleWrite(partitionKey, partialUpdateNode)
@@ -543,7 +546,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
       val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
       patchPartialUpdateItem.fields().asScala.foreach(field => {
-        columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
+        columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+          field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}", false)
       })
 
       val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -571,7 +575,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}", false)
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -623,7 +628,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
@@ -686,13 +692,15 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
         val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
         patchPartialUpdateItem.fields().asScala.foreach(field => {
-          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+            field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
         })
 
         val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
 
         patchPartialUpdateItem.fields().asScala.foreach(field => {
-          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+            field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
         })
 
         bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
@@ -744,7 +752,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     patchPartialUpdateItem.fields().asScala.foreach(field => {
-      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
     })
 
     val pointWriterForPatch =
@@ -783,7 +792,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
     partialUpdateSchema.fields.foreach(field => {
-      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(
+        field.name, CosmosPatchOperationTypes.Set, s"/${field.name}", false)
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)

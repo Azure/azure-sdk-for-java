@@ -90,7 +90,7 @@ public final class ImagesCreateOrUpdateSamples {
         manager
             .images()
             .define("image1")
-            .withExistingLabPlan("testrg123", "testlabplan")
+            .withExistingLabPlan("fakeResourceGroupPlaceholder", "testlabplan")
             .withEnabledState(EnableState.ENABLED)
             .create();
     }
@@ -113,7 +113,7 @@ public final class ImagesGetSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getImage(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.images().getWithResponse("testrg123", "testlabplan", "image1", Context.NONE);
+        manager.images().getWithResponse("fakeResourceGroupPlaceholder", "testlabplan", "image1", Context.NONE);
     }
 }
 ```
@@ -134,7 +134,7 @@ public final class ImagesListByLabPlanSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listImages(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.images().listByLabPlan("testrg123", "testlabplan", null, Context.NONE);
+        manager.images().listByLabPlan("fakeResourceGroupPlaceholder", "testlabplan", null, Context.NONE);
     }
 }
 ```
@@ -158,7 +158,7 @@ public final class ImagesUpdateSamples {
      */
     public static void patchImage(com.azure.resourcemanager.labservices.LabServicesManager manager) {
         Image resource =
-            manager.images().getWithResponse("testrg123", "testlabplan", "image1", Context.NONE).getValue();
+            manager.images().getWithResponse("fakeResourceGroupPlaceholder", "testlabplan", "image1", Context.NONE).getValue();
         resource.update().withEnabledState(EnableState.ENABLED).apply();
     }
 }
@@ -191,7 +191,7 @@ public final class LabPlansCreateOrUpdateSamples {
             .labPlans()
             .define("testlabplan")
             .withRegion("westus")
-            .withExistingResourceGroup("testrg123")
+            .withExistingResourceGroup("fakeResourceGroupPlaceholder")
             .withDefaultConnectionProfile(
                 new ConnectionProfile()
                     .withWebSshAccess(ConnectionType.NONE)
@@ -209,9 +209,9 @@ public final class LabPlansCreateOrUpdateSamples {
             .withDefaultNetworkProfile(
                 new LabPlanNetworkProfile()
                     .withSubnetId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/fakeResourceGroupPlaceholder/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
             .withSharedGalleryId(
-                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Compute/galleries/testsig")
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/fakeResourceGroupPlaceholder/providers/Microsoft.Compute/galleries/testsig")
             .withSupportInfo(
                 new SupportInfo()
                     .withUrl("help.contoso.com")
@@ -239,7 +239,7 @@ public final class LabPlansDeleteSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void deleteLabPlan(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labPlans().delete("testrg123", "testlabplan", Context.NONE);
+        manager.labPlans().delete("fakeResourceGroupPlaceholder", "testlabplan", Context.NONE);
     }
 }
 ```
@@ -260,7 +260,7 @@ public final class LabPlansGetByResourceGroupSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getLabPlan(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labPlans().getByResourceGroupWithResponse("testrg123", "testlabplan", Context.NONE);
+        manager.labPlans().getByResourceGroupWithResponse("fakeResourceGroupPlaceholder", "testlabplan", Context.NONE);
     }
 }
 ```
@@ -302,7 +302,7 @@ public final class LabPlansListByResourceGroupSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listResourceGroupLabPlans(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labPlans().listByResourceGroup("testrg123", Context.NONE);
+        manager.labPlans().listByResourceGroup("fakeResourceGroupPlaceholder", Context.NONE);
     }
 }
 ```
@@ -327,12 +327,12 @@ public final class LabPlansSaveImageSamples {
         manager
             .labPlans()
             .saveImage(
-                "testrg123",
+                "fakeResourceGroupPlaceholder",
                 "testlabplan",
                 new SaveImageBody()
                     .withName("Test Image")
                     .withLabVirtualMachineId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.LabServices/labs/testlab/virtualMachines/template"),
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/fakeResourceGroupPlaceholder/providers/Microsoft.LabServices/labs/testlab/virtualMachines/template"),
                 Context.NONE);
     }
 }
@@ -358,7 +358,7 @@ public final class LabPlansUpdateSamples {
      */
     public static void patchLabPlan(com.azure.resourcemanager.labservices.LabServicesManager manager) {
         LabPlan resource =
-            manager.labPlans().getByResourceGroupWithResponse("testrg123", "testlabplan", Context.NONE).getValue();
+            manager.labPlans().getByResourceGroupWithResponse("fakeResourceGroupPlaceholder", "testlabplan", Context.NONE).getValue();
         resource
             .update()
             .withDefaultConnectionProfile(
@@ -405,11 +405,11 @@ public final class LabsCreateOrUpdateSamples {
             .labs()
             .define("testlab")
             .withRegion("westus")
-            .withExistingResourceGroup("testrg123")
+            .withExistingResourceGroup("fakeResourceGroupPlaceholder")
             .withNetworkProfile(
                 new LabNetworkProfile()
                     .withSubnetId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/fakeResourceGroupPlaceholder/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"))
             .withAutoShutdownProfile(
                 new AutoShutdownProfile()
                     .withShutdownOnDisconnect(EnableState.ENABLED)
@@ -441,7 +441,7 @@ public final class LabsCreateOrUpdateSamples {
                     .withAdminUser(new Credentials().withUsername("test-user")))
             .withSecurityProfile(new SecurityProfile().withOpenAccess(EnableState.DISABLED))
             .withLabPlanId(
-                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.LabServices/labPlans/testlabplan")
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/fakeResourceGroupPlaceholder/providers/Microsoft.LabServices/labPlans/testlabplan")
             .withTitle("Test Lab")
             .withDescription("This is a test lab.")
             .create();
@@ -465,7 +465,7 @@ public final class LabsDeleteSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void deleteLab(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().delete("testrg123", "testlab", Context.NONE);
+        manager.labs().delete("fakeResourceGroupPlaceholder", "testlab", Context.NONE);
     }
 }
 ```
@@ -486,7 +486,7 @@ public final class LabsGetByResourceGroupSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getLab(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().getByResourceGroupWithResponse("testrg123", "testlab", Context.NONE);
+        manager.labs().getByResourceGroupWithResponse("fakeResourceGroupPlaceholder", "testlab", Context.NONE);
     }
 }
 ```
@@ -528,7 +528,7 @@ public final class LabsListByResourceGroupSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listResourceGroupLabs(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().listByResourceGroup("testrg123", Context.NONE);
+        manager.labs().listByResourceGroup("fakeResourceGroupPlaceholder", Context.NONE);
     }
 }
 ```
@@ -549,7 +549,7 @@ public final class LabsPublishSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void publishLab(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().publish("testrg123", "testlab", Context.NONE);
+        manager.labs().publish("fakeResourceGroupPlaceholder", "testlab", Context.NONE);
     }
 }
 ```
@@ -570,7 +570,7 @@ public final class LabsSyncGroupSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void syncLab(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.labs().syncGroup("testrg123", "testlab", Context.NONE);
+        manager.labs().syncGroup("fakeResourceGroupPlaceholder", "testlab", Context.NONE);
     }
 }
 ```
@@ -594,7 +594,7 @@ public final class LabsUpdateSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void patchLab(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        Lab resource = manager.labs().getByResourceGroupWithResponse("testrg123", "testlab", Context.NONE).getValue();
+        Lab resource = manager.labs().getByResourceGroupWithResponse("fakeResourceGroupPlaceholder", "testlab", Context.NONE).getValue();
         resource.update().withSecurityProfile(new SecurityProfile().withOpenAccess(EnableState.ENABLED)).apply();
     }
 }
@@ -663,7 +663,7 @@ public final class SchedulesCreateOrUpdateSamples {
         manager
             .schedules()
             .define("schedule1")
-            .withExistingLab("testrg123", "testlab")
+            .withExistingLab("fakeResourceGroupPlaceholder", "testlab")
             .withStartAt(OffsetDateTime.parse("2020-05-26T12:00:00Z"))
             .withStopAt(OffsetDateTime.parse("2020-05-26T18:00:00Z"))
             .withRecurrencePattern(
@@ -694,7 +694,7 @@ public final class SchedulesDeleteSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void deleteSchedule(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.schedules().delete("testrg123", "testlab", "schedule1", Context.NONE);
+        manager.schedules().delete("fakeResourceGroupPlaceholder", "testlab", "schedule1", Context.NONE);
     }
 }
 ```
@@ -715,7 +715,7 @@ public final class SchedulesGetSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getSchedule(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.schedules().getWithResponse("testrg123", "testlab", "schedule1", Context.NONE);
+        manager.schedules().getWithResponse("fakeResourceGroupPlaceholder", "testlab", "schedule1", Context.NONE);
     }
 }
 ```
@@ -736,7 +736,7 @@ public final class SchedulesListByLabSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getListSchedule(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.schedules().listByLab("testrg123", "testlab", null, Context.NONE);
+        manager.schedules().listByLab("fakeResourceGroupPlaceholder", "testlab", null, Context.NONE);
     }
 }
 ```
@@ -762,7 +762,7 @@ public final class SchedulesUpdateSamples {
      */
     public static void patchSchedule(com.azure.resourcemanager.labservices.LabServicesManager manager) {
         Schedule resource =
-            manager.schedules().getWithResponse("testrg123", "testlab", "schedule1", Context.NONE).getValue();
+            manager.schedules().getWithResponse("fakeResourceGroupPlaceholder", "testlab", "schedule1", Context.NONE).getValue();
         resource
             .update()
             .withRecurrencePattern(
@@ -836,7 +836,7 @@ public final class UsersCreateOrUpdateSamples {
         manager
             .users()
             .define("testuser")
-            .withExistingLab("testrg123", "testlab")
+            .withExistingLab("fakeResourceGroupPlaceholder", "testlab")
             .withEmail("testuser@contoso.com")
             .withAdditionalUsageQuota(Duration.parse("PT10H"))
             .create();
@@ -860,7 +860,7 @@ public final class UsersDeleteSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void deleteUser(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.users().delete("testrg123", "testlab", "testuser", Context.NONE);
+        manager.users().delete("fakeResourceGroupPlaceholder", "testlab", "testuser", Context.NONE);
     }
 }
 ```
@@ -881,7 +881,7 @@ public final class UsersGetSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getUser(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.users().getWithResponse("testrg123", "testlab", "testuser", Context.NONE);
+        manager.users().getWithResponse("fakeResourceGroupPlaceholder", "testlab", "testuser", Context.NONE);
     }
 }
 ```
@@ -906,7 +906,7 @@ public final class UsersInviteSamples {
         manager
             .users()
             .invite(
-                "testrg123",
+                "fakeResourceGroupPlaceholder",
                 "testlab",
                 "testuser",
                 new InviteBody().withText("Invitation to lab testlab"),
@@ -931,7 +931,7 @@ public final class UsersListByLabSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listUser(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.users().listByLab("testrg123", "testlab", null, Context.NONE);
+        manager.users().listByLab("fakeResourceGroupPlaceholder", "testlab", null, Context.NONE);
     }
 }
 ```
@@ -954,7 +954,7 @@ public final class UsersUpdateSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void patchUser(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        User resource = manager.users().getWithResponse("testrg123", "testlab", "testuser", Context.NONE).getValue();
+        User resource = manager.users().getWithResponse("fakeResourceGroupPlaceholder", "testlab", "testuser", Context.NONE).getValue();
         resource.update().withAdditionalUsageQuota(Duration.parse("PT10H")).apply();
     }
 }
@@ -976,7 +976,7 @@ public final class VirtualMachinesGetSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().getWithResponse("testrg123", "testlab", "template", Context.NONE);
+        manager.virtualMachines().getWithResponse("fakeResourceGroupPlaceholder", "testlab", "template", Context.NONE);
     }
 }
 ```
@@ -997,7 +997,7 @@ public final class VirtualMachinesListByLabSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().listByLab("testrg123", "testlab", null, Context.NONE);
+        manager.virtualMachines().listByLab("fakeResourceGroupPlaceholder", "testlab", null, Context.NONE);
     }
 }
 ```
@@ -1018,7 +1018,7 @@ public final class VirtualMachinesRedeploySamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void redeployVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().redeploy("testrg123", "testlab", "template", Context.NONE);
+        manager.virtualMachines().redeploy("fakeResourceGroupPlaceholder", "testlab", "template", Context.NONE);
     }
 }
 ```
@@ -1039,7 +1039,7 @@ public final class VirtualMachinesReimageSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void reimageVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().reimage("testrg123", "testlab", "template", Context.NONE);
+        manager.virtualMachines().reimage("fakeResourceGroupPlaceholder", "testlab", "template", Context.NONE);
     }
 }
 ```
@@ -1064,7 +1064,7 @@ public final class VirtualMachinesResetPasswordSamples {
         manager
             .virtualMachines()
             .resetPassword(
-                "testrg123",
+                "fakeResourceGroupNamePlaceholder",
                 "testlab",
                 "template",
                 new ResetPasswordBody().withUsername("example-username").withPassword("example-password"),
@@ -1089,7 +1089,7 @@ public final class VirtualMachinesStartSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void startVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().start("testrg123", "testlab", "template", Context.NONE);
+        manager.virtualMachines().start("fakeResourceGroupPlaceholder", "testlab", "template", Context.NONE);
     }
 }
 ```
@@ -1110,7 +1110,7 @@ public final class VirtualMachinesStopSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void stopVirtualMachine(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.virtualMachines().stop("testrg123", "testlab", "template", Context.NONE);
+        manager.virtualMachines().stop("fakeResourceGroupPlaceholder", "testlab", "template", Context.NONE);
     }
 }
 ```

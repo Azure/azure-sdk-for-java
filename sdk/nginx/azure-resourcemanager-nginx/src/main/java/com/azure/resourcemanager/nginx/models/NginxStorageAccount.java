@@ -22,6 +22,10 @@ public final class NginxStorageAccount {
     @JsonProperty(value = "containerName")
     private String containerName;
 
+    /** Creates an instance of NginxStorageAccount class. */
+    public NginxStorageAccount() {
+    }
+
     /**
      * Get the accountName property: The accountName property.
      *

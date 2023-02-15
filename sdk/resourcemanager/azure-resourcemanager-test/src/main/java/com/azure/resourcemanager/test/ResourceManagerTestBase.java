@@ -22,6 +22,11 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.InvocationInterceptor;
+import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -34,6 +39,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -53,6 +59,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -89,6 +97,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
+
+    /**
+     * Sets upper bound execution timeout for each @Test method.
+     * {@link org.junit.jupiter.api.Timeout} annotation on test methods will only narrow the timeout, not affecting the upper
+     * bound.
+     */
+    @RegisterExtension
+    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(30));
 
     /**
      * Generates a random resource name.
@@ -453,4 +469,25 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * Cleans up resources.
      */
     protected abstract void cleanUpResources();
+
+    private final class PlaybackTimeoutInterceptor implements InvocationInterceptor {
+
+        private final Duration duration;
+
+        private PlaybackTimeoutInterceptor(Supplier<Duration> timeoutSupplier) {
+            Objects.requireNonNull(timeoutSupplier);
+            this.duration = timeoutSupplier.get();
+        }
+
+        @Override
+        public void interceptTestMethod(Invocation<Void> invocation,
+                                        ReflectiveInvocationContext<Method> invocationContext,
+                                        ExtensionContext extensionContext) throws Throwable {
+            if (isPlaybackMode()) {
+                Assertions.assertTimeoutPreemptively(duration, invocation::proceed);
+            } else {
+                invocation.proceed();
+            }
+        }
+    }
 }

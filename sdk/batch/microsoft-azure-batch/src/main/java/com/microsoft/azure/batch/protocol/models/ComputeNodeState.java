@@ -51,7 +51,7 @@ public enum ComputeNodeState {
     /** The Compute Node is not currently running a Task, and scheduling of new Tasks to the Compute Node is disabled. */
     OFFLINE("offline"),
 
-    /** The low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. */
+    /** The Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. */
     PREEMPTED("preempted");
 
     /** The actual serialized value for a ComputeNodeState instance. */

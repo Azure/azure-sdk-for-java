@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfidenceScoreStatus. */
+/**
+ * The confidence score calculation status, i.e. indicating if score calculation is pending for this alert, not
+ * applicable or final.
+ */
 public final class ConfidenceScoreStatus extends ExpandableStringEnum<ConfidenceScoreStatus> {
     /** Static value NotApplicable for ConfidenceScoreStatus. */
     public static final ConfidenceScoreStatus NOT_APPLICABLE = fromString("NotApplicable");

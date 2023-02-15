@@ -14,6 +14,7 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalListResultInner;
+import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Database;
@@ -21,10 +22,9 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipal;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListRequest;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListResult;
 import com.azure.resourcemanager.kusto.models.Databases;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DatabasesImpl implements Databases {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasesImpl.class);
 
     private final DatabasesClient innerClient;
 
@@ -99,6 +99,21 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database createOrUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole) {
+        DatabaseInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Database createOrUpdate(
         String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         DatabaseInner inner =
             this.serviceClient().createOrUpdate(resourceGroupName, clusterName, databaseName, parameters);
@@ -110,9 +125,31 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context) {
         DatabaseInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, clusterName, databaseName, parameters, context);
+            this
+                .serviceClient()
+                .createOrUpdate(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Database update(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole) {
+        DatabaseInner inner =
+            this.serviceClient().update(resourceGroupName, clusterName, databaseName, parameters, callerRole);
         if (inner != null) {
             return new DatabaseImpl(inner, this.manager());
         } else {
@@ -131,9 +168,14 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context) {
         DatabaseInner inner =
-            this.serviceClient().update(resourceGroupName, clusterName, databaseName, parameters, context);
+            this.serviceClient().update(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
         if (inner != null) {
             return new DatabaseImpl(inner, this.manager());
         } else {

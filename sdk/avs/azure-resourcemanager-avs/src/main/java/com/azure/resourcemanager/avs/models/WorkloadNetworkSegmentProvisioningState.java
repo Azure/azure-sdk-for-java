@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkSegmentProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkSegmentProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkSegmentProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkSegmentProvisioningState. */
@@ -26,6 +26,9 @@ public final class WorkloadNetworkSegmentProvisioningState
     /** Static value Updating for WorkloadNetworkSegmentProvisioningState. */
     public static final WorkloadNetworkSegmentProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkSegmentProvisioningState. */
+    public static final WorkloadNetworkSegmentProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a WorkloadNetworkSegmentProvisioningState from its string representation.
      *
@@ -37,7 +40,11 @@ public final class WorkloadNetworkSegmentProvisioningState
         return fromString(name, WorkloadNetworkSegmentProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkSegmentProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkSegmentProvisioningState values.
+     *
+     * @return known WorkloadNetworkSegmentProvisioningState values.
+     */
     public static Collection<WorkloadNetworkSegmentProvisioningState> values() {
         return values(WorkloadNetworkSegmentProvisioningState.class);
     }

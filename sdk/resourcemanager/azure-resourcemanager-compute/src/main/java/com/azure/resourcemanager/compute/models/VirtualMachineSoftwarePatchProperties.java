@@ -73,6 +73,10 @@ public final class VirtualMachineSoftwarePatchProperties {
     @JsonProperty(value = "assessmentState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchAssessmentState assessmentState;
 
+    /** Creates an instance of VirtualMachineSoftwarePatchProperties class. */
+    public VirtualMachineSoftwarePatchProperties() {
+    }
+
     /**
      * Get the patchId property: A unique identifier for the patch.
      *

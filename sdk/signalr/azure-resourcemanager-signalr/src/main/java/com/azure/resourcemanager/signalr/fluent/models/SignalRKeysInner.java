@@ -34,6 +34,10 @@ public final class SignalRKeysInner {
     @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
+    /** Creates an instance of SignalRKeysInner class. */
+    public SignalRKeysInner() {
+    }
+
     /**
      * Get the primaryKey property: The primary access key.
      *

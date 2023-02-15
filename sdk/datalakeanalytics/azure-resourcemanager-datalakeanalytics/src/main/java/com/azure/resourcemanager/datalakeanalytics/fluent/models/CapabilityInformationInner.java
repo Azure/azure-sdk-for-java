@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Subscription-level properties and limits for Data Lake Analytics. */
 @Immutable
 public final class CapabilityInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilityInformationInner.class);
-
     /*
      * The subscription credentials that uniquely identifies the subscription.
      */
@@ -45,6 +41,10 @@ public final class CapabilityInformationInner {
      */
     @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean migrationState;
+
+    /** Creates an instance of CapabilityInformationInner class. */
+    public CapabilityInformationInner() {
+    }
 
     /**
      * Get the subscriptionId property: The subscription credentials that uniquely identifies the subscription.

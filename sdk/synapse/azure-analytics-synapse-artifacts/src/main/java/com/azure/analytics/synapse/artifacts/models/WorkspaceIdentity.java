@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WorkspaceIdentity {
     /*
-     * The identity type. Currently the only supported type is
-     * 'SystemAssigned'.
+     * The identity type. Currently the only supported type is 'SystemAssigned'.
      */
     @JsonProperty(value = "type", required = true)
     private String type = "SystemAssigned";

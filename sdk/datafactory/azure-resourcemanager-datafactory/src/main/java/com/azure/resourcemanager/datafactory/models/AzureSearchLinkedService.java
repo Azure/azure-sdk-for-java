@@ -24,6 +24,10 @@ public final class AzureSearchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSearchLinkedServiceTypeProperties innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSearchLinkedService class. */
+    public AzureSearchLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Windows Azure Search Service linked service properties.
      *

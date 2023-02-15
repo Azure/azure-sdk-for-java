@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TopologyList model. */
 @Immutable
 public final class TopologyList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyList.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class TopologyList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of TopologyList class. */
+    public TopologyList() {
+    }
 
     /**
      * Get the value property: The value property.

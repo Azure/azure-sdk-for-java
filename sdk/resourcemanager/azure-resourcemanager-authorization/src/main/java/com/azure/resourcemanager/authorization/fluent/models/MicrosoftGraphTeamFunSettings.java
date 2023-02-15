@@ -44,6 +44,10 @@ public final class MicrosoftGraphTeamFunSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamFunSettings class. */
+    public MicrosoftGraphTeamFunSettings() {
+    }
+
     /**
      * Get the allowCustomMemes property: If set to true, enables users to include custom memes.
      *

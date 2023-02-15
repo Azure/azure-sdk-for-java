@@ -3,7 +3,6 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
@@ -183,6 +182,19 @@ public class HttpRequest {
     }
 
     /**
+     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
+     * matching name exists.
+     *
+     * @param headerName the header name
+     * @param value the header value
+     * @return this HttpRequest
+     */
+    public HttpRequest setHeader(HttpHeaderName headerName, String value) {
+        headers.set(headerName, value);
+        return this;
+    }
+
+    /**
      * Get the request content.
      *
      * @return the content to be sent
@@ -263,7 +275,7 @@ public class HttpRequest {
     }
 
     private void setContentLength(long contentLength) {
-        HttpHeadersHelper.setNoKeyFormatting(headers, "content-length", "Content-Length", String.valueOf(contentLength));
+        headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**

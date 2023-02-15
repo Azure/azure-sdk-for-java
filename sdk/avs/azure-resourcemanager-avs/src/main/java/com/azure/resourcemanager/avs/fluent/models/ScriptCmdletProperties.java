@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a pre-canned script. */
 @Immutable
 public final class ScriptCmdletProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCmdletProperties.class);
-
     /*
      * Description of the scripts functionality
      */
@@ -33,6 +29,10 @@ public final class ScriptCmdletProperties {
      */
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScriptParameter> parameters;
+
+    /** Creates an instance of ScriptCmdletProperties class. */
+    public ScriptCmdletProperties() {
+    }
 
     /**
      * Get the description property: Description of the scripts functionality.

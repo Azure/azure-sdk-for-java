@@ -6,15 +6,12 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that define a Step group in a rollout. */
 @Fluent
 public final class StepGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StepGroup.class);
-
     /*
      * The name of the step group.
      */
@@ -34,8 +31,8 @@ public final class StepGroup {
     private List<PrePostStep> preDeploymentSteps;
 
     /*
-     * The resource Id of service unit to be deployed. The service unit should
-     * be from the service topology referenced in targetServiceTopologyId
+     * The resource Id of service unit to be deployed. The service unit should be from the service topology referenced
+     * in targetServiceTopologyId
      */
     @JsonProperty(value = "deploymentTargetId", required = true)
     private String deploymentTargetId;
@@ -45,6 +42,10 @@ public final class StepGroup {
      */
     @JsonProperty(value = "postDeploymentSteps")
     private List<PrePostStep> postDeploymentSteps;
+
+    /** Creates an instance of StepGroup class. */
+    public StepGroup() {
+    }
 
     /**
      * Get the name property: The name of the step group.
@@ -155,14 +156,14 @@ public final class StepGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model StepGroup"));
         }
         if (preDeploymentSteps() != null) {
             preDeploymentSteps().forEach(e -> e.validate());
         }
         if (deploymentTargetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property deploymentTargetId in model StepGroup"));
         }
@@ -170,4 +171,6 @@ public final class StepGroup {
             postDeploymentSteps().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StepGroup.class);
 }

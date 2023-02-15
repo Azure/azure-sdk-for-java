@@ -60,7 +60,7 @@ public final class DirectConnectionConfig {
      * <p>
      * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
-     * By default, connection endpoint rediscovery is disabled.
+     * By default, connection endpoint rediscovery is enabled.
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
@@ -73,7 +73,7 @@ public final class DirectConnectionConfig {
      * <p>
      * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
-     * By default, connection endpoint rediscovery is disabled.
+     * By default, connection endpoint rediscovery is enabled.
      *
      * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
      *                                             false} otherwise.

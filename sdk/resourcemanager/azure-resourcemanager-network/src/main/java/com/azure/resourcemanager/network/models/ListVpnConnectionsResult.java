@@ -27,6 +27,10 @@ public final class ListVpnConnectionsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListVpnConnectionsResult class. */
+    public ListVpnConnectionsResult() {
+    }
+
     /**
      * Get the value property: List of Vpn Connections.
      *

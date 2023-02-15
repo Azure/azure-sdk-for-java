@@ -22,6 +22,10 @@ public final class UserOwnedStorage {
     @JsonProperty(value = "identityClientId")
     private String identityClientId;
 
+    /** Creates an instance of UserOwnedStorage class. */
+    public UserOwnedStorage() {
+    }
+
     /**
      * Get the resourceId property: Full resource id of a Microsoft.Storage resource.
      *

@@ -103,6 +103,10 @@ public final class PrestoLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of PrestoLinkedServiceTypeProperties class. */
+    public PrestoLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The IP address or host name of the Presto server. (i.e. 192.168.222.160).
      *

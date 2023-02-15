@@ -32,6 +32,10 @@ public final class Sku {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
+
     /**
      * Get the name property: The sku name.
      *

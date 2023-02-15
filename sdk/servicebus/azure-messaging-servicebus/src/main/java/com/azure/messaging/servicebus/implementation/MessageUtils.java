@@ -6,12 +6,19 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleAction;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -23,7 +30,6 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import reactor.core.publisher.Signal;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -33,22 +39,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
-
 
 /**
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
@@ -310,35 +307,6 @@ public final class MessageUtils {
     }
 
     /**
-     * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
-     */
-    public static ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage,
-        Context messageContext, String hostname, String entityPath, TracerProvider tracerProvider) {
-        Optional<Object> eventContextData = messageContext.getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), don't start a message span or add a new context
-            return serviceBusMessage;
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context newMessageContext = messageContext
-                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-                .addData(ENTITY_PATH_KEY, entityPath)
-                .addData(HOST_NAME_KEY, hostname);
-            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, newMessageContext,
-                ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-            if (eventDiagnosticIdOptional.isPresent()) {
-                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
-                    .toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-            }
-        }
-        return serviceBusMessage;
-    }
-
-
-    /**
      * Convert DescribedType to origin type based on the descriptor.
      * @param describedType Service bus defined DescribedType.
      * @param <T> Including URI, OffsetDateTime and Duration
@@ -367,6 +335,169 @@ public final class MessageUtils {
             return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
         }
         return (T) described;
+    }
+
+    /**
+     * Create a map and put {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info into map for management request.
+     *
+     * @param name name of rule.
+     * @param options The options for the rule to add.
+     * @return A map with {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info to put into management message body.
+     */
+    public static Map<String, Object> encodeRuleOptionToMap(String name, CreateRuleOptions options) {
+        Map<String, Object> descriptionMap = new HashMap<>(3);
+        if (options.getFilter() instanceof SqlRuleFilter) {
+            Map<String, Object> filterMap = new HashMap<>(1);
+            filterMap.put(ManagementConstants.EXPRESSION, ((SqlRuleFilter) options.getFilter()).getSqlExpression());
+            descriptionMap.put(ManagementConstants.SQL_RULE_FILTER, filterMap);
+        } else if (options.getFilter() instanceof CorrelationRuleFilter) {
+            CorrelationRuleFilter correlationFilter = (CorrelationRuleFilter) options.getFilter();
+            Map<String, Object> filterMap = new HashMap<>(9);
+            filterMap.put(ManagementConstants.CORRELATION_ID, correlationFilter.getCorrelationId());
+            filterMap.put(ManagementConstants.MESSAGE_ID, correlationFilter.getMessageId());
+            filterMap.put(ManagementConstants.TO, correlationFilter.getTo());
+            filterMap.put(ManagementConstants.REPLY_TO, correlationFilter.getReplyTo());
+            filterMap.put(ManagementConstants.LABEL, correlationFilter.getLabel());
+            filterMap.put(ManagementConstants.SESSION_ID, correlationFilter.getSessionId());
+            filterMap.put(ManagementConstants.REPLY_TO_SESSION_ID, correlationFilter.getReplyToSessionId());
+            filterMap.put(ManagementConstants.CONTENT_TYPE, correlationFilter.getContentType());
+            filterMap.put(ManagementConstants.CORRELATION_FILTER_PROPERTIES, correlationFilter.getProperties());
+
+            descriptionMap.put(ManagementConstants.CORRELATION_FILTER, filterMap);
+        } else {
+            throw new IllegalArgumentException("This API supports the addition of only SQLFilters and CorrelationFilters.");
+        }
+
+        RuleAction action = options.getAction();
+        if (action == null) {
+            descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, null);
+        } else if (action instanceof SqlRuleAction) {
+            Map<String, Object> sqlActionMap = new HashMap<>(1);
+            sqlActionMap.put(ManagementConstants.EXPRESSION, ((SqlRuleAction) action).getSqlExpression());
+            descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, sqlActionMap);
+        } else {
+            throw new IllegalArgumentException("This API supports the addition of only filters with SqlRuleActions.");
+        }
+
+        descriptionMap.put(ManagementConstants.RULE_NAME, name);
+
+        return descriptionMap;
+    }
+
+    /**
+     * Get {@link RuleProperties} from {@link DescribedType}.
+     *
+     * @param ruleDescribedType A {@link DescribedType} with rule information.
+     * @return A {@link RuleProperties} contains name, {@link RuleAction} and {@link RuleFilter}.
+     */
+    public static RuleProperties decodeRuleDescribedType(DescribedType ruleDescribedType) {
+        if (ruleDescribedType == null) {
+            return null;
+        }
+        if (!(ruleDescribedType.getDescriptor()).equals(ServiceBusConstants.RULE_DESCRIPTION_NAME)) {
+            return null;
+        }
+
+        RuleDescription ruleDescription = new RuleDescription();
+        if (ruleDescribedType.getDescribed() instanceof Iterable) {
+            @SuppressWarnings("unchecked") Iterator<Object> describedRule = ((Iterable<Object>) ruleDescribedType.getDescribed()).iterator();
+            if (describedRule.hasNext()) {
+                RuleFilter ruleFilter = decodeFilter((DescribedType) describedRule.next());
+                ruleDescription.setFilter(Objects.isNull(ruleFilter) ? null : EntityHelper.toImplementation(ruleFilter));
+            }
+
+            if (describedRule.hasNext()) {
+                RuleAction ruleAction = decodeRuleAction((DescribedType) describedRule.next());
+                ruleDescription.setAction(Objects.isNull(ruleAction) ? null : EntityHelper.toImplementation(ruleAction));
+            }
+
+            if (describedRule.hasNext()) {
+                ruleDescription.setName((String) describedRule.next());
+            }
+        }
+
+        return EntityHelper.toModel(ruleDescription);
+    }
+
+    /**
+     * Get {@link RuleFilter} from a {@link DescribedType}.
+     *
+     * @param describedFilter A {@link DescribedType} with rule filter information.
+     * @return A {@link RuleFilter}.
+     */
+    @SuppressWarnings("unchecked")
+    private static RuleFilter decodeFilter(DescribedType describedFilter) {
+        if (describedFilter.getDescriptor().equals(ServiceBusConstants.SQL_FILTER_NAME)
+            && describedFilter.getDescribed() instanceof Iterable) {
+            Iterator<Object> describedSqlFilter = ((Iterable<Object>) describedFilter.getDescribed()).iterator();
+            if (describedSqlFilter.hasNext()) {
+                return new SqlRuleFilter((String) describedSqlFilter.next());
+            }
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.CORRELATION_FILTER_NAME)
+            && describedFilter.getDescribed() instanceof Iterable) {
+            CorrelationRuleFilter correlationFilter = new CorrelationRuleFilter();
+            Iterator<Object> describedCorrelationFilter = ((Iterable<Object>) describedFilter.getDescribed()).iterator();
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setCorrelationId((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setMessageId((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setTo((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setReplyTo((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setLabel((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setSessionId((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setReplyToSessionId((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                correlationFilter.setContentType((String) (describedCorrelationFilter.next()));
+            }
+            if (describedCorrelationFilter.hasNext()) {
+                Object properties = describedCorrelationFilter.next();
+                if (properties instanceof Map) {
+                    correlationFilter.getProperties().putAll((Map<String, ?>) properties);
+                }
+            }
+
+            return correlationFilter;
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.TRUE_FILTER_NAME)) {
+            return new TrueRuleFilter();
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.FALSE_FILTER_NAME)) {
+            return new FalseRuleFilter();
+        } else {
+            throw new UnsupportedOperationException("This client cannot support filter with descriptor: " + describedFilter.getDescriptor());
+        }
+
+        return null;
+    }
+
+    /**
+     * Get {@link RuleAction} from a {@link DescribedType}.
+     *
+     * @param describedAction A {@link DescribedType} with rule action information.
+     * @return A {@link RuleAction}.
+     */
+    private static RuleAction decodeRuleAction(DescribedType describedAction) {
+        if (describedAction.getDescriptor().equals(ServiceBusConstants.EMPTY_RULE_ACTION_NAME)) {
+            return null;
+        } else if (describedAction.getDescriptor().equals(ServiceBusConstants.SQL_RULE_ACTION_NAME)
+            && describedAction.getDescribed() instanceof Iterable) {
+            @SuppressWarnings("unchecked") Iterator<Object> describedSqlAction = ((Iterable<Object>) describedAction.getDescribed()).iterator();
+            if (describedSqlAction.hasNext()) {
+                return new SqlRuleAction((String) describedSqlAction.next());
+            }
+        }
+
+        return null;
     }
 
 }

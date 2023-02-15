@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Cluster operation response. */
 @Fluent
 public final class ClusterListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
-
     /*
      * The list of Clusters.
      */
@@ -27,6 +23,10 @@ public final class ClusterListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ClusterListResult class. */
+    public ClusterListResult() {
+    }
 
     /**
      * Get the value property: The list of Clusters.

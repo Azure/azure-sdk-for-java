@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
@@ -53,6 +52,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
+    private static final String TRACKING_ID_KEY = "trackingId";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
@@ -61,8 +61,8 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
-    private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final String identifier;
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
@@ -80,16 +80,16 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
         this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
-        this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+        this.identifier = identifier;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -111,10 +111,10 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this(entityPath, entityType, connectionProcessor, tracerProvider,
-            messageSerializer, receiverOptions, null);
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
+        this(entityPath, entityType, connectionProcessor,
+            messageSerializer, receiverOptions, null, identifier);
     }
 
     /**
@@ -127,6 +127,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusSessionManager}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSessionManager}.
+     */
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     /**
@@ -253,7 +262,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, sessionId);
+                null, entityType, identifier, sessionId);
             });
     }
 
@@ -269,7 +278,13 @@ class ServiceBusSessionManager implements AutoCloseable {
         }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
-                .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
+                .filter(e -> e == AmqpEndpointState.ACTIVE)
+                .next()
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error condition,
+                // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable processor recovery.
+                .switchIfEmpty(Mono.error(() ->
+                    new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
@@ -288,7 +303,19 @@ class ServiceBusSessionManager implements AutoCloseable {
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
                     return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                 } else {
-                    return Mono.<Long>error(failure);
+                    final long id = System.nanoTime();
+                    LOGGER.atInfo()
+                            .addKeyValue(TRACKING_ID_KEY, id)
+                            .log("Unable to acquire new session.", failure);
+                    // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
+                    // non-blocking, if we use the session processor to recover the error, it requires a blocking
+                    // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
+                    return Mono.<Long>error(failure)
+                            .publishOn(Schedulers.boundedElastic())
+                            .doOnError(e -> LOGGER.atInfo()
+                                    .addKeyValue(TRACKING_ID_KEY, id)
+                                    .log("Emitting the error signal received for session acquire attempt.", e)
+                    );
                 }
             })));
     }

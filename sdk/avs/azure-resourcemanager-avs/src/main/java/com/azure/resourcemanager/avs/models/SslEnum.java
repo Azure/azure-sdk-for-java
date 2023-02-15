@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SslEnum. */
+/** Protect LDAP communication using SSL certificate (LDAPS). */
 public final class SslEnum extends ExpandableStringEnum<SslEnum> {
     /** Static value Enabled for SslEnum. */
     public static final SslEnum ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class SslEnum extends ExpandableStringEnum<SslEnum> {
         return fromString(name, SslEnum.class);
     }
 
-    /** @return known SslEnum values. */
+    /**
+     * Gets known SslEnum values.
+     *
+     * @return known SslEnum values.
+     */
     public static Collection<SslEnum> values() {
         return values(SslEnum.class);
     }

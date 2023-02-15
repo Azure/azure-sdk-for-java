@@ -23,9 +23,8 @@ public final class MicrosoftGraphResponseStatus {
     private MicrosoftGraphResponseType response;
 
     /*
-     * The date and time that the response was returned. It uses ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The date and time that the response was returned. It uses ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "time")
     private OffsetDateTime time;
@@ -34,6 +33,10 @@ public final class MicrosoftGraphResponseStatus {
      * responseStatus
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResponseStatus class. */
+    public MicrosoftGraphResponseStatus() {
+    }
 
     /**
      * Get the response property: responseType.

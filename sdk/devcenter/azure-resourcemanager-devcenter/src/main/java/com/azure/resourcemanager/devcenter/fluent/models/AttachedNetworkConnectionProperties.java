@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an attached NetworkConnection. */
@@ -17,7 +18,7 @@ public final class AttachedNetworkConnectionProperties {
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The resource ID of the NetworkConnection you want to attach.
@@ -43,12 +44,16 @@ public final class AttachedNetworkConnectionProperties {
     @JsonProperty(value = "domainJoinType", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinType domainJoinType;
 
+    /** Creates an instance of AttachedNetworkConnectionProperties class. */
+    public AttachedNetworkConnectionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

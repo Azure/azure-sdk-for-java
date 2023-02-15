@@ -39,6 +39,10 @@ public final class MicrosoftGraphWorkbookChartSeries extends MicrosoftGraphEntit
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartSeries class. */
+    public MicrosoftGraphWorkbookChartSeries() {
+    }
+
     /**
      * Get the name property: Represents the name of a series in a chart.
      *

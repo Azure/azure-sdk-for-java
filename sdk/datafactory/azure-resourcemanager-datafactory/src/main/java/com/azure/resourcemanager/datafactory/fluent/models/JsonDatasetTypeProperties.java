@@ -34,6 +34,10 @@ public final class JsonDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of JsonDatasetTypeProperties class. */
+    public JsonDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the json data storage.
      *

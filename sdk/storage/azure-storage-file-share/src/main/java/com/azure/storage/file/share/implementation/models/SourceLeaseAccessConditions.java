@@ -18,6 +18,9 @@ public final class SourceLeaseAccessConditions {
     @JsonProperty(value = "sourceLeaseId")
     private String sourceLeaseId;
 
+    /** Creates an instance of SourceLeaseAccessConditions class. */
+    public SourceLeaseAccessConditions() {}
+
     /**
      * Get the sourceLeaseId property: Required if the source file has an active infinite lease.
      *

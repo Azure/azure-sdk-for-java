@@ -48,6 +48,10 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     @JsonProperty(value = "contextualServiceEndpointPolicies")
     private List<String> contextualServiceEndpointPolicies;
 
+    /** Creates an instance of ServiceEndpointPolicyPropertiesFormat class. */
+    public ServiceEndpointPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.

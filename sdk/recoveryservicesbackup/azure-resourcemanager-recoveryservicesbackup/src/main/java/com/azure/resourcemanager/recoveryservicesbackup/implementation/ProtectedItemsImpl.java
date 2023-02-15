@@ -27,17 +27,6 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         this.serviceManager = serviceManager;
     }
 
-    public ProtectedItemResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        ProtectedItemResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
-        if (inner != null) {
-            return new ProtectedItemResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProtectedItemResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -62,9 +51,15 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
     }
 
-    public void delete(
+    public ProtectedItemResource get(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        this.serviceClient().delete(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
+        ProtectedItemResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
+        if (inner != null) {
+            return new ProtectedItemResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -77,6 +72,11 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         return this
             .serviceClient()
             .deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context);
+    }
+
+    public void delete(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+        this.serviceClient().delete(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
     }
 
     public ProtectedItemResource getById(String id) {

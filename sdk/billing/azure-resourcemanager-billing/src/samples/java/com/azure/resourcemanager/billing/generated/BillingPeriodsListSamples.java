@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingPeriods List. */
 public final class BillingPeriodsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class BillingPeriodsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingPeriodsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPeriods().list(null, null, null, Context.NONE);
+        manager.billingPeriods().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

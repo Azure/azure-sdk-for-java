@@ -50,7 +50,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientVMInsig")
-    private interface VMInsightsService {
+    public interface VMInsightsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default")
         @ExpectedResponses({200})
@@ -144,21 +144,6 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      *
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource, or scope, whose status
      *     to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vM Insights onboarding status for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VMInsightsOnboardingStatusInner getOnboardingStatus(String resourceUri) {
-        return getOnboardingStatusAsync(resourceUri).block();
-    }
-
-    /**
-     * Retrieves the VM Insights onboarding status for the specified resource or resource scope.
-     *
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource, or scope, whose status
-     *     to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -169,5 +154,20 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
     public Response<VMInsightsOnboardingStatusInner> getOnboardingStatusWithResponse(
         String resourceUri, Context context) {
         return getOnboardingStatusWithResponseAsync(resourceUri, context).block();
+    }
+
+    /**
+     * Retrieves the VM Insights onboarding status for the specified resource or resource scope.
+     *
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource, or scope, whose status
+     *     to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vM Insights onboarding status for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VMInsightsOnboardingStatusInner getOnboardingStatus(String resourceUri) {
+        return getOnboardingStatusWithResponse(resourceUri, Context.NONE).getValue();
     }
 }

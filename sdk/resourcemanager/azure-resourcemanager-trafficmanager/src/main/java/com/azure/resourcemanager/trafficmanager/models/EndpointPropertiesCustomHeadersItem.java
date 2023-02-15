@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom header name and value. */
 @Fluent
 public final class EndpointPropertiesCustomHeadersItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointPropertiesCustomHeadersItem.class);
-
     /*
      * Header name.
      */
@@ -25,6 +21,10 @@ public final class EndpointPropertiesCustomHeadersItem {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of EndpointPropertiesCustomHeadersItem class. */
+    public EndpointPropertiesCustomHeadersItem() {
+    }
 
     /**
      * Get the name property: Header name.

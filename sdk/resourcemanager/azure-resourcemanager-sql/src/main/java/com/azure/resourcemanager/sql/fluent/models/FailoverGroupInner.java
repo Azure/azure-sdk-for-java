@@ -37,6 +37,10 @@ public final class FailoverGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private FailoverGroupProperties innerProperties;
 
+    /** Creates an instance of FailoverGroupInner class. */
+    public FailoverGroupInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

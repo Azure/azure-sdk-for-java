@@ -13,10 +13,9 @@ import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSite;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSites;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HcxEnterpriseSitesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HcxEnterpriseSitesImpl.class);
 
     private final HcxEnterpriseSitesClient innerClient;
 
@@ -39,16 +38,6 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         return Utils.mapPage(inner, inner1 -> new HcxEnterpriseSiteImpl(inner1, this.manager()));
     }
 
-    public HcxEnterpriseSite get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
-        HcxEnterpriseSiteInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, hcxEnterpriseSiteName);
-        if (inner != null) {
-            return new HcxEnterpriseSiteImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<HcxEnterpriseSite> getWithResponse(
         String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context) {
         Response<HcxEnterpriseSiteInner> inner =
@@ -64,8 +53,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         }
     }
 
-    public void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, hcxEnterpriseSiteName);
+    public HcxEnterpriseSite get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
+        HcxEnterpriseSiteInner inner =
+            this.serviceClient().get(resourceGroupName, privateCloudName, hcxEnterpriseSiteName);
+        if (inner != null) {
+            return new HcxEnterpriseSiteImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,10 +70,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
             .deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
 
+    public void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
+        this.serviceClient().delete(resourceGroupName, privateCloudName, hcxEnterpriseSiteName);
+    }
+
     public HcxEnterpriseSite getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,14 +85,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String hcxEnterpriseSiteName = Utils.getValueFromIdByName(id, "hcxEnterpriseSites");
         if (hcxEnterpriseSiteName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
     public Response<HcxEnterpriseSite> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,14 +115,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String hcxEnterpriseSiteName = Utils.getValueFromIdByName(id, "hcxEnterpriseSites");
         if (hcxEnterpriseSiteName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,14 +143,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String hcxEnterpriseSiteName = Utils.getValueFromIdByName(id, "hcxEnterpriseSites");
         if (hcxEnterpriseSiteName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,14 +171,14 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String hcxEnterpriseSiteName = Utils.getValueFromIdByName(id, "hcxEnterpriseSites");
         if (hcxEnterpriseSiteName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

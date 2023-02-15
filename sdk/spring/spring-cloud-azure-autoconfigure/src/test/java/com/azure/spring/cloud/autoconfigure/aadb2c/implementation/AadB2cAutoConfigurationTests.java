@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.aad.RestTemplateTestUtil;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerTestConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
@@ -19,6 +22,9 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConf
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
@@ -264,6 +270,35 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                     verify(userFlowCondition, never()).getMatchOutcome(any(), any());
                     verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
                 });
+        }
+    }
+
+    @Test
+    void testRestTemplateWellConfigured() {
+        getDefaultContextRunner()
+                .withUserConfiguration(RestTemplateProxyCustomizerTestConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
+                .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+                .run(RestTemplateTestUtil::assertRestTemplateWellConfigured);
+    }
+
+    @EnableWebSecurity
+    public static class AadB2cTestWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+        private final AadB2cOidcLoginConfigurer configurer;
+
+        AadB2cTestWebSecurityConfiguration(AadB2cOidcLoginConfigurer configurer) {
+            this.configurer = configurer;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            // @formatter:off
+            http
+                    .authorizeRequests()
+                        .anyRequest().authenticated()
+                        .and()
+                    .apply(configurer);
+            // @formatter:on
         }
     }
 }

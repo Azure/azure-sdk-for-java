@@ -30,6 +30,10 @@ public final class CassandraSource extends TabularSource {
     @JsonProperty(value = "consistencyLevel")
     private CassandraSourceReadConsistencyLevels consistencyLevel;
 
+    /** Creates an instance of CassandraSource class. */
+    public CassandraSource() {
+    }
+
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)
      * command. Type: string (or Expression with resultType string).

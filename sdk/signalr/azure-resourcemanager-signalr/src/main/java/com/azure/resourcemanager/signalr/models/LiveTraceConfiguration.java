@@ -14,9 +14,8 @@ public final class LiveTraceConfiguration {
     /*
      * Indicates whether or not enable live trace.
      * When it's set to true, live trace client can connect to the service.
-     * Otherwise, live trace client can't connect to the service, so that you
-     * are unable to receive any log, no matter what you configure in
-     * "categories".
+     * Otherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter
+     * what you configure in "categories".
      * Available values: true, false.
      * Case insensitive.
      */
@@ -28,6 +27,10 @@ public final class LiveTraceConfiguration {
      */
     @JsonProperty(value = "categories")
     private List<LiveTraceCategory> categories;
+
+    /** Creates an instance of LiveTraceConfiguration class. */
+    public LiveTraceConfiguration() {
+    }
 
     /**
      * Get the enabled property: Indicates whether or not enable live trace. When it's set to true, live trace client

@@ -18,6 +18,9 @@ public final class QuerySerialization {
     @JsonProperty(value = "Format", required = true)
     private QueryFormat format;
 
+    /** Creates an instance of QuerySerialization class. */
+    public QuerySerialization() {}
+
     /**
      * Get the format property: The Format property.
      *

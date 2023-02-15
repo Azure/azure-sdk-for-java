@@ -1,0 +1,28 @@
+{
+    "results": [
+        {
+            "year": "2022",
+            "basinId": "AL",
+            "govId": 15,
+            "name": "Lisa",
+            "isActive": true,
+            "isSubtropical": false
+        },
+        {
+            "year": "2022",
+            "basinId": "NP",
+            "govId": 26,
+            "name": "NALGAE",
+            "isActive": true,
+            "isSubtropical": false
+        },
+        {
+            "year": "2022",
+            "basinId": "NP",
+            "govId": 27,
+            "name": "BANYAN",
+            "isActive": true,
+            "isSubtropical": false
+        }
+    ]
+}

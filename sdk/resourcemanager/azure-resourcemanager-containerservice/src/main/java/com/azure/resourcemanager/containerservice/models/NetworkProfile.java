@@ -28,6 +28,10 @@ public final class NetworkProfile {
     @JsonProperty(value = "vnetId")
     private String vnetId;
 
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
+
     /**
      * Get the vnetCidr property: CIDR for the OpenShift Vnet.
      *

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.Map;
 
 /** A copy activity Azure SQL source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -33,8 +31,7 @@ public final class AzureSqlSource extends TabularSource {
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    private Object storedProcedureParameters;
 
     /*
      * Which additional types to produce.
@@ -54,6 +51,10 @@ public final class AzureSqlSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
+
+    /** Creates an instance of AzureSqlSource class. */
+    public AzureSqlSource() {
+    }
 
     /**
      * Get the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
@@ -103,7 +104,7 @@ public final class AzureSqlSource extends TabularSource {
      *
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> storedProcedureParameters() {
+    public Object storedProcedureParameters() {
         return this.storedProcedureParameters;
     }
 
@@ -114,8 +115,7 @@ public final class AzureSqlSource extends TabularSource {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the AzureSqlSource object itself.
      */
-    public AzureSqlSource withStoredProcedureParameters(
-        Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public AzureSqlSource withStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
     }
@@ -232,16 +232,6 @@ public final class AzureSqlSource extends TabularSource {
     @Override
     public void validate() {
         super.validate();
-        if (storedProcedureParameters() != null) {
-            storedProcedureParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

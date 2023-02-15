@@ -83,6 +83,10 @@ public final class HBaseLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of HBaseLinkedServiceTypeProperties class. */
+    public HBaseLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The IP address or host name of the HBase server. (i.e. 192.168.222.160).
      *

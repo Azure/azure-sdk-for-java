@@ -35,6 +35,10 @@ public final class UntilActivityTypeProperties {
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
+    /** Creates an instance of UntilActivityTypeProperties class. */
+    public UntilActivityTypeProperties() {
+    }
+
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.

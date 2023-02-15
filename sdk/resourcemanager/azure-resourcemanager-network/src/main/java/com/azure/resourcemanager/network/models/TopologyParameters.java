@@ -29,6 +29,10 @@ public final class TopologyParameters {
     @JsonProperty(value = "targetSubnet")
     private SubResource targetSubnet;
 
+    /** Creates an instance of TopologyParameters class. */
+    public TopologyParameters() {
+    }
+
     /**
      * Get the targetResourceGroupName property: The name of the target resource group to perform topology on.
      *

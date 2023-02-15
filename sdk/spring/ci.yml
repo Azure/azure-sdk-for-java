@@ -191,6 +191,38 @@ parameters:
   displayName: 'spring-cloud-azure-starter-stream-servicebus'
   type: boolean
   default: true
+- name: release_springcloudazurestarterjdbcmysql
+  displayName: 'spring-cloud-azure-starter-jdbc-mysql'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterjdbcpostgresql
+  displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterredis
+  displayName: 'spring-cloud-azure-starter-redis'
+  type: boolean
+  default: true
+- name: release_springcloudazureappconfigurationconfig
+  displayName: 'spring-cloud-azure-appconfiguration-config'
+  type: boolean
+  default: true
+- name: release_springcloudazureappconfigurationconfigweb
+  displayName: 'spring-cloud-azure-appconfiguration-config-web'
+  type: boolean
+  default: true
+- name: release_springcloudazurefeaturemanagement
+  displayName: 'spring-cloud-azure-feature-management'
+  type: boolean
+  default: true
+- name: release_springcloudazurefeaturemanagementweb
+  displayName: 'spring-cloud-azure-feature-management-web'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterappconfigurationconfig
+  displayName: 'spring-cloud-azure-starter-appconfiguration-config'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -489,3 +521,47 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterstreamservicebus }}
+      - name: spring-cloud-azure-starter-jdbc-mysql
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterjdbcmysql
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcmysql }}
+      - name: spring-cloud-azure-starter-jdbc-postgresql
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterjdbcpostgresql
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
+      - name: spring-cloud-azure-starter-redis
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterredis
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterredis }}
+      - name: spring-cloud-azure-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: springcloudazureappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfig }}
+      - name: spring-cloud-azure-appconfiguration-config-web
+        groupId: com.azure.spring
+        safeName: springcloudazureappconfigurationconfigweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
+      - name: spring-cloud-azure-feature-management
+        groupId: com.azure.spring
+        safeName: springcloudazurefeaturemanagement
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
+      - name: spring-cloud-azure-feature-management-web
+        groupId: com.azure.spring
+        safeName: springcloudazurefeaturemanagementweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
+      - name: spring-cloud-azure-starter-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudstarterappconfigurationconfig }}

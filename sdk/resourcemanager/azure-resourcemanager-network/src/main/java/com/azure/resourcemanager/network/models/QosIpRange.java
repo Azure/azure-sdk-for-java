@@ -22,6 +22,10 @@ public final class QosIpRange {
     @JsonProperty(value = "endIP")
     private String endIp;
 
+    /** Creates an instance of QosIpRange class. */
+    public QosIpRange() {
+    }
+
     /**
      * Get the startIp property: Start IP Address.
      *

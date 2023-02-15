@@ -22,6 +22,10 @@ public final class RequestMatchPattern {
     @JsonProperty(value = "method")
     private String method;
 
+    /** Creates an instance of RequestMatchPattern class. */
+    public RequestMatchPattern() {
+    }
+
     /**
      * Get the path property: The path property.
      *

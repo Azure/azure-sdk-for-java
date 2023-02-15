@@ -3,9 +3,12 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import io.netty.channel.ChannelOption;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.netty.transport.ProxyProvider;
@@ -15,6 +18,8 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -72,6 +77,7 @@ public class NettyAsyncHttpClientProviderTests {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
         HttpClientOptions clientOptions = new HttpClientOptions()
+            .setConnectTimeout(timeout)
             .setWriteTimeout(timeout)
             .setResponseTimeout(timeout)
             .setReadTimeout(timeout);
@@ -79,6 +85,9 @@ public class NettyAsyncHttpClientProviderTests {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
+        Integer connectTimeout = (Integer) httpClient.nettyClient.configuration().options()
+            .get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        assertEquals((int) expectedTimeout, connectTimeout.intValue());
         assertEquals(expectedTimeout, httpClient.writeTimeout);
         assertEquals(expectedTimeout, httpClient.responseTimeout);
         assertEquals(expectedTimeout, httpClient.readTimeout);
@@ -99,5 +108,28 @@ public class NettyAsyncHttpClientProviderTests {
                 .createInstance(new HttpClientOptions());
         actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
         // assertEquals(500, actualMaxConnections);
+    }
+
+    @Test
+    public void testNettyAsExplicitProvider() {
+        HttpClientOptions options = new HttpClientOptions();
+        options.setHttpClientProvider(NettyAsyncHttpClientProvider.class);
+        // sanity check
+        HttpClient httpClient = HttpClient.createDefault(options);
+        assertInstanceOf(NettyAsyncHttpClient.class, httpClient);
+    }
+
+    @Test
+    public void testIncorrectExplicitProvider() {
+        HttpClientOptions options = new HttpClientOptions();
+        options.setHttpClientProvider(AnotherHttpClientProvider.class);
+        assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
+    }
+
+    class AnotherHttpClientProvider implements HttpClientProvider {
+        @Override
+        public HttpClient createInstance() {
+            throw new IllegalStateException("should never be called");
+        }
     }
 }

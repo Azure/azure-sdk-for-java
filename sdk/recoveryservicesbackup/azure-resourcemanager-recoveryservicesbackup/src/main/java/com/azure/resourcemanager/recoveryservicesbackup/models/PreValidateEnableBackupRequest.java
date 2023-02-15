@@ -38,6 +38,10 @@ public final class PreValidateEnableBackupRequest {
     @JsonProperty(value = "properties")
     private String properties;
 
+    /** Creates an instance of PreValidateEnableBackupRequest class. */
+    public PreValidateEnableBackupRequest() {
+    }
+
     /**
      * Get the resourceType property: ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc.
      *

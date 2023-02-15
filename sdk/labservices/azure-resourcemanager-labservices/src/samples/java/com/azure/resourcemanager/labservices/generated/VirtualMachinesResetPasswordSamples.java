@@ -21,7 +21,7 @@ public final class VirtualMachinesResetPasswordSamples {
         manager
             .virtualMachines()
             .resetPassword(
-                "testrg123",
+                "fakeResourceGroupNamePlaceholder",
                 "testlab",
                 "template",
                 new ResetPasswordBody().withUsername("example-username").withPassword("example-password"),

@@ -59,7 +59,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CloudServiceOperatingSystemsService {
+    public interface CloudServiceOperatingSystemsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsVersions"
@@ -167,7 +167,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -218,7 +218,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -255,23 +255,6 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      *
      * @param location Name of the location that the OS version pertains to.
      * @param osVersionName Name of the OS version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system version that can be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OSVersionInner getOSVersion(String location, String osVersionName) {
-        return getOSVersionAsync(location, osVersionName).block();
-    }
-
-    /**
-     * Gets properties of a guest operating system version that can be specified in the XML service configuration
-     * (.cscfg) for a cloud service.
-     *
-     * @param location Name of the location that the OS version pertains to.
-     * @param osVersionName Name of the OS version.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -282,6 +265,23 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OSVersionInner> getOSVersionWithResponse(String location, String osVersionName, Context context) {
         return getOSVersionWithResponseAsync(location, osVersionName, context).block();
+    }
+
+    /**
+     * Gets properties of a guest operating system version that can be specified in the XML service configuration
+     * (.cscfg) for a cloud service.
+     *
+     * @param location Name of the location that the OS version pertains to.
+     * @param osVersionName Name of the OS version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a guest operating system version that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OSVersionInner getOSVersion(String location, String osVersionName) {
+        return getOSVersionWithResponse(location, osVersionName, Context.NONE).getValue();
     }
 
     /**
@@ -313,7 +313,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -368,7 +368,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -490,7 +490,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -541,7 +541,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -578,23 +578,6 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      *
      * @param location Name of the location that the OS family pertains to.
      * @param osFamilyName Name of the OS family.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system family that can be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OSFamilyInner getOSFamily(String location, String osFamilyName) {
-        return getOSFamilyAsync(location, osFamilyName).block();
-    }
-
-    /**
-     * Gets properties of a guest operating system family that can be specified in the XML service configuration
-     * (.cscfg) for a cloud service.
-     *
-     * @param location Name of the location that the OS family pertains to.
-     * @param osFamilyName Name of the OS family.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -605,6 +588,23 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OSFamilyInner> getOSFamilyWithResponse(String location, String osFamilyName, Context context) {
         return getOSFamilyWithResponseAsync(location, osFamilyName, context).block();
+    }
+
+    /**
+     * Gets properties of a guest operating system family that can be specified in the XML service configuration
+     * (.cscfg) for a cloud service.
+     *
+     * @param location Name of the location that the OS family pertains to.
+     * @param osFamilyName Name of the OS family.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a guest operating system family that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OSFamilyInner getOSFamily(String location, String osFamilyName) {
+        return getOSFamilyWithResponse(location, osFamilyName, Context.NONE).getValue();
     }
 
     /**
@@ -636,7 +636,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -691,7 +691,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

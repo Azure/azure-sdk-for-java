@@ -19,6 +19,10 @@ public final class MicrosoftGraphChat extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphChat class. */
+    public MicrosoftGraphChat() {
+    }
+
     /**
      * Get the additionalProperties property: chat.
      *

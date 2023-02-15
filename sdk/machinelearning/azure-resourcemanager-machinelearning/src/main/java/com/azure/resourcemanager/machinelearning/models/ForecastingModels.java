@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForecastingModels. */
+/** Enum for all forecasting models supported by AutoML. */
 public final class ForecastingModels extends ExpandableStringEnum<ForecastingModels> {
     /** Static value AutoArima for ForecastingModels. */
     public static final ForecastingModels AUTO_ARIMA = fromString("AutoArima");
@@ -66,6 +66,15 @@ public final class ForecastingModels extends ExpandableStringEnum<ForecastingMod
 
     /** Static value XGBoostRegressor for ForecastingModels. */
     public static final ForecastingModels XGBOOST_REGRESSOR = fromString("XGBoostRegressor");
+
+    /**
+     * Creates a new instance of ForecastingModels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastingModels() {
+    }
 
     /**
      * Creates or finds a ForecastingModels from its string representation.

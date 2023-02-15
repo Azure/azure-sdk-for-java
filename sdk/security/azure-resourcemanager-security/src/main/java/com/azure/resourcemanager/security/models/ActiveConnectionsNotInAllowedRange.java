@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,7 +14,9 @@ import java.time.Duration;
 @JsonTypeName("ActiveConnectionsNotInAllowedRange")
 @Fluent
 public final class ActiveConnectionsNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActiveConnectionsNotInAllowedRange.class);
+    /** Creates an instance of ActiveConnectionsNotInAllowedRange class. */
+    public ActiveConnectionsNotInAllowedRange() {
+    }
 
     /** {@inheritDoc} */
     @Override

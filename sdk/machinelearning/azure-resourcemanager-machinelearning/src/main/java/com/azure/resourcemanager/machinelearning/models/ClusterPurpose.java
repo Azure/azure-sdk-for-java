@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterPurpose. */
+/** Intended usage of the cluster. */
 public final class ClusterPurpose extends ExpandableStringEnum<ClusterPurpose> {
     /** Static value FastProd for ClusterPurpose. */
     public static final ClusterPurpose FAST_PROD = fromString("FastProd");
@@ -18,6 +18,15 @@ public final class ClusterPurpose extends ExpandableStringEnum<ClusterPurpose> {
 
     /** Static value DevTest for ClusterPurpose. */
     public static final ClusterPurpose DEV_TEST = fromString("DevTest");
+
+    /**
+     * Creates a new instance of ClusterPurpose value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterPurpose() {
+    }
 
     /**
      * Creates or finds a ClusterPurpose from its string representation.

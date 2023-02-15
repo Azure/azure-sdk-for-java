@@ -1,317 +1,343 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg32173?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg21066?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6a1c3cea-d3dd-47d6-8cbf-ee895727d0c8",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0277d11c-6ca4-45e0-bffb-a45059e75512",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "225",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "fc254d03-0697-4745-8180-7db85094b541",
-      "Date" : "Thu, 25 Aug 2022 02:03:39 GMT",
+      "Date" : "Tue, 14 Feb 2023 02:07:45 GMT",
+      "x-ms-correlation-request-id" : "05766e4c-9353-4684-ba75-ad434c2fba12",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020340Z:fc254d03-0697-4745-8180-7db85094b541",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T020746Z:05766e4c-9353-4684-ba75-ad434c2fba12",
       "Expires" : "-1",
-      "x-ms-request-id" : "fc254d03-0697-4745-8180-7db85094b541",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg32173\",\"name\":\"javaacsrg32173\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Length" : "225",
+      "x-ms-request-id" : "05766e4c-9353-4684-ba75-ad434c2fba12",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg21066\",\"name\":\"javaacsrg21066\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg32173/providers/Microsoft.ContainerService/managedClusters/aks32142f2a?api-version=2022-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg21066/providers/Microsoft.ContainerService/managedClusters/aks19810469?api-version=2023-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "daa824d7-508f-4309-af1b-79d219dd2c71",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4bf726bc-a48e-4466-97a9-d79d876d6c95",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "2527",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-ratelimit-remaining-subscription-writes" : "1198",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "ccc3f72b-87a8-497d-b3c9-d20cd0b35c06",
-      "Date" : "Thu, 25 Aug 2022 02:03:54 GMT",
+      "Date" : "Tue, 14 Feb 2023 02:07:59 GMT",
+      "x-ms-correlation-request-id" : "fdf71ba4-1975-4eaa-9dec-1fa570a528e6",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020355Z:ccc3f72b-87a8-497d-b3c9-d20cd0b35c06",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T020759Z:fdf71ba4-1975-4eaa-9dec-1fa570a528e6",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
-      "x-ms-request-id" : "d55c7ac4-4a5e-4d92-b9d1-490d8f42968c",
-      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg32173/providers/Microsoft.ContainerService/managedClusters/aks32142f2a\",\n  \"location\": \"westus3\",\n  \"name\": \"aks32142f2a\",\n  \"type\": \"Microsoft.ContainerService/ManagedClusters\",\n  \"properties\": {\n   \"provisioningState\": \"Creating\",\n   \"powerState\": {\n    \"code\": \"Running\"\n   },\n   \"kubernetesVersion\": \"1.23.8\",\n   \"currentKubernetesVersion\": \"1.23.8\",\n   \"dnsPrefix\": \"mp1dns030917\",\n   \"fqdn\": \"mp1dns030917-00e387c5.hcp.westus3.azmk8s.io\",\n   \"azurePortalFQDN\": \"mp1dns030917-00e387c5.portal.hcp.westus3.azmk8s.io\",\n   \"agentPoolProfiles\": [\n    {\n     \"name\": \"ap0847238\",\n     \"count\": 1,\n     \"vmSize\": \"Standard_D2_v3\",\n     \"osDiskSizeGB\": 30,\n     \"osDiskType\": \"Managed\",\n     \"kubeletDiskType\": \"OS\",\n     \"maxPods\": 110,\n     \"type\": \"VirtualMachineScaleSets\",\n     \"provisioningState\": \"Creating\",\n     \"powerState\": {\n      \"code\": \"Running\"\n     },\n     \"orchestratorVersion\": \"1.23.8\",\n     \"currentOrchestratorVersion\": \"1.23.8\",\n     \"mode\": \"System\",\n     \"osType\": \"Linux\",\n     \"osSKU\": \"Ubuntu\",\n     \"nodeImageVersion\": \"AKSUbuntu-1804containerd-2022.08.10\",\n     \"enableFIPS\": false\n    }\n   ],\n   \"servicePrincipalProfile\": {\n    \"clientId\": \"msi\"\n   },\n   \"nodeResourceGroup\": \"MC_javaacsrg32173_aks32142f2a_westus3\",\n   \"enableRBAC\": true,\n   \"networkProfile\": {\n    \"networkPlugin\": \"kubenet\",\n    \"loadBalancerSku\": \"standard\",\n    \"loadBalancerProfile\": {\n     \"managedOutboundIPs\": {\n      \"count\": 1\n     }\n    },\n    \"podCidr\": \"10.244.0.0/16\",\n    \"serviceCidr\": \"10.0.0.0/16\",\n    \"dnsServiceIP\": \"10.0.0.10\",\n    \"dockerBridgeCidr\": \"172.17.0.1/16\",\n    \"outboundType\": \"loadBalancer\",\n    \"podCidrs\": [\n     \"10.244.0.0/16\"\n    ],\n    \"serviceCidrs\": [\n     \"10.0.0.0/16\"\n    ],\n    \"ipFamilies\": [\n     \"IPv4\"\n    ]\n   },\n   \"aadProfile\": {\n    \"managed\": true,\n    \"adminGroupObjectIDs\": null,\n    \"adminUsers\": null,\n    \"enableAzureRBAC\": true,\n    \"tenantID\": \"00000000-0000-0000-0000-000000000000\"\n   },\n   \"maxAgentPools\": 100,\n   \"disableLocalAccounts\": true,\n   \"securityProfile\": {},\n   \"storageProfile\": {\n    \"diskCSIDriver\": {\n     \"enabled\": true\n    },\n    \"fileCSIDriver\": {\n     \"enabled\": true\n    },\n    \"snapshotController\": {\n     \"enabled\": true\n    }\n   }\n  },\n  \"identity\": {\n   \"type\": \"SystemAssigned\",\n   \"principalId\": \"388affcd-1da3-4c30-885d-7851dd7fa3db\",\n   \"tenantId\": \"00000000-0000-0000-0000-000000000000\"\n  },\n  \"sku\": {\n   \"name\": \"Basic\",\n   \"tier\": \"Free\"\n  }\n }",
+      "Content-Length" : "2615",
+      "x-ms-request-id" : "ee4d4cd2-d208-4ecc-9646-249940e2b454",
+      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg21066/providers/Microsoft.ContainerService/managedClusters/aks19810469\",\n  \"location\": \"westus3\",\n  \"name\": \"aks19810469\",\n  \"type\": \"Microsoft.ContainerService/ManagedClusters\",\n  \"properties\": {\n   \"provisioningState\": \"Creating\",\n   \"powerState\": {\n    \"code\": \"Running\"\n   },\n   \"kubernetesVersion\": \"1.24.9\",\n   \"currentKubernetesVersion\": \"1.24.9\",\n   \"dnsPrefix\": \"mp1dns747273\",\n   \"fqdn\": \"mp1dns747273-869d4fb3.hcp.westus3.azmk8s.io\",\n   \"azurePortalFQDN\": \"mp1dns747273-869d4fb3.portal.hcp.westus3.azmk8s.io\",\n   \"agentPoolProfiles\": [\n    {\n     \"name\": \"ap0726263\",\n     \"count\": 1,\n     \"vmSize\": \"Standard_D2_v3\",\n     \"osDiskSizeGB\": 30,\n     \"osDiskType\": \"Managed\",\n     \"kubeletDiskType\": \"OS\",\n     \"maxPods\": 110,\n     \"type\": \"VirtualMachineScaleSets\",\n     \"provisioningState\": \"Creating\",\n     \"powerState\": {\n      \"code\": \"Running\"\n     },\n     \"orchestratorVersion\": \"1.24.9\",\n     \"currentOrchestratorVersion\": \"1.24.9\",\n     \"mode\": \"System\",\n     \"osType\": \"Linux\",\n     \"osSKU\": \"Ubuntu\",\n     \"nodeImageVersion\": \"AKSUbuntu-1804containerd-2023.01.20\",\n     \"enableFIPS\": false\n    }\n   ],\n   \"servicePrincipalProfile\": {\n    \"clientId\": \"msi\"\n   },\n   \"nodeResourceGroup\": \"MC_javaacsrg21066_aks19810469_westus3\",\n   \"enableRBAC\": true,\n   \"networkProfile\": {\n    \"networkPlugin\": \"kubenet\",\n    \"loadBalancerSku\": \"standard\",\n    \"loadBalancerProfile\": {\n     \"managedOutboundIPs\": {\n      \"count\": 1\n     }\n    },\n    \"podCidr\": \"10.244.0.0/16\",\n    \"serviceCidr\": \"10.0.0.0/16\",\n    \"dnsServiceIP\": \"10.0.0.10\",\n    \"dockerBridgeCidr\": \"172.17.0.1/16\",\n    \"outboundType\": \"loadBalancer\",\n    \"podCidrs\": [\n     \"10.244.0.0/16\"\n    ],\n    \"serviceCidrs\": [\n     \"10.0.0.0/16\"\n    ],\n    \"ipFamilies\": [\n     \"IPv4\"\n    ]\n   },\n   \"aadProfile\": {\n    \"managed\": true,\n    \"adminGroupObjectIDs\": null,\n    \"adminUsers\": null,\n    \"enableAzureRBAC\": true,\n    \"tenantID\": \"00000000-0000-0000-0000-000000000000\"\n   },\n   \"maxAgentPools\": 100,\n   \"disableLocalAccounts\": true,\n   \"securityProfile\": {},\n   \"storageProfile\": {\n    \"diskCSIDriver\": {\n     \"enabled\": true\n    },\n    \"fileCSIDriver\": {\n     \"enabled\": true\n    },\n    \"snapshotController\": {\n     \"enabled\": true\n    }\n   },\n   \"oidcIssuerProfile\": {\n    \"enabled\": false\n   },\n   \"workloadAutoScalerProfile\": {}\n  },\n  \"identity\": {\n   \"type\": \"SystemAssigned\",\n   \"principalId\": \"0edefe42-bf78-4bb9-b5c6-c8fb0475e8e2\",\n   \"tenantId\": \"00000000-0000-0000-0000-000000000000\"\n  },\n  \"sku\": {\n   \"name\": \"Base\",\n   \"tier\": \"Free\"\n  }\n }",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c0cf774f-867d-4b75-a29d-096232874fc7"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "47d5b4bf-164f-42c5-9387-3c5c3a8256aa"
     },
     "Response" : {
-      "content-length" : "126",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11999",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "b1c24abb-6194-4314-babc-7bc2fb61971c",
-      "Date" : "Thu, 25 Aug 2022 02:04:25 GMT",
+      "x-ms-correlation-request-id" : "2ef56fde-81ed-4dda-8117-3f908c19feb0",
+      "Date" : "Tue, 14 Feb 2023 02:08:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020425Z:b1c24abb-6194-4314-babc-7bc2fb61971c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T020830Z:2ef56fde-81ed-4dda-8117-3f908c19feb0",
       "Expires" : "-1",
-      "x-ms-request-id" : "9aebf23e-ae07-4a36-bcb8-788ccfb6ad00",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "11409d13-833e-46a5-9ef5-a46a9c6331ad",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2def6cd2-cfe1-4e6c-8fb4-aae86a9d4f97"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e335a5c5-20ef-4d51-8ec3-10c6612c395f"
     },
     "Response" : {
-      "content-length" : "126",
-      "Server" : "nginx",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "5d9b88fc-51dc-41a1-853f-adeac535f090",
-      "Date" : "Thu, 25 Aug 2022 02:04:56 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020456Z:5d9b88fc-51dc-41a1-853f-adeac535f090",
-      "Expires" : "-1",
-      "x-ms-request-id" : "c980b1e3-bad6-42d1-8699-43b53c548525",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fefb9111-33cd-4d2a-8190-678360b36ad2"
-    },
-    "Response" : {
-      "content-length" : "126",
-      "Server" : "nginx",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "6748c8bd-5907-466a-8e1c-9e5d940805d2",
-      "Date" : "Thu, 25 Aug 2022 02:05:26 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020527Z:6748c8bd-5907-466a-8e1c-9e5d940805d2",
-      "Expires" : "-1",
-      "x-ms-request-id" : "9c136ceb-36ec-455e-9621-cfe9cd425564",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "91745571-b244-451f-a4ad-10b4ca5dbf1e"
-    },
-    "Response" : {
-      "content-length" : "126",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11996",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "d5b65762-f554-4f2c-a196-4e1078a5acf2",
-      "Date" : "Thu, 25 Aug 2022 02:05:58 GMT",
+      "x-ms-correlation-request-id" : "d34b1b5a-7a28-4e2d-a9c4-48eea5a429e4",
+      "Date" : "Tue, 14 Feb 2023 02:09:00 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020558Z:d5b65762-f554-4f2c-a196-4e1078a5acf2",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T020901Z:d34b1b5a-7a28-4e2d-a9c4-48eea5a429e4",
       "Expires" : "-1",
-      "x-ms-request-id" : "ec83d13c-8cdd-44eb-afa3-95a3dc08adda",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "fc16ab0d-e0eb-4444-877a-ae7874384535",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aa3b5e47-2f97-45e2-9a94-0f3e7d5513db"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "944bb1bc-9f80-4130-af27-13e995e516f2"
     },
     "Response" : {
-      "content-length" : "126",
+      "Server" : "nginx",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "cd8f6558-813d-497d-8eec-e7b90e07fb6a",
+      "Date" : "Tue, 14 Feb 2023 02:09:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T020932Z:cd8f6558-813d-497d-8eec-e7b90e07fb6a",
+      "Expires" : "-1",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "01d0ce20-cf9b-4ddc-93bb-01c50871aa3e",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e8bce00f-7a7e-44c8-8c33-f9df84590d51"
+    },
+    "Response" : {
+      "Server" : "nginx",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "95ad35aa-4efc-4dce-bab5-56d30904adee",
+      "Date" : "Tue, 14 Feb 2023 02:10:02 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021002Z:95ad35aa-4efc-4dce-bab5-56d30904adee",
+      "Expires" : "-1",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "bae664ae-47e8-4906-ba44-80f5ea22571b",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e6a1ecf4-f526-4d1b-87ee-41243196246e"
+    },
+    "Response" : {
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11994",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "75daf53e-e215-4635-8af9-117ec6d1af4f",
-      "Date" : "Thu, 25 Aug 2022 02:06:29 GMT",
+      "x-ms-correlation-request-id" : "c4cde4ea-990b-490e-a636-13324643a129",
+      "Date" : "Tue, 14 Feb 2023 02:10:33 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020629Z:75daf53e-e215-4635-8af9-117ec6d1af4f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021033Z:c4cde4ea-990b-490e-a636-13324643a129",
       "Expires" : "-1",
-      "x-ms-request-id" : "d70d8876-5b36-4a27-8c22-50b47b57b308",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "d49d0be1-32ec-45ec-b458-430c59f80fa2",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "41d9991a-d8f2-492a-97d5-e987dbaabb19"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b9df70ce-edd7-41b4-9a1d-81e72189c258"
     },
     "Response" : {
-      "content-length" : "126",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11995",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "99a51a0b-6871-46d1-a1e5-30ac722aae03",
-      "Date" : "Thu, 25 Aug 2022 02:07:00 GMT",
+      "x-ms-correlation-request-id" : "df8812f1-6062-4d48-aebb-8c064e077927",
+      "Date" : "Tue, 14 Feb 2023 02:11:04 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020700Z:99a51a0b-6871-46d1-a1e5-30ac722aae03",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021104Z:df8812f1-6062-4d48-aebb-8c064e077927",
       "Expires" : "-1",
-      "x-ms-request-id" : "ca20b56a-0c3f-4e19-9d7f-a1f237697e3b",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "2838a9f8-4bca-48f3-81f7-eb3507a78c17",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a31351fc-9c33-484c-871d-cbdbbce2e076"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a3af25c9-7578-4cbe-863a-4297d5868d64"
     },
     "Response" : {
-      "content-length" : "126",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "3628bd02-ded6-4938-a0fe-1fb7d99d091d",
-      "Date" : "Thu, 25 Aug 2022 02:07:30 GMT",
+      "x-ms-correlation-request-id" : "ccd9e077-9af5-48f4-9a5d-3a641efd8a03",
+      "Date" : "Tue, 14 Feb 2023 02:11:34 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020731Z:3628bd02-ded6-4938-a0fe-1fb7d99d091d",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021135Z:ccd9e077-9af5-48f4-9a5d-3a641efd8a03",
       "Expires" : "-1",
-      "x-ms-request-id" : "0d27840e-a7e7-464e-b301-37b03f85502a",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\"\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "a59eb330-24da-471a-acc9-0a952b65ba2d",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/d55c7ac4-4a5e-4d92-b9d1-490d8f42968c?api-version=2016-03-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2f45be0d-8215-4001-8fea-d575f3614169"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4a0b3c8e-9d83-4986-8eeb-a511a11789e8"
     },
     "Response" : {
-      "content-length" : "170",
-      "Server" : "nginx",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "1d243927-c33c-48c1-a45b-682838299cf6",
-      "Date" : "Thu, 25 Aug 2022 02:08:01 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020802Z:1d243927-c33c-48c1-a45b-682838299cf6",
-      "Expires" : "-1",
-      "x-ms-request-id" : "4014fcdd-08d9-4d5d-9062-12753487c27a",
-      "Body" : "{\n  \"name\": \"c47a5cd5-5e4a-924d-b9d1-490d8f42968c\",\n  \"status\": \"Succeeded\",\n  \"startTime\": \"2022-08-25T02:03:53.6733333Z\",\n  \"endTime\": \"2022-08-25T02:07:57.8042993Z\"\n }",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg32173/providers/Microsoft.ContainerService/managedClusters/aks32142f2a?api-version=2022-07-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "96c7b690-1f6c-4b19-a4b0-33ce8a732685"
-    },
-    "Response" : {
-      "content-length" : "3169",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "4503da18-1ae3-49f4-bf04-e7e8e4468bec",
-      "Date" : "Thu, 25 Aug 2022 02:08:03 GMT",
+      "x-ms-correlation-request-id" : "bd50e9e4-7ff4-411e-aa7d-52990cb0cf2e",
+      "Date" : "Tue, 14 Feb 2023 02:12:05 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020803Z:4503da18-1ae3-49f4-bf04-e7e8e4468bec",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021206Z:bd50e9e4-7ff4-411e-aa7d-52990cb0cf2e",
       "Expires" : "-1",
-      "x-ms-request-id" : "b8c94120-db4b-4e51-876f-2209b9bbbc78",
-      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg32173/providers/Microsoft.ContainerService/managedClusters/aks32142f2a\",\n  \"location\": \"westus3\",\n  \"name\": \"aks32142f2a\",\n  \"type\": \"Microsoft.ContainerService/ManagedClusters\",\n  \"properties\": {\n   \"provisioningState\": \"Succeeded\",\n   \"powerState\": {\n    \"code\": \"Running\"\n   },\n   \"kubernetesVersion\": \"1.23.8\",\n   \"currentKubernetesVersion\": \"1.23.8\",\n   \"dnsPrefix\": \"mp1dns030917\",\n   \"fqdn\": \"mp1dns030917-00e387c5.hcp.westus3.azmk8s.io\",\n   \"azurePortalFQDN\": \"mp1dns030917-00e387c5.portal.hcp.westus3.azmk8s.io\",\n   \"agentPoolProfiles\": [\n    {\n     \"name\": \"ap0847238\",\n     \"count\": 1,\n     \"vmSize\": \"Standard_D2_v3\",\n     \"osDiskSizeGB\": 30,\n     \"osDiskType\": \"Managed\",\n     \"kubeletDiskType\": \"OS\",\n     \"maxPods\": 110,\n     \"type\": \"VirtualMachineScaleSets\",\n     \"provisioningState\": \"Succeeded\",\n     \"powerState\": {\n      \"code\": \"Running\"\n     },\n     \"orchestratorVersion\": \"1.23.8\",\n     \"currentOrchestratorVersion\": \"1.23.8\",\n     \"mode\": \"System\",\n     \"osType\": \"Linux\",\n     \"osSKU\": \"Ubuntu\",\n     \"nodeImageVersion\": \"AKSUbuntu-1804containerd-2022.08.10\",\n     \"enableFIPS\": false\n    }\n   ],\n   \"servicePrincipalProfile\": {\n    \"clientId\": \"msi\"\n   },\n   \"nodeResourceGroup\": \"MC_javaacsrg32173_aks32142f2a_westus3\",\n   \"enableRBAC\": true,\n   \"networkProfile\": {\n    \"networkPlugin\": \"kubenet\",\n    \"loadBalancerSku\": \"Standard\",\n    \"loadBalancerProfile\": {\n     \"managedOutboundIPs\": {\n      \"count\": 1\n     },\n     \"effectiveOutboundIPs\": [\n      {\n       \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_javaacsrg32173_aks32142f2a_westus3/providers/Microsoft.Network/publicIPAddresses/cfcf6294-0e62-4c71-9699-9e439cfa96b4\"\n      }\n     ]\n    },\n    \"podCidr\": \"10.244.0.0/16\",\n    \"serviceCidr\": \"10.0.0.0/16\",\n    \"dnsServiceIP\": \"10.0.0.10\",\n    \"dockerBridgeCidr\": \"172.17.0.1/16\",\n    \"outboundType\": \"loadBalancer\",\n    \"podCidrs\": [\n     \"10.244.0.0/16\"\n    ],\n    \"serviceCidrs\": [\n     \"10.0.0.0/16\"\n    ],\n    \"ipFamilies\": [\n     \"IPv4\"\n    ]\n   },\n   \"aadProfile\": {\n    \"managed\": true,\n    \"adminGroupObjectIDs\": null,\n    \"adminUsers\": null,\n    \"enableAzureRBAC\": true,\n    \"tenantID\": \"00000000-0000-0000-0000-000000000000\"\n   },\n   \"maxAgentPools\": 100,\n   \"identityProfile\": {\n    \"kubeletidentity\": {\n     \"resourceId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_javaacsrg32173_aks32142f2a_westus3/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks32142f2a-agentpool\",\n     \"clientId\": \"37055226-a9b9-43dc-8f50-3af9b04692b0\",\n     \"objectId\": \"3100c6bc-e870-4f86-b2b2-1631e101d4ac\"\n    }\n   },\n   \"disableLocalAccounts\": true,\n   \"securityProfile\": {},\n   \"storageProfile\": {\n    \"diskCSIDriver\": {\n     \"enabled\": true\n    },\n    \"fileCSIDriver\": {\n     \"enabled\": true\n    },\n    \"snapshotController\": {\n     \"enabled\": true\n    }\n   }\n  },\n  \"identity\": {\n   \"type\": \"SystemAssigned\",\n   \"principalId\": \"388affcd-1da3-4c30-885d-7851dd7fa3db\",\n   \"tenantId\": \"00000000-0000-0000-0000-000000000000\"\n  },\n  \"sku\": {\n   \"name\": \"Basic\",\n   \"tier\": \"Free\"\n  }\n }",
+      "Content-Length" : "126",
+      "x-ms-request-id" : "9a5758ff-9ac5-44e2-af79-58419a94e226",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"InProgress\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\"\n }",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/operations/ee4d4cd2-d208-4ecc-9646-249940e2b454?api-version=2016-03-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0f95f020-d089-422c-ba86-7eb03bae31ee"
+    },
+    "Response" : {
+      "Server" : "nginx",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7e0bc44d-d512-41d1-8cda-1df967e20019",
+      "Date" : "Tue, 14 Feb 2023 02:12:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021236Z:7e0bc44d-d512-41d1-8cda-1df967e20019",
+      "Expires" : "-1",
+      "Content-Length" : "170",
+      "x-ms-request-id" : "bd17538e-4421-4db5-b8e3-1d9f2c2afb90",
+      "Body" : "{\n  \"name\": \"d24c4dee-08d2-cc4e-9646-249940e2b454\",\n  \"status\": \"Succeeded\",\n  \"startTime\": \"2023-02-14T02:07:58.2095914Z\",\n  \"endTime\": \"2023-02-14T02:12:33.0515053Z\"\n }",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg21066/providers/Microsoft.ContainerService/managedClusters/aks19810469?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0cb8dcbf-892a-4cc4-81a1-aa9d693e0546"
+    },
+    "Response" : {
+      "Server" : "nginx",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9ab6e69e-feb4-4873-973b-fd69de262624",
+      "Date" : "Tue, 14 Feb 2023 02:12:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021238Z:9ab6e69e-feb4-4873-973b-fd69de262624",
+      "Expires" : "-1",
+      "Content-Length" : "3257",
+      "x-ms-request-id" : "08c81ef9-e773-4564-b346-05a332c52372",
+      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg21066/providers/Microsoft.ContainerService/managedClusters/aks19810469\",\n  \"location\": \"westus3\",\n  \"name\": \"aks19810469\",\n  \"type\": \"Microsoft.ContainerService/ManagedClusters\",\n  \"properties\": {\n   \"provisioningState\": \"Succeeded\",\n   \"powerState\": {\n    \"code\": \"Running\"\n   },\n   \"kubernetesVersion\": \"1.24.9\",\n   \"currentKubernetesVersion\": \"1.24.9\",\n   \"dnsPrefix\": \"mp1dns747273\",\n   \"fqdn\": \"mp1dns747273-869d4fb3.hcp.westus3.azmk8s.io\",\n   \"azurePortalFQDN\": \"mp1dns747273-869d4fb3.portal.hcp.westus3.azmk8s.io\",\n   \"agentPoolProfiles\": [\n    {\n     \"name\": \"ap0726263\",\n     \"count\": 1,\n     \"vmSize\": \"Standard_D2_v3\",\n     \"osDiskSizeGB\": 30,\n     \"osDiskType\": \"Managed\",\n     \"kubeletDiskType\": \"OS\",\n     \"maxPods\": 110,\n     \"type\": \"VirtualMachineScaleSets\",\n     \"provisioningState\": \"Succeeded\",\n     \"powerState\": {\n      \"code\": \"Running\"\n     },\n     \"orchestratorVersion\": \"1.24.9\",\n     \"currentOrchestratorVersion\": \"1.24.9\",\n     \"mode\": \"System\",\n     \"osType\": \"Linux\",\n     \"osSKU\": \"Ubuntu\",\n     \"nodeImageVersion\": \"AKSUbuntu-1804containerd-2023.01.20\",\n     \"enableFIPS\": false\n    }\n   ],\n   \"servicePrincipalProfile\": {\n    \"clientId\": \"msi\"\n   },\n   \"nodeResourceGroup\": \"MC_javaacsrg21066_aks19810469_westus3\",\n   \"enableRBAC\": true,\n   \"networkProfile\": {\n    \"networkPlugin\": \"kubenet\",\n    \"loadBalancerSku\": \"Standard\",\n    \"loadBalancerProfile\": {\n     \"managedOutboundIPs\": {\n      \"count\": 1\n     },\n     \"effectiveOutboundIPs\": [\n      {\n       \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_javaacsrg21066_aks19810469_westus3/providers/Microsoft.Network/publicIPAddresses/c1049504-e728-4298-9b3c-e23c8555b18f\"\n      }\n     ]\n    },\n    \"podCidr\": \"10.244.0.0/16\",\n    \"serviceCidr\": \"10.0.0.0/16\",\n    \"dnsServiceIP\": \"10.0.0.10\",\n    \"dockerBridgeCidr\": \"172.17.0.1/16\",\n    \"outboundType\": \"loadBalancer\",\n    \"podCidrs\": [\n     \"10.244.0.0/16\"\n    ],\n    \"serviceCidrs\": [\n     \"10.0.0.0/16\"\n    ],\n    \"ipFamilies\": [\n     \"IPv4\"\n    ]\n   },\n   \"aadProfile\": {\n    \"managed\": true,\n    \"adminGroupObjectIDs\": null,\n    \"adminUsers\": null,\n    \"enableAzureRBAC\": true,\n    \"tenantID\": \"00000000-0000-0000-0000-000000000000\"\n   },\n   \"maxAgentPools\": 100,\n   \"identityProfile\": {\n    \"kubeletidentity\": {\n     \"resourceId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/MC_javaacsrg21066_aks19810469_westus3/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks19810469-agentpool\",\n     \"clientId\": \"2e94085c-cbf4-469e-b14d-750c60a755c1\",\n     \"objectId\": \"b9111168-3d4d-4afe-b22c-43c2a26fc63e\"\n    }\n   },\n   \"disableLocalAccounts\": true,\n   \"securityProfile\": {},\n   \"storageProfile\": {\n    \"diskCSIDriver\": {\n     \"enabled\": true\n    },\n    \"fileCSIDriver\": {\n     \"enabled\": true\n    },\n    \"snapshotController\": {\n     \"enabled\": true\n    }\n   },\n   \"oidcIssuerProfile\": {\n    \"enabled\": false\n   },\n   \"workloadAutoScalerProfile\": {}\n  },\n  \"identity\": {\n   \"type\": \"SystemAssigned\",\n   \"principalId\": \"0edefe42-bf78-4bb9-b5c6-c8fb0475e8e2\",\n   \"tenantId\": \"00000000-0000-0000-0000-000000000000\"\n  },\n  \"sku\": {\n   \"name\": \"Base\",\n   \"tier\": \"Free\"\n  }\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg32173?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg21066?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "544a7946-e2fc-4e3c-a4ca-116390c62024",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "515bf3a2-c354-4afa-9017-712014448157",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "0",
       "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "d8c4bd59-9064-41ec-a940-6869b6533bbe",
-      "Date" : "Thu, 25 Aug 2022 02:08:05 GMT",
+      "Date" : "Tue, 14 Feb 2023 02:12:42 GMT",
+      "x-ms-correlation-request-id" : "5892bf2d-4674-47bc-afc1-c5563b7d9c43",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
       "Retry-After" : "0",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020806Z:d8c4bd59-9064-41ec-a940-6869b6533bbe",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230214T021242Z:5892bf2d-4674-47bc-afc1-c5563b7d9c43",
       "Expires" : "-1",
-      "x-ms-request-id" : "d8c4bd59-9064-41ec-a940-6869b6533bbe",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQUNTUkczMjE3My1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-01-01"
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5892bf2d-4674-47bc-afc1-c5563b7d9c43",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQUNTUkcyMTA2Ni1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-01-01"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javaacsrg32173", "aks32142f2a", "dns030917", "ap0847238" ]
+  "variables" : [ "javaacsrg21066", "aks19810469", "dns747273", "ap0726263" ]
 }

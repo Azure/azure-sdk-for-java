@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -77,11 +78,7 @@ public interface Lease {
      */
     String getTimestamp();
 
-    ChangeFeedState getPartitionKeyBasedContinuationState(
-        String containerRid,
-        FeedRangeInternal feedRange);
-
-    ChangeFeedState getEpkRangeBasedContinuationState(String containerRid);
+    ChangeFeedState getContinuationState(String containerRid, ChangeFeedMode changeFeedMode);
 
     /**
      * Gets the continuation token used to determine the last processed point of the Change Feed.
@@ -169,7 +166,7 @@ public interface Lease {
      *
      * @param properties the custom lease item.
      */
-    void setProperties(Map<String,String> properties);
+    void setProperties(Map<String, String> properties);
 
     /**
      * Sets the lease properties.

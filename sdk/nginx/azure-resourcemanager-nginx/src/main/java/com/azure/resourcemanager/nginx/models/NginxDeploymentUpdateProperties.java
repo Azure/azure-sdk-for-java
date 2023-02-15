@@ -22,6 +22,10 @@ public final class NginxDeploymentUpdateProperties {
     @JsonProperty(value = "logging")
     private NginxLogging logging;
 
+    /** Creates an instance of NginxDeploymentUpdateProperties class. */
+    public NginxDeploymentUpdateProperties() {
+    }
+
     /**
      * Get the enableDiagnosticsSupport property: The enableDiagnosticsSupport property.
      *

@@ -11,10 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RetentionDuration {
     /*
-     * Count of duration types. Retention duration is obtained by the counting
-     * the duration type Count times.
-     * For example, when Count = 3 and DurationType = Weeks, retention duration
-     * will be three weeks.
+     * Count of duration types. Retention duration is obtained by the counting the duration type Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -24,6 +22,10 @@ public final class RetentionDuration {
      */
     @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
+
+    /** Creates an instance of RetentionDuration class. */
+    public RetentionDuration() {
+    }
 
     /**
      * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration type

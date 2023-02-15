@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedDatabaseSensitivityLabels DisableRecommendation. */
 public final class ManagedDatabaseSensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
      */
     /**
      * Sample code: Disables the sensitivity recommendations on a given column.

@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaStreamingConfigurationInternal model. */
+/** Configuration of Media streaming. */
 @Fluent
 public final class MediaStreamingConfigurationInternal {
     /*

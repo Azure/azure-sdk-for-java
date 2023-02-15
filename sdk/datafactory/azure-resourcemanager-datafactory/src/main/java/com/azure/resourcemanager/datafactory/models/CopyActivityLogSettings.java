@@ -22,6 +22,10 @@ public final class CopyActivityLogSettings {
     @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
 
+    /** Creates an instance of CopyActivityLogSettings class. */
+    public CopyActivityLogSettings() {
+    }
+
     /**
      * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).

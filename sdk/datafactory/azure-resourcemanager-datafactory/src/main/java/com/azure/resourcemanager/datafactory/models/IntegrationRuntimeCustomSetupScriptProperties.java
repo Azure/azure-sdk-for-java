@@ -22,6 +22,10 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
+    /** Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class. */
+    public IntegrationRuntimeCustomSetupScriptProperties() {
+    }
+
     /**
      * Get the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.
      *

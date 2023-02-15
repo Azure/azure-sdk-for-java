@@ -16,7 +16,7 @@ public interface ImageVersionsClient {
     /**
      * Lists versions for an image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -32,7 +32,7 @@ public interface ImageVersionsClient {
     /**
      * Lists versions for an image.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -49,24 +49,7 @@ public interface ImageVersionsClient {
     /**
      * Gets an image version.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
-     * @param imageName The name of the image.
-     * @param versionName The version of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageVersionInner get(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName);
-
-    /**
-     * Gets an image version.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
@@ -85,4 +68,21 @@ public interface ImageVersionsClient {
         String imageName,
         String versionName,
         Context context);
+
+    /**
+     * Gets an image version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @param imageName The name of the image.
+     * @param versionName The version of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an image version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImageVersionInner get(
+        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName);
 }

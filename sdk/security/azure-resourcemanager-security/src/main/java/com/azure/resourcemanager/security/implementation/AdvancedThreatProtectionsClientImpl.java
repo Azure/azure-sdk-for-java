@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AdvancedThreatProtectionsClient;
 import com.azure.resourcemanager.security.fluent.models.AdvancedThreatProtectionSettingInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AdvancedThreatProtectionsClient. */
 public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreatProtectionsClient {
-    private final ClientLogger logger = new ClientLogger(AdvancedThreatProtectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AdvancedThreatProtectionsService service;
 
@@ -57,7 +54,7 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAdvanc")
-    private interface AdvancedThreatProtectionsService {
+    public interface AdvancedThreatProtectionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}")
         @ExpectedResponses({200})
@@ -91,7 +88,8 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvancedThreatProtectionSettingInner>> getWithResponseAsync(String resourceId) {
@@ -121,7 +119,8 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvancedThreatProtectionSettingInner>> getWithResponseAsync(
@@ -149,19 +148,27 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
+     * @return the Advanced Threat Protection settings for the specified resource on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AdvancedThreatProtectionSettingInner> getAsync(String resourceId) {
-        return getWithResponseAsync(resourceId)
-            .flatMap(
-                (Response<AdvancedThreatProtectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the Advanced Threat Protection settings for the specified resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advanced Threat Protection settings for the specified resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AdvancedThreatProtectionSettingInner> getWithResponse(String resourceId, Context context) {
+        return getWithResponseAsync(resourceId, context).block();
     }
 
     /**
@@ -175,22 +182,7 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedThreatProtectionSettingInner get(String resourceId) {
-        return getAsync(resourceId).block();
-    }
-
-    /**
-     * Gets the Advanced Threat Protection settings for the specified resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection settings for the specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdvancedThreatProtectionSettingInner> getWithResponse(String resourceId, Context context) {
-        return getWithResponseAsync(resourceId, context).block();
+        return getWithResponse(resourceId, Context.NONE).getValue();
     }
 
     /**
@@ -201,7 +193,8 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection resource.
+     * @return the Advanced Threat Protection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvancedThreatProtectionSettingInner>> createWithResponseAsync(
@@ -250,7 +243,8 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection resource.
+     * @return the Advanced Threat Protection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvancedThreatProtectionSettingInner>> createWithResponseAsync(
@@ -295,20 +289,30 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection resource.
+     * @return the Advanced Threat Protection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AdvancedThreatProtectionSettingInner> createAsync(
         String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting) {
         return createWithResponseAsync(resourceId, advancedThreatProtectionSetting)
-            .flatMap(
-                (Response<AdvancedThreatProtectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the Advanced Threat Protection settings on a specified resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advanced Threat Protection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AdvancedThreatProtectionSettingInner> createWithResponse(
+        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context) {
+        return createWithResponseAsync(resourceId, advancedThreatProtectionSetting, context).block();
     }
 
     /**
@@ -324,23 +328,6 @@ public final class AdvancedThreatProtectionsClientImpl implements AdvancedThreat
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvancedThreatProtectionSettingInner create(
         String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting) {
-        return createAsync(resourceId, advancedThreatProtectionSetting).block();
-    }
-
-    /**
-     * Creates or updates the Advanced Threat Protection settings on a specified resource.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advanced Threat Protection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdvancedThreatProtectionSettingInner> createWithResponse(
-        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context) {
-        return createWithResponseAsync(resourceId, advancedThreatProtectionSetting, context).block();
+        return createWithResponse(resourceId, advancedThreatProtectionSetting, Context.NONE).getValue();
     }
 }

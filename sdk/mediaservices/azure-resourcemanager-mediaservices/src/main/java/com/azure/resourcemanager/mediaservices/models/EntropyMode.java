@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntropyMode. */
+/**
+ * The entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for
+ * the profile and level.
+ */
 public final class EntropyMode extends ExpandableStringEnum<EntropyMode> {
     /** Static value Cabac for EntropyMode. */
     public static final EntropyMode CABAC = fromString("Cabac");
 
     /** Static value Cavlc for EntropyMode. */
     public static final EntropyMode CAVLC = fromString("Cavlc");
+
+    /**
+     * Creates a new instance of EntropyMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntropyMode() {
+    }
 
     /**
      * Creates or finds a EntropyMode from its string representation.

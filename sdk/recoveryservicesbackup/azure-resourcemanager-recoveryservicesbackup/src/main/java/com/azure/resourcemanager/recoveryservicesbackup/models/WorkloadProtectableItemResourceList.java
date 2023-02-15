@@ -18,6 +18,10 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<WorkloadProtectableItemResourceInner> value;
 
+    /** Creates an instance of WorkloadProtectableItemResourceList class. */
+    public WorkloadProtectableItemResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

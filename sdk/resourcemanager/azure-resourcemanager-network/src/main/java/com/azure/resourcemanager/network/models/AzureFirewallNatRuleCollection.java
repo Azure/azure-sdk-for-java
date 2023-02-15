@@ -31,6 +31,10 @@ public final class AzureFirewallNatRuleCollection extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of AzureFirewallNatRuleCollection class. */
+    public AzureFirewallNatRuleCollection() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the azure firewall NAT rule collection.
      *

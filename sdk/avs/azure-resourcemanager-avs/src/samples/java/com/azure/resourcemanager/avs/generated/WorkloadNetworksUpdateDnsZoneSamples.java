@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateDnsZone. */
 public final class WorkloadNetworksUpdateDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsZone.

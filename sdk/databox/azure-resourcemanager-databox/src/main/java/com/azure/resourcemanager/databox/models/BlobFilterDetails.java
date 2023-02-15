@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Filter details to transfer Azure Blobs. */
 @Fluent
 public final class BlobFilterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobFilterDetails.class);
-
     /*
      * Prefix list of the Azure blobs to be transferred.
      */
@@ -32,6 +28,10 @@ public final class BlobFilterDetails {
      */
     @JsonProperty(value = "containerList")
     private List<String> containerList;
+
+    /** Creates an instance of BlobFilterDetails class. */
+    public BlobFilterDetails() {
+    }
 
     /**
      * Get the blobPrefixList property: Prefix list of the Azure blobs to be transferred.

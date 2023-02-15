@@ -18,12 +18,9 @@ public final class Configuration {
     private List<Secret> secrets;
 
     /*
-     * ActiveRevisionsMode controls how active revisions are handled for the
-     * Container app:
-     * <list><item>Multiple: multiple revisions can be
-     * active.</item><item>Single: Only one revision can be active at a time.
-     * Revision weights can not be used in this mode. If no value if provided,
-     * this is the default.</item></list>
+     * ActiveRevisionsMode controls how active revisions are handled for the Container app:
+     * <list><item>Multiple: multiple revisions can be active.</item><item>Single: Only one revision can be active at a
+     * time. Revision weights can not be used in this mode. If no value if provided, this is the default.</item></list>
      */
     @JsonProperty(value = "activeRevisionsMode")
     private ActiveRevisionsMode activeRevisionsMode;
@@ -35,8 +32,7 @@ public final class Configuration {
     private Ingress ingress;
 
     /*
-     * Collection of private container registry credentials for containers used
-     * by the Container app
+     * Collection of private container registry credentials for containers used by the Container app
      */
     @JsonProperty(value = "registries")
     private List<RegistryCredentials> registries;
@@ -46,6 +42,16 @@ public final class Configuration {
      */
     @JsonProperty(value = "dapr")
     private Dapr dapr;
+
+    /*
+     * Optional. Max inactive revisions a Container App can have.
+     */
+    @JsonProperty(value = "maxInactiveRevisions")
+    private Integer maxInactiveRevisions;
+
+    /** Creates an instance of Configuration class. */
+    public Configuration() {
+    }
 
     /**
      * Get the secrets property: Collection of secrets used by a Container app.
@@ -152,6 +158,26 @@ public final class Configuration {
      */
     public Configuration withDapr(Dapr dapr) {
         this.dapr = dapr;
+        return this;
+    }
+
+    /**
+     * Get the maxInactiveRevisions property: Optional. Max inactive revisions a Container App can have.
+     *
+     * @return the maxInactiveRevisions value.
+     */
+    public Integer maxInactiveRevisions() {
+        return this.maxInactiveRevisions;
+    }
+
+    /**
+     * Set the maxInactiveRevisions property: Optional. Max inactive revisions a Container App can have.
+     *
+     * @param maxInactiveRevisions the maxInactiveRevisions value to set.
+     * @return the Configuration object itself.
+     */
+    public Configuration withMaxInactiveRevisions(Integer maxInactiveRevisions) {
+        this.maxInactiveRevisions = maxInactiveRevisions;
         return this;
     }
 

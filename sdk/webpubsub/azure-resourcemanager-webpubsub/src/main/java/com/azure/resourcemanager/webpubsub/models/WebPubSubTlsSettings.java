@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** TLS settings for the resource. */
 @Fluent
 public final class WebPubSubTlsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubTlsSettings.class);
-
     /*
      * Request client certificate during TLS handshake if enabled
      */
     @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
+
+    /** Creates an instance of WebPubSubTlsSettings class. */
+    public WebPubSubTlsSettings() {
+    }
 
     /**
      * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.

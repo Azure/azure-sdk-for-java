@@ -31,6 +31,10 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
     @JsonProperty(value = "privateRanges")
     private List<String> privateRanges;
 
+    /** Creates an instance of FirewallPolicyIntrusionDetectionConfiguration class. */
+    public FirewallPolicyIntrusionDetectionConfiguration() {
+    }
+
     /**
      * Get the signatureOverrides property: List of specific signatures states.
      *

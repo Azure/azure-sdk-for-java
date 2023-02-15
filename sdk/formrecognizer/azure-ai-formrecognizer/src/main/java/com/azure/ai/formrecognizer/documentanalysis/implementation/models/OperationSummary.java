@@ -66,6 +66,9 @@ public final class OperationSummary {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /** Creates an instance of OperationSummary class. */
+    public OperationSummary() {}
+
     /**
      * Get the operationId property: Operation ID.
      *

@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class QuickBooksLinkedService extends LinkedService {
     /*
-     * Properties used to connect to QuickBooks. It is mutually exclusive with
-     * any other properties in the linked service. Type: object.
+     * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked
+     * service. Type: object.
      */
     @JsonProperty(value = "typeProperties.connectionProperties")
     private Object connectionProperties;
@@ -62,19 +62,20 @@ public class QuickBooksLinkedService extends LinkedService {
     private SecretBase accessTokenSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of QuickBooksLinkedService class. */
+    public QuickBooksLinkedService() {}
 
     /**
      * Get the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with

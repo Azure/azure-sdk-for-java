@@ -42,22 +42,6 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
     }
 
-    public ManagedPrivateEndpointResource get(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName) {
-        ManagedPrivateEndpointResourceInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
-        if (inner != null) {
-            return new ManagedPrivateEndpointResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ManagedPrivateEndpointResource> getWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -86,14 +70,20 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
     }
 
-    public void delete(
+    public ManagedPrivateEndpointResource get(
         String resourceGroupName,
         String factoryName,
         String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
+        ManagedPrivateEndpointResourceInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
+        if (inner != null) {
+            return new ManagedPrivateEndpointResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -106,6 +96,16 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
             .serviceClient()
             .deleteWithResponse(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, context);
+    }
+
+    public void delete(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName) {
+        this
+            .serviceClient()
+            .delete(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
     }
 
     public ManagedPrivateEndpointResource getById(String id) {

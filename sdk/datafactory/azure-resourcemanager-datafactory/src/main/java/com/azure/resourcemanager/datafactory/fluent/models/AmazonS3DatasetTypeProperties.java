@@ -61,6 +61,10 @@ public final class AmazonS3DatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AmazonS3DatasetTypeProperties class. */
+    public AmazonS3DatasetTypeProperties() {
+    }
+
     /**
      * Get the bucketName property: The name of the Amazon S3 bucket. Type: string (or Expression with resultType
      * string).

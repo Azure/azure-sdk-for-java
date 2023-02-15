@@ -24,8 +24,7 @@ public final class MicrosoftGraphAssignedPlan {
     private OffsetDateTime assignedDateTime;
 
     /*
-     * Condition of the capability assignment. The possible values are Enabled,
-     * Warning, Suspended, Deleted, LockedOut.
+     * Condition of the capability assignment. The possible values are Enabled, Warning, Suspended, Deleted, LockedOut.
      */
     @JsonProperty(value = "capabilityStatus")
     private String capabilityStatus;
@@ -46,6 +45,10 @@ public final class MicrosoftGraphAssignedPlan {
      * assignedPlan
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAssignedPlan class. */
+    public MicrosoftGraphAssignedPlan() {
+    }
 
     /**
      * Get the assignedDateTime property: The assignedDateTime property.

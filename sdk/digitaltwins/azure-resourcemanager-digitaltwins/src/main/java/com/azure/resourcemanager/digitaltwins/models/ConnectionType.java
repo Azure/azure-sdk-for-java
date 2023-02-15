@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionType. */
+/** The type of time series connection resource. */
 public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     /** Static value AzureDataExplorer for ConnectionType. */
     public static final ConnectionType AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");

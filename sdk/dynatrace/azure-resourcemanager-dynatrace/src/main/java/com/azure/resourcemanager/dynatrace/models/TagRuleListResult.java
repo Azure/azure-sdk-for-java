@@ -22,7 +22,7 @@ public final class TagRuleListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -77,11 +77,6 @@ public final class TagRuleListResult {
                     new IllegalArgumentException("Missing required property value in model TagRuleListResult"));
         } else {
             value().forEach(e -> e.validate());
-        }
-        if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextLink in model TagRuleListResult"));
         }
     }
 

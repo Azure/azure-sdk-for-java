@@ -69,6 +69,10 @@ public final class TabularTranslator extends CopyTranslator {
     @JsonProperty(value = "typeConversionSettings")
     private TypeConversionSettings typeConversionSettings;
 
+    /** Creates an instance of TabularTranslator class. */
+    public TabularTranslator() {
+    }
+
     /**
      * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
      * string (or Expression with resultType string). This property will be retired. Please use mappings property.

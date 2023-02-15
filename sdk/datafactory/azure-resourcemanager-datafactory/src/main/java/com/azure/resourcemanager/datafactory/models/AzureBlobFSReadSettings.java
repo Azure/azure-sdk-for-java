@@ -72,6 +72,10 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
+    /** Creates an instance of AzureBlobFSReadSettings class. */
+    public AzureBlobFSReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).

@@ -18,16 +18,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageModelDistributionSettingsObjectDetection extends ImageModelDistributionSettings {
     /*
-     * Maximum number of detections per image, for all classes. Must be a
-     * positive integer.
+     * Maximum number of detections per image, for all classes. Must be a positive integer.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
     @JsonProperty(value = "boxDetectionsPerImage")
     private String boxDetectionsPerImage;
 
     /*
-     * During inference, only return proposals with a classification score
-     * greater than
+     * During inference, only return proposals with a classification score greater than
      * BoxScoreThreshold. Must be a float in the range[0, 1].
      */
     @JsonProperty(value = "boxScoreThreshold")
@@ -42,20 +40,16 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     private String imageSize;
 
     /*
-     * Maximum size of the image to be rescaled before feeding it to the
-     * backbone.
-     * Must be a positive integer. Note: training run may get into CUDA OOM if
-     * the size is too big.
+     * Maximum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
     @JsonProperty(value = "maxSize")
     private String maxSize;
 
     /*
-     * Minimum size of the image to be rescaled before feeding it to the
-     * backbone.
-     * Must be a positive integer. Note: training run may get into CUDA OOM if
-     * the size is too big.
+     * Minimum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
     @JsonProperty(value = "minSize")
@@ -78,33 +72,28 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     private String multiScale;
 
     /*
-     * IOU threshold used during inference in NMS post processing. Must be
-     * float in the range [0, 1].
+     * IOU threshold used during inference in NMS post processing. Must be float in the range [0, 1].
      */
     @JsonProperty(value = "nmsIouThreshold")
     private String nmsIouThreshold;
 
     /*
-     * The grid size to use for tiling each image. Note: TileGridSize must not
-     * be
-     * None to enable small object detection logic. A string containing two
-     * integers in mxn format.
+     * The grid size to use for tiling each image. Note: TileGridSize must not be
+     * None to enable small object detection logic. A string containing two integers in mxn format.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
     @JsonProperty(value = "tileGridSize")
     private String tileGridSize;
 
     /*
-     * Overlap ratio between adjacent tiles in each dimension. Must be float in
-     * the range [0, 1).
+     * Overlap ratio between adjacent tiles in each dimension. Must be float in the range [0, 1).
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
     @JsonProperty(value = "tileOverlapRatio")
     private String tileOverlapRatio;
 
     /*
-     * The IOU threshold to use to perform NMS while merging predictions from
-     * tiles and image.
+     * The IOU threshold to use to perform NMS while merging predictions from tiles and image.
      * Used in validation/ inference. Must be float in the range [0, 1].
      * Note: This settings is not supported for the 'yolov5' algorithm.
      * NMS: Non-maximum suppression
@@ -113,18 +102,20 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     private String tilePredictionsNmsThreshold;
 
     /*
-     * IOU threshold to use when computing validation metric. Must be float in
-     * the range [0, 1].
+     * IOU threshold to use when computing validation metric. Must be float in the range [0, 1].
      */
     @JsonProperty(value = "validationIouThreshold")
     private String validationIouThreshold;
 
     /*
-     * Metric computation method to use for validation metrics. Must be 'none',
-     * 'coco', 'voc', or 'coco_voc'.
+     * Metric computation method to use for validation metrics. Must be 'none', 'coco', 'voc', or 'coco_voc'.
      */
     @JsonProperty(value = "validationMetricType")
     private String validationMetricType;
+
+    /** Creates an instance of ImageModelDistributionSettingsObjectDetection class. */
+    public ImageModelDistributionSettingsObjectDetection() {
+    }
 
     /**
      * Get the boxDetectionsPerImage property: Maximum number of detections per image, for all classes. Must be a
@@ -567,13 +558,6 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     @Override
     public ImageModelDistributionSettingsObjectDetection withRandomSeed(String randomSeed) {
         super.withRandomSeed(randomSeed);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImageModelDistributionSettingsObjectDetection withSplitRatio(String splitRatio) {
-        super.withSplitRatio(splitRatio);
         return this;
     }
 

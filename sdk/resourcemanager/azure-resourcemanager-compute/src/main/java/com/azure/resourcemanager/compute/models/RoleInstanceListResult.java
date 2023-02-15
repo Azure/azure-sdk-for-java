@@ -26,6 +26,10 @@ public final class RoleInstanceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RoleInstanceListResult class. */
+    public RoleInstanceListResult() {
+    }
+
     /**
      * Get the value property: The list of resources.
      *

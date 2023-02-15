@@ -21,6 +21,10 @@ public final class OperationResultInfo extends OperationResultInfoBase {
     @JsonProperty(value = "jobList")
     private List<String> jobList;
 
+    /** Creates an instance of OperationResultInfo class. */
+    public OperationResultInfo() {
+    }
+
     /**
      * Get the jobList property: List of jobs created by this operation.
      *

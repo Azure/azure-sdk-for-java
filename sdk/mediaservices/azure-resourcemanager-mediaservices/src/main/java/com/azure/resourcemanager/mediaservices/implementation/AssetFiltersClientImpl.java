@@ -59,7 +59,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesAs")
-    private interface AssetFiltersService {
+    public interface AssetFiltersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -158,7 +158,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -194,6 +196,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -205,7 +208,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             resourceGroupName,
                             accountName,
                             assetName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<AssetFilterInner>>map(
@@ -221,7 +224,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -258,6 +263,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -267,7 +273,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 resourceGroupName,
                 accountName,
                 assetName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -282,7 +288,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -300,7 +308,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -320,7 +330,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -336,7 +348,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -354,7 +368,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -394,6 +410,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -406,14 +423,16 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -454,6 +473,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -464,13 +484,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -490,24 +512,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetFilterInner get(String resourceGroupName, String accountName, String assetName, String filterName) {
-        return getAsync(resourceGroupName, accountName, assetName, filterName).block();
-    }
-
-    /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -526,7 +533,28 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Creates or updates an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of an Asset Filter associated with the specified Asset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetFilterInner get(String resourceGroupName, String accountName, String assetName, String filterName) {
+        return getWithResponse(resourceGroupName, accountName, assetName, filterName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an Asset Filter
+     *
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -575,6 +603,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +616,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -595,7 +624,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Creates or updates an Asset Filter associated with the specified Asset.
+     * Create or update an Asset Filter
+     *
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -646,6 +677,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -656,14 +688,16 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates or updates an Asset Filter associated with the specified Asset.
+     * Create or update an Asset Filter
+     *
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -687,30 +721,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Creates or updates an Asset Filter associated with the specified Asset.
+     * Create or update an Asset Filter
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Asset Filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetFilterInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, accountName, assetName, filterName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an Asset Filter associated with the specified Asset.
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -737,7 +750,36 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Create or update an Asset Filter
+     *
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Asset Filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetFilterInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String assetName,
+        String filterName,
+        AssetFilterInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, accountName, assetName, filterName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -776,6 +818,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -788,14 +831,16 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -835,6 +880,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -845,13 +891,15 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -869,23 +917,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String assetName, String filterName) {
-        deleteAsync(resourceGroupName, accountName, assetName, filterName).block();
-    }
-
-    /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -904,7 +938,27 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Updates an existing Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String assetName, String filterName) {
+        deleteWithResponse(resourceGroupName, accountName, assetName, filterName, Context.NONE);
+    }
+
+    /**
+     * Update an Asset Filter
+     *
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -953,6 +1007,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -965,7 +1020,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -973,7 +1028,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Updates an existing Asset Filter associated with the specified Asset.
+     * Update an Asset Filter
+     *
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1024,6 +1081,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1034,14 +1092,16 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates an existing Asset Filter associated with the specified Asset.
+     * Update an Asset Filter
+     *
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1065,30 +1125,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
-     * Updates an existing Asset Filter associated with the specified Asset.
+     * Update an Asset Filter
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Asset Filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetFilterInner update(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters) {
-        return updateAsync(resourceGroupName, accountName, assetName, filterName, parameters).block();
-    }
-
-    /**
-     * Updates an existing Asset Filter associated with the specified Asset.
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1114,9 +1153,36 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     }
 
     /**
+     * Update an Asset Filter
+     *
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Asset Filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetFilterInner update(
+        String resourceGroupName,
+        String accountName,
+        String assetName,
+        String filterName,
+        AssetFilterInner parameters) {
+        return updateWithResponse(resourceGroupName, accountName, assetName, filterName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1152,7 +1218,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

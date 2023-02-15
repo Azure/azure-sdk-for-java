@@ -77,6 +77,10 @@ public final class SingleQueryResult {
     @JsonProperty(value = "inheritedFromParentPolicy")
     private Boolean inheritedFromParentPolicy;
 
+    /** Creates an instance of SingleQueryResult class. */
+    public SingleQueryResult() {
+    }
+
     /**
      * Get the signatureId property: The ID of the signature.
      *

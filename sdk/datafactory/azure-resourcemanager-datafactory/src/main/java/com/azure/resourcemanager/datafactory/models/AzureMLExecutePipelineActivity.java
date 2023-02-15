@@ -24,6 +24,10 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
     private AzureMLExecutePipelineActivityTypeProperties innerTypeProperties =
         new AzureMLExecutePipelineActivityTypeProperties();
 
+    /** Creates an instance of AzureMLExecutePipelineActivity class. */
+    public AzureMLExecutePipelineActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Execute Pipeline activity properties.
      *

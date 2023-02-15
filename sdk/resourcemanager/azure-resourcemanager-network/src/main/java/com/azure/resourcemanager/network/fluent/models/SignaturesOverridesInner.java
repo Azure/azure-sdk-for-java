@@ -36,6 +36,10 @@ public final class SignaturesOverridesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SignaturesOverridesProperties properties;
 
+    /** Creates an instance of SignaturesOverridesInner class. */
+    public SignaturesOverridesInner() {
+    }
+
     /**
      * Get the name property: Contains the name of the resource (default).
      *

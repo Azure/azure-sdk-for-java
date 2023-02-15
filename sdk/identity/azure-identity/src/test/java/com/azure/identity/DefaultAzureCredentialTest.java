@@ -4,11 +4,13 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -46,6 +48,7 @@ public class DefaultAzureCredentialTest {
 
 
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request1)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
@@ -70,6 +73,7 @@ public class DefaultAzureCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
@@ -85,6 +89,103 @@ public class DefaultAzureCredentialTest {
     }
 
     @Test
+    public void testUseWorkloadIdentityCredentialWithManagedIdentityClientId() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
+        configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-path");
+
+        // mock
+        try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithExchangeToken(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+        })) {
+
+
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                .managedIdentityClientId("dummy-client-id")
+                .configuration(configuration)
+                .build();
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+            Assert.assertNotNull(mocked);
+            Assert.assertNotNull(ijcredential);
+        }
+    }
+
+    @Test
+    public void testUseWorkloadIdentityCredentialWithWorkloadClientId() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
+        configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-path");
+
+        // mock
+        try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithExchangeToken(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        })) {
+            // test
+            String clientId = "dummy-client-id";
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                .workloadIdentityClientId(clientId)
+                .configuration(configuration)
+                .build();
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+            Assert.assertNotNull(mocked);
+        }
+    }
+
+    @Test
+    public void testUseWorkloadIdentityCredentialWithClientIdFlow() throws Exception {
+        // setup
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        configuration.put(Configuration.PROPERTY_AZURE_TENANT_ID, "dummy-tenant");
+        configuration.put(ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE, "dummy-path");
+
+        // test
+        String clientId = "dummy-client-id";
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+            .workloadIdentityClientId(clientId)
+            .configuration(configuration)
+            .build();
+        WorkloadIdentityCredential workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+
+        credential = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(clientId)
+            .configuration(configuration)
+            .build();
+        workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+
+        configuration.put(Configuration.PROPERTY_AZURE_CLIENT_ID, clientId);
+        credential = new DefaultAzureCredentialBuilder()
+            .configuration(configuration)
+            .build();
+        workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertNotNull(workloadIdentityCredential);
+        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+    }
+
+
+
+    @Test
     public void testUseAzureCliCredential() throws Exception {
         // setup
         String token1 = "token1";
@@ -95,7 +196,37 @@ public class DefaultAzureCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithAzureCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithSharedTokenCache(request, null)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithIntelliJ(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithVsCodeCredential(any(), any())).thenReturn(Mono.empty());
+        }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+        })) {
+
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+            Assert.assertNotNull(mocked);
+            Assert.assertNotNull(ijcredential);
+        }
+    }
+
+    @Test
+    public void testUseAzureDeveloperCliCredential() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
+        // mock
+        try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithAzureCli(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithSharedTokenCache(request, null)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithIntelliJ(request)).thenReturn(Mono.empty());
@@ -124,6 +255,8 @@ public class DefaultAzureCredentialTest {
             when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
         }); MockedConstruction<SharedTokenCacheCredential> sharedTokenCacheCredentialMock = mockConstruction(SharedTokenCacheCredential.class, (sharedTokenCacheCredential, context) -> {
             when(sharedTokenCacheCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from shared token cache")));
+        }); MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
+            when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Azure Developer CLI credential")));
         }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
             when(azureCliCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Azure CLI credential")));
         }); MockedConstruction<AzurePowerShellCredential> azurePowerShellCredentialMock = mockConstruction(AzurePowerShellCredential.class, (azurePowerShellCredential, context) -> {
@@ -138,6 +271,7 @@ public class DefaultAzureCredentialTest {
             Assert.assertNotNull(identityClientMock);
             Assert.assertNotNull(sharedTokenCacheCredentialMock);
             Assert.assertNotNull(azureCliCredentialMock);
+            Assert.assertNotNull(azureDeveloperCliCredentialMock);
             Assert.assertNotNull(azurePowerShellCredentialMock);
             Assert.assertNotNull(intelliJCredentialMock);
         }
@@ -157,6 +291,8 @@ public class DefaultAzureCredentialTest {
             when(powerShellCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Powershell credential")));
         }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
             when(azureCliCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Cli credential")));
+        }); MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
+            when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Azure Developer CLI credential")));
         })) {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -165,6 +301,40 @@ public class DefaultAzureCredentialTest {
             Assert.assertNotNull(intelliJCredentialMock);
             Assert.assertNotNull(powerShellCredentialMock);
             Assert.assertNotNull(azureCliCredentialMock);
+            Assert.assertNotNull(azureDeveloperCliCredentialMock);
+        }
+
+    }
+
+    @Test
+    public void testCredentialUnavailableSync() throws Exception {
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
+        try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
+            when(managedIdentityCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Managed Identity credential"));
+        }); MockedConstruction<IntelliJCredential> intelliJCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from IntelliJ Credential"));
+        }); MockedConstruction<AzurePowerShellCredential> powerShellCredentialMock = mockConstruction(AzurePowerShellCredential.class, (powerShellCredential, context) -> {
+            when(powerShellCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Powershell credential"));
+        }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
+            when(azureCliCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Cli credential"));
+        }); MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock = mockConstruction(AzureDeveloperCliCredential.class, (azureDeveloperCliCredential, context) -> {
+            when(azureDeveloperCliCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Azure Developer Cli credential"));
+        })) {
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+            try {
+                credential.getTokenSync(request);
+            } catch (Exception e) {
+                Assert.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("EnvironmentCredential authentication unavailable. "));
+            }
+            Assert.assertNotNull(managedIdentityCredentialMock);
+            Assert.assertNotNull(intelliJCredentialMock);
+            Assert.assertNotNull(powerShellCredentialMock);
+            Assert.assertNotNull(azureCliCredentialMock);
+            Assert.assertNotNull(azureDeveloperCliCredentialMock);
         }
 
     }
@@ -176,5 +346,60 @@ public class DefaultAzureCredentialTest {
 
         // test
         new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build();
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
+
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().contains("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().contains("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
     }
 }

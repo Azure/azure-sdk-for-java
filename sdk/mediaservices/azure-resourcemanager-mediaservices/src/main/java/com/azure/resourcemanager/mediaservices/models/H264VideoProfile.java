@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H264VideoProfile. */
+/** We currently support Baseline, Main, High, High422, High444. Default is Auto. */
 public final class H264VideoProfile extends ExpandableStringEnum<H264VideoProfile> {
     /** Static value Auto for H264VideoProfile. */
     public static final H264VideoProfile AUTO = fromString("Auto");
@@ -27,6 +27,15 @@ public final class H264VideoProfile extends ExpandableStringEnum<H264VideoProfil
 
     /** Static value High444 for H264VideoProfile. */
     public static final H264VideoProfile HIGH444 = fromString("High444");
+
+    /**
+     * Creates a new instance of H264VideoProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264VideoProfile() {
+    }
 
     /**
      * Creates or finds a H264VideoProfile from its string representation.

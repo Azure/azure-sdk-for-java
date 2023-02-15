@@ -19,19 +19,21 @@ import java.util.Map;
 @Fluent
 public class MongoDbAtlasLinkedService extends LinkedService {
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB Atlas database that you want to access. Type:
-     * string (or Expression with resultType string).
+     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
+
+    /** Creates an instance of MongoDbAtlasLinkedService class. */
+    public MongoDbAtlasLinkedService() {}
 
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or

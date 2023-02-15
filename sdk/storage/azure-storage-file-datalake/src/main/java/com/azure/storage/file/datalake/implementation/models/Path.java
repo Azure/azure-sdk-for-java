@@ -78,6 +78,9 @@ public final class Path {
     @JsonProperty(value = "etag")
     private String eTag;
 
+    /** Creates an instance of Path class. */
+    public Path() {}
+
     /**
      * Get the name property: The name property.
      *
@@ -219,7 +222,7 @@ public final class Path {
     }
 
     /**
-     * Get the encryptionScope property: The name of the encryption scope under which the path is encrypted.
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
      *
      * @return the encryptionScope value.
      */
@@ -228,7 +231,7 @@ public final class Path {
     }
 
     /**
-     * Set the encryptionScope property: The name of the encryption scope under which the path is encrypted.
+     * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
      *
      * @param encryptionScope the encryptionScope value to set.
      * @return the Path object itself.

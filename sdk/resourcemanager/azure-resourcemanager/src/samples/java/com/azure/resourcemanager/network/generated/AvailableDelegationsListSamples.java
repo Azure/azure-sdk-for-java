@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailableDelegations List. */
 public final class AvailableDelegationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/AvailableDelegationsSubscriptionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/AvailableDelegationsSubscriptionGet.json
      */
     /**
      * Sample code: Get available delegations.

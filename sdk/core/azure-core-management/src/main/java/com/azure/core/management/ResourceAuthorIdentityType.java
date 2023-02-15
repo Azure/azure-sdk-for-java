@@ -23,6 +23,18 @@ public final class ResourceAuthorIdentityType extends ExpandableStringEnum<Resou
     public static final ResourceAuthorIdentityType KEY = fromString("Key");
 
     /**
+     * Creates a new instance of {@link ResourceAuthorIdentityType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link ResourceAuthorIdentityType} which doesn't have a
+     * String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
+     */
+    @Deprecated
+    public ResourceAuthorIdentityType() {
+    }
+
+    /**
      * Creates or finds a ResourceAuthorIdentityType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class ResourceAuthorIdentityType extends ExpandableStringEnum<Resou
         return fromString(name, ResourceAuthorIdentityType.class);
     }
 
-    /** @return known ResourceAuthorIdentityType values. */
+    /**
+     * Gets the known ResourceAuthorIdentityType values.
+     *
+     * @return known ResourceAuthorIdentityType values.
+     */
     public static Collection<ResourceAuthorIdentityType> values() {
         return values(ResourceAuthorIdentityType.class);
     }

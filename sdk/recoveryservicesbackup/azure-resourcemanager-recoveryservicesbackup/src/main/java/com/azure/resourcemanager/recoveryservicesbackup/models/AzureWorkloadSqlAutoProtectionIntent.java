@@ -20,6 +20,10 @@ public final class AzureWorkloadSqlAutoProtectionIntent extends AzureWorkloadAut
     @JsonProperty(value = "workloadItemType")
     private WorkloadItemType workloadItemType;
 
+    /** Creates an instance of AzureWorkloadSqlAutoProtectionIntent class. */
+    public AzureWorkloadSqlAutoProtectionIntent() {
+    }
+
     /**
      * Get the workloadItemType property: Workload item type of the item for which intent is to be set.
      *

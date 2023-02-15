@@ -17,19 +17,21 @@ public final class StackEnsembleSettings {
     private Object stackMetaLearnerKWargs;
 
     /*
-     * Specifies the proportion of the training set (when choosing train and
-     * validation type of training) to be reserved for training the
-     * meta-learner. Default value is 0.2.
+     * Specifies the proportion of the training set (when choosing train and validation type of training) to be
+     * reserved for training the meta-learner. Default value is 0.2.
      */
     @JsonProperty(value = "stackMetaLearnerTrainPercentage")
     private Double stackMetaLearnerTrainPercentage;
 
     /*
-     * The meta-learner is a model trained on the output of the individual
-     * heterogeneous models.
+     * The meta-learner is a model trained on the output of the individual heterogeneous models.
      */
     @JsonProperty(value = "stackMetaLearnerType")
     private StackMetaLearnerType stackMetaLearnerType;
+
+    /** Creates an instance of StackEnsembleSettings class. */
+    public StackEnsembleSettings() {
+    }
 
     /**
      * Get the stackMetaLearnerKWargs property: Optional parameters to pass to the initializer of the meta-learner.

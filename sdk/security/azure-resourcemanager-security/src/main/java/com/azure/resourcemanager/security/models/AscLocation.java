@@ -30,7 +30,7 @@ public interface AscLocation {
     String type();
 
     /**
-     * Gets the properties property: Any object.
+     * Gets the properties property: An empty set of properties.
      *
      * @return the properties value.
      */

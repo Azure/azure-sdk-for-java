@@ -13,7 +13,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
  */
 public class CommonProperties extends AzureAmqpSdkProperties implements ServiceBusClientCommonProperties {
 
-    private String domainName = "servicebus.windows.net";
+    private String domainName;
 
     /**
      * The namespace of a service bus, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
@@ -30,14 +30,21 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
         return new ServiceBusConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || getDomainName() == null) {
+            return null;
+        }
+        return this.namespace + "." + getDomainName();
+    }
+
     @Override
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
     }
 
     @Override
     public String getDomainName() {
-        return domainName;
+        return this.domainName == null ? getProfile().getEnvironment().getServiceBusDomainName() : this.domainName;
     }
 
     /**

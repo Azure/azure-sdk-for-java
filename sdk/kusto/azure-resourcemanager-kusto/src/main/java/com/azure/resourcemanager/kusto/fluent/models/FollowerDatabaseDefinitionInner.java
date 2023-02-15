@@ -6,34 +6,42 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.kusto.models.DatabaseShareOrigin;
+import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing follower database request. */
 @Fluent
 public final class FollowerDatabaseDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FollowerDatabaseDefinitionInner.class);
-
     /*
-     * Resource id of the cluster that follows a database owned by this
-     * cluster.
+     * Resource id of the cluster that follows a database owned by this cluster.
      */
     @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
 
     /*
-     * Resource name of the attached database configuration in the follower
-     * cluster.
+     * Resource name of the attached database configuration in the follower cluster.
      */
     @JsonProperty(value = "attachedDatabaseConfigurationName", required = true)
     private String attachedDatabaseConfigurationName;
 
     /*
-     * The database name owned by this cluster that was followed. * in case
-     * following all databases.
+     * The database name owned by this cluster that was followed. * in case following all databases.
      */
     @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
+
+    /*
+     * Table level sharing specifications
+     */
+    @JsonProperty(value = "tableLevelSharingProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private TableLevelSharingProperties tableLevelSharingProperties;
+
+    /*
+     * The origin of the following setup.
+     */
+    @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
+    private DatabaseShareOrigin databaseShareOrigin;
 
     /**
      * Get the clusterResourceId property: Resource id of the cluster that follows a database owned by this cluster.
@@ -89,23 +97,46 @@ public final class FollowerDatabaseDefinitionInner {
     }
 
     /**
+     * Get the tableLevelSharingProperties property: Table level sharing specifications.
+     *
+     * @return the tableLevelSharingProperties value.
+     */
+    public TableLevelSharingProperties tableLevelSharingProperties() {
+        return this.tableLevelSharingProperties;
+    }
+
+    /**
+     * Get the databaseShareOrigin property: The origin of the following setup.
+     *
+     * @return the databaseShareOrigin value.
+     */
+    public DatabaseShareOrigin databaseShareOrigin() {
+        return this.databaseShareOrigin;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
         }
         if (attachedDatabaseConfigurationName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property attachedDatabaseConfigurationName in model"
                             + " FollowerDatabaseDefinitionInner"));
         }
+        if (tableLevelSharingProperties() != null) {
+            tableLevelSharingProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FollowerDatabaseDefinitionInner.class);
 }

@@ -95,6 +95,10 @@ public final class ElasticPoolOperationProperties {
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
+    /** Creates an instance of ElasticPoolOperationProperties class. */
+    public ElasticPoolOperationProperties() {
+    }
+
     /**
      * Get the elasticPoolName property: The name of the elastic pool the operation is being performed on.
      *

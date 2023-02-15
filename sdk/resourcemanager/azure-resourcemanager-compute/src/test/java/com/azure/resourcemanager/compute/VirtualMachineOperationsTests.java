@@ -29,6 +29,7 @@ import com.azure.resourcemanager.compute.models.PowerState;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
+import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
@@ -1562,7 +1563,48 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(vm1.storageProfile().osDisk().managedDisk().diskEncryptionSet());
     }
 
+    @Test
+    public void canCRUDTrustedLaunchVM() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withTrustedLaunch()
+            .withSecureBoot()
+            .withVTpm()
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .create();
 
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, vm.securityType());
+        Assertions.assertTrue(vm.isSecureBootEnabled());
+        Assertions.assertTrue(vm.isVTpmEnabled());
+
+        vm.update()
+            .withoutSecureBoot()
+            .withoutVTpm()
+            .applyAsync()
+            // security features changes need restart to take effect
+            .flatMap(VirtualMachine::restartAsync)
+            .block();
+
+        // Let virtual machine finish restarting.
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        vm = computeManager.virtualMachines().getById(vm.id());
+
+        Assertions.assertEquals(SecurityTypes.TRUSTED_LAUNCH, vm.securityType());
+        Assertions.assertFalse(vm.isSecureBootEnabled());
+        Assertions.assertFalse(vm.isVTpmEnabled());
+
+        computeManager.virtualMachines().deleteById(vm.id());
+    }
 
     // *********************************** helper methods ***********************************
 

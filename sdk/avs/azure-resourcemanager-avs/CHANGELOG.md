@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,159 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-10-17)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2022-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Locations` was modified
+
+* `checkTrialAvailabilityWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.PrivateCloud$Update` was modified
+
+* `withAvailability(models.AvailabilityProperties)` was removed
+
+### Features Added
+
+* `models.AddonArcProperties` was added
+
+* `models.WorkloadNetworkName` was added
+
+* `models.NsxPublicIpQuotaRaisedEnum` was added
+
+* `models.ClusterZone` was added
+
+* `models.AzureHybridBenefitType` was added
+
+* `models.WorkloadNetwork` was added
+
+* `models.AffinityStrength` was added
+
+* `models.WorkloadNetworkList` was added
+
+* `models.ClusterZoneList` was added
+
+#### `models.Locations` was modified
+
+* `checkTrialAvailabilityWithResponse(java.lang.String,models.Sku,com.azure.core.util.Context)` was added
+
+#### `models.Cluster` was modified
+
+* `listZonesWithResponse(com.azure.core.util.Context)` was added
+* `listZones()` was added
+* `resourceGroupName()` was added
+
+#### `models.GlobalReachConnection` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkloadNetworks` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,models.WorkloadNetworkName,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String,models.WorkloadNetworkName)` was added
+* `list(java.lang.String,java.lang.String)` was added
+
+#### `models.ExpressRouteAuthorization` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.EncryptionKeyVaultProperties` was modified
+
+* `autoDetectedKeyVersion()` was added
+
+#### `models.WorkloadNetworkDnsZone` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PlacementPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ScriptPackage` was modified
+
+* `company()` was added
+* `uri()` was added
+
+#### `models.Addon` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Datastore` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PlacementPolicy$Update` was modified
+
+* `withAzureHybridBenefitType(models.AzureHybridBenefitType)` was added
+* `withAffinityStrength(models.AffinityStrength)` was added
+
+#### `models.WorkloadNetworkSegment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PlacementPolicyUpdate` was modified
+
+* `withAffinityStrength(models.AffinityStrength)` was added
+* `azureHybridBenefitType()` was added
+* `affinityStrength()` was added
+* `withAzureHybridBenefitType(models.AzureHybridBenefitType)` was added
+
+#### `AvsManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.CloudLink` was modified
+
+* `resourceGroupName()` was added
+
+#### `AvsManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.VmHostPlacementPolicyProperties` was modified
+
+* `withAffinityStrength(models.AffinityStrength)` was added
+* `azureHybridBenefitType()` was added
+* `withAzureHybridBenefitType(models.AzureHybridBenefitType)` was added
+* `affinityStrength()` was added
+
+#### `models.WorkloadNetworkPortMirroring` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ScriptExecution` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkloadNetworkVMGroup` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.HcxEnterpriseSite` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Clusters` was modified
+
+* `listZones(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listZonesWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `resourceGroupName()` was added
+* `nsxPublicIpQuotaRaised()` was added
+
+#### `models.WorkloadNetworkDnsService` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkloadNetworkDhcp` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.3 (2021-11-10)
 

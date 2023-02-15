@@ -50,21 +50,6 @@ public interface ContainerAppsRevisionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RevisionInner getRevision(String resourceGroupName, String containerAppName, String revisionName);
-
-    /**
-     * Get a revision of a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -77,7 +62,7 @@ public interface ContainerAppsRevisionsClient {
         String resourceGroupName, String containerAppName, String revisionName, Context context);
 
     /**
-     * Activates a revision for a Container App.
+     * Get a revision of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
@@ -86,9 +71,10 @@ public interface ContainerAppsRevisionsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a revision of a Container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void activateRevision(String resourceGroupName, String containerAppName, String revisionName);
+    RevisionInner getRevision(String resourceGroupName, String containerAppName, String revisionName);
 
     /**
      * Activates a revision for a Container App.
@@ -108,7 +94,7 @@ public interface ContainerAppsRevisionsClient {
         String resourceGroupName, String containerAppName, String revisionName, Context context);
 
     /**
-     * Deactivates a revision for a Container App.
+     * Activates a revision for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
@@ -119,7 +105,7 @@ public interface ContainerAppsRevisionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deactivateRevision(String resourceGroupName, String containerAppName, String revisionName);
+    void activateRevision(String resourceGroupName, String containerAppName, String revisionName);
 
     /**
      * Deactivates a revision for a Container App.
@@ -139,7 +125,7 @@ public interface ContainerAppsRevisionsClient {
         String resourceGroupName, String containerAppName, String revisionName, Context context);
 
     /**
-     * Restarts a revision for a Container App.
+     * Deactivates a revision for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
@@ -150,7 +136,7 @@ public interface ContainerAppsRevisionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restartRevision(String resourceGroupName, String containerAppName, String revisionName);
+    void deactivateRevision(String resourceGroupName, String containerAppName, String revisionName);
 
     /**
      * Restarts a revision for a Container App.
@@ -168,4 +154,18 @@ public interface ContainerAppsRevisionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> restartRevisionWithResponse(
         String resourceGroupName, String containerAppName, String revisionName, Context context);
+
+    /**
+     * Restarts a revision for a Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param revisionName Name of the Container App Revision.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restartRevision(String resourceGroupName, String containerAppName, String revisionName);
 }

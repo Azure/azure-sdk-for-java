@@ -1228,7 +1228,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1283,7 +1285,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1336,7 +1340,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1354,7 +1360,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1371,7 +1379,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

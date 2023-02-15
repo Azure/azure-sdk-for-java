@@ -10,16 +10,16 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannelType;
-import com.azure.communication.callautomation.models.MediaStreamingConfiguration;
-import com.azure.communication.callautomation.models.MediaStreamingContentType;
-import com.azure.communication.callautomation.models.MediaStreamingTransportType;
+import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.MediaStreamingContent;
+import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -36,18 +36,20 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
     static final String CALL_CALLER_ID = "callerId";
+    static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
+    static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
 
-    static final MediaStreamingConfiguration MEDIA_STREAMING_CONFIGURATION = new MediaStreamingConfiguration(
+    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",
-        MediaStreamingTransportType.WEBSOCKET,
-        MediaStreamingContentType.AUDIO,
-        MediaStreamingAudioChannelType.MIXED
+        MediaStreamingTransport.WEBSOCKET,
+        MediaStreamingContent.AUDIO,
+        MediaStreamingAudioChannel.MIXED
     );
 
     public static String generateDownloadResult(String content) {
@@ -55,15 +57,18 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
-                                                String targetId, String connectionState, String subject, String callbackUri) {
+                                                String callerDisplayName, String targetId, String connectionState,
+                                                String subject, String callbackUri, String mediaSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
-            .setSubject(subject)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+            .setMediaSubscriptionId(mediaSubscriptionId)
             .setSource(new CallSourceInternal()
-                .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId)))
+                .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
+                .setDisplayName(callerDisplayName)
+            )
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
 
@@ -71,7 +76,7 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateGetParticipantResponse(String callerId, boolean isMuted) {
-        AcsCallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
+        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
         return serializeObject(callParticipant);
     }
 

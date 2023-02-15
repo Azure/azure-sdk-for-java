@@ -52,6 +52,10 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
     @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
+    /** Creates an instance of CertificateDatastoreCredentials class. */
+    public CertificateDatastoreCredentials() {
+    }
+
     /**
      * Get the authorityUrl property: Authority URL used for authentication.
      *

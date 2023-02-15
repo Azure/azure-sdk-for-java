@@ -42,6 +42,10 @@ public final class MabJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of MabJobTaskDetails class. */
+    public MabJobTaskDetails() {
+    }
+
     /**
      * Get the taskId property: The task display name.
      *

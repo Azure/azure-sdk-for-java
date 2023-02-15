@@ -68,7 +68,7 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface ProximityPlacementGroupsService {
+    public interface ProximityPlacementGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -220,7 +220,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +284,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -323,23 +323,6 @@ public final class ProximityPlacementGroupsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner createOrUpdate(
-        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, proximityPlacementGroupName, parameters).block();
-    }
-
-    /**
-     * Create or update a proximity placement group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -354,6 +337,24 @@ public final class ProximityPlacementGroupsClientImpl
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create or update a proximity placement group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner createOrUpdate(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, proximityPlacementGroupName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -398,7 +399,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -462,7 +463,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -501,23 +502,6 @@ public final class ProximityPlacementGroupsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner update(
-        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
-        return updateAsync(resourceGroupName, proximityPlacementGroupName, parameters).block();
-    }
-
-    /**
-     * Update a proximity placement group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -531,6 +515,23 @@ public final class ProximityPlacementGroupsClientImpl
         ProximityPlacementGroupUpdate parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters, context).block();
+    }
+
+    /**
+     * Update a proximity placement group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner update(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
+        return updateWithResponse(resourceGroupName, proximityPlacementGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -567,7 +568,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -620,7 +621,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -654,20 +655,6 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String proximityPlacementGroupName) {
-        deleteAsync(resourceGroupName, proximityPlacementGroupName).block();
-    }
-
-    /**
-     * Delete a proximity placement group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -678,6 +665,20 @@ public final class ProximityPlacementGroupsClientImpl
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String proximityPlacementGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName, context).block();
+    }
+
+    /**
+     * Delete a proximity placement group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String proximityPlacementGroupName) {
+        deleteWithResponse(resourceGroupName, proximityPlacementGroupName, Context.NONE);
     }
 
     /**
@@ -718,7 +719,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -775,7 +776,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -795,26 +796,6 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
-     *     resources in the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
-        return getByResourceGroupWithResponseAsync(
-                resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves information about a proximity placement group .
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -827,23 +808,6 @@ public final class ProximityPlacementGroupsClientImpl
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves information about a proximity placement group .
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner getByResourceGroup(
-        String resourceGroupName, String proximityPlacementGroupName) {
-        final String includeColocationStatus = null;
-        return getByResourceGroupAsync(resourceGroupName, proximityPlacementGroupName, includeColocationStatus).block();
     }
 
     /**
@@ -868,6 +832,25 @@ public final class ProximityPlacementGroupsClientImpl
     }
 
     /**
+     * Retrieves information about a proximity placement group .
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the proximity placement group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProximityPlacementGroupInner getByResourceGroup(
+        String resourceGroupName, String proximityPlacementGroupName) {
+        final String includeColocationStatus = null;
+        return getByResourceGroupWithResponse(
+                resourceGroupName, proximityPlacementGroupName, includeColocationStatus, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Lists all proximity placement groups in a subscription.
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -889,7 +872,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -932,7 +915,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1031,7 +1014,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1086,7 +1069,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

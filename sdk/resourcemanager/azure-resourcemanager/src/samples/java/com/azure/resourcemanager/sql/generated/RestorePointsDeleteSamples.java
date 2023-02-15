@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorePoints Delete. */
 public final class RestorePointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DatabaseRestorePointsDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsDelete.json
      */
     /**
      * Sample code: Deletes a restore point.

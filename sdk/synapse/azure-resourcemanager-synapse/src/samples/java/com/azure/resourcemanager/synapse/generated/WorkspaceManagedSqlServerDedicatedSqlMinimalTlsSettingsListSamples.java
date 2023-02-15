@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings List. */
 public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSamples {
     /*
@@ -20,6 +18,6 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSa
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .list("workspace-6852", "workspace-2080", Context.NONE);
+            .list("workspace-6852", "workspace-2080", com.azure.core.util.Context.NONE);
     }
 }

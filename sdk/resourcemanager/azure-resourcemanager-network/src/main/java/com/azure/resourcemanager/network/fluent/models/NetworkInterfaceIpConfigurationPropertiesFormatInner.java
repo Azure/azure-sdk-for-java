@@ -101,6 +101,10 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     @JsonProperty(value = "privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
+    /** Creates an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner class. */
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner() {
+    }
+
     /**
      * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
      *

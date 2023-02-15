@@ -39,6 +39,16 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointAdditionalInfo")
     private String recoveryPointAdditionalInfo;
 
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
+    /** Creates an instance of GenericRecoveryPoint class. */
+    public GenericRecoveryPoint() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the backup copy.
      *
@@ -120,6 +130,26 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the GenericRecoveryPoint object itself.
+     */
+    public GenericRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -127,5 +157,8 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     @Override
     public void validate() {
         super.validate();
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
     }
 }

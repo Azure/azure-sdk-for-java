@@ -13,12 +13,10 @@ import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsRe
 import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedRecommendation;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsRecommendations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
     implements IotSecuritySolutionsAnalyticsRecommendations {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsAnalyticsRecommendationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IotSecuritySolutionsAnalyticsRecommendationsImpl.class);
 
     private final IotSecuritySolutionsAnalyticsRecommendationsClient innerClient;
 
@@ -29,17 +27,6 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public IoTSecurityAggregatedRecommendation get(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
-        IoTSecurityAggregatedRecommendationInner inner =
-            this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
-        if (inner != null) {
-            return new IoTSecurityAggregatedRecommendationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<IoTSecurityAggregatedRecommendation> getWithResponse(
@@ -54,6 +41,17 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IoTSecurityAggregatedRecommendationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IoTSecurityAggregatedRecommendation get(
+        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
+        IoTSecurityAggregatedRecommendationInner inner =
+            this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
+        if (inner != null) {
+            return new IoTSecurityAggregatedRecommendationImpl(inner, this.manager());
         } else {
             return null;
         }

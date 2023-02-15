@@ -12,6 +12,16 @@ public class NamespaceProperties extends CommonProperties implements EventHubsNa
 
     private Boolean sharedConnection;
 
+    /**
+     * The default constructor.
+     *
+     * The object constructed from this constructor will have a cloud type default
+     * to the Azure global cloud.
+     */
+    public NamespaceProperties() {
+        this.getProfile().setCloudType(CloudType.AZURE);
+    }
+
     @Override
     public Boolean getSharedConnection() {
         return sharedConnection;

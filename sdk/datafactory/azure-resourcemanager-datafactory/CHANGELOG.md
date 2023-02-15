@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.18 (Unreleased)
+## 1.0.0-beta.21 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,203 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.20 (2023-01-18)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withNumExecutors(java.lang.Integer)` was removed
+* `java.lang.Integer numExecutors()` -> `java.lang.Object numExecutors()`
+
+### Features Added
+
+* `models.ConfigurationType` was added
+
+* `models.SparkConfigurationReferenceType` was added
+
+* `models.SparkConfigurationParametrizationReference` was added
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withConfigurationType(models.ConfigurationType)` was added
+* `targetSparkConfiguration()` was added
+* `configurationType()` was added
+* `withTargetSparkConfiguration(models.SparkConfigurationParametrizationReference)` was added
+* `withNumExecutors(java.lang.Object)` was added
+* `scanFolder()` was added
+* `withSparkConfig(java.util.Map)` was added
+* `sparkConfig()` was added
+* `withScanFolder(java.lang.Object)` was added
+
+## 1.0.0-beta.19 (2022-11-24)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CredentialOperations` was added
+
+* `models.ManagedIdentityCredentialResource$Update` was added
+
+* `models.ManagedIdentityCredentialResource$DefinitionStages` was added
+
+* `models.ManagedIdentityCredentialResource$Definition` was added
+
+* `models.ManagedIdentityCredentialResource` was added
+
+* `models.ManagedIdentityCredentialResource$UpdateStages` was added
+
+* `models.CredentialListResponse` was added
+
+#### `models.ScriptActivity` was modified
+
+* `scriptBlockExecutionTimeout()` was added
+* `withScriptBlockExecutionTimeout(java.lang.Object)` was added
+
+#### `DataFactoryManager` was modified
+
+* `credentialOperations()` was added
+
+## 1.0.0-beta.18 (2022-10-14)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.StoredProcedureParameterType` was removed
+
+* `models.StoredProcedureParameter` was removed
+
+#### `models.SqlMISink` was modified
+
+* `withStoredProcedureParameters(java.util.Map)` was removed
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+
+#### `models.SqlServerSink` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.SqlMISource` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.SynapseSparkJobReference` was modified
+
+* `withReferenceName(java.lang.String)` was removed
+* `java.lang.String referenceName()` -> `java.lang.Object referenceName()`
+
+#### `models.AmazonRdsForSqlServerSource` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.SqlServerSource` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.SqlSink` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.AzureSqlSink` was modified
+
+* `withStoredProcedureParameters(java.util.Map)` was removed
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+
+#### `models.SqlSource` was modified
+
+* `withStoredProcedureParameters(java.util.Map)` was removed
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+
+#### `models.Factories` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AzureSqlSource` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+### Features Added
+
+#### `models.SqlMISink` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.SqlServerSink` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.SqlMISource` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.FactoryRepoConfiguration` was modified
+
+* `withDisablePublish(java.lang.Boolean)` was added
+* `disablePublish()` was added
+
+#### `models.SynapseSparkJobReference` was modified
+
+* `withReferenceName(java.lang.Object)` was added
+
+#### `models.AzureSynapseArtifactsLinkedService` was modified
+
+* `withWorkspaceResourceId(java.lang.Object)` was added
+* `workspaceResourceId()` was added
+
+#### `models.AmazonRdsForSqlServerSource` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.FactoryGitHubConfiguration` was modified
+
+* `withDisablePublish(java.lang.Boolean)` was added
+* `withDisablePublish(java.lang.Boolean)` was added
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withFilesV2(java.util.List)` was added
+* `filesV2()` was added
+* `withPythonCodeReference(java.util.List)` was added
+* `pythonCodeReference()` was added
+
+#### `models.SqlServerSource` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.SqlSink` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.AzureSqlSink` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.SqlSource` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.Factories` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.FactoryVstsConfiguration` was modified
+
+* `withDisablePublish(java.lang.Boolean)` was added
+* `withDisablePublish(java.lang.Boolean)` was added
+
+#### `models.AzureSqlSource` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
 
 ## 1.0.0-beta.17 (2022-09-13)
 

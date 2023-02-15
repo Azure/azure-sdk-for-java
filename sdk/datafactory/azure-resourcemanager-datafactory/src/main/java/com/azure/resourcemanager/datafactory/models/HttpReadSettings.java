@@ -54,6 +54,10 @@ public final class HttpReadSettings extends StoreReadSettings {
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
+    /** Creates an instance of HttpReadSettings class. */
+    public HttpReadSettings() {
+    }
+
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).

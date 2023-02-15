@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedLong;
 
 import java.time.Duration;
 
@@ -19,7 +20,6 @@ public class ServiceBusConstants {
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
-    public static final String AZ_TRACING_SERVICE_NAME = "ServiceBus.";
 
     public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
     public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
@@ -112,6 +112,13 @@ public class ServiceBusConstants {
     public static final String URI_NAME = VENDOR + ":uri";
     public static final String DURATION_NAME = VENDOR + ":timespan";
     public static final String OFFSETDATETIME_NAME = VENDOR + ":datetime-offset";
+    public static final UnsignedLong RULE_DESCRIPTION_NAME = new UnsignedLong(0x0000013700000004L);
+    public static final UnsignedLong SQL_FILTER_NAME = new UnsignedLong(0x000001370000006L);
+    public static final UnsignedLong CORRELATION_FILTER_NAME = new UnsignedLong(0x000001370000009L);
+    public static final UnsignedLong TRUE_FILTER_NAME = new UnsignedLong(0x000001370000007L);
+    public static final UnsignedLong FALSE_FILTER_NAME = new UnsignedLong(0x000001370000008L);
+    public static final UnsignedLong EMPTY_RULE_ACTION_NAME = new UnsignedLong(0x0000013700000005L);
+    public static final UnsignedLong SQL_RULE_ACTION_NAME = new UnsignedLong(0x0000013700000006L);
 
     /**
      * Amqp symbol for specific type.

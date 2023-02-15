@@ -24,6 +24,10 @@ public final class EnvironmentTypeListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of EnvironmentTypeListResult class. */
+    public EnvironmentTypeListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

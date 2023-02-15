@@ -18,8 +18,7 @@ public final class ExpansionResultAggregation {
     private String aggregationType;
 
     /*
-     * Total number of aggregations of the given kind (and aggregationType if
-     * given) in the expansion result.
+     * Total number of aggregations of the given kind (and aggregationType if given) in the expansion result.
      */
     @JsonProperty(value = "count", required = true)
     private int count;

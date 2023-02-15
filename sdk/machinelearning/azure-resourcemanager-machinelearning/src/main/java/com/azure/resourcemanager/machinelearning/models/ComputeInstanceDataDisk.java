@@ -23,8 +23,10 @@ public final class ComputeInstanceDataDisk {
     private Integer diskSizeGB;
 
     /*
-     * The logical unit number. The lun is used to uniquely identify each data
-     * disk. If attaching multiple disks, each should have a distinct lun.
+     * The logical unit number.
+     *
+     * The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun.
      */
     @JsonProperty(value = "lun")
     private Integer lun;
@@ -34,6 +36,10 @@ public final class ComputeInstanceDataDisk {
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
+
+    /** Creates an instance of ComputeInstanceDataDisk class. */
+    public ComputeInstanceDataDisk() {
+    }
 
     /**
      * Get the caching property: Caching type of Data Disk.
@@ -76,8 +82,10 @@ public final class ComputeInstanceDataDisk {
     }
 
     /**
-     * Get the lun property: The logical unit number. The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun.
+     * Get the lun property: The logical unit number.
+     *
+     * <p>The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun.
      *
      * @return the lun value.
      */
@@ -86,8 +94,10 @@ public final class ComputeInstanceDataDisk {
     }
 
     /**
-     * Set the lun property: The logical unit number. The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun.
+     * Set the lun property: The logical unit number.
+     *
+     * <p>The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun.
      *
      * @param lun the lun value to set.
      * @return the ComputeInstanceDataDisk object itself.

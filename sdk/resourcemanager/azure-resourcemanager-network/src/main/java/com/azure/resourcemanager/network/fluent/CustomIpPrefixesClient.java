@@ -140,21 +140,6 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomIpPrefixInner> getByResourceGroupAsync(
-        String resourceGroupName, String customIpPrefixName, String expand);
-
-    /**
-     * Gets the specified custom IP prefix in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,19 +147,6 @@ public interface CustomIpPrefixesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CustomIpPrefixInner> getByResourceGroupAsync(String resourceGroupName, String customIpPrefixName);
-
-    /**
-     * Gets the specified custom IP prefix in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomIpPrefixInner getByResourceGroup(String resourceGroupName, String customIpPrefixName);
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
@@ -191,6 +163,19 @@ public interface CustomIpPrefixesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomIpPrefixInner> getByResourceGroupWithResponse(
         String resourceGroupName, String customIpPrefixName, String expand, Context context);
+
+    /**
+     * Gets the specified custom IP prefix in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param customIpPrefixName The name of the custom IP prefix.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified custom IP prefix in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomIpPrefixInner getByResourceGroup(String resourceGroupName, String customIpPrefixName);
 
     /**
      * Creates or updates a custom IP prefix.
@@ -335,20 +320,6 @@ public interface CustomIpPrefixesClient
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName, TagsObject parameters);
-
-    /**
-     * Updates custom IP prefix tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
-     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -358,6 +329,20 @@ public interface CustomIpPrefixesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomIpPrefixInner> updateTagsWithResponse(
         String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context);
+
+    /**
+     * Updates custom IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param customIpPrefixName The name of the custom IP prefix.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName, TagsObject parameters);
 
     /**
      * Gets all the custom IP prefixes in a subscription.

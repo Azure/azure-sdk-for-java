@@ -25,6 +25,10 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties =
         new AzureFileStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureFileStorageLinkedService class. */
+    public AzureFileStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure File Storage linked service properties.
      *

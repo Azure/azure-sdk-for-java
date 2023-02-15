@@ -28,6 +28,10 @@ public final class SystemService {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
+    /** Creates an instance of SystemService class. */
+    public SystemService() {
+    }
+
     /**
      * Get the systemServiceType property: The type of this system service.
      *

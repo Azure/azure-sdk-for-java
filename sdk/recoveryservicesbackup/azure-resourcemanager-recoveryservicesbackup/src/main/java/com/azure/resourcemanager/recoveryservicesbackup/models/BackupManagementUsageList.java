@@ -18,6 +18,10 @@ public final class BackupManagementUsageList {
     @JsonProperty(value = "value")
     private List<BackupManagementUsageInner> value;
 
+    /** Creates an instance of BackupManagementUsageList class. */
+    public BackupManagementUsageList() {
+    }
+
     /**
      * Get the value property: The list of backup management usages for the given vault.
      *

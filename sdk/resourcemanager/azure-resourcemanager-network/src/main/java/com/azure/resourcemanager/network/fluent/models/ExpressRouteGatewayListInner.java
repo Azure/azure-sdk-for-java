@@ -17,6 +17,10 @@ public final class ExpressRouteGatewayListInner {
     @JsonProperty(value = "value")
     private List<ExpressRouteGatewayInner> value;
 
+    /** Creates an instance of ExpressRouteGatewayListInner class. */
+    public ExpressRouteGatewayListInner() {
+    }
+
     /**
      * Get the value property: List of ExpressRoute gateways.
      *

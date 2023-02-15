@@ -18,9 +18,8 @@ import java.util.Map;
 @Fluent
 public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
     /*
-     * An incremental part of a shift which can cover details of when and where
-     * an employee is during their shift. For example, an assignment or a
-     * scheduled break or lunch. Required.
+     * An incremental part of a shift which can cover details of when and where an employee is during their shift. For
+     * example, an assignment or a scheduled break or lunch. Required.
      */
     @JsonProperty(value = "activities")
     private List<MicrosoftGraphShiftActivity> activities;
@@ -41,6 +40,10 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
      * shiftItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShiftItem class. */
+    public MicrosoftGraphShiftItem() {
+    }
 
     /**
      * Get the activities property: An incremental part of a shift which can cover details of when and where an employee

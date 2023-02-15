@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceData;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SecuritySolutionsReferenceDataList model. */
 @Fluent
 public final class SecuritySolutionsReferenceDataListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceDataListInner.class);
-
     /*
      * The value property.
      */
     @JsonProperty(value = "value")
     private List<SecuritySolutionsReferenceData> value;
+
+    /** Creates an instance of SecuritySolutionsReferenceDataListInner class. */
+    public SecuritySolutionsReferenceDataListInner() {
+    }
 
     /**
      * Get the value property: The value property.

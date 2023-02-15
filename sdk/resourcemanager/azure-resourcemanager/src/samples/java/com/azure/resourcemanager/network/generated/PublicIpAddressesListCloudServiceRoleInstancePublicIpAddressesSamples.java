@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpAddresses ListCloudServiceRoleInstancePublicIpAddresses. */
 public final class PublicIpAddressesListCloudServiceRoleInstancePublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/CloudServiceRoleInstancePublicIpList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/CloudServiceRoleInstancePublicIpList.json
      */
     /**
      * Sample code: ListVMSSVMPublicIP.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSets Delete. */
 public final class VirtualMachineScaleSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Delete_Force.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Delete_Force.json
      */
     /**
      * Sample code: Force Delete a VM scale set.
@@ -22,6 +20,6 @@ public final class VirtualMachineScaleSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .delete("myResourceGroup", "myvmScaleSet", true, Context.NONE);
+            .delete("myResourceGroup", "myvmScaleSet", true, com.azure.core.util.Context.NONE);
     }
 }

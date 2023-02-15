@@ -30,6 +30,10 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
     @JsonProperty(value = "restoreRequest")
     private RestoreRequest restoreRequest;
 
+    /** Creates an instance of ValidateRestoreOperationRequest class. */
+    public ValidateRestoreOperationRequest() {
+    }
+
     /**
      * Get the restoreRequest property: Sets restore request to be validated.
      *

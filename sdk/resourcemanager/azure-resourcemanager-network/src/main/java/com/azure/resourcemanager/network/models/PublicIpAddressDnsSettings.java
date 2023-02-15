@@ -33,6 +33,10 @@ public final class PublicIpAddressDnsSettings {
     @JsonProperty(value = "reverseFqdn")
     private String reverseFqdn;
 
+    /** Creates an instance of PublicIpAddressDnsSettings class. */
+    public PublicIpAddressDnsSettings() {
+    }
+
     /**
      * Get the domainNameLabel property: The domain name label. The concatenation of the domain name label and the
      * regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain

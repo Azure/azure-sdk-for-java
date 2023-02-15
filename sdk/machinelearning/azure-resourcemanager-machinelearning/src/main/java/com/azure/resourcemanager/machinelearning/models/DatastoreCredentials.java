@@ -19,14 +19,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AccountKey", value = AccountKeyDatastoreCredentials.class),
     @JsonSubTypes.Type(name = "Certificate", value = CertificateDatastoreCredentials.class),
-    @JsonSubTypes.Type(name = "KerberosKeytab", value = KerberosKeytabCredentials.class),
-    @JsonSubTypes.Type(name = "KerberosPassword", value = KerberosPasswordCredentials.class),
     @JsonSubTypes.Type(name = "None", value = NoneDatastoreCredentials.class),
     @JsonSubTypes.Type(name = "Sas", value = SasDatastoreCredentials.class),
     @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalDatastoreCredentials.class)
 })
 @Immutable
 public class DatastoreCredentials {
+    /** Creates an instance of DatastoreCredentials class. */
+    public DatastoreCredentials() {
+    }
+
     /**
      * Validates the instance.
      *

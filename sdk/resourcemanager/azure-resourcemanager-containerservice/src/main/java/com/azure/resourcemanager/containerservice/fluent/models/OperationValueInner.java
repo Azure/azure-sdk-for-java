@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.containerservice.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Operation value. */
-@Fluent
+@Immutable
 public final class OperationValueInner {
     /*
      * The origin of the operation.
@@ -27,6 +27,10 @@ public final class OperationValueInner {
      */
     @JsonProperty(value = "display")
     private OperationValueDisplay innerDisplay;
+
+    /** Creates an instance of OperationValueInner class. */
+    public OperationValueInner() {
+    }
 
     /**
      * Get the origin property: The origin of the operation.

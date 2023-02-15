@@ -16,17 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class TextClassificationMultilabel extends AutoMLVertical {
     /*
      * Primary metric for Text-Classification-Multilabel task.
-     * Currently only Accuracy is supported as primary metric, hence user need
-     * not set it explicitly.
+     * Currently only Accuracy is supported as primary metric, hence user need not set it explicitly.
      */
     @JsonProperty(value = "primaryMetric", access = JsonProperty.Access.WRITE_ONLY)
     private ClassificationMultilabelPrimaryMetrics primaryMetric;
-
-    /*
-     * Data inputs for AutoMLJob.
-     */
-    @JsonProperty(value = "dataSettings")
-    private NlpVerticalDataSettings dataSettings;
 
     /*
      * Featurization inputs needed for AutoML job.
@@ -40,6 +33,16 @@ public final class TextClassificationMultilabel extends AutoMLVertical {
     @JsonProperty(value = "limitSettings")
     private NlpVerticalLimitSettings limitSettings;
 
+    /*
+     * Validation data inputs.
+     */
+    @JsonProperty(value = "validationData")
+    private MLTableJobInput validationData;
+
+    /** Creates an instance of TextClassificationMultilabel class. */
+    public TextClassificationMultilabel() {
+    }
+
     /**
      * Get the primaryMetric property: Primary metric for Text-Classification-Multilabel task. Currently only Accuracy
      * is supported as primary metric, hence user need not set it explicitly.
@@ -48,26 +51,6 @@ public final class TextClassificationMultilabel extends AutoMLVertical {
      */
     public ClassificationMultilabelPrimaryMetrics primaryMetric() {
         return this.primaryMetric;
-    }
-
-    /**
-     * Get the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @return the dataSettings value.
-     */
-    public NlpVerticalDataSettings dataSettings() {
-        return this.dataSettings;
-    }
-
-    /**
-     * Set the dataSettings property: Data inputs for AutoMLJob.
-     *
-     * @param dataSettings the dataSettings value to set.
-     * @return the TextClassificationMultilabel object itself.
-     */
-    public TextClassificationMultilabel withDataSettings(NlpVerticalDataSettings dataSettings) {
-        this.dataSettings = dataSettings;
-        return this;
     }
 
     /**
@@ -111,10 +94,44 @@ public final class TextClassificationMultilabel extends AutoMLVertical {
         return this;
     }
 
+    /**
+     * Get the validationData property: Validation data inputs.
+     *
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     *
+     * @param validationData the validationData value to set.
+     * @return the TextClassificationMultilabel object itself.
+     */
+    public TextClassificationMultilabel withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public TextClassificationMultilabel withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextClassificationMultilabel withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextClassificationMultilabel withTrainingData(MLTableJobInput trainingData) {
+        super.withTrainingData(trainingData);
         return this;
     }
 
@@ -126,14 +143,14 @@ public final class TextClassificationMultilabel extends AutoMLVertical {
     @Override
     public void validate() {
         super.validate();
-        if (dataSettings() != null) {
-            dataSettings().validate();
-        }
         if (featurizationSettings() != null) {
             featurizationSettings().validate();
         }
         if (limitSettings() != null) {
             limitSettings().validate();
+        }
+        if (validationData() != null) {
+            validationData().validate();
         }
     }
 }

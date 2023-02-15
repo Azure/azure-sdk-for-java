@@ -8,7 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreateMode. */
+/**
+ * Specifies the mode of sql pool creation.
+ *
+ * <p>Default: regular sql pool creation.
+ *
+ * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+ * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+ * specified.
+ *
+ * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+ * recoverableDatabaseId to restore.
+ *
+ * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql pool's
+ * original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
+ */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value Default for CreateMode. */
     public static final CreateMode DEFAULT = fromString("Default");
@@ -33,7 +47,11 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
         return fromString(name, CreateMode.class);
     }
 
-    /** @return known CreateMode values. */
+    /**
+     * Gets known CreateMode values.
+     *
+     * @return known CreateMode values.
+     */
     public static Collection<CreateMode> values() {
         return values(CreateMode.class);
     }

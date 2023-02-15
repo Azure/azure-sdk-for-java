@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+/** The rental and lease key type. */
 public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
     extends ExpandableStringEnum<ContentKeyPolicyFairPlayRentalAndLeaseKeyType> {
     /** Static value Unknown for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
@@ -27,6 +27,15 @@ public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
     /** Static value PersistentLimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
     public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_LIMITED =
         fromString("PersistentLimited");
+
+    /**
+     * Creates a new instance of ContentKeyPolicyFairPlayRentalAndLeaseKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyFairPlayRentalAndLeaseKeyType() {
+    }
 
     /**
      * Creates or finds a ContentKeyPolicyFairPlayRentalAndLeaseKeyType from its string representation.

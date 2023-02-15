@@ -41,6 +41,10 @@ public final class VaultJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private VaultJobExtendedInfo extendedInfo;
 
+    /** Creates an instance of VaultJob class. */
+    public VaultJob() {
+    }
+
     /**
      * Get the duration property: Time elapsed during the execution of this job.
      *

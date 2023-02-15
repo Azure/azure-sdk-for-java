@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for NetworkManagers Patch. */
 public final class NetworkManagersPatchSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerPatch.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerPatch.json
      */
     /**
      * Sample code: NetworkManagesPatch.

@@ -19,9 +19,12 @@ import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.Volume;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
@@ -118,6 +121,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().snapshotId();
     }
 
+    public Boolean deleteBaseSnapshot() {
+        return this.innerModel().deleteBaseSnapshot();
+    }
+
     public String backupId() {
         return this.innerModel().backupId();
     }
@@ -177,6 +184,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Boolean smbEncryption() {
         return this.innerModel().smbEncryption();
+    }
+
+    public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
+        return this.innerModel().smbAccessBasedEnumeration();
+    }
+
+    public SmbNonBrowsable smbNonBrowsable() {
+        return this.innerModel().smbNonBrowsable();
     }
 
     public Boolean smbContinuouslyAvailable() {
@@ -473,12 +488,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void relocate(RelocateVolumeRequest body) {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
     public void relocate() {
         serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void relocate(Context context) {
-        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, context);
+    public void relocate(RelocateVolumeRequest body, Context context) {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void finalizeRelocation() {
@@ -562,6 +581,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withDeleteBaseSnapshot(Boolean deleteBaseSnapshot) {
+        this.innerModel().withDeleteBaseSnapshot(deleteBaseSnapshot);
+        return this;
+    }
+
     public VolumeImpl withBackupId(String backupId) {
         this.innerModel().withBackupId(backupId);
         return this;
@@ -604,6 +628,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withSmbEncryption(Boolean smbEncryption) {
         this.innerModel().withSmbEncryption(smbEncryption);
+        return this;
+    }
+
+    public VolumeImpl withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
+        this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+        return this;
+    }
+
+    public VolumeImpl withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
+        this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
         return this;
     }
 

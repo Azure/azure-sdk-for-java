@@ -28,6 +28,10 @@ public final class ConnectivityDestination {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of ConnectivityDestination class. */
+    public ConnectivityDestination() {
+    }
+
     /**
      * Get the resourceId property: The ID of the resource to which a connection attempt will be made.
      *

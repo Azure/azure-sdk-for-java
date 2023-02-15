@@ -11,6 +11,10 @@ spring:
         client-secret: ${AZURE_SPRING_CLIENT_SECRET}
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
+      eventhubs:
+        domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
+      servicebus:
+        domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
 logging:
   level:
     com.azure:

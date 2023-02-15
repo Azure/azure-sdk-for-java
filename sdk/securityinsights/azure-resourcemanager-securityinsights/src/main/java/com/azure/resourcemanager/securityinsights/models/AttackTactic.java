@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AttackTactic. */
+/** The severity for alerts created by this alert rule. */
 public final class AttackTactic extends ExpandableStringEnum<AttackTactic> {
     /** Static value Reconnaissance for AttackTactic. */
     public static final AttackTactic RECONNAISSANCE = fromString("Reconnaissance");

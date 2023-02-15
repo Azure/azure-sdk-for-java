@@ -38,15 +38,6 @@ public final class ConfigurationsImpl implements Configurations {
         return Utils.mapPage(inner, inner1 -> new NginxConfigurationImpl(inner1, this.manager()));
     }
 
-    public NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName) {
-        NginxConfigurationInner inner = this.serviceClient().get(resourceGroupName, deploymentName, configurationName);
-        if (inner != null) {
-            return new NginxConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NginxConfiguration> getWithResponse(
         String resourceGroupName, String deploymentName, String configurationName, Context context) {
         Response<NginxConfigurationInner> inner =
@@ -57,6 +48,15 @@ public final class ConfigurationsImpl implements Configurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NginxConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName) {
+        NginxConfigurationInner inner = this.serviceClient().get(resourceGroupName, deploymentName, configurationName);
+        if (inner != null) {
+            return new NginxConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

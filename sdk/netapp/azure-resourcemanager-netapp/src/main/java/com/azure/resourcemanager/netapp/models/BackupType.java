@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupType. */
+/**
+ * backupType
+ *
+ * <p>Type of backup Manual or Scheduled.
+ */
 public final class BackupType extends ExpandableStringEnum<BackupType> {
     /** Static value Manual for BackupType. */
     public static final BackupType MANUAL = fromString("Manual");

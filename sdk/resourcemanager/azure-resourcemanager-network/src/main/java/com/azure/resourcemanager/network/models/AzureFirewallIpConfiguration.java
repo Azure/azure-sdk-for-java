@@ -36,6 +36,10 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of AzureFirewallIpConfiguration class. */
+    public AzureFirewallIpConfiguration() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the azure firewall IP configuration.
      *

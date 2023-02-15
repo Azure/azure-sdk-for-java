@@ -28,6 +28,10 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     @JsonProperty(value = "status")
     private InstanceViewStatus status;
 
+    /** Creates an instance of VirtualMachineExtensionHandlerInstanceView class. */
+    public VirtualMachineExtensionHandlerInstanceView() {
+    }
+
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *

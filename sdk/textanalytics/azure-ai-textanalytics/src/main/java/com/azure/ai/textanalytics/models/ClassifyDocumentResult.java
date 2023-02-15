@@ -12,6 +12,7 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class ClassifyDocumentResult extends TextAnalyticsResult {
+    private DetectedLanguage detectedLanguage;
     private IterableStream<ClassificationCategory> classifications;
     private IterableStream<TextAnalyticsWarning> warnings;
 
@@ -22,6 +23,12 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
                 public void setClassifications(ClassifyDocumentResult classifyDocumentResult,
                     IterableStream<ClassificationCategory> classifications) {
                     classifyDocumentResult.setClassifications(classifications);
+                }
+
+                @Override
+                public void setDetectedLanguage(ClassifyDocumentResult classifyDocumentResult,
+                    DetectedLanguage detectedLanguage) {
+                    classifyDocumentResult.setDetectedLanguage(detectedLanguage);
                 }
 
                 @Override
@@ -55,12 +62,27 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     }
 
     /**
+     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
+     * contain an object of the language detected for this document.
+     *
+     * @return the detectedLanguage value.
+     */
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
+    }
+
+
+    /**
      * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public IterableStream<TextAnalyticsWarning> getWarnings() {
         return this.warnings;
+    }
+
+    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
     }
 
     private void setClassifications(IterableStream<ClassificationCategory> classifications) {

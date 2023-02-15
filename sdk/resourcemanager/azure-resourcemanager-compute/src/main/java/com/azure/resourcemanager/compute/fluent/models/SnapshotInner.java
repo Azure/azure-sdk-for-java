@@ -53,6 +53,10 @@ public final class SnapshotInner extends Resource {
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
+
     /**
      * Get the managedBy property: Unused. Always Null.
      *
@@ -374,6 +378,16 @@ public final class SnapshotInner extends Resource {
         }
         this.innerProperties().withIncremental(incremental);
         return this;
+    }
+
+    /**
+     * Get the incrementalSnapshotFamilyId property: Incremental snapshots for a disk share an incremental snapshot
+     * family id. The Get Page Range Diff API can only be called on incremental snapshots with the same family id.
+     *
+     * @return the incrementalSnapshotFamilyId value.
+     */
+    public String incrementalSnapshotFamilyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().incrementalSnapshotFamilyId();
     }
 
     /**

@@ -37,6 +37,10 @@ public final class ServiceAssociationLink extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ServiceAssociationLink class. */
+    public ServiceAssociationLink() {
+    }
+
     /**
      * Get the innerProperties property: Resource navigation link properties format.
      *

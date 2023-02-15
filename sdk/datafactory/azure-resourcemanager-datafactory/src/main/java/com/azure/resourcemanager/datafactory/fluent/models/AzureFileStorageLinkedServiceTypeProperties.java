@@ -76,6 +76,10 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureFileStorageLinkedServiceTypeProperties class. */
+    public AzureFileStorageLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
      *

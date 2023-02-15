@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.VendorNetworkFunctionsClie
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorNetworkFunctionInner;
 import com.azure.resourcemanager.hybridnetwork.models.VendorNetworkFunction;
 import com.azure.resourcemanager.hybridnetwork.models.VendorNetworkFunctions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VendorNetworkFunctionsImpl implements VendorNetworkFunctions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorNetworkFunctionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VendorNetworkFunctionsImpl.class);
 
     private final VendorNetworkFunctionsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class VendorNetworkFunctionsImpl implements VendorNetworkFunctions 
         this.serviceManager = serviceManager;
     }
 
-    public VendorNetworkFunction get(String locationName, String vendorName, String serviceKey) {
-        VendorNetworkFunctionInner inner = this.serviceClient().get(locationName, vendorName, serviceKey);
-        if (inner != null) {
-            return new VendorNetworkFunctionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VendorNetworkFunction> getWithResponse(
         String locationName, String vendorName, String serviceKey, Context context) {
         Response<VendorNetworkFunctionInner> inner =
@@ -48,6 +38,15 @@ public final class VendorNetworkFunctionsImpl implements VendorNetworkFunctions 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VendorNetworkFunctionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VendorNetworkFunction get(String locationName, String vendorName, String serviceKey) {
+        VendorNetworkFunctionInner inner = this.serviceClient().get(locationName, vendorName, serviceKey);
+        if (inner != null) {
+            return new VendorNetworkFunctionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -68,21 +67,21 @@ public final class VendorNetworkFunctionsImpl implements VendorNetworkFunctions 
     public VendorNetworkFunction getById(String id) {
         String locationName = Utils.getValueFromIdByName(id, "locations");
         if (locationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String serviceKey = Utils.getValueFromIdByName(id, "networkFunctions");
         if (serviceKey == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,21 +94,21 @@ public final class VendorNetworkFunctionsImpl implements VendorNetworkFunctions 
     public Response<VendorNetworkFunction> getByIdWithResponse(String id, Context context) {
         String locationName = Utils.getValueFromIdByName(id, "locations");
         if (locationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String serviceKey = Utils.getValueFromIdByName(id, "networkFunctions");
         if (serviceKey == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

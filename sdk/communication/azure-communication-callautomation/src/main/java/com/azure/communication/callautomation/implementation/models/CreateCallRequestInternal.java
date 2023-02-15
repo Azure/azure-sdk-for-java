@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CreateCallRequestInternal model. */
+/** The request payload for creating the call. */
 @Fluent
 public final class CreateCallRequestInternal {
     /*
@@ -24,10 +24,10 @@ public final class CreateCallRequestInternal {
     private CallSourceInternal source;
 
     /*
-     * The subject.
+     * A customer set value used to track the answering of a call.
      */
-    @JsonProperty(value = "subject")
-    private String subject;
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
 
     /*
      * The callback URI.
@@ -40,6 +40,12 @@ public final class CreateCallRequestInternal {
      */
     @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
+
+    /*
+     * The identifier of the Cognitive Service resource assigned to this call.
+     */
+    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
+    private String azureCognitiveServicesEndpointUrl;
 
     /**
      * Get the targets property: The targets of the call.
@@ -82,22 +88,22 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the subject property: The subject.
+     * Get the operationContext property: A customer set value used to track the answering of a call.
      *
-     * @return the subject value.
+     * @return the operationContext value.
      */
-    public String getSubject() {
-        return this.subject;
+    public String getOperationContext() {
+        return this.operationContext;
     }
 
     /**
-     * Set the subject property: The subject.
+     * Set the operationContext property: A customer set value used to track the answering of a call.
      *
-     * @param subject the subject value to set.
+     * @param operationContext the operationContext value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSubject(String subject) {
-        this.subject = subject;
+    public CreateCallRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 
@@ -139,6 +145,28 @@ public final class CreateCallRequestInternal {
     public CreateCallRequestInternal setMediaStreamingConfiguration(
             MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
+     * this call.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
+     * this call.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

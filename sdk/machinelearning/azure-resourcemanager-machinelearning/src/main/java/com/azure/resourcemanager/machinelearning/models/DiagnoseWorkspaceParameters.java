@@ -16,6 +16,10 @@ public final class DiagnoseWorkspaceParameters {
     @JsonProperty(value = "value")
     private DiagnoseRequestProperties value;
 
+    /** Creates an instance of DiagnoseWorkspaceParameters class. */
+    public DiagnoseWorkspaceParameters() {
+    }
+
     /**
      * Get the value property: Value of Parameters.
      *

@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsResultsLocationsImpl implements OperationsResultsLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsResultsLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsResultsLocationsImpl.class);
 
     private final OperationsResultsLocationsClient innerClient;
 

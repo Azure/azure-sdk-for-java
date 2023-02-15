@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.QuotaBaseProperties;
 import com.azure.resourcemanager.machinelearning.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Quotas Update. */
 public final class QuotasUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Quota/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Quota/update.json
      */
     /**
      * Sample code: update quotas.
@@ -41,6 +40,6 @@ public final class QuotasUpdateSamples {
                                     .withType("Microsoft.MachineLearningServices/workspaces/quotas")
                                     .withLimit(200L)
                                     .withUnit(QuotaUnit.COUNT))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

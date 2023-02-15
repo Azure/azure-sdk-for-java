@@ -24,6 +24,10 @@ public final class HDInsightLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightLinkedServiceTypeProperties innerTypeProperties = new HDInsightLinkedServiceTypeProperties();
 
+    /** Creates an instance of HDInsightLinkedService class. */
+    public HDInsightLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight linked service properties.
      *

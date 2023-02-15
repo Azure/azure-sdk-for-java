@@ -17,6 +17,10 @@ public final class SapTableResourceDatasetTypeProperties {
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
+    /** Creates an instance of SapTableResourceDatasetTypeProperties class. */
+    public SapTableResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
      *

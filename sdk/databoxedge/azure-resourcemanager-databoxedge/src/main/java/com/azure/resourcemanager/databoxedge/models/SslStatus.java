@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SslStatus. */
+/** Signifies whether SSL needs to be enabled or not. */
 public final class SslStatus extends ExpandableStringEnum<SslStatus> {
     /** Static value Enabled for SslStatus. */
     public static final SslStatus ENABLED = fromString("Enabled");
 
     /** Static value Disabled for SslStatus. */
     public static final SslStatus DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of SslStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SslStatus() {
+    }
 
     /**
      * Creates or finds a SslStatus from its string representation.
@@ -27,7 +36,11 @@ public final class SslStatus extends ExpandableStringEnum<SslStatus> {
         return fromString(name, SslStatus.class);
     }
 
-    /** @return known SslStatus values. */
+    /**
+     * Gets known SslStatus values.
+     *
+     * @return known SslStatus values.
+     */
     public static Collection<SslStatus> values() {
         return values(SslStatus.class);
     }

@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Slim version of policy metadata resource definition, excluding properties with large strings. */
-@Fluent
+@Immutable
 public final class SlimPolicyMetadataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlimPolicyMetadataInner.class);
-
     /*
      * Properties of the policy metadata.
      */
@@ -37,6 +33,10 @@ public final class SlimPolicyMetadataInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+
+    /** Creates an instance of SlimPolicyMetadataInner class. */
+    public SlimPolicyMetadataInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the policy metadata.

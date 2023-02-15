@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.CodeVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionDataInner;
-import com.azure.resourcemanager.machinelearning.models.CodeVersionData;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
+import com.azure.resourcemanager.machinelearning.models.CodeVersion;
 import com.azure.resourcemanager.machinelearning.models.CodeVersions;
 
 public final class CodeVersionsImpl implements CodeVersions {
@@ -28,12 +28,12 @@ public final class CodeVersionsImpl implements CodeVersions {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<CodeVersionData> list(String resourceGroupName, String workspaceName, String name) {
-        PagedIterable<CodeVersionDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, name);
-        return Utils.mapPage(inner, inner1 -> new CodeVersionDataImpl(inner1, this.manager()));
+    public PagedIterable<CodeVersion> list(String resourceGroupName, String workspaceName, String name) {
+        PagedIterable<CodeVersionInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, name);
+        return Utils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CodeVersionData> list(
+    public PagedIterable<CodeVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -41,13 +41,9 @@ public final class CodeVersionsImpl implements CodeVersions {
         Integer top,
         String skip,
         Context context) {
-        PagedIterable<CodeVersionDataInner> inner =
+        PagedIterable<CodeVersionInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, name, orderBy, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new CodeVersionDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
+        return Utils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -55,31 +51,35 @@ public final class CodeVersionsImpl implements CodeVersions {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, version, context);
     }
 
-    public CodeVersionData get(String resourceGroupName, String workspaceName, String name, String version) {
-        CodeVersionDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
-        if (inner != null) {
-            return new CodeVersionDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
     }
 
-    public Response<CodeVersionData> getWithResponse(
+    public Response<CodeVersion> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
-        Response<CodeVersionDataInner> inner =
+        Response<CodeVersionInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, version, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CodeVersionDataImpl(inner.getValue(), this.manager()));
+                new CodeVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CodeVersionData getById(String id) {
+    public CodeVersion get(String resourceGroupName, String workspaceName, String name, String version) {
+        CodeVersionInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
+        if (inner != null) {
+            return new CodeVersionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CodeVersion getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -112,7 +112,7 @@ public final class CodeVersionsImpl implements CodeVersions {
         return this.getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
-    public Response<CodeVersionData> getByIdWithResponse(String id, Context context) {
+    public Response<CodeVersion> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -219,7 +219,7 @@ public final class CodeVersionsImpl implements CodeVersions {
         return this.serviceManager;
     }
 
-    public CodeVersionDataImpl define(String name) {
-        return new CodeVersionDataImpl(name, this.manager());
+    public CodeVersionImpl define(String name) {
+        return new CodeVersionImpl(name, this.manager());
     }
 }

@@ -23,6 +23,10 @@ public final class AzurePostgreSqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzurePostgreSqlTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzurePostgreSqlTableDataset class. */
+    public AzurePostgreSqlTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

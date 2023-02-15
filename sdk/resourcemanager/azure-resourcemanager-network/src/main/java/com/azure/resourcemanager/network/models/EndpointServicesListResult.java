@@ -24,6 +24,10 @@ public final class EndpointServicesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EndpointServicesListResult class. */
+    public EndpointServicesListResult() {
+    }
+
     /**
      * Get the value property: List of available endpoint services in a region.
      *

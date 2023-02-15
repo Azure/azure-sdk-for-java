@@ -29,6 +29,10 @@ public final class GalleryImageIdentifier {
     @JsonProperty(value = "sku", required = true)
     private String sku;
 
+    /** Creates an instance of GalleryImageIdentifier class. */
+    public GalleryImageIdentifier() {
+    }
+
     /**
      * Get the publisher property: The name of the gallery image definition publisher.
      *

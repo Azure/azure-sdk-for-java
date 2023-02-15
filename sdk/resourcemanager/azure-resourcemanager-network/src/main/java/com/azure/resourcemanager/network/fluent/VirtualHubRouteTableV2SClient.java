@@ -55,20 +55,6 @@ public interface VirtualHubRouteTableV2SClient {
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubRouteTableV2 Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualHubRouteTableV2Inner get(String resourceGroupName, String virtualHubName, String routeTableName);
-
-    /**
-     * Retrieves the details of a VirtualHubRouteTableV2.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeTableName The name of the VirtualHubRouteTableV2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -78,6 +64,20 @@ public interface VirtualHubRouteTableV2SClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualHubRouteTableV2Inner> getWithResponse(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context);
+
+    /**
+     * Retrieves the details of a VirtualHubRouteTableV2.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the VirtualHubRouteTableV2.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHubRouteTableV2 Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualHubRouteTableV2Inner get(String resourceGroupName, String virtualHubName, String routeTableName);
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.

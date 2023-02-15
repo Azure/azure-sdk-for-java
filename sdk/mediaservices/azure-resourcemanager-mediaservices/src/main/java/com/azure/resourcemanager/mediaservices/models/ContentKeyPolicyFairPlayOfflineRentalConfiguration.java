@@ -22,6 +22,10 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
     @JsonProperty(value = "storageDurationSeconds", required = true)
     private long storageDurationSeconds;
 
+    /** Creates an instance of ContentKeyPolicyFairPlayOfflineRentalConfiguration class. */
+    public ContentKeyPolicyFairPlayOfflineRentalConfiguration() {
+    }
+
     /**
      * Get the playbackDurationSeconds property: Playback duration.
      *

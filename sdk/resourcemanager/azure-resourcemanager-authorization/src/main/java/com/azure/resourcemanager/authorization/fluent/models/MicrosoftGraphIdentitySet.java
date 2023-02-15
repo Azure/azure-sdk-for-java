@@ -38,6 +38,10 @@ public final class MicrosoftGraphIdentitySet {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphIdentitySet class. */
+    public MicrosoftGraphIdentitySet() {
+    }
+
     /**
      * Get the application property: identity.
      *

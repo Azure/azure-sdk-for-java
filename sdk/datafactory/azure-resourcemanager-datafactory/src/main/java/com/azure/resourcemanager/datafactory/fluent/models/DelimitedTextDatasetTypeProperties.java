@@ -77,6 +77,10 @@ public final class DelimitedTextDatasetTypeProperties {
     @JsonProperty(value = "nullValue")
     private Object nullValue;
 
+    /** Creates an instance of DelimitedTextDatasetTypeProperties class. */
+    public DelimitedTextDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the delimited text storage.
      *

@@ -8,23 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the properties of an outbound endpoint for a DNS resolver. */
 @Fluent
 public final class OutboundEndpointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEndpointProperties.class);
-
     /*
      * The reference to the subnet used for the outbound endpoint.
      */
-    @JsonProperty(value = "subnet")
+    @JsonProperty(value = "subnet", required = true)
     private SubResource subnet;
 
     /*
-     * The current provisioning state of the outbound endpoint. This is a
-     * read-only property and any attempt to set this value will be ignored.
+     * The current provisioning state of the outbound endpoint. This is a read-only property and any attempt to set
+     * this value will be ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -80,5 +77,13 @@ public final class OutboundEndpointProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (subnet() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property subnet in model OutboundEndpointProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundEndpointProperties.class);
 }

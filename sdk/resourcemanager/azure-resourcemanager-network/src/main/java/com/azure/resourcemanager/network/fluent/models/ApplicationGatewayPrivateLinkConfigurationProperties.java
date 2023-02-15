@@ -25,6 +25,10 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayPrivateLinkConfigurationProperties class. */
+    public ApplicationGatewayPrivateLinkConfigurationProperties() {
+    }
+
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.
      *

@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for NetworkManagerCommits Post. */
 public final class NetworkManagerCommitsPostSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerCommitPost.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerCommitPost.json
      */
     /**
      * Sample code: NetworkManageCommitPost.
@@ -33,7 +33,7 @@ public final class NetworkManagerCommitsPostSamples {
                     .withConfigurationIds(
                         Arrays
                             .asList(
-                                "/subscriptions/subscriptionC/resourceGroups/resoureGroupSample/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/SampleSecurityAdminConfig"))
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resoureGroupSample/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/SampleSecurityAdminConfig"))
                     .withCommitType(ConfigurationType.SECURITY_ADMIN),
                 Context.NONE);
     }

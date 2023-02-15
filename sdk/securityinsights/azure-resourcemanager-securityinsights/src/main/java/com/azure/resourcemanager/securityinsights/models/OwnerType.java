@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OwnerType. */
+/** The type of the owner the incident is assigned to. */
 public final class OwnerType extends ExpandableStringEnum<OwnerType> {
     /** Static value Unknown for OwnerType. */
     public static final OwnerType UNKNOWN = fromString("Unknown");

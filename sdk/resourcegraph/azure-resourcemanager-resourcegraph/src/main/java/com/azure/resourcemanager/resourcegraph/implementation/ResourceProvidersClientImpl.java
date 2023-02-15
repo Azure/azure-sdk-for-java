@@ -133,29 +133,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryResponseInner> resourcesAsync(QueryRequest query) {
-        return resourcesWithResponseAsync(query)
-            .flatMap(
-                (Response<QueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
-     * @param query Request specifying query and its options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResponseInner resources(QueryRequest query) {
-        return resourcesAsync(query).block();
+        return resourcesWithResponseAsync(query).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -171,5 +149,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResponseInner> resourcesWithResponse(QueryRequest query, Context context) {
         return resourcesWithResponseAsync(query, context).block();
+    }
+
+    /**
+     * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
+     *
+     * @param query Request specifying query and its options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryResponseInner resources(QueryRequest query) {
+        return resourcesWithResponse(query, Context.NONE).getValue();
     }
 }

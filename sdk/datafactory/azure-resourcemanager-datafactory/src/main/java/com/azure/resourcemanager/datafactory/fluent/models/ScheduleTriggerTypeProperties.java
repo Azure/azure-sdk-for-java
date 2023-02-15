@@ -18,6 +18,10 @@ public final class ScheduleTriggerTypeProperties {
     @JsonProperty(value = "recurrence", required = true)
     private ScheduleTriggerRecurrence recurrence;
 
+    /** Creates an instance of ScheduleTriggerTypeProperties class. */
+    public ScheduleTriggerTypeProperties() {
+    }
+
     /**
      * Get the recurrence property: Recurrence schedule configuration.
      *

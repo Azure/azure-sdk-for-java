@@ -98,16 +98,15 @@ steps:
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
           -InformationAction Continue
     - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
-      - task: EsrpRelease@1
+      - task: EsrpRelease@2
         displayName: 'Publish to ESRP'
         inputs:
           ConnectedServiceName: 'ESRP Release Service'
           Intent: 'PackageDistribution'
           ContentType: 'Maven'
-          PackageLocation: $(PackageLocation)
+          PackageLocation: ${{ parameters.OutputDirectory }}
           Owners: $(Build.RequestedForEmail)
           Approvers: 'wesh@microsoft.com'
           ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
           MainPublisher: 'ESRPRELPACMANTEST'
           DomainTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-

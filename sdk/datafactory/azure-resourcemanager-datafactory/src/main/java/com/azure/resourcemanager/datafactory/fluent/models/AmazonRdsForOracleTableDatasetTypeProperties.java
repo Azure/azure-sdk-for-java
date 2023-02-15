@@ -22,6 +22,10 @@ public final class AmazonRdsForOracleTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of AmazonRdsForOracleTableDatasetTypeProperties class. */
+    public AmazonRdsForOracleTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the schema property: The schema name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).

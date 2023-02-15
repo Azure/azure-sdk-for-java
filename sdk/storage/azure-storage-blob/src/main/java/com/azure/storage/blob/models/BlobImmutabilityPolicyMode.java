@@ -33,6 +33,9 @@ public enum BlobImmutabilityPolicyMode {
      */
     @JsonCreator
     public static BlobImmutabilityPolicyMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         BlobImmutabilityPolicyMode[] items = BlobImmutabilityPolicyMode.values();
         for (BlobImmutabilityPolicyMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum BlobImmutabilityPolicyMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

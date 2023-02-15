@@ -13,7 +13,7 @@ public interface EnvironmentTypes {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface EnvironmentTypes {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -40,20 +40,7 @@ public interface EnvironmentTypes {
     /**
      * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment type.
-     */
-    EnvironmentType get(String resourceGroupName, String devCenterName, String environmentTypeName);
-
-    /**
-     * Gets an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -66,21 +53,22 @@ public interface EnvironmentTypes {
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
 
     /**
-     * Deletes an environment type.
+     * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment type.
      */
-    void delete(String resourceGroupName, String devCenterName, String environmentTypeName);
+    EnvironmentType get(String resourceGroupName, String devCenterName, String environmentTypeName);
 
     /**
      * Deletes an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -91,6 +79,18 @@ public interface EnvironmentTypes {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
+
+    /**
+     * Deletes an environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String devCenterName, String environmentTypeName);
 
     /**
      * Gets an environment type.

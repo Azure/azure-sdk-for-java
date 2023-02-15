@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +15,9 @@ import java.util.Map;
 /** The kubernetes scheduling information. */
 @Fluent
 public final class K8SScheduling {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SScheduling.class);
-
     /*
-     * The kubernetes scheduling options. It describes restrictions used to
-     * help Kubernetes select appropriate nodes to host the database service
+     * The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to
+     * host the database service
      */
     @JsonProperty(value = "default")
     private K8SSchedulingOptions defaultProperty;
@@ -29,6 +26,10 @@ public final class K8SScheduling {
      * The kubernetes scheduling information.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of K8SScheduling class. */
+    public K8SScheduling() {
+    }
 
     /**
      * Get the defaultProperty property: The kubernetes scheduling options. It describes restrictions used to help

@@ -12,6 +12,16 @@ public class NamespaceProperties extends CommonProperties implements ServiceBusN
 
     private Boolean crossEntityTransactions;
 
+    /**
+     * The default constructor.
+     *
+     * The object constructed from this constructor will have a cloud type default
+     * to the Azure global cloud.
+     */
+    public NamespaceProperties() {
+        this.getProfile().setCloudType(CloudType.AZURE);
+    }
+
     @Override
     public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;

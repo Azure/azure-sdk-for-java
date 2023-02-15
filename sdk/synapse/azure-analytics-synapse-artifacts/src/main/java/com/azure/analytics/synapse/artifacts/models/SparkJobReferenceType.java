@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkJobReferenceType. */
+/** Synapse spark job reference type. */
 public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobReferenceType> {
     /** Static value SparkJobDefinitionReference for SparkJobReferenceType. */
     public static final SparkJobReferenceType SPARK_JOB_DEFINITION_REFERENCE =
@@ -25,7 +25,11 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
         return fromString(name, SparkJobReferenceType.class);
     }
 
-    /** @return known SparkJobReferenceType values. */
+    /**
+     * Gets known SparkJobReferenceType values.
+     *
+     * @return known SparkJobReferenceType values.
+     */
     public static Collection<SparkJobReferenceType> values() {
         return values(SparkJobReferenceType.class);
     }

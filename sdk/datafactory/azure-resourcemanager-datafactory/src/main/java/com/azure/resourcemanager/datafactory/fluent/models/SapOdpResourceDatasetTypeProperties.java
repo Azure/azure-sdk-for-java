@@ -23,6 +23,10 @@ public final class SapOdpResourceDatasetTypeProperties {
     @JsonProperty(value = "objectName", required = true)
     private Object objectName;
 
+    /** Creates an instance of SapOdpResourceDatasetTypeProperties class. */
+    public SapOdpResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      *

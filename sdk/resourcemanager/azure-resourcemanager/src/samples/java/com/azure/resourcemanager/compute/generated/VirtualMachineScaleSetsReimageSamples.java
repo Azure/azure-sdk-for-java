@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimageParameters;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets Reimage. */
 public final class VirtualMachineScaleSetsReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Reimage_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Reimage_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Reimage_MinimumSet_Gen.
@@ -25,11 +24,11 @@ public final class VirtualMachineScaleSetsReimageSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .reimage("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .reimage("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Reimage_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Reimage_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Reimage_MaximumSet_Gen.
@@ -49,6 +48,6 @@ public final class VirtualMachineScaleSetsReimageSamples {
                 new VirtualMachineScaleSetReimageParameters()
                     .withTempDisk(true)
                     .withInstanceIds(Arrays.asList("aaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

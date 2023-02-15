@@ -22,6 +22,10 @@ public final class ConnectionMonitorOutput {
     @JsonProperty(value = "workspaceSettings")
     private ConnectionMonitorWorkspaceSettings workspaceSettings;
 
+    /** Creates an instance of ConnectionMonitorOutput class. */
+    public ConnectionMonitorOutput() {
+    }
+
     /**
      * Get the type property: Connection monitor output destination type. Currently, only "Workspace" is supported.
      *

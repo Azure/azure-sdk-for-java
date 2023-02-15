@@ -36,6 +36,9 @@ public final class ComposeDocumentModelRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /** Creates an instance of ComposeDocumentModelRequest class. */
+    public ComposeDocumentModelRequest() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BreakReplicationRequest {
     /*
-     * If replication is in status transferring and you want to force break the
-     * replication, set to true
+     * If replication is in status transferring and you want to force break the replication, set to true
      */
     @JsonProperty(value = "forceBreakReplication")
     private Boolean forceBreakReplication;

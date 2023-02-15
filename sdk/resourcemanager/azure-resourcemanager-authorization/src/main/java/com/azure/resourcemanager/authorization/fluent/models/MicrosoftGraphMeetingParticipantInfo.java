@@ -38,6 +38,10 @@ public final class MicrosoftGraphMeetingParticipantInfo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphMeetingParticipantInfo class. */
+    public MicrosoftGraphMeetingParticipantInfo() {
+    }
+
     /**
      * Get the identity property: identitySet.
      *

@@ -5,11 +5,13 @@ package com.azure.resourcemanager.samples;
 
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
+import com.azure.resourcemanager.compute.samples.CloneVirtualMachineToNewRegion;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineEncryptedUsingCustomerManagedKey;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVHD;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVM;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromSnapshot;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromVhd;
+import com.azure.resourcemanager.compute.samples.CreateVirtualMachineWithTrustedLaunchFromGalleryImage;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesAsyncTrackingRelatedResources;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesInParallel;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachinesUsingCustomImageOrSpecializedVHD;
@@ -191,5 +193,15 @@ public class ComputeSampleTests extends SamplesTestBase {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
+    }
+
+    @Test
+    public void testCloneVirtualMachineToNewRegion() {
+        Assertions.assertTrue(CloneVirtualMachineToNewRegion.runSample(azureResourceManager));
+    }
+
+    @Test
+    public void testCreateVirtualMachineWithTrustedLaunchFromGalleryImage() {
+        Assertions.assertTrue(CreateVirtualMachineWithTrustedLaunchFromGalleryImage.runSample(azureResourceManager));
     }
 }

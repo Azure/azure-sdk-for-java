@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.1 (2022-11-07)
 This is the first version of the restart of Azure Communication Service Call Automation. For more information, please see the [README][read_me].
 
 - Name changed to Azure Communication Service Call Automation.
@@ -16,6 +26,7 @@ This is the first version of the restart of Azure Communication Service Call Aut
 - Call recording.
 - Get, add and remove participants from the call.
 - Recording download apis.
+- Optimized the logic for deserializing types derived from the `CommunicationIdentifier`.
 
 ### Breaking Changes
 - Incompatible with previous version of service

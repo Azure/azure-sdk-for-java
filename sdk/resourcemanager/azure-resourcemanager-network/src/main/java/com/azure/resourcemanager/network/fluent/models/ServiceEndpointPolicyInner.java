@@ -38,6 +38,10 @@ public final class ServiceEndpointPolicyInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ServiceEndpointPolicyInner class. */
+    public ServiceEndpointPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the service end point policy.
      *

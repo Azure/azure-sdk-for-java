@@ -16,6 +16,12 @@ public class RequestConditions extends MatchConditions {
     private OffsetDateTime ifUnmodifiedSince;
 
     /**
+     * Creates a new instance of {@link RequestConditions}.
+     */
+    public RequestConditions() {
+    }
+
+    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.

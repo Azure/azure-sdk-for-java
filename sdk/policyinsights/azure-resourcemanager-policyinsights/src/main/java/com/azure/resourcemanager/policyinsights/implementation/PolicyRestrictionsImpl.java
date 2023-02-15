@@ -10,13 +10,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyRestrictionsClient;
 import com.azure.resourcemanager.policyinsights.fluent.models.CheckRestrictionsResultInner;
+import com.azure.resourcemanager.policyinsights.models.CheckManagementGroupRestrictionsRequest;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsRequest;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsResult;
 import com.azure.resourcemanager.policyinsights.models.PolicyRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PolicyRestrictionsImpl implements PolicyRestrictions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyRestrictionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyRestrictionsImpl.class);
 
     private final PolicyRestrictionsClient innerClient;
 
@@ -29,6 +29,21 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
         this.serviceManager = serviceManager;
     }
 
+    public Response<CheckRestrictionsResult> checkAtSubscriptionScopeWithResponse(
+        CheckRestrictionsRequest parameters, Context context) {
+        Response<CheckRestrictionsResultInner> inner =
+            this.serviceClient().checkAtSubscriptionScopeWithResponse(parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CheckRestrictionsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public CheckRestrictionsResult checkAtSubscriptionScope(CheckRestrictionsRequest parameters) {
         CheckRestrictionsResultInner inner = this.serviceClient().checkAtSubscriptionScope(parameters);
         if (inner != null) {
@@ -38,10 +53,10 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
         }
     }
 
-    public Response<CheckRestrictionsResult> checkAtSubscriptionScopeWithResponse(
-        CheckRestrictionsRequest parameters, Context context) {
+    public Response<CheckRestrictionsResult> checkAtResourceGroupScopeWithResponse(
+        String resourceGroupName, CheckRestrictionsRequest parameters, Context context) {
         Response<CheckRestrictionsResultInner> inner =
-            this.serviceClient().checkAtSubscriptionScopeWithResponse(parameters, context);
+            this.serviceClient().checkAtResourceGroupScopeWithResponse(resourceGroupName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -64,16 +79,27 @@ public final class PolicyRestrictionsImpl implements PolicyRestrictions {
         }
     }
 
-    public Response<CheckRestrictionsResult> checkAtResourceGroupScopeWithResponse(
-        String resourceGroupName, CheckRestrictionsRequest parameters, Context context) {
+    public Response<CheckRestrictionsResult> checkAtManagementGroupScopeWithResponse(
+        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Context context) {
         Response<CheckRestrictionsResultInner> inner =
-            this.serviceClient().checkAtResourceGroupScopeWithResponse(resourceGroupName, parameters, context);
+            this.serviceClient().checkAtManagementGroupScopeWithResponse(managementGroupId, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckRestrictionsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckRestrictionsResult checkAtManagementGroupScope(
+        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters) {
+        CheckRestrictionsResultInner inner =
+            this.serviceClient().checkAtManagementGroupScope(managementGroupId, parameters);
+        if (inner != null) {
+            return new CheckRestrictionsResultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -20,6 +20,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -30,11 +31,12 @@ public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
      *
-     * @param httpPipeline    the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer      the serializer that will be used to convert response bodies to POJOs.
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      */
-    public SyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
+    public SyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer,
+        SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -53,14 +55,14 @@ public class SyncRestProxy extends RestProxyBase {
         return createHttpRequest(methodParser, serializer, false, args);
     }
 
-
     @Override
-    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
+    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
+        Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
+        context = startTracingSpan(methodParser, context);
+        AutoCloseable scope = tracer.makeSpanCurrent(context);
         try {
-            context = startTracingSpan(methodParser, context);
-
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
             if (options != null && requestCallback != null) {
@@ -73,13 +75,20 @@ public class SyncRestProxy extends RestProxyBase {
 
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options, errorOptions);
+            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
+                errorOptions);
         } catch (RuntimeException e) {
             throwable = e;
             throw LOGGER.logExceptionAsError(e);
         } finally {
             if (decodedResponse != null || throwable != null) {
                 endTracingSpan(decodedResponse, throwable, context);
+            }
+
+            try {
+                scope.close();
+            } catch (Exception e) {
+                LOGGER.verbose("Failed to close scope");
             }
         }
     }
@@ -96,9 +105,10 @@ public class SyncRestProxy extends RestProxyBase {
      * the HTTP request.
      * @return An async-version of the provided decodedResponse.
      */
-    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-                                                                         final SwaggerMethodParser methodParser, RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
-        final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
+    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse, SwaggerMethodParser methodParser,
+        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+        int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
@@ -116,7 +126,7 @@ public class SyncRestProxy extends RestProxyBase {
             e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
-            Object decodedBody =  decodedResponse.getDecodedBody(responseBytes);
+            Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
             e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
@@ -129,9 +139,8 @@ public class SyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Object handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
-                                                final SwaggerMethodParser methodParser,
-                                                final Type entityType) {
+    private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
+        SwaggerMethodParser methodParser, Type entityType) {
         if (methodParser.isStreamResponse()) {
             return new StreamResponse(response.getSourceResponse());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
@@ -140,7 +149,7 @@ public class SyncRestProxy extends RestProxyBase {
                 response.getSourceResponse().close();
                 return createResponse(response, entityType, null);
             } else {
-                Object bodyAsObject =  handleBodyReturnType(response, methodParser, bodyType);
+                Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
                 Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
                 if (httpResponse == null) {
                     return createResponse(response, entityType, null);
@@ -153,8 +162,8 @@ public class SyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Object handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
-                                        final SwaggerMethodParser methodParser, final Type entityType) {
+    private Object handleBodyReturnType(HttpResponseDecoder.HttpDecodedResponse response,
+        SwaggerMethodParser methodParser, Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -173,7 +182,9 @@ public class SyncRestProxy extends RestProxyBase {
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
             }
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
-        }  else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
+            result = response.getSourceResponse().getBodyAsInputStream();
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
@@ -196,12 +207,9 @@ public class SyncRestProxy extends RestProxyBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return the deserialized result
      */
-    private Object handleRestReturnType(final HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-                                        final SwaggerMethodParser methodParser,
-                                        final Type returnType,
-                                        final Context context,
-                                        final RequestOptions options,
-                                        EnumSet<ErrorOptions> errorOptions) {
+    private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
+        SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions) {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
@@ -219,10 +227,22 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration,
+        SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
+
+        // Attempt to use JsonSerializable or XmlSerializable in a separate block.
+        if (supportsJsonSerializable(bodyContentObject.getClass())) {
+            request.setBody(BinaryData.fromByteBuffer(serializeAsJsonSerializable(bodyContentObject)));
+            return;
+        }
+
+        if (supportsXmlSerializable(bodyContentObject.getClass())) {
+            request.setBody(BinaryData.fromByteBuffer(serializeAsXmlSerializable(bodyContentObject)));
+            return;
+        }
 
         if (isJson) {
             request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
@@ -242,9 +262,8 @@ public class SyncRestProxy extends RestProxyBase {
                 request.setBody(array);
             }
         } else {
-            byte[] serializedBytes = serializerAdapter
-                .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
-            request.setBody(serializedBytes);
+            SerializerEncoding encoding = SerializerEncoding.fromHeaders(request.getHeaders());
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, encoding));
         }
     }
 }

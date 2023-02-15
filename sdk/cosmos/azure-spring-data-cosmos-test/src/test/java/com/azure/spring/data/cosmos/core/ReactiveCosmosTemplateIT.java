@@ -8,7 +8,10 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -33,6 +36,8 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Assert;
@@ -65,7 +70,13 @@ import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREMENT;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -88,6 +99,23 @@ public class ReactiveCosmosTemplateIT {
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
+
+    private static final CosmosPatchOperations operations = CosmosPatchOperations
+        .create()
+        .replace("/age", PATCH_AGE_1);
+
+    CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
+        .create()
+        .set("/firstName", PATCH_FIRST_NAME)
+        .replace("/passportIdsByCountry", NEW_PASSPORT_IDS_BY_COUNTRY_JSON)
+        .add("/hobbies/2", PATCH_HOBBY1)
+        .remove("/shippingAddresses/1")
+        .increment("/age", PATCH_AGE_INCREMENT);
+
+    private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
     @ClassRule
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
@@ -279,6 +307,41 @@ public class ReactiveCosmosTemplateIT {
 
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testPatch() {
+        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations);
+        StepVerifier.create(patch).expectNextCount(1).verifyComplete();
+        Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
+        StepVerifier.create(patchedPerson).expectNextMatches(person -> person.getAge() == PATCH_AGE_1).verifyComplete();
+    }
+
+    @Test
+    public void testPatchMultiOperations() {
+        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, multiPatchOperations);
+        StepVerifier.create(patch).expectNextCount(1).verifyComplete();
+        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class).block();
+        assertEquals(patchedPerson.getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
+        assertEquals(patchedPerson.getHobbies(),PATCH_HOBBIES);
+        assertEquals(patchedPerson.getFirstName(), PATCH_FIRST_NAME);
+        assertEquals(patchedPerson.getShippingAddresses().size(), 1);
+        assertEquals(patchedPerson.getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+    }
+
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM person p WHERE p.lastName = '"+LAST_NAME+"'");
+        Mono<Person> patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
+        StepVerifier.create(patchedPerson).expectNextMatches(person -> person.getAge() == PATCH_AGE_1).verifyComplete();
+    }
+
+    @Test
+    public void testPatchPreConditionFail() {
+        options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
+        Mono<Person> person = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
+        StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+                ((CosmosAccessException) ex).getCosmosException() instanceof PreconditionFailedException).verify();
     }
 
     @Test
@@ -613,6 +676,28 @@ public class ReactiveCosmosTemplateIT {
 
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
         assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
+    }
+
+    @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final ReactiveCosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = responseContinuationTokenLimitInKbCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
+
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
     }
 
     @Test

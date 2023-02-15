@@ -10,6 +10,40 @@
 
 ### Other Changes
 
+## 4.0.4 (2023-02-09)
+
+### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
+
+#### Dependency Updates
+- Upgraded `azure-core` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` to version `1.13.0`.
+
+## 4.0.3 (2023-01-09)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 4.0.2 (2022-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 4.0.1 (2022-10-12)
+
+### Bugs Fixed
+- Fixed bug when deserializing properties on DocumentField.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.33.0`.
+- Upgraded `azure-core-http-netty` to `1.12.6`.
+
 ## 4.0.0 (2022-09-08)
 This version of the SDK defaults 2022-08-31 going forward.
 

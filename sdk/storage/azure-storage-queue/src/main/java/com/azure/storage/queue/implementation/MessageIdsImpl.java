@@ -17,9 +17,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.queue.implementation.models.MessageIdsDeleteHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
@@ -68,6 +70,22 @@ public final class MessageIdsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/{queueName}/messages/{messageid}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Mono<Response<Void>> updateNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @PathParam("messageid") String messageid,
+                @QueryParam("popreceipt") String popReceipt,
+                @QueryParam("visibilitytimeout") int visibilitytimeout,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") QueueMessage queueMessage,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
@@ -81,6 +99,71 @@ public final class MessageIdsImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Delete("/{queueName}/messages/{messageid}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Mono<Response<Void>> deleteNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @PathParam("messageid") String messageid,
+                @QueryParam("popreceipt") String popReceipt,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message
+     * operation updates the visibility timeout of a message. You can also use this operation to update the contents of
+     * a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the
+     * encoded message can be up to 64KB in size.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<MessageIdsUpdateHeaders, Void>> updateWithResponseAsync(
+            String queueName,
+            String messageid,
+            String popReceipt,
+            int visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            QueueMessage queueMessage) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.update(
+                                this.client.getUrl(),
+                                queueName,
+                                messageid,
+                                popReceipt,
+                                visibilitytimeout,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                queueMessage,
+                                accept,
+                                context));
     }
 
     /**
@@ -135,6 +218,223 @@ public final class MessageIdsImpl {
     }
 
     /**
+     * The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message
+     * operation updates the visibility timeout of a message. You can also use this operation to update the contents of
+     * a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the
+     * encoded message can be up to 64KB in size.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateAsync(
+            String queueName,
+            String messageid,
+            String popReceipt,
+            int visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            QueueMessage queueMessage) {
+        return updateWithResponseAsync(
+                        queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId, queueMessage)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message
+     * operation updates the visibility timeout of a message. You can also use this operation to update the contents of
+     * a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the
+     * encoded message can be up to 64KB in size.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateAsync(
+            String queueName,
+            String messageid,
+            String popReceipt,
+            int visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            QueueMessage queueMessage,
+            Context context) {
+        return updateWithResponseAsync(
+                        queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId, queueMessage, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message
+     * operation updates the visibility timeout of a message. You can also use this operation to update the contents of
+     * a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the
+     * encoded message can be up to 64KB in size.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(
+            String queueName,
+            String messageid,
+            String popReceipt,
+            int visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            QueueMessage queueMessage) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.updateNoCustomHeaders(
+                                this.client.getUrl(),
+                                queueName,
+                                messageid,
+                                popReceipt,
+                                visibilitytimeout,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                queueMessage,
+                                accept,
+                                context));
+    }
+
+    /**
+     * The Update operation was introduced with version 2011-08-18 of the Queue service API. The Update Message
+     * operation updates the visibility timeout of a message. You can also use this operation to update the contents of
+     * a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the
+     * encoded message can be up to 64KB in size.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateNoCustomHeadersWithResponseAsync(
+            String queueName,
+            String messageid,
+            String popReceipt,
+            int visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            QueueMessage queueMessage,
+            Context context) {
+        final String accept = "application/xml";
+        return service.updateNoCustomHeaders(
+                this.client.getUrl(),
+                queueName,
+                messageid,
+                popReceipt,
+                visibilitytimeout,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                queueMessage,
+                accept,
+                context);
+    }
+
+    /**
+     * The Delete operation deletes the specified message.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> deleteWithResponseAsync(
+            String queueName, String messageid, String popReceipt, Integer timeout, String requestId) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getUrl(),
+                                queueName,
+                                messageid,
+                                popReceipt,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
+    }
+
+    /**
      * The Delete operation deletes the specified message.
      *
      * @param queueName The queue name.
@@ -157,6 +457,124 @@ public final class MessageIdsImpl {
             String queueName, String messageid, String popReceipt, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.delete(
+                this.client.getUrl(),
+                queueName,
+                messageid,
+                popReceipt,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Delete operation deletes the specified message.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+            String queueName, String messageid, String popReceipt, Integer timeout, String requestId) {
+        return deleteWithResponseAsync(queueName, messageid, popReceipt, timeout, requestId)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Delete operation deletes the specified message.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+            String queueName, String messageid, String popReceipt, Integer timeout, String requestId, Context context) {
+        return deleteWithResponseAsync(queueName, messageid, popReceipt, timeout, requestId, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Delete operation deletes the specified message.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String queueName, String messageid, String popReceipt, Integer timeout, String requestId) {
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteNoCustomHeaders(
+                                this.client.getUrl(),
+                                queueName,
+                                messageid,
+                                popReceipt,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
+    }
+
+    /**
+     * The Delete operation deletes the specified message.
+     *
+     * @param queueName The queue name.
+     * @param messageid The message ID name.
+     * @param popReceipt Required. Specifies the valid pop receipt value returned from an earlier call to the Get
+     *     Messages or Update Message operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String queueName, String messageid, String popReceipt, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.deleteNoCustomHeaders(
                 this.client.getUrl(),
                 queueName,
                 messageid,

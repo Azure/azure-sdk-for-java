@@ -8,43 +8,43 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GetParticipantsResponseInternal model. */
+/** The response payload for getting participants of the call. */
 @Fluent
 public final class GetParticipantsResponseInternal {
     /*
-     * The values property.
+     * List of the current participants in the call.
      */
     @JsonProperty(value = "values")
-    private List<AcsCallParticipantInternal> values;
+    private List<CallParticipantInternal> values;
 
     /*
-     * The nextLink property.
+     * Continue of the list of participants
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the values property: The values property.
+     * Get the values property: List of the current participants in the call.
      *
      * @return the values value.
      */
-    public List<AcsCallParticipantInternal> getValues() {
+    public List<CallParticipantInternal> getValues() {
         return this.values;
     }
 
     /**
-     * Set the values property: The values property.
+     * Set the values property: List of the current participants in the call.
      *
      * @param values the values value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
-    public GetParticipantsResponseInternal setValues(List<AcsCallParticipantInternal> values) {
+    public GetParticipantsResponseInternal setValues(List<CallParticipantInternal> values) {
         this.values = values;
         return this;
     }
 
     /**
-     * Get the nextLink property: The nextLink property.
+     * Get the nextLink property: Continue of the list of participants.
      *
      * @return the nextLink value.
      */
@@ -53,7 +53,7 @@ public final class GetParticipantsResponseInternal {
     }
 
     /**
-     * Set the nextLink property: The nextLink property.
+     * Set the nextLink property: Continue of the list of participants.
      *
      * @param nextLink the nextLink value to set.
      * @return the GetParticipantsResponseInternal object itself.

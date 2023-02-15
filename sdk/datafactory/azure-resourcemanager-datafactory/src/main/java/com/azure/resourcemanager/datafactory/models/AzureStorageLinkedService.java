@@ -24,6 +24,10 @@ public final class AzureStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureStorageLinkedServiceTypeProperties innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureStorageLinkedService class. */
+    public AzureStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Storage linked service properties.
      *

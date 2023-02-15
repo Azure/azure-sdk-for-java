@@ -34,6 +34,10 @@ public final class AmlOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of AmlOperationDisplay class. */
+    public AmlOperationDisplay() {
+    }
+
     /**
      * Get the provider property: The resource provider name: Microsoft.MachineLearningExperimentation.
      *

@@ -35,6 +35,10 @@ public final class ServiceTagInformationInner {
     @JsonProperty(value = "serviceTagChangeNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceTagChangeNumber;
 
+    /** Creates an instance of ServiceTagInformationInner class. */
+    public ServiceTagInformationInner() {
+    }
+
     /**
      * Get the properties property: Properties of the service tag information.
      *

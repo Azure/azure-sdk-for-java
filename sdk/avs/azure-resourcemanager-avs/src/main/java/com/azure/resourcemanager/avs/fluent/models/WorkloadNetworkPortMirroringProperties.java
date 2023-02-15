@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Port Mirroring Properties. */
 @Fluent
 public final class WorkloadNetworkPortMirroringProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkPortMirroringProperties.class);
-
     /*
      * Display name of the port mirroring profile.
      */
@@ -58,6 +54,10 @@ public final class WorkloadNetworkPortMirroringProperties {
      */
     @JsonProperty(value = "revision")
     private Long revision;
+
+    /** Creates an instance of WorkloadNetworkPortMirroringProperties class. */
+    public WorkloadNetworkPortMirroringProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the port mirroring profile.

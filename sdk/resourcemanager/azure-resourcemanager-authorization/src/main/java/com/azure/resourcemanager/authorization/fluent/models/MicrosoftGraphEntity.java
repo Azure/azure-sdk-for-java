@@ -26,6 +26,10 @@ public class MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphEntity class. */
+    public MicrosoftGraphEntity() {
+    }
+
     /**
      * Get the id property: Read-only.
      *

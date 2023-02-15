@@ -4,19 +4,17 @@
 package com.azure.core.util.io;
 
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockFluxHttpResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FaultyAsynchronousByteChannel;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.PartialWriteChannel;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import wiremock.org.eclipse.jetty.util.ConcurrentArrayQueue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,16 +30,18 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IOUtilsTest {
-
     private static final Random RANDOM = new Random();
+    private static final HttpRequest MOCK_REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
 
     @Test
     public void canTransferFromReadableByteChannelToWriteableByteChannel() throws IOException {
@@ -123,28 +123,25 @@ public class IOUtilsTest {
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
-        HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
-            Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MockFluxHttpResponse> responses = new ConcurrentLinkedQueue<>();
+        MockFluxHttpResponse httpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(0));
         responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            HttpResponse newHttpResponse = Mockito.spy(new MockFluxHttpResponse(
-                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue())));
+            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST,
+                fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
         try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
             IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            () -> new IOException("KABOOM"),
-            3,
-            1024)) {
+            () -> new IOException("KABOOM"), 3, 1024)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
                     channel, initialResponse, onErrorResume, null, 5))
@@ -159,7 +156,7 @@ public class IOUtilsTest {
         assertArrayEquals(data, Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(4, responses.size());
-        responses.forEach(r -> Mockito.verify(r).close());
+        responses.forEach(r -> assertTrue(r.isClosed()));
     }
 
     @Test
@@ -179,28 +176,25 @@ public class IOUtilsTest {
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
-        HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
-            Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MockFluxHttpResponse> responses = new ConcurrentLinkedQueue<>();
+        MockFluxHttpResponse httpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(0));
         responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            HttpResponse newHttpResponse = Mockito.spy(new MockFluxHttpResponse(
-                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue())));
+            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST,
+                fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
         try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
             IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            () -> new IOException("KABOOM"),
-            3,
-            1024)) {
+            () -> new IOException("KABOOM"), 3, 1024)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
                     channel, initialResponse, onErrorResume, null, 2))
@@ -216,6 +210,6 @@ public class IOUtilsTest {
         assertArrayEquals(Arrays.copyOfRange(data, 0, 1024), Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(3, responses.size());
-        responses.forEach(r -> Mockito.verify(r).close());
+        responses.forEach(r -> assertTrue(r.isClosed()));
     }
 }

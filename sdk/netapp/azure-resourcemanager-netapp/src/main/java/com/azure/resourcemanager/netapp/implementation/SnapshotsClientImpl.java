@@ -182,7 +182,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -244,7 +246,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -304,7 +308,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -322,7 +328,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -342,7 +350,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -360,7 +370,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -379,7 +391,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -442,7 +456,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -508,7 +524,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -528,7 +546,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -547,7 +567,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -573,7 +595,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -648,7 +672,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -722,7 +748,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -756,7 +784,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -789,7 +819,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -815,7 +847,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -843,7 +877,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -870,7 +906,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -899,7 +937,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -924,7 +964,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -951,7 +993,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1024,7 +1068,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1096,7 +1142,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1130,7 +1178,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1163,7 +1213,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1189,7 +1241,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1217,7 +1271,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1244,7 +1300,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1273,7 +1331,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1298,7 +1358,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1325,7 +1387,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1386,7 +1450,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1450,7 +1516,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1474,7 +1542,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1504,7 +1574,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1523,7 +1595,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1549,7 +1623,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1570,7 +1646,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1597,7 +1675,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1615,7 +1695,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1639,7 +1721,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1712,7 +1796,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1784,7 +1870,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1814,7 +1902,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1847,7 +1937,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1873,7 +1965,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1901,7 +1995,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1928,7 +2024,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1957,7 +2055,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1981,7 +2081,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

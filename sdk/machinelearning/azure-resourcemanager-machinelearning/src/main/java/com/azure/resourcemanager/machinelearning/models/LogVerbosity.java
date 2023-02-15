@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LogVerbosity. */
+/** Enum for setting log verbosity. */
 public final class LogVerbosity extends ExpandableStringEnum<LogVerbosity> {
     /** Static value NotSet for LogVerbosity. */
     public static final LogVerbosity NOT_SET = fromString("NotSet");
@@ -27,6 +27,15 @@ public final class LogVerbosity extends ExpandableStringEnum<LogVerbosity> {
 
     /** Static value Critical for LogVerbosity. */
     public static final LogVerbosity CRITICAL = fromString("Critical");
+
+    /**
+     * Creates a new instance of LogVerbosity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogVerbosity() {
+    }
 
     /**
      * Creates or finds a LogVerbosity from its string representation.

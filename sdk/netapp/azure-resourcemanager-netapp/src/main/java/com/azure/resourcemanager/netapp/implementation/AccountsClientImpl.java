@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -151,6 +152,19 @@ public final class AccountsClientImpl implements AccountsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
+                + "/netAppAccounts/{accountName}/renewCredentials")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> renewCredentials(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -173,7 +187,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +234,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +280,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,7 +295,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,7 +312,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,7 +326,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +342,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,7 +396,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -419,7 +449,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +466,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -451,7 +485,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,7 +501,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -480,7 +518,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -528,7 +568,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -574,7 +616,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -590,7 +634,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -605,7 +651,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -622,7 +670,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -677,7 +727,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -730,7 +782,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -755,7 +809,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -779,7 +835,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -796,7 +854,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -814,7 +874,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -833,7 +895,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -853,7 +917,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -869,7 +935,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -887,7 +955,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -932,7 +1002,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -976,7 +1048,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -995,7 +1069,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1016,7 +1092,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1031,7 +1109,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1048,7 +1128,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1063,7 +1145,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1081,7 +1165,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1095,7 +1181,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1110,7 +1198,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1165,7 +1255,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1218,7 +1310,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1243,7 +1337,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1266,7 +1362,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1283,7 +1381,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1301,7 +1401,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1320,7 +1422,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1340,7 +1444,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1356,7 +1462,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1374,9 +1482,262 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> renewCredentialsWithResponseAsync(
+        String resourceGroupName, String accountName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .renewCredentials(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> renewCredentialsWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .renewCredentials(
+                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, context);
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRenewCredentialsAsync(
+        String resourceGroupName, String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = renewCredentialsWithResponseAsync(resourceGroupName, accountName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRenewCredentialsAsync(
+        String resourceGroupName, String accountName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            renewCredentialsWithResponseAsync(resourceGroupName, accountName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName) {
+        return beginRenewCredentialsAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(
+        String resourceGroupName, String accountName, Context context) {
+        return beginRenewCredentialsAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> renewCredentialsAsync(String resourceGroupName, String accountName) {
+        return beginRenewCredentialsAsync(resourceGroupName, accountName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> renewCredentialsAsync(String resourceGroupName, String accountName, Context context) {
+        return beginRenewCredentialsAsync(resourceGroupName, accountName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renewCredentials(String resourceGroupName, String accountName) {
+        renewCredentialsAsync(resourceGroupName, accountName).block();
+    }
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renewCredentials(String resourceGroupName, String accountName, Context context) {
+        renewCredentialsAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1413,7 +1774,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1451,7 +1813,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1487,7 +1850,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

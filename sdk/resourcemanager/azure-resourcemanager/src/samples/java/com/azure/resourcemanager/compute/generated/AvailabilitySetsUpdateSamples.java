@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.AvailabilitySetUpdate;
 import com.azure.resourcemanager.compute.models.Sku;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for AvailabilitySets Update. */
 public final class AvailabilitySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/availabilitySetExamples/AvailabilitySets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_Update_MinimumSet_Gen.
@@ -28,11 +27,12 @@ public final class AvailabilitySetsUpdateSamples {
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new AvailabilitySetUpdate(), Context.NONE);
+            .updateWithResponse(
+                "rgcompute", "aaaaaaaaaaaaaaaaaaaa", new AvailabilitySetUpdate(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/availabilitySetExamples/AvailabilitySets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_Update_MaximumSet_Gen.
@@ -63,7 +63,7 @@ public final class AvailabilitySetsUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

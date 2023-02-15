@@ -25,6 +25,10 @@ public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat {
     @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
+    /** Creates an instance of ApplicationGatewaySslPredefinedPolicyPropertiesFormat class. */
+    public ApplicationGatewaySslPredefinedPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.
      *
