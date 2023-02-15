@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class TaskRequestUpdateTests extends PurviewWorkflowClientTestBase {
+public final class TaskStatusUpdateTests extends PurviewWorkflowClientTestBase {
     @Test
-    public void testTaskRequestUpdateTests() {
-        BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"In Progress\"}");
+    public void testTaskStatusUpdateTests() {
+        BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"NotStarted\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.updateTaskRequestWithResponse(
-                        "59336bfb-fefb-46ab-94bb-0bdfe2b7ee03", taskUpdateCommand, requestOptions);
+                purviewWorkflowClient.updateTaskStatusWithResponse(
+                        "a8f67c0b-36a6-48b0-9cbb-8fc4a02281d8", taskUpdateCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class TaskRequestUpdate {
+public class TaskStatusUpdate {
     public static void main(String[] args) {
         PurviewWorkflowClient purviewWorkflowClient =
                 new PurviewWorkflowClientBuilder()
@@ -24,7 +24,7 @@ public class TaskRequestUpdate {
         RequestOptions requestOptions = new RequestOptions();
         String taskId = "d5bd0215-df84-4245-8e18-3a8f012be376";
         Response<Void> response =
-                purviewWorkflowClient.updateTaskRequestWithResponse(
+                purviewWorkflowClient.updateTaskStatusWithResponse(
                     taskId, taskUpdateCommand, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.updatetaskrequest.taskrequestupdate
     }
