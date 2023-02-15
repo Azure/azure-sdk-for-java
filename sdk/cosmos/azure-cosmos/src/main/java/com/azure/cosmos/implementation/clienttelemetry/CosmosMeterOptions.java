@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 
 import java.util.EnumSet;
 
@@ -43,7 +42,7 @@ public final class CosmosMeterOptions {
     }
 
     public double[] getPercentiles() {
-        return this.percentiles;
+        return this.percentiles.clone();
     }
 
     public boolean isEnabled() {
