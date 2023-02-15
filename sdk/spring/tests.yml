@@ -14,6 +14,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           Location: "chinanorth3"
       TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-test-appconfiguration-config
         - spring/spring-cloud-azure-integration-tests/test-resources/common
         - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
@@ -23,7 +24,6 @@ stages:
         - spring/spring-cloud-azure-integration-tests/test-resources/storage
         - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/dummy
-        - spring/spring-cloud-azure-integration-test-appconfiguration-config
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
