@@ -28,6 +28,10 @@ public final class Indexes {
     @JsonProperty(value = "kind")
     private IndexKind kind;
 
+    /** Creates an instance of Indexes class. */
+    public Indexes() {
+    }
+
     /**
      * Get the dataType property: The datatype for which the indexing behavior is applied to.
      *

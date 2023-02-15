@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters for updating the properties of a container registry. */
 @Fluent
 public final class RegistryPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryPropertiesUpdateParameters.class);
-
     /*
      * The value that indicates whether the admin user is enabled.
      */
@@ -50,18 +46,20 @@ public final class RegistryPropertiesUpdateParameters {
     private Boolean dataEndpointEnabled;
 
     /*
-     * Whether or not public network access is allowed for the container
-     * registry.
+     * Whether or not public network access is allowed for the container registry.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Whether to allow trusted Azure services to access a network restricted
-     * registry.
+     * Whether to allow trusted Azure services to access a network restricted registry.
      */
     @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
+
+    /** Creates an instance of RegistryPropertiesUpdateParameters class. */
+    public RegistryPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.

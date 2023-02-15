@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryValueForSingleApi;
 import java.nio.ByteBuffer;
@@ -61,7 +60,8 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ClientDiscoveryValueForSingleApi> response = manager.operations().list(Context.NONE);
+        PagedIterable<ClientDiscoveryValueForSingleApi> response =
+            manager.operations().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("bfatklddxbjhwu", response.iterator().next().name());
         Assertions.assertEquals("oz", response.iterator().next().display().provider());

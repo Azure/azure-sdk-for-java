@@ -18,6 +18,10 @@ public final class ServiceResourceListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceResourceInner> value;
 
+    /** Creates an instance of ServiceResourceListResult class. */
+    public ServiceResourceListResult() {
+    }
+
     /**
      * Get the value property: List of Service Resource and their properties.
      *

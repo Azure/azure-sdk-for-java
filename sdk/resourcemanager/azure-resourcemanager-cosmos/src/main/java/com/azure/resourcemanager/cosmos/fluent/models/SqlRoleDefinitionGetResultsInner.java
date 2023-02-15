@@ -20,6 +20,10 @@ public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private SqlRoleDefinitionResource innerProperties;
 
+    /** Creates an instance of SqlRoleDefinitionGetResultsInner class. */
+    public SqlRoleDefinitionGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties related to the Role Definition.
      *

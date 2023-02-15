@@ -28,6 +28,10 @@ public final class SqlUserDefinedFunctionGetPropertiesResource extends SqlUserDe
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of SqlUserDefinedFunctionGetPropertiesResource class. */
+    public SqlUserDefinedFunctionGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

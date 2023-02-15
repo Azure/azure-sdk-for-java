@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources GetSqlStoredProcedure. */
 public final class SqlResourcesGetSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlStoredProcedureGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlStoredProcedureGet.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureGet.
@@ -23,6 +21,11 @@ public final class SqlResourcesGetSqlStoredProcedureSamples {
             .serviceClient()
             .getSqlResources()
             .getSqlStoredProcedureWithResponse(
-                "rgName", "ddb1", "databaseName", "containerName", "storedProcedureName", Context.NONE);
+                "rgName",
+                "ddb1",
+                "databaseName",
+                "containerName",
+                "storedProcedureName",
+                com.azure.core.util.Context.NONE);
     }
 }

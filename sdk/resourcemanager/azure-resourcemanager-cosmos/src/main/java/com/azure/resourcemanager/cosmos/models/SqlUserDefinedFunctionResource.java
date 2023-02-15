@@ -23,6 +23,10 @@ public class SqlUserDefinedFunctionResource {
     @JsonProperty(value = "body")
     private String body;
 
+    /** Creates an instance of SqlUserDefinedFunctionResource class. */
+    public SqlUserDefinedFunctionResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB SQL userDefinedFunction.
      *
