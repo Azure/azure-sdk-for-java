@@ -3,6 +3,7 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import com.azure.identity.*;
@@ -25,7 +26,7 @@ public final class JavaDocCodeSnippets {
      */
     public void clientSecretCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.clientsecretcredential.construct
-        ClientSecretCredential credential1 = new ClientSecretCredentialBuilder()
+        TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
@@ -33,7 +34,7 @@ public final class JavaDocCodeSnippets {
         // END: com.azure.identity.credential.clientsecretcredential.construct
 
         // BEGIN: com.azure.identity.credential.clientsecretcredential.constructwithproxy
-        ClientSecretCredential credential2 = new ClientSecretCredentialBuilder()
+        TokenCredential secretCredential = new ClientSecretCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
@@ -47,7 +48,7 @@ public final class JavaDocCodeSnippets {
      */
     public void clientCertificateCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.clientcertificatecredential.construct
-        ClientCertificateCredential credential1 = new ClientCertificateCredentialBuilder()
+        TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .pemCertificate("<PATH-TO-PEM-CERTIFICATE>")
@@ -55,7 +56,7 @@ public final class JavaDocCodeSnippets {
         // END: com.azure.identity.credential.clientcertificatecredential.construct
 
         // BEGIN: com.azure.identity.credential.clientcertificatecredential.constructwithproxy
-        ClientCertificateCredential credential2 = new ClientCertificateCredentialBuilder()
+        TokenCredential certificateCredential = new ClientCertificateCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .pfxCertificate("<PATH-TO-PFX-CERTIFICATE>", "P@s$w0rd")
@@ -69,16 +70,16 @@ public final class JavaDocCodeSnippets {
      */
     public void chainedTokenCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
-        UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
+        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
             .clientId(clientId)
             .username(fakeUsernamePlaceholder)
             .password(fakePasswordPlaceholder)
             .build();
-        InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+        TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
             .clientId(clientId)
             .port(8765)
             .build();
-        ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
+        TokenCredential credential = new ChainedTokenCredentialBuilder()
             .addLast(usernamePasswordCredential)
             .addLast(interactiveBrowserCredential)
             .build();
@@ -90,12 +91,12 @@ public final class JavaDocCodeSnippets {
      */
     public void defaultAzureCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.defaultazurecredential.construct
-        DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
+        TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.defaultazurecredential.construct
 
         // BEGIN: com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity
-        DefaultAzureCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder()
+        TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder()
             .managedIdentityClientId("<Managed-Identity-Client-Id")
             .build();
         // END: com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity
@@ -106,7 +107,7 @@ public final class JavaDocCodeSnippets {
      */
     public void interactiveBrowserCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.interactivebrowsercredential.construct
-        InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+        TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
             .clientId(clientId)
             .redirectUrl("http://localhost:8765")
             .build();
@@ -118,7 +119,7 @@ public final class JavaDocCodeSnippets {
      */
     public void managedIdentityCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.managedidentitycredential.construct
-        ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
             .clientId(clientId) // specify client id only if targeting a user-assigned managed identity.
             .build();
         // END: com.azure.identity.credential.managedidentitycredential.construct
@@ -130,7 +131,7 @@ public final class JavaDocCodeSnippets {
      */
     public void azureCliCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.azureclicredential.construct
-        AzureCliCredential azureCliCredential = new AzureCliCredentialBuilder()
+        TokenCredential azureCliCredential = new AzureCliCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.azureclicredential.construct
     }
@@ -140,7 +141,7 @@ public final class JavaDocCodeSnippets {
      */
     public void intelliJCredentialsCodeSnippets() {
         // BEGIN: com.azure.identity.credential.intellijcredential.construct
-        IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
+        TokenCredential intelliJCredential = new IntelliJCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.intellijcredential.construct
     }

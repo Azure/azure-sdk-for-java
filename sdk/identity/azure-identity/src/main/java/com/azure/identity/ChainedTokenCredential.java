@@ -23,16 +23,16 @@ import java.util.List;
  * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>
- * UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
  *     .username&#40;fakeUsernamePlaceholder&#41;
  *     .password&#40;fakePasswordPlaceholder&#41;
  *     .build&#40;&#41;;
- * InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
  *     .port&#40;8765&#41;
  *     .build&#40;&#41;;
- * ChainedTokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
+ * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
  *     .addLast&#40;usernamePasswordCredential&#41;
  *     .addLast&#40;interactiveBrowserCredential&#41;
  *     .build&#40;&#41;;

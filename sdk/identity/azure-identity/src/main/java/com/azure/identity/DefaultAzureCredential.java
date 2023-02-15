@@ -24,7 +24,7 @@ import java.util.List;
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
  *
- * For more information refer to <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> Conceptual knowledge and configuration details </a>.
+ * For more information refer to the <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> conceptual knowledge and configuration details </a>.
  *
  * <H2>Configure DefaultAzureCredential</H2>
  * DefaultAzureCredential supports a set of configurations through setters on the DefaultAzureCredentialBuilder or environment variables.
@@ -37,7 +37,7 @@ import java.util.List;
  * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
- * DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
@@ -45,13 +45,16 @@ import java.util.List;
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  * <pre>
- * DefaultAzureCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
+ * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
+ * The Azure SDK client builders consume TokenCredential for Azure Active Directory (AAD) based authentication. The TokenCredential instantiated
+ * above can be passed into most of the Azure SDK client builders to for AAD authentication.
  *
+ * @see com.azure.identity
  * @see com.azure.identity.ManagedIdentityCredential
  * @see com.azure.identity.EnvironmentCredential
  * @see com.azure.identity.ClientSecretCredential
