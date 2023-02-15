@@ -28,6 +28,9 @@ stages:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
           safeName: springcloudazureintegrationtests
+        - name: spring-cloud-azure-integration-test-appconfiguration-config
+          groupId: com.azure.spring
+          safeName: springcloudazureintegrationtestappconfigurationconfig
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: SpringIntegrationTests
