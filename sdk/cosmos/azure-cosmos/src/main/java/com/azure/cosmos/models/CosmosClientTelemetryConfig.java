@@ -335,7 +335,13 @@ public final class CosmosClientTelemetryConfig {
                 public CosmosMeterOptions getMeterOptions(
                     CosmosClientTelemetryConfig config,
                     CosmosMeterName name) {
-                    return config.micrometerMetricsOptions.getMeterOptions(name);
+                    if (config != null &&
+                        config.micrometerMetricsOptions != null) {
+
+                        return config.micrometerMetricsOptions.getMeterOptions(name);
+                    }
+
+                    return createDisabledMeterOptions(name);
                 }
 
                 @Override

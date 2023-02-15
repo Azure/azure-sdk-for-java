@@ -192,9 +192,9 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
         CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
-            .getMeterOptions(this.clientTelemetryConfig, CosmosMeterName.SYSTEM_CPU);
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMeterName.SYSTEM_CPU);
         CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
-            .getMeterOptions(this.clientTelemetryConfig, CosmosMeterName.SYSTEM_MEMORY_FREE);
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMeterName.SYSTEM_MEMORY_FREE);
 
 
         if (clientMetricRegistrySnapshot != null) {
