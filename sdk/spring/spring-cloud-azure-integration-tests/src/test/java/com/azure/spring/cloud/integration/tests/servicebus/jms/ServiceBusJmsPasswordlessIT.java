@@ -28,7 +28,7 @@ public class ServiceBusJmsPasswordlessIT {
 
     @Test
     @Timeout(70)
-    public void testServiceBusJmsOperation() throws InterruptedException {
+    void testServiceBusJmsOperation() throws InterruptedException {
         LOGGER.info("ServiceBusJmsPasswordlessIT begin.");
         jmsTemplate.convertAndSend(QUEUE_NAME, DATA);
         LOGGER.info("Send message: {}", DATA);
@@ -38,7 +38,7 @@ public class ServiceBusJmsPasswordlessIT {
     }
 
     @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
-    public void receiveQueueMessage(String message) throws InterruptedException {
+    void receiveQueueMessage(String message) throws InterruptedException {
         LOGGER.info("Received message from queue: {}", message);
         EXCHANGER.exchange(message);
     }

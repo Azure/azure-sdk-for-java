@@ -34,7 +34,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureServiceBusPasswordlessProperties.class);
-                assertThat(context).doesNotHaveBean(AzureServiceBusCredentialSupplier.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
     }
@@ -51,7 +51,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
-                assertThat(context).hasSingleBean(AzureServiceBusCredentialSupplier.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
     }
@@ -85,7 +85,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
-                assertThat(context).hasSingleBean(AzureServiceBusCredentialSupplier.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
                 AzureServiceBusPasswordlessProperties properties = context.getBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(properties.getScopes()).isEqualTo("scopes");
@@ -109,7 +109,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
     }
 
     @Test
-    void testAzureServiceBusCredentialSupplier() {
+    void testAzureServiceBusJmsCredentialSupplier() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getProfile().setCloudType(AZURE);
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
@@ -119,15 +119,15 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
             .withBean(AzureGlobalProperties.class, () -> azureProperties);
 
-        try (MockedConstruction<AzureServiceBusCredentialSupplier> supplierMockedConstruction = mockConstruction(AzureServiceBusCredentialSupplier.class,
-            (azureServiceBusCredentialSupplierMocker, mockerContext) -> {
-                when(azureServiceBusCredentialSupplierMocker.get()).thenReturn("fake-token");
+        try (MockedConstruction<AzureServiceBusJmsCredentialSupplier> supplierMockedConstruction = mockConstruction(AzureServiceBusJmsCredentialSupplier.class,
+            (azureServiceBusJmsCredentialSupplierMocker, mockerContext) -> {
+                when(azureServiceBusJmsCredentialSupplierMocker.get()).thenReturn("fake-token");
 
                 contextRunner.run(runnerContext -> {
                     assertThat(runnerContext).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
-                    assertThat(runnerContext).hasSingleBean(AzureServiceBusCredentialSupplier.class);
+                    assertThat(runnerContext).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
                     assertThat(runnerContext).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
-                    runnerContext.getBean(AzureServiceBusCredentialSupplier.class).get().equals("fake-token");
+                    runnerContext.getBean(AzureServiceBusJmsCredentialSupplier.class).get().equals("fake-token");
                 });
 
             })) {

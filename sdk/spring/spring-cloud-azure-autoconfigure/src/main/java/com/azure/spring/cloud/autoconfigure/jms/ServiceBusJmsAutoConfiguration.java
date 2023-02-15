@@ -52,11 +52,11 @@ public class ServiceBusJmsAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusCredentialSupplier> azureServiceBusCredentialSupplier) {
+    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
             properties.put("com.microsoft:is-client-provider", true);
-            if (azureServiceBusCredentialSupplier.getIfAvailable() != null) {
+            if (azureServiceBusJmsCredentialSupplier.getIfAvailable() != null) {
                 properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
             } else {
                 properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);

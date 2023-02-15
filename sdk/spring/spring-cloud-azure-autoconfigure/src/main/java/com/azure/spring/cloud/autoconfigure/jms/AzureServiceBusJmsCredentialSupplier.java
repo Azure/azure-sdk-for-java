@@ -9,19 +9,19 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
- * AzureServiceBusCredentialSupplier that provide a String as the password to connect Azure ServiceBus.
+ * AzureServiceBusJmsCredentialSupplier that provide a String as the password to connect Azure ServiceBus.
  *
  * @since 4.7.0
  */
-public class AzureServiceBusCredentialSupplier implements Supplier<String> {
+public class AzureServiceBusJmsCredentialSupplier implements Supplier<String> {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
     /**
-     * Create {@link AzureServiceBusCredentialSupplier} instance.
-     * @param properties properties to initialize AzureServiceBusCredentialSupplier.
+     * Create {@link AzureServiceBusJmsCredentialSupplier} instance.
+     * @param properties properties to initialize AzureServiceBusJmsCredentialSupplier.
      */
-    public AzureServiceBusCredentialSupplier(Properties properties) {
+    public AzureServiceBusJmsCredentialSupplier(Properties properties) {
         azureAuthenticationTemplate = new AzureAuthenticationTemplate();
         azureAuthenticationTemplate.init(properties);
     }
@@ -31,7 +31,7 @@ public class AzureServiceBusCredentialSupplier implements Supplier<String> {
         return azureAuthenticationTemplate.getTokenAsPassword();
     }
 
-    AzureServiceBusCredentialSupplier(AzureAuthenticationTemplate azureAuthenticationTemplate) {
+    AzureServiceBusJmsCredentialSupplier(AzureAuthenticationTemplate azureAuthenticationTemplate) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
     }
 }

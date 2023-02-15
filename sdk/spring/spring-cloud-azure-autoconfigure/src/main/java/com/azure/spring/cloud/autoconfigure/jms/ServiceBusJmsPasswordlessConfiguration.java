@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureServiceBusPasswordlessProperties;
@@ -26,6 +27,8 @@ import java.util.Properties;
 @ConditionalOnProperty(value = "spring.jms.servicebus.passwordless-enabled", havingValue = "true")
 public class ServiceBusJmsPasswordlessConfiguration {
 
+    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
+
     @Bean
     @ConfigurationProperties(prefix = "spring.jms.servicebus")
     AzureServiceBusPasswordlessProperties serviceBusPasswordlessProperties() {
@@ -34,18 +37,25 @@ public class ServiceBusJmsPasswordlessConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AzureServiceBusCredentialSupplier azureServiceBusCredentialSupplier(AzureGlobalProperties azureGlobalProperties, AzureServiceBusPasswordlessProperties serviceBusPasswordlessProperties) {
+    AzureServiceBusJmsCredentialSupplier azureServiceBusJmsCredentialSupplier(AzureGlobalProperties azureGlobalProperties, AzureServiceBusPasswordlessProperties serviceBusPasswordlessProperties) {
         Properties properties = mergeAzureProperties(azureGlobalProperties, serviceBusPasswordlessProperties).toProperties();
-        return new AzureServiceBusCredentialSupplier(properties);
+        return new AzureServiceBusJmsCredentialSupplier(properties);
     }
 
     @Bean
-    ServiceBusJmsConnectionFactoryCustomizer jmsAADAuthenticationCustomizer(AzureServiceBusCredentialSupplier credentialSupplier) {
+    ServiceBusJmsConnectionFactoryCustomizer jmsAADAuthenticationCustomizer(AzureServiceBusJmsCredentialSupplier credentialSupplier,
+                                                                            AzureServiceBusJmsProperties properties,
+                                                                            AzureServiceBusPasswordlessProperties serviceBusPasswordlessProperties) {
         return factory -> {
             factory.setExtension(JmsConnectionExtensions.USERNAME_OVERRIDE.toString(), (connection, uri) -> "$jwt");
             factory.setExtension(JmsConnectionExtensions.PASSWORD_OVERRIDE.toString(), (connection, uri) ->
-                    credentialSupplier.get()
+                credentialSupplier.get()
             );
+
+            String remoteUrl = String.format(AMQP_URI_FORMAT,
+                properties.getNameSpace() + serviceBusPasswordlessProperties.getProfile().getEnvironment().getServiceBusDomainName(),
+                properties.getIdleTimeout().toMillis());
+            factory.setRemoteURI(remoteUrl);
         };
     }
 
