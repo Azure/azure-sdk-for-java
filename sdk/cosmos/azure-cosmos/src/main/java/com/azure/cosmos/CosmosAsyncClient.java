@@ -190,8 +190,15 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientMetricRegistrySnapshot = telemetryConfigAccessor
             .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
+
+        CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(this.clientTelemetryConfig, CosmosMeterName.SYSTEM_CPU);
+        CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(this.clientTelemetryConfig, CosmosMeterName.SYSTEM_MEMORY_FREE);
+
+
         if (clientMetricRegistrySnapshot != null) {
-            ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
+            ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
         }
         this.accountTagValue = URI.create(this.serviceEndpoint).getHost().replace(
             ".documents.azure.com", ""

@@ -63,6 +63,8 @@ public final class ClientTelemetryMetrics {
 
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
+    private static CosmosMeterOptions cpuOptions;
+    private static CosmosMeterOptions memoryOptions;
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -98,28 +100,32 @@ public final class ClientTelemetryMetrics {
         float averageSystemCpuUsage,
         float freeMemoryAvailableInMB
     ) {
-        if (compositeRegistry.getRegistries().isEmpty()) {
+        if (compositeRegistry.getRegistries().isEmpty() || cpuOptions == null || memoryOptions == null) {
             return;
         }
 
-        DistributionSummary averageSystemCpuUsageMeter = DistributionSummary
-            .builder(CosmosMeterName.SYSTEM_CPU.toString())
-            .baseUnit("%")
-            .description("Avg. System CPU load")
-            .maximumExpectedValue(100d)
-            .publishPercentiles(0.95, 0.99)
-            .publishPercentileHistogram(true)
-            .register(compositeRegistry);
-        averageSystemCpuUsageMeter.record(averageSystemCpuUsage);
+        if (cpuOptions.isEnabled()) {
+            DistributionSummary averageSystemCpuUsageMeter = DistributionSummary
+                .builder(CosmosMeterName.SYSTEM_CPU.toString())
+                .baseUnit("%")
+                .description("Avg. System CPU load")
+                .maximumExpectedValue(100d)
+                .publishPercentiles(optionsAccessor.getPercentiles(cpuOptions))
+                .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(cpuOptions))
+                .register(compositeRegistry);
+            averageSystemCpuUsageMeter.record(averageSystemCpuUsage);
+        }
 
-        DistributionSummary freeMemoryAvailableInMBMeter = DistributionSummary
-            .builder(CosmosMeterName.SYSTEM_MEMORY_FREE.toString())
-            .baseUnit("MB")
-            .description("Free memory available")
-            .publishPercentiles()
-            .publishPercentileHistogram(false)
-            .register(compositeRegistry);
-        freeMemoryAvailableInMBMeter.record(freeMemoryAvailableInMB);
+        if (memoryOptions.isEnabled()) {
+            DistributionSummary freeMemoryAvailableInMBMeter = DistributionSummary
+                .builder(CosmosMeterName.SYSTEM_MEMORY_FREE.toString())
+                .baseUnit("MB")
+                .description("Free memory available")
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
+                .register(compositeRegistry);
+            freeMemoryAvailableInMBMeter.record(freeMemoryAvailableInMB);
+        }
     }
 
     public static void recordOperation(
@@ -185,13 +191,23 @@ public final class ClientTelemetryMetrics {
         return new RntbdMetricsV2(compositeRegistry, client, endpoint);
     }
 
-    public static synchronized void add(MeterRegistry registry) {
+    public static synchronized void add(
+        MeterRegistry registry,
+        CosmosMeterOptions cpuOptions,
+        CosmosMeterOptions memoryOptions) {
         if (registryRefCount
             .computeIfAbsent(registry, (meterRegistry) -> { return new AtomicLong(0); })
             .incrementAndGet() == 1L) {
             ClientTelemetryMetrics
                 .compositeRegistry
                 .add(registry);
+
+            // CPU and Memory signals are scoped system-wide - not for each client
+            // technically multiple CosmosClients could have different configuration for system meter options
+            // which isn't possible because it is a global system-wide metric
+            // so using most intuitive compromise - last meter options wins
+            cpuOptions = cpuOptions;
+            memoryOptions = memoryOptions;
         }
     }
 
