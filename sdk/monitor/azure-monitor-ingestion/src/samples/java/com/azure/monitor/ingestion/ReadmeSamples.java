@@ -82,6 +82,34 @@ public final class ReadmeSamples {
         // END: readme-sample-uploadLogsWithMaxConcurrency
     }
 
+
+    /**
+     * Sample to demonstrate uploading logs to Azure Monitor.
+     */
+    public void uploadLogsWithErrorHandler() {
+        // BEGIN: readme-sample-uploadLogs-error-handler
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        LogsIngestionClient client = new LogsIngestionClientBuilder()
+                .endpoint("<data-collection-endpoint")
+                .credential(tokenCredential)
+                .buildClient();
+
+        List<Object> logs = getLogs();
+
+        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
+                .setUploadLogsErrorConsumer(uploadLogsError -> {
+                    System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
+                    System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
+
+                    // throw the exception here to abort uploading remaining logs
+                    // throw uploadLogsError.getResponseException();
+                });
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+                Context.NONE);
+        // END: readme-sample-uploadLogs-error-handler
+    }
+
     private List<Object> getLogs() {
         return null;
     }
