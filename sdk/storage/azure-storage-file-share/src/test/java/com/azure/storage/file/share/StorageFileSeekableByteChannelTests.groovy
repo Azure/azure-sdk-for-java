@@ -95,7 +95,6 @@ class StorageFileSeekableByteChannelTests extends APISpec {
     @Unroll
     def "ReadBehavior read graceful bad range"() {
         given:
-        def fileSize = Constants.KB
         def data = getRandomByteArray(fileSize)
         primaryFileClient.create(fileSize)
         primaryFileClient.upload(new ByteArrayInputStream(data), fileSize, null as ParallelTransferOptions)
@@ -121,10 +120,11 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         }
 
         where:
-        offset        | expectedRead
-        500           | fileSize - 500 // overlap on end of file
-        fileSize      | -1             // starts at end of file
-        fileSize + 20 | -1             // completely past file
+        fileSize     | offset            | readSize         | expectedRead
+        Constants.KB | 0                 | 2 * Constants.KB | Constants.KB       // read larger than file
+        Constants.KB | 500               | Constants.KB     | Constants.KB - 500 // overlap on end of file
+        Constants.KB | Constants.KB      | Constants.KB     | -1                 // starts at end of file
+        Constants.KB | Constants.KB + 20 | Constants.KB     | -1                 // completely past file
 
     }
 
