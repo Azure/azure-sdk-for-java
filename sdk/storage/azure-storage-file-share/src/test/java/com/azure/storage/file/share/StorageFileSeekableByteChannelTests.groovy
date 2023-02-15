@@ -34,6 +34,10 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
     }
 
+    def cleanup() {
+        shareClient.deleteIfExists()
+    }
+
     def "E2E channel write"() {
         given:
         def streamBufferSize = 50

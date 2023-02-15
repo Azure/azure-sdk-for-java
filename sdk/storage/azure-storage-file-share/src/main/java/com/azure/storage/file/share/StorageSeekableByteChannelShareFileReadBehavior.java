@@ -34,28 +34,16 @@ public class StorageSeekableByteChannelShareFileReadBehavior implements StorageS
 
     @Override
     public int read(ByteBuffer dst, long sourceOffset) {
-        int initialPosition = dst.position();
-
-        /* Optimistically assume cached resource length has not changed, but don't take that for truth. If read strategy
-         * uses etag locking, conditions will catch changes and cause an etag error. If read strategy uses versioning,
-         * changes are impossible. Otherwise, assume the file length may have changed.
-         * If, based on cached length, the download range contains _some_ bytes but will still cause an invalid range
-         * exception: trim download range to ensure success.
-         * If, based on cached length, the download range would return zero bytes (offset is past cached length): make
-         * the full range call and deal with potential invalid range. The error will return Content-Range to confirm
-         * whether we are at end of file.
-         */
-        int actualLength = getCachedLength() == null
-            ? dst.remaining()
-            : (int) Math.min(dst.remaining(), getCachedLength() - sourceOffset);
-        if (actualLength <= 0) {
-            actualLength = dst.remaining();
+        if (dst.remaining() <= 0) {
+            throw new IllegalArgumentException("'dst.remaining()' must be positive.");
         }
+
+        int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
             ShareFileDownloadResponse response =  client.downloadWithResponse(dstStream,
                 new ShareFileDownloadOptions()
-                    .setRange(new ShareFileRange(sourceOffset, sourceOffset + actualLength - 1))
+                    .setRange(new ShareFileRange(sourceOffset, sourceOffset + dst.remaining() - 1))
                     .setRequestConditions(conditions),
                 null, null);
             lastKnownResourceLength = getResourceLengthFromContentRange(
@@ -75,14 +63,6 @@ public class StorageSeekableByteChannelShareFileReadBehavior implements StorageS
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void updateResourceCachedState(ShareFileDownloadResponse response) {
-        if (response == null) {
-            return;
-        }
-        String contentRange = response.getDeserializedHeaders().getContentRange();
-        lastKnownResourceLength = getResourceLengthFromContentRange(contentRange);
     }
 
     @Override

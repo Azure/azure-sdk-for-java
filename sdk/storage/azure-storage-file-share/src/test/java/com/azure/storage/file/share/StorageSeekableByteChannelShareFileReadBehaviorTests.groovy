@@ -6,6 +6,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders
 import com.azure.storage.file.share.models.ShareFileDownloadResponse
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import spock.lang.Unroll
@@ -25,6 +26,10 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
     }
 
+    def cleanup() {
+        shareClient.deleteIfExists()
+    }
+
     ShareFileDownloadResponse createMockDownloadResponse(String contentRange) {
         String contentRangeHeader = "Content-Range"
         return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(null, 206,
@@ -33,7 +38,7 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
     }
 
     @Unroll
-    def "ReadBehavior read calls to client correctly"() {
+    def "Read calls to client correctly"() {
         given:
         ShareFileClient client = Mock()
         def behavior = new StorageSeekableByteChannelShareFileReadBehavior(client, conditions)
@@ -60,7 +65,7 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
     }
 
     @Unroll
-    def "ReadBehavior read graceful past end of file"() {
+    def "Read graceful past end of file"() {
         given:
         def data = getRandomByteArray(fileSize)
         shareClient.create()
@@ -97,5 +102,60 @@ class StorageSeekableByteChannelShareFileReadBehaviorTests extends APISpec {
         Constants.KB | 500               | Constants.KB     | Constants.KB - 500 // overlap on end of file
         Constants.KB | Constants.KB      | Constants.KB     | -1                 // starts at end of file
         Constants.KB | Constants.KB + 20 | Constants.KB     | -1                 // completely past file
+    }
+
+    def "Read detects file growth"() {
+        given: "data"
+        int length = 512
+        def data = getRandomByteArray(2 * length)
+
+        and: "Storage file at half size"
+        shareClient.create()
+        primaryFileClient.create(length)
+        primaryFileClient.upload(new ByteArrayInputStream(data[0..length-1] as byte[]), length, null as ParallelTransferOptions)
+
+        and: "behavior to read file"
+        def behavior = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null)
+        def buffer = ByteBuffer.allocate(length)
+
+        when: "entire file initially read"
+        def read = behavior.read(buffer, 0)
+
+        then: "channel state as expected"
+        read == length
+        behavior.cachedLength.longValue() == length
+
+        and: "buffer correctly filled"
+        buffer.position() == buffer.capacity()
+        buffer.array() as List<Byte> == data[0..length-1]
+
+        when: "read at end of file"
+        buffer.clear()
+        read = behavior.read(buffer, length)
+
+        then: "gracefully signal end of file"
+        notThrown(Throwable)
+        read == -1
+        behavior.cachedLength.longValue() == length
+
+        and: "buffer unfilled"
+        buffer.position() == 0
+
+        when: "file augmented to full size"
+        primaryFileClient.setProperties(2 * length, null, null, null)
+        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
+            new ByteArrayInputStream(data[length..-1] as byte[]), length).setOffset(length), null, null)
+
+        and: "behavior reads at previous EOF"
+        buffer.clear()
+        read = behavior.read(buffer, behavior.cachedLength.longValue())
+
+        then: "channel state has updated length"
+        read == length
+        behavior.cachedLength.longValue() == 2 * length
+
+        and: "buffer correctly filled"
+        buffer.position() == buffer.capacity()
+        buffer.array() as List<Byte> == data[length..-1]
     }
 }
