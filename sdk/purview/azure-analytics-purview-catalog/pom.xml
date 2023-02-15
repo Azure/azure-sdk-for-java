@@ -31,6 +31,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.03</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
