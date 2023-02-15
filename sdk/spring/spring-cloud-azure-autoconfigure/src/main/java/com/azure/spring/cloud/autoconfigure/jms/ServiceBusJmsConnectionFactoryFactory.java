@@ -63,7 +63,7 @@ public class ServiceBusJmsConnectionFactoryFactory {
             String remoteUrl = null;
             String username = null;
             String password = null;
-            if (serviceBusPasswordlessProperties != null & properties.getNameSpace() != null) {
+            if (serviceBusPasswordlessProperties != null && properties.getNameSpace() != null) {
                 remoteUrl = String.format(AMQP_URI_FORMAT,
                     properties.getNameSpace() + serviceBusPasswordlessProperties.getProfile().getEnvironment().getServiceBusDomainName(),
                     properties.getIdleTimeout().toMillis());
