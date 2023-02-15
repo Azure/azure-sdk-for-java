@@ -54,21 +54,7 @@ public enum TagName {
         TagName.RegionName
     );
 
-    public static final EnumSet<TagName> ALL_TAGS = EnumSet.of(
-        TagName.Container,
-        TagName.Operation,
-        TagName.OperationStatusCode,
-        TagName.ClientCorrelationId,
-        TagName.ConsistencyLevel,
-        TagName.PartitionKeyRangeId,
-        TagName.RequestStatusCode,
-        TagName.RequestOperationType,
-        TagName.RegionName,
-        TagName.ServiceEndpoint,
-        TagName.ServiceAddress,
-        TagName.IsForceRefresh,
-        TagName.IsForceCollectionRoutingMapRefresh
-    );
+    public static final EnumSet<TagName> ALL_TAGS = EnumSet.allOf(TagName.class);
 
     public static final EnumSet<TagName> MINIMUM_TAGS = EnumSet.of(
         TagName.Container,

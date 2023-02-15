@@ -111,10 +111,16 @@ public final class RntbdRequestArgs {
         this.lifetime.stop();
     }
 
-    public long stop(Timer requests, Timer responses) {
+    public void stop(Timer requests, Timer responses) {
         this.lifetime.stop();
-        this.sample.stop(requests);
-        return this.sample.stop(responses);
+
+        if (requests != null) {
+            this.sample.stop(requests);
+        }
+
+        if (responses != null) {
+            this.sample.stop(responses);
+        }
     }
 
     @Override

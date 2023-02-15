@@ -1192,8 +1192,14 @@ public final class ClientTelemetryMetrics {
                 requestRecord.stop(this.requests, requestRecord.isCompletedExceptionally()
                     ? this.responseErrors
                     : this.responseSuccesses);
-                this.requestSize.record(requestRecord.requestLength());
-                this.responseSize.record(requestRecord.responseLength());
+
+                if (this.requestSize != null) {
+                    this.requestSize.record(requestRecord.requestLength());
+                }
+
+                if (this.responseSize != null) {
+                    this.responseSize.record(requestRecord.responseLength());
+                }
             } else {
                 requestRecord.stop();
             }
