@@ -119,6 +119,7 @@
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/netapp</module>
+    <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
