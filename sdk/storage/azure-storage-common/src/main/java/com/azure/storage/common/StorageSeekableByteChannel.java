@@ -28,10 +28,13 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
      */
     public interface ReadBehavior {
         /**
-         * Reads from the backing resource.
+         * Reads n bytes from the backing resource, where {@code 0 <= n <= dst.remaining()}.
+         * Emulates behavior of {@link java.nio.channels.ReadableByteChannel#read(ByteBuffer)}.
+         *
          * @param dst Destination to read the resource into.
          * @param sourceOffset Offset to read from the resource.
-         * @return Number of bytes read from the resource.
+         * @return Number of bytes read from the resource, possibly zero, or -1 end of resource.
+         * @see java.nio.channels.ReadableByteChannel#read(ByteBuffer)
          */
         int read(ByteBuffer dst, long sourceOffset);
 

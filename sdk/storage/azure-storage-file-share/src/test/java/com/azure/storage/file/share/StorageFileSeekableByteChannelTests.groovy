@@ -100,7 +100,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         primaryFileClient.upload(new ByteArrayInputStream(data), fileSize, null as ParallelTransferOptions)
 
         def behavior = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null)
-        def buffer = ByteBuffer.allocate(fileSize)
+        def buffer = ByteBuffer.allocate(readSize)
 
         when: "ReadBehavior.read() called"
         def read = behavior.read(buffer, offset)
@@ -110,13 +110,17 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         and: "correct amount read"
         read == expectedRead
-        buffer.position() == expectedRead
+        buffer.position() == Math.max(expectedRead, 0) //
         behavior.getCachedLength() == fileSize
 
         and: "if applicable, correct data read"
         if (offset < fileSize) {
             assert buffer.position() == expectedRead
-            assert buffer.array()[offset..-1] == data[offset..-1]
+            buffer.limit(buffer.position())
+            buffer.rewind()
+            def validBufferContent = new byte[buffer.limit()]
+            buffer.get(validBufferContent)
+            assert validBufferContent as List<Byte> == data[offset..-1]
         }
 
         where:
