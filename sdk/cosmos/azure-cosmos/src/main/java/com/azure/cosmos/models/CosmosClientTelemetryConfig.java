@@ -158,7 +158,7 @@ public final class CosmosClientTelemetryConfig {
      * @return current CosmosClientTelemetryConfig
      *
      * @deprecated Use {@link CosmosMicrometerMetricsOptions#defaultTagNames(CosmosMeterTagName...)} or
-     * {@link CosmosMeterOptions#tagNames(CosmosMeterTagName...)} instead.
+     * {@link CosmosMeterOptions#suppressTagNames(CosmosMeterTagName...)} instead.
      */
     @Deprecated
     public CosmosClientTelemetryConfig metricTagNames(String... tagNames) {

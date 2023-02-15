@@ -13,10 +13,10 @@ import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Names of Cosmos DB client-side meters
+ */
 public final class CosmosMeterName extends ExpandableStringEnum<CosmosMeterName> {
-
-    private final static Map<String, CosmosMeterName> meters = createMeterNameMap();
-
     private CosmosMeterCategory meterCategory;
 
     /**
@@ -295,6 +295,8 @@ public final class CosmosMeterName extends ExpandableStringEnum<CosmosMeterName>
         fromString(nameOf("req.rntbd.stats.endpoint.inflightRequests"), CosmosMeterName.class)
             .setCategory(CosmosMeterCategory.LEGACY);
 
+    private final static Map<String, CosmosMeterName> meters = createMeterNameMap();
+
     /**
      * Gets the corresponding metric category state from its string representation.
      *
@@ -318,6 +320,14 @@ public final class CosmosMeterName extends ExpandableStringEnum<CosmosMeterName>
         }
 
         return meterName;
+    }
+
+    /**
+     * Gets the meter category of the meter
+     * @return the category of the meter
+     */
+    public CosmosMeterCategory getCategory() {
+        return this.meterCategory;
     }
 
     private static Map<String, CosmosMeterName> createMeterNameMap() {
@@ -380,10 +390,6 @@ public final class CosmosMeterName extends ExpandableStringEnum<CosmosMeterName>
     private CosmosMeterName setCategory(CosmosMeterCategory meterCategory) {
         this.meterCategory = meterCategory;
         return this;
-    }
-
-    public CosmosMeterCategory getCategory() {
-        return this.meterCategory;
     }
 
     private static String nameOf(final String member) {

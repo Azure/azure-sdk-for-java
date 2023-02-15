@@ -12,6 +12,11 @@ import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * The tag names that can be used for Cosmos client-side meters. Not all tag names are applicable for all meters, but
+ * this identifier can be used to tune which tags to use for individual meters or also define the default tags that
+ * should be used when no meter-specific suppression exists.
+ */
 public final class CosmosMeterTagName extends ExpandableStringEnum<CosmosMeterTagName> {
 
     private EnumSet<TagName> tagNames;

@@ -11,6 +11,10 @@ import java.util.EnumSet;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Options of a Cosmos client-side meter that can be used to enable/disable it, change the percentile and histogram
+ * capturing (if percentiles are applicable for the meter) and allows suppressing tags that are not desired.
+ */
 public final class CosmosMeterOptions extends MetricsOptions {
 
     private final CosmosMeterName meterName;
@@ -34,6 +38,10 @@ public final class CosmosMeterOptions extends MetricsOptions {
         this.suppressedTagNames = EnumSet.noneOf(TagName.class);
     }
 
+    /**
+     * Gets the name of the meter these options are applicable for
+     * @return the meter name for these options
+     */
     public CosmosMeterName getMeterName() {
         return this.meterName;
     }
