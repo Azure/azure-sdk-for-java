@@ -3,6 +3,7 @@
 Workflows are automated, repeatable business processes that users can create within Microsoft Purview to validate and orchestrate CUD (create, update, delete) operations on their data entities. Enabling these processes allow organizations to track changes, enforce policy compliance, and ensure quality data across their data landscape.
 
 Use the client library for Purview Workflow to:
+
 - Manage workflows
 - Submit user requests and monitor workflow runs
 - View and respond to workflow tasks
@@ -47,8 +48,10 @@ PurviewWorkflowClient purviewWorkflowClient = new PurviewWorkflowClientBuilder()
     .buildClient();
 ```
 
-### Example
+## Examples
+
 The following section provides several code snippets covering some of the most common scenarios, including:
+
 - [Create Workflow](#create-workflow)
 - [Submit User Requests](#submit-user-requests)
 - [Approve Workflow Task](#approve-workflow-task)
@@ -85,6 +88,12 @@ Response<Void> response =
     purviewWorkflowClient.approveApprovalTaskWithResponse(
         "69b57a00-f5de-4a17-a44a-6479adae373d", approvalResponseComment, requestOptions);
 ```
+
+## Key concepts
+
+## Troubleshooting
+
+## Next steps
 
 ## Contributing
 
