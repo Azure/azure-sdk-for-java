@@ -16,19 +16,19 @@ public final class ErrorInformation {
      * Service specific error code which serves as the substatus for the HTTP
      * error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "code")
     private String code;
 
     /*
      * A human-readable representation of the error.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Internal error details.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "details")
     private List<ErrorInformation> details;
 
     /*
