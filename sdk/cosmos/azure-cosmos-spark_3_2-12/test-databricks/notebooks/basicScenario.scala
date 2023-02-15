@@ -78,4 +78,3 @@ df.filter(col("isAlive") === true)
 
 // cleanup
 spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")
-spark.sql(s"DROP DATABASE cosmosCatalog.${cosmosDatabaseName}")
