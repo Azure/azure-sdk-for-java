@@ -14,6 +14,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -28,12 +29,13 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PartiesClientTests extends TestBase {
-    private PartiesClient client;
+    private final String defaultEndpoint = "https://REDACTED.farmbeats.azure.net";
 
     private PartiesAsyncClient createClient() {
+        System.out.println(getTestMode().toString());
         PartiesClientBuilder builder =
             new PartiesClientBuilder()
-                .host("https://bb-prod-wcus-1.farmbeats.azure.net")
+                .host(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -51,8 +53,8 @@ public class PartiesClientTests extends TestBase {
     @Test
     public void testList() {
         PartiesAsyncClient client = createClient();
-        RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = client.getWithResponse("contoso-party", new RequestOptions()).block();
+        System.out.println(response.getValue().toString());
         assertNotNull(response.getValue());
     }
 }
