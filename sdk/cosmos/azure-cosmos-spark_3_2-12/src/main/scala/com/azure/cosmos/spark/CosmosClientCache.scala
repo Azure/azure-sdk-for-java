@@ -220,7 +220,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               CosmosMeterTagName.OPERATION,
               CosmosMeterTagName.OPERATION_STATUS_CODE,
               CosmosMeterTagName.PARTITION_KEY_RANGE_ID,
-              CosmosMeterTagName.SERVICE_ENDPOINT,
+              CosmosMeterTagName.SERVICE_ADDRESS,
               CosmosMeterTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
               CosmosMeterTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
               CosmosMeterTagName.REQUEST_STATUS_CODE,

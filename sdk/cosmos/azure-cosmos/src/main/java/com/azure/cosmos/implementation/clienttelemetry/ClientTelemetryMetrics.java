@@ -206,8 +206,8 @@ public final class ClientTelemetryMetrics {
             // technically multiple CosmosClients could have different configuration for system meter options
             // which isn't possible because it is a global system-wide metric
             // so using most intuitive compromise - last meter options wins
-            cpuOptions = cpuOptions;
-            memoryOptions = memoryOptions;
+            ClientTelemetryMetrics.cpuOptions = cpuOptions;
+            ClientTelemetryMetrics.memoryOptions = memoryOptions;
         }
     }
 
@@ -377,8 +377,8 @@ public final class ClientTelemetryMetrics {
                         .baseUnit("Regions contacted")
                         .description("Operation - regions contacted")
                         .maximumExpectedValue(100d)
-                        .publishPercentiles(optionsAccessor.getPercentiles(regionsOptions))
-                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(regionsOptions))
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
                         .tags(getEffectiveTags(operationTags, regionsOptions))
                         .register(compositeRegistry);
                     if (contactedRegions != null && contactedRegions.size() > 0) {
