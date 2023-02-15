@@ -72,7 +72,7 @@ public class CosmosFactory {
      *
      * @return container name
      */
-    public String getContainerName() {
+    public String overrideContainerName() {
         return null;
     }
 

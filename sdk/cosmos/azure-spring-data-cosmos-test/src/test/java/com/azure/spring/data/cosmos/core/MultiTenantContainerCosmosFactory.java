@@ -28,7 +28,7 @@ public class MultiTenantContainerCosmosFactory extends CosmosFactory {
     }
 
     @Override
-    public String getContainerName() {
+    public String overrideContainerName() {
         return this.manuallySetContainerName;
     }
 }

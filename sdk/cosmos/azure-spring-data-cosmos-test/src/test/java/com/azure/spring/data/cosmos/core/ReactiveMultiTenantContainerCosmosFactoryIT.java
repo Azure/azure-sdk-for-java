@@ -95,14 +95,14 @@ public class ReactiveMultiTenantContainerCosmosFactoryIT {
         cosmosFactory.manuallySetContainerName = testContainer1;
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
         reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
-        assertThat(cosmosFactory.getContainerName()).isEqualTo(testContainer1);
+        assertThat(cosmosFactory.overrideContainerName()).isEqualTo(testContainer1);
         reactiveCosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1))).block();
 
         // Create testContainer1 and add TEST_PERSON_2 to it
         cosmosFactory.manuallySetContainerName = testContainer2;
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
         reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
-        assertThat(cosmosFactory.getContainerName()).isEqualTo(testContainer2);
+        assertThat(cosmosFactory.overrideContainerName()).isEqualTo(testContainer2);
         reactiveCosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
 
         // Check that testContainer2 has the correct contents
