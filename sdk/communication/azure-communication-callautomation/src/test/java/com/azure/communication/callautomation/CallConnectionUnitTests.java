@@ -272,7 +272,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         RemoveParticipantOptions removeParticipantsOptions = new RemoveParticipantOptions(
             new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnection.removeParticipantsWithResponse(
+        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnection.removeParticipantWithResponse(
             removeParticipantsOptions, Context.NONE);
 
 

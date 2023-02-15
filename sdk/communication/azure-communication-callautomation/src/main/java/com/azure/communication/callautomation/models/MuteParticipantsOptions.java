@@ -56,7 +56,7 @@ public final class MuteParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the RemoveParticipantsOptions object itself.
+     * @return the MuteParticipantsOptions object itself.
      */
     public MuteParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;

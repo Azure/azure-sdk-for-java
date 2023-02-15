@@ -53,7 +53,7 @@ public final class RemoveParticipantOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the RemoveParticipantsOptions object itself.
+     * @return the RemoveParticipantOptions object itself.
      */
     public RemoveParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;

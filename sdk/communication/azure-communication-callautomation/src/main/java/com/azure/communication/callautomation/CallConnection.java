@@ -218,7 +218,7 @@ public class CallConnection {
      * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantResult> removeParticipantsWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
+    public Response<RemoveParticipantResult> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
         return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
     }
 

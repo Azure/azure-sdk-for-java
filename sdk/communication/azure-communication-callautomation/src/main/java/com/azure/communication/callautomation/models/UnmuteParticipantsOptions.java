@@ -56,7 +56,7 @@ public final class UnmuteParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the RemoveParticipantsOptions object itself.
+     * @return the UnmuteParticipantsOptions object itself.
      */
     public UnmuteParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
