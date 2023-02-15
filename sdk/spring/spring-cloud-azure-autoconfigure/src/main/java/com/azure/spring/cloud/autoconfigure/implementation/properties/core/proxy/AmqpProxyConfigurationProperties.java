@@ -14,7 +14,7 @@ public class AmqpProxyConfigurationProperties extends ProxyConfigurationProperti
     implements ProxyOptionsProvider.AmqpProxyOptions {
 
     /**
-     * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is 'none'.
+     * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is `'none'`.
      */
     private String authenticationType;
 

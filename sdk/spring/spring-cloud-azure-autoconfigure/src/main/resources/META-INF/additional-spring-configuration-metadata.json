@@ -1191,25 +1191,25 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist headers that should be logged. The default value is "x-ms-request-id","x-ms-client-request-id","x-ms-return-client-request-id","traceparent","MS-CV","Accept","Cache-Control","Connection","Content-Length","Content-Type","Date","ETag","Expires","If-Match","If-Modified-Since","If-None-Match","If-Unmodified-Since","Last-Modified","Pragma","Request-Id","Retry-After","Server","Transfer-Encoding","User-Agent","WWW-Authenticate".",
+      "description": "Comma-delimited list of allowlist headers that should be logged. The default value is `'x-ms-request-id','x-ms-client-request-id','x-ms-return-client-request-id','traceparent','MS-CV','Accept','Cache-Control','Connection','Content-Length','Content-Type','Date','ETag','Expires','If-Match','If-Modified-Since','If-None-Match','If-Unmodified-Since','Last-Modified','Pragma','Request-Id','Retry-After','Server','Transfer-Encoding','User-Agent','WWW-Authenticate'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist query parameters. The default value is "api-version".",
+      "description": "Comma-delimited list of allowlist query parameters. The default value is `'api-version'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.level",
       "type": "com.azure.core.http.policy.HttpLogDetailLevel",
-      "description": "The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is NONE.",
+      "description": "The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is `NONE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.pretty-print-body",
       "type": "java.lang.Boolean",
-      "description": "Whether to pretty print the message bodies. The default value is false.",
+      "description": "Whether to pretty print the message bodies. The default value is `false`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
@@ -1301,7 +1301,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
       "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is AZURE.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
@@ -1590,7 +1590,7 @@
     {
       "name": "spring.datasource.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is AZURE.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
     },
     {
@@ -1658,7 +1658,7 @@
     {
       "name": "spring.redis.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is AZURE.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
     },
     {
