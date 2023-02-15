@@ -12,6 +12,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -20,6 +21,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -49,7 +51,10 @@ public final class TranslatorClientBuilder
 
     @Generated private static final String SDK_VERSION = "version";
     
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    
     private AzureRegionalKeyCredential regionalCredential;
+    private TokenCredential tokenCredential;
 
     @Generated
     private static final Map<String, String> PROPERTIES =
@@ -211,6 +216,21 @@ public final class TranslatorClientBuilder
     }
 
     /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return The updated {@link TranslatorClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public TranslatorClientBuilder credential(TokenCredential tokenCredential) {
+        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /**
      * Builds an instance of TranslatorClientImpl with the provided parameters.
      *
      * @return an instance of TranslatorClientImpl.
@@ -253,6 +273,10 @@ public final class TranslatorClientBuilder
         
         if (this.regionalCredential != null) {
             policies.add(new GlobalEndpointAuthenticationPolicy(this.regionalCredential));
+        }
+        if (tokenCredential != null) {
+                // User token based policy
+                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         }
         
         this.pipelinePolicies.stream()
