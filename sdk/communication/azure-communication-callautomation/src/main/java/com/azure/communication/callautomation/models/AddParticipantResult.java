@@ -3,22 +3,20 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantsResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
-import com.azure.communication.callautomation.implementation.models.AddParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.AddParticipantResponseInternal;
 import com.azure.core.annotation.Immutable;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-/** The AddParticipantsResult model. */
+/** The AddParticipantResult model. */
 @Immutable
 public final class AddParticipantResult {
     /*
-     * The participants property.
+     * The participant property.
      */
-    private final List<CallParticipant> participants;
+    private final CallParticipant participant;
 
     /*
      * The operation context provided by client.
@@ -26,10 +24,10 @@ public final class AddParticipantResult {
     private final String operationContext;
 
     static {
-        AddParticipantsResponseConstructorProxy.setAccessor(
-            new AddParticipantsResponseConstructorProxy.AddParticipantsResponseConstructorAccessor() {
+        AddParticipantResponseConstructorProxy.setAccessor(
+            new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
                 @Override
-                public AddParticipantResult create(AddParticipantsResponseInternal internalHeaders) {
+                public AddParticipantResult create(AddParticipantResponseInternal internalHeaders) {
                     return new AddParticipantResult(internalHeaders);
                 }
             });
@@ -40,32 +38,29 @@ public final class AddParticipantResult {
      *
      */
     public AddParticipantResult() {
-        this.participants = null;
+        this.participant = null;
         this.operationContext = null;
     }
 
     /**
      * Constructor of the class
      *
-     * @param addParticipantsResponseInternal The response from the addParticipant service
+     * @param addParticipantResponseInternal The response from the addParticipant service
      */
-    AddParticipantResult(AddParticipantsResponseInternal addParticipantsResponseInternal) {
-        Objects.requireNonNull(addParticipantsResponseInternal, "addParticipantsResponseInternal must not be null");
+    AddParticipantResult(AddParticipantResponseInternal addParticipantResponseInternal) {
+        Objects.requireNonNull(addParticipantResponseInternal, "addParticipantResponseInternal must not be null");
 
-        this.participants = addParticipantsResponseInternal.getParticipants()
-            .stream()
-            .map(CallParticipantConverter::convert)
-            .collect(Collectors.toList());
-        this.operationContext = addParticipantsResponseInternal.getOperationContext();
+        this.participant = CallParticipantConverter.convert(addParticipantResponseInternal.getParticipant());
+        this.operationContext = addParticipantResponseInternal.getOperationContext();
     }
 
     /**
-     * Get the participants property: The participants property.
+     * Get the participant property: The participant property.
      *
-     * @return the participants value.
+     * @return the participant value.
      */
-    public List<CallParticipant> getParticipants() {
-        return this.participants;
+    public CallParticipant getParticipant() {
+        return this.participant;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public final class MuteParticipantsRequestInternal {
     /*
-     * Participant to be muted from the call.
+     * Participants to be muted from the call.
      * Only ACS Users are supported.
      */
     @JsonProperty(value = "targetParticipants", required = true)
@@ -26,7 +26,7 @@ public final class MuteParticipantsRequestInternal {
     private String operationContext;
 
     /**
-     * Get the targetParticipants property: Participant to be muted from the call. Only ACS Users are supported.
+     * Get the targetParticipants property: Participants to be muted from the call. Only ACS Users are supported.
      *
      * @return the targetParticipants value.
      */
@@ -35,7 +35,7 @@ public final class MuteParticipantsRequestInternal {
     }
 
     /**
-     * Set the targetParticipants property: Participant to be muted from the call. Only ACS Users are supported.
+     * Set the targetParticipants property: Participants to be muted from the call. Only ACS Users are supported.
      *
      * @param targetParticipants the targetParticipants value to set.
      * @return the MuteParticipantsRequestInternal object itself.

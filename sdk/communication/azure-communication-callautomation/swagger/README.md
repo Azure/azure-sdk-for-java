@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/4ce9b59a6317ae247e2db710495e19c12e6e2793/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/cb2cd38aa4a7258e59a912edbb21a21468fb9c6f/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -55,8 +55,8 @@ directive:
     from: AddParticipantRequest
     to: AddParticipantRequestInternal
 - rename-model:
-    from: AddParticipantsResponse
-    to: AddParticipantsResponseInternal
+    from: AddParticipantResponse
+    to: AddParticipantResponseInternal
 - rename-model:
     from: CallConnectionProperties
     to: CallConnectionPropertiesInternal
@@ -76,8 +76,8 @@ directive:
     from: RemoveParticipantRequest
     to: RemoveParticipantRequestInternal
 - rename-model:
-    from: RemoveParticipantsResponse
-    to: RemoveParticipantsResponseInternal
+    from: RemoveParticipantResponse
+    to: RemoveParticipantResponseInternal
 - rename-model:
     from: TransferCallResponse
     to: TransferCallResponseInternal

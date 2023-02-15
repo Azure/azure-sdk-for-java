@@ -3,22 +3,22 @@
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
 
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 
 /**
  * Helper class to access private values of {@link RemoveParticipantResult} across package boundaries.
  */
-public final class RemoveParticipantsResponseConstructorProxy {
-    private static RemoveParticipantsResponseConstructorAccessor accessor;
+public final class RemoveParticipantResponseConstructorProxy {
+    private static RemoveParticipantResponseConstructorAccessor accessor;
 
-    private RemoveParticipantsResponseConstructorProxy() { }
+    private RemoveParticipantResponseConstructorProxy() { }
 
     /**
-     * Type defining the methods to set the non-public properties of a {@link RemoveParticipantsResponseConstructorAccessor}
+     * Type defining the methods to set the non-public properties of a {@link RemoveParticipantResponseConstructorAccessor}
      * instance.
      */
-    public interface RemoveParticipantsResponseConstructorAccessor {
+    public interface RemoveParticipantResponseConstructorAccessor {
         /**
          * Creates a new instance of {@link RemoveParticipantResult} backed by an internal instance of
          * {@link RemoveParticipantResult}.
@@ -26,7 +26,7 @@ public final class RemoveParticipantsResponseConstructorProxy {
          * @param internalResponse The internal response.
          * @return A new instance of {@link RemoveParticipantResult}.
          */
-        RemoveParticipantResult create(RemoveParticipantsResponseInternal internalResponse);
+        RemoveParticipantResult create(RemoveParticipantResponseInternal internalResponse);
     }
 
     /**
@@ -34,8 +34,8 @@ public final class RemoveParticipantsResponseConstructorProxy {
      *
      * @param accessor The accessor.
      */
-    public static void setAccessor(final RemoveParticipantsResponseConstructorAccessor accessor) {
-        RemoveParticipantsResponseConstructorProxy.accessor = accessor;
+    public static void setAccessor(final RemoveParticipantResponseConstructorAccessor accessor) {
+        RemoveParticipantResponseConstructorProxy.accessor = accessor;
     }
 
     /**
@@ -45,7 +45,7 @@ public final class RemoveParticipantsResponseConstructorProxy {
      * @param internalResponse The internal response.
      * @return A new instance of {@link RemoveParticipantResult}.
      */
-    public static RemoveParticipantResult create(RemoveParticipantsResponseInternal internalResponse) {
+    public static RemoveParticipantResult create(RemoveParticipantResponseInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.

@@ -10,7 +10,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.azure.communication.callautomation.implementation.models.AddParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.AddParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
@@ -88,10 +88,9 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateAddParticipantsResponse() {
-        AddParticipantsResponseInternal addParticipantsResponseInternal = new AddParticipantsResponseInternal()
+        AddParticipantResponseInternal addParticipantsResponseInternal = new AddParticipantResponseInternal()
             .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipants(new ArrayList<>(Collections.singletonList(
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false))));
+            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
 
         return serializeObject(addParticipantsResponseInternal);
     }

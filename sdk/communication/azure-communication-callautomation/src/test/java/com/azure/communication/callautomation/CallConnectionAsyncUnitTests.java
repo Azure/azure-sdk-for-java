@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
@@ -222,8 +222,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertNotNull(addParticipantsResult);
         assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
-            .getParticipants()
-            .get(0)
+            .getParticipant()
             .getIdentifier())
             .getId());
     }
@@ -250,7 +249,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void removeParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
@@ -266,7 +265,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void removeParticipantsWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);

@@ -3,13 +3,13 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantsResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The RemoveParticipantsResult model. */
+/** The RemoveParticipantResult model. */
 @Immutable
 public final class RemoveParticipantResult {
     /*
@@ -18,10 +18,10 @@ public final class RemoveParticipantResult {
     private final String operationContext;
 
     static {
-        RemoveParticipantsResponseConstructorProxy.setAccessor(
-            new RemoveParticipantsResponseConstructorProxy.RemoveParticipantsResponseConstructorAccessor() {
+        RemoveParticipantResponseConstructorProxy.setAccessor(
+            new RemoveParticipantResponseConstructorProxy.RemoveParticipantResponseConstructorAccessor() {
                 @Override
-                public RemoveParticipantResult create(RemoveParticipantsResponseInternal internalHeaders) {
+                public RemoveParticipantResult create(RemoveParticipantResponseInternal internalHeaders) {
                     return new RemoveParticipantResult(internalHeaders);
                 }
             });
@@ -38,12 +38,12 @@ public final class RemoveParticipantResult {
     /**
      * Package-private constructor of the class, used internally only.
      *
-     * @param  removeParticipantsResponseInternal The response from the service
+     * @param  removeParticipantResponseInternal The response from the service
      */
-    RemoveParticipantResult(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
-        Objects.requireNonNull(removeParticipantsResponseInternal, "removeParticipantsResponseInternal must not be null");
+    RemoveParticipantResult(RemoveParticipantResponseInternal removeParticipantResponseInternal) {
+        Objects.requireNonNull(removeParticipantResponseInternal, "removeParticipantResponseInternal must not be null");
 
-        this.operationContext = removeParticipantsResponseInternal.getOperationContext();
+        this.operationContext = removeParticipantResponseInternal.getOperationContext();
     }
 
     /**
