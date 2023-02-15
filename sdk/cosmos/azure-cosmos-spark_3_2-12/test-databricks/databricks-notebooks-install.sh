@@ -10,6 +10,7 @@ RESOURCEGROUPNAME=$7
 CLIENTID=$8
 CLIENTSECRET=$9
 COSMOSCONTAINERNAME=${10}
+COSMOSDATABASENAME=${11}
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$NOTEBOOKSFOLDER" ]] && exit 1
 [[ -z "$COSMOSENDPOINT" ]] && exit 1
@@ -20,6 +21,7 @@ COSMOSCONTAINERNAME=${10}
 [[ -z "$CLIENTID" ]] && exit 1
 [[ -z "$CLIENTSECRET" ]] && exit 1
 [[ -z "$COSMOSCONTAINERNAME" ]] && exit 1
+[[ -z "$COSMOSDATABASENAME" ]] && exit 1
 
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.clusters[] | select(.cluster_name == $N) | .cluster_id')
 
@@ -42,7 +44,7 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\"}" | jq -r '.run_id')
+	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}" | jq -r '.run_id')
 
 	if [[ -z "$RUN_ID" ]]
 	then

@@ -5,8 +5,7 @@
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
-
-val cosmosDatabaseName = "sampleDB"
+val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
@@ -18,7 +17,7 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchema.enabled" -> "true"                          
+  "spark.cosmos.read.inferSchema.enabled" -> "true"
 )
 
 // COMMAND ----------

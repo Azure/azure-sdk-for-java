@@ -14,8 +14,7 @@ val resourceGroupName = dbutils.widgets.get("resourceGroupName")
 val clientId = dbutils.widgets.get("clientId")
 val clientSecret = dbutils.widgets.get("clientSecret")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
-
-val cosmosDatabaseName = "sampleDB"
+val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
