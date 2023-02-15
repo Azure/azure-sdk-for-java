@@ -29,7 +29,7 @@ import java.util.function.Function;
 public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
 
-    private static final CosmosDaemonThreadFactory theadFactory = new CosmosDaemonThreadFactory("global-endpoint-manager");
+    private static final CosmosDaemonThreadFactory theadFactory = new CosmosDaemonThreadFactory("cosmos-global-endpoint-mgr");
 
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final LocationCache locationCache;
