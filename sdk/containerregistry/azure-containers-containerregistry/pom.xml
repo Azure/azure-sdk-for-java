@@ -47,6 +47,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.36.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
      <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
