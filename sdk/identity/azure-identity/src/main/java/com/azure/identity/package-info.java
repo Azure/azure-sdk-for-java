@@ -16,9 +16,6 @@
  * served by the default settings should use other credential types.
  * For more information refer to the<a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> conceptual knowledge and configuration details </a>.
  *
- * <p><img class="marble" src="doc-files/marbles/mono.svg" alt="">
- *
- * <p>
  * <p><strong>Sample: Construct a simple DefaultAzureCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
