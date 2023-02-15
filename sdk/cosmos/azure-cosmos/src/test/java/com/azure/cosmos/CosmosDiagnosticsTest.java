@@ -1093,12 +1093,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
 
-        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
-        assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
         JsonNode replicaStatusList = storeResult.get("replicaStatusList");
         assertThat(replicaStatusList.isArray()).isTrue();
         assertThat(replicaStatusList.size()).isGreaterThan(0);
 
+        // validate serviceEndpointStatistics
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
 
@@ -1109,6 +1108,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        // validate connectionStats
+        JsonNode channelStatistics = storeResult.get("channelStatistics");
+        assertThat(channelStatistics).isNotNull();
+        assertThat(channelStatistics.get("channelId").asText()).isNotEmpty();
+        assertThat(channelStatistics.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
+        assertThat(channelStatistics.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        assertThat(channelStatistics.get("lastReadTime").asText()).isNotEmpty();
+        assertThat(channelStatistics.get("waitForConnectionInit").asText()).isNotEmpty();
 
         JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
         if (connectionStateListenerEnabled) {
