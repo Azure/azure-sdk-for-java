@@ -1,0 +1,78 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/854927?api-version=2023-02-27-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1118e468-4b34-46e8-8134-03d197589fac",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Retry-After" : "0",
+      "Content-Length" : "167",
+      "StatusCode" : "429",
+      "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
+      "Date" : "Wed, 15 Feb 2023 20:29:40 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/854927?api-version=2023-02-27-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1118e468-4b34-46e8-8134-03d197589fac",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-44ed31695e7dbe48936f2a7285e5eaa4-cdc57e4efaf336ae-01",
+      "mise-correlation-id" : "a2eeb259-ea09-48d8-b706-31e95c490041",
+      "retry-after" : "0",
+      "Content-Length" : "389",
+      "StatusCode" : "201",
+      "Body" : "{\"id\":\"854927\",\"inputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/bulkInputBlobSdkTest.ndjson\",\"outputBlobUri\":\"https://sanravisdktest.blob.core.windows.net/sanravisdktest/output-854927.ndjson\",\"createdDateTime\":\"2023-02-15T20:29:50.1651871Z\",\"lastActionDateTime\":\"2023-02-15T20:29:50.1651871Z\",\"purgeDateTime\":\"2023-03-17T20:29:50.1651871Z\",\"status\":\"notstarted\"}",
+      "Date" : "Wed, 15 Feb 2023 20:29:50 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/854927?api-version=2023-02-27-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1fb125e1-e696-4423-9f09-e611da120499",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Retry-After" : "0",
+      "Content-Length" : "167",
+      "StatusCode" : "429",
+      "Body" : "{ \"error\": { \"statusCode\": 429, \"message\": \"Maximum request rate limit reached. For Azure Digital Twins rate limiting details please see http://aka.ms/dtv2limits.\" } }",
+      "Date" : "Wed, 15 Feb 2023 20:29:50 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/854927?api-version=2023-02-27-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1fb125e1-e696-4423-9f09-e611da120499",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-e3b59f98a5044bff3be9468a12bc8a03-848f3846f0fad953-01",
+      "mise-correlation-id" : "432d5de9-9f48-45e8-8e0b-d8ab3daa0af6",
+      "retry-after" : "0",
+      "Content-Length" : "142",
+      "StatusCode" : "409",
+      "Body" : "{\"error\":{\"code\":\"JobIdAlreadyExists\",\"message\":\"Provided Job ID already exists: 854927. Use Jobs_List API to view jobs that already exist.\"}}",
+      "Date" : "Wed, 15 Feb 2023 20:30:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "076149" ]
+}

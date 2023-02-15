@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/digitaltwins/a6e7c6a7-d8cd-4b0b-b5b8-6be572c134f0?api-version=2022-05-31",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/digitaltwins/6fbd8c8b-9c21-4c30-8efa-99151a976d7d?api-version=2023-02-27-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0b57e04e-eb45-42e0-80ed-e88fb7ebe531"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e675357f-37b4-4e82-a8f9-db7464804c42"
     },
     "Response" : {
-      "content-length" : "290",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-725bbc5acf59f807cca7bfbabe9163bd-ef91be5636133070-01",
-      "mise-correlation-id" : "1305b67e-329c-42c2-9689-834128bc60dd",
+      "traceresponse" : "00-647d3051587fa8506a2eb0394b46cd11-a3124332e76e567b-01",
+      "mise-correlation-id" : "dd300580-04ce-48b9-b2fd-dec2f7cfd805",
       "retry-after" : "0",
+      "Content-Length" : "290",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID a6e7c6a7-d8cd-4b0b-b5b8-6be572c134f0. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
-      "Date" : "Wed, 29 Jun 2022 13:44:14 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID 6fbd8c8b-9c21-4c30-8efa-99151a976d7d. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 15 Feb 2023 20:32:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "a6e7c6a7-d8cd-4b0b-b5b8-6be572c134f0" ]
+  "variables" : [ "6fbd8c8b-9c21-4c30-8efa-99151a976d7d" ]
 }

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.neu.pp.azuredigitaltwins-ppe.net/jobs/imports/466040?api-version=2023-02-27-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.4.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "40e3fd48-4576-40a2-88ef-accbb8fc0432",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-c61d69662187dbc8c125b764681fea75-dd7ca7c9f10db6b6-01",
+      "x-ms-error-code" : "InvalidArgument",
+      "mise-correlation-id" : "aaae6ac9-17d4-47de-93c0-8ed1a94343a9",
+      "retry-after" : "0",
+      "Content-Length" : "290",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Azure Storage Blob URI 'invalidUri' failed validation. Invalid URI: The format of the URI could not be determined. Please check: https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata\"}}",
+      "Date" : "Wed, 15 Feb 2023 20:28:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "68826d" ]
+}
