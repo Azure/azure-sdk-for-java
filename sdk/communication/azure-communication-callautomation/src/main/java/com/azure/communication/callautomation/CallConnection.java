@@ -170,7 +170,7 @@ public class CallConnection {
     /**
      * Add a participant to the call.
      *
-     * @param participants participant to invite.
+     * @param participant participant to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -183,7 +183,7 @@ public class CallConnection {
     /**
      * Add a participant to the call.
      *
-     * @param AddParticipantOptions Options bag for addParticipant
+     * @param addParticipantOptions Options bag for addParticipant
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,7 +198,7 @@ public class CallConnection {
     /**
      * Remove a participants from the call.
      *
-     * @param participantsToRemove participant to be removed.
+     * @param participantToRemove participant to be removed.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful remove participant request.

@@ -319,11 +319,7 @@ public class CallConnectionAsync {
             AddParticipantRequestInternal request = new AddParticipantRequestInternal()
                 .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getTarget()))
                 .setSourceDisplayName(addParticipantOptions.getTargetCallInvite().getSourceDisplayName())
-                .setSourceCallerIdNumber(CommunicationIdentifierConverter
-                        .convert(addParticipantOptions
-                                .getTargetCallInvite()
-                                .getSourceCallIdNumber())
-                        .getPhoneNumber())
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getSourceCallIdNumber()))
                 .setOperationContext(addParticipantOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
@@ -349,7 +345,7 @@ public class CallConnectionAsync {
     }
 
     /**
-     * Remove a participants from the call.
+     * Remove a participant from the call.
      *
      * @param participantToRemove participant to remove.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
