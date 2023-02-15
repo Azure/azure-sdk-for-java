@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contoso/ci.yml
+      - sdk/contoso/azure-template-contoso/
+    exclude:
+      - sdk/contoso/pom.xml
+      - sdk/contoso/azure-template-contoso/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contoso/ci.yml
+      - sdk/contoso/azure-template-contoso/
+    exclude:
+      - sdk/contoso/pom.xml
+      - sdk/contoso/azure-template-contoso/pom.xml
+
+parameters:
+  - name: release_azuretemplatecontoso
+    displayName: azure-template-contoso
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: contoso
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-template-contoso
+        groupId: com.azure
+        safeName: azuretemplatecontoso
+        releaseInBatch: ${{ parameters.release_azuretemplatecontoso }}
