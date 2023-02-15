@@ -26,6 +26,10 @@ public final class SqlContainerCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of SqlContainerCreateUpdateProperties class. */
+    public SqlContainerCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a container.
      *

@@ -16,6 +16,10 @@ public final class ApiProperties {
     @JsonProperty(value = "serverVersion")
     private ServerVersion serverVersion;
 
+    /** Creates an instance of ApiProperties class. */
+    public ApiProperties() {
+    }
+
     /**
      * Get the serverVersion property: Describes the ServerVersion of an a MongoDB account.
      *

@@ -55,6 +55,10 @@ public class GremlinGraphResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
+    /** Creates an instance of GremlinGraphResource class. */
+    public GremlinGraphResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB Gremlin graph.
      *

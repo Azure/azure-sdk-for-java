@@ -23,6 +23,10 @@ public class OptionsResource {
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
+    /** Creates an instance of OptionsResource class. */
+    public OptionsResource() {
+    }
+
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
      * ThroughputSetting resource when retrieving offer details.
