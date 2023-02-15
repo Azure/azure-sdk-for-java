@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -331,7 +332,7 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public CosmosMicrometerMeterOptions getMeterOptions(
+                public CosmosMeterOptions getMeterOptions(
                     CosmosClientTelemetryConfig config,
                     CosmosMetricName name) {
                     if (config != null &&
@@ -344,8 +345,13 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public CosmosMicrometerMeterOptions createDisabledMeterOptions(CosmosMetricName name) {
-                    return new CosmosMicrometerMeterOptions(name, false, null).setEnabled(false);
+                public CosmosMeterOptions createDisabledMeterOptions(CosmosMetricName name) {
+                    return new CosmosMeterOptions(
+                        name,
+                        false,
+                        new double[0],
+                        false,
+                        EnumSet.noneOf(TagName.class));
                 }
 
                 @Override

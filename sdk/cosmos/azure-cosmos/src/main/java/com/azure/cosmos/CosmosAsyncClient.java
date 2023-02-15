@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
@@ -191,9 +192,9 @@ public final class CosmosAsyncClient implements Closeable {
             .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
-        CosmosMicrometerMeterOptions cpuMeterOptions = telemetryConfigAccessor
+        CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
-        CosmosMicrometerMeterOptions memoryMeterOptions = telemetryConfigAccessor
+        CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
 
 
@@ -763,7 +764,7 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public CosmosMicrometerMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
+                public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);
                 }

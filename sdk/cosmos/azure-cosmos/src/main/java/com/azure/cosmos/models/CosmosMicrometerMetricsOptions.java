@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.core.util.MetricsOptions;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -22,7 +23,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private EnumSet<TagName> defaultTagNames = TagName.DEFAULT_TAGS.clone();
     private double[] defaultPercentiles = { 0.95, 0.99 };
     private boolean defaultShouldPublishHistograms = true;
-    private final ConcurrentHashMap<CosmosMetricName, CosmosMicrometerMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<CosmosMetricName, CosmosMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
 
     /**
      * Instantiates new Micrometer-specific Azure Cosmos DB SDK metrics options
@@ -142,7 +143,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * instance will be reflected at runtime by the client.
      *
      * @param categories - a comma-separated list of metric categories that should be emitted
-     * @return current CosmosClientTelemetryConfig
+     * @return current CosmosMicrometerMetricsOptions instance
      */
     public CosmosMicrometerMetricsOptions setMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
@@ -172,7 +173,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * instance will be reflected at runtime by the client.
      *
      * @param categories - a comma-separated list of metric categories that should be emitted
-     * @return current CosmosClientTelemetryConfig
+     * @return current CosmosMicrometerMetricsOptions instance
      */
     public CosmosMicrometerMetricsOptions addMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
@@ -201,7 +202,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * instance will be reflected at runtime by the client.
      *
      * @param categories - a comma-separated list of metric categories that should be emitted
-     * @return current CosmosClientTelemetryConfig
+     * @return current CosmosMicrometerMetricsOptions instance
      */
     public CosmosMicrometerMetricsOptions removeMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
@@ -224,21 +225,73 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
         return this;
     }
 
+
+    /**
+     * Allows overriding meter-specific options.
+     * @param meterName the meter name
+     * @param options the options to be overridden
+     * @return current CosmosMicrometerMetricsOptions instance
+     */
+    public CosmosMicrometerMetricsOptions configureMeter(
+        CosmosMetricName meterName,
+        CosmosMicrometerMeterOptions options) {
+
+        this
+            .effectiveOptions
+            .compute(
+                meterName,
+                (name, valueBeforeUpdate) -> {
+                    if (valueBeforeUpdate == null) {
+                        return new CosmosMeterOptions(
+                            name,
+                            options.getIsEnabled() != null ? options.getIsEnabled().booleanValue() : true,
+                            options.getPercentiles() != null ? options.getPercentiles() : this.defaultPercentiles,
+                            options.getIsHistogramPublishingEnabled() != null ?
+                                options.getIsHistogramPublishingEnabled().booleanValue() :
+                                this.defaultShouldPublishHistograms,
+                            options.getSuppressedTagNames() != null ?
+                                options.getSuppressedTagNames() :
+                                EnumSet.noneOf(TagName.class)
+                        );
+                    }
+
+                    return new CosmosMeterOptions(
+                        name,
+                        options.getIsEnabled() != null ?
+                            options.getIsEnabled().booleanValue() :
+                            valueBeforeUpdate.isEnabled(),
+                        options.getPercentiles() != null ?
+                            options.getPercentiles() :
+                            valueBeforeUpdate.getPercentiles(),
+                        options.getIsHistogramPublishingEnabled() != null ?
+                            options.getIsHistogramPublishingEnabled().booleanValue() :
+                            valueBeforeUpdate.isHistogramPublishingEnabled(),
+                        options.getSuppressedTagNames() != null ?
+                            options.getSuppressedTagNames() :
+                            valueBeforeUpdate.getSuppressedTagNames()
+                    );
+                });
+
+        return this;
+    }
+
     /**
      * Gets the meter options for a certain meter. The returned meter options can be used to modify the settings for
      * this meter. Changes can be applied even after building the Cosmos Client instance at runtime.
      * @param meterName - the meter name
      * @return the current meter options
      */
-    public CosmosMicrometerMeterOptions getMeterOptions(CosmosMetricName meterName) {
+    CosmosMeterOptions getMeterOptions(CosmosMetricName meterName) {
         checkNotNull(meterName, "Argument 'meterName' must not be null.");
 
         return this
             .effectiveOptions
-            .computeIfAbsent(meterName, name -> new CosmosMicrometerMeterOptions(
+            .computeIfAbsent(meterName, name -> new CosmosMeterOptions(
                 name,
+                true,
+                this.defaultPercentiles,
                 this.defaultShouldPublishHistograms,
-                this.defaultPercentiles
+                EnumSet.noneOf(TagName.class)
             ));
     }
 

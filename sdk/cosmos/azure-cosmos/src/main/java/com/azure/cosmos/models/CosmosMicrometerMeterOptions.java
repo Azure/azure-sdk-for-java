@@ -3,12 +3,9 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 
 import java.util.EnumSet;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Options of a Cosmos client-side meter that can be used to enable/disable it, change the percentile and histogram
@@ -16,35 +13,19 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosMicrometerMeterOptions {
 
-    private final CosmosMetricName meterName;
-    private boolean isHistogramPublishingEnabled;
+    private Boolean isHistogramPublishingEnabled;
     private double[] percentiles;
     private EnumSet<TagName> suppressedTagNames;
-    private boolean isEnabled;
+    private Boolean isEnabled;
 
     /**
      * Instantiates new options for a specific Cosmos DB meter
      */
-    CosmosMicrometerMeterOptions(
-        CosmosMetricName meterName,
-        boolean isHistogramPublishingEnabled,
-        double[] percentiles) {
-
-        checkNotNull(meterName, "Argument 'meterName' must not be null.");
-
-        this.meterName = meterName;
-        this.isHistogramPublishingEnabled = isHistogramPublishingEnabled;
-        this.percentiles = percentiles;
-        this.suppressedTagNames = EnumSet.noneOf(TagName.class);
-        this.isEnabled = true;
-    }
-
-    /**
-     * Gets the name of the meter these options are applicable for
-     * @return the meter name for these options
-     */
-    public CosmosMetricName getMeterName() {
-        return this.meterName;
+    public CosmosMicrometerMeterOptions() {
+        this.isHistogramPublishingEnabled = null;
+        this.percentiles = null;
+        this.suppressedTagNames = null;
+        this.isEnabled = null;
     }
 
     /**
@@ -90,14 +71,13 @@ public final class CosmosMicrometerMeterOptions {
      */
     public CosmosMicrometerMeterOptions percentiles(double... percentiles) {
         if (percentiles == null || percentiles.length == 0) {
-            this.percentiles = null;
+            this.percentiles = new double[0];
         } else {
             this.percentiles = percentiles.clone();
         }
 
         return this;
     }
-
 
     /**
      * Enables or disables this meter. By default, meters are enabled.
@@ -110,35 +90,19 @@ public final class CosmosMicrometerMeterOptions {
         return this;
     }
 
-    /**
-     * Flag indicating if this meter is currently enabled.
-     * @return {@code true} if meter is currently enabled, {@code false} otherwise.
-     */
-    public boolean isEnabled() {
+    EnumSet<TagName> getSuppressedTagNames() {
+        return this.suppressedTagNames;
+    }
+
+    Boolean getIsHistogramPublishingEnabled() {
+        return this.isHistogramPublishingEnabled;
+    }
+
+    Boolean getIsEnabled() {
         return this.isEnabled;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.CosmosMeterOptionsHelper.setCosmosMeterOptionsAccessor(
-            new ImplementationBridgeHelpers.CosmosMeterOptionsHelper.CosmosMeterOptionsAccessor() {
-                @Override
-                public EnumSet<TagName> getSuppressedTagNames(CosmosMicrometerMeterOptions options) {
-                    return options.suppressedTagNames;
-                }
-
-                @Override
-                public boolean isHistogramPublishingEnabled(CosmosMicrometerMeterOptions options) {
-                    return options.isHistogramPublishingEnabled;
-                }
-
-                @Override
-                public double[] getPercentiles(CosmosMicrometerMeterOptions options) {
-                    return options.percentiles;
-                }
-            }
-        );
+    double[] getPercentiles() {
+        return this.percentiles;
     }
 }

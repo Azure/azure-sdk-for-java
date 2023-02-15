@@ -964,6 +964,5 @@ public final class ModelBridgeInternal {
         PartitionKey.initialize();
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
-        CosmosMicrometerMeterOptions.initialize();
     }
 }

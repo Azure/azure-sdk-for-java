@@ -28,6 +28,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricCategory;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosMetricTagName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -190,10 +191,9 @@ public class ClientMetricsTest extends BatchTestBase {
 
             if (disableLatencyMeter) {
                 this.inputMetricsOptions
-                    .getMeterOptions(
-                        CosmosMetricName.fromString(
-                            CosmosMetricName.OPERATION_SUMMARY_LATENCY.toString().toUpperCase(Locale.ROOT)))
-                    .setEnabled(false);
+                    .configureMeter(
+                        CosmosMetricName.fromString(CosmosMetricName.OPERATION_SUMMARY_LATENCY.toString().toUpperCase(Locale.ROOT)),
+                        new CosmosMicrometerMeterOptions().setEnabled(false));
             }
 
             try {
@@ -251,11 +251,12 @@ public class ClientMetricsTest extends BatchTestBase {
             if (suppressConsistencyLevelTag) {
                 this
                     .inputMetricsOptions
-                    .getMeterOptions(CosmosMetricName.OPERATION_SUMMARY_LATENCY)
-                    .suppressTagNames(CosmosMetricTagName.fromString("ConsistencyLevel"))
-                    .histogramPublishingEnabled(false)
-                    .percentiles(0.99, 0.999)
-                ;
+                    .configureMeter(
+                        CosmosMetricName.OPERATION_SUMMARY_LATENCY,
+                        new CosmosMicrometerMeterOptions()
+                            .suppressTagNames(CosmosMetricTagName.fromString("ConsistencyLevel"))
+                            .histogramPublishingEnabled(false)
+                            .percentiles(0.99, 0.999));
             }
 
             try {
