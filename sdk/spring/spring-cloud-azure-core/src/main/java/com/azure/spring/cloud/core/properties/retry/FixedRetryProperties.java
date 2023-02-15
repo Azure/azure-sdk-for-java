@@ -17,7 +17,7 @@ public class FixedRetryProperties implements RetryOptionsProvider.RetryOptions.F
      */
     private Integer maxRetries;
     /**
-     * Amount of time to wait between retry attempts.
+     * Amount of time(Duration) to wait between retry attempts.
      */
     private Duration delay;
 
