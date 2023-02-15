@@ -50,9 +50,9 @@ public final class InsightAttachmentsClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -61,30 +61,26 @@ public final class InsightAttachmentsClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             insightId: String (Required)
-     *             modelId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *             resourceId: String (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     insightId: String (Required)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param modelId Id of the associated model.
      * @param resourceType Resource type associated with the record.
      * @param resourceId Id of the associated resource.
@@ -98,11 +94,11 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerIdModelIdAndResource(
-            String farmerId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(
+            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.listByFarmerIdModelIdAndResource(
-                        farmerId, modelId, resourceType, resourceId, requestOptions));
+                this.client.listByPartyIdModelIdAndResource(
+                        partyId, modelId, resourceType, resourceId, requestOptions));
     }
 
     /**
@@ -130,10 +126,10 @@ public final class InsightAttachmentsClient {
      * {
      *     insightId: String (Required)
      *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
      *     resourceId: String (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -141,11 +137,13 @@ public final class InsightAttachmentsClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
      *     'SoilMoistureModelId' or any solution id.
      * @param resourceType Resource type associated with the record.
@@ -162,7 +160,7 @@ public final class InsightAttachmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
@@ -171,12 +169,12 @@ public final class InsightAttachmentsClient {
             RequestOptions requestOptions) {
         return this.client
                 .createOrUpdateWithResponse(
-                        farmerId, modelId, resourceType, resourceId, insightAttachmentId, insightId, requestOptions)
+                        partyId, modelId, resourceType, resourceId, insightAttachmentId, insightId, requestOptions)
                 .block();
     }
 
     /**
-     * Gets a specified insight resource under a particular farmer.
+     * Gets a specified insight resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -184,10 +182,10 @@ public final class InsightAttachmentsClient {
      * {
      *     insightId: String (Required)
      *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
      *     resourceId: String (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -195,11 +193,13 @@ public final class InsightAttachmentsClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
      *     'SoilMoistureModelId' or any solution id.
      * @param resourceType Resource type associated with the record.
@@ -210,26 +210,26 @@ public final class InsightAttachmentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified insight resource under a particular farmer along with {@link Response}.
+     * @return a specified insight resource under a particular party along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
             String insightAttachmentId,
             RequestOptions requestOptions) {
         return this.client
-                .getWithResponse(farmerId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+                .getWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
                 .block();
     }
 
     /**
      * Deletes a specified insight resource.
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
      *     'SoilMoistureModelId' or any solution id.
      * @param resourceType Resource type associated with the record.
@@ -245,14 +245,14 @@ public final class InsightAttachmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
             String insightAttachmentId,
             RequestOptions requestOptions) {
         return this.client
-                .deleteWithResponse(farmerId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+                .deleteWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
                 .block();
     }
 
@@ -265,7 +265,7 @@ public final class InsightAttachmentsClient {
      * BinaryData
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
      *     'SoilMoistureModelId' or any solution id.
      * @param resourceType Resource type associated with the record.
@@ -281,14 +281,14 @@ public final class InsightAttachmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadWithResponse(
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
             String insightAttachmentId,
             RequestOptions requestOptions) {
         return this.client
-                .downloadWithResponse(farmerId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+                .downloadWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
                 .block();
     }
 }

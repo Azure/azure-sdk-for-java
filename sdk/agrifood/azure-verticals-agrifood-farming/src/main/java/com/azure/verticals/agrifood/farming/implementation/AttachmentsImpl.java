@@ -61,8 +61,8 @@ public final class AttachmentsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientAttac")
-    private interface AttachmentsService {
-        @Get("/farmers/{farmerId}/attachments")
+    public interface AttachmentsService {
+        @Get("/parties/{partyId}/attachments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -74,15 +74,15 @@ public final class AttachmentsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/attachments/{attachmentId}")
+        @Get("/parties/{partyId}/attachments/{attachmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -96,7 +96,7 @@ public final class AttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -104,7 +104,7 @@ public final class AttachmentsImpl {
                 Context context);
 
         // @Multipart not supported by RestProxy
-        @Patch("/farmers/{farmerId}/attachments/{attachmentId}")
+        @Patch("/parties/{partyId}/attachments/{attachmentId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -118,14 +118,14 @@ public final class AttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/farmers/{farmerId}/attachments/{attachmentId}")
+        @Delete("/parties/{partyId}/attachments/{attachmentId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -139,14 +139,14 @@ public final class AttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/attachments/{attachmentId}/file")
+        @Get("/parties/{partyId}/attachments/{attachmentId}/file")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -160,7 +160,7 @@ public final class AttachmentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> download(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("attachmentId") String attachmentId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -179,7 +179,7 @@ public final class AttachmentsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
+        Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -188,7 +188,7 @@ public final class AttachmentsImpl {
     }
 
     /**
-     * Returns a paginated list of attachment resources under a particular farmer.
+     * Returns a paginated list of attachment resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -197,7 +197,7 @@ public final class AttachmentsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>resourceIds</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>resourceTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Types of the resource.
-     * i.e. Farmer, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * i.e. Party, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -207,9 +207,9 @@ public final class AttachmentsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -218,28 +218,24 @@ public final class AttachmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             resourceId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     resourceId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -249,14 +245,14 @@ public final class AttachmentsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerId(
+                                service.listByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -273,7 +269,7 @@ public final class AttachmentsImpl {
     }
 
     /**
-     * Returns a paginated list of attachment resources under a particular farmer.
+     * Returns a paginated list of attachment resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -282,7 +278,7 @@ public final class AttachmentsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>resourceIds</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>resourceTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Types of the resource.
-     * i.e. Farmer, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * i.e. Party, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -292,9 +288,9 @@ public final class AttachmentsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -303,28 +299,24 @@ public final class AttachmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             resourceId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     resourceId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -334,19 +326,19 @@ public final class AttachmentsImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
-     * Returns a paginated list of attachment resources under a particular farmer.
+     * Returns a paginated list of attachment resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -355,7 +347,7 @@ public final class AttachmentsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>resourceIds</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>resourceTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Types of the resource.
-     * i.e. Farmer, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * i.e. Party, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -365,9 +357,9 @@ public final class AttachmentsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -376,28 +368,24 @@ public final class AttachmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             resourceId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     resourceId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -407,21 +395,21 @@ public final class AttachmentsImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
     }
 
     /**
-     * Gets a specified attachment resource under a particular farmer.
+     * Gets a specified attachment resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -429,29 +417,31 @@ public final class AttachmentsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified attachment resource under a particular farmer along with {@link Response} on successful
+     * @return a specified attachment resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
+            String partyId, String attachmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -460,16 +450,16 @@ public final class AttachmentsImpl {
     }
 
     /**
-     * Gets a specified attachment resource under a particular farmer.
+     * Gets a specified attachment resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -477,26 +467,28 @@ public final class AttachmentsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified attachment resource under a particular farmer along with {@link Response}.
+     * @return a specified attachment resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, attachmentId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String attachmentId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, attachmentId, requestOptions).block();
     }
 
     /**
-     * Creates or updates an attachment resource under a particular farmer.
+     * Creates or updates an attachment resource under a particular party.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -519,9 +511,9 @@ public final class AttachmentsImpl {
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -529,11 +521,13 @@ public final class AttachmentsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param attachmentId Id of the attachment resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -544,13 +538,13 @@ public final class AttachmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
+            String partyId, String attachmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -559,7 +553,7 @@ public final class AttachmentsImpl {
     }
 
     /**
-     * Creates or updates an attachment resource under a particular farmer.
+     * Creates or updates an attachment resource under a particular party.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -582,9 +576,9 @@ public final class AttachmentsImpl {
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -592,11 +586,13 @@ public final class AttachmentsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param attachmentId Id of the attachment resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -607,14 +603,14 @@ public final class AttachmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, attachmentId, requestOptions).block();
+            String partyId, String attachmentId, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, attachmentId, requestOptions).block();
     }
 
     /**
-     * Deletes a specified attachment resource under a particular farmer.
+     * Deletes a specified attachment resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -625,13 +621,13 @@ public final class AttachmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
+            String partyId, String attachmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -640,9 +636,9 @@ public final class AttachmentsImpl {
     }
 
     /**
-     * Deletes a specified attachment resource under a particular farmer.
+     * Deletes a specified attachment resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -652,8 +648,8 @@ public final class AttachmentsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, attachmentId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String attachmentId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, attachmentId, requestOptions).block();
     }
 
     /**
@@ -665,7 +661,7 @@ public final class AttachmentsImpl {
      * BinaryData
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of attachment to be downloaded.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -676,13 +672,13 @@ public final class AttachmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadWithResponseAsync(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
+            String partyId, String attachmentId, RequestOptions requestOptions) {
         final String accept = "application/json, application/octet-stream";
         return FluxUtil.withContext(
                 context ->
                         service.download(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 attachmentId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -699,7 +695,7 @@ public final class AttachmentsImpl {
      * BinaryData
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of attachment to be downloaded.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -710,8 +706,8 @@ public final class AttachmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return downloadWithResponseAsync(farmerId, attachmentId, requestOptions).block();
+            String partyId, String attachmentId, RequestOptions requestOptions) {
+        return downloadWithResponseAsync(partyId, attachmentId, requestOptions).block();
     }
 
     /**
@@ -721,24 +717,20 @@ public final class AttachmentsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             resourceId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     resourceId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
@@ -753,12 +745,12 @@ public final class AttachmentsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdNext(
+                                service.listByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->

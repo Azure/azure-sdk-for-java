@@ -63,7 +63,7 @@ public final class DeviceDataModelsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientDevic")
-    private interface DeviceDataModelsService {
+    public interface DeviceDataModelsService {
         @Get("/sensor-partners/{sensorPartnerId}/device-data-models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -185,9 +185,9 @@ public final class DeviceDataModelsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -196,30 +196,28 @@ public final class DeviceDataModelsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     type: String (Optional)
+     *     manufacturer: String (Optional)
+     *     productCode: String (Optional)
+     *     ports (Optional): [
      *          (Optional){
-     *             type: String (Optional)
-     *             manufacturer: String (Optional)
-     *             productCode: String (Optional)
-     *             ports (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     type: String (Optional)
-     *                 }
-     *             ]
-     *             sensorPartnerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
      *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             type: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -233,7 +231,7 @@ public final class DeviceDataModelsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(String sensorPartnerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String sensorPartnerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -272,9 +270,9 @@ public final class DeviceDataModelsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -283,30 +281,28 @@ public final class DeviceDataModelsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     type: String (Optional)
+     *     manufacturer: String (Optional)
+     *     productCode: String (Optional)
+     *     ports (Optional): [
      *          (Optional){
-     *             type: String (Optional)
-     *             manufacturer: String (Optional)
-     *             productCode: String (Optional)
-     *             ports (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     type: String (Optional)
-     *                 }
-     *             ]
-     *             sensorPartnerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
      *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             type: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -348,9 +344,9 @@ public final class DeviceDataModelsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -359,30 +355,28 @@ public final class DeviceDataModelsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     type: String (Optional)
+     *     manufacturer: String (Optional)
+     *     productCode: String (Optional)
+     *     ports (Optional): [
      *          (Optional){
-     *             type: String (Optional)
-     *             manufacturer: String (Optional)
-     *             productCode: String (Optional)
-     *             ports (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     type: String (Optional)
-     *                 }
-     *             ]
-     *             sensorPartnerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
      *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             type: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -424,7 +418,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -449,7 +447,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -507,7 +509,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -532,7 +538,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -581,7 +591,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -634,7 +648,11 @@ public final class DeviceDataModelsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -706,30 +724,28 @@ public final class DeviceDataModelsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     type: String (Optional)
+     *     manufacturer: String (Optional)
+     *     productCode: String (Optional)
+     *     ports (Optional): [
      *          (Optional){
-     *             type: String (Optional)
-     *             manufacturer: String (Optional)
-     *             productCode: String (Optional)
-     *             ports (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     type: String (Optional)
-     *                 }
-     *             ]
-     *             sensorPartnerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
      *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             type: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -744,7 +760,7 @@ public final class DeviceDataModelsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

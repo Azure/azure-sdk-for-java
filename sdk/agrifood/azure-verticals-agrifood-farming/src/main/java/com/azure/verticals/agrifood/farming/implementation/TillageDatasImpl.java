@@ -68,8 +68,8 @@ public final class TillageDatasImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientTilla")
-    private interface TillageDatasService {
-        @Get("/farmers/{farmerId}/tillage-data")
+    public interface TillageDatasService {
+        @Get("/parties/{partyId}/tillage-data")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -81,15 +81,15 @@ public final class TillageDatasImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/tillage-data/{tillageDataId}")
+        @Get("/parties/{partyId}/tillage-data/{tillageDataId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -103,14 +103,14 @@ public final class TillageDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("tillageDataId") String tillageDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/farmers/{farmerId}/tillage-data/{tillageDataId}")
+        @Patch("/parties/{partyId}/tillage-data/{tillageDataId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -124,7 +124,7 @@ public final class TillageDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("tillageDataId") String tillageDataId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData tillageData,
@@ -132,7 +132,7 @@ public final class TillageDatasImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/farmers/{farmerId}/tillage-data/{tillageDataId}")
+        @Delete("/parties/{partyId}/tillage-data/{tillageDataId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -146,7 +146,7 @@ public final class TillageDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("tillageDataId") String tillageDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -187,7 +187,7 @@ public final class TillageDatasImpl {
         Mono<Response<BinaryData>> createCascadeDeleteJob(
                 @HostParam("$host") String host,
                 @PathParam("jobId") String jobId,
-                @QueryParam("farmerId") String farmerId,
+                @QueryParam("partyId") String partyId,
                 @QueryParam("tillageDataId") String tillageDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -226,7 +226,7 @@ public final class TillageDatasImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
+        Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -284,9 +284,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -295,37 +295,35 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -335,14 +333,14 @@ public final class TillageDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerId(
+                                service.listByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -389,9 +387,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -400,37 +398,35 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -440,15 +436,15 @@ public final class TillageDatasImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -482,9 +478,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -493,37 +489,35 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -533,12 +527,12 @@ public final class TillageDatasImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
     }
 
     /**
-     * Get a specified tillage data resource under a particular farmer.
+     * Get a specified tillage data resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -555,7 +549,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -564,29 +558,33 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param tillageDataId ID of the tillage data resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified tillage data resource under a particular farmer along with {@link Response} on successful
+     * @return a specified tillage data resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String tillageDataId, RequestOptions requestOptions) {
+            String partyId, String tillageDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 tillageDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -595,7 +593,7 @@ public final class TillageDatasImpl {
     }
 
     /**
-     * Get a specified tillage data resource under a particular farmer.
+     * Get a specified tillage data resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -612,7 +610,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -621,26 +619,30 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param tillageDataId ID of the tillage data resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified tillage data resource under a particular farmer along with {@link Response}.
+     * @return a specified tillage data resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String farmerId, String tillageDataId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, tillageDataId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String tillageDataId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, tillageDataId, requestOptions).block();
     }
 
     /**
-     * Creates or updates an tillage data resource under a particular farmer.
+     * Creates or updates an tillage data resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -657,7 +659,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -666,7 +668,11 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -685,7 +691,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -694,11 +700,15 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param tillageDataId ID of the tillage data resource.
      * @param tillageData Tillage data resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -710,13 +720,13 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String tillageDataId, BinaryData tillageData, RequestOptions requestOptions) {
+            String partyId, String tillageDataId, BinaryData tillageData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 tillageDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 tillageData,
@@ -726,7 +736,7 @@ public final class TillageDatasImpl {
     }
 
     /**
-     * Creates or updates an tillage data resource under a particular farmer.
+     * Creates or updates an tillage data resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -743,7 +753,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -752,7 +762,11 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -771,7 +785,7 @@ public final class TillageDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -780,11 +794,15 @@ public final class TillageDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param tillageDataId ID of the tillage data resource.
      * @param tillageData Tillage data resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -796,14 +814,14 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String tillageDataId, BinaryData tillageData, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, tillageDataId, tillageData, requestOptions).block();
+            String partyId, String tillageDataId, BinaryData tillageData, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, tillageDataId, tillageData, requestOptions).block();
     }
 
     /**
-     * Deletes a specified tillage data resource under a particular farmer.
+     * Deletes a specified tillage data resource under a particular party.
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param tillageDataId ID of the tillage data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -814,13 +832,13 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String tillageDataId, RequestOptions requestOptions) {
+            String partyId, String tillageDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 tillageDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -829,9 +847,9 @@ public final class TillageDatasImpl {
     }
 
     /**
-     * Deletes a specified tillage data resource under a particular farmer.
+     * Deletes a specified tillage data resource under a particular party.
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param tillageDataId ID of the tillage data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -841,12 +859,12 @@ public final class TillageDatasImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String tillageDataId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, tillageDataId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String tillageDataId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, tillageDataId, requestOptions).block();
     }
 
     /**
-     * Returns a paginated list of tillage data resources across all farmers.
+     * Returns a paginated list of tillage data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -876,9 +894,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -887,33 +905,31 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -926,7 +942,7 @@ public final class TillageDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -948,7 +964,7 @@ public final class TillageDatasImpl {
     }
 
     /**
-     * Returns a paginated list of tillage data resources across all farmers.
+     * Returns a paginated list of tillage data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -978,9 +994,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -989,33 +1005,31 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1040,7 +1054,7 @@ public final class TillageDatasImpl {
     }
 
     /**
-     * Returns a paginated list of tillage data resources across all farmers.
+     * Returns a paginated list of tillage data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1070,9 +1084,9 @@ public final class TillageDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1081,33 +1095,31 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1131,13 +1143,14 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1146,7 +1159,7 @@ public final class TillageDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param tillageDataId Id of the tillage data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1157,14 +1170,14 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
-            String jobId, String farmerId, String tillageDataId, RequestOptions requestOptions) {
+            String jobId, String partyId, String tillageDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
                                 this.client.getHost(),
                                 jobId,
-                                farmerId,
+                                partyId,
                                 tillageDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1179,13 +1192,14 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1194,7 +1208,7 @@ public final class TillageDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param tillageDataId Id of the tillage data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1205,12 +1219,13 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
-            String jobId, String farmerId, String tillageDataId, RequestOptions requestOptions) {
+            String jobId, String partyId, String tillageDataId, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, farmerId, tillageDataId, requestOptions),
+                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, tillageDataId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1226,13 +1241,14 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1241,7 +1257,7 @@ public final class TillageDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param tillageDataId Id of the tillage data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1252,8 +1268,8 @@ public final class TillageDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String tillageDataId, RequestOptions requestOptions) {
-        return this.beginCreateCascadeDeleteJobAsync(jobId, farmerId, tillageDataId, requestOptions).getSyncPoller();
+            String jobId, String partyId, String tillageDataId, RequestOptions requestOptions) {
+        return this.beginCreateCascadeDeleteJobAsync(jobId, partyId, tillageDataId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -1263,13 +1279,14 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1308,13 +1325,14 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1342,33 +1360,31 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1383,12 +1399,12 @@ public final class TillageDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdNext(
+                                service.listByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -1408,33 +1424,31 @@ public final class TillageDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             tillageDepth (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             tillagePressure (Optional): (recursive schema, see tillagePressure above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     tillageDepth (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     tillagePressure (Optional): (recursive schema, see tillagePressure above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1449,7 +1463,7 @@ public final class TillageDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

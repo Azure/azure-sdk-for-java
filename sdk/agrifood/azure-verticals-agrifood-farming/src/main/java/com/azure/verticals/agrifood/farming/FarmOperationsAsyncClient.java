@@ -41,7 +41,7 @@ public final class FarmOperationsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     authProviderId: String (Required)
      *     operations (Optional): [
      *         String (Optional)
@@ -52,13 +52,18 @@ public final class FarmOperationsAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -66,7 +71,7 @@ public final class FarmOperationsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     authProviderId: String (Required)
      *     operations (Optional): [
      *         String (Optional)
@@ -77,13 +82,18 @@ public final class FarmOperationsAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -110,7 +120,7 @@ public final class FarmOperationsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     authProviderId: String (Required)
      *     operations (Optional): [
      *         String (Optional)
@@ -121,13 +131,18 @@ public final class FarmOperationsAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *

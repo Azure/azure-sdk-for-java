@@ -63,91 +63,7 @@ public final class NutrientAnalysesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientNutri")
-    private interface NutrientAnalysesService {
-        @Get("/farmers/{farmerId}/nutrient-analyses")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/farmers/{farmerId}/nutrient-analyses/{nutrientAnalysisId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Patch("/farmers/{farmerId}/nutrient-analyses/{nutrientAnalysisId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData nutrientAnalysis,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/farmers/{farmerId}/nutrient-analyses/{nutrientAnalysisId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
+    public interface NutrientAnalysesService {
         @Get("/nutrient-analyses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -167,7 +83,7 @@ public final class NutrientAnalysesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("{nextLink}")
+        @Get("/parties/{partyId}/nutrient-analyses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -179,9 +95,74 @@ public final class NutrientAnalysesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/parties/{partyId}/nutrient-analyses/{nutrientAnalysisId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> get(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/parties/{partyId}/nutrient-analyses/{nutrientAnalysisId}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createOrUpdate(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData nutrientAnalysis,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/parties/{partyId}/nutrient-analyses/{nutrientAnalysisId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> delete(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("nutrientAnalysisId") String nutrientAnalysisId,
+                @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -204,10 +185,29 @@ public final class NutrientAnalysesImpl {
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listByPartyIdNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
-     * Returns a paginated list of nutrient analysis resources under a particular farmer.
+     * Returns a paginated list of nutrient analysis resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -227,9 +227,9 @@ public final class NutrientAnalysesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -238,248 +238,7 @@ public final class NutrientAnalysesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByFarmerId(
-                                        this.client.getHost(),
-                                        farmerId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Returns a paginated list of nutrient analysis resources under a particular farmer.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
-     * i.e. PlantTissueAnalysis.</td></tr>
-     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Returns a paginated list of nutrient analysis resources under a particular farmer.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
-     * i.e. PlantTissueAnalysis.</td></tr>
-     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
-    }
-
-    /**
-     * Gets a specified nutrient analysis resource under a particular farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
      *     parentType: String(PlantTissueAnalysis) (Optional)
      *     unit: String (Optional)
@@ -503,373 +262,11 @@ public final class NutrientAnalysesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param nutrientAnalysisId Id of the nutrient analysis.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified nutrient analysis resource under a particular farmer along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String nutrientAnalysisId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getHost(),
-                                farmerId,
-                                nutrientAnalysisId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets a specified nutrient analysis resource under a particular farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     parentId: String (Optional)
-     *     parentType: String(PlantTissueAnalysis) (Optional)
-     *     unit: String (Optional)
-     *     value: Double (Optional)
-     *     referenceValueLow: Double (Optional)
-     *     referenceValueHigh: Double (Optional)
-     *     classification: String (Optional)
-     *     recommendation: String (Optional)
-     *     products (Optional): [
-     *          (Optional){
-     *             rate: String (Optional)
-     *             instruction: String (Optional)
-     *             product: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param nutrientAnalysisId Id of the nutrient analysis.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified nutrient analysis resource under a particular farmer along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String farmerId, String nutrientAnalysisId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, nutrientAnalysisId, requestOptions).block();
-    }
-
-    /**
-     * Creates or updates a nutrient analysis resource.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     parentId: String (Optional)
-     *     parentType: String(PlantTissueAnalysis) (Optional)
-     *     unit: String (Optional)
-     *     value: Double (Optional)
-     *     referenceValueLow: Double (Optional)
-     *     referenceValueHigh: Double (Optional)
-     *     classification: String (Optional)
-     *     recommendation: String (Optional)
-     *     products (Optional): [
-     *          (Optional){
-     *             rate: String (Optional)
-     *             instruction: String (Optional)
-     *             product: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     parentId: String (Optional)
-     *     parentType: String(PlantTissueAnalysis) (Optional)
-     *     unit: String (Optional)
-     *     value: Double (Optional)
-     *     referenceValueLow: Double (Optional)
-     *     referenceValueHigh: Double (Optional)
-     *     classification: String (Optional)
-     *     recommendation: String (Optional)
-     *     products (Optional): [
-     *          (Optional){
-     *             rate: String (Optional)
-     *             instruction: String (Optional)
-     *             product: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the farmer resource.
-     * @param nutrientAnalysisId Id of the nutrient analysis resource.
-     * @param nutrientAnalysis NutrientAnalysis resource payload to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return api Model for nutrient analysis object along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getHost(),
-                                farmerId,
-                                nutrientAnalysisId,
-                                this.client.getServiceVersion().getVersion(),
-                                nutrientAnalysis,
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Creates or updates a nutrient analysis resource.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     parentId: String (Optional)
-     *     parentType: String(PlantTissueAnalysis) (Optional)
-     *     unit: String (Optional)
-     *     value: Double (Optional)
-     *     referenceValueLow: Double (Optional)
-     *     referenceValueHigh: Double (Optional)
-     *     classification: String (Optional)
-     *     recommendation: String (Optional)
-     *     products (Optional): [
-     *          (Optional){
-     *             rate: String (Optional)
-     *             instruction: String (Optional)
-     *             product: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     parentId: String (Optional)
-     *     parentType: String(PlantTissueAnalysis) (Optional)
-     *     unit: String (Optional)
-     *     value: Double (Optional)
-     *     referenceValueLow: Double (Optional)
-     *     referenceValueHigh: Double (Optional)
-     *     classification: String (Optional)
-     *     recommendation: String (Optional)
-     *     products (Optional): [
-     *          (Optional){
-     *             rate: String (Optional)
-     *             instruction: String (Optional)
-     *             product: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the farmer resource.
-     * @param nutrientAnalysisId Id of the nutrient analysis resource.
-     * @param nutrientAnalysis NutrientAnalysis resource payload to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return api Model for nutrient analysis object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, nutrientAnalysisId, nutrientAnalysis, requestOptions).block();
-    }
-
-    /**
-     * Deletes a specified nutrient analysis resource under a particular farmer.
-     *
-     * @param farmerId Id of the farmer.
-     * @param nutrientAnalysisId Id of the nutrient analysis.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String nutrientAnalysisId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getHost(),
-                                farmerId,
-                                nutrientAnalysisId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Deletes a specified nutrient analysis resource under a particular farmer.
-     *
-     * @param farmerId Id of the farmer.
-     * @param nutrientAnalysisId Id of the nutrient analysis.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String farmerId, String nutrientAnalysisId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, nutrientAnalysisId, requestOptions).block();
-    }
-
-    /**
-     * Returns a paginated list of nutrient analysis resources across all farmers.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
-     * i.e. PlantTissueAnalysis.</td></tr>
-     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -882,7 +279,7 @@ public final class NutrientAnalysesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -904,7 +301,7 @@ public final class NutrientAnalysesImpl {
     }
 
     /**
-     * Returns a paginated list of nutrient analysis resources across all farmers.
+     * Returns a paginated list of nutrient analysis resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -924,9 +321,9 @@ public final class NutrientAnalysesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -935,37 +332,35 @@ public final class NutrientAnalysesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
      *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -990,7 +385,7 @@ public final class NutrientAnalysesImpl {
     }
 
     /**
-     * Returns a paginated list of nutrient analysis resources across all farmers.
+     * Returns a paginated list of nutrient analysis resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1010,9 +405,9 @@ public final class NutrientAnalysesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1021,37 +416,35 @@ public final class NutrientAnalysesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
      *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1069,43 +462,659 @@ public final class NutrientAnalysesImpl {
     }
 
     /**
+     * Returns a paginated list of nutrient analysis resources under a particular party.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
+     * i.e. PlantTissueAnalysis.</td></tr>
+     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listByPartyId(
+                                        this.client.getHost(),
+                                        partyId,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Returns a paginated list of nutrient analysis resources under a particular party.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
+     * i.e. PlantTissueAnalysis.</td></tr>
+     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Returns a paginated list of nutrient analysis resources under a particular party.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.
+     * i.e. PlantTissueAnalysis.</td></tr>
+     *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>classifications</td><td>List&lt;String&gt;</td><td>No</td><td>Classifications for nutrient analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
+    }
+
+    /**
+     * Gets a specified nutrient analysis resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param nutrientAnalysisId Id of the nutrient analysis.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specified nutrient analysis resource under a particular party along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getWithResponseAsync(
+            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getHost(),
+                                partyId,
+                                nutrientAnalysisId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets a specified nutrient analysis resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param nutrientAnalysisId Id of the nutrient analysis.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specified nutrient analysis resource under a particular party along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getWithResponse(
+            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, nutrientAnalysisId, requestOptions).block();
+    }
+
+    /**
+     * Creates or updates a nutrient analysis resource.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the party resource.
+     * @param nutrientAnalysisId Id of the nutrient analysis resource.
+     * @param nutrientAnalysis NutrientAnalysis resource payload to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return api Model for nutrient analysis object along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+            String partyId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdate(
+                                this.client.getHost(),
+                                partyId,
+                                nutrientAnalysisId,
+                                this.client.getServiceVersion().getVersion(),
+                                nutrientAnalysis,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Creates or updates a nutrient analysis resource.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
+     *          (Optional){
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the party resource.
+     * @param nutrientAnalysisId Id of the nutrient analysis resource.
+     * @param nutrientAnalysis NutrientAnalysis resource payload to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return api Model for nutrient analysis object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String partyId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, nutrientAnalysisId, nutrientAnalysis, requestOptions).block();
+    }
+
+    /**
+     * Deletes a specified nutrient analysis resource under a particular party.
+     *
+     * @param partyId Id of the party.
+     * @param nutrientAnalysisId Id of the nutrient analysis.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getHost(),
+                                partyId,
+                                nutrientAnalysisId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Deletes a specified nutrient analysis resource under a particular party.
+     *
+     * @param partyId Id of the party.
+     * @param nutrientAnalysisId Id of the nutrient analysis.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, nutrientAnalysisId, requestOptions).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
      *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1120,13 +1129,10 @@ public final class NutrientAnalysesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listByFarmerIdNext(
-                                        nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1145,37 +1151,35 @@ public final class NutrientAnalysesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     parentType: String(PlantTissueAnalysis) (Optional)
+     *     unit: String (Optional)
+     *     value: Double (Optional)
+     *     referenceValueLow: Double (Optional)
+     *     referenceValueHigh: Double (Optional)
+     *     classification: String (Optional)
+     *     recommendation: String (Optional)
+     *     products (Optional): [
      *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             parentType: String(PlantTissueAnalysis) (Optional)
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *             referenceValueLow: Double (Optional)
-     *             referenceValueHigh: Double (Optional)
-     *             classification: String (Optional)
-     *             recommendation: String (Optional)
-     *             products (Optional): [
-     *                  (Optional){
-     *                     rate: String (Optional)
-     *                     instruction: String (Optional)
-     *                     product: String (Optional)
-     *                 }
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             rate: String (Optional)
+     *             instruction: String (Optional)
+     *             product: String (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1190,10 +1194,13 @@ public final class NutrientAnalysesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listByPartyIdNext(
+                                        nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

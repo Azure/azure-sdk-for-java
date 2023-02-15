@@ -16,35 +16,33 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.verticals.agrifood.farming.implementation.CropVarietiesImpl;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.verticals.agrifood.farming.implementation.PartiesImpl;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
-@ServiceClient(builder = CropVarietiesClientBuilder.class, isAsync = true)
-public final class CropVarietiesAsyncClient {
-    @Generated private final CropVarietiesImpl serviceClient;
+@ServiceClient(builder = PartiesClientBuilder.class, isAsync = true)
+public final class PartiesAsyncClient {
+    @Generated private final PartiesImpl serviceClient;
 
     /**
-     * Initializes an instance of CropVarietiesAsyncClient class.
+     * Initializes an instance of PartiesAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    CropVarietiesAsyncClient(CropVarietiesImpl serviceClient) {
+    PartiesAsyncClient(PartiesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * Returns a paginated list of crop variety resources.
+     * Returns a paginated list of party resources.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>brands</td><td>List&lt;String&gt;</td><td>No</td><td>Brands of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>products</td><td>List&lt;String&gt;</td><td>No</td><td>Products of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -54,9 +52,9 @@ public final class CropVarietiesAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -65,26 +63,19 @@ public final class CropVarietiesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             cropIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             brand: String (Optional)
-     *             product: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -103,17 +94,12 @@ public final class CropVarietiesAsyncClient {
     }
 
     /**
-     * Gets a specified crop variety resource.
+     * Gets a specified party resource.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     cropIds (Optional): [
-     *         String (Optional)
-     *     ]
-     *     brand: String (Optional)
-     *     product: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -122,36 +108,35 @@ public final class CropVarietiesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified crop variety resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a specified party resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String cropVarietyId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(cropVarietyId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, requestOptions);
     }
 
     /**
-     * Creates or updates a crop variety resource.
+     * Creates or updates a party resource.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     cropIds (Optional): [
-     *         String (Optional)
-     *     ]
-     *     brand: String (Optional)
-     *     product: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -160,7 +145,11 @@ public final class CropVarietiesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -168,11 +157,6 @@ public final class CropVarietiesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     cropIds (Optional): [
-     *         String (Optional)
-     *     ]
-     *     brand: String (Optional)
-     *     product: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -181,30 +165,34 @@ public final class CropVarietiesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety resource.
-     * @param cropVariety Crop variety resource payload to create or update.
+     * @param partyId Id of the party resource.
+     * @param party Party resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of crop variety resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return schema of party resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String cropVarietyId, BinaryData cropVariety, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(cropVarietyId, cropVariety, requestOptions);
+            String partyId, BinaryData party, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, party, requestOptions);
     }
 
     /**
-     * Deletes a specified crop variety resource.
+     * Deletes a specified party resource.
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param partyId Id of party to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -214,7 +202,83 @@ public final class CropVarietiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String cropVarietyId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(cropVarietyId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, requestOptions);
+    }
+
+    /**
+     * Get a cascade delete job for specified party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a cascade delete job for specified party along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
+            String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
+    }
+
+    /**
+     * Create a cascade delete job for specified party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param partyId ID of the party to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
+            String jobId, String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, requestOptions);
     }
 }

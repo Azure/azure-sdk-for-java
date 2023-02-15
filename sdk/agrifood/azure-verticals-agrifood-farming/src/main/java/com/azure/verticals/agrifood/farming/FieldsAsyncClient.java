@@ -36,7 +36,7 @@ public final class FieldsAsyncClient {
     }
 
     /**
-     * Returns a paginated list of field resources under a particular farmer.
+     * Returns a paginated list of field resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -53,9 +53,9 @@ public final class FieldsAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -64,58 +64,8 @@ public final class FieldsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmId: String (Optional)
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.listByFarmerIdAsync(farmerId, requestOptions);
-    }
-
-    /**
-     * Gets a specified field resource under a particular farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
      *     farmId: String (Optional)
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -124,158 +74,11 @@ public final class FieldsAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param fieldId Id of the field.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified field resource under a particular farmer along with {@link Response} on successful completion
-     *     of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String farmerId, String fieldId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(farmerId, fieldId, requestOptions);
-    }
-
-    /**
-     * Creates or Updates a field resource under a particular farmer.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmId: String (Optional)
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmId: String (Optional)
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
-     *     id: String (Optional)
-     *     eTag: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     source: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer resource.
-     * @param fieldId Id of the field resource.
-     * @param field Field resource payload to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of field resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String farmerId, String fieldId, BinaryData field, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(farmerId, fieldId, field, requestOptions);
-    }
-
-    /**
-     * Deletes a specified field resource under a particular farmer.
-     *
-     * @param farmerId Id of the farmer.
-     * @param fieldId Id of the field.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String farmerId, String fieldId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(farmerId, fieldId, requestOptions);
-    }
-
-    /**
-     * Returns a paginated list of field resources across all farmers.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmId: String (Optional)
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -294,57 +97,20 @@ public final class FieldsAsyncClient {
     }
 
     /**
-     * Create a cascade delete job for specified field.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
-     * @param fieldId ID of the field to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String fieldId, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, farmerId, fieldId, requestOptions);
-    }
-
-    /**
      * Get a cascade delete job for specified field.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -366,5 +132,229 @@ public final class FieldsAsyncClient {
     public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
             String jobId, RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
+    }
+
+    /**
+     * Create a cascade delete job for specified field.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param partyId ID of the associated party.
+     * @param fieldId ID of the field to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
+            String jobId, String partyId, String fieldId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, fieldId, requestOptions);
+    }
+
+    /**
+     * Returns a paginated list of field resources under a particular party.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.listByPartyIdAsync(partyId, requestOptions);
+    }
+
+    /**
+     * Gets a specified field resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param fieldId Id of the field.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specified field resource under a particular party along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String fieldId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, fieldId, requestOptions);
+    }
+
+    /**
+     * Creates or Updates a field resource under a particular party.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party resource.
+     * @param fieldId Id of the field resource.
+     * @param field Field resource payload to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return schema of field resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+            String partyId, String fieldId, BinaryData field, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, fieldId, field, requestOptions);
+    }
+
+    /**
+     * Deletes a specified field resource under a particular party.
+     *
+     * @param partyId Id of the party.
+     * @param fieldId Id of the field.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String fieldId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, fieldId, requestOptions);
     }
 }

@@ -67,106 +67,7 @@ public final class InsightsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientInsig")
-    private interface InsightsService {
-        @Get("/farmers/{farmerId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdModelIdAndResource(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Patch(
-                "/farmers/{farmerId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData insightData,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get(
-                "/farmers/{farmerId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete(
-                "/farmers/{farmerId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
-                @PathParam("modelId") String modelId,
-                @PathParam("resourceType") String resourceType,
-                @PathParam("resourceId") String resourceId,
-                @PathParam("insightId") String insightId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
+    public interface InsightsService {
         @Put("/insights/cascade-delete/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -182,7 +83,7 @@ public final class InsightsImpl {
         Mono<Response<BinaryData>> createCascadeDeleteJob(
                 @HostParam("$host") String host,
                 @PathParam("jobId") String jobId,
-                @QueryParam("farmerId") String farmerId,
+                @QueryParam("partyId") String partyId,
                 @QueryParam("modelId") String modelId,
                 @QueryParam("resourceType") String resourceType,
                 @QueryParam("resourceId") String resourceId,
@@ -212,6 +113,105 @@ public final class InsightsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listByPartyIdModelIdAndResource(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("modelId") String modelId,
+                @PathParam("resourceType") String resourceType,
+                @PathParam("resourceId") String resourceId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch(
+                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createOrUpdate(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("modelId") String modelId,
+                @PathParam("resourceType") String resourceType,
+                @PathParam("resourceId") String resourceId,
+                @PathParam("insightId") String insightId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData insightData,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get(
+                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> get(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("modelId") String modelId,
+                @PathParam("resourceType") String resourceType,
+                @PathParam("resourceId") String resourceId,
+                @PathParam("insightId") String insightId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete(
+                "/parties/{partyId}/models/{modelId}/resource-types/{resourceType}/resources/{resourceId}/insights/{insightId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> delete(
+                @HostParam("$host") String host,
+                @PathParam("partyId") String partyId,
+                @PathParam("modelId") String modelId,
+                @PathParam("resourceType") String resourceType,
+                @PathParam("resourceId") String resourceId,
+                @PathParam("insightId") String insightId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -224,7 +224,7 @@ public final class InsightsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdModelIdAndResourceNext(
+        Mono<Response<BinaryData>> listByPartyIdModelIdAndResourceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -233,685 +233,20 @@ public final class InsightsImpl {
     }
 
     /**
-     * Returns a paginated list of insight resources.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>measureFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
-     * eg. "measureKey.unit eq {testValue}" where testValue is string.
-     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * Create a cascade delete job for insights specified partyId/modelId/resourceType/resourceId.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             modelId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *             resourceId: String (Optional)
-     *             modelVersion: String (Optional)
-     *             attachmentsLink: String (Optional)
-     *             insightStartDateTime: OffsetDateTime (Optional)
-     *             insightEndDateTime: OffsetDateTime (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdModelIdAndResourceSinglePageAsync(
-            String farmerId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listByFarmerIdModelIdAndResource(
-                                        this.client.getHost(),
-                                        farmerId,
-                                        modelId,
-                                        resourceType,
-                                        resourceId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Returns a paginated list of insight resources.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>measureFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
-     * eg. "measureKey.unit eq {testValue}" where testValue is string.
-     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             modelId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *             resourceId: String (Optional)
-     *             modelVersion: String (Optional)
-     *             attachmentsLink: String (Optional)
-     *             insightStartDateTime: OffsetDateTime (Optional)
-     *             insightEndDateTime: OffsetDateTime (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdModelIdAndResourceAsync(
-            String farmerId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () ->
-                        listByFarmerIdModelIdAndResourceSinglePageAsync(
-                                farmerId, modelId, resourceType, resourceId, requestOptions),
-                nextLink -> listByFarmerIdModelIdAndResourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Returns a paginated list of insight resources.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>measureFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
-     * eg. "measureKey.unit eq {testValue}" where testValue is string.
-     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
-     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
-     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
-     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             modelId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *             resourceId: String (Optional)
-     *             modelVersion: String (Optional)
-     *             attachmentsLink: String (Optional)
-     *             insightStartDateTime: OffsetDateTime (Optional)
-     *             insightEndDateTime: OffsetDateTime (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerIdModelIdAndResource(
-            String farmerId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                listByFarmerIdModelIdAndResourceAsync(farmerId, modelId, resourceType, resourceId, requestOptions));
-    }
-
-    /**
-     * Creates or updates insight entity.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param insightData Insight data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of insight resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getHost(),
-                                farmerId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                insightData,
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Creates or updates insight entity.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param insightData Insight data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of insight resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            BinaryData insightData,
-            RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(
-                        farmerId, modelId, resourceType, resourceId, insightId, insightData, requestOptions)
-                .block();
-    }
-
-    /**
-     * Gets a specified insight resource under a particular farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified insight resource under a particular farmer along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getHost(),
-                                farmerId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Gets a specified insight resource under a particular farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Optional)
-     *     modelId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *     resourceId: String (Optional)
-     *     modelVersion: String (Optional)
-     *     attachmentsLink: String (Optional)
-     *     insightStartDateTime: OffsetDateTime (Optional)
-     *     insightEndDateTime: OffsetDateTime (Optional)
-     *     measures (Optional): {
-     *         String (Optional): {
-     *             unit: String (Optional)
-     *             value: Double (Optional)
-     *         }
-     *     }
-     *     id: String (Optional)
-     *     status: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     modifiedDateTime: OffsetDateTime (Optional)
-     *     eTag: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     properties: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified insight resource under a particular farmer along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, modelId, resourceType, resourceId, insightId, requestOptions).block();
-    }
-
-    /**
-     * Deletes a specified insight resource.
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getHost(),
-                                farmerId,
-                                modelId,
-                                resourceType,
-                                resourceId,
-                                insightId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Deletes a specified insight resource.
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
-     *     'SoilMoistureModelId' or any solution id.
-     * @param resourceType Resource type associated with the record.
-     * @param resourceId Id of the associated resource.
-     * @param insightId Id of the insight resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String farmerId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightId,
-            RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, modelId, resourceType, resourceId, insightId, requestOptions).block();
-    }
-
-    /**
-     * Create a cascade delete job for insights specified farmerId/modelId/resourceType/resourceId.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -920,7 +255,7 @@ public final class InsightsImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param modelId Id of the associated model.
      * @param resourceType Resource Type.
      * @param resourceId Id of the associated resource.
@@ -935,7 +270,7 @@ public final class InsightsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
             String jobId,
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
@@ -947,7 +282,7 @@ public final class InsightsImpl {
                         service.createCascadeDeleteJob(
                                 this.client.getHost(),
                                 jobId,
-                                farmerId,
+                                partyId,
                                 modelId,
                                 resourceType,
                                 resourceId,
@@ -959,19 +294,20 @@ public final class InsightsImpl {
     }
 
     /**
-     * Create a cascade delete job for insights specified farmerId/modelId/resourceType/resourceId.
+     * Create a cascade delete job for insights specified partyId/modelId/resourceType/resourceId.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -980,7 +316,7 @@ public final class InsightsImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param modelId Id of the associated model.
      * @param resourceType Resource Type.
      * @param resourceId Id of the associated resource.
@@ -995,7 +331,7 @@ public final class InsightsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
             String jobId,
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
@@ -1005,9 +341,10 @@ public final class InsightsImpl {
                 Duration.ofSeconds(1),
                 () ->
                         this.createCascadeDeleteJobWithResponseAsync(
-                                jobId, farmerId, modelId, resourceType, resourceId, insightId, requestOptions),
+                                jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1017,19 +354,20 @@ public final class InsightsImpl {
     }
 
     /**
-     * Create a cascade delete job for insights specified farmerId/modelId/resourceType/resourceId.
+     * Create a cascade delete job for insights specified partyId/modelId/resourceType/resourceId.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1038,7 +376,7 @@ public final class InsightsImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param modelId Id of the associated model.
      * @param resourceType Resource Type.
      * @param resourceId Id of the associated resource.
@@ -1053,14 +391,14 @@ public final class InsightsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
             String jobId,
-            String farmerId,
+            String partyId,
             String modelId,
             String resourceType,
             String resourceId,
             String insightId,
             RequestOptions requestOptions) {
         return this.beginCreateCascadeDeleteJobAsync(
-                        jobId, farmerId, modelId, resourceType, resourceId, insightId, requestOptions)
+                        jobId, partyId, modelId, resourceType, resourceId, insightId, requestOptions)
                 .getSyncPoller();
     }
 
@@ -1071,13 +409,14 @@ public final class InsightsImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1116,13 +455,14 @@ public final class InsightsImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1144,40 +484,722 @@ public final class InsightsImpl {
     }
 
     /**
+     * Returns a paginated list of insight resources.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>measurementFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
+     * eg. "measureKey.unit eq {testValue}" where testValue is string.
+     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceSinglePageAsync(
+            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listByPartyIdModelIdAndResource(
+                                        this.client.getHost(),
+                                        partyId,
+                                        modelId,
+                                        resourceType,
+                                        resourceId,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Returns a paginated list of insight resources.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>measurementFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
+     * eg. "measureKey.unit eq {testValue}" where testValue is string.
+     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listByPartyIdModelIdAndResourceAsync(
+            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () ->
+                        listByPartyIdModelIdAndResourceSinglePageAsync(
+                                partyId, modelId, resourceType, resourceId, requestOptions),
+                nextLink -> listByPartyIdModelIdAndResourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Returns a paginated list of insight resources.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightStartDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightStartDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>minInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>maxInsightEndDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum insightEndDateTime time of insight resources (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
+     *     <tr><td>measurementFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on measureKey.unit/unitValue or measureKey.value/value pairs within the Measures object.
+     * eg. "measureKey.unit eq {testValue}" where testValue is string.
+     * eg. "measureKey.value eq {testValue}" where testValue = double. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
+     * eg. "{testKey} eq {testValue}". Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Statuses of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
+     *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(
+            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+        return new PagedIterable<>(
+                listByPartyIdModelIdAndResourceAsync(partyId, modelId, resourceType, resourceId, requestOptions));
+    }
+
+    /**
+     * Creates or updates insight entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param insightData Insight data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return schema of insight resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            BinaryData insightData,
+            RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdate(
+                                this.client.getHost(),
+                                partyId,
+                                modelId,
+                                resourceType,
+                                resourceId,
+                                insightId,
+                                this.client.getServiceVersion().getVersion(),
+                                insightData,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Creates or updates insight entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param insightData Insight data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return schema of insight resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            BinaryData insightData,
+            RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(
+                        partyId, modelId, resourceType, resourceId, insightId, insightData, requestOptions)
+                .block();
+    }
+
+    /**
+     * Gets a specified insight resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specified insight resource under a particular party along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getWithResponseAsync(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getHost(),
+                                partyId,
+                                modelId,
+                                resourceType,
+                                resourceId,
+                                insightId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets a specified insight resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specified insight resource under a particular party along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getWithResponse(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId, requestOptions).block();
+    }
+
+    /**
+     * Deletes a specified insight resource.
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getHost(),
+                                partyId,
+                                modelId,
+                                resourceType,
+                                resourceId,
+                                insightId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Deletes a specified insight resource.
+     *
+     * @param partyId Id of the associated party.
+     * @param modelId Id of the associated model. It can be either 'BiomassModelId', 'SensorPlacementModelId',
+     *     'SoilMoistureModelId' or any solution id.
+     * @param resourceType Resource type associated with the record.
+     * @param resourceId Id of the associated resource.
+     * @param insightId Id of the insight resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+            String partyId,
+            String modelId,
+            String resourceType,
+            String resourceId,
+            String insightId,
+            RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, modelId, resourceType, resourceId, insightId, requestOptions).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             modelId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary) (Optional)
-     *             resourceId: String (Optional)
-     *             modelVersion: String (Optional)
-     *             attachmentsLink: String (Optional)
-     *             insightStartDateTime: OffsetDateTime (Optional)
-     *             insightEndDateTime: OffsetDateTime (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     partyId: String (Optional)
+     *     modelId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary) (Optional)
+     *     resourceId: String (Optional)
+     *     modelVersion: String (Optional)
+     *     attachmentsLink: String (Optional)
+     *     insightStartDateTime: OffsetDateTime (Optional)
+     *     insightEndDateTime: OffsetDateTime (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1192,12 +1214,12 @@ public final class InsightsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdModelIdAndResourceNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdModelIdAndResourceNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdModelIdAndResourceNext(
+                                service.listByPartyIdModelIdAndResourceNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->

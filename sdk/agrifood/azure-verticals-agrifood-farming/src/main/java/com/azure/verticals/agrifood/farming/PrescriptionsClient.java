@@ -34,7 +34,7 @@ public final class PrescriptionsClient {
     }
 
     /**
-     * Returns a paginated list of prescription resources under a particular farmer.
+     * Returns a paginated list of prescription resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -55,9 +55,9 @@ public final class PrescriptionsClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -66,36 +66,34 @@ public final class PrescriptionsClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             prescriptionMapId: String (Optional)
-     *             productCode: String (Optional)
-     *             productName: String (Optional)
-     *             type: String (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     partyId: String (Optional)
+     *     prescriptionMapId: String (Optional)
+     *     productCode: String (Optional)
+     *     productName: String (Optional)
+     *     type: String (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -106,23 +104,23 @@ public final class PrescriptionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listByFarmerId(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listByPartyId(partyId, requestOptions));
     }
 
     /**
-     * Gets a specified prescription resource under a particular farmer.
+     * Gets a specified prescription resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     prescriptionMapId: String (Optional)
      *     productCode: String (Optional)
      *     productName: String (Optional)
      *     type: String (Optional)
-     *     measures (Optional): {
+     *     measurements (Optional): {
      *         String (Optional): {
      *             unit: String (Optional)
      *             value: Double (Optional)
@@ -136,38 +134,42 @@ public final class PrescriptionsClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param prescriptionId Id of the prescription.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified prescription resource under a particular farmer along with {@link Response}.
+     * @return a specified prescription resource under a particular party along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String farmerId, String prescriptionId, RequestOptions requestOptions) {
-        return this.client.getWithResponse(farmerId, prescriptionId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String prescriptionId, RequestOptions requestOptions) {
+        return this.client.getWithResponse(partyId, prescriptionId, requestOptions).block();
     }
 
     /**
-     * Creates or Updates a prescription resource under a particular farmer.
+     * Creates or Updates a prescription resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     prescriptionMapId: String (Optional)
      *     productCode: String (Optional)
      *     productName: String (Optional)
      *     type: String (Optional)
-     *     measures (Optional): {
+     *     measurements (Optional): {
      *         String (Optional): {
      *             unit: String (Optional)
      *             value: Double (Optional)
@@ -181,7 +183,11 @@ public final class PrescriptionsClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -189,12 +195,12 @@ public final class PrescriptionsClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     prescriptionMapId: String (Optional)
      *     productCode: String (Optional)
      *     productName: String (Optional)
      *     type: String (Optional)
-     *     measures (Optional): {
+     *     measurements (Optional): {
      *         String (Optional): {
      *             unit: String (Optional)
      *             value: Double (Optional)
@@ -208,11 +214,15 @@ public final class PrescriptionsClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param prescriptionId Id of the prescription resource.
      * @param prescription Prescription resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -225,14 +235,14 @@ public final class PrescriptionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String prescriptionId, BinaryData prescription, RequestOptions requestOptions) {
-        return this.client.createOrUpdateWithResponse(farmerId, prescriptionId, prescription, requestOptions).block();
+            String partyId, String prescriptionId, BinaryData prescription, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, prescriptionId, prescription, requestOptions).block();
     }
 
     /**
-     * Deletes a specified prescription resource under a particular farmer.
+     * Deletes a specified prescription resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param prescriptionId Id of the prescription.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -243,12 +253,12 @@ public final class PrescriptionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String prescriptionId, RequestOptions requestOptions) {
-        return this.client.deleteWithResponse(farmerId, prescriptionId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String prescriptionId, RequestOptions requestOptions) {
+        return this.client.deleteWithResponse(partyId, prescriptionId, requestOptions).block();
     }
 
     /**
-     * Returns a paginated list of prescription resources across all farmers.
+     * Returns a paginated list of prescription resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -269,9 +279,9 @@ public final class PrescriptionsClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -280,32 +290,30 @@ public final class PrescriptionsClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             prescriptionMapId: String (Optional)
-     *             productCode: String (Optional)
-     *             productName: String (Optional)
-     *             type: String (Optional)
-     *             measures (Optional): {
-     *                 String (Optional): {
-     *                     unit: String (Optional)
-     *                     value: Double (Optional)
-     *                 }
-     *             }
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     partyId: String (Optional)
+     *     prescriptionMapId: String (Optional)
+     *     productCode: String (Optional)
+     *     productName: String (Optional)
+     *     type: String (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -330,13 +338,14 @@ public final class PrescriptionsClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -365,13 +374,14 @@ public final class PrescriptionsClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -380,7 +390,7 @@ public final class PrescriptionsClient {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param prescriptionId ID of the prescription to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -392,7 +402,7 @@ public final class PrescriptionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String prescriptionId, RequestOptions requestOptions) {
-        return this.client.beginCreateCascadeDeleteJob(jobId, farmerId, prescriptionId, requestOptions).getSyncPoller();
+            String jobId, String partyId, String prescriptionId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, prescriptionId, requestOptions).getSyncPoller();
     }
 }

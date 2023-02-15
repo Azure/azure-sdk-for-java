@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of FarmBeatsClient. */
 public enum FarmBeatsServiceVersion implements ServiceVersion {
-    /** Enum value 2021-07-31-preview. */
-    V2021_07_31_PREVIEW("2021-07-31-preview");
+    /** Enum value 2022-11-01-preview. */
+    V2022_11_01_PREVIEW("2022-11-01-preview");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum FarmBeatsServiceVersion implements ServiceVersion {
      * @return The latest {@link FarmBeatsServiceVersion}.
      */
     public static FarmBeatsServiceVersion getLatest() {
-        return V2021_07_31_PREVIEW;
+        return V2022_11_01_PREVIEW;
     }
 }

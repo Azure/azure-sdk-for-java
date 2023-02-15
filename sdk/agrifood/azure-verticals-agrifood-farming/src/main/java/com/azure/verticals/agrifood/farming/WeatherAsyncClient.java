@@ -45,9 +45,9 @@ public final class WeatherAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>startDateTime</td><td>OffsetDateTime</td><td>No</td><td>Weather data start UTC date-time (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>endDateTime</td><td>OffsetDateTime</td><td>No</td><td>Weather data end UTC date-time (inclusive), sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -56,51 +56,47 @@ public final class WeatherAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Required)
-     *             boundaryId: String (Required)
-     *             extensionId: String (Required)
-     *             location (Required): {
-     *                 latitude: double (Required)
-     *                 longitude: double (Required)
-     *             }
-     *             dateTime: OffsetDateTime (Required)
-     *             unitSystemCode: String (Optional)
-     *             extensionVersion: String (Required)
-     *             weatherDataType: String (Required)
-     *             granularity: String (Required)
-     *             cloudCover (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             dewPoint (Optional): (recursive schema, see dewPoint above)
-     *             growingDegreeDay (Optional): (recursive schema, see growingDegreeDay above)
-     *             precipitation (Optional): (recursive schema, see precipitation above)
-     *             pressure (Optional): (recursive schema, see pressure above)
-     *             relativeHumidity (Optional): (recursive schema, see relativeHumidity above)
-     *             soilMoisture (Optional): (recursive schema, see soilMoisture above)
-     *             soilTemperature (Optional): (recursive schema, see soilTemperature above)
-     *             temperature (Optional): (recursive schema, see temperature above)
-     *             visibility (Optional): (recursive schema, see visibility above)
-     *             wetBulbTemperature (Optional): (recursive schema, see wetBulbTemperature above)
-     *             windChill (Optional): (recursive schema, see windChill above)
-     *             windDirection (Optional): (recursive schema, see windDirection above)
-     *             windGust (Optional): (recursive schema, see windGust above)
-     *             windSpeed (Optional): (recursive schema, see windSpeed above)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Required)
+     *     boundaryId: String (Required)
+     *     extensionId: String (Required)
+     *     location (Required): {
+     *         latitude: double (Required)
+     *         longitude: double (Required)
+     *     }
+     *     dateTime: OffsetDateTime (Required)
+     *     unitSystemCode: String (Optional)
+     *     extensionVersion: String (Required)
+     *     weatherDataType: String (Required)
+     *     granularity: String (Required)
+     *     cloudCover (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     dewPoint (Optional): (recursive schema, see dewPoint above)
+     *     growingDegreeDay (Optional): (recursive schema, see growingDegreeDay above)
+     *     precipitation (Optional): (recursive schema, see precipitation above)
+     *     pressure (Optional): (recursive schema, see pressure above)
+     *     relativeHumidity (Optional): (recursive schema, see relativeHumidity above)
+     *     soilMoisture (Optional): (recursive schema, see soilMoisture above)
+     *     soilTemperature (Optional): (recursive schema, see soilTemperature above)
+     *     temperature (Optional): (recursive schema, see temperature above)
+     *     visibility (Optional): (recursive schema, see visibility above)
+     *     wetBulbTemperature (Optional): (recursive schema, see wetBulbTemperature above)
+     *     windChill (Optional): (recursive schema, see windChill above)
+     *     windDirection (Optional): (recursive schema, see windDirection above)
+     *     windGust (Optional): (recursive schema, see windGust above)
+     *     windSpeed (Optional): (recursive schema, see windSpeed above)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Farmer ID.
+     * @param partyId Party ID.
      * @param boundaryId Boundary ID.
      * @param extensionId ID of the weather extension.
      * @param weatherDataType Type of weather data (forecast/historical).
@@ -116,14 +112,14 @@ public final class WeatherAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> list(
-            String farmerId,
+            String partyId,
             String boundaryId,
             String extensionId,
             String weatherDataType,
             String granularity,
             RequestOptions requestOptions) {
         return this.serviceClient.listAsync(
-                farmerId, boundaryId, extensionId, weatherDataType, granularity, requestOptions);
+                partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions);
     }
 
     /**
@@ -134,7 +130,7 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     extensionId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     weatherDataType: String (Optional)
      *     granularity: String (Optional)
@@ -144,13 +140,18 @@ public final class WeatherAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -176,7 +177,7 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     extensionId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     weatherDataType: String (Optional)
      *     granularity: String (Optional)
@@ -186,13 +187,18 @@ public final class WeatherAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -201,7 +207,7 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     extensionId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     weatherDataType: String (Optional)
      *     granularity: String (Optional)
@@ -211,13 +217,18 @@ public final class WeatherAsyncClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -245,23 +256,30 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     boundaryId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     extensionId: String (Required)
      *     extensionApiName: String (Required)
-     *     extensionApiInput: Object (Required)
+     *     extensionApiInput (Required): {
+     *         String: Object (Required)
+     *     }
      *     extensionDataProviderAppId: String (Optional)
      *     extensionDataProviderApiKey: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -288,23 +306,30 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     boundaryId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     extensionId: String (Required)
      *     extensionApiName: String (Required)
-     *     extensionApiInput: Object (Required)
+     *     extensionApiInput (Required): {
+     *         String: Object (Required)
+     *     }
      *     extensionDataProviderAppId: String (Optional)
      *     extensionDataProviderApiKey: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -313,23 +338,30 @@ public final class WeatherAsyncClient {
      * <pre>{@code
      * {
      *     boundaryId: String (Required)
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     extensionId: String (Required)
      *     extensionApiName: String (Required)
-     *     extensionApiInput: Object (Required)
+     *     extensionApiInput (Required): {
+     *         String: Object (Required)
+     *     }
      *     extensionDataProviderAppId: String (Optional)
      *     extensionDataProviderApiKey: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *

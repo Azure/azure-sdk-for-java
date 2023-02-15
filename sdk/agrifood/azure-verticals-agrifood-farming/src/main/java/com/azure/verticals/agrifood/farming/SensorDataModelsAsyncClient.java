@@ -51,9 +51,9 @@ public final class SensorDataModelsAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -62,33 +62,33 @@ public final class SensorDataModelsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             type: String (Optional)
-     *             manufacturer: String (Optional)
-     *             productCode: String (Optional)
-     *             measures (Required): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     dataType: String(Bool/Double/DateTime/Long/String) (Required)
-     *                     type: String (Optional)
-     *                     unit: String (Optional)
-     *                     properties: Object (Optional)
-     *                 }
-     *             }
-     *             sensorPartnerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
+     *     type: String (Optional)
+     *     manufacturer: String (Optional)
+     *     productCode: String (Optional)
+     *     measures (Required): {
+     *         String (Required): {
      *             description: String (Optional)
-     *             properties: Object (Optional)
+     *             dataType: String(Bool/Double/DateTime/Long/String) (Required)
+     *             type: String (Optional)
+     *             unit: String (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     sensorPartnerId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -123,7 +123,9 @@ public final class SensorDataModelsAsyncClient {
      *             dataType: String(Bool/Double/DateTime/Long/String) (Required)
      *             type: String (Optional)
      *             unit: String (Optional)
-     *             properties: Object (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     }
      *     sensorPartnerId: String (Optional)
@@ -134,7 +136,11 @@ public final class SensorDataModelsAsyncClient {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -151,7 +157,9 @@ public final class SensorDataModelsAsyncClient {
      *             dataType: String(Bool/Double/DateTime/Long/String) (Required)
      *             type: String (Optional)
      *             unit: String (Optional)
-     *             properties: Object (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     }
      *     sensorPartnerId: String (Optional)
@@ -162,7 +170,11 @@ public final class SensorDataModelsAsyncClient {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -203,7 +215,9 @@ public final class SensorDataModelsAsyncClient {
      *             dataType: String(Bool/Double/DateTime/Long/String) (Required)
      *             type: String (Optional)
      *             unit: String (Optional)
-     *             properties: Object (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     }
      *     sensorPartnerId: String (Optional)
@@ -214,7 +228,11 @@ public final class SensorDataModelsAsyncClient {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *

@@ -61,7 +61,7 @@ public final class CropsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientCrops")
-    private interface CropsService {
+    public interface CropsService {
         @Get("/crops")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -171,6 +171,7 @@ public final class CropsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>phenotypes</td><td>List&lt;String&gt;</td><td>No</td><td>Crop phenotypes of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>breedingMethods</td><td>List&lt;String&gt;</td><td>No</td><td>Breeding method of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -180,9 +181,9 @@ public final class CropsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -191,22 +192,27 @@ public final class CropsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             phenotype: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -219,7 +225,7 @@ public final class CropsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -249,6 +255,7 @@ public final class CropsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>phenotypes</td><td>List&lt;String&gt;</td><td>No</td><td>Crop phenotypes of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>breedingMethods</td><td>List&lt;String&gt;</td><td>No</td><td>Breeding method of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -258,9 +265,9 @@ public final class CropsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -269,22 +276,27 @@ public final class CropsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             phenotype: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -317,6 +329,7 @@ public final class CropsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>phenotypes</td><td>List&lt;String&gt;</td><td>No</td><td>Crop phenotypes of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>breedingMethods</td><td>List&lt;String&gt;</td><td>No</td><td>Breeding method of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -326,9 +339,9 @@ public final class CropsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -337,22 +350,27 @@ public final class CropsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             phenotype: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -377,6 +395,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -385,7 +410,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -419,6 +448,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -427,7 +463,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -452,6 +492,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -460,7 +507,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -469,6 +520,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -477,7 +535,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -514,6 +576,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -522,7 +591,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -531,6 +604,13 @@ public final class CropsImpl {
      * <pre>{@code
      * {
      *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
+     *         }
+     *     }
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -539,7 +619,11 @@ public final class CropsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -606,22 +690,27 @@ public final class CropsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             phenotype: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
+     *     phenotype: String (Optional)
+     *     breedingMethod: String(VARIETY/HYBRID/UNKNOWN) (Optional)
+     *     measurements (Optional): {
+     *         String (Optional): {
+     *             unit: String (Optional)
+     *             value: Double (Optional)
      *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -636,7 +725,7 @@ public final class CropsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

@@ -37,14 +37,15 @@ import com.azure.verticals.agrifood.farming.implementation.FarmBeatsClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the FarmersClient type. */
-@ServiceClientBuilder(serviceClients = {FarmersClient.class, FarmersAsyncClient.class})
-public final class FarmersClientBuilder
-        implements HttpTrait<FarmersClientBuilder>,
-                ConfigurationTrait<FarmersClientBuilder>,
-                TokenCredentialTrait<FarmersClientBuilder> {
+/** A builder for creating a new instance of the PartiesClient type. */
+@ServiceClientBuilder(serviceClients = {PartiesClient.class, PartiesAsyncClient.class})
+public final class PartiesClientBuilder
+        implements HttpTrait<PartiesClientBuilder>,
+                ConfigurationTrait<PartiesClientBuilder>,
+                TokenCredentialTrait<PartiesClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -52,14 +53,14 @@ public final class FarmersClientBuilder
     @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats.azure.net/.default"};
 
     @Generated
-    private final Map<String, String> properties =
+    private static final Map<String, String> PROPERTIES =
             CoreUtils.getProperties("azure-verticals-agrifood-farming.properties");
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the FarmersClientBuilder. */
+    /** Create an instance of the PartiesClientBuilder. */
     @Generated
-    public FarmersClientBuilder() {
+    public PartiesClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -71,7 +72,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder pipeline(HttpPipeline pipeline) {
+    public PartiesClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -84,7 +85,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder httpClient(HttpClient httpClient) {
+    public PartiesClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -97,7 +98,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public PartiesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -110,7 +111,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder clientOptions(ClientOptions clientOptions) {
+    public PartiesClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -123,7 +124,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder retryOptions(RetryOptions retryOptions) {
+    public PartiesClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -131,7 +132,8 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public PartiesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -144,7 +146,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder configuration(Configuration configuration) {
+    public PartiesClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -157,7 +159,7 @@ public final class FarmersClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public FarmersClientBuilder credential(TokenCredential tokenCredential) {
+    public PartiesClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -171,10 +173,10 @@ public final class FarmersClientBuilder
      * Sets server parameter.
      *
      * @param host the host value.
-     * @return the FarmersClientBuilder.
+     * @return the PartiesClientBuilder.
      */
     @Generated
-    public FarmersClientBuilder host(String host) {
+    public PartiesClientBuilder host(String host) {
         this.host = host;
         return this;
     }
@@ -188,10 +190,10 @@ public final class FarmersClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the FarmersClientBuilder.
+     * @return the PartiesClientBuilder.
      */
     @Generated
-    public FarmersClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
+    public PartiesClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -205,10 +207,10 @@ public final class FarmersClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the FarmersClientBuilder.
+     * @return the PartiesClientBuilder.
      */
     @Generated
-    public FarmersClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public PartiesClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -234,21 +236,17 @@ public final class FarmersClientBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -273,28 +271,28 @@ public final class FarmersClientBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }
 
     /**
-     * Builds an instance of FarmersAsyncClient class.
+     * Builds an instance of PartiesAsyncClient class.
      *
-     * @return an instance of FarmersAsyncClient.
+     * @return an instance of PartiesAsyncClient.
      */
     @Generated
-    public FarmersAsyncClient buildAsyncClient() {
-        return new FarmersAsyncClient(buildInnerClient().getFarmers());
+    public PartiesAsyncClient buildAsyncClient() {
+        return new PartiesAsyncClient(buildInnerClient().getParties());
     }
 
     /**
-     * Builds an instance of FarmersClient class.
+     * Builds an instance of PartiesClient class.
      *
-     * @return an instance of FarmersClient.
+     * @return an instance of PartiesClient.
      */
     @Generated
-    public FarmersClient buildClient() {
-        return new FarmersClient(new FarmersAsyncClient(buildInnerClient().getFarmers()));
+    public PartiesClient buildClient() {
+        return new PartiesClient(new PartiesAsyncClient(buildInnerClient().getParties()));
     }
 }

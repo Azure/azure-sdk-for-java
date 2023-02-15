@@ -37,14 +37,15 @@ import com.azure.verticals.agrifood.farming.implementation.FarmBeatsClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the CropVarietiesClient type. */
-@ServiceClientBuilder(serviceClients = {CropVarietiesClient.class, CropVarietiesAsyncClient.class})
-public final class CropVarietiesClientBuilder
-        implements HttpTrait<CropVarietiesClientBuilder>,
-                ConfigurationTrait<CropVarietiesClientBuilder>,
-                TokenCredentialTrait<CropVarietiesClientBuilder> {
+/** A builder for creating a new instance of the CropProductsClient type. */
+@ServiceClientBuilder(serviceClients = {CropProductsClient.class, CropProductsAsyncClient.class})
+public final class CropProductsClientBuilder
+        implements HttpTrait<CropProductsClientBuilder>,
+                ConfigurationTrait<CropProductsClientBuilder>,
+                TokenCredentialTrait<CropProductsClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -52,14 +53,14 @@ public final class CropVarietiesClientBuilder
     @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats.azure.net/.default"};
 
     @Generated
-    private final Map<String, String> properties =
+    private static final Map<String, String> PROPERTIES =
             CoreUtils.getProperties("azure-verticals-agrifood-farming.properties");
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the CropVarietiesClientBuilder. */
+    /** Create an instance of the CropProductsClientBuilder. */
     @Generated
-    public CropVarietiesClientBuilder() {
+    public CropProductsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -71,7 +72,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder pipeline(HttpPipeline pipeline) {
+    public CropProductsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -84,7 +85,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder httpClient(HttpClient httpClient) {
+    public CropProductsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -97,7 +98,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public CropProductsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -110,7 +111,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder clientOptions(ClientOptions clientOptions) {
+    public CropProductsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -123,7 +124,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder retryOptions(RetryOptions retryOptions) {
+    public CropProductsClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -131,7 +132,8 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public CropProductsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -144,7 +146,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder configuration(Configuration configuration) {
+    public CropProductsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -157,7 +159,7 @@ public final class CropVarietiesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public CropVarietiesClientBuilder credential(TokenCredential tokenCredential) {
+    public CropProductsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -171,10 +173,10 @@ public final class CropVarietiesClientBuilder
      * Sets server parameter.
      *
      * @param host the host value.
-     * @return the CropVarietiesClientBuilder.
+     * @return the CropProductsClientBuilder.
      */
     @Generated
-    public CropVarietiesClientBuilder host(String host) {
+    public CropProductsClientBuilder host(String host) {
         this.host = host;
         return this;
     }
@@ -188,10 +190,10 @@ public final class CropVarietiesClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the CropVarietiesClientBuilder.
+     * @return the CropProductsClientBuilder.
      */
     @Generated
-    public CropVarietiesClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
+    public CropProductsClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -205,10 +207,10 @@ public final class CropVarietiesClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the CropVarietiesClientBuilder.
+     * @return the CropProductsClientBuilder.
      */
     @Generated
-    public CropVarietiesClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public CropProductsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -234,21 +236,17 @@ public final class CropVarietiesClientBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -273,28 +271,28 @@ public final class CropVarietiesClientBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }
 
     /**
-     * Builds an instance of CropVarietiesAsyncClient class.
+     * Builds an instance of CropProductsAsyncClient class.
      *
-     * @return an instance of CropVarietiesAsyncClient.
+     * @return an instance of CropProductsAsyncClient.
      */
     @Generated
-    public CropVarietiesAsyncClient buildAsyncClient() {
-        return new CropVarietiesAsyncClient(buildInnerClient().getCropVarieties());
+    public CropProductsAsyncClient buildAsyncClient() {
+        return new CropProductsAsyncClient(buildInnerClient().getCropProducts());
     }
 
     /**
-     * Builds an instance of CropVarietiesClient class.
+     * Builds an instance of CropProductsClient class.
      *
-     * @return an instance of CropVarietiesClient.
+     * @return an instance of CropProductsClient.
      */
     @Generated
-    public CropVarietiesClient buildClient() {
-        return new CropVarietiesClient(new CropVarietiesAsyncClient(buildInnerClient().getCropVarieties()));
+    public CropProductsClient buildClient() {
+        return new CropProductsClient(new CropProductsAsyncClient(buildInnerClient().getCropProducts()));
     }
 }

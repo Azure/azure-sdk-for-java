@@ -51,7 +51,7 @@ public final class SensorEventsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientSenso")
-    private interface SensorEventsService {
+    public interface SensorEventsService {
         @Get("/sensor-events")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -96,18 +96,20 @@ public final class SensorEventsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
+     *     value (Required): [
+     *          (Required){
      *             sensorId: String (Optional)
      *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
+     *             partyId: String (Optional)
      *             boundaryId: String (Optional)
      *             eventDateTime: OffsetDateTime (Optional)
      *             ingestionDateTime: OffsetDateTime (Optional)
-     *             measures: Object (Optional)
+     *             measures (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     ]
-     *     $skipToken: String (Optional)
+     *     skipToken: String (Optional)
      *     nextLink: String (Optional)
      * }
      * }</pre>
@@ -160,18 +162,20 @@ public final class SensorEventsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
+     *     value (Required): [
+     *          (Required){
      *             sensorId: String (Optional)
      *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
+     *             partyId: String (Optional)
      *             boundaryId: String (Optional)
      *             eventDateTime: OffsetDateTime (Optional)
      *             ingestionDateTime: OffsetDateTime (Optional)
-     *             measures: Object (Optional)
+     *             measures (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     ]
-     *     $skipToken: String (Optional)
+     *     skipToken: String (Optional)
      *     nextLink: String (Optional)
      * }
      * }</pre>

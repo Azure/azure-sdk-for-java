@@ -39,7 +39,7 @@ public final class ModelInferenceClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     modelVersion: String (Required)
      *     cropName: String(Corn) (Required)
@@ -47,20 +47,25 @@ public final class ModelInferenceClient {
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     weatherExtensionId: String (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     imageResolution: double (Required)
      *     imageFormat: String(TIF) (Required)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -68,7 +73,7 @@ public final class ModelInferenceClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     modelVersion: String (Required)
      *     cropName: String(Corn) (Required)
@@ -76,20 +81,25 @@ public final class ModelInferenceClient {
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     weatherExtensionId: String (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     imageResolution: double (Required)
      *     imageFormat: String(TIF) (Required)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -116,7 +126,7 @@ public final class ModelInferenceClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     modelVersion: String (Required)
      *     cropName: String(Corn) (Required)
@@ -124,20 +134,25 @@ public final class ModelInferenceClient {
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     weatherExtensionId: String (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     imageResolution: double (Required)
      *     imageFormat: String(TIF) (Required)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -156,39 +171,37 @@ public final class ModelInferenceClient {
     }
 
     /**
-     * Create a SoilMoisture Model job.
+     * Create a Sensor Placement Model job.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
-     *     sensorDataModelId: String (Required)
-     *     sensorPartnerId: String (Required)
+     *     modelVersion: String (Required)
      *     inferenceStartDateTime: OffsetDateTime (Required)
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
-     *     imageResolution: double (Required)
-     *     imageFormat: String(TIF) (Required)
-     *     modelVersion: String (Required)
-     *     sensorDefinition (Required): {
-     *         sensorMeasurement: String (Required)
-     *         minProperty: String (Required)
-     *         maxProperty: String (Required)
-     *     }
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
+     *     sensorType: String (Required)
+     *     isRanked: boolean (Required)
      *     id: String (Optional)
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -196,14 +209,114 @@ public final class ModelInferenceClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
+     *     boundaryId: String (Required)
+     *     modelVersion: String (Required)
+     *     inferenceStartDateTime: OffsetDateTime (Required)
+     *     inferenceEndDateTime: OffsetDateTime (Required)
+     *     satelliteProvider: String(Microsoft) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
+     *     sensorType: String (Required)
+     *     isRanked: boolean (Required)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId JobId provided by user.
+     * @param job Job parameters supplied by user.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of schema of sensor placement model job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateSensorPlacementModelJob(
+            String jobId, BinaryData job, RequestOptions requestOptions) {
+        return this.client.beginCreateSensorPlacementModelJob(jobId, job, requestOptions).getSyncPoller();
+    }
+
+    /**
+     * Get Sensor Placement Model job's details.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     boundaryId: String (Required)
+     *     modelVersion: String (Required)
+     *     inferenceStartDateTime: OffsetDateTime (Required)
+     *     inferenceEndDateTime: OffsetDateTime (Required)
+     *     satelliteProvider: String(Microsoft) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
+     *     sensorType: String (Required)
+     *     isRanked: boolean (Required)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return sensor Placement Model job's details along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getSensorPlacementModelJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.client.getSensorPlacementModelJobWithResponse(jobId, requestOptions).block();
+    }
+
+    /**
+     * Create a SoilMoisture Model job.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     sensorDataModelId: String (Required)
      *     sensorPartnerId: String (Required)
      *     inferenceStartDateTime: OffsetDateTime (Required)
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     imageResolution: double (Required)
      *     imageFormat: String(TIF) (Required)
      *     modelVersion: String (Required)
@@ -216,13 +329,57 @@ public final class ModelInferenceClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     boundaryId: String (Required)
+     *     sensorDataModelId: String (Required)
+     *     sensorPartnerId: String (Required)
+     *     inferenceStartDateTime: OffsetDateTime (Required)
+     *     inferenceEndDateTime: OffsetDateTime (Required)
+     *     satelliteProvider: String(Microsoft) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
+     *     imageResolution: double (Required)
+     *     imageFormat: String(TIF) (Required)
+     *     modelVersion: String (Required)
+     *     sensorDefinition (Required): {
+     *         sensorMeasurement: String (Required)
+     *         minProperty: String (Required)
+     *         maxProperty: String (Required)
+     *     }
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -249,14 +406,14 @@ public final class ModelInferenceClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     sensorDataModelId: String (Required)
      *     sensorPartnerId: String (Required)
      *     inferenceStartDateTime: OffsetDateTime (Required)
      *     inferenceEndDateTime: OffsetDateTime (Required)
      *     satelliteProvider: String(Microsoft) (Required)
-     *     satelliteSource: String(Sentinel_2_L2A) (Required)
+     *     satelliteSource: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     imageResolution: double (Required)
      *     imageFormat: String(TIF) (Required)
      *     modelVersion: String (Required)
@@ -269,13 +426,18 @@ public final class ModelInferenceClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *

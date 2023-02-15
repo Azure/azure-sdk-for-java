@@ -34,7 +34,7 @@ public final class PlantingDataClient {
     }
 
     /**
-     * Returns a paginated list of planting data resources under a particular farm.
+     * Returns a paginated list of planting data resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -66,73 +66,12 @@ public final class PlantingDataClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             avgPlantingRate (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
-     *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
-     *             plantingProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     area (Optional): (recursive schema, see area above)
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                     avgMaterial (Optional): (recursive schema, see avgMaterial above)
-     *                 }
-     *             ]
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param farmerId ID of the associated farmer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listByFarmerId(farmerId, requestOptions));
-    }
-
-    /**
-     * Get a specified planting data resource under a particular farmer.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -158,7 +97,7 @@ public final class PlantingDataClient {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -167,27 +106,90 @@ public final class PlantingDataClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of requested objects and a URL link to get the next set of results as
+     *     paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listByPartyId(partyId, requestOptions));
+    }
+
+    /**
+     * Get a specified planting data resource under a particular party.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     avgPlantingRate (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     plantingProductDetails (Optional): [
+     *          (Optional){
+     *             productName: String (Optional)
+     *             area (Optional): (recursive schema, see area above)
+     *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *         }
+     *     ]
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param partyId ID of the associated party resource.
      * @param plantingDataId ID of the planting data resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified planting data resource under a particular farmer along with {@link Response}.
+     * @return a specified planting data resource under a particular party along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String farmerId, String plantingDataId, RequestOptions requestOptions) {
-        return this.client.getWithResponse(farmerId, plantingDataId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String plantingDataId, RequestOptions requestOptions) {
+        return this.client.getWithResponse(partyId, plantingDataId, requestOptions).block();
     }
 
     /**
-     * Creates or updates an planting data resource under a particular farmer.
+     * Creates or updates an planting data resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -213,7 +215,7 @@ public final class PlantingDataClient {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -222,7 +224,11 @@ public final class PlantingDataClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -250,7 +256,7 @@ public final class PlantingDataClient {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -259,11 +265,15 @@ public final class PlantingDataClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param plantingDataId ID of the planting data resource.
      * @param plantingData Planting data resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -276,14 +286,14 @@ public final class PlantingDataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String plantingDataId, BinaryData plantingData, RequestOptions requestOptions) {
-        return this.client.createOrUpdateWithResponse(farmerId, plantingDataId, plantingData, requestOptions).block();
+            String partyId, String plantingDataId, BinaryData plantingData, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, plantingDataId, plantingData, requestOptions).block();
     }
 
     /**
-     * Deletes a specified planting data resource under a particular farmer.
+     * Deletes a specified planting data resource under a particular party.
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param plantingDataId ID of the planting data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -294,12 +304,12 @@ public final class PlantingDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String plantingDataId, RequestOptions requestOptions) {
-        return this.client.deleteWithResponse(farmerId, plantingDataId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String plantingDataId, RequestOptions requestOptions) {
+        return this.client.deleteWithResponse(partyId, plantingDataId, requestOptions).block();
     }
 
     /**
-     * Returns a paginated list of planting data resources across all farmers.
+     * Returns a paginated list of planting data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -331,9 +341,9 @@ public final class PlantingDataClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -342,42 +352,40 @@ public final class PlantingDataClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     avgPlantingRate (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     plantingProductDetails (Optional): [
      *          (Optional){
-     *             avgPlantingRate (Optional): {
-     *                 unit: String (Optional)
-     *                 value: Double (Optional)
-     *             }
+     *             productName: String (Optional)
+     *             area (Optional): (recursive schema, see area above)
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
      *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
-     *             plantingProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     area (Optional): (recursive schema, see area above)
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                     avgMaterial (Optional): (recursive schema, see avgMaterial above)
-     *                 }
-     *             ]
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -402,13 +410,14 @@ public final class PlantingDataClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -417,7 +426,7 @@ public final class PlantingDataClient {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param plantingDataId Id of the planting data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -429,8 +438,8 @@ public final class PlantingDataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String plantingDataId, RequestOptions requestOptions) {
-        return this.client.beginCreateCascadeDeleteJob(jobId, farmerId, plantingDataId, requestOptions).getSyncPoller();
+            String jobId, String partyId, String plantingDataId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, plantingDataId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -440,13 +449,14 @@ public final class PlantingDataClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)

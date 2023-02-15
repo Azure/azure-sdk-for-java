@@ -59,7 +59,7 @@ public final class SolutionInferencesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientSolut")
-    private interface SolutionInferencesService {
+    public interface SolutionInferencesService {
         @Post("/solutions/{solutionId}:cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -132,14 +132,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of solution for which job is to be cancelled.
@@ -149,7 +153,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelWithResponseAsync(
@@ -175,14 +179,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of solution for which job is to be cancelled.
@@ -192,7 +200,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response}.
+     * @return dictionary of &lt;any&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelWithResponse(
@@ -208,14 +216,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution resource.
@@ -225,7 +237,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -251,14 +263,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution resource.
@@ -268,7 +284,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateAsync(
@@ -278,6 +294,7 @@ public final class SolutionInferencesImpl {
                 () -> this.createOrUpdateWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -294,14 +311,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution resource.
@@ -311,7 +332,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of any object.
+     * @return the {@link SyncPoller} for polling of dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdate(
@@ -327,14 +348,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution.
@@ -344,7 +369,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> fetchWithResponseAsync(
@@ -370,14 +395,18 @@ public final class SolutionInferencesImpl {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution.
@@ -387,7 +416,7 @@ public final class SolutionInferencesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response}.
+     * @return dictionary of &lt;any&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> fetchWithResponse(

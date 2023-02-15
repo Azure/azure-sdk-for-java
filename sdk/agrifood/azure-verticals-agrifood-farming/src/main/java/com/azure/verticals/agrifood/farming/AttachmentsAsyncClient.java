@@ -35,7 +35,7 @@ public final class AttachmentsAsyncClient {
     }
 
     /**
-     * Returns a paginated list of attachment resources under a particular farmer.
+     * Returns a paginated list of attachment resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -44,7 +44,7 @@ public final class AttachmentsAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>resourceIds</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>resourceTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Resource Types of the resource.
-     * i.e. Farmer, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * i.e. Party, Farm, Field, SeasonalField, Boundary, ApplicationData, HarvestData, TillageData, PlantingData, PlantTissueAnalysis. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -54,9 +54,9 @@ public final class AttachmentsAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -65,28 +65,24 @@ public final class AttachmentsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             resourceId: String (Optional)
-     *             resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
-     *             originalFileName: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             eTag: String (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     resourceId: String (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     originalFileName: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -97,21 +93,21 @@ public final class AttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.listByFarmerIdAsync(farmerId, requestOptions);
+    public PagedFlux<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.listByPartyIdAsync(partyId, requestOptions);
     }
 
     /**
-     * Gets a specified attachment resource under a particular farmer.
+     * Gets a specified attachment resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -119,29 +115,31 @@ public final class AttachmentsAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified attachment resource under a particular farmer along with {@link Response} on successful
+     * @return a specified attachment resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(farmerId, attachmentId, requestOptions);
+            String partyId, String attachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 
     /**
-     * Creates or updates an attachment resource under a particular farmer.
+     * Creates or updates an attachment resource under a particular party.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -164,9 +162,9 @@ public final class AttachmentsAsyncClient {
      * <pre>{@code
      * {
      *     resourceId: String (Optional)
-     *     resourceType: String(Farmer/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
+     *     resourceType: String(Party/Farm/Field/SeasonalField/Boundary/ApplicationData/HarvestData/TillageData/PlantingData/PlantTissueAnalysis) (Optional)
      *     originalFileName: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -174,11 +172,13 @@ public final class AttachmentsAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
      *     eTag: String (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param attachmentId Id of the attachment resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -190,14 +190,14 @@ public final class AttachmentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(farmerId, attachmentId, requestOptions);
+            String partyId, String attachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 
     /**
-     * Deletes a specified attachment resource under a particular farmer.
+     * Deletes a specified attachment resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param attachmentId Id of the attachment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -208,9 +208,8 @@ public final class AttachmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(farmerId, attachmentId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String attachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 
     /**
@@ -222,7 +221,7 @@ public final class AttachmentsAsyncClient {
      * BinaryData
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param attachmentId Id of attachment to be downloaded.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -234,7 +233,7 @@ public final class AttachmentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadWithResponse(
-            String farmerId, String attachmentId, RequestOptions requestOptions) {
-        return this.serviceClient.downloadWithResponseAsync(farmerId, attachmentId, requestOptions);
+            String partyId, String attachmentId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadWithResponseAsync(partyId, attachmentId, requestOptions);
     }
 }

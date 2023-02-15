@@ -42,14 +42,18 @@ public final class SolutionInferenceAsyncClient {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of solution for which job is to be cancelled.
@@ -59,7 +63,7 @@ public final class SolutionInferenceAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -76,14 +80,18 @@ public final class SolutionInferenceAsyncClient {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution resource.
@@ -93,7 +101,7 @@ public final class SolutionInferenceAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of any object.
+     * @return the {@link PollerFlux} for polling of dictionary of &lt;any&gt;.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -110,14 +118,18 @@ public final class SolutionInferenceAsyncClient {
      * <pre>{@code
      * {
      *     requestPath: String (Required)
-     *     partnerRequestBody: Object (Optional)
+     *     partnerRequestBody (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     String: Object (Required)
+     * }
      * }</pre>
      *
      * @param solutionId Id of the solution.
@@ -127,7 +139,7 @@ public final class SolutionInferenceAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

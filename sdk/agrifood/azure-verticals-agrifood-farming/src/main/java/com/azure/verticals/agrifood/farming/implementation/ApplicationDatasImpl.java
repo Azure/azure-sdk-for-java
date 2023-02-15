@@ -69,7 +69,7 @@ public final class ApplicationDatasImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientAppli")
-    private interface ApplicationDatasService {
+    public interface ApplicationDatasService {
         @Get("/application-data")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -104,7 +104,7 @@ public final class ApplicationDatasImpl {
         Mono<Response<BinaryData>> createCascadeDeleteJob(
                 @HostParam("$host") String host,
                 @PathParam("jobId") String jobId,
-                @QueryParam("farmerId") String farmerId,
+                @QueryParam("partyId") String partyId,
                 @QueryParam("applicationDataId") String applicationDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -131,7 +131,7 @@ public final class ApplicationDatasImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/application-data")
+        @Get("/parties/{partyId}/application-data")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -143,15 +143,15 @@ public final class ApplicationDatasImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/application-data/{applicationDataId}")
+        @Get("/parties/{partyId}/application-data/{applicationDataId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -165,14 +165,14 @@ public final class ApplicationDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("applicationDataId") String applicationDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/farmers/{farmerId}/application-data/{applicationDataId}")
+        @Patch("/parties/{partyId}/application-data/{applicationDataId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -186,7 +186,7 @@ public final class ApplicationDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("applicationDataId") String applicationDataId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData applicationData,
@@ -194,7 +194,7 @@ public final class ApplicationDatasImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/farmers/{farmerId}/application-data/{applicationDataId}")
+        @Delete("/parties/{partyId}/application-data/{applicationDataId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -208,7 +208,7 @@ public final class ApplicationDatasImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("applicationDataId") String applicationDataId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -246,7 +246,7 @@ public final class ApplicationDatasImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
+        Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -255,7 +255,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Returns a paginated list of application data resources across all farmers.
+     * Returns a paginated list of application data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -285,9 +285,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -296,41 +296,39 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -343,7 +341,7 @@ public final class ApplicationDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -365,7 +363,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Returns a paginated list of application data resources across all farmers.
+     * Returns a paginated list of application data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -395,9 +393,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -406,41 +404,39 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -465,7 +461,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Returns a paginated list of application data resources across all farmers.
+     * Returns a paginated list of application data resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -495,9 +491,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -506,41 +502,39 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -564,13 +558,14 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -579,7 +574,7 @@ public final class ApplicationDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param applicationDataId Id of the application data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -590,14 +585,14 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
-            String jobId, String farmerId, String applicationDataId, RequestOptions requestOptions) {
+            String jobId, String partyId, String applicationDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
                                 this.client.getHost(),
                                 jobId,
-                                farmerId,
+                                partyId,
                                 applicationDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -612,13 +607,14 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -627,7 +623,7 @@ public final class ApplicationDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param applicationDataId Id of the application data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -638,12 +634,13 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
-            String jobId, String farmerId, String applicationDataId, RequestOptions requestOptions) {
+            String jobId, String partyId, String applicationDataId, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, farmerId, applicationDataId, requestOptions),
+                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, applicationDataId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -659,13 +656,14 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -674,7 +672,7 @@ public final class ApplicationDatasImpl {
      * }</pre>
      *
      * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param applicationDataId Id of the application data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -685,9 +683,8 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String applicationDataId, RequestOptions requestOptions) {
-        return this.beginCreateCascadeDeleteJobAsync(jobId, farmerId, applicationDataId, requestOptions)
-                .getSyncPoller();
+            String jobId, String partyId, String applicationDataId, RequestOptions requestOptions) {
+        return this.beginCreateCascadeDeleteJobAsync(jobId, partyId, applicationDataId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -697,13 +694,14 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -742,13 +740,14 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -770,7 +769,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Returns a paginated list of application data resources under a particular farm.
+     * Returns a paginated list of application data resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -800,9 +799,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -811,45 +810,43 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -859,14 +856,14 @@ public final class ApplicationDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerId(
+                                service.listByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -883,7 +880,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Returns a paginated list of application data resources under a particular farm.
+     * Returns a paginated list of application data resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -913,9 +910,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -924,45 +921,43 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -972,19 +967,19 @@ public final class ApplicationDatasImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
-     * Returns a paginated list of application data resources under a particular farm.
+     * Returns a paginated list of application data resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1014,9 +1009,9 @@ public final class ApplicationDatasImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1025,45 +1020,43 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1073,12 +1066,12 @@ public final class ApplicationDatasImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
     }
 
     /**
-     * Get a specified application data resource under a particular farmer.
+     * Get a specified application data resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1103,7 +1096,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1112,29 +1105,33 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param applicationDataId ID of the application data resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified application data resource under a particular farmer along with {@link Response} on successful
+     * @return a specified application data resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String applicationDataId, RequestOptions requestOptions) {
+            String partyId, String applicationDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 applicationDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1143,7 +1140,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Get a specified application data resource under a particular farmer.
+     * Get a specified application data resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1168,7 +1165,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1177,27 +1174,31 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param applicationDataId ID of the application data resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified application data resource under a particular farmer along with {@link Response}.
+     * @return a specified application data resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
-            String farmerId, String applicationDataId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, applicationDataId, requestOptions).block();
+            String partyId, String applicationDataId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, applicationDataId, requestOptions).block();
     }
 
     /**
-     * Creates or updates an application data resource under a particular farmer.
+     * Creates or updates an application data resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1222,7 +1223,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1231,7 +1232,11 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1258,7 +1263,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1267,11 +1272,15 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param applicationDataId ID of the application data resource.
      * @param applicationData Application data resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1283,13 +1292,13 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
+            String partyId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 applicationDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 applicationData,
@@ -1299,7 +1308,7 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Creates or updates an application data resource under a particular farmer.
+     * Creates or updates an application data resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1324,7 +1333,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1333,7 +1342,11 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1360,7 +1373,7 @@ public final class ApplicationDatasImpl {
      *     operationEndDateTime: OffsetDateTime (Optional)
      *     attachmentsLink: String (Optional)
      *     associatedBoundaryId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -1369,11 +1382,15 @@ public final class ApplicationDatasImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param applicationDataId ID of the application data resource.
      * @param applicationData Application data resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1385,14 +1402,14 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, applicationDataId, applicationData, requestOptions).block();
+            String partyId, String applicationDataId, BinaryData applicationData, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, applicationDataId, applicationData, requestOptions).block();
     }
 
     /**
-     * Deletes a specified application data resource under a particular farmer.
+     * Deletes a specified application data resource under a particular party.
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param applicationDataId ID of the application data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1403,13 +1420,13 @@ public final class ApplicationDatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String applicationDataId, RequestOptions requestOptions) {
+            String partyId, String applicationDataId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 applicationDataId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1418,9 +1435,9 @@ public final class ApplicationDatasImpl {
     }
 
     /**
-     * Deletes a specified application data resource under a particular farmer.
+     * Deletes a specified application data resource under a particular party.
      *
-     * @param farmerId ID of the associated farmer resource.
+     * @param partyId ID of the associated party resource.
      * @param applicationDataId ID of the application data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1430,8 +1447,8 @@ public final class ApplicationDatasImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String applicationDataId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, applicationDataId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String applicationDataId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, applicationDataId, requestOptions).block();
     }
 
     /**
@@ -1441,41 +1458,39 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1490,7 +1505,7 @@ public final class ApplicationDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
@@ -1512,41 +1527,39 @@ public final class ApplicationDatasImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     applicationProductDetails (Optional): [
      *          (Optional){
-     *             applicationProductDetails (Optional): [
-     *                  (Optional){
-     *                     productName: String (Optional)
-     *                     isCarrier: Boolean (Optional)
-     *                     avgMaterial (Optional): {
-     *                         unit: String (Optional)
-     *                         value: Double (Optional)
-     *                     }
-     *                     totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *                 }
-     *             ]
-     *             avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *             productName: String (Optional)
+     *             isCarrier: Boolean (Optional)
+     *             avgMaterial (Optional): {
+     *                 unit: String (Optional)
+     *                 value: Double (Optional)
+     *             }
      *             totalMaterial (Optional): (recursive schema, see totalMaterial above)
-     *             area (Optional): (recursive schema, see area above)
-     *             operationModifiedDateTime: OffsetDateTime (Optional)
-     *             operationStartDateTime: OffsetDateTime (Optional)
-     *             operationEndDateTime: OffsetDateTime (Optional)
-     *             attachmentsLink: String (Optional)
-     *             associatedBoundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     avgMaterial (Optional): (recursive schema, see avgMaterial above)
+     *     totalMaterial (Optional): (recursive schema, see totalMaterial above)
+     *     area (Optional): (recursive schema, see area above)
+     *     operationModifiedDateTime: OffsetDateTime (Optional)
+     *     operationStartDateTime: OffsetDateTime (Optional)
+     *     operationEndDateTime: OffsetDateTime (Optional)
+     *     attachmentsLink: String (Optional)
+     *     associatedBoundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1561,12 +1574,12 @@ public final class ApplicationDatasImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdNext(
+                                service.listByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->

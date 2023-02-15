@@ -69,7 +69,7 @@ public final class BoundariesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientBound")
-    private interface BoundariesService {
+    public interface BoundariesService {
         @Get("/boundaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -124,7 +124,7 @@ public final class BoundariesImpl {
         Mono<Response<BinaryData>> createCascadeDeleteJob(
                 @HostParam("$host") String host,
                 @PathParam("jobId") String jobId,
-                @QueryParam("farmerId") String farmerId,
+                @QueryParam("partyId") String partyId,
                 @QueryParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -151,7 +151,7 @@ public final class BoundariesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/boundaries")
+        @Get("/parties/{partyId}/boundaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -163,15 +163,15 @@ public final class BoundariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/farmers/{farmerId}/boundaries")
+        @Post("/parties/{partyId}/boundaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -183,16 +183,16 @@ public final class BoundariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> searchByFarmerId(
+        Mono<Response<BinaryData>> searchByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchBoundaryQuery,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/farmers/{farmerId}/boundaries/{boundaryId}")
+        @Patch("/parties/{partyId}/boundaries/{boundaryId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -206,7 +206,7 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData boundary,
@@ -214,7 +214,7 @@ public final class BoundariesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/boundaries/{boundaryId}")
+        @Get("/parties/{partyId}/boundaries/{boundaryId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -228,14 +228,14 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/farmers/{farmerId}/boundaries/{boundaryId}")
+        @Delete("/parties/{partyId}/boundaries/{boundaryId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -249,14 +249,14 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/boundaries/{boundaryId}/overlap")
+        @Get("/parties/{partyId}/boundaries/{boundaryId}/overlap")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -270,9 +270,9 @@ public final class BoundariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOverlap(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("boundaryId") String boundaryId,
-                @QueryParam("otherFarmerId") String otherFarmerId,
+                @QueryParam("otherPartyId") String otherPartyId,
                 @QueryParam("otherBoundaryId") String otherBoundaryId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -329,7 +329,7 @@ public final class BoundariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
+        Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -348,7 +348,7 @@ public final class BoundariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> searchByFarmerIdNext(
+        Mono<Response<BinaryData>> searchByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -357,18 +357,18 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns a paginated list of boundary resources across all farmers.
+     * Returns a paginated list of boundary resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -378,9 +378,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -389,26 +389,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -421,7 +422,7 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -443,18 +444,18 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns a paginated list of boundary resources across all farmers.
+     * Returns a paginated list of boundary resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -464,9 +465,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -475,26 +476,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -519,18 +521,18 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns a paginated list of boundary resources across all farmers.
+     * Returns a paginated list of boundary resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -540,9 +542,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -551,26 +553,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -588,7 +591,7 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Search for boundaries across all farmers by fields and intersecting geometry.
+     * Search for boundaries across all parties by fields and intersecting geometry.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -610,15 +613,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -628,26 +631,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -661,7 +665,7 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> searchSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> searchSinglePageAsync(
             BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -685,7 +689,7 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Search for boundaries across all farmers by fields and intersecting geometry.
+     * Search for boundaries across all parties by fields and intersecting geometry.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -707,15 +711,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -725,26 +729,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -770,7 +775,7 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Search for boundaries across all farmers by fields and intersecting geometry.
+     * Search for boundaries across all parties by fields and intersecting geometry.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -792,15 +797,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -810,26 +815,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -854,13 +860,14 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -869,7 +876,7 @@ public final class BoundariesImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param boundaryId ID of the boundary to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -880,14 +887,14 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
-            String jobId, String farmerId, String boundaryId, RequestOptions requestOptions) {
+            String jobId, String partyId, String boundaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createCascadeDeleteJob(
                                 this.client.getHost(),
                                 jobId,
-                                farmerId,
+                                partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -902,13 +909,14 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -917,7 +925,7 @@ public final class BoundariesImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param boundaryId ID of the boundary to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -928,12 +936,13 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
-            String jobId, String farmerId, String boundaryId, RequestOptions requestOptions) {
+            String jobId, String partyId, String boundaryId, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, farmerId, boundaryId, requestOptions),
+                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, boundaryId, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -949,13 +958,14 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -964,7 +974,7 @@ public final class BoundariesImpl {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param boundaryId ID of the boundary to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -975,8 +985,8 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String boundaryId, RequestOptions requestOptions) {
-        return this.beginCreateCascadeDeleteJobAsync(jobId, farmerId, boundaryId, requestOptions).getSyncPoller();
+            String jobId, String partyId, String boundaryId, RequestOptions requestOptions) {
+        return this.beginCreateCascadeDeleteJobAsync(jobId, partyId, boundaryId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -986,13 +996,14 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1031,13 +1042,14 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1059,18 +1071,18 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns a paginated list of boundary resources under a particular farmer.
+     * Returns a paginated list of boundary resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -1080,9 +1092,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1091,30 +1103,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1124,14 +1137,14 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerId(
+                                service.listByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -1148,18 +1161,18 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns a paginated list of boundary resources under a particular farmer.
+     * Returns a paginated list of boundary resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -1169,9 +1182,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1180,30 +1193,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1213,30 +1227,30 @@ public final class BoundariesImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
-     * Returns a paginated list of boundary resources under a particular farmer.
+     * Returns a paginated list of boundary resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>isPrimary</td><td>Boolean</td><td>No</td><td>Is the boundary primary.</td></tr>
      *     <tr><td>parentType</td><td>String</td><td>No</td><td>Type of the parent it belongs to.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Type it belongs to.</td></tr>
      *     <tr><td>parentIds</td><td>List&lt;String&gt;</td><td>No</td><td>Parent Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAcreage</td><td>Double</td><td>No</td><td>Minimum acreage of the boundary (inclusive).</td></tr>
-     *     <tr><td>maxAcreage</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
+     *     <tr><td>minArea</td><td>Double</td><td>No</td><td>Minimum area of the boundary (inclusive).</td></tr>
+     *     <tr><td>maxArea</td><td>Double</td><td>No</td><td>Maximum acreage of the boundary (inclusive).</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -1246,9 +1260,9 @@ public final class BoundariesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1257,30 +1271,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1290,8 +1305,8 @@ public final class BoundariesImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
     }
 
     /**
@@ -1317,15 +1332,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -1335,30 +1350,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param searchBoundaryQuery Query filters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1369,14 +1385,14 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> searchByFarmerIdSinglePageAsync(
-            String farmerId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> searchByPartyIdSinglePageAsync(
+            String partyId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.searchByFarmerId(
+                                service.searchByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         searchBoundaryQuery,
                                         accept,
@@ -1416,15 +1432,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -1434,30 +1450,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param searchBoundaryQuery Query filters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1468,16 +1485,16 @@ public final class BoundariesImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> searchByFarmerIdAsync(
-            String farmerId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> searchByPartyIdAsync(
+            String partyId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> searchByFarmerIdSinglePageAsync(farmerId, searchBoundaryQuery, requestOptions),
-                nextLink -> searchByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> searchByPartyIdSinglePageAsync(partyId, searchBoundaryQuery, requestOptions),
+                nextLink -> searchByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1503,15 +1520,15 @@ public final class BoundariesImpl {
      *     maxCreatedDateTime: OffsetDateTime (Optional)
      *     minLastModifiedDateTime: OffsetDateTime (Optional)
      *     maxLastModifiedDateTime: OffsetDateTime (Optional)
-     *     $maxPageSize: Integer (Optional)
-     *     $skipToken: String (Optional)
-     *     isPrimary: Boolean (Optional)
+     *     maxPageSize: Integer (Optional)
+     *     skipToken: String (Optional)
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
      *     parentIds (Optional): [
      *         String (Optional)
      *     ]
-     *     minAcreage: Double (Optional)
-     *     maxAcreage: Double (Optional)
+     *     minArea: Double (Optional)
+     *     maxArea: Double (Optional)
      *     intersectsWithGeometry (Optional): {
      *     }
      * }
@@ -1521,30 +1538,31 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param searchBoundaryQuery Query filters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1555,9 +1573,9 @@ public final class BoundariesImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> searchByFarmerId(
-            String farmerId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
-        return new PagedIterable<>(searchByFarmerIdAsync(farmerId, searchBoundaryQuery, requestOptions));
+    public PagedIterable<BinaryData> searchByPartyId(
+            String partyId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
+        return new PagedIterable<>(searchByPartyIdAsync(partyId, searchBoundaryQuery, requestOptions));
     }
 
     /**
@@ -1569,10 +1587,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1582,7 +1606,11 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1592,10 +1620,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1605,11 +1639,15 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
+     * @param partyId Id of the party resource.
      * @param boundaryId Id of the boundary resource.
      * @param boundary Boundary resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1621,13 +1659,13 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
+            String partyId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
                                 boundary,
@@ -1645,10 +1683,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1658,7 +1702,11 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1668,10 +1716,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1681,11 +1735,15 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
+     * @param partyId Id of the party resource.
      * @param boundaryId Id of the boundary resource.
      * @param boundary Boundary resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1697,12 +1755,12 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, boundaryId, boundary, requestOptions).block();
+            String partyId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, boundaryId, boundary, requestOptions).block();
     }
 
     /**
-     * Gets a specified boundary resource under a particular farmer.
+     * Gets a specified boundary resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1710,10 +1768,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1723,29 +1787,33 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param boundaryId Id of the boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified boundary resource under a particular farmer along with {@link Response} on successful
+     * @return a specified boundary resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String boundaryId, RequestOptions requestOptions) {
+            String partyId, String boundaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1754,7 +1822,7 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Gets a specified boundary resource under a particular farmer.
+     * Gets a specified boundary resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1762,10 +1830,16 @@ public final class BoundariesImpl {
      * {
      *     geometry (Optional): {
      *     }
-     *     farmerId: String (Optional)
+     *     type: String (Optional)
+     *     crs: String (Optional)
+     *     centroid (Optional): (recursive schema, see centroid above)
+     *     bbox (Optional): (recursive schema, see bbox above)
+     *     partyId: String (Optional)
      *     parentId: String (Optional)
-     *     isPrimary: Boolean (Optional)
-     *     acreage: Double (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
      *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
@@ -1775,28 +1849,32 @@ public final class BoundariesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param boundaryId Id of the boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified boundary resource under a particular farmer along with {@link Response}.
+     * @return a specified boundary resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String farmerId, String boundaryId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, boundaryId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String boundaryId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, boundaryId, requestOptions).block();
     }
 
     /**
-     * Deletes a specified boundary resource under a particular farmer.
+     * Deletes a specified boundary resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param boundaryId Id of the boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1807,13 +1885,13 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String boundaryId, RequestOptions requestOptions) {
+            String partyId, String boundaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 boundaryId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1822,9 +1900,9 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Deletes a specified boundary resource under a particular farmer.
+     * Deletes a specified boundary resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param boundaryId Id of the boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1834,26 +1912,26 @@ public final class BoundariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String boundaryId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, boundaryId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String boundaryId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, boundaryId, requestOptions).block();
     }
 
     /**
-     * Returns overlapping acreage between two boundary Ids.
+     * Returns overlapping area between two boundary Ids.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     boundaryAcreage: Double (Optional)
-     *     otherBoundaryAcreage: Double (Optional)
-     *     intersectingAcreage: Double (Optional)
+     *     boundaryArea: Double (Optional)
+     *     otherBoundaryArea: Double (Optional)
+     *     intersectingArea: Double (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param boundaryId Id of the boundary.
-     * @param otherFarmerId FarmerId of the other field.
+     * @param otherPartyId PartyId of the other field.
      * @param otherBoundaryId Id of the other boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1864,9 +1942,9 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOverlapWithResponseAsync(
-            String farmerId,
+            String partyId,
             String boundaryId,
-            String otherFarmerId,
+            String otherPartyId,
             String otherBoundaryId,
             RequestOptions requestOptions) {
         final String accept = "application/json";
@@ -1874,9 +1952,9 @@ public final class BoundariesImpl {
                 context ->
                         service.getOverlap(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 boundaryId,
-                                otherFarmerId,
+                                otherPartyId,
                                 otherBoundaryId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1885,21 +1963,21 @@ public final class BoundariesImpl {
     }
 
     /**
-     * Returns overlapping acreage between two boundary Ids.
+     * Returns overlapping area between two boundary Ids.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     boundaryAcreage: Double (Optional)
-     *     otherBoundaryAcreage: Double (Optional)
-     *     intersectingAcreage: Double (Optional)
+     *     boundaryArea: Double (Optional)
+     *     otherBoundaryArea: Double (Optional)
+     *     intersectingArea: Double (Optional)
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param boundaryId Id of the boundary.
-     * @param otherFarmerId FarmerId of the other field.
+     * @param otherPartyId PartyId of the other field.
      * @param otherBoundaryId Id of the other boundary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1910,13 +1988,12 @@ public final class BoundariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOverlapWithResponse(
-            String farmerId,
+            String partyId,
             String boundaryId,
-            String otherFarmerId,
+            String otherPartyId,
             String otherBoundaryId,
             RequestOptions requestOptions) {
-        return getOverlapWithResponseAsync(farmerId, boundaryId, otherFarmerId, otherBoundaryId, requestOptions)
-                .block();
+        return getOverlapWithResponseAsync(partyId, boundaryId, otherPartyId, otherBoundaryId, requestOptions).block();
     }
 
     /**
@@ -1926,26 +2003,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1960,7 +2038,7 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))
@@ -1982,26 +2060,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -2016,7 +2095,7 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> searchNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> searchNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.searchNext(nextLink, this.client.getHost(), accept, requestOptions, context))
@@ -2038,26 +2117,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -2072,12 +2152,12 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdNext(
+                                service.listByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -2097,26 +2177,27 @@ public final class BoundariesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             parentId: String (Optional)
-     *             isPrimary: Boolean (Optional)
-     *             acreage: Double (Optional)
-     *             parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     parentId: String (Optional)
+     *     area (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     parentType: String(Field/SeasonalField/Zone/Prescription/PlantTissueAnalysis/ApplicationData/PlantingData/TillageData/HarvestData) (Optional)
+     *     type: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -2131,12 +2212,12 @@ public final class BoundariesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> searchByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> searchByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.searchByFarmerIdNext(
+                                service.searchByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->

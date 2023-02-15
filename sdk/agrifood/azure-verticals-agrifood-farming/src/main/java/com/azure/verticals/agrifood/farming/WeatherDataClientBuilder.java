@@ -40,12 +40,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the SensorsClient type. */
-@ServiceClientBuilder(serviceClients = {SensorsClient.class, SensorsAsyncClient.class})
-public final class SensorsClientBuilder
-        implements HttpTrait<SensorsClientBuilder>,
-                ConfigurationTrait<SensorsClientBuilder>,
-                TokenCredentialTrait<SensorsClientBuilder> {
+/** A builder for creating a new instance of the WeatherDataClient type. */
+@ServiceClientBuilder(serviceClients = {WeatherDataClient.class, WeatherDataAsyncClient.class})
+public final class WeatherDataClientBuilder
+        implements HttpTrait<WeatherDataClientBuilder>,
+                ConfigurationTrait<WeatherDataClientBuilder>,
+                TokenCredentialTrait<WeatherDataClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -58,9 +58,9 @@ public final class SensorsClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the SensorsClientBuilder. */
+    /** Create an instance of the WeatherDataClientBuilder. */
     @Generated
-    public SensorsClientBuilder() {
+    public WeatherDataClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -72,7 +72,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder pipeline(HttpPipeline pipeline) {
+    public WeatherDataClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -85,7 +85,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder httpClient(HttpClient httpClient) {
+    public WeatherDataClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -98,7 +98,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public WeatherDataClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -111,7 +111,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder clientOptions(ClientOptions clientOptions) {
+    public WeatherDataClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -124,7 +124,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder retryOptions(RetryOptions retryOptions) {
+    public WeatherDataClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -132,7 +132,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public WeatherDataClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -146,7 +146,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder configuration(Configuration configuration) {
+    public WeatherDataClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -159,7 +159,7 @@ public final class SensorsClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public SensorsClientBuilder credential(TokenCredential tokenCredential) {
+    public WeatherDataClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -173,10 +173,10 @@ public final class SensorsClientBuilder
      * Sets server parameter.
      *
      * @param host the host value.
-     * @return the SensorsClientBuilder.
+     * @return the WeatherDataClientBuilder.
      */
     @Generated
-    public SensorsClientBuilder host(String host) {
+    public WeatherDataClientBuilder host(String host) {
         this.host = host;
         return this;
     }
@@ -190,10 +190,10 @@ public final class SensorsClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the SensorsClientBuilder.
+     * @return the WeatherDataClientBuilder.
      */
     @Generated
-    public SensorsClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
+    public WeatherDataClientBuilder serviceVersion(FarmBeatsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -207,10 +207,10 @@ public final class SensorsClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the SensorsClientBuilder.
+     * @return the WeatherDataClientBuilder.
      */
     @Generated
-    public SensorsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public WeatherDataClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -277,22 +277,22 @@ public final class SensorsClientBuilder
     }
 
     /**
-     * Builds an instance of SensorsAsyncClient class.
+     * Builds an instance of WeatherDataAsyncClient class.
      *
-     * @return an instance of SensorsAsyncClient.
+     * @return an instance of WeatherDataAsyncClient.
      */
     @Generated
-    public SensorsAsyncClient buildAsyncClient() {
-        return new SensorsAsyncClient(buildInnerClient().getSensors());
+    public WeatherDataAsyncClient buildAsyncClient() {
+        return new WeatherDataAsyncClient(buildInnerClient().getWeatherDatas());
     }
 
     /**
-     * Builds an instance of SensorsClient class.
+     * Builds an instance of WeatherDataClient class.
      *
-     * @return an instance of SensorsClient.
+     * @return an instance of WeatherDataClient.
      */
     @Generated
-    public SensorsClient buildClient() {
-        return new SensorsClient(new SensorsAsyncClient(buildInnerClient().getSensors()));
+    public WeatherDataClient buildClient() {
+        return new WeatherDataClient(new WeatherDataAsyncClient(buildInnerClient().getWeatherDatas()));
     }
 }

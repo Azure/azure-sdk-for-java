@@ -37,33 +37,33 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CropVarieties. */
-public final class CropVarietiesImpl {
+/** An instance of this class provides access to all the operations defined in CropProducts. */
+public final class CropProductsImpl {
     /** The proxy service used to perform REST calls. */
-    private final CropVarietiesService service;
+    private final CropProductsService service;
 
     /** The service client containing this operation class. */
     private final FarmBeatsClientImpl client;
 
     /**
-     * Initializes an instance of CropVarietiesImpl.
+     * Initializes an instance of CropProductsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CropVarietiesImpl(FarmBeatsClientImpl client) {
+    CropProductsImpl(FarmBeatsClientImpl client) {
         this.service =
-                RestProxy.create(CropVarietiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                RestProxy.create(CropProductsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FarmBeatsClientCropVarieties to be used by the proxy service to
+     * The interface defining all the services for FarmBeatsClientCropProducts to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "FarmBeatsClientCropV")
-    private interface CropVarietiesService {
-        @Get("/crop-varieties")
+    @ServiceInterface(name = "FarmBeatsClientCropP")
+    public interface CropProductsService {
+        @Get("/crop-products")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -82,7 +82,7 @@ public final class CropVarietiesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/crop-varieties/{cropVarietyId}")
+        @Get("/crop-products/{cropProductId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -96,13 +96,13 @@ public final class CropVarietiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("cropVarietyId") String cropVarietyId,
+                @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/crop-varieties/{cropVarietyId}")
+        @Patch("/crop-products/{cropProductId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -116,14 +116,14 @@ public final class CropVarietiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("cropVarietyId") String cropVarietyId,
+                @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData cropVariety,
+                @BodyParam("application/merge-patch+json") BinaryData cropProduct,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/crop-varieties/{cropVarietyId}")
+        @Delete("/crop-products/{cropProductId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -137,7 +137,7 @@ public final class CropVarietiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("cropVarietyId") String cropVarietyId,
+                @PathParam("cropProductId") String cropProductId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -164,7 +164,7 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Returns a paginated list of crop variety resources.
+     * Returns a paginated list of crop product resources.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -174,6 +174,7 @@ public final class CropVarietiesImpl {
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>brands</td><td>List&lt;String&gt;</td><td>No</td><td>Brands of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>products</td><td>List&lt;String&gt;</td><td>No</td><td>Products of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>traits</td><td>List&lt;String&gt;</td><td>No</td><td>Traits of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -183,9 +184,9 @@ public final class CropVarietiesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -194,26 +195,32 @@ public final class CropVarietiesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             cropIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             brand: String (Optional)
-     *             product: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     cropIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -226,7 +233,7 @@ public final class CropVarietiesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -248,7 +255,7 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Returns a paginated list of crop variety resources.
+     * Returns a paginated list of crop product resources.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -258,6 +265,7 @@ public final class CropVarietiesImpl {
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>brands</td><td>List&lt;String&gt;</td><td>No</td><td>Brands of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>products</td><td>List&lt;String&gt;</td><td>No</td><td>Products of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>traits</td><td>List&lt;String&gt;</td><td>No</td><td>Traits of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -267,9 +275,9 @@ public final class CropVarietiesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -278,26 +286,32 @@ public final class CropVarietiesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             cropIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             brand: String (Optional)
-     *             product: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     cropIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -322,7 +336,7 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Returns a paginated list of crop variety resources.
+     * Returns a paginated list of crop product resources.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -332,6 +346,7 @@ public final class CropVarietiesImpl {
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>brands</td><td>List&lt;String&gt;</td><td>No</td><td>Brands of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>products</td><td>List&lt;String&gt;</td><td>No</td><td>Products of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>traits</td><td>List&lt;String&gt;</td><td>No</td><td>Traits of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -341,9 +356,9 @@ public final class CropVarietiesImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -352,26 +367,32 @@ public final class CropVarietiesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             cropIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             brand: String (Optional)
-     *             product: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     cropIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -389,7 +410,7 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Gets a specified crop variety resource.
+     * Gets a specified crop Product resource.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -400,6 +421,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -408,26 +437,30 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified crop variety resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a specified crop Product resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String cropVarietyId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String cropProductId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                cropVarietyId,
+                                cropProductId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -435,7 +468,7 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Gets a specified crop variety resource.
+     * Gets a specified crop Product resource.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -446,6 +479,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -454,25 +495,29 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified crop variety resource along with {@link Response}.
+     * @return a specified crop Product resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String cropVarietyId, RequestOptions requestOptions) {
-        return getWithResponseAsync(cropVarietyId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String cropProductId, RequestOptions requestOptions) {
+        return getWithResponseAsync(cropProductId, requestOptions).block();
     }
 
     /**
-     * Creates or updates a crop variety resource.
+     * Creates or updates a crop Product resource.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -483,6 +528,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -491,7 +544,11 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -504,6 +561,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -512,37 +577,41 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety resource.
-     * @param cropVariety Crop variety resource payload to create or update.
+     * @param cropProductId Id of the crop Product resource.
+     * @param cropProduct Crop Product resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of crop variety resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return schema of crop product resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String cropVarietyId, BinaryData cropVariety, RequestOptions requestOptions) {
+            String cropProductId, BinaryData cropProduct, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                cropVarietyId,
+                                cropProductId,
                                 this.client.getServiceVersion().getVersion(),
-                                cropVariety,
+                                cropProduct,
                                 accept,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Creates or updates a crop variety resource.
+     * Creates or updates a crop Product resource.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -553,6 +622,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -561,7 +638,11 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -574,6 +655,14 @@ public final class CropVarietiesImpl {
      *     ]
      *     brand: String (Optional)
      *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -582,29 +671,33 @@ public final class CropVarietiesImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param cropVarietyId Id of the crop variety resource.
-     * @param cropVariety Crop variety resource payload to create or update.
+     * @param cropProductId Id of the crop Product resource.
+     * @param cropProduct Crop Product resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of crop variety resource along with {@link Response}.
+     * @return schema of crop product resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String cropVarietyId, BinaryData cropVariety, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(cropVarietyId, cropVariety, requestOptions).block();
+            String cropProductId, BinaryData cropProduct, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(cropProductId, cropProduct, requestOptions).block();
     }
 
     /**
-     * Deletes a specified crop variety resource.
+     * Deletes a specified crop Product resource.
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -613,13 +706,13 @@ public final class CropVarietiesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String cropVarietyId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String cropProductId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                cropVarietyId,
+                                cropProductId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -627,9 +720,9 @@ public final class CropVarietiesImpl {
     }
 
     /**
-     * Deletes a specified crop variety resource.
+     * Deletes a specified crop Product resource.
      *
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -638,8 +731,8 @@ public final class CropVarietiesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String cropVarietyId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(cropVarietyId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String cropProductId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(cropProductId, requestOptions).block();
     }
 
     /**
@@ -649,26 +742,32 @@ public final class CropVarietiesImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             cropIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             brand: String (Optional)
-     *             product: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     cropIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -683,7 +782,7 @@ public final class CropVarietiesImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

@@ -62,7 +62,7 @@ public final class SensorMappingsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientSenso")
-    private interface SensorMappingsService {
+    public interface SensorMappingsService {
         @Get("/sensor-mappings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -173,7 +173,7 @@ public final class SensorMappingsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>sensorIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensors. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>sensorPartnerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensor partners. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>farmerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the farmers. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>partyIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the parties. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>boundaryIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the boundaries. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
@@ -184,9 +184,9 @@ public final class SensorMappingsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -195,24 +195,22 @@ public final class SensorMappingsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             sensorId: String (Optional)
-     *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
-     *             boundaryId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorId: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     partyId: String (Optional)
+     *     boundaryId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -225,7 +223,7 @@ public final class SensorMappingsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -256,7 +254,7 @@ public final class SensorMappingsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>sensorIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensors. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>sensorPartnerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensor partners. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>farmerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the farmers. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>partyIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the parties. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>boundaryIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the boundaries. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
@@ -267,9 +265,9 @@ public final class SensorMappingsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -278,24 +276,22 @@ public final class SensorMappingsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             sensorId: String (Optional)
-     *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
-     *             boundaryId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorId: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     partyId: String (Optional)
+     *     boundaryId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -329,7 +325,7 @@ public final class SensorMappingsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>sensorIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensors. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>sensorPartnerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the sensor partners. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>farmerIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the farmers. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>partyIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the parties. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>boundaryIds</td><td>List&lt;String&gt;</td><td>No</td><td>Id of the boundaries. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
@@ -340,9 +336,9 @@ public final class SensorMappingsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -351,24 +347,22 @@ public final class SensorMappingsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             sensorId: String (Optional)
-     *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
-     *             boundaryId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorId: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     partyId: String (Optional)
+     *     boundaryId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -394,7 +388,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -403,7 +397,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -413,7 +411,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -422,7 +420,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -460,7 +462,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -469,7 +471,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -479,7 +485,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -488,7 +494,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -516,7 +526,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -525,7 +535,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -560,7 +574,7 @@ public final class SensorMappingsImpl {
      * {
      *     sensorId: String (Optional)
      *     sensorPartnerId: String (Optional)
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     boundaryId: String (Optional)
      *     id: String (Optional)
      *     status: String (Optional)
@@ -569,7 +583,11 @@ public final class SensorMappingsImpl {
      *     eTag: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -634,24 +652,22 @@ public final class SensorMappingsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             sensorId: String (Optional)
-     *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
-     *             boundaryId: String (Optional)
-     *             id: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             eTag: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     sensorId: String (Optional)
+     *     sensorPartnerId: String (Optional)
+     *     partyId: String (Optional)
+     *     boundaryId: String (Optional)
+     *     id: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     eTag: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -666,7 +682,7 @@ public final class SensorMappingsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

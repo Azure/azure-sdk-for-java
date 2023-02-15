@@ -53,18 +53,20 @@ public final class SensorEventsClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
+     *     value (Required): [
+     *          (Required){
      *             sensorId: String (Optional)
      *             sensorPartnerId: String (Optional)
-     *             farmerId: String (Optional)
+     *             partyId: String (Optional)
      *             boundaryId: String (Optional)
      *             eventDateTime: OffsetDateTime (Optional)
      *             ingestionDateTime: OffsetDateTime (Optional)
-     *             measures: Object (Optional)
+     *             measures (Optional): {
+     *                 String: Object (Optional)
+     *             }
      *         }
      *     ]
-     *     $skipToken: String (Optional)
+     *     skipToken: String (Optional)
      *     nextLink: String (Optional)
      * }
      * }</pre>

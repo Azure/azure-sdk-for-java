@@ -34,7 +34,7 @@ public final class PlantTissueAnalysesClient {
     }
 
     /**
-     * Returns a paginated list of plant tissue analysis resources under a particular farmer.
+     * Returns a paginated list of plant tissue analysis resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -43,7 +43,7 @@ public final class PlantTissueAnalysesClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietiesIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop varieties ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductsIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop products ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
@@ -54,9 +54,9 @@ public final class PlantTissueAnalysesClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -65,46 +65,44 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             fieldId: String (Optional)
-     *             cropId: String (Optional)
-     *             cropVarietyId: String (Optional)
-     *             seasonId: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             growthStage: String (Optional)
-     *             plantPart: String (Optional)
-     *             plantPosition: String (Optional)
-     *             plantAppearance: String (Optional)
-     *             sampleCollectionCondition: String (Optional)
-     *             sampleCollectionDateTime: OffsetDateTime (Optional)
-     *             sampleReceivedDateTime: OffsetDateTime (Optional)
-     *             sampleTestResultDateTime: OffsetDateTime (Optional)
-     *             labDetails (Optional): {
-     *                 code: String (Optional)
-     *                 name: String (Optional)
-     *                 description: String (Optional)
-     *                 address: String (Optional)
-     *             }
-     *             attachmentsLink: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     fieldId: String (Optional)
+     *     cropId: String (Optional)
+     *     cropProductId: String (Optional)
+     *     seasonId: String (Optional)
+     *     plantingDateTime: OffsetDateTime (Optional)
+     *     growthStage: String (Optional)
+     *     plantPart: String (Optional)
+     *     plantPosition: String (Optional)
+     *     plantAppearance: String (Optional)
+     *     sampleCollectionCondition: String (Optional)
+     *     sampleCollectionDateTime: OffsetDateTime (Optional)
+     *     sampleReceivedDateTime: OffsetDateTime (Optional)
+     *     sampleTestResultDateTime: OffsetDateTime (Optional)
+     *     labDetails (Optional): {
+     *         code: String (Optional)
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         address: String (Optional)
+     *     }
+     *     attachmentsLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -115,21 +113,21 @@ public final class PlantTissueAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listByFarmerId(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listByPartyId(partyId, requestOptions));
     }
 
     /**
-     * Gets a specified plant tissue analysis resource under a particular farmer.
+     * Gets a specified plant tissue analysis resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     fieldId: String (Optional)
      *     cropId: String (Optional)
-     *     cropVarietyId: String (Optional)
+     *     cropProductId: String (Optional)
      *     seasonId: String (Optional)
      *     plantingDateTime: OffsetDateTime (Optional)
      *     growthStage: String (Optional)
@@ -155,24 +153,28 @@ public final class PlantTissueAnalysesClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param plantTissueAnalysisId Id of the plant tissue analysis.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified plant tissue analysis resource under a particular farmer along with {@link Response}.
+     * @return a specified plant tissue analysis resource under a particular party along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
-            String farmerId, String plantTissueAnalysisId, RequestOptions requestOptions) {
-        return this.client.getWithResponse(farmerId, plantTissueAnalysisId, requestOptions).block();
+            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+        return this.client.getWithResponse(partyId, plantTissueAnalysisId, requestOptions).block();
     }
 
     /**
@@ -182,10 +184,10 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     fieldId: String (Optional)
      *     cropId: String (Optional)
-     *     cropVarietyId: String (Optional)
+     *     cropProductId: String (Optional)
      *     seasonId: String (Optional)
      *     plantingDateTime: OffsetDateTime (Optional)
      *     growthStage: String (Optional)
@@ -211,7 +213,11 @@ public final class PlantTissueAnalysesClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -219,10 +225,10 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     fieldId: String (Optional)
      *     cropId: String (Optional)
-     *     cropVarietyId: String (Optional)
+     *     cropProductId: String (Optional)
      *     seasonId: String (Optional)
      *     plantingDateTime: OffsetDateTime (Optional)
      *     growthStage: String (Optional)
@@ -248,11 +254,15 @@ public final class PlantTissueAnalysesClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
+     * @param partyId Id of the party resource.
      * @param plantTissueAnalysisId Id of the plant tissue analysis resource.
      * @param plantTissueAnalysis PlantTissueAnalysis resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -265,19 +275,19 @@ public final class PlantTissueAnalysesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId,
+            String partyId,
             String plantTissueAnalysisId,
             BinaryData plantTissueAnalysis,
             RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(farmerId, plantTissueAnalysisId, plantTissueAnalysis, requestOptions)
+                .createOrUpdateWithResponse(partyId, plantTissueAnalysisId, plantTissueAnalysis, requestOptions)
                 .block();
     }
 
     /**
-     * Deletes a specified plant tissue analysis resource under a particular farmer.
+     * Deletes a specified plant tissue analysis resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param plantTissueAnalysisId Id of the plant tissue analysis.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -289,12 +299,12 @@ public final class PlantTissueAnalysesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-            String farmerId, String plantTissueAnalysisId, RequestOptions requestOptions) {
-        return this.client.deleteWithResponse(farmerId, plantTissueAnalysisId, requestOptions).block();
+            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+        return this.client.deleteWithResponse(partyId, plantTissueAnalysisId, requestOptions).block();
     }
 
     /**
-     * Returns a paginated list of plant tissue analysis resources across all farmers.
+     * Returns a paginated list of plant tissue analysis resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -303,7 +313,7 @@ public final class PlantTissueAnalysesClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietiesIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop varieties ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductsIds</td><td>List&lt;String&gt;</td><td>No</td><td>Crop products ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field ids of the plant tissue analyses. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
@@ -314,9 +324,9 @@ public final class PlantTissueAnalysesClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -325,42 +335,40 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             fieldId: String (Optional)
-     *             cropId: String (Optional)
-     *             cropVarietyId: String (Optional)
-     *             seasonId: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             growthStage: String (Optional)
-     *             plantPart: String (Optional)
-     *             plantPosition: String (Optional)
-     *             plantAppearance: String (Optional)
-     *             sampleCollectionCondition: String (Optional)
-     *             sampleCollectionDateTime: OffsetDateTime (Optional)
-     *             sampleReceivedDateTime: OffsetDateTime (Optional)
-     *             sampleTestResultDateTime: OffsetDateTime (Optional)
-     *             labDetails (Optional): {
-     *                 code: String (Optional)
-     *                 name: String (Optional)
-     *                 description: String (Optional)
-     *                 address: String (Optional)
-     *             }
-     *             attachmentsLink: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     fieldId: String (Optional)
+     *     cropId: String (Optional)
+     *     cropProductId: String (Optional)
+     *     seasonId: String (Optional)
+     *     plantingDateTime: OffsetDateTime (Optional)
+     *     growthStage: String (Optional)
+     *     plantPart: String (Optional)
+     *     plantPosition: String (Optional)
+     *     plantAppearance: String (Optional)
+     *     sampleCollectionCondition: String (Optional)
+     *     sampleCollectionDateTime: OffsetDateTime (Optional)
+     *     sampleReceivedDateTime: OffsetDateTime (Optional)
+     *     sampleTestResultDateTime: OffsetDateTime (Optional)
+     *     labDetails (Optional): {
+     *         code: String (Optional)
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         address: String (Optional)
+     *     }
+     *     attachmentsLink: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -385,13 +393,14 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -400,7 +409,7 @@ public final class PlantTissueAnalysesClient {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param plantTissueAnalysisId ID of the plant tissue analysis to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -412,9 +421,9 @@ public final class PlantTissueAnalysesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+            String jobId, String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
         return this.client
-                .beginCreateCascadeDeleteJob(jobId, farmerId, plantTissueAnalysisId, requestOptions)
+                .beginCreateCascadeDeleteJob(jobId, partyId, plantTissueAnalysisId, requestOptions)
                 .getSyncPoller();
     }
 
@@ -425,13 +434,14 @@ public final class PlantTissueAnalysesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)

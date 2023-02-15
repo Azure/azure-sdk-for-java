@@ -36,7 +36,7 @@ public final class ZonesAsyncClient {
     }
 
     /**
-     * Returns a paginated list of zone resources under a particular farmer.
+     * Returns a paginated list of zone resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -55,9 +55,9 @@ public final class ZonesAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -66,28 +66,26 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             type: String (Optional)
-     *             managementZoneId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     type: String (Optional)
+     *     managementZoneId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -98,18 +96,18 @@ public final class ZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.listByFarmerIdAsync(farmerId, requestOptions);
+    public PagedFlux<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return this.serviceClient.listByPartyIdAsync(partyId, requestOptions);
     }
 
     /**
-     * Gets a specified zone resource under a particular farmer.
+     * Gets a specified zone resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     type: String (Optional)
      *     managementZoneId: String (Optional)
      *     id: String (Optional)
@@ -120,24 +118,28 @@ public final class ZonesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param zoneId Id of the zone.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified zone resource under a particular farmer along with {@link Response} on successful completion
+     * @return a specified zone resource under a particular party along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String farmerId, String zoneId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(farmerId, zoneId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String zoneId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(partyId, zoneId, requestOptions);
     }
 
     /**
@@ -147,7 +149,7 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     type: String (Optional)
      *     managementZoneId: String (Optional)
      *     id: String (Optional)
@@ -158,7 +160,11 @@ public final class ZonesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -166,7 +172,7 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
+     *     partyId: String (Optional)
      *     type: String (Optional)
      *     managementZoneId: String (Optional)
      *     id: String (Optional)
@@ -177,11 +183,15 @@ public final class ZonesAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
+     * @param partyId Id of the party resource.
      * @param zoneId Id of the zone resource.
      * @param zone Zone resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -194,14 +204,14 @@ public final class ZonesAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String farmerId, String zoneId, BinaryData zone, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(farmerId, zoneId, zone, requestOptions);
+            String partyId, String zoneId, BinaryData zone, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, zoneId, zone, requestOptions);
     }
 
     /**
-     * Deletes a specified zone resource under a particular farmer.
+     * Deletes a specified zone resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param zoneId Id of the zone.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -212,12 +222,12 @@ public final class ZonesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String farmerId, String zoneId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(farmerId, zoneId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String zoneId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(partyId, zoneId, requestOptions);
     }
 
     /**
-     * Returns a paginated list of zone resources across all farmers.
+     * Returns a paginated list of zone resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -236,9 +246,9 @@ public final class ZonesAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -247,24 +257,22 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             type: String (Optional)
-     *             managementZoneId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Optional)
+     *     type: String (Optional)
+     *     managementZoneId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -289,13 +297,14 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -326,13 +335,14 @@ public final class ZonesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -341,7 +351,7 @@ public final class ZonesAsyncClient {
      * }</pre>
      *
      * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
+     * @param partyId ID of the associated party.
      * @param zoneId ID of the zone to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -353,7 +363,7 @@ public final class ZonesAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String zoneId, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, farmerId, zoneId, requestOptions);
+            String jobId, String partyId, String zoneId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, zoneId, requestOptions);
     }
 }

@@ -16,33 +16,36 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.verticals.agrifood.farming.implementation.FarmersImpl;
+import com.azure.verticals.agrifood.farming.implementation.CropProductsImpl;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
-@ServiceClient(builder = FarmersClientBuilder.class, isAsync = true)
-public final class FarmersAsyncClient {
-    @Generated private final FarmersImpl serviceClient;
+@ServiceClient(builder = CropProductsClientBuilder.class, isAsync = true)
+public final class CropProductsAsyncClient {
+    @Generated private final CropProductsImpl serviceClient;
 
     /**
-     * Initializes an instance of FarmersAsyncClient class.
+     * Initializes an instance of CropProductsAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    FarmersAsyncClient(FarmersImpl serviceClient) {
+    CropProductsAsyncClient(CropProductsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * Returns a paginated list of farmer resources.
+     * Returns a paginated list of crop product resources.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>brands</td><td>List&lt;String&gt;</td><td>No</td><td>Brands of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>products</td><td>List&lt;String&gt;</td><td>No</td><td>Products of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>traits</td><td>List&lt;String&gt;</td><td>No</td><td>Traits of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -52,9 +55,9 @@ public final class FarmersAsyncClient {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -63,21 +66,32 @@ public final class FarmersAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     cropIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -96,12 +110,25 @@ public final class FarmersAsyncClient {
     }
 
     /**
-     * Gets a specified farmer resource.
+     * Gets a specified crop Product resource.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
+     *     cropIds (Optional): [
+     *         String (Optional)
+     *     ]
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -110,31 +137,48 @@ public final class FarmersAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId ID of the associated farmer.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified farmer resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a specified crop Product resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(farmerId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String cropProductId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(cropProductId, requestOptions);
     }
 
     /**
-     * Creates or updates a farmer resource.
+     * Creates or updates a crop Product resource.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
+     *     cropIds (Optional): [
+     *         String (Optional)
+     *     ]
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -143,7 +187,11 @@ public final class FarmersAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -151,6 +199,19 @@ public final class FarmersAsyncClient {
      *
      * <pre>{@code
      * {
+     *     cropIds (Optional): [
+     *         String (Optional)
+     *     ]
+     *     brand: String (Optional)
+     *     product: String (Optional)
+     *     trait: String (Optional)
+     *     relativeMaturity (Optional): {
+     *         unit: String (Optional)
+     *         value: Double (Optional)
+     *     }
+     *     treatments (Optional): [
+     *         String (Optional)
+     *     ]
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -159,30 +220,34 @@ public final class FarmersAsyncClient {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
-     * @param farmer Farmer resource payload to create or update.
+     * @param cropProductId Id of the crop Product resource.
+     * @param cropProduct Crop Product resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of farmer resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return schema of crop product resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String farmerId, BinaryData farmer, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(farmerId, farmer, requestOptions);
+            String cropProductId, BinaryData cropProduct, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(cropProductId, cropProduct, requestOptions);
     }
 
     /**
-     * Deletes a specified farmer resource.
+     * Deletes a specified crop Product resource.
      *
-     * @param farmerId Id of farmer to be deleted.
+     * @param cropProductId Id of the crop Product.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -192,81 +257,7 @@ public final class FarmersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(farmerId, requestOptions);
-    }
-
-    /**
-     * Create a cascade delete job for specified farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the farmer to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, farmerId, requestOptions);
-    }
-
-    /**
-     * Get a cascade delete job for specified farmer.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Id of the job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a cascade delete job for specified farmer along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
+    public Mono<Response<Void>> deleteWithResponse(String cropProductId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(cropProductId, requestOptions);
     }
 }

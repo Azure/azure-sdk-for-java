@@ -44,15 +44,15 @@ public final class OAuthTokensAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>authProviderIds</td><td>List&lt;String&gt;</td><td>No</td><td>Name of AuthProvider. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>farmerIds</td><td>List&lt;String&gt;</td><td>No</td><td>List of farmers. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>partyIds</td><td>List&lt;String&gt;</td><td>No</td><td>List of parties. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>isValid</td><td>Boolean</td><td>No</td><td>If the token object is valid.</td></tr>
      *     <tr><td>minCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum creation date of resource (inclusive).</td></tr>
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -61,18 +61,12 @@ public final class OAuthTokensAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Required)
-     *             authProviderId: String (Required)
-     *             isValid: Boolean (Optional)
-     *             eTag: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     partyId: String (Required)
+     *     authProviderId: String (Required)
+     *     isValid: Boolean (Optional)
+     *     eTag: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
      * }
      * }</pre>
      *
@@ -97,7 +91,7 @@ public final class OAuthTokensAsyncClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     oAuthProviderId: String (Required)
      *     userRedirectLink: String (Required)
      *     userRedirectState: String (Optional)
@@ -126,57 +120,20 @@ public final class OAuthTokensAsyncClient {
     }
 
     /**
-     * Create remove job for OAuth token.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job Id supplied by end user.
-     * @param farmerId Id of the farmer.
-     * @param oauthProviderId Id of the OAuthProvider.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String oauthProviderId, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, farmerId, oauthProviderId, requestOptions);
-    }
-
-    /**
      * Get remove job for OAuth token.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -197,5 +154,44 @@ public final class OAuthTokensAsyncClient {
     public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
             String jobId, RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
+    }
+
+    /**
+     * Create remove job for OAuth token.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job Id supplied by end user.
+     * @param partyId Id of the party.
+     * @param oauthProviderId Id of the OAuthProvider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
+            String jobId, String partyId, String oauthProviderId, RequestOptions requestOptions) {
+        return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, oauthProviderId, requestOptions);
     }
 }

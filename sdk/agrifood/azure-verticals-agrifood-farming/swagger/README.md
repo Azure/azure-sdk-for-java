@@ -1,6 +1,6 @@
 ## Generate autorest code
 ``` yaml
-input-file: C:\Users\bhkansag\bhargav-kansagara\azure-rest-api-specs-pr\specification\agrifood\data-plane\Microsoft.AgFoodPlatform\preview\2021-07-31-preview\agfood.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/e38daec67d57ef9c4804b1e3055753407e45fa71/specification/agrifood/data-plane/Microsoft.AgFoodPlatform/preview/2022-11-01-preview/agfood.json
 java: true
 output-folder: ../
 namespace: com.azure.verticals.agrifood.farming

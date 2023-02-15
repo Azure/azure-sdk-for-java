@@ -41,7 +41,6 @@ public final class ScenesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>source</td><td>String</td><td>No</td><td>Source name of scene data, default value Sentinel_2_L2A (Sentinel 2 L2A).</td></tr>
      *     <tr><td>startDateTime</td><td>OffsetDateTime</td><td>No</td><td>Scene start UTC datetime (inclusive), sample format: yyyy-MM-ddThh:mm:ssZ.</td></tr>
      *     <tr><td>endDateTime</td><td>OffsetDateTime</td><td>No</td><td>Scene end UTC datetime (inclusive), sample format: yyyy-MM-dThh:mm:ssZ.</td></tr>
      *     <tr><td>maxCloudCoveragePercentage</td><td>Double</td><td>No</td><td>Filter scenes with cloud coverage percentage less than max value. Range [0 to 100.0].</td></tr>
@@ -49,9 +48,9 @@ public final class ScenesClient {
      *     <tr><td>imageNames</td><td>List&lt;String&gt;</td><td>No</td><td>List of image names to be filtered. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>imageResolutions</td><td>List&lt;Double&gt;</td><td>No</td><td>List of image resolutions in meters to be filtered. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>imageFormats</td><td>List&lt;String&gt;</td><td>No</td><td>List of image formats to be filtered. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -60,37 +59,32 @@ public final class ScenesClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     sceneDateTime: OffsetDateTime (Optional)
+     *     provider: String (Optional)
+     *     source: String (Optional)
+     *     imageFiles (Optional): [
      *          (Optional){
-     *             sceneDateTime: OffsetDateTime (Optional)
-     *             provider: String (Optional)
-     *             source: String (Optional)
-     *             imageFiles (Optional): [
-     *                  (Optional){
-     *                     fileLink: String (Optional)
-     *                     name: String (Required)
-     *                     imageFormat: String(TIF) (Optional)
-     *                     resolution: Double (Optional)
-     *                 }
-     *             ]
+     *             fileLink: String (Optional)
+     *             name: String (Required)
      *             imageFormat: String(TIF) (Optional)
-     *             cloudCoverPercentage: Double (Optional)
-     *             darkPixelPercentage: Double (Optional)
-     *             ndviMedianValue: Double (Optional)
-     *             boundaryId: String (Optional)
-     *             farmerId: String (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
+     *             resolution: Double (Optional)
      *         }
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     imageFormat: String(TIF) (Optional)
+     *     cloudCoverPercentage: Double (Optional)
+     *     darkPixelPercentage: Double (Optional)
+     *     ndviMedianValue: Double (Optional)
+     *     boundaryId: String (Optional)
+     *     partyId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
      * }
      * }</pre>
      *
      * @param provider Provider name of scene data.
-     * @param farmerId FarmerId.
+     * @param partyId PartyId.
      * @param boundaryId BoundaryId.
+     * @param source Source name of scene data, Available Values: Sentinel_2_L2A, Sentinel_2_L1C.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -102,8 +96,8 @@ public final class ScenesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(
-            String provider, String farmerId, String boundaryId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.list(provider, farmerId, boundaryId, requestOptions));
+            String provider, String partyId, String boundaryId, String source, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.list(provider, partyId, boundaryId, source, requestOptions));
     }
 
     /**
@@ -136,12 +130,12 @@ public final class ScenesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     startDateTime: OffsetDateTime (Required)
      *     endDateTime: OffsetDateTime (Required)
      *     provider: String(Microsoft) (Optional)
-     *     source: String(Sentinel_2_L2A) (Optional)
+     *     source: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     data (Optional): {
      *         imageNames (Optional): [
      *             String (Optional)
@@ -157,13 +151,18 @@ public final class ScenesClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -171,12 +170,12 @@ public final class ScenesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     startDateTime: OffsetDateTime (Required)
      *     endDateTime: OffsetDateTime (Required)
      *     provider: String(Microsoft) (Optional)
-     *     source: String(Sentinel_2_L2A) (Optional)
+     *     source: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     data (Optional): {
      *         imageNames (Optional): [
      *             String (Optional)
@@ -192,13 +191,18 @@ public final class ScenesClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -225,12 +229,12 @@ public final class ScenesClient {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     boundaryId: String (Required)
      *     startDateTime: OffsetDateTime (Required)
      *     endDateTime: OffsetDateTime (Required)
      *     provider: String(Microsoft) (Optional)
-     *     source: String(Sentinel_2_L2A) (Optional)
+     *     source: String(Sentinel_2_L2A/Sentinel_2_L1C) (Required)
      *     data (Optional): {
      *         imageNames (Optional): [
      *             String (Optional)
@@ -246,13 +250,18 @@ public final class ScenesClient {
      *     status: String (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -269,5 +278,154 @@ public final class ScenesClient {
     public Response<BinaryData> getSatelliteDataIngestionJobDetailsWithResponse(
             String jobId, RequestOptions requestOptions) {
         return this.client.getSatelliteDataIngestionJobDetailsWithResponse(jobId, requestOptions).block();
+    }
+
+    /**
+     * Search for STAC features by collection id, bbox, intersecting geometry, start and end datetime.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Maximum number of features needed (inclusive). Minimum = 1, Maximum = 100, Default value = 10.</td></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     startDateTime: OffsetDateTime (Required)
+     *     endDateTime: OffsetDateTime (Required)
+     *     intersects (Optional): {
+     *     }
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
+     *     featureIds (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     features (Required): [
+     *          (Required){
+     *             stacVersion: String (Required)
+     *             stacExtensions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             id: String (Required)
+     *             type: String (Required)
+     *             geometry: Object (Optional)
+     *             bbox (Optional): [
+     *                 double (Optional)
+     *             ]
+     *             properties: Object (Required)
+     *             links (Required): [
+     *                  (Required){
+     *                     href: String (Required)
+     *                     rel: String (Required)
+     *                     type: String (Optional)
+     *                     title: String (Optional)
+     *                 }
+     *             ]
+     *             assets (Required): {
+     *                 String (Required): {
+     *                     href: String (Required)
+     *                     title: String (Optional)
+     *                     description: String (Optional)
+     *                     type: String (Optional)
+     *                     roles (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                 }
+     *             }
+     *             collection: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param collectionId Collection Id to be searched. Allowed values: "Sentinel_2_L2A", "Sentinel_2_L1C".
+     * @param searchFeaturesQuery Query filters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged response contains list of features and next property to get the next set of results along with
+     *     {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> searchFeaturesWithResponse(
+            String collectionId, BinaryData searchFeaturesQuery, RequestOptions requestOptions) {
+        return this.client.searchFeaturesWithResponse(collectionId, searchFeaturesQuery, requestOptions).block();
+    }
+
+    /**
+     * Get a feature(SpatioTemporal Asset Catalog (STAC) Item) for given collection and feature id.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     stacVersion: String (Required)
+     *     stacExtensions (Optional): [
+     *         String (Optional)
+     *     ]
+     *     id: String (Required)
+     *     type: String (Required)
+     *     geometry: Object (Optional)
+     *     bbox (Optional): [
+     *         double (Optional)
+     *     ]
+     *     properties: Object (Required)
+     *     links (Required): [
+     *          (Required){
+     *             href: String (Required)
+     *             rel: String (Required)
+     *             type: String (Optional)
+     *             title: String (Optional)
+     *         }
+     *     ]
+     *     assets (Required): {
+     *         String (Required): {
+     *             href: String (Required)
+     *             title: String (Optional)
+     *             description: String (Optional)
+     *             type: String (Optional)
+     *             roles (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     collection: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param collectionId Collection Id to be fetched. Allowed values: "Sentinel_2_L2A", "Sentinel_2_L1C".
+     * @param featureId Feature Id to be fetched.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a feature(SpatioTemporal Asset Catalog (STAC) Item) for given collection and feature id along with {@link
+     *     Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getStacFeatureWithResponse(
+            String collectionId, String featureId, RequestOptions requestOptions) {
+        return this.client.getStacFeatureWithResponse(collectionId, featureId, requestOptions).block();
     }
 }

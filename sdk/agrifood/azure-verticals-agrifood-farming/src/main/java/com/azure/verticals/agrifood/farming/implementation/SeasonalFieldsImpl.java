@@ -68,8 +68,8 @@ public final class SeasonalFieldsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FarmBeatsClientSeaso")
-    private interface SeasonalFieldsService {
-        @Get("/farmers/{farmerId}/seasonal-fields")
+    public interface SeasonalFieldsService {
+        @Get("/parties/{partyId}/seasonal-fields")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -81,15 +81,15 @@ public final class SeasonalFieldsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerId(
+        Mono<Response<BinaryData>> listByPartyId(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/farmers/{farmerId}/seasonal-fields/{seasonalFieldId}")
+        @Get("/parties/{partyId}/seasonal-fields/{seasonalFieldId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -103,14 +103,14 @@ public final class SeasonalFieldsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("seasonalFieldId") String seasonalFieldId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/farmers/{farmerId}/seasonal-fields/{seasonalFieldId}")
+        @Patch("/parties/{partyId}/seasonal-fields/{seasonalFieldId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -124,7 +124,7 @@ public final class SeasonalFieldsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("seasonalFieldId") String seasonalFieldId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData seasonalField,
@@ -132,7 +132,7 @@ public final class SeasonalFieldsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/farmers/{farmerId}/seasonal-fields/{seasonalFieldId}")
+        @Delete("/parties/{partyId}/seasonal-fields/{seasonalFieldId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -146,7 +146,7 @@ public final class SeasonalFieldsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
-                @PathParam("farmerId") String farmerId,
+                @PathParam("partyId") String partyId,
                 @PathParam("seasonalFieldId") String seasonalFieldId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -172,28 +172,6 @@ public final class SeasonalFieldsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Put("/seasonal-fields/cascade-delete/{jobId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createCascadeDeleteJob(
-                @HostParam("$host") String host,
-                @PathParam("jobId") String jobId,
-                @QueryParam("farmerId") String farmerId,
-                @QueryParam("seasonalFieldId") String seasonalFieldId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/seasonal-fields/cascade-delete/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -214,6 +192,28 @@ public final class SeasonalFieldsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/seasonal-fields/cascade-delete/{jobId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createCascadeDeleteJob(
+                @HostParam("$host") String host,
+                @PathParam("jobId") String jobId,
+                @QueryParam("partyId") String partyId,
+                @QueryParam("seasonalFieldId") String seasonalFieldId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -226,7 +226,7 @@ public final class SeasonalFieldsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listByFarmerIdNext(
+        Mono<Response<BinaryData>> listByPartyIdNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("$host") String host,
                 @HeaderParam("Accept") String accept,
@@ -254,7 +254,7 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Returns a paginated list of seasonal field resources under a particular farmer.
+     * Returns a paginated list of seasonal field resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -264,16 +264,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -283,9 +275,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -294,42 +286,31 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -339,14 +320,14 @@ public final class SeasonalFieldsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdSinglePageAsync(
-            String farmerId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listByPartyIdSinglePageAsync(
+            String partyId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerId(
+                                service.listByPartyId(
                                         this.client.getHost(),
-                                        farmerId,
+                                        partyId,
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -363,7 +344,7 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Returns a paginated list of seasonal field resources under a particular farmer.
+     * Returns a paginated list of seasonal field resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -373,16 +354,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -392,9 +365,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -403,42 +376,31 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -448,19 +410,19 @@ public final class SeasonalFieldsImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByFarmerIdAsync(String farmerId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listByPartyIdAsync(String partyId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listByFarmerIdSinglePageAsync(farmerId, requestOptions),
-                nextLink -> listByFarmerIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listByPartyIdSinglePageAsync(partyId, requestOptions),
+                nextLink -> listByPartyIdNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
-     * Returns a paginated list of seasonal field resources under a particular farmer.
+     * Returns a paginated list of seasonal field resources under a particular party.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -470,16 +432,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -489,9 +443,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -500,42 +454,31 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -545,34 +488,25 @@ public final class SeasonalFieldsImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByFarmerId(String farmerId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByFarmerIdAsync(farmerId, requestOptions));
+    public PagedIterable<BinaryData> listByPartyId(String partyId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByPartyIdAsync(partyId, requestOptions));
     }
 
     /**
-     * Gets a specified seasonal field resource under a particular farmer.
+     * Gets a specified seasonal field resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -581,29 +515,33 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param seasonalFieldId Id of the seasonal field.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified seasonal field resource under a particular farmer along with {@link Response} on successful
+     * @return a specified seasonal field resource under a particular party along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
-            String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
+            String partyId, String seasonalFieldId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 seasonalFieldId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -612,29 +550,20 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Gets a specified seasonal field resource under a particular farmer.
+     * Gets a specified seasonal field resource under a particular party.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -643,49 +572,43 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param partyId Id of the associated party.
      * @param seasonalFieldId Id of the seasonal field.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specified seasonal field resource under a particular farmer along with {@link Response}.
+     * @return a specified seasonal field resource under a particular party along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
-        return getWithResponseAsync(farmerId, seasonalFieldId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+        return getWithResponseAsync(partyId, seasonalFieldId, requestOptions).block();
     }
 
     /**
-     * Creates or Updates a seasonal field resource under a particular farmer.
+     * Creates or Updates a seasonal field resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -694,7 +617,11 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -702,23 +629,14 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -727,11 +645,15 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param seasonalFieldId Id of the seasonal field resource.
      * @param seasonalField Seasonal field resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -743,13 +665,13 @@ public final class SeasonalFieldsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String farmerId, String seasonalFieldId, BinaryData seasonalField, RequestOptions requestOptions) {
+            String partyId, String seasonalFieldId, BinaryData seasonalField, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 seasonalFieldId,
                                 this.client.getServiceVersion().getVersion(),
                                 seasonalField,
@@ -759,29 +681,20 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Creates or Updates a seasonal field resource under a particular farmer.
+     * Creates or Updates a seasonal field resource under a particular party.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -790,7 +703,11 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -798,23 +715,14 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Optional)
-     *     primaryBoundaryId: String (Optional)
-     *     boundaryIds (Optional): [
-     *         String (Optional)
-     *     ]
+     *     partyId: String (Optional)
      *     farmId: String (Optional)
      *     fieldId: String (Optional)
      *     seasonId: String (Optional)
-     *     cropVarietyIds (Optional): [
+     *     cropProductIds (Optional): [
      *         String (Optional)
      *     ]
      *     cropId: String (Optional)
-     *     avgYieldValue: Double (Optional)
-     *     avgYieldUnit: String (Optional)
-     *     avgSeedPopulationValue: Double (Optional)
-     *     avgSeedPopulationUnit: String (Optional)
-     *     plantingDateTime: OffsetDateTime (Optional)
      *     id: String (Optional)
      *     eTag: String (Optional)
      *     status: String (Optional)
@@ -823,11 +731,15 @@ public final class SeasonalFieldsImpl {
      *     source: String (Optional)
      *     name: String (Optional)
      *     description: String (Optional)
-     *     properties: Object (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
+     * @param partyId Id of the associated party resource.
      * @param seasonalFieldId Id of the seasonal field resource.
      * @param seasonalField Seasonal field resource payload to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -839,14 +751,14 @@ public final class SeasonalFieldsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
-            String farmerId, String seasonalFieldId, BinaryData seasonalField, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(farmerId, seasonalFieldId, seasonalField, requestOptions).block();
+            String partyId, String seasonalFieldId, BinaryData seasonalField, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(partyId, seasonalFieldId, seasonalField, requestOptions).block();
     }
 
     /**
-     * Deletes a specified seasonal-field resource under a particular farmer.
+     * Deletes a specified seasonal-field resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param seasonalFieldId Id of the seasonal field.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -857,13 +769,13 @@ public final class SeasonalFieldsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-            String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
+            String partyId, String seasonalFieldId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.delete(
                                 this.client.getHost(),
-                                farmerId,
+                                partyId,
                                 seasonalFieldId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -872,9 +784,9 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Deletes a specified seasonal-field resource under a particular farmer.
+     * Deletes a specified seasonal-field resource under a particular party.
      *
-     * @param farmerId Id of the farmer.
+     * @param partyId Id of the party.
      * @param seasonalFieldId Id of the seasonal field.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -884,12 +796,12 @@ public final class SeasonalFieldsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(farmerId, seasonalFieldId, requestOptions).block();
+    public Response<Void> deleteWithResponse(String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(partyId, seasonalFieldId, requestOptions).block();
     }
 
     /**
-     * Returns a paginated list of seasonal field resources across all farmers.
+     * Returns a paginated list of seasonal field resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -899,16 +811,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -918,9 +822,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -929,38 +833,27 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -973,7 +866,7 @@ public final class SeasonalFieldsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -995,7 +888,7 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Returns a paginated list of seasonal field resources across all farmers.
+     * Returns a paginated list of seasonal field resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1005,16 +898,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -1024,9 +909,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1035,38 +920,27 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1091,7 +965,7 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Returns a paginated list of seasonal field resources across all farmers.
+     * Returns a paginated list of seasonal field resources across all parties.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -1101,16 +975,8 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>farmIds</td><td>List&lt;String&gt;</td><td>No</td><td>Farm Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>fieldIds</td><td>List&lt;String&gt;</td><td>No</td><td>Field Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>seasonIds</td><td>List&lt;String&gt;</td><td>No</td><td>Season Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>cropVarietyIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropVarietyIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>cropProductIds</td><td>List&lt;String&gt;</td><td>No</td><td>CropProductIds of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>cropIds</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the crop it belongs to. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minAvgYieldValue</td><td>Double</td><td>No</td><td>Minimum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgYieldValue</td><td>Double</td><td>No</td><td>Maximum average yield value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgYieldUnit</td><td>String</td><td>No</td><td>Unit of the average yield value attribute.</td></tr>
-     *     <tr><td>minAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Minimum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>maxAvgSeedPopulationValue</td><td>Double</td><td>No</td><td>Maximum average seed population value of the seasonal field(inclusive).</td></tr>
-     *     <tr><td>avgSeedPopulationUnit</td><td>String</td><td>No</td><td>Unit of average seed population value attribute.</td></tr>
-     *     <tr><td>minPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
-     *     <tr><td>maxPlantingDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum planting datetime, sample format: yyyy-MM-ddTHH:mm:ssZ.</td></tr>
      *     <tr><td>ids</td><td>List&lt;String&gt;</td><td>No</td><td>Ids of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>names</td><td>List&lt;String&gt;</td><td>No</td><td>Names of the resource. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>propertyFilters</td><td>List&lt;String&gt;</td><td>No</td><td>Filters on key-value pairs within the Properties object.
@@ -1120,9 +986,9 @@ public final class SeasonalFieldsImpl {
      *     <tr><td>maxCreatedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum creation date of resource (inclusive).</td></tr>
      *     <tr><td>minLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Minimum last modified date of resource (inclusive).</td></tr>
      *     <tr><td>maxLastModifiedDateTime</td><td>OffsetDateTime</td><td>No</td><td>Maximum last modified date of resource (inclusive).</td></tr>
-     *     <tr><td>$maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum number of items needed (inclusive).
      * Minimum = 10, Maximum = 1000, Default value = 50.</td></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>Skip token for getting next set of results.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1131,38 +997,27 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1180,151 +1035,20 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
-     * Create a cascade delete job for specified seasonal field.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
-     * @param seasonalFieldId ID of the seasonalField to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return schema of cascade delete job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
-            String jobId, String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createCascadeDeleteJob(
-                                this.client.getHost(),
-                                jobId,
-                                farmerId,
-                                seasonalFieldId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Create a cascade delete job for specified seasonal field.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
-     * @param seasonalFieldId ID of the seasonalField to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
-            String jobId, String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, farmerId, seasonalFieldId, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create a cascade delete job for specified seasonal field.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     farmerId: String (Required)
-     *     resourceId: String (Required)
-     *     resourceType: String (Required)
-     *     id: String (Optional)
-     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
-     *     durationInSeconds: Double (Optional)
-     *     message: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     lastActionDateTime: OffsetDateTime (Optional)
-     *     startTime: OffsetDateTime (Optional)
-     *     endTime: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     *
-     * @param jobId Job ID supplied by end user.
-     * @param farmerId ID of the associated farmer.
-     * @param seasonalFieldId ID of the seasonalField to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of schema of cascade delete job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String farmerId, String seasonalFieldId, RequestOptions requestOptions) {
-        return this.beginCreateCascadeDeleteJobAsync(jobId, farmerId, seasonalFieldId, requestOptions).getSyncPoller();
-    }
-
-    /**
      * Get cascade delete job for specified seasonal field.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1363,13 +1087,14 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     farmerId: String (Required)
+     *     partyId: String (Required)
      *     resourceId: String (Required)
      *     resourceType: String (Required)
      *     id: String (Optional)
      *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
      *     durationInSeconds: Double (Optional)
      *     message: String (Optional)
+     *     errorCode: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     lastActionDateTime: OffsetDateTime (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -1391,44 +1116,169 @@ public final class SeasonalFieldsImpl {
     }
 
     /**
+     * Create a cascade delete job for specified seasonal field.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param partyId ID of the associated party.
+     * @param seasonalFieldId ID of the seasonalField to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return schema of cascade delete job along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> createCascadeDeleteJobWithResponseAsync(
+            String jobId, String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.createCascadeDeleteJob(
+                                this.client.getHost(),
+                                jobId,
+                                partyId,
+                                seasonalFieldId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Create a cascade delete job for specified seasonal field.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param partyId ID of the associated party.
+     * @param seasonalFieldId ID of the seasonalField to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of schema of cascade delete job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJobAsync(
+            String jobId, String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.createCascadeDeleteJobWithResponseAsync(jobId, partyId, seasonalFieldId, requestOptions),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        null,
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create a cascade delete job for specified seasonal field.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     partyId: String (Required)
+     *     resourceId: String (Required)
+     *     resourceType: String (Required)
+     *     id: String (Optional)
+     *     status: String(Waiting/Running/Succeeded/Failed/Cancelled) (Optional)
+     *     durationInSeconds: Double (Optional)
+     *     message: String (Optional)
+     *     errorCode: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     lastActionDateTime: OffsetDateTime (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param partyId ID of the associated party.
+     * @param seasonalFieldId ID of the seasonalField to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of schema of cascade delete job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
+            String jobId, String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+        return this.beginCreateCascadeDeleteJobAsync(jobId, partyId, seasonalFieldId, requestOptions).getSyncPoller();
+    }
+
+    /**
      * Get the next page of items.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1443,12 +1293,12 @@ public final class SeasonalFieldsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByFarmerIdNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listByPartyIdNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listByFarmerIdNext(
+                                service.listByPartyIdNext(
                                         nextLink, this.client.getHost(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -1468,38 +1318,27 @@ public final class SeasonalFieldsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             farmerId: String (Optional)
-     *             primaryBoundaryId: String (Optional)
-     *             boundaryIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             farmId: String (Optional)
-     *             fieldId: String (Optional)
-     *             seasonId: String (Optional)
-     *             cropVarietyIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             cropId: String (Optional)
-     *             avgYieldValue: Double (Optional)
-     *             avgYieldUnit: String (Optional)
-     *             avgSeedPopulationValue: Double (Optional)
-     *             avgSeedPopulationUnit: String (Optional)
-     *             plantingDateTime: OffsetDateTime (Optional)
-     *             id: String (Optional)
-     *             eTag: String (Optional)
-     *             status: String (Optional)
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             modifiedDateTime: OffsetDateTime (Optional)
-     *             source: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             properties: Object (Optional)
-     *         }
+     *     partyId: String (Optional)
+     *     farmId: String (Optional)
+     *     fieldId: String (Optional)
+     *     seasonId: String (Optional)
+     *     cropProductIds (Optional): [
+     *         String (Optional)
      *     ]
-     *     $skipToken: String (Optional)
-     *     nextLink: String (Optional)
+     *     cropId: String (Optional)
+     *     id: String (Optional)
+     *     eTag: String (Optional)
+     *     status: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     modifiedDateTime: OffsetDateTime (Optional)
+     *     source: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     createdBy: String (Optional)
+     *     modifiedBy: String (Optional)
+     *     properties (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -1514,7 +1353,7 @@ public final class SeasonalFieldsImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listNext(nextLink, this.client.getHost(), accept, requestOptions, context))

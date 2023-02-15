@@ -99,6 +99,18 @@ public final class FarmBeatsClientImpl {
         return this.boundaries;
     }
 
+    /** The CropProductsImpl object to access its operations. */
+    private final CropProductsImpl cropProducts;
+
+    /**
+     * Gets the CropProductsImpl object to access its operations.
+     *
+     * @return the CropProductsImpl object.
+     */
+    public CropProductsImpl getCropProducts() {
+        return this.cropProducts;
+    }
+
     /** The CropsImpl object to access its operations. */
     private final CropsImpl crops;
 
@@ -109,18 +121,6 @@ public final class FarmBeatsClientImpl {
      */
     public CropsImpl getCrops() {
         return this.crops;
-    }
-
-    /** The CropVarietiesImpl object to access its operations. */
-    private final CropVarietiesImpl cropVarieties;
-
-    /**
-     * Gets the CropVarietiesImpl object to access its operations.
-     *
-     * @return the CropVarietiesImpl object.
-     */
-    public CropVarietiesImpl getCropVarieties() {
-        return this.cropVarieties;
     }
 
     /** The DeviceDataModelsImpl object to access its operations. */
@@ -145,18 +145,6 @@ public final class FarmBeatsClientImpl {
      */
     public DevicesImpl getDevices() {
         return this.devices;
-    }
-
-    /** The FarmersImpl object to access its operations. */
-    private final FarmersImpl farmers;
-
-    /**
-     * Gets the FarmersImpl object to access its operations.
-     *
-     * @return the FarmersImpl object.
-     */
-    public FarmersImpl getFarmers() {
-        return this.farmers;
     }
 
     /** The FarmOperationsImpl object to access its operations. */
@@ -301,6 +289,18 @@ public final class FarmBeatsClientImpl {
      */
     public OAuthTokensImpl getOAuthTokens() {
         return this.oAuthTokens;
+    }
+
+    /** The PartiesImpl object to access its operations. */
+    private final PartiesImpl parties;
+
+    /**
+     * Gets the PartiesImpl object to access its operations.
+     *
+     * @return the PartiesImpl object.
+     */
+    public PartiesImpl getParties() {
+        return this.parties;
     }
 
     /** The PlantingDatasImpl object to access its operations. */
@@ -483,6 +483,18 @@ public final class FarmBeatsClientImpl {
         return this.weathers;
     }
 
+    /** The WeatherDatasImpl object to access its operations. */
+    private final WeatherDatasImpl weatherDatas;
+
+    /**
+     * Gets the WeatherDatasImpl object to access its operations.
+     *
+     * @return the WeatherDatasImpl object.
+     */
+    public WeatherDatasImpl getWeatherDatas() {
+        return this.weatherDatas;
+    }
+
     /** The ZonesImpl object to access its operations. */
     private final ZonesImpl zones;
 
@@ -542,11 +554,10 @@ public final class FarmBeatsClientImpl {
         this.applicationDatas = new ApplicationDatasImpl(this);
         this.attachments = new AttachmentsImpl(this);
         this.boundaries = new BoundariesImpl(this);
+        this.cropProducts = new CropProductsImpl(this);
         this.crops = new CropsImpl(this);
-        this.cropVarieties = new CropVarietiesImpl(this);
         this.deviceDataModels = new DeviceDataModelsImpl(this);
         this.devices = new DevicesImpl(this);
-        this.farmers = new FarmersImpl(this);
         this.farmOperations = new FarmOperationsImpl(this);
         this.farms = new FarmsImpl(this);
         this.fields = new FieldsImpl(this);
@@ -559,6 +570,7 @@ public final class FarmBeatsClientImpl {
         this.nutrientAnalyses = new NutrientAnalysesImpl(this);
         this.oAuthProviders = new OAuthProvidersImpl(this);
         this.oAuthTokens = new OAuthTokensImpl(this);
+        this.parties = new PartiesImpl(this);
         this.plantingDatas = new PlantingDatasImpl(this);
         this.plantTissueAnalyses = new PlantTissueAnalysesImpl(this);
         this.prescriptionMaps = new PrescriptionMapsImpl(this);
@@ -574,6 +586,7 @@ public final class FarmBeatsClientImpl {
         this.solutionInferences = new SolutionInferencesImpl(this);
         this.tillageDatas = new TillageDatasImpl(this);
         this.weathers = new WeathersImpl(this);
+        this.weatherDatas = new WeatherDatasImpl(this);
         this.zones = new ZonesImpl(this);
     }
 }
