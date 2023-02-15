@@ -377,7 +377,7 @@ public final class CosmosMeterName extends ExpandableStringEnum<CosmosMeterName>
         return sj.toString();
     }
 
-    private CosmosMeterName setCategory(CosmosMeterCategory metricCategory) {
+    private CosmosMeterName setCategory(CosmosMeterCategory meterCategory) {
         this.meterCategory = meterCategory;
         return this;
     }

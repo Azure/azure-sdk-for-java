@@ -286,19 +286,19 @@ public final class ClientTelemetryMetrics {
             return tags;
         }
 
-        Tags result = Tags.empty();
         HashSet<String> suppressedNames = new HashSet<>();
         for (TagName t: suppressedTags) {
             suppressedNames.add(t.name());
         }
 
+        List<Tag> result = new ArrayList<>();
         for (Tag t: tags) {
             if (!suppressedNames.contains(t.getKey())) {
-                result.and(t);
+                result.add(t);
             }
         }
 
-        return result;
+        return Tags.of(result);
     }
 
     private static class OperationMetricProducer {
