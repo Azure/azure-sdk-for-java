@@ -4,9 +4,6 @@
 
 package com.azure.analytics.purview.workflow;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -24,8 +21,9 @@ public final class ReadmeSamples {
             .password(Configuration.getGlobalConfiguration().get("PASSWORD", "password"))
             .build())
         .buildClient();
+
     // END: readme-sample-createWorkflowClient
-    public void createWorkflow(){
+    public void createWorkflow() {
         // BEGIN: readme-sample-createWorkflow
         BinaryData workflowCreateOrUpdateCommand =
             BinaryData.fromString(
@@ -36,7 +34,8 @@ public final class ReadmeSamples {
                 "4afb5752-e47f-43a1-8ba7-c696bf8d2745", workflowCreateOrUpdateCommand, requestOptions);
         // END: readme-sample-createWorkflow
     }
-    public void submitUserRequests(){
+
+    public void submitUserRequests() {
         // BEGIN: readme-sample-submitUserRequests
         BinaryData userRequestsPayload =
             BinaryData.fromString(
@@ -46,7 +45,8 @@ public final class ReadmeSamples {
             purviewWorkflowClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
         // END: readme-sample-submitUserRequests
     }
-    public void approveWorkflowTask(){
+
+    public void approveWorkflowTask() {
         // BEGIN: readme-sample-approveWorkflowTask
         BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
         RequestOptions requestOptions = new RequestOptions();

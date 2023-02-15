@@ -7,7 +7,6 @@ package com.azure.analytics.purview.workflow.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class WorkflowDeleteTests extends PurviewWorkflowClientTestBase {
