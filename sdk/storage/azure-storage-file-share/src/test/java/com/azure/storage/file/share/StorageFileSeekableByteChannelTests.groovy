@@ -1,6 +1,7 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.HttpHeaders
+import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageChannelMode
 import com.azure.storage.common.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
@@ -13,7 +14,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelOptions
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -69,13 +69,15 @@ class StorageFileSeekableByteChannelTests extends APISpec {
     def "ReadBehavior read calls to client correctly"() {
         given:
         ShareFileClient client = Mock()
-        def behavior = new StorageSeekableBytechannelShareFileReadBehavior(client, conditions)
+        def behavior = new StorageSeekableByteChannelShareFileReadBehavior(client, conditions)
         def buffer = ByteBuffer.allocate(Constants.KB)
 
         when: "ReadBehavior.read() called"
         behavior.read(buffer, offset)
 
         then: "Expected ShareFileClient download parameters given"
+        // if this test throws null pointer exceptions, then the condition isn't matching and so the stubbed response is
+        // not being appropriately returned to the write behavior
         1 * client.downloadWithResponse(
             _,
             { ShareFileDownloadOptions options -> options.getRange().getStart() == offset &&
@@ -90,15 +92,58 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         0      | new ShareRequestConditions()
     }
 
+    @Unroll
+    def "ReadBehavior read graceful bad range"() {
+        given:
+        def fileSize = Constants.KB
+        def data = getRandomByteArray(fileSize)
+        primaryFileClient.create(fileSize)
+        primaryFileClient.upload(new ByteArrayInputStream(data), fileSize, null as ParallelTransferOptions)
+
+        def behavior = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null)
+        def buffer = ByteBuffer.allocate(fileSize)
+
+        when: "ReadBehavior.read() called"
+        def read = behavior.read(buffer, offset)
+
+        then: "graceful read"
+        notThrown(Throwable)
+
+        and: "correct amount read"
+        read == expectedRead
+        buffer.position() == expectedRead
+        behavior.getCachedLength() == fileSize
+
+        and: "if applicable, correct data read"
+        if (offset < fileSize) {
+            assert buffer.position() == expectedRead
+            assert buffer.array()[offset..-1] == data[offset..-1]
+        }
+
+        where:
+        offset        | expectedRead
+        500           | fileSize - 500 // overlap on end of file
+        fileSize      | -1             // starts at end of file
+        fileSize + 20 | -1             // completely past file
+
+    }
+
     def "E2E channel write"() {
         given:
+        def streamBufferSize = 50
+        def copyBufferSize = 40
         def data = getRandomByteArray(1024)
-        def channel = new StorageSeekableByteChannel(50, StorageChannelMode.WRITE, null,
+
+        when: "Channel initialized"
+        def channel = new StorageSeekableByteChannel(streamBufferSize, StorageChannelMode.WRITE, null,
             new StorageSeekableByteChannelShareFileWriteBehavior(primaryFileClient, null, null))
         primaryFileClient.create(data.length)
 
+        then: "Channel initialized to position zero"
+        channel.position() == 0
+
         when: "write to channel"
-        int copied = TestUtility.copy(new ByteArrayInputStream(data), channel, 50)
+        int copied = TestUtility.copy(new ByteArrayInputStream(data), channel, copyBufferSize)
 
         then: "channel position updated accordingly"
         copied == data.length
@@ -115,6 +160,36 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         downloadedData.toByteArray() == data
     }
 
+    def "E2E channel read"() {
+        given:
+        def data = getRandomByteArray(dataLength)
+        primaryFileClient.create(dataLength)
+        primaryFileClient.upload(new ByteArrayInputStream(data), data.length, null as ParallelTransferOptions)
+
+        when: "Channel initialized"
+        def channel = new StorageSeekableByteChannel(streamBufferSize, StorageChannelMode.READ,
+            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null), null)
+
+        then: "Channel initialized to position zero"
+        channel.position() == 0
+
+        when: "read from channel"
+        def downloadedData = new ByteArrayOutputStream()
+        int copied = TestUtility.copy(channel, downloadedData, copyBufferSize)
+
+        then: "channel position updated accordingly"
+        copied == dataLength
+        channel.position() == dataLength
+
+        and: "expected data downloaded"
+        downloadedData.toByteArray() == data
+
+        where:
+        streamBufferSize | copyBufferSize | dataLength
+        50               | 40             | Constants.KB
+        2 * Constants.KB | 40             | Constants.KB // initial fetch larger than resource size
+    }
+
     def "Client creates appropriate channel writemode"() {
         when: "make channel in write mode"
         def channel = primaryFileClient.getFileSeekableByteChannel(
@@ -128,7 +203,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         writeBehavior.lastWrittenMode == lastWrittenMode
 
         and: "channel ReadBehavior has appropriate values"
-        def readBehavior = channel.getReadBehavior() as StorageSeekableBytechannelShareFileReadBehavior
+        def readBehavior = channel.getReadBehavior() as StorageSeekableByteChannelShareFileReadBehavior
         readBehavior.client == primaryFileClient
         readBehavior.requestConditions == conditions
 
@@ -152,7 +227,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         writeBehavior.requestConditions == conditions
 
         and: "channel ReadBehavior has appropriate values"
-        def readBehavior = channel.getReadBehavior() as StorageSeekableBytechannelShareFileReadBehavior
+        def readBehavior = channel.getReadBehavior() as StorageSeekableByteChannelShareFileReadBehavior
         readBehavior.client == primaryFileClient
         readBehavior.requestConditions == conditions
 

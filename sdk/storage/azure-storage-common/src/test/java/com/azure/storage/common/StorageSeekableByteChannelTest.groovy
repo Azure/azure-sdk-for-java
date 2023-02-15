@@ -145,6 +145,43 @@ class StorageSeekableByteChannelTest extends Specification {
         0 * behavior.read(_, _)
     }
 
+    def "Read past resource end"() {
+        given:
+        def resourceSize = Constants.KB
+        StorageSeekableByteChannel.ReadBehavior behavior = Stub {
+            getCachedLength() >> resourceSize
+            read(_,_) >> { ByteBuffer dst, long sourceOffset ->
+                def toRead = Math.min(dst.remaining(), resourceSize - sourceOffset)
+                if (toRead > 0) {
+                    dst.put(new byte[toRead])
+                    return toRead
+                } else {
+                    return -1
+                }
+            }
+        }
+        def channel = new StorageSeekableByteChannel(resourceSize, StorageChannelMode.READ, behavior, null)
+
+        when: "read past resource end"
+        channel.position(offset)
+        def read = channel.read(ByteBuffer.allocate(resourceSize))
+
+        then: "Graceful operation"
+        notThrown(Throwable)
+
+        and: "Appropriate values"
+        read == expectedReadLength
+        channel.position() == resourceSize
+        channel.size() == resourceSize
+
+
+        where:
+        offset            | expectedReadLength
+        500               | resourceSize - 500 // overlap on end of resource
+        resourceSize      | -1                 // starts at end of resource
+        resourceSize + 20 | -1                 // completely past resource
+    }
+
     @Unroll
     def "Write"() {
         setup:

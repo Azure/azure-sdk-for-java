@@ -10,13 +10,13 @@ import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class StorageSeekableBytechannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
+public class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
     private final ShareFileClient client;
     private final ShareRequestConditions conditions;
 
-    private long _lastKnownResourceLength;
+    private Long lastKnownResourceLength;
 
-    public StorageSeekableBytechannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
+    public StorageSeekableByteChannelShareFileReadBehavior(ShareFileClient client, ShareRequestConditions conditions) {
         this.client = client;
         this.conditions = conditions;
     }
@@ -32,28 +32,40 @@ public class StorageSeekableBytechannelShareFileReadBehavior implements StorageS
     @Override
     public int read(ByteBuffer dst, long sourceOffset) {
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
-            int prevPosition = dst.position();
-            ShareFileDownloadResponse response = client.downloadWithResponse(
-                dstStream,
-                new ShareFileDownloadOptions().setRange(new ShareFileRange(sourceOffset, sourceOffset + dst.remaining() - 1))
+            int initialPosition = dst.position();
+            int actualLength = getCachedLength() == null
+                ? dst.remaining()
+                : (int) Math.min(dst.remaining(), getCachedLength() - sourceOffset);
+            if (actualLength <= 0) {
+                // TODO (jaschrep): If not etag/version locked, resource may have grown
+                return -1;
+            }
+
+            // TODO (jaschrep): If not etag/version locked, resource may have shrunk. Recover from bad range.
+            ShareFileDownloadResponse response = client.downloadWithResponse(dstStream, new ShareFileDownloadOptions()
+                    .setRange(new ShareFileRange(sourceOffset, sourceOffset + actualLength - 1))
                     .setRequestConditions(conditions),
                 null, null);
-
             updateResourceCachedState(response);
 
-            return dst.position() - prevPosition;
+            // the actual amount read may differ from the amount we calculated we'd read, ensure we return actual read
+            return dst.position() - initialPosition;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+
     private void updateResourceCachedState(ShareFileDownloadResponse response) {
+        if (response == null) {
+            return;
+        }
         String contentRange = response.getDeserializedHeaders().getContentRange();
-        _lastKnownResourceLength = Long.parseLong(contentRange.split("/")[1]);
+        lastKnownResourceLength = Long.parseLong(contentRange.split("/")[1]);
     }
 
     @Override
-    public long getCachedLength() {
-        return _lastKnownResourceLength;
+    public Long getCachedLength() {
+        return lastKnownResourceLength;
     }
 }

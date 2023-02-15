@@ -37,9 +37,9 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
 
         /**
          * Gets the last known length of the resource.
-         * @return The length in bytes.
+         * @return The length in bytes. Null if not yet known.
          */
-        long getCachedLength();
+        Long getCachedLength();
     }
 
     /**

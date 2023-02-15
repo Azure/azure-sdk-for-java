@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.StorageChannelMode;
 import com.azure.storage.common.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -165,7 +164,7 @@ public class ShareFileClient {
         // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
         Objects.requireNonNull(options, "'options' cannot be null.");
         return new StorageSeekableByteChannel(4 * Constants.MB, options.getChannelMode(),
-            new StorageSeekableBytechannelShareFileReadBehavior(this, options.getRequestConditions()),
+            new StorageSeekableByteChannelShareFileReadBehavior(this, options.getRequestConditions()),
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()));
     }
