@@ -4,6 +4,7 @@
 package com.azure.cognitiveservices.translator.authentication;
 
 import com.azure.core.credential.AzureKeyCredential;
+import java.util.Objects;
 
 /**
  * Regional Cognitive Services Key Credentials.
@@ -19,6 +20,9 @@ public class AzureRegionalKeyCredential {
      * @param region Azure region.
      */
     public AzureRegionalKeyCredential(AzureKeyCredential key, String region) {
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        Objects.requireNonNull(region, "'region' cannot be null.");
+        
         this.key = key;
         this.region = region;
     }

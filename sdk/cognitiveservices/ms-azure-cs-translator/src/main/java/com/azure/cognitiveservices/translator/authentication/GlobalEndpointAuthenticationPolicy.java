@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
@@ -26,6 +27,7 @@ public class GlobalEndpointAuthenticationPolicy implements HttpPipelinePolicy {
      */
     public GlobalEndpointAuthenticationPolicy(AzureRegionalKeyCredential credentials)
     {
+        Objects.requireNonNull(credentials, "'credentials' cannot be null.");
         this.credentials = credentials;
     }
     
