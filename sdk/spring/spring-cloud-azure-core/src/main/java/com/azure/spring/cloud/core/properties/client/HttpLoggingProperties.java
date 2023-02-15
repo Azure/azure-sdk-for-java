@@ -16,7 +16,7 @@ import java.util.Set;
 public final class HttpLoggingProperties implements HttpLoggingOptionsProvider.HttpLoggingOptions {
 
     /**
-     * Gets the level of detail to log on HTTP messages.
+     * The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is NONE.
      */
     private HttpLogDetailLevel level;
     /**
@@ -28,7 +28,7 @@ public final class HttpLoggingProperties implements HttpLoggingOptionsProvider.H
      */
     private final Set<String> allowedQueryParamNames = new HashSet<>();
     /**
-     * Whether to pretty print the message bodies.
+     * Whether to pretty print the message bodies. The default value is false.
      */
     private Boolean prettyPrintBody;
 
