@@ -195,8 +195,12 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
     @Override
     public long size() throws IOException {
         assertOpen();
-        return readBehavior.getCachedLength();
-        // TODO (jaschrep): what about when in write mode?
+        if (mode == StorageChannelMode.READ) {
+            // TODO (jaschrep): what if no cached length yet?
+            return readBehavior.getCachedLength();
+        } else {
+            return absolutePosition;
+        }
     }
 
     @Override

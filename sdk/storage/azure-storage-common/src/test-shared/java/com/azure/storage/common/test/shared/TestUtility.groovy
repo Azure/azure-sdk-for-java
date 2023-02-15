@@ -17,7 +17,10 @@ class TestUtility {
         def temp = new byte[copySize]
         while ((read = src.read(temp)) != -1) {
             totalRead += read
-            dst.write(ByteBuffer.wrap(temp, 0, read))
+            int written = 0;
+            while (written < read) {
+                written += dst.write(ByteBuffer.wrap(temp, written, read - written))
+            }
         }
         return totalRead
     }
