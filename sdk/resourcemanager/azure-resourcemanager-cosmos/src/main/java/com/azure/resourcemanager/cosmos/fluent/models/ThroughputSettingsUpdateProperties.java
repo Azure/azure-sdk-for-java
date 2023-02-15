@@ -18,6 +18,10 @@ public final class ThroughputSettingsUpdateProperties {
     @JsonProperty(value = "resource", required = true)
     private ThroughputSettingsResource resource;
 
+    /** Creates an instance of ThroughputSettingsUpdateProperties class. */
+    public ThroughputSettingsUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a resource throughput.
      *

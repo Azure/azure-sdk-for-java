@@ -28,6 +28,10 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of SqlContainerGetPropertiesResource class. */
+    public SqlContainerGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *
@@ -96,6 +100,13 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     public SqlContainerGetPropertiesResource withConflictResolutionPolicy(
         ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
+        super.withClientEncryptionPolicy(clientEncryptionPolicy);
         return this;
     }
 
