@@ -22,8 +22,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsComp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.models.CosmosMeterName;
-import com.azure.cosmos.models.CosmosMeterOptions;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.FunctionCounter;
@@ -63,8 +63,8 @@ public final class ClientTelemetryMetrics {
 
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
-    private static CosmosMeterOptions cpuOptions;
-    private static CosmosMeterOptions memoryOptions;
+    private static CosmosMicrometerMeterOptions cpuOptions;
+    private static CosmosMicrometerMeterOptions memoryOptions;
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -106,7 +106,7 @@ public final class ClientTelemetryMetrics {
 
         if (cpuOptions.isEnabled()) {
             DistributionSummary averageSystemCpuUsageMeter = DistributionSummary
-                .builder(CosmosMeterName.SYSTEM_CPU.toString())
+                .builder(CosmosMetricName.SYSTEM_CPU.toString())
                 .baseUnit("%")
                 .description("Avg. System CPU load")
                 .maximumExpectedValue(100d)
@@ -118,7 +118,7 @@ public final class ClientTelemetryMetrics {
 
         if (memoryOptions.isEnabled()) {
             DistributionSummary freeMemoryAvailableInMBMeter = DistributionSummary
-                .builder(CosmosMeterName.SYSTEM_MEMORY_FREE.toString())
+                .builder(CosmosMetricName.SYSTEM_MEMORY_FREE.toString())
                 .baseUnit("MB")
                 .description("Free memory available")
                 .publishPercentiles()
@@ -193,8 +193,8 @@ public final class ClientTelemetryMetrics {
 
     public static synchronized void add(
         MeterRegistry registry,
-        CosmosMeterOptions cpuOptions,
-        CosmosMeterOptions memoryOptions) {
+        CosmosMicrometerMeterOptions cpuOptions,
+        CosmosMicrometerMeterOptions memoryOptions) {
         if (registryRefCount
             .computeIfAbsent(registry, (meterRegistry) -> { return new AtomicLong(0); })
             .incrementAndGet() == 1L) {
@@ -296,7 +296,7 @@ public final class ClientTelemetryMetrics {
         return Tags.of(effectiveTags);
     }
 
-    private static Tags getEffectiveTags(Tags tags, CosmosMeterOptions meterOptions) {
+    private static Tags getEffectiveTags(Tags tags, CosmosMicrometerMeterOptions meterOptions) {
         EnumSet<TagName> suppressedTags = optionsAccessor.getSuppressedTagNames(meterOptions);
         if (suppressedTags == null || suppressedTags.isEmpty()) {
             return tags;
@@ -337,9 +337,9 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnostics diagnostics,
             Set<String> contactedRegions) {
 
-            CosmosMeterOptions callsOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions callsOptions = clientAccessor.getMeterOptions(
                 cosmosAsyncClient,
-                CosmosMeterName.OPERATION_SUMMARY_CALLS);
+                CosmosMetricName.OPERATION_SUMMARY_CALLS);
 
             if (callsOptions.isEnabled()) {
                 Counter operationsCounter = Counter
@@ -351,9 +351,9 @@ public final class ClientTelemetryMetrics {
                 operationsCounter.increment();
             }
 
-            CosmosMeterOptions requestChargeOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions requestChargeOptions = clientAccessor.getMeterOptions(
                 cosmosAsyncClient,
-                CosmosMeterName.OPERATION_SUMMARY_REQUEST_CHARGE);
+                CosmosMetricName.OPERATION_SUMMARY_REQUEST_CHARGE);
             if (requestChargeOptions.isEnabled()) {
                 DistributionSummary requestChargeMeter = DistributionSummary
                     .builder(requestChargeOptions.getMeterName().toString())
@@ -368,9 +368,9 @@ public final class ClientTelemetryMetrics {
             }
 
             if (this.metricCategories.contains(MetricCategory.OperationDetails)) {
-                CosmosMeterOptions regionsOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions regionsOptions = clientAccessor.getMeterOptions(
                     cosmosAsyncClient,
-                    CosmosMeterName.OPERATION_DETAILS_REGIONS_CONTACTED);
+                    CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
                 if (regionsOptions.isEnabled()) {
                     DistributionSummary regionsContactedMeter = DistributionSummary
                         .builder(regionsOptions.getMeterName().toString())
@@ -389,9 +389,9 @@ public final class ClientTelemetryMetrics {
                 this.recordItemCounts(cosmosAsyncClient, maxItemCount, actualItemCount);
             }
 
-            CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                 cosmosAsyncClient,
-                CosmosMeterName.OPERATION_SUMMARY_LATENCY);
+                CosmosMetricName.OPERATION_SUMMARY_LATENCY);
             if (latencyOptions.isEnabled()) {
                 Timer latencyMeter = Timer
                     .builder(latencyOptions.getMeterName().toString())
@@ -450,9 +450,9 @@ public final class ClientTelemetryMetrics {
                 createQueryPlanTags(metricTagNames)
             );
 
-            CosmosMeterOptions requestsOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions requestsOptions = clientAccessor.getMeterOptions(
                 cosmosAsyncClient,
-                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
             if (requestsOptions.isEnabled()) {
                 Counter requestCounter = Counter
                     .builder(requestsOptions.getMeterName().toString())
@@ -466,9 +466,9 @@ public final class ClientTelemetryMetrics {
             Duration latency = queryPlanDiagnostics.getDuration();
 
             if (latency != null) {
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                     cosmosAsyncClient,
-                    CosmosMeterName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
                 if (latencyOptions.isEnabled()) {
                     Timer requestLatencyMeter = Timer
                         .builder(latencyOptions.getMeterName().toString())
@@ -484,7 +484,7 @@ public final class ClientTelemetryMetrics {
 
             recordRequestTimeline(
                 cosmosAsyncClient,
-                CosmosMeterName.REQUEST_DETAILS_GATEWAY_TIMELINE,
+                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
                 queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
@@ -493,9 +493,9 @@ public final class ClientTelemetryMetrics {
             int requestPayloadSizeInBytes,
             int responsePayloadSizeInBytes
         ) {
-            CosmosMeterOptions reqSizeOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions reqSizeOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.REQUEST_SUMMARY_SIZE_REQUEST);
+                CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
             if (reqSizeOptions.isEnabled()) {
                 DistributionSummary requestPayloadSizeMeter = DistributionSummary
                     .builder(reqSizeOptions.getMeterName().toString())
@@ -509,9 +509,9 @@ public final class ClientTelemetryMetrics {
                 requestPayloadSizeMeter.record(requestPayloadSizeInBytes);
             }
 
-            CosmosMeterOptions rspSizeOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions rspSizeOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.REQUEST_SUMMARY_SIZE_RESPONSE);
+                CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
             if (rspSizeOptions.isEnabled()) {
                 DistributionSummary responsePayloadSizeMeter = DistributionSummary
                     .builder(rspSizeOptions.getMeterName().toString())
@@ -533,9 +533,9 @@ public final class ClientTelemetryMetrics {
         ) {
             if (maxItemCount > 0 && this.metricCategories.contains(MetricCategory.OperationDetails)) {
 
-                CosmosMeterOptions maxItemCountOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions maxItemCountOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.OPERATION_DETAILS_MAX_ITEM_COUNT);
+                    CosmosMetricName.OPERATION_DETAILS_MAX_ITEM_COUNT);
                 if (maxItemCountOptions.isEnabled()) {
                     DistributionSummary maxItemCountMeter = DistributionSummary
                         .builder(maxItemCountOptions.getMeterName().toString())
@@ -549,9 +549,9 @@ public final class ClientTelemetryMetrics {
                     maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 100_000d)));
                 }
 
-                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
+                    CosmosMetricName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
                 if (actualItemCountOptions.isEnabled()) {
                     DistributionSummary actualItemCountMeter = DistributionSummary
                         .builder(actualItemCountOptions.getMeterName().toString())
@@ -671,9 +671,9 @@ public final class ClientTelemetryMetrics {
                 return;
             }
 
-            CosmosMeterOptions acquiredOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions acquiredOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_ACQUIRED);
+                CosmosMetricName.LEGACY_DIRECT_ENDPOINT_STATISTICS_ACQUIRED);
             if (acquiredOptions.isEnabled()) {
                 DistributionSummary acquiredChannelsMeter = DistributionSummary
                     .builder(acquiredOptions.getMeterName().toString())
@@ -688,9 +688,9 @@ public final class ClientTelemetryMetrics {
                 acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
             }
 
-            CosmosMeterOptions availableOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions availableOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_AVAILABLE);
+                CosmosMetricName.LEGACY_DIRECT_ENDPOINT_STATISTICS_AVAILABLE);
             if (availableOptions.isEnabled()) {
                 DistributionSummary availableChannelsMeter = DistributionSummary
                     .builder(availableOptions.getMeterName().toString())
@@ -704,9 +704,9 @@ public final class ClientTelemetryMetrics {
                 availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
             }
 
-            CosmosMeterOptions inflightOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions inflightOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.LEGACY_DIRECT_ENDPOINT_STATISTICS_INFLIGHT);
+                CosmosMetricName.LEGACY_DIRECT_ENDPOINT_STATISTICS_INFLIGHT);
             if (inflightOptions.isEnabled()) {
                 DistributionSummary inflightRequestsMeter = DistributionSummary
                     .builder(inflightOptions.getMeterName().toString())
@@ -723,7 +723,7 @@ public final class ClientTelemetryMetrics {
 
         private void recordRequestTimeline(
             CosmosAsyncClient client,
-            CosmosMeterName name,
+            CosmosMetricName name,
             RequestTimeline requestTimeline,
             Tags requestTags) {
 
@@ -731,7 +731,7 @@ public final class ClientTelemetryMetrics {
                 return;
             }
 
-            CosmosMeterOptions timelineOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions timelineOptions = clientAccessor.getMeterOptions(
                 client,
                 name);
             if (!timelineOptions.isEnabled()) {
@@ -785,9 +785,9 @@ public final class ClientTelemetryMetrics {
 
                 if (backendLatency != null) {
 
-                    CosmosMeterOptions beLatencyOptions = clientAccessor.getMeterOptions(
+                    CosmosMicrometerMeterOptions beLatencyOptions = clientAccessor.getMeterOptions(
                         client,
-                        CosmosMeterName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
+                        CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
                     if (beLatencyOptions.isEnabled()) {
                         DistributionSummary backendRequestLatencyMeter = DistributionSummary
                             .builder(beLatencyOptions.getMeterName().toString())
@@ -802,9 +802,9 @@ public final class ClientTelemetryMetrics {
                     }
                 }
 
-                CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions ruOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
                 if (ruOptions.isEnabled()) {
                     double requestCharge = storeResponseDiagnostics.getRequestCharge();
                     DistributionSummary requestChargeMeter = DistributionSummary
@@ -819,9 +819,9 @@ public final class ClientTelemetryMetrics {
                     requestChargeMeter.record(Math.min(requestCharge, 100_000d));
                 }
 
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_LATENCY);
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
                 if (latencyOptions.isEnabled()) {
                     Duration latency = responseStatistics.getDuration();
                     if (latency != null) {
@@ -837,9 +837,9 @@ public final class ClientTelemetryMetrics {
                     }
                 }
 
-                CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions reqOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.REQUEST_SUMMARY_DIRECT_REQUESTS);
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
                 if (reqOptions.isEnabled()) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
@@ -853,7 +853,7 @@ public final class ClientTelemetryMetrics {
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
                         client,
-                        CosmosMeterName.REQUEST_DETAILS_DIRECT_TIMELINE,
+                        CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE,
                         storeResponseDiagnostics.getRequestTimeline(), requestTags);
                 }
 
@@ -897,9 +897,9 @@ public final class ClientTelemetryMetrics {
                     null)
             );
 
-            CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions reqOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
             if (reqOptions.isEnabled()) {
                 Counter requestCounter = Counter
                     .builder(reqOptions.getMeterName().toString())
@@ -910,9 +910,9 @@ public final class ClientTelemetryMetrics {
                 requestCounter.increment();
             }
 
-            CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
+            CosmosMicrometerMeterOptions ruOptions = clientAccessor.getMeterOptions(
                 client,
-                CosmosMeterName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
+                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
             if (ruOptions.isEnabled()) {
                 double requestCharge = gatewayStatistics.getRequestCharge();
                 DistributionSummary requestChargeMeter = DistributionSummary
@@ -928,9 +928,9 @@ public final class ClientTelemetryMetrics {
             }
 
             if (latency != null) {
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
                 if (latencyOptions.isEnabled()) {
                     Timer requestLatencyMeter = Timer
                         .builder(latencyOptions.getMeterName().toString())
@@ -946,7 +946,7 @@ public final class ClientTelemetryMetrics {
 
             recordRequestTimeline(
                 client,
-                CosmosMeterName.REQUEST_DETAILS_GATEWAY_TIMELINE,
+                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
                 gatewayStatistics.getRequestTimeline(), requestTags);
         }
 
@@ -986,9 +986,9 @@ public final class ClientTelemetryMetrics {
                     addressResolutionStatistics.getStartTimeUTC(),
                     addressResolutionStatistics.getEndTimeUTC());
 
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
+                    CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
                 if (latencyOptions.isEnabled()) {
                     Timer addressResolutionLatencyMeter = Timer
                         .builder(latencyOptions.getMeterName().toString())
@@ -1001,9 +1001,9 @@ public final class ClientTelemetryMetrics {
                     addressResolutionLatencyMeter.record(latency);
                 }
 
-                CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
+                CosmosMicrometerMeterOptions reqOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMeterName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
+                    CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
                 if (reqOptions.isEnabled()) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
@@ -1018,65 +1018,18 @@ public final class ClientTelemetryMetrics {
     }
 
     private static class RntbdMetricsV2 implements RntbdMetricsCompletionRecorder {
-        private final DistributionSummary requestSize;
-        private final Timer requests;
-        private final Timer responseErrors;
-        private final DistributionSummary responseSize;
-        private final Timer responseSuccesses;
-        private final EnumSet<MetricCategory> metricCategories;
+        private final RntbdTransportClient client;
+        private final Tags tags;
+        private final MeterRegistry registry;
 
         private RntbdMetricsV2(MeterRegistry registry, RntbdTransportClient client, RntbdEndpoint endpoint) {
-            Tags tags = Tags.of(endpoint.clientMetricTag());
-            this.metricCategories = client.getMetricCategories();
-            if (metricCategories.contains(MetricCategory.DirectRequests)) {
+            this.tags = Tags.of(endpoint.clientMetricTag(), endpoint.tag());
+            this.client = client;
+            this.registry = registry;
+            if (this.client.getMetricCategories().contains(MetricCategory.DirectRequests)) {
 
-                CosmosMeterOptions options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY);
-                if (options.isEnabled()) {
-                    this.requests = Timer
-                        .builder(options.getMeterName().toString())
-                        .description("RNTBD request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(optionsAccessor.getPercentiles(options))
-                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
-                        .tags(getEffectiveTags(tags, options))
-                        .register(registry);
-                } else {
-                    this.requests = null;
-                }
-
-                options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY_FAILED);
-                if (options.isEnabled()) {
-                    this.responseErrors = Timer
-                        .builder(options.getMeterName().toString())
-                        .description("RNTBD failed request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(optionsAccessor.getPercentiles(options))
-                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
-                        .tags(getEffectiveTags(tags, options))
-                        .register(registry);
-                } else {
-                    this.responseErrors = null;
-                }
-
-                options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_LATENCY_SUCCESS);
-                if (options.isEnabled()) {
-                    this.responseSuccesses = Timer
-                        .builder(options.getMeterName().toString())
-                        .description("RNTBD successful request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(optionsAccessor.getPercentiles(options))
-                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
-                        .tags(getEffectiveTags(tags, options))
-                        .register(registry);
-                } else {
-                    this.responseSuccesses = null;
-                }
-
-                options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_CONCURRENT_COUNT);
+                CosmosMicrometerMeterOptions options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_CONCURRENT_COUNT);
                 if (options.isEnabled()) {
                     Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::concurrentRequests)
                          .description("RNTBD concurrent requests (executing or queued request count)")
@@ -1085,54 +1038,18 @@ public final class ClientTelemetryMetrics {
                 }
 
                 options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_QUEUED_COUNT);
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_QUEUED_COUNT);
                 if (options.isEnabled()) {
                     Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::requestQueueLength)
                          .description("RNTBD queued request count")
                          .tags(getEffectiveTags(tags, options))
                          .register(registry);
                 }
-
-                options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_SIZE_REQUEST);
-                if (options.isEnabled()) {
-                    this.requestSize = DistributionSummary.builder(options.getMeterName().toString())
-                                                          .description("RNTBD request size (bytes)")
-                                                          .baseUnit("bytes")
-                                                          .tags(getEffectiveTags(tags, options))
-                                                          .maximumExpectedValue(16_000_000d)
-                                                          .publishPercentileHistogram(false)
-                                                          .publishPercentiles()
-                                                          .register(registry);
-                } else {
-                    this.requestSize = null;
-                }
-
-                options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_REQUEST_SIZE_RESPONSE);
-                if (options.isEnabled()) {
-                    this.responseSize = DistributionSummary.builder(options.getMeterName().toString())
-                                                           .description("RNTBD response size (bytes)")
-                                                           .baseUnit("bytes")
-                                                           .tags(getEffectiveTags(tags, options))
-                                                           .maximumExpectedValue(16_000_000d)
-                                                           .publishPercentileHistogram(false)
-                                                           .publishPercentiles()
-                                                           .register(registry);
-                } else {
-                    this.responseSize = null;
-                }
-            } else {
-                this.requests = null;
-                this.responseErrors = null;
-                this.responseSuccesses = null;
-                this.requestSize = null;
-                this.responseSize= null;
             }
 
-            if (metricCategories.contains(MetricCategory.DirectEndpoints)) {
-                CosmosMeterOptions options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_ENDPOINTS_COUNT);
+            if (this.client.getMetricCategories().contains(MetricCategory.DirectEndpoints)) {
+                CosmosMicrometerMeterOptions options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_ENDPOINTS_COUNT);
                 if (options.isEnabled()) {
                     Gauge.builder(options.getMeterName().toString(), client, RntbdTransportClient::endpointCount)
                          .description("RNTBD endpoint count")
@@ -1140,7 +1057,7 @@ public final class ClientTelemetryMetrics {
                 }
 
                 options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_ENDPOINTS_EVICTED);
+                    .getMeterOptions(CosmosMetricName.DIRECT_ENDPOINTS_EVICTED);
                 if (options.isEnabled()) {
                     FunctionCounter.builder(
                         options.getMeterName().toString(),
@@ -1151,9 +1068,9 @@ public final class ClientTelemetryMetrics {
                 }
             }
 
-            if (metricCategories.contains(MetricCategory.DirectChannels)) {
-                CosmosMeterOptions options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_ACQUIRED_COUNT);
+            if (this.client.getMetricCategories().contains(MetricCategory.DirectChannels)) {
+                CosmosMicrometerMeterOptions options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_CHANNELS_ACQUIRED_COUNT);
                 if (options.isEnabled()) {
                     FunctionCounter.builder(
                         options.getMeterName().toString(),
@@ -1165,7 +1082,7 @@ public final class ClientTelemetryMetrics {
                 }
 
                 options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_CLOSED_COUNT);
+                    .getMeterOptions(CosmosMetricName.DIRECT_CHANNELS_CLOSED_COUNT);
                 if (options.isEnabled()) {
                     FunctionCounter.builder(
                         options.getMeterName().toString(),
@@ -1177,7 +1094,7 @@ public final class ClientTelemetryMetrics {
                 }
 
                 options = client
-                    .getMeterOptions(CosmosMeterName.DIRECT_CHANNELS_AVAILABLE_COUNT);
+                    .getMeterOptions(CosmosMetricName.DIRECT_CHANNELS_AVAILABLE_COUNT);
                 if (options.isEnabled()) {
                     Gauge.builder(options.getMeterName().toString(), endpoint, RntbdEndpoint::channelsAvailableMetric)
                          .description("RNTBD available channel count")
@@ -1188,17 +1105,83 @@ public final class ClientTelemetryMetrics {
         }
 
         public void markComplete(RntbdRequestRecord requestRecord) {
-            if (this.metricCategories.contains(MetricCategory.DirectRequests)) {
-                requestRecord.stop(this.requests, requestRecord.isCompletedExceptionally()
-                    ? this.responseErrors
-                    : this.responseSuccesses);
+            if (this.client.getMetricCategories().contains(MetricCategory.DirectRequests)) {
 
-                if (this.requestSize != null) {
-                    this.requestSize.record(requestRecord.requestLength());
+                Timer requests = null;
+                Timer requestsSuccess = null;
+                Timer requestsFailed = null;
+
+                CosmosMicrometerMeterOptions options = this.client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_LATENCY);
+
+                if (options.isEnabled()) {
+                    requests = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(this.tags, options))
+                        .register(this.registry);
                 }
 
-                if (this.responseSize != null) {
-                    this.responseSize.record(requestRecord.responseLength());
+                options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_LATENCY_FAILED);
+                if (options.isEnabled()) {
+                    requestsFailed = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD failed request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(tags, options))
+                        .register(registry);
+                }
+
+                options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_LATENCY_SUCCESS);
+                if (options.isEnabled()) {
+                    requestsSuccess = Timer
+                        .builder(options.getMeterName().toString())
+                        .description("RNTBD successful request latency")
+                        .maximumExpectedValue(Duration.ofSeconds(300))
+                        .publishPercentiles(optionsAccessor.getPercentiles(options))
+                        .publishPercentileHistogram(optionsAccessor.isHistogramPublishingEnabled(options))
+                        .tags(getEffectiveTags(tags, options))
+                        .register(registry);
+                }
+
+                requestRecord.stop(
+                    requests,
+                    requestRecord.isCompletedExceptionally() ? requestsFailed : requestsSuccess);
+
+                options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_SIZE_REQUEST);
+                if (options.isEnabled()) {
+                    DistributionSummary requestSize = DistributionSummary.builder(options.getMeterName().toString())
+                                                          .description("RNTBD request size (bytes)")
+                                                          .baseUnit("bytes")
+                                                          .tags(getEffectiveTags(tags, options))
+                                                          .maximumExpectedValue(16_000_000d)
+                                                          .publishPercentileHistogram(false)
+                                                          .publishPercentiles()
+                                                          .register(registry);
+                    requestSize.record(requestRecord.requestLength());
+                }
+
+                options = client
+                    .getMeterOptions(CosmosMetricName.DIRECT_REQUEST_SIZE_RESPONSE);
+                if (options.isEnabled()) {
+                    DistributionSummary responseSize = DistributionSummary.builder(options.getMeterName().toString())
+                                                           .description("RNTBD response size (bytes)")
+                                                           .baseUnit("bytes")
+                                                           .tags(getEffectiveTags(tags, options))
+                                                           .maximumExpectedValue(16_000_000d)
+                                                           .publishPercentileHistogram(false)
+                                                           .publishPercentiles()
+                                                           .register(registry);
+
+                    responseSize.record(requestRecord.responseLength());
                 }
             } else {
                 requestRecord.stop();

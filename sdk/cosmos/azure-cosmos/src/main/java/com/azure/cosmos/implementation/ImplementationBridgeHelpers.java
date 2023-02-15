@@ -38,8 +38,8 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosMeterName;
-import com.azure.cosmos.models.CosmosMeterOptions;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -1048,7 +1048,7 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
-            CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMeterName name);
+            CosmosMicrometerMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
         }
     }
 
@@ -1083,9 +1083,9 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosMeterOptionsAccessor {
-            EnumSet<TagName> getSuppressedTagNames(CosmosMeterOptions options);
-            boolean isHistogramPublishingEnabled(CosmosMeterOptions options);
-            double[] getPercentiles(CosmosMeterOptions options);
+            EnumSet<TagName> getSuppressedTagNames(CosmosMicrometerMeterOptions options);
+            boolean isHistogramPublishingEnabled(CosmosMicrometerMeterOptions options);
+            double[] getPercentiles(CosmosMicrometerMeterOptions options);
         }
     }
 
@@ -1173,8 +1173,8 @@ public class ImplementationBridgeHelpers {
             Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
             void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
-            CosmosMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMeterName name);
-            CosmosMeterOptions createDisabledMeterOptions(CosmosMeterName name);
+            CosmosMicrometerMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMetricName name);
+            CosmosMicrometerMeterOptions createDisabledMeterOptions(CosmosMetricName name);
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);

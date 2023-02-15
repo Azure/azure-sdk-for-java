@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.MetricsOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 
@@ -15,18 +14,19 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Options of a Cosmos client-side meter that can be used to enable/disable it, change the percentile and histogram
  * capturing (if percentiles are applicable for the meter) and allows suppressing tags that are not desired.
  */
-public final class CosmosMeterOptions extends MetricsOptions {
+public final class CosmosMicrometerMeterOptions {
 
-    private final CosmosMeterName meterName;
+    private final CosmosMetricName meterName;
     private boolean isHistogramPublishingEnabled;
     private double[] percentiles;
     private EnumSet<TagName> suppressedTagNames;
+    private boolean isEnabled;
 
     /**
      * Instantiates new options for a specific Cosmos DB meter
      */
-    CosmosMeterOptions(
-        CosmosMeterName meterName,
+    CosmosMicrometerMeterOptions(
+        CosmosMetricName meterName,
         boolean isHistogramPublishingEnabled,
         double[] percentiles) {
 
@@ -36,13 +36,14 @@ public final class CosmosMeterOptions extends MetricsOptions {
         this.isHistogramPublishingEnabled = isHistogramPublishingEnabled;
         this.percentiles = percentiles;
         this.suppressedTagNames = EnumSet.noneOf(TagName.class);
+        this.isEnabled = true;
     }
 
     /**
      * Gets the name of the meter these options are applicable for
      * @return the meter name for these options
      */
-    public CosmosMeterName getMeterName() {
+    public CosmosMetricName getMeterName() {
         return this.meterName;
     }
 
@@ -52,10 +53,10 @@ public final class CosmosMeterOptions extends MetricsOptions {
      * @param tags - the tags to be used (when applicable) for this meter
      * @return current CosmosMeterOptions instance
      */
-    public CosmosMeterOptions suppressTagNames(CosmosMeterTagName... tags) {
+    public CosmosMicrometerMeterOptions suppressTagNames(CosmosMetricTagName... tags) {
         EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
         if (tags != null && tags.length > 0) {
-            for (CosmosMeterTagName t: tags) {
+            for (CosmosMetricTagName t: tags) {
                 for (TagName tagName: t.getTagNames()) {
                     if (!TagName.MINIMUM_TAGS.contains(tagName)) {
                         newTagNames.add(tagName);
@@ -75,7 +76,7 @@ public final class CosmosMeterOptions extends MetricsOptions {
      * @param isEnabled - a flag indicating whether histogram publishing is enabled for this meter
      * @return current CosmosMeterOptions instance
      */
-    public CosmosMeterOptions histogramPublishingEnabled(boolean isEnabled) {
+    public CosmosMicrometerMeterOptions histogramPublishingEnabled(boolean isEnabled) {
         this.isHistogramPublishingEnabled = isEnabled;
 
         return this;
@@ -87,7 +88,7 @@ public final class CosmosMeterOptions extends MetricsOptions {
      * @param percentiles - a flag indicating whether histogram publishing is enabled for this meter
      * @return current CosmosMeterOptions instance
      */
-    public CosmosMeterOptions percentiles(double... percentiles) {
+    public CosmosMicrometerMeterOptions percentiles(double... percentiles) {
         if (percentiles == null || percentiles.length == 0) {
             this.percentiles = null;
         } else {
@@ -97,13 +98,24 @@ public final class CosmosMeterOptions extends MetricsOptions {
         return this;
     }
 
+
     /**
-     * {@inheritDoc}
+     * Enables or disables this meter. By default, meters are enabled.
+     *
+     * @param enabled pass {@code true} to enable the meter.
+     * @return the updated {@code MetricsOptions} object.
      */
-    @Override
-    public CosmosMeterOptions setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
+    public CosmosMicrometerMeterOptions setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
         return this;
+    }
+
+    /**
+     * Flag indicating if this meter is currently enabled.
+     * @return {@code true} if meter is currently enabled, {@code false} otherwise.
+     */
+    public boolean isEnabled() {
+        return this.isEnabled;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -113,17 +125,17 @@ public final class CosmosMeterOptions extends MetricsOptions {
         ImplementationBridgeHelpers.CosmosMeterOptionsHelper.setCosmosMeterOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosMeterOptionsHelper.CosmosMeterOptionsAccessor() {
                 @Override
-                public EnumSet<TagName> getSuppressedTagNames(CosmosMeterOptions options) {
+                public EnumSet<TagName> getSuppressedTagNames(CosmosMicrometerMeterOptions options) {
                     return options.suppressedTagNames;
                 }
 
                 @Override
-                public boolean isHistogramPublishingEnabled(CosmosMeterOptions options) {
+                public boolean isHistogramPublishingEnabled(CosmosMicrometerMeterOptions options) {
                     return options.isHistogramPublishingEnabled;
                 }
 
                 @Override
-                public double[] getPercentiles(CosmosMeterOptions options) {
+                public double[] getPercentiles(CosmosMicrometerMeterOptions options) {
                     return options.percentiles;
                 }
             }

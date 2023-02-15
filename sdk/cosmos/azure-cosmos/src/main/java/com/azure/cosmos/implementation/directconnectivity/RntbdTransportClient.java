@@ -19,8 +19,8 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.*;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosMeterName;
-import com.azure.cosmos.models.CosmosMeterOptions;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -378,7 +378,7 @@ public class RntbdTransportClient extends TransportClient {
                 .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
     }
 
-    public CosmosMeterOptions getMeterOptions(CosmosMeterName name) {
+    public CosmosMicrometerMeterOptions getMeterOptions(CosmosMetricName name) {
         return this.metricConfig != null ?
             ImplementationBridgeHelpers
                 .CosmosClientTelemetryConfigHelper

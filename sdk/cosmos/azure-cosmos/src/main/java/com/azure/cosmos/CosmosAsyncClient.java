@@ -28,8 +28,8 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosMeterName;
-import com.azure.cosmos.models.CosmosMeterOptions;
+import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -191,10 +191,10 @@ public final class CosmosAsyncClient implements Closeable {
             .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
-        CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
-            .getMeterOptions(effectiveTelemetryConfig, CosmosMeterName.SYSTEM_CPU);
-        CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
-            .getMeterOptions(effectiveTelemetryConfig, CosmosMeterName.SYSTEM_MEMORY_FREE);
+        CosmosMicrometerMeterOptions cpuMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
+        CosmosMicrometerMeterOptions memoryMeterOptions = telemetryConfigAccessor
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
 
 
         if (clientMetricRegistrySnapshot != null) {
@@ -763,7 +763,7 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMeterName name) {
+                public CosmosMicrometerMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);
                 }

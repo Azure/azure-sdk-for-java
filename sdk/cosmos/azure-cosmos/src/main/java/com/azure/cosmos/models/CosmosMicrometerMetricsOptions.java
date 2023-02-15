@@ -7,9 +7,7 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Tag;
 
-import java.lang.reflect.Array;
 import java.util.EnumSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,7 +22,7 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private EnumSet<TagName> defaultTagNames = TagName.DEFAULT_TAGS.clone();
     private double[] defaultPercentiles = { 0.95, 0.99 };
     private boolean defaultShouldPublishHistograms = true;
-    private final ConcurrentHashMap<CosmosMeterName, CosmosMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<CosmosMetricName, CosmosMicrometerMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
 
     /**
      * Instantiates new Micrometer-specific Azure Cosmos DB SDK metrics options
@@ -54,21 +52,21 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
 
     /**
      * Sets the default tags that should be used for metrics (where applicable) unless overridden for a specific
-     * meter in its {@link CosmosMeterOptions}
+     * meter in its {@link CosmosMicrometerMeterOptions}
      * By default all applicable tags are added for each metric. Adding tags/dimensions especially with high
      * cardinality has some overhead - so, this method allows modifying the set of tags to be applied when some are
      * not relevant in a certain use case.
      *
      * @param tags - the default tags to be used (when they are applicable to a specific meter and there is no
-     *     override in {@link CosmosMeterOptions} for that meter.
+     *     override in {@link CosmosMicrometerMeterOptions} for that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
-    public CosmosMicrometerMetricsOptions defaultTagNames(CosmosMeterTagName... tags) {
+    public CosmosMicrometerMetricsOptions defaultTagNames(CosmosMetricTagName... tags) {
         if (tags == null || tags.length == 0) {
             this.defaultTagNames = TagName.DEFAULT_TAGS.clone();
         } else {
             EnumSet<TagName> newTagNames = TagName.MINIMUM_TAGS.clone();
-            for (CosmosMeterTagName t: tags) {
+            for (CosmosMetricTagName t: tags) {
                 for (TagName tagName: t.getTagNames()) {
                     newTagNames.add(tagName);
                 }
@@ -82,12 +80,12 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
 
     /**
      * Sets the default percentiles that should be captured for metrics (where applicable) unless overridden for a
-     * specific meter in its {@link CosmosMeterOptions}
+     * specific meter in its {@link CosmosMicrometerMeterOptions}
      * By default percentiles 0.95 and 0.99 are captured. If percentiles is null or empty no percentiles will be
      * captured.
      *
      * @param percentiles - the default percentiles to be captured (when they are applicable to a specific meter and
-     *     there is no override in {@link CosmosMeterOptions} for that meter.
+     *     there is no override in {@link CosmosMicrometerMeterOptions} for that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
     public CosmosMicrometerMetricsOptions defaultPercentiles(double... percentiles) {
@@ -109,12 +107,12 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
 
     /**
      * Sets a flag indicating whether by default histograms should be published for metrics (where applicable) unless
-     * overridden for a specific meter in its {@link CosmosMeterOptions}
+     * overridden for a specific meter in its {@link CosmosMicrometerMeterOptions}
      * By default histograms are published. Publishing histograms has its overhead - so, this method allows disabling
      * histograms by default.
      *
      * @param publishHistograms -  a flag indicating whether by default histograms should be published for metrics
-     *     (when they are applicable to a specific meter and there is no override in {@link CosmosMeterOptions} for
+     *     (when they are applicable to a specific meter and there is no override in {@link CosmosMicrometerMeterOptions} for
      *     that meter.
      * @return current CosmosMicrometerMetricsOptions instance
      */
@@ -146,12 +144,12 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * @param categories - a comma-separated list of metric categories that should be emitted
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosMicrometerMetricsOptions setMetricCategories(CosmosMeterCategory... categories) {
+    public CosmosMicrometerMetricsOptions setMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
             this.metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
         } else {
             EnumSet<MetricCategory> newMetricCategories = MetricCategory.MINIMAL_CATEGORIES.clone();
-            for (CosmosMeterCategory c: categories) {
+            for (CosmosMetricCategory c: categories) {
                 for (MetricCategory metricCategory: c.getCategories()) {
                     newMetricCategories.add(metricCategory);
                 }
@@ -176,13 +174,13 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * @param categories - a comma-separated list of metric categories that should be emitted
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosMicrometerMetricsOptions addMetricCategories(CosmosMeterCategory... categories) {
+    public CosmosMicrometerMetricsOptions addMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
             return this;
         }
 
         EnumSet<MetricCategory> newMetricCategories = this.metricCategories.clone();
-        for (CosmosMeterCategory c: categories) {
+        for (CosmosMetricCategory c: categories) {
             for (MetricCategory metricCategory: c.getCategories()) {
                 newMetricCategories.add(metricCategory);
             }
@@ -205,19 +203,19 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * @param categories - a comma-separated list of metric categories that should be emitted
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosMicrometerMetricsOptions removeMetricCategories(CosmosMeterCategory... categories) {
+    public CosmosMicrometerMetricsOptions removeMetricCategories(CosmosMetricCategory... categories) {
         if (categories == null || categories.length == 0) {
             return this;
         }
 
         EnumSet<MetricCategory> newMetricCategories = this.metricCategories.clone();
-        for (CosmosMeterCategory c: categories) {
+        for (CosmosMetricCategory c: categories) {
             for (MetricCategory metricCategory: c.getCategories()) {
                 newMetricCategories.remove(metricCategory);
             }
         }
 
-        for (MetricCategory metricCategory: CosmosMeterCategory.MINIMUM.getCategories()) {
+        for (MetricCategory metricCategory: CosmosMetricCategory.MINIMUM.getCategories()) {
             newMetricCategories.add(metricCategory);
         }
 
@@ -232,12 +230,12 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * @param meterName - the meter name
      * @return the current meter options
      */
-    public CosmosMeterOptions getMeterOptions(CosmosMeterName meterName) {
+    public CosmosMicrometerMeterOptions getMeterOptions(CosmosMetricName meterName) {
         checkNotNull(meterName, "Argument 'meterName' must not be null.");
 
         return this
             .effectiveOptions
-            .computeIfAbsent(meterName, name -> new CosmosMeterOptions(
+            .computeIfAbsent(meterName, name -> new CosmosMicrometerMeterOptions(
                 name,
                 this.defaultShouldPublishHistograms,
                 this.defaultPercentiles

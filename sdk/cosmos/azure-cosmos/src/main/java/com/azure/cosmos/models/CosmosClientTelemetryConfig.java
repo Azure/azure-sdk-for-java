@@ -23,7 +23,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -157,8 +156,8 @@ public final class CosmosClientTelemetryConfig {
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
      *
-     * @deprecated Use {@link CosmosMicrometerMetricsOptions#defaultTagNames(CosmosMeterTagName...)} or
-     * {@link CosmosMeterOptions#suppressTagNames(CosmosMeterTagName...)} instead.
+     * @deprecated Use {@link CosmosMicrometerMetricsOptions#defaultTagNames(CosmosMetricTagName...)} or
+     * {@link CosmosMicrometerMeterOptions#suppressTagNames(CosmosMetricTagName...)} instead.
      */
     @Deprecated
     public CosmosClientTelemetryConfig metricTagNames(String... tagNames) {
@@ -332,9 +331,9 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public CosmosMeterOptions getMeterOptions(
+                public CosmosMicrometerMeterOptions getMeterOptions(
                     CosmosClientTelemetryConfig config,
-                    CosmosMeterName name) {
+                    CosmosMetricName name) {
                     if (config != null &&
                         config.micrometerMetricsOptions != null) {
 
@@ -345,8 +344,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public CosmosMeterOptions createDisabledMeterOptions(CosmosMeterName name) {
-                    return new CosmosMeterOptions(name, false, null).setEnabled(false);
+                public CosmosMicrometerMeterOptions createDisabledMeterOptions(CosmosMetricName name) {
+                    return new CosmosMicrometerMeterOptions(name, false, null).setEnabled(false);
                 }
 
                 @Override
