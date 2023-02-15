@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureServiceBusPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,9 +47,13 @@ class ServiceBusJmsPasswordlessConfigurationTest {
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
 
+        AzureServiceBusJmsProperties jmsProperties = new AzureServiceBusJmsProperties();
         this.contextRunner
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
+            .withPropertyValues("spring.jms.servicebus.namespace=testnamespace")
+            .withPropertyValues("spring.jms.servicebus.pricing-tier=standard")
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withBean(AzureServiceBusJmsProperties.class, () -> jmsProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
@@ -62,9 +67,11 @@ class ServiceBusJmsPasswordlessConfigurationTest {
         azureProperties.getProfile().setCloudType(AZURE);
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
-
+        AzureServiceBusJmsProperties jmsProperties = new AzureServiceBusJmsProperties();
         this.contextRunner
             .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
+            .withPropertyValues("spring.jms.servicebus.namespace=testnamespace")
+            .withPropertyValues("spring.jms.servicebus.pricing-tier=standard")
             .withPropertyValues("spring.jms.servicebus.scopes=scopes",
                 "spring.jms.servicebus.profile.tenant-id=tenant-id",
                 "spring.jms.servicebus.profile.subscription-id=subscription-id",
@@ -83,6 +90,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
                 "spring.jms.servicebus.proxy.password=password",
                 "spring.jms.servicebus.proxy.type=type")
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withBean(AzureServiceBusJmsProperties.class, () -> jmsProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusPasswordlessProperties.class);
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
