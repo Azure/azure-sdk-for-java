@@ -16,6 +16,9 @@
  * served by the default settings should use other credential types.
  * For more information refer to the<a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs"> conceptual knowledge and configuration details </a>.
  *
+ * <p><img class="marble" src="doc-files/marbles/mono.svg" alt="">
+ *
+ * <p>
  * <p><strong>Sample: Construct a simple DefaultAzureCredential</strong></p>
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
@@ -29,8 +32,8 @@
  *  <br> <br/>
  *
  * The {@link com.azure.identity.DefaultAzureCredential} works well in most of the scenarios as it executes a chain of credentials underneath which covers
- * well known authentication scenarios for both Azure hosted platforms and development environment. But, in some scenarios where only a specific
- * authentication mechanism will work we would like to use a specific credential to authenticate and skip running the chain of credentials offered by the {@link com.azure.identity.DefaultAzureCredential}.
+ * well known authentication scenarios for both Azure hosted platforms and development environment. But, if a developer is looking to have more control and
+ * wants to use a single known authentication mechanism, then a specific credential needs to be used.
  * Let's take a look at the individual authentication scenarios and their respective credential use below.
  *
  * <H2> Authenticating on Azure Hosted Platforms via Managed Identity</H2>
