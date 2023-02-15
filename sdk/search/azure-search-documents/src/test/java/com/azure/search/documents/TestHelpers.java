@@ -22,14 +22,11 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
-import org.reactivestreams.Publisher;
-import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -48,8 +45,6 @@ import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
-import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,9 +66,6 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
-        new TypeReference<List<Map<String, Object>>>() {
-        };
 
     private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
@@ -287,12 +279,6 @@ public final class TestHelpers {
         }
     }
 
-    public static void assertHttpResponseExceptionAsync(Publisher<?> exceptionThrower) {
-        StepVerifier.create(exceptionThrower)
-            .verifyErrorSatisfies(error -> verifyHttpResponseError(error, HttpURLConnection.HTTP_BAD_REQUEST,
-                "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
-    }
-
     public static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
         if (ex instanceof HttpResponseException) {
             assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
@@ -393,7 +379,7 @@ public final class TestHelpers {
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
-        try (JsonReader jsonReader = JsonProviders.createReader(loadResource(HOTELS_TESTS_INDEX_DATA_JSON))) {
+        try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
@@ -403,7 +389,10 @@ public final class TestHelpers {
                 .buildClient();
 
             searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
-            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+
+            if (indexData != null) {
+                uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
+            }
 
             return searchIndexClient;
         } catch (IOException ex) {
