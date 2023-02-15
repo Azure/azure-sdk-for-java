@@ -62,18 +62,8 @@ public class ServiceBusJmsPasswordlessConfiguration {
 
     @Bean
     @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
-    ServiceConnectionStringProvider<AzureServiceType.ServiceBus> ServiceBusJMSConnectionStringProvider() {
-        return new ServiceConnectionStringProvider<AzureServiceType.ServiceBus>() {
-            @Override
-            public AzureServiceType.ServiceBus getServiceType() {
-                return AzureServiceType.SERVICE_BUS;
-            }
-
-            @Override
-            public String getConnectionString() {
-                return "Endpoint=sb://passwordless-fake.servicebus.windows.net/;SharedAccessKeyName=passwordless-fake-accesskeyname;SharedAccessKey=passwordless-fake-key=";
-            }
-        };
+    ServiceConnectionStringProvider<AzureServiceType.ServiceBus> serviceBusJmsConnectionStringProvider() {
+        return new ServiceBusJmsConnectionStringProvider();
     }
 
     private AzureServiceBusPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzurePasswordlessProperties azurePasswordlessProperties) {
@@ -81,6 +71,19 @@ public class ServiceBusJmsPasswordlessConfiguration {
         AzurePropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
         mergedProperties.setScopes(azurePasswordlessProperties.getScopes());
         return mergedProperties;
+    }
+
+    class ServiceBusJmsConnectionStringProvider implements ServiceConnectionStringProvider<AzureServiceType.ServiceBus> {
+
+        @Override
+        public AzureServiceType.ServiceBus getServiceType() {
+            return AzureServiceType.SERVICE_BUS;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return "Endpoint=sb://passwordless-fake.servicebus.windows.net/;SharedAccessKeyName=passwordless-fake-accesskeyname;SharedAccessKey=passwordless-fake-key=";
+        }
     }
 
 }
