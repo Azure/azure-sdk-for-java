@@ -84,6 +84,11 @@ public final class StringContent extends BinaryDataContent {
         return Mono.just(this);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.TEXT;
+    }
+
     private byte[] getBytes() {
         return this.content.getBytes(StandardCharsets.UTF_8);
     }
