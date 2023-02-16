@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.2.0-beta.2</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
