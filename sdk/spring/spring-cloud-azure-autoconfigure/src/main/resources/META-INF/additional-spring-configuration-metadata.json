@@ -850,7 +850,7 @@
     {
       "name": "spring.cloud.azure.servicebus.retry-options.delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts. This is a legacy property.",
+      "description": "Amount of time(Duration) to wait between retry attempts. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -890,7 +890,7 @@
     {
       "name": "spring.cloud.azure.servicebus.transport-type",
       "type": "com.azure.core.amqp.AmqpTransportType",
-      "description": "Transport type for AMQP-based client. This is a legacy property.",
+      "description": "Transport type for AMQP-based client. Supported types are: AMQP, AMQP_WEB_SOCKETS. This is a legacy property.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
@@ -1167,13 +1167,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connect-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time the request attempts to connect to the remote host and the connection is resolved.",
+      "description": "Amount of time(Duration) the request attempts to connect to the remote host and the connection is resolved.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connection-idle-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time before an idle connection.",
+      "description": "Amount of time(Duration) before an idle connection.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
@@ -1191,25 +1191,25 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist headers that should be logged.",
+      "description": "Comma-delimited list of allowlist headers that should be logged. The default value is `'x-ms-request-id','x-ms-client-request-id','x-ms-return-client-request-id','traceparent','MS-CV','Accept','Cache-Control','Connection','Content-Length','Content-Type','Date','ETag','Expires','If-Match','If-Modified-Since','If-None-Match','If-Unmodified-Since','Last-Modified','Pragma','Request-Id','Retry-After','Server','Transfer-Encoding','User-Agent','WWW-Authenticate'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
       "type": "java.util.Set<java.lang.String>",
-      "description": "Comma-delimited list of allowlist query parameters.",
+      "description": "Comma-delimited list of allowlist query parameters. The default value is `'api-version'`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.level",
       "type": "com.azure.core.http.policy.HttpLogDetailLevel",
-      "description": "The level of detail to log on HTTP messages.",
+      "description": "The level of detail to log on HTTP messages. Supported types are: NONE, BASIC, HEADERS, BODY, BODY_AND_HEADERS. The default value is `NONE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.pretty-print-body",
       "type": "java.lang.Boolean",
-      "description": "Whether to pretty print the message bodies.",
+      "description": "Whether to pretty print the message bodies. The default value is `false`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
@@ -1221,19 +1221,19 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.read-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time used when reading the server response.",
+      "description": "Amount of time(Duration) used when reading the server response.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.response-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time used when waiting for a server to reply.",
+      "description": "Amount of time(Duration) used when waiting for a server to reply.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.write-timeout",
       "type": "java.time.Duration",
-      "description": "Amount of time each request being sent over the wire.",
+      "description": "Amount of time(Duration) each request being sent over the wire.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
     },
     {
@@ -1301,7 +1301,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
       "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
-      "description": "Name of the Azure cloud to connect to.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
@@ -1457,7 +1457,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.type",
       "type": "java.lang.String",
-      "description": "Type of the proxy.",
+      "description": "Type of the proxy. For instance of http, 'http', 'socks4', 'socks5'. For instance of amqp, 'http', 'socks'.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
@@ -1487,7 +1487,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.base-delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts.",
+      "description": "Amount of time(Duration) to wait between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
@@ -1505,7 +1505,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.delay",
       "type": "java.time.Duration",
-      "description": "Amount of time to wait between retry attempts.",
+      "description": "Amount of time(Duration) to wait between retry attempts.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
     },
     {
@@ -1517,7 +1517,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.mode",
       "type": "com.azure.spring.cloud.core.provider.RetryOptionsProvider$RetryMode",
-      "description": "Retry backoff mode.",
+      "description": "The retry backoff mode when retrying. Supported types are: FIXED, EXPONENTIAL.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties"
     },
     {
@@ -1590,13 +1590,81 @@
     {
       "name": "spring.datasource.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
     },
     {
       "name": "spring.datasource.azure.passwordless-enabled",
       "type": "java.lang.Boolean",
       "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.redis.azure.credential.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-secret",
+      "type": "java.lang.String",
+      "description": "Client secret to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-certificate-password",
+      "type": "java.lang.String",
+      "description": "Password of the certificate file.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.client-certificate-path",
+      "type": "java.lang.String",
+      "description": "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.username",
+      "type": "java.lang.String",
+      "description": "Username to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.password",
+      "type": "java.lang.String",
+      "description": "Password to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.credential.managed-identity-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.redis.azure.profile.environment.active-directory-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory endpoint to connect to.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.profile.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for Azure resources.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.profile.cloud-type",
+      "type": "java.lang.String",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.redis.azure.passwordless-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable passwordless connections to Azure Redis Cache by using OAuth2 Azure Active Directory token credentials.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
       "defaultValue": false
     },

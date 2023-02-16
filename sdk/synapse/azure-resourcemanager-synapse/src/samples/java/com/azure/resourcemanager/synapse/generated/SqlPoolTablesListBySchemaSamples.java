@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTables ListBySchema. */
 public final class SqlPoolTablesListBySchemaSamples {
     /*
@@ -18,6 +16,8 @@ public final class SqlPoolTablesListBySchemaSamples {
      */
     public static void listTheTablesOfAGivenSchemaInASQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolTables().listBySchema("myRG", "serverName", "myDatabase", "dbo", null, Context.NONE);
+        manager
+            .sqlPoolTables()
+            .listBySchema("myRG", "serverName", "myDatabase", "dbo", null, com.azure.core.util.Context.NONE);
     }
 }

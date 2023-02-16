@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.VaultCertificate
 import com.azure.resourcemanager.recoveryservices.models.ResourceCertificateDetails;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VaultCertificateResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultCertificateResponseInner model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class VaultCertificateResponseInnerTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T13:19:49Z"), model.properties().validTo());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VaultCertificateResponseInner model =
             new VaultCertificateResponseInner()
                 .withProperties(

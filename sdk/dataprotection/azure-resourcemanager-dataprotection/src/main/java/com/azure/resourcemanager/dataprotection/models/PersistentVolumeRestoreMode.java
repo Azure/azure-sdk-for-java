@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the PV Restore Mode property. This property sets whether volumes needs to be restored. */
+/**
+ * Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be
+ * restored.
+ */
 public final class PersistentVolumeRestoreMode extends ExpandableStringEnum<PersistentVolumeRestoreMode> {
     /** Static value RestoreWithVolumeData for PersistentVolumeRestoreMode. */
     public static final PersistentVolumeRestoreMode RESTORE_WITH_VOLUME_DATA = fromString("RestoreWithVolumeData");

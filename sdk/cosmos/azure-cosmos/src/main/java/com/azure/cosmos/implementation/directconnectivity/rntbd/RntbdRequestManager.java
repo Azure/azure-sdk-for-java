@@ -615,6 +615,19 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.exceptionCaught(context, error);
     }
 
+    public RntbdChannelStatistics getChannelStatistics(
+        Channel channel,
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        return new RntbdChannelStatistics()
+            .channelId(channel.id().toString())
+            .pendingRequestsCount(this.pendingRequests.size())
+            .channelTaskQueueSize(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()))
+            .lastReadTime(this.timestamps.lastChannelReadTime())
+            .transitTimeoutCount(this.timestamps.transitTimeoutCount())
+            .transitTimeoutStartingTime(this.timestamps.transitTimeoutStartingTime())
+            .waitForConnectionInit(channelAcquisitionTimeline.isWaitForChannelInit());
+    }
+
     // endregion
 
     // region Package private methods
@@ -671,8 +684,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.pendingRequestQueueSize(pendingRequests.size());
-
             pendingRequestTimeout.set(record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
@@ -981,9 +992,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    final static class UnhealthyChannelException extends ChannelException {
+    public final static class UnhealthyChannelException extends ChannelException {
 
-        UnhealthyChannelException(String reason) {
+        public UnhealthyChannelException(String reason) {
             super("health check failed, reason: " + reason);
         }
 

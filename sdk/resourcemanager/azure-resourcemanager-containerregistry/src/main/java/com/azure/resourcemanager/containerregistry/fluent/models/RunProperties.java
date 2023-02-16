@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.ImageDescriptor;
 import com.azure.resourcemanager.containerregistry.models.ImageUpdateTrigger;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.containerregistry.models.RunStatus;
 import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerDescriptor;
 import com.azure.resourcemanager.containerregistry.models.TimerTriggerDescriptor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.List;
 /** The properties for a run. */
 @Fluent
 public final class RunProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunProperties.class);
-
     /*
      * The unique identifier for the run.
      */
@@ -74,8 +70,8 @@ public final class RunProperties {
     private OffsetDateTime finishTime;
 
     /*
-     * The list of all images that were generated from the run. This is
-     * applicable if the run generates base image dependencies.
+     * The list of all images that were generated from the run. This is applicable if the run generates base image
+     * dependencies.
      */
     @JsonProperty(value = "outputImages")
     private List<ImageDescriptor> outputImages;
@@ -87,8 +83,7 @@ public final class RunProperties {
     private String task;
 
     /*
-     * The image update trigger that caused the run. This is applicable if the
-     * task has base image trigger configured.
+     * The image update trigger that caused the run. This is applicable if the task has base image trigger configured.
      */
     @JsonProperty(value = "imageUpdateTrigger")
     private ImageUpdateTrigger imageUpdateTrigger;
@@ -118,8 +113,7 @@ public final class RunProperties {
     private AgentProperties agentConfiguration;
 
     /*
-     * The scope of the credentials that were used to login to the source
-     * registry during this run.
+     * The scope of the credentials that were used to login to the source registry during this run.
      */
     @JsonProperty(value = "sourceRegistryAuth")
     private String sourceRegistryAuth;
@@ -131,8 +125,7 @@ public final class RunProperties {
     private List<String> customRegistries;
 
     /*
-     * The error message received from backend systems after the run is
-     * scheduled.
+     * The error message received from backend systems after the run is scheduled.
      */
     @JsonProperty(value = "runErrorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String runErrorMessage;
@@ -160,6 +153,10 @@ public final class RunProperties {
      */
     @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
+
+    /** Creates an instance of RunProperties class. */
+    public RunProperties() {
+    }
 
     /**
      * Get the runId property: The unique identifier for the run.

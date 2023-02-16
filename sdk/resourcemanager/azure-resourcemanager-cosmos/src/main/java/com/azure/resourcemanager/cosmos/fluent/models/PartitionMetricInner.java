@@ -22,6 +22,10 @@ public final class PartitionMetricInner extends MetricInner {
     @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
 
+    /** Creates an instance of PartitionMetricInner class. */
+    public PartitionMetricInner() {
+    }
+
     /**
      * Get the partitionId property: The partition id (GUID identifier) of the metric values.
      *

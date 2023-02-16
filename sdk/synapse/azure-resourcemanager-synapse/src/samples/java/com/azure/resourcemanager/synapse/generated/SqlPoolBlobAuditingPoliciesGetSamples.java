@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolBlobAuditingPolicies Get. */
 public final class SqlPoolBlobAuditingPoliciesGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class SqlPoolBlobAuditingPoliciesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolBlobAuditingPolicies()
-            .getWithResponse("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .getWithResponse(
+                "blobauditingtest-6852", "blobauditingtest-2080", "testdb", com.azure.core.util.Context.NONE);
     }
 }

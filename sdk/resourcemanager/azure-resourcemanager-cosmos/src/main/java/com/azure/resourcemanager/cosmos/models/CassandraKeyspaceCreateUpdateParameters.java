@@ -19,6 +19,10 @@ public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourcePr
     @JsonProperty(value = "properties", required = true)
     private CassandraKeyspaceCreateUpdateProperties innerProperties = new CassandraKeyspaceCreateUpdateProperties();
 
+    /** Creates an instance of CassandraKeyspaceCreateUpdateParameters class. */
+    public CassandraKeyspaceCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Cassandra keyspace.
      *

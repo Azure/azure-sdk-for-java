@@ -9,13 +9,15 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-- Change feed pull API is suing an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+* Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+* Added improvement in `RntbdClientChannelHealthChecker` for detecting transit timeout. - See [PR 33464](https://github.com/Azure/azure-sdk-for-java/pull/33464)
 
 #### Other Changes
+* Give a meaningful name to the GlobalEndpointManager worker thread - See [PR 33507](https://github.com/Azure/azure-sdk-for-java/pull/33507)
 
 ### 4.40.0 (2023-01-13)
 #### Features Added
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `retryAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
 
 #### Bugs Fixed

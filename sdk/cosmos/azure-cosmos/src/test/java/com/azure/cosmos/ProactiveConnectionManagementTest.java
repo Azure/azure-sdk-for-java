@@ -85,8 +85,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     @Test(groups = {"multi-region"}, dataProvider = "invalidProactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithInvalidCosmosClientConfig(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers) {
 
-        CosmosAsyncClient clientWithOpenConnections = null;
-
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
@@ -99,7 +97,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         if (numProactiveConnectionRegions > 5) {
             try {
-                CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                     .setProactiveConnectionRegions(numProactiveConnectionRegions)
                     .build();
                 fail("Should have thrown exception");
@@ -111,7 +109,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 .build();
 
             try {
-                clientWithOpenConnections = new CosmosClientBuilder()
+                CosmosAsyncClient clientWithOpenConnections = new CosmosClientBuilder()
                     .endpoint(TestConfigurations.HOST)
                     .key(TestConfigurations.MASTER_KEY)
                     .endpointDiscoveryEnabled(true)
@@ -363,7 +361,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure preferredLocation, no of proactive connection regions, no of containers
         return new Object[][] {
-            new Object[]{preferredLocations, 2, 1},
+            new Object[]{preferredLocations, preferredLocations.size() + 1, 1},
             new Object[]{
                 Collections.unmodifiableList(
                     Arrays.asList("R1", "R2", "R3", "R4", "R5", "R6")),

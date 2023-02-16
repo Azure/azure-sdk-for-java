@@ -11,25 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolTransparentDataEncryptions. */
 public interface SqlPoolTransparentDataEncryptions {
     /**
-     * Get a SQL pool's transparent data encryption configuration.
+     * Get a SQL pool's transparent data encryption configuration
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
-     */
-    TransparentDataEncryption get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName);
-
-    /**
-     * Get a SQL pool's transparent data encryption configuration.
+     * <p>Get a SQL pool's transparent data encryption configuration.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -49,7 +33,29 @@ public interface SqlPoolTransparentDataEncryptions {
         Context context);
 
     /**
-     * Get list of SQL pool's transparent data encryption configurations.
+     * Get a SQL pool's transparent data encryption configuration
+     *
+     * <p>Get a SQL pool's transparent data encryption configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SQL pool's transparent data encryption configuration.
+     */
+    TransparentDataEncryption get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        TransparentDataEncryptionName transparentDataEncryptionName);
+
+    /**
+     * SQL pool's transparent data encryption configurations
+     *
+     * <p>Get list of SQL pool's transparent data encryption configurations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -63,7 +69,9 @@ public interface SqlPoolTransparentDataEncryptions {
     PagedIterable<TransparentDataEncryption> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Get list of SQL pool's transparent data encryption configurations.
+     * SQL pool's transparent data encryption configurations
+     *
+     * <p>Get list of SQL pool's transparent data encryption configurations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -79,7 +87,9 @@ public interface SqlPoolTransparentDataEncryptions {
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
     /**
-     * Get a SQL pool's transparent data encryption configuration.
+     * Get a SQL pool's transparent data encryption configuration
+     *
+     * <p>Get a SQL pool's transparent data encryption configuration.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +100,9 @@ public interface SqlPoolTransparentDataEncryptions {
     TransparentDataEncryption getById(String id);
 
     /**
-     * Get a SQL pool's transparent data encryption configuration.
+     * Get a SQL pool's transparent data encryption configuration
+     *
+     * <p>Get a SQL pool's transparent data encryption configuration.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -7,19 +7,15 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An object that represents a replication for a container registry. */
 @Fluent
 public final class ReplicationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationInner.class);
-
     /*
      * The properties of the replication.
      */
@@ -31,6 +27,10 @@ public final class ReplicationInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ReplicationInner class. */
+    public ReplicationInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the replication.
