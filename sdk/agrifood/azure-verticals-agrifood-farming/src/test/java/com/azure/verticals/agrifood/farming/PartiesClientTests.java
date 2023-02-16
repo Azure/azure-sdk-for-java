@@ -32,7 +32,6 @@ public class PartiesClientTests extends TestBase {
     private final String defaultEndpoint = "https://REDACTED.farmbeats.azure.net";
 
     private PartiesAsyncClient createClient() {
-        System.out.println(getTestMode().toString());
         PartiesClientBuilder builder =
             new PartiesClientBuilder()
                 .host(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
@@ -54,7 +53,6 @@ public class PartiesClientTests extends TestBase {
     public void testList() {
         PartiesAsyncClient client = createClient();
         Response<BinaryData> response = client.getWithResponse("contoso-party", new RequestOptions()).block();
-        System.out.println(response.getValue().toString());
         assertNotNull(response.getValue());
     }
 }
