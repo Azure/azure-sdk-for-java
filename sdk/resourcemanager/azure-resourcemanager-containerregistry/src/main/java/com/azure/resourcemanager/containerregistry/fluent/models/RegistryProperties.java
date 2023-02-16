@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.List;
 /** The properties of a container registry. */
 @Fluent
 public final class RegistryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryProperties.class);
-
     /*
      * The URL that can be used to log into the container registry.
      */
@@ -37,15 +33,13 @@ public final class RegistryProperties {
     private OffsetDateTime creationDate;
 
     /*
-     * The provisioning state of the container registry at the time the
-     * operation was called.
+     * The provisioning state of the container registry at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The status of the container registry at the time the operation was
-     * called.
+     * The status of the container registry at the time the operation was called.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
@@ -81,8 +75,7 @@ public final class RegistryProperties {
     private Boolean dataEndpointEnabled;
 
     /*
-     * List of host names that will serve data when dataEndpointEnabled is
-     * true.
+     * List of host names that will serve data when dataEndpointEnabled is true.
      */
     @JsonProperty(value = "dataEndpointHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dataEndpointHostNames;
@@ -94,15 +87,13 @@ public final class RegistryProperties {
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Whether or not public network access is allowed for the container
-     * registry.
+     * Whether or not public network access is allowed for the container registry.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Whether to allow trusted Azure services to access a network restricted
-     * registry.
+     * Whether to allow trusted Azure services to access a network restricted registry.
      */
     @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
@@ -112,6 +103,16 @@ public final class RegistryProperties {
      */
     @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
+
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    @JsonProperty(value = "anonymousPullEnabled")
+    private Boolean anonymousPullEnabled;
+
+    /** Creates an instance of RegistryProperties class. */
+    public RegistryProperties() {
+    }
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
@@ -327,6 +328,26 @@ public final class RegistryProperties {
      */
     public RegistryProperties withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
         this.zoneRedundancy = zoneRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryProperties object itself.
+     */
+    public RegistryProperties withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
         return this;
     }
 

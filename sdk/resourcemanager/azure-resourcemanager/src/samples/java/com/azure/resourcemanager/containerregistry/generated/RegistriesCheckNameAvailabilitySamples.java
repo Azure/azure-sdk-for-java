@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 
 /** Samples for Registries CheckNameAvailability. */
 public final class RegistriesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCheckNameAvailable.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/RegistryCheckNameAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameAvailable.
@@ -23,11 +22,12 @@ public final class RegistriesCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCheckNameNotAvailable.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/RegistryCheckNameNotAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameNotAvailable.
@@ -40,6 +40,7 @@ public final class RegistriesCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
     }
 }

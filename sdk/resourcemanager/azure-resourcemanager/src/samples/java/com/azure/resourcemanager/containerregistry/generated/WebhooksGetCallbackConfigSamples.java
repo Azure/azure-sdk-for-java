@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Webhooks GetCallbackConfig. */
 public final class WebhooksGetCallbackConfigSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookGetCallbackConfig.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/WebhookGetCallbackConfig.json
      */
     /**
      * Sample code: WebhookGetCallbackConfig.
@@ -22,6 +20,7 @@ public final class WebhooksGetCallbackConfigSamples {
             .manager()
             .serviceClient()
             .getWebhooks()
-            .getCallbackConfigWithResponse("myResourceGroup", "myRegistry", "myWebhook", Context.NONE);
+            .getCallbackConfigWithResponse(
+                "myResourceGroup", "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
     }
 }

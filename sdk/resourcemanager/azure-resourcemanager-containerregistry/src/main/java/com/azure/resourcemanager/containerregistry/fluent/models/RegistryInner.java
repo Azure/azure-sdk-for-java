@@ -18,7 +18,6 @@ import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,8 +26,6 @@ import java.util.Map;
 /** An object that represents a container registry. */
 @Fluent
 public final class RegistryInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryInner.class);
-
     /*
      * The SKU of the container registry.
      */
@@ -52,6 +49,10 @@ public final class RegistryInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of RegistryInner class. */
+    public RegistryInner() {
+    }
 
     /**
      * Get the sku property: The SKU of the container registry.
@@ -367,13 +368,36 @@ public final class RegistryInner extends Resource {
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().anonymousPullEnabled();
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model RegistryInner"));
         } else {
@@ -386,4 +410,6 @@ public final class RegistryInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegistryInner.class);
 }

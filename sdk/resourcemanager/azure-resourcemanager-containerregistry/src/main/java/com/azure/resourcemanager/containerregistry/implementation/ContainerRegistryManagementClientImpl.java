@@ -7,17 +7,24 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerregistry.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ConnectedRegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
+import com.azure.resourcemanager.containerregistry.fluent.CredentialSetsClient;
+import com.azure.resourcemanager.containerregistry.fluent.ExportPipelinesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ImportPipelinesClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
+import com.azure.resourcemanager.containerregistry.fluent.PipelineRunsClient;
 import com.azure.resourcemanager.containerregistry.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ReplicationsClient;
 import com.azure.resourcemanager.containerregistry.fluent.RunsClient;
+import com.azure.resourcemanager.containerregistry.fluent.ScopeMapsClient;
 import com.azure.resourcemanager.containerregistry.fluent.TaskRunsClient;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
+import com.azure.resourcemanager.containerregistry.fluent.TokensClient;
 import com.azure.resourcemanager.containerregistry.fluent.WebhooksClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -26,13 +33,11 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerRegistryManagementClientBuilder.class)
 public final class ContainerRegistryManagementClientImpl extends AzureServiceClient
     implements ContainerRegistryManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryManagementClientImpl.class);
-
-    /** The Microsoft Azure subscription ID. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -88,6 +93,54 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this.defaultPollInterval;
     }
 
+    /** The CacheRulesClient object to access its operations. */
+    private final CacheRulesClient cacheRules;
+
+    /**
+     * Gets the CacheRulesClient object to access its operations.
+     *
+     * @return the CacheRulesClient object.
+     */
+    public CacheRulesClient getCacheRules() {
+        return this.cacheRules;
+    }
+
+    /** The ConnectedRegistriesClient object to access its operations. */
+    private final ConnectedRegistriesClient connectedRegistries;
+
+    /**
+     * Gets the ConnectedRegistriesClient object to access its operations.
+     *
+     * @return the ConnectedRegistriesClient object.
+     */
+    public ConnectedRegistriesClient getConnectedRegistries() {
+        return this.connectedRegistries;
+    }
+
+    /** The CredentialSetsClient object to access its operations. */
+    private final CredentialSetsClient credentialSets;
+
+    /**
+     * Gets the CredentialSetsClient object to access its operations.
+     *
+     * @return the CredentialSetsClient object.
+     */
+    public CredentialSetsClient getCredentialSets() {
+        return this.credentialSets;
+    }
+
+    /** The ExportPipelinesClient object to access its operations. */
+    private final ExportPipelinesClient exportPipelines;
+
+    /**
+     * Gets the ExportPipelinesClient object to access its operations.
+     *
+     * @return the ExportPipelinesClient object.
+     */
+    public ExportPipelinesClient getExportPipelines() {
+        return this.exportPipelines;
+    }
+
     /** The RegistriesClient object to access its operations. */
     private final RegistriesClient registries;
 
@@ -100,6 +153,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this.registries;
     }
 
+    /** The ImportPipelinesClient object to access its operations. */
+    private final ImportPipelinesClient importPipelines;
+
+    /**
+     * Gets the ImportPipelinesClient object to access its operations.
+     *
+     * @return the ImportPipelinesClient object.
+     */
+    public ImportPipelinesClient getImportPipelines() {
+        return this.importPipelines;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -110,6 +175,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /** The PipelineRunsClient object to access its operations. */
+    private final PipelineRunsClient pipelineRuns;
+
+    /**
+     * Gets the PipelineRunsClient object to access its operations.
+     *
+     * @return the PipelineRunsClient object.
+     */
+    public PipelineRunsClient getPipelineRuns() {
+        return this.pipelineRuns;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -134,6 +211,30 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public ReplicationsClient getReplications() {
         return this.replications;
+    }
+
+    /** The ScopeMapsClient object to access its operations. */
+    private final ScopeMapsClient scopeMaps;
+
+    /**
+     * Gets the ScopeMapsClient object to access its operations.
+     *
+     * @return the ScopeMapsClient object.
+     */
+    public ScopeMapsClient getScopeMaps() {
+        return this.scopeMaps;
+    }
+
+    /** The TokensClient object to access its operations. */
+    private final TokensClient tokens;
+
+    /**
+     * Gets the TokensClient object to access its operations.
+     *
+     * @return the TokensClient object.
+     */
+    public TokensClient getTokens() {
+        return this.tokens;
     }
 
     /** The WebhooksClient object to access its operations. */
@@ -203,7 +304,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The Microsoft Azure subscription ID.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     ContainerRegistryManagementClientImpl(
@@ -219,10 +320,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.cacheRules = new CacheRulesClientImpl(this);
+        this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
+        this.credentialSets = new CredentialSetsClientImpl(this);
+        this.exportPipelines = new ExportPipelinesClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
+        this.importPipelines = new ImportPipelinesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.pipelineRuns = new PipelineRunsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.replications = new ReplicationsClientImpl(this);
+        this.scopeMaps = new ScopeMapsClientImpl(this);
+        this.tokens = new TokensClientImpl(this);
         this.webhooks = new WebhooksClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.runs = new RunsClientImpl(this);

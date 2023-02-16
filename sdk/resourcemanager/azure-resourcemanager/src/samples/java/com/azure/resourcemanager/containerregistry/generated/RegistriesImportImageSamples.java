@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Registries ImportImage. */
 public final class RegistriesImportImageSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ImportImageFromPublicRegistry.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/ImportImageFromPublicRegistry.json
      */
     /**
      * Sample code: ImportImageFromPublicRegistry.
@@ -37,11 +36,11 @@ public final class RegistriesImportImageSamples {
                     .withTargetTags(Arrays.asList("targetRepository:targetTag"))
                     .withUntaggedTargetRepositories(Arrays.asList("targetRepository1"))
                     .withMode(ImportMode.FORCE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ImportImageByTag.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/ImportImageByTag.json
      */
     /**
      * Sample code: ImportImageByTag.
@@ -66,11 +65,11 @@ public final class RegistriesImportImageSamples {
                     .withTargetTags(Arrays.asList("targetRepository:targetTag"))
                     .withUntaggedTargetRepositories(Arrays.asList("targetRepository1"))
                     .withMode(ImportMode.FORCE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ImportImageByManifestDigest.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/ImportImageByManifestDigest.json
      */
     /**
      * Sample code: ImportImageByManifestDigest.
@@ -96,6 +95,6 @@ public final class RegistriesImportImageSamples {
                     .withTargetTags(Arrays.asList("targetRepository:targetTag"))
                     .withUntaggedTargetRepositories(Arrays.asList("targetRepository1"))
                     .withMode(ImportMode.FORCE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

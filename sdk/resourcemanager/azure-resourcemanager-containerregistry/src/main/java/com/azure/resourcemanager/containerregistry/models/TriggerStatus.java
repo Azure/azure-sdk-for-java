@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerStatus. */
+/** The current status of trigger. */
 public final class TriggerStatus extends ExpandableStringEnum<TriggerStatus> {
     /** Static value Disabled for TriggerStatus. */
     public static final TriggerStatus DISABLED = fromString("Disabled");
 
     /** Static value Enabled for TriggerStatus. */
     public static final TriggerStatus ENABLED = fromString("Enabled");
+
+    /**
+     * Creates a new instance of TriggerStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerStatus() {
+    }
 
     /**
      * Creates or finds a TriggerStatus from its string representation.
@@ -27,7 +36,11 @@ public final class TriggerStatus extends ExpandableStringEnum<TriggerStatus> {
         return fromString(name, TriggerStatus.class);
     }
 
-    /** @return known TriggerStatus values. */
+    /**
+     * Gets known TriggerStatus values.
+     *
+     * @return known TriggerStatus values.
+     */
     public static Collection<TriggerStatus> values() {
         return values(TriggerStatus.class);
     }

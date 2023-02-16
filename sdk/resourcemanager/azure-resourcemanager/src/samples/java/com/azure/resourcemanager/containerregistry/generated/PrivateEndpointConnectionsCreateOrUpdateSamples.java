@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerregistry.models.ConnectionStatus;
 import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConnectionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConn
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/PrivateEndpointConnectionCreateOrUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/PrivateEndpointConnectionCreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionCreateOrUpdate.
@@ -34,6 +33,6 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus(ConnectionStatus.APPROVED)
                             .withDescription("Auto-Approved")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

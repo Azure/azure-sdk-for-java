@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Replications Update. */
 public final class ReplicationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/ReplicationUpdate.json
      */
     /**
      * Sample code: ReplicationUpdate.
@@ -30,7 +29,7 @@ public final class ReplicationsUpdateSamples {
                 "myRegistry",
                 "myReplication",
                 new ReplicationUpdateParameters().withTags(mapOf("key", "value")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

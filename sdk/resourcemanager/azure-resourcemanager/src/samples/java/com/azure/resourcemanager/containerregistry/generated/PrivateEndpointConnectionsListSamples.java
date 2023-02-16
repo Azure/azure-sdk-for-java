@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/PrivateEndpointConnectionList.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: PrivateEndpointConnectionList.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsListSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .list("myResourceGroup", "myRegistry", Context.NONE);
+            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

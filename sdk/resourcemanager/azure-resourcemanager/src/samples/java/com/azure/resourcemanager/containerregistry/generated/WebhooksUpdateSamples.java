@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for Webhooks Update. */
 public final class WebhooksUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/WebhookUpdate.json
      */
     /**
      * Sample code: WebhookUpdate.
@@ -36,11 +35,11 @@ public final class WebhooksUpdateSamples {
                     .withTags(mapOf("key", "value"))
                     .withServiceUri("http://myservice.com")
                     .withCustomHeaders(
-                        mapOf("Authorization", "Basic FakeCredentialPlaceHolder"))
+                        mapOf("Authorization", "Basic 000000000000000000000000000000000000000000000000000"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

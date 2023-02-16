@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Webhooks Delete. */
 public final class WebhooksDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookDelete.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/WebhookDelete.json
      */
     /**
      * Sample code: WebhookDelete.
@@ -22,6 +20,6 @@ public final class WebhooksDeleteSamples {
             .manager()
             .serviceClient()
             .getWebhooks()
-            .delete("myResourceGroup", "myRegistry", "myWebhook", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
     }
 }

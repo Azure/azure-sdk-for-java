@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Registries ListCredentials. */
 public final class RegistriesListCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListCredentials.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/RegistryListCredentials.json
      */
     /**
      * Sample code: RegistryListCredentials.
@@ -22,6 +20,6 @@ public final class RegistriesListCredentialsSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .listCredentialsWithResponse("myResourceGroup", "myRegistry", Context.NONE);
+            .listCredentialsWithResponse("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TaskRunRequest")
 @Fluent
 public final class TaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunRequest.class);
-
     /*
      * The resource ID of task against which run has to be queued.
      */
@@ -29,6 +26,10 @@ public final class TaskRunRequest extends RunRequest {
      */
     @JsonProperty(value = "overrideTaskStepProperties")
     private OverrideTaskStepProperties overrideTaskStepProperties;
+
+    /** Creates an instance of TaskRunRequest class. */
+    public TaskRunRequest() {
+    }
 
     /**
      * Get the taskId property: The resource ID of task against which run has to be queued.
@@ -102,7 +103,7 @@ public final class TaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (taskId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));
         }
@@ -110,4 +111,6 @@ public final class TaskRunRequest extends RunRequest {
             overrideTaskStepProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TaskRunRequest.class);
 }

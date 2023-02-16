@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for Registries Create. */
 public final class RegistriesCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCreateZoneRedundant.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/RegistryCreateZoneRedundant.json
      */
     /**
      * Sample code: RegistryCreateZoneRedundant.
@@ -36,11 +35,11 @@ public final class RegistriesCreateSamples {
                     .withTags(mapOf("key", "value"))
                     .withSku(new Sku().withName(SkuName.STANDARD))
                     .withZoneRedundancy(ZoneRedundancy.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/RegistryCreate.json
      */
     /**
      * Sample code: RegistryCreate.
@@ -61,7 +60,7 @@ public final class RegistriesCreateSamples {
                     .withTags(mapOf("key", "value"))
                     .withSku(new Sku().withName(SkuName.STANDARD))
                     .withAdminUserEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

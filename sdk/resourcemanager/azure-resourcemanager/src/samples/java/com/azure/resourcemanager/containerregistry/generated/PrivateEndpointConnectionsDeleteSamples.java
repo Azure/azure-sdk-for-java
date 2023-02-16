@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/PrivateEndpointConnectionDelete.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: PrivateEndpointConnectionDelete.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .delete("myResourceGroup", "myRegistry", "myConnection", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myConnection", com.azure.core.util.Context.NONE);
     }
 }
