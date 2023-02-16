@@ -952,6 +952,7 @@ class BlobAPITest extends APISpec {
         then:
         compareFiles(file, outFile, 0, fileSize)
         properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+        properties.getValue().getCreationTime() != null
 
         cleanup:
         outFile.delete()
@@ -1440,31 +1441,6 @@ class BlobAPITest extends APISpec {
         5000 * Constants.MB | 5000 * Constants.MB || _ /* This was the default before. */
         6000 * Constants.MB | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
         6000 * Constants.MB | 5100 * Constants.MB || _ /* Testing chunking with a large size */
-    }
-
-    @LiveOnly
-    def "Download file creation time"() {
-        setup:
-        def file = getRandomFile(Constants.MB)
-        bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(namer.getRandomName(60) + ".txt")
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
-
-        when:
-        def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
-
-        then:
-        compareFiles(file, outFile, 0, Constants.MB)
-        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
-//        properties.getValue().getCreationTime() != null
-        // this test returns null, need to fix the way BlobPropertiesInternalDownload handles getCreationTime
-
-        cleanup:
-        outFile.delete()
-        file.delete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
