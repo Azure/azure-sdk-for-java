@@ -42,7 +42,7 @@ public final class CosmosMeterOptions {
     }
 
     public double[] getPercentiles() {
-        return this.percentiles.clone();
+        return this.percentiles != null ? this.percentiles.clone() : null;
     }
 
     public boolean isEnabled() {
