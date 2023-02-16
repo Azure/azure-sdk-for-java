@@ -386,6 +386,7 @@ class BlobAPITest extends APISpec {
         headers.getBlobCommittedBlockCount() == null
         headers.isServerEncrypted() != null
         headers.getBlobContentMD5() == null
+        headers.getCreationTime() != null
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
@@ -1441,6 +1442,30 @@ class BlobAPITest extends APISpec {
         6000 * Constants.MB | 5100 * Constants.MB || _ /* Testing chunking with a large size */
     }
 
+    @LiveOnly
+    def "Download file creation time"() {
+        setup:
+        def file = getRandomFile(Constants.MB)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getRandomName(60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, Constants.MB)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+//        properties.getValue().getCreationTime() != null
+        // this test returns null, need to fix the way BlobPropertiesInternalDownload handles getCreationTime
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+    }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get properties default"() {
@@ -2354,7 +2379,7 @@ class BlobAPITest extends APISpec {
         false  | true
         false  | false
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {

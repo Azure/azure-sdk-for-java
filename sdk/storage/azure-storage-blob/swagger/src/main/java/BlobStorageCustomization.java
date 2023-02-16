@@ -24,6 +24,11 @@ public class BlobStorageCustomization extends Customization {
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
         implementationModels.getClass("BlobPrefix").rename("BlobPrefixInternal");
 
+
+//        implementationModels.getClass("BlobPropertiesInternalDownload")
+//            .getMethod("getCreationTime")
+//            .setReturnType("OffsetDateTime", "return headers.getCreationTime();", true);
+
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");

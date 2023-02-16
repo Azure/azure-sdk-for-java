@@ -6,7 +6,6 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
