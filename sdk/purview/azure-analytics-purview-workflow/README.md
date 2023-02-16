@@ -56,7 +56,7 @@ The following section provides several code snippets covering some of the most c
 - [Submit User Requests](#submit-user-requests)
 - [Approve Workflow Task](#approve-workflow-task)
 
-#### Create workflow
+### Create workflow
 
 ```java readme-sample-createWorkflow
 BinaryData workflowCreateOrUpdateCommand =
