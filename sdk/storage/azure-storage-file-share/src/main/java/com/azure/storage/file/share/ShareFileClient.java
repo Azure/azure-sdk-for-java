@@ -160,6 +160,11 @@ public class ShareFileClient {
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
     }
 
+    /**
+     * Creats and opens a {@link SeekableByteChannel} to transfer data to/from the file.
+     * @param options Options for opening the channel.
+     * @return The opened channel.
+     */
     public final SeekableByteChannel getFileSeekableByteChannel(ShareFileSeekableByteChannelOptions options) {
         // TODO (jaschrep): make max put range an accessible constant (how is it not already??)
         Objects.requireNonNull(options, "'options' cannot be null.");
