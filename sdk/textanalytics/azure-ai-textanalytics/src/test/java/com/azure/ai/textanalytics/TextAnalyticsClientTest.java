@@ -3172,6 +3172,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void beginAbstractSummaryEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -3181,10 +3182,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 () -> client.beginAbstractSummary(inputs, null, Context.NONE));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_PARAMETER_VALUE, textAnalyticsError.getErrorCode());
+            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
         });
     }
 
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void beginAbstractSummaryTooManyDocuments(HttpClient httpClient,
