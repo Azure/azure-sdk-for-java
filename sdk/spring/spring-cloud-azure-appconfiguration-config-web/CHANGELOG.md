@@ -8,7 +8,7 @@
 * Feature Flags now support multiple selects
 
 ### Breaking Changes
-* Libraries have been renamed from azure-spring-cloud-appconfiguraiton-config to spring-cloud-azure-appconfiguration-config
+* Libraries have been renamed from azure-spring-cloud-appconfiguration-config to spring-cloud-azure-appconfiguration-config
 * Switched to the SDK style for RevApi
 * Removed AppConfigurationCredentialProvider, KeyVaultCredentialProvider
 * Renamed ConfigurationClientBuilderSetup to ConfigurationClientCustomizer
