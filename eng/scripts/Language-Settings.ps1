@@ -739,3 +739,11 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 
   return
 }
+
+function Get-java-EmitterName() {
+  return "@azure-tools/cadl-java"
+}
+
+function Get-java-EmitterAdditionalOptions([string]$projectDirectory) {
+  return "--option @azure-tools/cadl-java.emitter-output-dir=$projectDirectory/"
+}

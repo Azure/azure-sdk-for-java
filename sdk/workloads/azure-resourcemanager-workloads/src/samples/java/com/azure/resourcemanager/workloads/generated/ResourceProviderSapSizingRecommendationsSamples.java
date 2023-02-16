@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProvider SapSizingRecommendations. */
 public final class ResourceProviderSapSizingRecommendationsSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_Distributed.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_Distributed.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_Distributed.
@@ -18,11 +16,13 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
      */
     public static void sAPSizingRecommendationsS4HANADistributed(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSizingRecommendationsWithResponse("centralus", null, Context.NONE);
+        manager
+            .resourceProviders()
+            .sapSizingRecommendationsWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_SingleServer.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_SingleServer.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_SingleServer.
@@ -31,11 +31,13 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
      */
     public static void sAPSizingRecommendationsS4HANASingleServer(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSizingRecommendationsWithResponse("centralus", null, Context.NONE);
+        manager
+            .resourceProviders()
+            .sapSizingRecommendationsWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvZone.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvZone.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_DistributedHA_AvZone.
@@ -44,11 +46,13 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
      */
     public static void sAPSizingRecommendationsS4HANADistributedHAAvZone(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSizingRecommendationsWithResponse("centralus", null, Context.NONE);
+        manager
+            .resourceProviders()
+            .sapSizingRecommendationsWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvSet.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPSizingRecommendations_S4HANA_HA_AvSet.json
      */
     /**
      * Sample code: SAPSizingRecommendations_S4HANA_DistributedHA_AvSet.
@@ -57,6 +61,8 @@ public final class ResourceProviderSapSizingRecommendationsSamples {
      */
     public static void sAPSizingRecommendationsS4HANADistributedHAAvSet(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.resourceProviders().sapSizingRecommendationsWithResponse("centralus", null, Context.NONE);
+        manager
+            .resourceProviders()
+            .sapSizingRecommendationsWithResponse("centralus", null, com.azure.core.util.Context.NONE);
     }
 }

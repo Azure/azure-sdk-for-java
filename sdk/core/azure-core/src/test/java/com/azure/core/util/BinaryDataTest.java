@@ -400,6 +400,17 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void createFromListByteBuffer() {
+
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final List<ByteBuffer> list = Arrays.asList(ByteBuffer.wrap(data), ByteBuffer.wrap(data));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+
+        BinaryData binaryData = BinaryData.fromListByteBuffer(list);
+        assertArrayEquals(expected, binaryData.toBytes());
+    }
+
+    @Test
     public void toReadOnlyByteBufferThrowsOnMutation() {
         BinaryData binaryData = BinaryData.fromString("Hello");
 

@@ -29,6 +29,10 @@ public final class SqlPoolConnectionPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SqlPoolConnectionPolicyProperties innerProperties;
 
+    /** Creates an instance of SqlPoolConnectionPolicyInner class. */
+    public SqlPoolConnectionPolicyInner() {
+    }
+
     /**
      * Get the kind property: Resource kind.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorableSqlContainers List. */
 public final class RestorableSqlContainersListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableSqlContainerList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestorableSqlContainerList.json
      */
     /**
      * Sample code: CosmosDBRestorableSqlContainerList.
@@ -22,6 +20,12 @@ public final class RestorableSqlContainersListSamples {
             .manager()
             .serviceClient()
             .getRestorableSqlContainers()
-            .list("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", "3fu-hg==", null, null, Context.NONE);
+            .list(
+                "WestUS",
+                "98a570f2-63db-4117-91f0-366327b7b353",
+                "3fu-hg==",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

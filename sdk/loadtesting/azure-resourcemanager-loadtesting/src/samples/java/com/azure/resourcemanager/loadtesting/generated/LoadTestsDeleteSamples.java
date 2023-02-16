@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests Delete. */
 public final class LoadTestsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class LoadTestsDeleteSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsDelete(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().delete("dummyrg", "myLoadTest", Context.NONE);
+        manager.loadTests().delete("dummyrg", "myLoadTest", com.azure.core.util.Context.NONE);
     }
 }

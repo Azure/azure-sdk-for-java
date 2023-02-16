@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Folder")
 @Fluent
 public final class SsisFolder extends SsisObjectMetadata {
+    /** Creates an instance of SsisFolder class. */
+    public SsisFolder() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SsisFolder withId(Long id) {

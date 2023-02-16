@@ -23,6 +23,10 @@ public final class DatabaseRestoreResource {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
+    /** Creates an instance of DatabaseRestoreResource class. */
+    public DatabaseRestoreResource() {
+    }
+
     /**
      * Get the databaseName property: The name of the database available for restore.
      *

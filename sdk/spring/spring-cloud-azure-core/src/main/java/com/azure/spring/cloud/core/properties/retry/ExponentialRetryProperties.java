@@ -17,7 +17,7 @@ public class ExponentialRetryProperties implements RetryOptionsProvider.RetryOpt
      */
     private Integer maxRetries;
     /**
-     * Amount of time to wait between retry attempts.
+     * Amount of time(Duration) to wait between retry attempts.
      */
     private Duration baseDelay;
     /**

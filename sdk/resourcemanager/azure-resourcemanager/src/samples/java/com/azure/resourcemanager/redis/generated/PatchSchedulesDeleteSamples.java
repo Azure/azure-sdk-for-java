@@ -10,7 +10,7 @@ import com.azure.resourcemanager.redis.models.DefaultName;
 /** Samples for PatchSchedules Delete. */
 public final class PatchSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesDelete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePatchSchedulesDelete.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesDelete.

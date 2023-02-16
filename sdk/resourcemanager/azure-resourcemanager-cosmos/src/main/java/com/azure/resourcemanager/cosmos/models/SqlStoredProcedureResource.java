@@ -23,6 +23,10 @@ public class SqlStoredProcedureResource {
     @JsonProperty(value = "body")
     private String body;
 
+    /** Creates an instance of SqlStoredProcedureResource class. */
+    public SqlStoredProcedureResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB SQL storedProcedure.
      *

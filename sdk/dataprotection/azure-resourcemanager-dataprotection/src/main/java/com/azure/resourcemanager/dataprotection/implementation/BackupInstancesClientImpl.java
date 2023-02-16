@@ -43,6 +43,7 @@ import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -81,7 +82,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<BackupInstanceResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept,
@@ -96,7 +97,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<BackupInstanceResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -112,7 +113,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -129,7 +130,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -145,7 +146,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> adhocBackup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -162,7 +163,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> validateForBackup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @BodyParam("application/json") ValidateForBackupRequest parameters,
@@ -177,7 +178,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupInstanceResourceInner>> getBackupInstanceOperationResult(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -196,7 +197,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
             @BodyParam("application/json") AzureBackupRehydrationRequest parameters,
@@ -212,7 +213,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> triggerRestore(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -228,7 +229,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resumeBackups(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -244,7 +245,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resumeProtection(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -260,7 +261,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stopProtection(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -276,7 +277,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> suspendBackups(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -292,7 +293,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> syncBackupInstance(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -310,7 +311,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         Mono<Response<Flux<ByteBuffer>>> validateForRestore(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
@@ -332,7 +333,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,7 +391,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +447,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -462,7 +463,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,7 +482,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,7 +497,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instances belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -513,7 +514,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,7 +569,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -621,7 +622,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -639,7 +640,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -657,7 +658,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Gets a backup instance with name in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -673,7 +674,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -734,7 +735,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -797,7 +798,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -824,7 +825,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -857,7 +858,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -877,7 +878,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -902,7 +903,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -922,7 +923,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -947,7 +948,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -965,7 +966,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Create or update a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -988,7 +989,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,7 +1043,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -1094,7 +1095,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,7 +1117,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -1139,7 +1140,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,7 +1157,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -1174,7 +1175,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1192,7 +1193,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -1212,7 +1213,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1227,7 +1228,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Delete a backup instance in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
@@ -1243,7 +1244,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1304,7 +1305,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1367,7 +1368,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1394,7 +1395,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1427,7 +1428,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1445,7 +1446,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1470,7 +1471,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1490,7 +1491,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1515,7 +1516,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1533,7 +1534,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Trigger adhoc backup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -1556,7 +1557,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1611,7 +1612,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -1664,7 +1665,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1690,7 +1691,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -1719,7 +1720,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1736,7 +1737,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -1754,7 +1755,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1773,7 +1774,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -1793,7 +1794,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1810,7 +1811,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validate whether adhoc backup will be successful or not.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -1828,9 +1829,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1888,9 +1889,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1946,9 +1947,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1966,9 +1967,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1987,9 +1988,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Get result of backup instance creation operation.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2007,9 +2008,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2071,9 +2072,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2134,9 +2135,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2160,9 +2161,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2188,9 +2189,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2211,9 +2212,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2236,9 +2237,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2259,9 +2260,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2284,9 +2285,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2304,9 +2305,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * rehydrate recovery point for restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2326,7 +2327,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2387,7 +2388,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2450,7 +2451,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2481,7 +2482,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2515,7 +2516,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2535,7 +2536,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2560,7 +2561,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2580,7 +2581,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2605,7 +2606,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2623,7 +2624,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Triggers restore for a BackupInstance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -2646,9 +2647,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2700,9 +2701,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2752,9 +2753,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2774,9 +2775,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2797,9 +2798,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2814,9 +2815,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2832,9 +2833,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2850,9 +2851,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2870,9 +2871,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2885,9 +2886,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume backups for backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2901,9 +2902,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2955,9 +2956,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3007,9 +3008,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3029,9 +3030,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3052,9 +3053,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3069,9 +3070,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3089,9 +3090,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3107,9 +3108,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3127,9 +3128,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3142,9 +3143,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will resume protection for a stopped backup instance.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3159,9 +3160,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3213,9 +3214,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3265,9 +3266,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3287,9 +3288,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3310,9 +3311,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3327,9 +3328,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3345,9 +3346,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3363,9 +3364,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3383,9 +3384,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3398,9 +3399,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3415,9 +3416,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3470,9 +3471,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3523,9 +3524,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3546,9 +3547,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3570,9 +3571,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3588,9 +3589,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3607,9 +3608,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3626,9 +3627,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3647,9 +3648,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3663,9 +3664,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3680,9 +3681,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3742,9 +3743,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3806,9 +3807,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3830,9 +3831,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3859,9 +3860,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3880,9 +3881,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3906,9 +3907,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3927,9 +3928,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3953,9 +3954,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3971,9 +3972,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
      * instance to valid state.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param backupInstanceName The backupInstanceName parameter.
+     * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3993,7 +3994,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4057,7 +4058,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4120,7 +4121,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4151,7 +4152,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4185,7 +4186,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4208,7 +4209,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4233,7 +4234,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4256,7 +4257,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4281,7 +4282,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.
@@ -4302,7 +4303,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * Validates if Restore can be triggered for a DataSource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param parameters Request body for operation.

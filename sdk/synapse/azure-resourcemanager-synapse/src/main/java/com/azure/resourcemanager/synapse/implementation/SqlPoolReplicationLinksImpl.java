@@ -40,17 +40,6 @@ public final class SqlPoolReplicationLinksImpl implements SqlPoolReplicationLink
         return Utils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
     }
 
-    public ReplicationLink getByName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
-        ReplicationLinkInner inner =
-            this.serviceClient().getByName(resourceGroupName, workspaceName, sqlPoolName, linkId);
-        if (inner != null) {
-            return new ReplicationLinkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ReplicationLink> getByNameWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context) {
         Response<ReplicationLinkInner> inner =
@@ -61,6 +50,17 @@ public final class SqlPoolReplicationLinksImpl implements SqlPoolReplicationLink
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ReplicationLinkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ReplicationLink getByName(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        ReplicationLinkInner inner =
+            this.serviceClient().getByName(resourceGroupName, workspaceName, sqlPoolName, linkId);
+        if (inner != null) {
+            return new ReplicationLinkImpl(inner, this.manager());
         } else {
             return null;
         }

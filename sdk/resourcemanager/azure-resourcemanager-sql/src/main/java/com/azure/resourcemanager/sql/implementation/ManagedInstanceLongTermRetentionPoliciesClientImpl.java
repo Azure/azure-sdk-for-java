@@ -71,7 +71,7 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceLongTermRetentionPoliciesService {
+    public interface ManagedInstanceLongTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

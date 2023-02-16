@@ -55,7 +55,7 @@ public final class ServerOperationsClientImpl implements ServerOperationsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerOperationsService {
+    public interface ServerOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

@@ -51,6 +51,10 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
     @JsonProperty(value = "applicationServerInstanceCount")
     private Long applicationServerInstanceCount;
 
+    /** Creates an instance of ThreeTierRecommendationResult class. */
+    public ThreeTierRecommendationResult() {
+    }
+
     /**
      * Get the dbVmSku property: The database VM SKU.
      *

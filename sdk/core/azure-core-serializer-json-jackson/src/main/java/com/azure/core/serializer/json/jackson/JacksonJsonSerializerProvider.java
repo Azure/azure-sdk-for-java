@@ -10,6 +10,12 @@ import com.azure.core.util.serializer.MemberNameConverterProvider;
  * Implementation of {@link JsonSerializerProvider} and {@link MemberNameConverterProvider}.
  */
 public final class JacksonJsonSerializerProvider implements JsonSerializerProvider, MemberNameConverterProvider {
+    /**
+     * Creates an instance of {@link JacksonJsonSerializerProvider}.
+     */
+    public JacksonJsonSerializerProvider() {
+    }
+
     @Override
     public JacksonJsonSerializer createInstance() {
         return new JacksonJsonSerializerBuilder().build();

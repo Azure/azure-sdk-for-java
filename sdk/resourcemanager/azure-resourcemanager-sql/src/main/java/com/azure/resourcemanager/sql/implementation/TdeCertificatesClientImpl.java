@@ -55,7 +55,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientT")
-    private interface TdeCertificatesService {
+    public interface TdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

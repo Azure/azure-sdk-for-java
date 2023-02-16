@@ -11,7 +11,7 @@ import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AlertProperties model. */
+/** Alert properties. */
 @Fluent
 public final class AlertProperties {
     /*
@@ -69,7 +69,7 @@ public final class AlertProperties {
     private String modificationTime;
 
     /*
-     * The statusModificationUserName property.
+     * User who last modified the alert
      */
     @JsonProperty(value = "statusModificationUserName")
     private String statusModificationUsername;
@@ -265,7 +265,7 @@ public final class AlertProperties {
     }
 
     /**
-     * Get the statusModificationUsername property: The statusModificationUserName property.
+     * Get the statusModificationUsername property: User who last modified the alert.
      *
      * @return the statusModificationUsername value.
      */
@@ -274,7 +274,7 @@ public final class AlertProperties {
     }
 
     /**
-     * Set the statusModificationUsername property: The statusModificationUserName property.
+     * Set the statusModificationUsername property: User who last modified the alert.
      *
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the AlertProperties object itself.

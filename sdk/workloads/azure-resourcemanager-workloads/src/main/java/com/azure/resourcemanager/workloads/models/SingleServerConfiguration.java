@@ -39,6 +39,22 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     @JsonProperty(value = "virtualMachineConfiguration", required = true)
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
+    /*
+     * Gets or sets the disk configuration.
+     */
+    @JsonProperty(value = "dbDiskConfiguration")
+    private DiskConfiguration dbDiskConfiguration;
+
+    /*
+     * The set of custom names to be used for underlying azure resources that are part of the SAP system.
+     */
+    @JsonProperty(value = "customResourceNames")
+    private SingleServerCustomResourceNames customResourceNames;
+
+    /** Creates an instance of SingleServerConfiguration class. */
+    public SingleServerConfiguration() {
+    }
+
     /**
      * Get the networkConfiguration property: Network configuration for the server.
      *
@@ -120,6 +136,48 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
         return this;
     }
 
+    /**
+     * Get the dbDiskConfiguration property: Gets or sets the disk configuration.
+     *
+     * @return the dbDiskConfiguration value.
+     */
+    public DiskConfiguration dbDiskConfiguration() {
+        return this.dbDiskConfiguration;
+    }
+
+    /**
+     * Set the dbDiskConfiguration property: Gets or sets the disk configuration.
+     *
+     * @param dbDiskConfiguration the dbDiskConfiguration value to set.
+     * @return the SingleServerConfiguration object itself.
+     */
+    public SingleServerConfiguration withDbDiskConfiguration(DiskConfiguration dbDiskConfiguration) {
+        this.dbDiskConfiguration = dbDiskConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the customResourceNames property: The set of custom names to be used for underlying azure resources that are
+     * part of the SAP system.
+     *
+     * @return the customResourceNames value.
+     */
+    public SingleServerCustomResourceNames customResourceNames() {
+        return this.customResourceNames;
+    }
+
+    /**
+     * Set the customResourceNames property: The set of custom names to be used for underlying azure resources that are
+     * part of the SAP system.
+     *
+     * @param customResourceNames the customResourceNames value to set.
+     * @return the SingleServerConfiguration object itself.
+     */
+    public SingleServerConfiguration withCustomResourceNames(SingleServerCustomResourceNames customResourceNames) {
+        this.customResourceNames = customResourceNames;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public SingleServerConfiguration withAppResourceGroup(String appResourceGroup) {
@@ -151,6 +209,12 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
                         "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
+        }
+        if (dbDiskConfiguration() != null) {
+            dbDiskConfiguration().validate();
+        }
+        if (customResourceNames() != null) {
+            customResourceNames().validate();
         }
     }
 

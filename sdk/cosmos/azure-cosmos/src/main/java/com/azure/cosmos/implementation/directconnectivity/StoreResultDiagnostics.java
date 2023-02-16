@@ -205,8 +205,7 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResponseDiagnostics.getRntbdResponseLength());
             jsonGenerator.writeObjectField("requestPayloadLengthInBytes", storeResponseDiagnostics.getRequestPayloadLength());
             jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResponseDiagnostics.getResponsePayloadLength());
-            jsonGenerator.writeObjectField("channelTaskQueueSize", storeResponseDiagnostics.getRntbdChannelTaskQueueSize());
-            jsonGenerator.writeObjectField("pendingRequestsCount", storeResponseDiagnostics.getPendingRequestQueueSize());
+            jsonGenerator.writeObjectField("channelStatistics", storeResponseDiagnostics.getRntbdChannelStatistics());
             jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResponseDiagnostics.getRntbdEndpointStatistics());
 
             jsonGenerator.writeEndObject();

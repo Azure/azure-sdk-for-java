@@ -34,15 +34,6 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest request) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(request);
-        if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityRequest request, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner =
@@ -58,17 +49,12 @@ public final class OperationsImpl implements Operations {
         }
     }
 
-    public List<AvailableRpOperation> list() {
-        List<AvailableRpOperationInner> inner = this.serviceClient().list();
+    public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest request) {
+        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(request);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AvailableRpOperationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
@@ -89,8 +75,18 @@ public final class OperationsImpl implements Operations {
         }
     }
 
-    public void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
-        this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, operationId);
+    public List<AvailableRpOperation> list() {
+        List<AvailableRpOperationInner> inner = this.serviceClient().list();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new AvailableRpOperationImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Response<Void> getLocationHeaderResultWithResponse(
@@ -100,15 +96,8 @@ public final class OperationsImpl implements Operations {
             .getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, context);
     }
 
-    public OperationResource getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId) {
-        OperationResourceInner inner =
-            this.serviceClient().getAzureAsyncHeaderResult(resourceGroupName, workspaceName, operationId);
-        if (inner != null) {
-            return new OperationResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
+        this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, operationId);
     }
 
     public Response<OperationResource> getAzureAsyncHeaderResultWithResponse(
@@ -123,6 +112,17 @@ public final class OperationsImpl implements Operations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationResource getAzureAsyncHeaderResult(
+        String resourceGroupName, String workspaceName, String operationId) {
+        OperationResourceInner inner =
+            this.serviceClient().getAzureAsyncHeaderResult(resourceGroupName, workspaceName, operationId);
+        if (inner != null) {
+            return new OperationResourceImpl(inner, this.manager());
         } else {
             return null;
         }

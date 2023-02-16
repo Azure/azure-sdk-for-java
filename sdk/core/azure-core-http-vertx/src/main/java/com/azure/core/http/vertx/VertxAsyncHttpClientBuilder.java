@@ -58,8 +58,14 @@ public class VertxAsyncHttpClientBuilder {
     private Vertx vertx;
 
     /**
+     * Creates an instance of {@link VertxAsyncHttpClientBuilder}.
+     */
+    public VertxAsyncHttpClientBuilder() {
+    }
+
+    /**
      * Sets the read idle timeout.
-     *
+     * <p>
      * The default read idle timeout is 60 seconds.
      *
      * @param readIdleTimeout the read idle timeout
@@ -72,7 +78,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the write idle timeout.
-     *
+     * <p>
      * The default read idle timeout is 60 seconds.
      *
      * @param writeIdleTimeout the write idle timeout
@@ -85,7 +91,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the connect timeout.
-     *
+     * <p>
      * The default connect timeout is 10 seconds.
      *
      * @param connectTimeout the connection timeout
@@ -98,7 +104,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the connection idle timeout.
-     *
+     * <p>
      * The default connect timeout is 60 seconds.
      *
      * @param idleTimeout the connection idle timeout
@@ -259,11 +265,11 @@ public class VertxAsyncHttpClientBuilder {
     }
 
     /**
-     * Reverses non proxy host string sanitization applied by {@link ProxyOptions}.
-     *
+     * Reverses non-proxy host string sanitization applied by {@link ProxyOptions}.
+     * <p>
      * This is necessary as Vert.x will apply its own sanitization logic.
      *
-     * @param nonProxyHosts The list of non proxy hosts
+     * @param nonProxyHosts The list of non-proxy hosts
      * @return String array of desanitized proxy host strings
      */
     private String[] desanitizedNonProxyHosts(String nonProxyHosts) {
