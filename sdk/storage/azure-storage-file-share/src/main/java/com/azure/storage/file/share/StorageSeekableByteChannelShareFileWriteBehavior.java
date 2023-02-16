@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.share;
 
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.ByteBufferMarkableInputStream;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -37,8 +41,7 @@ class StorageSeekableByteChannelShareFileWriteBehavior implements StorageSeekabl
 
     @Override
     public void write(ByteBuffer src, long destOffset){
-        // TODO (jaschrep): this is an array copy, remove it
-        try (InputStream uploadStream = BinaryData.fromByteBuffer(src).toStream()) {
+        try (InputStream uploadStream = new ByteBufferMarkableInputStream(src)) {
             client.uploadRangeWithResponse(
                 new ShareFileUploadRangeOptions(uploadStream, src.remaining())
                     .setOffset(destOffset).setRequestConditions(conditions).setLastWrittenMode(lastWrittenMode),
