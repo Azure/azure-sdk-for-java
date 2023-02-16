@@ -150,7 +150,6 @@ class StorageSeekableByteChannelTest extends Specification {
 
     def "Read past resource end"() {
         given:
-        def resourceSize = Constants.KB
         StorageSeekableByteChannel.ReadBehavior behavior = Stub {
             getCachedLength() >> resourceSize
             read(_,_) >> { ByteBuffer dst, long sourceOffset ->
@@ -179,10 +178,10 @@ class StorageSeekableByteChannelTest extends Specification {
 
 
         where:
-        offset            | expectedReadLength
-        500               | resourceSize - 500 // overlap on end of resource
-        resourceSize      | -1                 // starts at end of resource
-        resourceSize + 20 | -1                 // completely past resource
+        resourceSize | offset            | expectedReadLength
+        Constants.KB | 500               | Constants.KB - 500 // overlap on end of resource
+        Constants.KB | Constants.KB      | -1                 // starts at end of resource
+        Constants.KB | Constants.KB + 20 | -1                 // completely past resource
     }
 
     @Unroll
@@ -207,7 +206,7 @@ class StorageSeekableByteChannelTest extends Specification {
         source == dest
 
         where:
-        dataSize         | chunkSize    | writeSize
+        chunkSize    | writeSize
         8 * Constants.KB | Constants.KB | Constants.KB // easy path
         8 * Constants.KB | Constants.KB | 100          // writes unaligned (smaller)
         8 * Constants.KB | Constants.KB | 1500         // writes unaligned (larger)
