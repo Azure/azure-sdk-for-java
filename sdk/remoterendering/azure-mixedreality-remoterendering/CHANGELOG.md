@@ -1,14 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 1.1.15 (2023-03-07)
 ### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.36.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.10`.
 
 ## 1.1.14 (2023-02-07)
 ### Other Changes
