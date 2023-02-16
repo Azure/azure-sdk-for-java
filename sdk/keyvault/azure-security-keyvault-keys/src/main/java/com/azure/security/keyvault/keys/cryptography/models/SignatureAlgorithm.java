@@ -65,11 +65,6 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
 
     /**
-     * Static value EdDSA for SignatureAlgorithm.
-     */
-    public static final SignatureAlgorithm EDDSA = fromString("EdDSA");
-
-    /**
      * Creates or finds a SignatureAlgorithm from its string representation.
      *
      * @param name a name to look for.
