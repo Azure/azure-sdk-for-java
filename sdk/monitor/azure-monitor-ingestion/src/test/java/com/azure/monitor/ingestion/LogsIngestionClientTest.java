@@ -75,14 +75,14 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
-        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
                 .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
 
         LogsIngestionClient client = clientBuilder
                 .addPolicy(new PartialFailurePolicy(count))
                 .buildClient();
 
-        client.upload(dataCollectionRuleId, streamName, logs, uploadLogsOptions);
+        client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions);
         assertEquals(11, count.get());
         assertEquals(49460, failedLogsCount.get());
     }

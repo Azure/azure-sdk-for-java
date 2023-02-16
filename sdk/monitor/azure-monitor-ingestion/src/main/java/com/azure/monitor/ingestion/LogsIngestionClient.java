@@ -73,9 +73,9 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * LogsUploadOptions uploadLogsOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * LogsUploadOptions logsUploadOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
      * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
-     *         uploadLogsOptions, Context.NONE&#41;;
+     *         logsUploadOptions, Context.NONE&#41;;
      * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->

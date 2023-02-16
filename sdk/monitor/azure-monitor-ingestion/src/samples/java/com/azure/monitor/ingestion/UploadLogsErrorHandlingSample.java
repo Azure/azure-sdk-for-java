@@ -31,13 +31,13 @@ public class UploadLogsErrorHandlingSample {
         // Configure the error handler to inspect HTTP request failure and the logs associated with the failed
         // request. A single client.upload() call can be broken down by the client into smaller HTTP requests, so,
         // this error handler can be called multiple times if there are multiple HTTP request failures.
-        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
                 .setLogsUploadErrorConsumer(uploadLogsError -> {
                     HttpResponseException responseException = uploadLogsError.getResponseException();
                     System.out.println(responseException.getMessage());
                     System.out.println("Failed logs count " + uploadLogsError.getFailedLogs().size());
                 });
-        client.upload("<data-collection-rule-id>", "<stream-name>", dataList, uploadLogsOptions);
+        client.upload("<data-collection-rule-id>", "<stream-name>", dataList, logsUploadOptions);
     }
 
     private static List<Object> getLogs() {

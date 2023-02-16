@@ -3,7 +3,7 @@
 ## 1.0.0 (2023-02-15)
 
 ### Features Added
-- Added `uploadLogsErrorConsumer` to `UploadLogsOptions` that is called when there's any service error while uploading logs.
+- Added `logsUploadErrorConsumer` to `LogsUploadOptions` that is called when there's any service error while uploading logs.
 - `upload` methods on `LogsIngestionClient` now take an `Iterable` of logs instead of `List`.
 
 ### Breaking Changes

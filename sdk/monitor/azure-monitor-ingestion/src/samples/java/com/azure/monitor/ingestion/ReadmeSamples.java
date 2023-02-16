@@ -74,9 +74,9 @@ public final class ReadmeSamples {
                 .buildClient();
 
         List<Object> logs = getLogs();
-        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
                 .setMaxConcurrency(3);
-        client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
                 Context.NONE);
         System.out.println("Logs uploaded successfully");
         // END: readme-sample-uploadLogsWithMaxConcurrency
@@ -97,7 +97,7 @@ public final class ReadmeSamples {
 
         List<Object> logs = getLogs();
 
-        LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
                 .setLogsUploadErrorConsumer(uploadLogsError -> {
                     System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
                     System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
@@ -105,7 +105,7 @@ public final class ReadmeSamples {
                     // throw the exception here to abort uploading remaining logs
                     // throw uploadLogsError.getResponseException();
                 });
-        client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
                 Context.NONE);
         // END: readme-sample-uploadLogs-error-handler
     }

@@ -40,7 +40,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.4</version>
+    <version>1.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -140,9 +140,9 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 
 List<Object> logs = getLogs();
-LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
         .setMaxConcurrency(3);
-client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
         Context.NONE);
 System.out.println("Logs uploaded successfully");
 ```
@@ -164,7 +164,7 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
 
 List<Object> logs = getLogs();
 
-LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
+LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
         .setLogsUploadErrorConsumer(uploadLogsError -> {
             System.out.println("Error message " + uploadLogsError.getResponseException().getMessage());
             System.out.println("Total logs failed to upload = " + uploadLogsError.getFailedLogs().size());
@@ -172,7 +172,7 @@ LogsUploadOptions uploadLogsOptions = new LogsUploadOptions()
             // throw the exception here to abort uploading remaining logs
             // throw uploadLogsError.getResponseException();
         });
-client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOptions,
         Context.NONE);
 ```
 ## Troubleshooting
