@@ -6,6 +6,7 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -1028,6 +1029,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setHasLegalHold(Boolean hasLegalHold) {
         internalHeaders.setXMsLegalHold(hasLegalHold);
+        return this;
+    }
+
+    /**
+     * Get the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @return the creation time value.
+     */
+    public OffsetDateTime getCreationTime() {
+        return internalHeaders.getXMsCreationTime();
+    }
+
+    /**
+     * Set the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @param creationTime the xMsCreationTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setCreationTime(OffsetDateTime creationTime) {
+        internalHeaders.setXMsCreationTime(creationTime);
         return this;
     }
 }
