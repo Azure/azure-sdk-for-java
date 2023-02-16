@@ -15,10 +15,6 @@
 * Renamed SecretClientBuilderSetup to SecretClientCustomizer
 * Feature Flags can now be loaded from multiple stores, duplicate key names result in last wins.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.11.0 (2023-01-18)
 Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
 

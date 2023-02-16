@@ -2,13 +2,7 @@
 
 ## 4.0.0-beta.3 (2023-02-16)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+Updated to use latest dependencies.
 
 ## 4.0.0-beta.2 (2022-10-06)
 
