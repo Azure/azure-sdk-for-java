@@ -206,7 +206,7 @@ class StorageSeekableByteChannelTest extends Specification {
         source == dest
 
         where:
-        chunkSize    | writeSize
+        dataSize         | chunkSize    | writeSize
         8 * Constants.KB | Constants.KB | Constants.KB // easy path
         8 * Constants.KB | Constants.KB | 100          // writes unaligned (smaller)
         8 * Constants.KB | Constants.KB | 1500         // writes unaligned (larger)
