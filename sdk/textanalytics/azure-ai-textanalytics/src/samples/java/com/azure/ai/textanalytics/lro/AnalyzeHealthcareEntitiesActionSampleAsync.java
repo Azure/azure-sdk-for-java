@@ -37,17 +37,17 @@ public class AnalyzeHealthcareEntitiesActionSampleAsync {
      */
     public static void main(String[] args) {
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
-                                              .buildAsyncClient();
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
 
         List<String> documents = Arrays.asList(
-                "Woman in NAD with a h/o CAD, DM2, asthma and HTN on ramipril for 8 years awoke from sleep around"
-                    + " 2:30 am this morning of a sore throat and swelling of tongue. She came immediately to the ED"
-                    + " b/c she was having difficulty swallowing.",
-                "Patient's brother died at the age of 64 from lung cancer. She was admitted for likely gastroparesis"
-                    + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
-                    + "if diarrhea worsen.");
+            "Woman in NAD with a h/o CAD, DM2, asthma and HTN on ramipril for 8 years awoke from sleep around"
+                + " 2:30 am this morning of a sore throat and swelling of tongue. She came immediately to the ED"
+                + " b/c she was having difficulty swallowing.",
+            "Patient's brother died at the age of 64 from lung cancer. She was admitted for likely gastroparesis"
+                + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
+                + "if diarrhea worsen.");
 
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
@@ -59,7 +59,7 @@ public class AnalyzeHealthcareEntitiesActionSampleAsync {
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
                 System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                                      + " failed actions: %d, total actions: %d%n",
+                        + " failed actions: %d, total actions: %d%n",
                     operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
                     operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
                     operationDetail.getTotalCount());
