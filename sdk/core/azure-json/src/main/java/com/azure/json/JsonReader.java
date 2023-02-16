@@ -353,13 +353,15 @@ public abstract class JsonReader implements Closeable {
             || (canStartAtArray && token == JsonToken.START_ARRAY)
             || (canStartAtFieldName && token == JsonToken.FIELD_NAME);
 
-        // Not a valid starting poing.
+        // Not a valid starting point.
         if (!canRead) {
             return buffer;
         }
 
         if (token == JsonToken.FIELD_NAME) {
-            buffer.append("{\"").append(ENCODER.quoteAsString(getText())).append("\":");
+            buffer.append("{\"");
+            ENCODER.quoteAsString(getFieldName(), buffer);
+            buffer.append("\":");
             token = nextToken();
         }
 
@@ -410,9 +412,13 @@ public abstract class JsonReader implements Closeable {
         // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
         //  Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
-            buffer.append("\"").append(ENCODER.quoteAsString(getFieldName())).append("\":");
+            buffer.append("\"");
+            ENCODER.quoteAsString(getFieldName(), buffer);
+            buffer.append("\":");
         } else if (token == JsonToken.STRING) {
-            buffer.append("\"").append(ENCODER.quoteAsString(getString())).append("\"");
+            buffer.append("\"");
+            ENCODER.quoteAsString(getString(), buffer);
+            buffer.append("\"");
         } else {
             buffer.append(getText());
         }
