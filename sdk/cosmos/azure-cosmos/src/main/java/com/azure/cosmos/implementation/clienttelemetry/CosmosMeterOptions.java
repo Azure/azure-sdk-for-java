@@ -24,7 +24,7 @@ public final class CosmosMeterOptions {
 
         this.name = name;
         this.isEnabled = isEnabled;
-        this.percentiles = percentiles != null ? percentiles.clone() : null;
+        this.percentiles = percentiles != null ? percentiles.clone() : new double[0];
         this.isHistogramPublishingEnabled = isHistogramPublishingEnabled;
         this.suppressedTagNames = suppressedTagNames;
     }
@@ -42,7 +42,7 @@ public final class CosmosMeterOptions {
     }
 
     public double[] getPercentiles() {
-        return this.percentiles != null ? this.percentiles.clone() : null;
+        return this.percentiles.clone();
     }
 
     public boolean isEnabled() {
