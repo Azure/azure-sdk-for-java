@@ -84,15 +84,12 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected CallAutomationClientBuilder getCallAutomationClientUsingConnectionString(HttpClient httpClient) {
 
         CallAutomationClientBuilder builder;
-        if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED)
-        {
+        if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED) {
             builder = new CallAutomationClientBuilder()
                 .connectionString(CONNECTION_STRING)
                 .endpoint(PMA_ENDPOINT)
                 .httpClient(getHttpClientOrUsePlayback(httpClient));
-        }
-        else
-        {
+        } else {
             builder = new CallAutomationClientBuilder()
                 .connectionString(CONNECTION_STRING)
                 .httpClient(getHttpClientOrUsePlayback(httpClient));
