@@ -218,7 +218,7 @@ public class ClientMetricsTest extends BatchTestBase {
                         expectedOperationTag,
                         Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
                         1,
-                        100
+                        300
                     );
 
                     this.validateMetrics(
@@ -226,7 +226,7 @@ public class ClientMetricsTest extends BatchTestBase {
                             TagName.Operation.toString(), "Document/Create"),
                         Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
                         1,
-                        100
+                        300
                     );
                 }
 
@@ -273,7 +273,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     Tag.of(TagName.OperationStatusCode.toString(), "201"),
                     Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
                     1,
-                    100
+                    300
                 );
 
                 this.validateMetrics(
@@ -281,7 +281,7 @@ public class ClientMetricsTest extends BatchTestBase {
                         TagName.Operation.toString(), "Document/Create"),
                     Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
                     1,
-                    100
+                    300
                 );
 
                 Tag expectedConsistencyTag = Tag.of(TagName.ConsistencyLevel.toString(), "Session");
@@ -424,7 +424,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                300
             );
 
             this.validateMetrics(
@@ -470,7 +470,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                1000
             );
 
             this.validateMetrics(
@@ -602,7 +602,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                300
             );
 
             this.validateMetrics(
@@ -610,7 +610,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Patch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Patch"),
                 1,
-                100
+                300
             );
         } finally {
             this.afterTest();
@@ -718,7 +718,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
                 1,
-                100
+                300
             );
 
             this.validateMetrics(
@@ -726,7 +726,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
                 1,
-                100
+                300
             );
         } finally {
             this.afterTest();
