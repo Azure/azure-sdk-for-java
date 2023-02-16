@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -196,6 +197,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadPriority(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadPriority(
                 DirectConnectionConfig config, int ioThreadPriority);
+            DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
+                DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
+            boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
         }
     }
 
@@ -1087,6 +1091,8 @@ public class ImplementationBridgeHelpers {
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
             List<String> getReplicaStatusList(CosmosException cosmosException);
+            CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
+            RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
         }
     }
 
