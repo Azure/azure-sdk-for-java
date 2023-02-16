@@ -89,7 +89,7 @@
     },
     {
       "name": "azure.activedirectory.b2c.authorization-clients",
-      "description": "Specify client configuration.",
+      "description": "Specify client configuration. For instance, 'authorizationGrantType: client_credentials'.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -129,7 +129,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -138,7 +138,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -147,7 +147,7 @@
     {
       "name": "azure.activedirectory.b2c.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -156,7 +156,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout",
       "type": "java.lang.Integer",
-      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "description": "Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -165,7 +165,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-read-timeout",
       "type": "java.lang.Integer",
-      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "description": "Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."
@@ -174,7 +174,7 @@
     {
       "name": "spring.cloud.azure.active-directory.b2c.jwt-size-limit",
       "type": "java.lang.Integer",
-      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.",
       "deprecation": {
         "level": "error",
         "reason": "Not used anymore, for any customization, provide a custom RestOperation bean."

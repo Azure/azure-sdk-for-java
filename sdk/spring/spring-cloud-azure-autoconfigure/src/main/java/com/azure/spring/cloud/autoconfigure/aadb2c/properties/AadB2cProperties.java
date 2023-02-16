@@ -54,22 +54,22 @@ public class AadB2cProperties implements InitializingBean {
     private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
-     * App ID URI which might be used in the "aud" claim of a token.
+     * App ID URI which might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
      */
     private String appIdUri;
 
     /**
-     * Connection Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.  Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
@@ -79,7 +79,7 @@ public class AadB2cProperties implements InitializingBean {
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     /**
-     * Additional parameters for authentication.
+     * Additional parameters for authentication. For instance, 'prompt: login'.
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -94,7 +94,7 @@ public class AadB2cProperties implements InitializingBean {
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * Azure AD B2C endpoint base uri.
+     * Azure AD B2C endpoint base uri. The default value is `"/oauth2/authorization"`.
      */
     private String baseUri;
 
@@ -104,12 +104,12 @@ public class AadB2cProperties implements InitializingBean {
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     /**
-     * User flows.
+     * User flows. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
      */
     private Map<String, String> userFlows = new HashMap<>();
 
     /**
-     * Specify client configuration.
+     * Specify client configuration. For instance, 'authorizationGrantType: client_credentials'.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
