@@ -450,8 +450,8 @@ public class EncryptionProcessor {
     }
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
-        JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(StandardCharsets.UTF_8), TypeMarker.STRING);
-        return convertToBase64UriSafeString(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName));
+        JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(StandardCharsets.US_ASCII), TypeMarker.STRING);
+        return new String(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName), StandardCharsets.US_ASCII);
     }
 
     public byte[] encryptAndSerializeValue(EncryptionSettings encryptionSettings, ObjectNode objectNode,
@@ -473,7 +473,11 @@ public class EncryptionProcessor {
 
         if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
             // case: id does not support '/','\','?','#'. Convert Base64 string to Uri safe string
-            cipherTextWithTypeMarker =  convertToBase64UriSafeString(cipherTextWithTypeMarker).getBytes(StandardCharsets.UTF_8);
+            String base64UriSafeString =  convertToBase64UriSafeString(cipherTextWithTypeMarker);
+            if (objectNode != null && !objectNode.isNull()) {
+                objectNode.put(propertyName, base64UriSafeString);
+            }
+            return base64UriSafeString.getBytes(StandardCharsets.UTF_8);
         }
 
         if (objectNode != null && !objectNode.isNull()) {
@@ -599,7 +603,7 @@ public class EncryptionProcessor {
             if (propertyValueHolder.getNodeType() == JsonNodeType.NULL) {
                 return null;
             }
-            cipherTextWithTypeMarker = convertFromBase64UriSafeString(propertyValueHolder.toString());
+            cipherTextWithTypeMarker = convertFromBase64UriSafeString(propertyValueHolder.asText());
         } else {
             cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
         }
@@ -664,24 +668,14 @@ public class EncryptionProcessor {
     }
 
     private String convertToBase64UriSafeString(byte[] bytesToProcess) {
-        StringBuilder base64String = new StringBuilder(new String(Base64.getEncoder().encode(bytesToProcess), StandardCharsets.UTF_8));
-
         // Base 64 Encoding with URL and Filename Safe Alphabet  https://datatracker.ietf.org/doc/html/rfc4648#section-5
         // https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits, due to base64 conversion and encryption
         // the permissible size of the property will further reduce.
-        replaceString(base64String, "/", "_");
-        replaceString(base64String, "\\+", "-");
-        return base64String.toString();
-//        return Base64.getUrlEncoder().encodeToString(bytesToProcess);
+        return Base64.getUrlEncoder().encodeToString(bytesToProcess);
     }
 
     private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
-        StringBuilder base64String = new StringBuilder(base64UriSafeString);
-
-        replaceString(base64String, "_", "/");
-        replaceString(base64String, "-", "\\+");
-        return Base64.getDecoder().decode(base64String.toString().getBytes(StandardCharsets.UTF_8));
-//        return Base64.getUrlDecoder().decode(base64UriSafeString);
+        return Base64.getUrlDecoder().decode(base64UriSafeString);
     }
 
     private StringBuilder replaceString(StringBuilder sb,
