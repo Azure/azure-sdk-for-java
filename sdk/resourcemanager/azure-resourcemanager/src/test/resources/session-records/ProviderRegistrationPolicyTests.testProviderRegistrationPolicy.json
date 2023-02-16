@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06594/providers/Microsoft.ContainerRegistry/registries/acr196506?api-version=2021-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06594/providers/Microsoft.ContainerRegistry/registries/acr196506?api-version=2023-01-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.20.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "2ce1eb2a-6725-49fa-85cf-d5d2ccbb2456",
@@ -313,7 +313,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06594/providers/Microsoft.ContainerRegistry/registries/acr196506?api-version=2021-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06594/providers/Microsoft.ContainerRegistry/registries/acr196506?api-version=2023-01-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.20.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "2ce1eb2a-6725-49fa-85cf-d5d2ccbb2456",
