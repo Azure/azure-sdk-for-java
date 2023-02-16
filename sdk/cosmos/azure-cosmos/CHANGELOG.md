@@ -13,6 +13,7 @@
 * Added improvement in `RntbdClientChannelHealthChecker` for detecting transit timeout. - See [PR 33464](https://github.com/Azure/azure-sdk-for-java/pull/33464)
 
 #### Other Changes
+* Give a meaningful name to the GlobalEndpointManager worker thread - See [PR 33507](https://github.com/Azure/azure-sdk-for-java/pull/33507)
 
 ### 4.40.0 (2023-01-13)
 #### Features Added

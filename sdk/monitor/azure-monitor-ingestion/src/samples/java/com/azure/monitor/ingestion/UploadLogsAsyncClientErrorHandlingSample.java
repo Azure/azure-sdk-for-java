@@ -5,7 +5,7 @@ package com.azure.monitor.ingestion;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -42,8 +42,8 @@ public class UploadLogsAsyncClientErrorHandlingSample {
         // Configure the error handler to inspect HTTP request failure and the logs associated with the failed
         // request. A single client.upload() call can be broken down by the client into smaller HTTP requests, so,
         // this error handler can be called multiple times if there are multiple HTTP request failures.
-        UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
-                .setUploadLogsErrorConsumer(uploadLogsError -> {
+        LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
+                .setLogsUploadErrorConsumer(uploadLogsError -> {
                     HttpResponseException responseException = uploadLogsError.getResponseException();
                     System.out.println(responseException.getMessage());
                     System.out.println("Failed logs count " + uploadLogsError.getFailedLogs().size());
@@ -52,7 +52,7 @@ public class UploadLogsAsyncClientErrorHandlingSample {
         // More details on Mono<> can be found in the project reactor documentation at :
         // https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html
         Mono<Void> resultMono = client.upload("<data-collection-rule-id>",
-                "<stream-name>", dataList, uploadLogsOptions);
+                "<stream-name>", dataList, logsUploadOptions);
 
         resultMono.subscribe(
                 ignored -> {

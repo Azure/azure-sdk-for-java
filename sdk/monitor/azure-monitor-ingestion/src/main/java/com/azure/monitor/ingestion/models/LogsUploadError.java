@@ -13,7 +13,7 @@ import java.util.List;
  * Monitor.
  */
 @Immutable
-public final class UploadLogsError {
+public final class LogsUploadError {
     private final HttpResponseException responseException;
     private final List<Object> failedLogs;
 
@@ -22,7 +22,7 @@ public final class UploadLogsError {
      * @param responseException the response exception containing the error details returned by the service.
      * @param failedLogs the logs that failed to upload.
      */
-    public UploadLogsError(HttpResponseException responseException, List<Object> failedLogs) {
+    public LogsUploadError(HttpResponseException responseException, List<Object> failedLogs) {
         this.responseException = responseException;
         this.failedLogs = failedLogs;
     }
