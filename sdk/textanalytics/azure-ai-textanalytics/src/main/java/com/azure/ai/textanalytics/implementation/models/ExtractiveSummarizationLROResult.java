@@ -21,9 +21,6 @@ public final class ExtractiveSummarizationLROResult extends AnalyzeTextLROResult
     @JsonProperty(value = "results", required = true)
     private ExtractiveSummarizationResult results;
 
-    /** Creates an instance of ExtractiveSummarizationLROResult class. */
-    public ExtractiveSummarizationLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

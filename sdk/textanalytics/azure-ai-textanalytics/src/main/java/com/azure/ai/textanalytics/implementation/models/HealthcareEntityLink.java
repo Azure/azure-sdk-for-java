@@ -22,9 +22,6 @@ public final class HealthcareEntityLink {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of HealthcareEntityLink class. */
-    public HealthcareEntityLink() {}
-
     /**
      * Get the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      *

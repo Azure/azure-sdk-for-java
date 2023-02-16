@@ -20,9 +20,6 @@ public final class EntitiesTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private EntitiesResult results;
 
-    /** Creates an instance of EntitiesTaskResult class. */
-    public EntitiesTaskResult() {}
-
     /**
      * Get the results property: The results property.
      *

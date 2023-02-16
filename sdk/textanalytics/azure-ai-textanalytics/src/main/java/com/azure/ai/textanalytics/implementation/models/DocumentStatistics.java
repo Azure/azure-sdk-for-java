@@ -22,9 +22,6 @@ public final class DocumentStatistics {
     @JsonProperty(value = "transactionsCount", required = true)
     private int transactionsCount;
 
-    /** Creates an instance of DocumentStatistics class. */
-    public DocumentStatistics() {}
-
     /**
      * Get the charactersCount property: Number of text elements recognized in the document.
      *

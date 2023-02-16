@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Describes if the entity is the subject of the text or if it describes someone else. */
+/** Defines values for Association. */
 public enum Association {
     /** Enum value subject. */
     SUBJECT("subject"),
@@ -42,7 +42,6 @@ public enum Association {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

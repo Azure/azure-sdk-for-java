@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The PII domain used for PII Entity Recognition. */
+/** Defines values for PiiDomain. */
 public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
     /** Static value phi for PiiDomain. */
     public static final PiiDomain PHI = fromString("phi");

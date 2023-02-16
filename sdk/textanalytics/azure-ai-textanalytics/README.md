@@ -8,11 +8,9 @@ features for understanding and analyzing text, and includes the following main f
 - Key Phrase Extraction
 - Multiple Actions Analysis Per Document
 - Healthcare Entities Analysis
-- Abstractive Text Summarization
 - Extractive Text Summarization
 - Custom Named Entity Recognition
 - Custom Text Classification
-- Dynamic Text Classification
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -63,19 +61,18 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.3.0-beta.1</version>
+    <version>5.2.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `2022-10-01-preview` version of the service.
-It is a newer version than `3_0`, `3_1` and `2022-05-01`.
+**Note:** This version of the client library defaults to the `2022-05-01` version of the service.
+It is a newer version than `3_0` and `3_1`.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.3.x | 3.0, 3.1, 2022-05-01, 2022-10-01-preview (default)
-|5.2.x | 3.0, 3.1, 2022-05-01
+|5.2.x | 3.0, 3.1, 2022-05-01 (default)
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
@@ -84,8 +81,31 @@ The Language service supports both [multi-service and single-service access][ser
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Language service access only,
 create a Language service resource.
 
-You can create the resource using the [Azure Portal][create_new_resource_in_azure_portal] or 
-[Azure CLI][azure_cli_doc] following the steps in [this document][create_new_resource_in_azure_cli].
+You can create either resource using the 
+
+**Option 1:** [Azure Portal][create_new_resource] 
+
+**Option 2:** [Azure CLI][azure_cli]
+
+Below is an example of how you can create a Language service resource using the CLI:
+
+```bash
+# Create a new resource group to hold the Language service resource -
+# if using an existing resource group, skip this step
+az group create --name <your-resource-group> --location <location>
+```
+
+```bash
+# Create language service
+az cognitiveservices account create \
+    --name <your-resource-name> \
+    --resource-group <your-resource-group-name> \
+    --kind TextAnalytics \
+    --sku <sku> \
+    --location <location> \
+    --yes
+```
+For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
 
 ### Authenticate the client
 In order to interact with the Language service, you will need to create an instance of the Text Analytics client,
@@ -142,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.7.2</version>
+    <version>1.7.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -217,9 +237,6 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
-* [Dynamic Text Classification][dynamic_classification_sample]
-* [Abstractive Text Summarization][abstractive_summary_action_sample]
-* [Extractive Text Summarization][extractive_summary_action_sample]
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
@@ -384,7 +401,6 @@ syncPoller.getFinalResult().forEach(
                     System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                         entity.getText(), entity.getCategory(), role.getName());
                 });
-                System.out.printf("\tRelation confidence score: %f.%n", entityRelation.getConfidenceScore());
             });
         }));
 ```
@@ -520,11 +536,9 @@ set of documents. Currently, the supported features are:
 - Key Phrase Extraction
 - Sentiment Analysis
 - Healthcare Analysis
-- Custom Entity Recognition (API version 2022-05-01 and newer)
-- Custom Single-Label Classification (API version 2022-05-01 and newer)
-- Custom Multi-Label Classification (API version 2022-05-01 and newer)
-- Abstractive Text Summarization (API version 2022-10-01-preview and newer)
-- Extractive Text Summarization (API version 2022-10-01-preview and newer)
+- Custom Entity Recognition
+- Custom Single-Label Classification
+- Custom Multi-Label Classification
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(
@@ -631,7 +645,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
-[azure_cli_doc]: https://learn.microsoft.com/cli/azure/
+[azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
@@ -642,8 +656,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[create_new_resource_in_azure_portal]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
-[create_new_resource_in_azure_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
+[create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
 [custom_entities_recognition_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-named-entity-recognition/overview
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [custom_text_classification_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-text-classification/overview
@@ -680,8 +693,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
-[abstractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarization.java
-[extractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ExtractiveSummarization.java
-[dynamic_classification_sample]:  https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DynamicClassificationBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

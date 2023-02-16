@@ -15,7 +15,7 @@ public class PreBuiltResult {
      * Errors by document id.
      */
     @JsonProperty(value = "errors", required = true)
-    private List<InputError> errors;
+    private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
@@ -29,15 +29,12 @@ public class PreBuiltResult {
     @JsonProperty(value = "modelVersion", required = true)
     private String modelVersion;
 
-    /** Creates an instance of PreBuiltResult class. */
-    public PreBuiltResult() {}
-
     /**
      * Get the errors property: Errors by document id.
      *
      * @return the errors value.
      */
-    public List<InputError> getErrors() {
+    public List<DocumentError> getErrors() {
         return this.errors;
     }
 
@@ -47,7 +44,7 @@ public class PreBuiltResult {
      * @param errors the errors value to set.
      * @return the PreBuiltResult object itself.
      */
-    public PreBuiltResult setErrors(List<InputError> errors) {
+    public PreBuiltResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
     }

@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ac6af098-9a43-4e81-b03b-e451c2f2e52a",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6d6a8975-e417-43ec-8664-c8556673e660",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,12 +12,11 @@
       "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "3f948a94-9992-4036-a7a4-26e79541852d",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "apim-request-id" : "9b6031c0-4351-4cff-b175-4f5c216396e6",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Country Hint.\",\"innererror\":{\"code\":\"InvalidCountryHint\",\"message\":\"Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code.\"}}}],\"modelVersion\":\"2021-11-20\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:16:40 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:48:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

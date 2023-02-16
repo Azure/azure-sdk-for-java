@@ -29,9 +29,6 @@ public class SentimentDocumentResult extends DocumentResult {
     @JsonProperty(value = "sentences", required = true)
     private List<SentenceSentiment> sentences;
 
-    /** Creates an instance of SentimentDocumentResult class. */
-    public SentimentDocumentResult() {}
-
     /**
      * Get the sentiment property: Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
      *

@@ -17,9 +17,6 @@ public final class MultiLanguageAnalysisInput {
     @JsonProperty(value = "documents")
     private List<MultiLanguageInput> documents;
 
-    /** Creates an instance of MultiLanguageAnalysisInput class. */
-    public MultiLanguageAnalysisInput() {}
-
     /**
      * Get the documents property: The documents property.
      *

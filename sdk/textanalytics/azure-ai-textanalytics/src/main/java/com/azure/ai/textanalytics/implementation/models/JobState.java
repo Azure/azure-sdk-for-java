@@ -43,7 +43,7 @@ public class JobState {
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
-     * The status of the task at the mentioned last update time.
+     * The status property.
      */
     @JsonProperty(value = "status", required = true)
     private State status;
@@ -59,9 +59,6 @@ public class JobState {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
-
-    /** Creates an instance of JobState class. */
-    public JobState() {}
 
     /**
      * Get the displayName property: The displayName property.
@@ -164,7 +161,7 @@ public class JobState {
     }
 
     /**
-     * Get the status property: The status of the task at the mentioned last update time.
+     * Get the status property: The status property.
      *
      * @return the status value.
      */
@@ -173,7 +170,7 @@ public class JobState {
     }
 
     /**
-     * Set the status property: The status of the task at the mentioned last update time.
+     * Set the status property: The status property.
      *
      * @param status the status value to set.
      * @return the JobState object itself.

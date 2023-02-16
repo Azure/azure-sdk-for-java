@@ -90,7 +90,7 @@ public final class RecognizePiiEntitiesAction {
     /**
      * Gets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/azsdk/language/pii for more information.
+     * See https://aka.ms/tanerpii for more information.
      *
      * @return The value of domainFilter.
      */
@@ -101,7 +101,7 @@ public final class RecognizePiiEntitiesAction {
     /**
      * Sets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/azsdk/language/pii for more information.
+     * See https://aka.ms/tanerpii for more information.
      *
      * @param domainFilter It filters the response entities to ones only included in the specified domain.
      *
