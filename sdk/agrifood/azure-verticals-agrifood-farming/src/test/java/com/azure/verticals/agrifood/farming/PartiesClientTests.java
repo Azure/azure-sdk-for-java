@@ -4,11 +4,9 @@
 package com.azure.verticals.agrifood.farming;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.experimental.http.DynamicResponse;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -19,11 +17,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
 import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
