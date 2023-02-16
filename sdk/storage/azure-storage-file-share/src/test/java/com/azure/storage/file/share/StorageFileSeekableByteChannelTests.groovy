@@ -1,22 +1,13 @@
 package com.azure.storage.file.share
 
-import com.azure.core.http.HttpHeaders
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageChannelMode
 import com.azure.storage.common.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
 import com.azure.storage.file.share.models.FileLastWrittenMode
-import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders
-import com.azure.storage.file.share.models.ShareFileDownloadResponse
-import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
-import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelOptions
-import spock.lang.Unroll
-
-import java.nio.ByteBuffer
 
 class StorageFileSeekableByteChannelTests extends APISpec {
     int MAX_PUT_RANGE = 4 * Constants.MB
