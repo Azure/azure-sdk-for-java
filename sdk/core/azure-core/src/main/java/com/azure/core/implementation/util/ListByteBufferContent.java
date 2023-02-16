@@ -93,6 +93,11 @@ public class ListByteBufferContent extends BinaryDataContent {
         return Mono.just(this);
     }
 
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
+
     private byte[] getBytes() {
         long length = getLength();
         if (length > MAX_ARRAY_SIZE) {
