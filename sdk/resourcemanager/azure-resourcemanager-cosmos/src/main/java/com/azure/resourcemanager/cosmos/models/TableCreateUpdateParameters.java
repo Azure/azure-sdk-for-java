@@ -19,6 +19,10 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
     @JsonProperty(value = "properties", required = true)
     private TableCreateUpdateProperties innerProperties = new TableCreateUpdateProperties();
 
+    /** Creates an instance of TableCreateUpdateParameters class. */
+    public TableCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Table.
      *

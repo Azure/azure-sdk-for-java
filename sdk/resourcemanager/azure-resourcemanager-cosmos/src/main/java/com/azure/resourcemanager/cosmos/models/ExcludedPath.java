@@ -17,6 +17,10 @@ public final class ExcludedPath {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of ExcludedPath class. */
+    public ExcludedPath() {
+    }
+
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
      * and end with wildcard (/path/*).

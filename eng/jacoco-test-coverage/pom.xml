@@ -88,12 +88,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.1.10</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.0-beta.14</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.1.0-beta.15</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -273,7 +273,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-ingestion</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-monitor-ingestion;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -283,7 +283,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-query</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

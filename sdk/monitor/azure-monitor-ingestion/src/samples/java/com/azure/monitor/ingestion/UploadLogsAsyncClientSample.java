@@ -4,7 +4,7 @@
 package com.azure.monitor.ingestion;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.ingestion.models.UploadLogsException;
+import com.azure.monitor.ingestion.models.LogsUploadException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -48,8 +48,8 @@ public class UploadLogsAsyncClientSample {
                 },
                 error -> {
                     // If any exceptions are thrown, they are handled here.
-                    if (error instanceof UploadLogsException) {
-                        UploadLogsException ex = (UploadLogsException) error;
+                    if (error instanceof LogsUploadException) {
+                        LogsUploadException ex = (LogsUploadException) error;
                         System.out.println("Failed to upload " + ex.getFailedLogsCount() + "logs.");
                     }
                 },
