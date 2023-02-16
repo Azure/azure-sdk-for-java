@@ -123,6 +123,8 @@ public class StorageSeekableByteChannel implements SeekableByteChannel {
         }
         // if _readBuffer is still empty after refill, there are no bytes remaining
         if (buffer.remaining() == 0) {
+            // cap any position overshooting if channel is at end
+            absolutePosition = readBehavior.getCachedLength();
             return -1;
         }
 
