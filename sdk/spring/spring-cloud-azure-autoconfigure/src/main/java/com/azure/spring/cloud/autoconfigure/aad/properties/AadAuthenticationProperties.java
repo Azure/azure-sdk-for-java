@@ -82,42 +82,42 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * App ID URI which might be used in the "aud" claim of an id_token.
+     * App ID URI which might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
      */
     private String appIdUri;
 
     /**
-     * Add additional parameters to the Authorization URL.
+     * Add additional parameters to the Authorization URL. For instance, 'prompt: login'.
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout for the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`. Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout for the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`. Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call. Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`. Deprecated. If you want to configure this, please provide a RestOperations bean.
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The lifespan of the cached JWK set before it expires, default is 5 minutes.
+     * The lifespan(duration) of the cached JWK set before it expires. The default value is `5m`.
      */
     private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
 
     /**
-     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     * The refresh time(duration) of the cached JWK set before it expires. The default value is `5m`.
      */
     private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
 
     /**
-     * The redirect uri after logout.
+     * The redirect uri after logout. For instance, 'http://localhost:8080/'.
      */
     private String postLogoutRedirectUri;
 
@@ -128,12 +128,12 @@ public class AadAuthenticationProperties implements InitializingBean {
     private Boolean sessionStateless = false;
 
     /**
-     * The OAuth2 authorization clients.
+     * The OAuth2 authorization clients. For instance, 'scopes: test1,test2'.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the Azure AD application.
+     * Type of the Azure AD application. Supported types are: WEB_APPLICATION, RESOURCE_SERVER, RESOURCE_SERVER_WITH_OBO, WEB_APPLICATION_AND_RESOURCE_SERVER. The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.
      */
     private AadApplicationType applicationType;
 
@@ -201,7 +201,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
+         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf". The default value is `false`.
          */
         private boolean useTransitiveMembers = false;
 
