@@ -28,15 +28,6 @@ public final class AddParticipantRequestInternal {
     private String sourceDisplayName;
 
     /*
-     * (Optional) The identifier of the source of the call for this invite
-     * operation. If SourceDisplayName
-     * is not set, the display name of the source will be used by default when
-     * adding a PSTN participant or teams user.
-     */
-    @JsonProperty(value = "sourceIdentity")
-    private CommunicationIdentifierModel sourceIdentity;
-
-    /*
      * The participant to invite.
      */
     @JsonProperty(value = "participantToAdd", required = true)
@@ -103,30 +94,6 @@ public final class AddParticipantRequestInternal {
      */
     public AddParticipantRequestInternal setSourceDisplayName(String sourceDisplayName) {
         this.sourceDisplayName = sourceDisplayName;
-        return this;
-    }
-
-    /**
-     * Get the sourceIdentity property: (Optional) The identifier of the source of the call for this invite operation.
-     * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
-     * participant or teams user.
-     *
-     * @return the sourceIdentity value.
-     */
-    public CommunicationIdentifierModel getSourceIdentity() {
-        return this.sourceIdentity;
-    }
-
-    /**
-     * Set the sourceIdentity property: (Optional) The identifier of the source of the call for this invite operation.
-     * If SourceDisplayName is not set, the display name of the source will be used by default when adding a PSTN
-     * participant or teams user.
-     *
-     * @param sourceIdentity the sourceIdentity value to set.
-     * @return the AddParticipantRequestInternal object itself.
-     */
-    public AddParticipantRequestInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
-        this.sourceIdentity = sourceIdentity;
         return this;
     }
 
