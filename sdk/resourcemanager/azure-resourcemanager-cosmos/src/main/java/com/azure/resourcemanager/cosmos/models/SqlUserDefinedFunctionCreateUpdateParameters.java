@@ -20,6 +20,10 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
     private SqlUserDefinedFunctionCreateUpdateProperties innerProperties =
         new SqlUserDefinedFunctionCreateUpdateProperties();
 
+    /** Creates an instance of SqlUserDefinedFunctionCreateUpdateParameters class. */
+    public SqlUserDefinedFunctionCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB userDefinedFunction.
      *

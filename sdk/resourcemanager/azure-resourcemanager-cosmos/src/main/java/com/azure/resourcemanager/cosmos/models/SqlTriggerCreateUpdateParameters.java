@@ -19,6 +19,10 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
     @JsonProperty(value = "properties", required = true)
     private SqlTriggerCreateUpdateProperties innerProperties = new SqlTriggerCreateUpdateProperties();
 
+    /** Creates an instance of SqlTriggerCreateUpdateParameters class. */
+    public SqlTriggerCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB trigger.
      *
